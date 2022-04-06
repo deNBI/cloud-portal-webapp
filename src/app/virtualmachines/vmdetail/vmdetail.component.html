@@ -58,30 +58,37 @@
 				<div class="card-body" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
 					<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Connect Information</span>
 					<div class="p-x-1 py-h">
-						<div class="row" *ngFor="let mode of virtualMachine?.modes">
-							<div class="col-4">
-								<div class="callout">
-									<small class="text-muted">via</small><br />
-									<strong class="text-muted">{{ mode.name }}</strong>
+						<div *ngFor="let mode of virtualMachine?.modes">
+							<div class="row">
+								<div class="col-4">
+									<div class="callout">
+										<small class="text-muted">via</small><br />
+										<strong class="text-muted">{{ mode.name }}</strong>
+									</div>
 								</div>
-							</div>
-							<div class="col-4">
-								<div class="callout">
-									<small class="text-muted">with</small><br />
-									<strong class="text-muted" [innerHTML]="mode?.description"></strong>
+								<div class="col-4">
+									<div class="callout">
+										<small class="text-muted">with</small><br />
+										<strong class="text-muted" [innerHTML]="mode?.description"></strong>
+									</div>
 								</div>
-							</div>
-
-							<div class="col-4">
-								<div
-									class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
-									id="copyCommandButton"
-									style="margin-top: 20px"
-									(click)="copyToClipboard(mode.copy_field)"
-								>
+								<div class="col-4">
+									<div
+										class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
+										id="copyCommandButton"
+										style="margin-top: 20px"
+										(click)="copyToClipboard(mode.copy_field)">
 									Copy Command
+									</div>
 								</div>
 							</div>
+							<div class="row" *ngIf="mode.name === 'ssh'">
+								<div class="col-auto">
+									<p class="font-weight-bold font-xs text-muted">
+										Learn more about persistent terminal sessions when using ssh:
+										<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Tutorial</a>
+									</p>
+								</div>
 						</div>
 						<div
 							class="row"

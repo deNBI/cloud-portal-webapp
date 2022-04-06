@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
-import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK } from '../../../links/links';
+import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_PERSISTENT_TERMINAL_LINK } from '../../../links/links';
 import { TemplateNames } from '../conda/template-names';
 import { StopVmComponent } from '../modals/stop-vm/stop-vm.component';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
@@ -29,9 +29,7 @@ import { RebootVmComponent } from '../modals/reboot-vm/reboot-vm.component';
 	styleUrls: ['./vmcard.component.scss'],
 	providers: [ImageService],
 })
-
 export class VmCardComponent implements OnInit, OnDestroy {
-
 	/**
 	 * The virtual machine this card is for.
 	 */
@@ -78,6 +76,11 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 
 	/**
+	 * Link to persistent terminal sessions tutorial.
+	 */
+	WIKI_PERSISTENT_TERMINAL_LINK: string = WIKI_PERSISTENT_TERMINAL_LINK;
+
+	/**
 	 * Subscription object to listen to different events.
 	 */
 	subscription: Subscription = new Subscription();
@@ -101,7 +104,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	/**
 	 * Error message to show if 409 status was returned, typically returned if vm is creating a snapshot.
 	 */
-	SNAPSHOT_CREATING_ERROR_MSG: string		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+	SNAPSHOT_CREATING_ERROR_MSG: string =		'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
 
 	/**
 	 * Timeout object to control check status loop (i.e. stopping and starting check status loop).
@@ -109,10 +112,10 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	checkStatusTimer: ReturnType<typeof setTimeout>;
 
 	constructor(
-private clipboardService: ClipboardService,
-							private modalService: BsModalService,
-							private virtualmachineservice: VirtualmachineService,
-							private imageService: ImageService,
+		private clipboardService: ClipboardService,
+		private modalService: BsModalService,
+		private virtualmachineservice: VirtualmachineService,
+		private imageService: ImageService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -170,24 +173,23 @@ private clipboardService: ClipboardService,
 	 */
 	stopVM(): void {
 		this.subscription.add(
-			this.virtualmachineservice.stopVM(this.vm.openstackid)
-				.subscribe(
-					(updated_vm: VirtualMachine): void => {
-						updated_vm.cardState = 0;
-						this.vm = updated_vm;
-						if (this.vm.status === VirtualMachineStates.SHUTOFF) {
-							this.resumeCheckStatusTimer();
-						} else {
-							this.check_status_loop(VirtualMachineStates.SHUTOFF);
-						}
-					},
-					(error1: any): void => {
-						if (error1['error']['error'] === '409') {
-							this.vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
-							this.resumeCheckStatusTimer();
-						}
-					},
-				),
+			this.virtualmachineservice.stopVM(this.vm.openstackid).subscribe(
+				(updated_vm: VirtualMachine): void => {
+					updated_vm.cardState = 0;
+					this.vm = updated_vm;
+					if (this.vm.status === VirtualMachineStates.SHUTOFF) {
+						this.resumeCheckStatusTimer();
+					} else {
+						this.check_status_loop(VirtualMachineStates.SHUTOFF);
+					}
+				},
+				(error1: any): void => {
+					if (error1['error']['error'] === '409') {
+						this.vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
+						this.resumeCheckStatusTimer();
+					}
+				},
+			),
 		);
 	}
 
@@ -390,28 +392,27 @@ private clipboardService: ClipboardService,
 		this.is_checked = false;
 		this.vm.status = VirtualMachineStates.DELETING;
 		this.vm.cardState = 0;
-		this.subscription.add(this.virtualmachineservice.deleteVM(this.vm.openstackid).subscribe(
-			(updated_vm: VirtualMachine): void => {
-				updated_vm.cardState = 0;
+		this.subscription.add(
+			this.virtualmachineservice.deleteVM(this.vm.openstackid).subscribe(
+				(updated_vm: VirtualMachine): void => {
+					updated_vm.cardState = 0;
 
-				if (updated_vm.status !== VirtualMachineStates.DELETED) {
-					setTimeout(
-						(): void => {
+					if (updated_vm.status !== VirtualMachineStates.DELETED) {
+						setTimeout((): void => {
 							this.deleteVM();
-						},
-						this.checkStatusTimeout,
-					);
-				} else {
-					this.stopCheckStatusTimer();
-					this.vm = updated_vm;
-				}
-			},
-			(error1: any): void => {
-				if (error1['status'] === 409) {
-					this.vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
-				}
-			},
-		));
+						}, this.checkStatusTimeout);
+					} else {
+						this.stopCheckStatusTimer();
+						this.vm = updated_vm;
+					}
+				},
+				(error1: any): void => {
+					if (error1['status'] === 409) {
+						this.vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
+					}
+				},
+			),
+		);
 	}
 
 	/**
@@ -419,27 +420,25 @@ private clipboardService: ClipboardService,
 	 */
 	subscribeToBsModalRef(): void {
 		this.subscription.add(
-			this.bsModalRef.content.event.subscribe(
-				(result: any) => {
-					if ('resume' in result) {
-						this.resumeCheckStatusTimer();
-					} else if ('stopVM' in result) {
-						this.stopVM();
-					} else if ('resumeVM' in result) {
-						this.resumeVM();
-					} else if ('deleteVM' in result) {
-						this.deleteVM();
-					} else if ('snapshotVM' in result) {
-						this.createSnapshot(result['snapshotName'], result['description']);
-					} else if ('attachVolume' in result) {
-						this.attachVolume(result['volume']);
-					} else if ('detachVolume' in result) {
-						this.detachVolume(result['volume']);
-					} else if ('reboot_type' in result) {
-						this.rebootVM(result['reboot_type']);
-					}
-				},
-			),
+			this.bsModalRef.content.event.subscribe((result: any) => {
+				if ('resume' in result) {
+					this.resumeCheckStatusTimer();
+				} else if ('stopVM' in result) {
+					this.stopVM();
+				} else if ('resumeVM' in result) {
+					this.resumeVM();
+				} else if ('deleteVM' in result) {
+					this.deleteVM();
+				} else if ('snapshotVM' in result) {
+					this.createSnapshot(result['snapshotName'], result['description']);
+				} else if ('attachVolume' in result) {
+					this.attachVolume(result['volume']);
+				} else if ('detachVolume' in result) {
+					this.detachVolume(result['volume']);
+				} else if ('reboot_type' in result) {
+					this.rebootVM(result['reboot_type']);
+				}
+			}),
 		);
 	}
 
@@ -449,42 +448,43 @@ private clipboardService: ClipboardService,
 	check_status_loop(final_state?: string, timeout: number = this.checkStatusTimeout): void {
 		this.stopCheckStatusTimer();
 		this.checkStatusTimer = setTimeout((): void => {
-			this.subscription.add(this.virtualmachineservice.checkVmStatus(this.vm.openstackid, this.vm.name)
-				.subscribe((updated_vm: VirtualMachine): void => {
-					updated_vm.cardState = this.vm.cardState;
-					if (this.vm.msg) {
-						updated_vm.setMsgWithTimeout(this.vm.msg);
-					}
-					if (this.vm.error_msg) {
-						updated_vm.setErrorMsgWithTimeout(this.vm.error_msg);
-					}
-					this.vm = updated_vm;
-					if (this.vm.status === VirtualMachineStates.ACTIVE) {
-						if (this.vm.volumes?.length > 0) {
-							const volumeIds: string[] = [];
-							for (const vol of this.vm.volumes) {
-								volumeIds.push(vol.volume_openstackid);
+			this.subscription.add(
+				this.virtualmachineservice
+					.checkVmStatus(this.vm.openstackid, this.vm.name)
+					.subscribe((updated_vm: VirtualMachine): void => {
+						updated_vm.cardState = this.vm.cardState;
+						if (this.vm.msg) {
+							updated_vm.setMsgWithTimeout(this.vm.msg);
+						}
+						if (this.vm.error_msg) {
+							updated_vm.setErrorMsgWithTimeout(this.vm.error_msg);
+						}
+						this.vm = updated_vm;
+						if (this.vm.status === VirtualMachineStates.ACTIVE) {
+							if (this.vm.volumes?.length > 0) {
+								const volumeIds: string[] = [];
+								for (const vol of this.vm.volumes) {
+									volumeIds.push(vol.volume_openstackid);
+								}
+								this.virtualmachineservice.triggerVolumeUpdate(volumeIds).subscribe((): void => {});
 							}
-							this.virtualmachineservice.triggerVolumeUpdate(volumeIds).subscribe((): void => {
-							});
 						}
-					}
-					if (final_state) {
-						if (final_state === this.vm.status) {
-							this.resumeCheckStatusTimer();
-						} else {
-							this.check_status_loop(final_state);
+						if (final_state) {
+							if (final_state === this.vm.status) {
+								this.resumeCheckStatusTimer();
+							} else {
+								this.check_status_loop(final_state);
+							}
+						} else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(this.vm.status) !== -1) {
+							this.check_status_loop();
+						} else if (this.vm.status !== VirtualMachineStates.DELETED) {
+							// so not all requests are at the same time for the vms
+							const min: number = 20000;
+							const max: number = 40000;
+							this.check_status_loop(null, Math.floor(Math.random() * (max - min)) + max);
 						}
-					} else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(this.vm.status) !== -1) {
-						this.check_status_loop();
-					} else if (this.vm.status !== VirtualMachineStates.DELETED) {
-						// so not all requests are at the same time for the vms
-						const min: number = 20000;
-						const max: number = 40000;
-						this.check_status_loop(null, Math.floor(Math.random() * (max - min)) + max);
-					}
-
-				}));
+					}),
+			);
 		}, timeout);
 	}
 
@@ -526,8 +526,10 @@ private clipboardService: ClipboardService,
 	 * Function to call by parent. Returns 1 if vm is active or shutoff and checked, -1 otherwise.
 	 */
 	vm_is_checked(): number {
-		if ((this.vm.status === VirtualMachineStates.ACTIVE || this.vm.status === VirtualMachineStates.SHUTOFF)
-			&& this.is_checked) {
+		if (
+			(this.vm.status === VirtualMachineStates.ACTIVE || this.vm.status === VirtualMachineStates.SHUTOFF)
+			&& this.is_checked
+		) {
 			return 1;
 		} else {
 			return -1;
