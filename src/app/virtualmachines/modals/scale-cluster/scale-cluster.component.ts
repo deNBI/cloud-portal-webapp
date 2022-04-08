@@ -200,7 +200,7 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 		} else {
 			flavors_to_filter = this.flavors;
 		}
-		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.cluster.worker_batches));
+		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTestUpScaling(flav));
 
 		this.flavors_loaded = true;
 	}

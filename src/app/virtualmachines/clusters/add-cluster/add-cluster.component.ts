@@ -203,7 +203,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		const flavors_to_filter: Flavor[] = this.flavors.filter(
 			(flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0,
 		);
-		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
+		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(flav, this.selectedWorkerBatches));
 		this.flavor_types = this.flavorService.sortFlavors(this.flavors_usable);
 
 		this.flavors_loaded = true;
@@ -327,12 +327,8 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		const flavors_to_filter: Flavor[] = this.flavors.filter(
 			(flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0,
 		);
-		this.selectedBatch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(
-			flav,
-			flavors_to_filter,
-			this.selectedWorkerBatches,
-			this.selectedMasterFlavor,
-		));
+		// eslint-disable-next-line max-len
+		this.selectedBatch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(flav, this.selectedWorkerBatches, this.selectedMasterFlavor));
 	}
 
 	setSelectedBatch(batch: WorkerBatch): void {
