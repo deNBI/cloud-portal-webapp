@@ -8,8 +8,8 @@ import environment from './tests/environment.json';
 const config: PlaywrightTestConfig = {
 	testDir: './tests',
 
-	/* Maximum time one test can run for. */
-	timeout: 80 * 1000,
+	/* Maximum time one test can run for. Set to 30 min as longest timeout in Util is 30 min. */
+	timeout: 60000 * 30,
 
 	expect: {
 		/**
@@ -29,7 +29,7 @@ const config: PlaywrightTestConfig = {
 	workers: process.env.CI ? 1 : undefined,
 
 	/* order of tests */
-	// testMatch: 'virtual_machines.spec.ts',
+	// testMatch: 'workshops.spec.ts',
 
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: 'html',
@@ -44,6 +44,7 @@ const config: PlaywrightTestConfig = {
 		screenshot: 'on',
 		video: 'on',
 		trace: 'on',
+		// headless: false,
 	},
 
 	/* Configure projects for major browsers */

@@ -786,25 +786,38 @@
 								<strong>Project settings</strong>
 							</li>
 							<li class="list-group-item">
-
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" id="toggle_member_name_visibility"
-												 [(ngModel)]="project_application.show_member_names"
-												 *ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
-												 (click)="toggleMemberNameVisibility();" [disabled]="toggleLocked">
-									<label class="form-check-label" style="vertical-align: middle"
-												 for="toggle_member_name_visibility">Project member names visible for non-administrators</label>
+									<input
+										class="form-check-input"
+										type="checkbox"
+										id="toggle_member_name_visibility"
+										[(ngModel)]="project_application.show_member_names"
+										*ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
+										(click)="toggleMemberNameVisibility()"
+										[disabled]="toggleLocked"
+									/>
+									<label class="form-check-label" style="vertical-align: middle" for="toggle_member_name_visibility"
+										>Project member names visible for non-administrators</label
+									>
 								</div>
 							</li>
-							<li *ngIf="!project_application.project_application_openstack_project"
-									class="list-group-item">
+							<li *ngIf="!project_application.project_application_openstack_project" class="list-group-item">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" id="toggle_starting_of_machines"
-												 [(ngModel)]="project_application.prevent_machines_starting"
-												 *ngIf="!project_application.project_application_openstack_project && (project_application?.user_is_pi || project_application?.user_is_admin)"
-												 (click)="toggleStartingOfMachines();" [disabled]="toggleLocked">
-									<label class="form-check-label" style="vertical-align: middle"
-												 for="toggle_starting_of_machines">Non-administrators are allowed to start machines</label>
+									<input
+										class="form-check-input"
+										type="checkbox"
+										id="toggle_starting_of_machines"
+										[(ngModel)]="project_application.prevent_machines_starting"
+										*ngIf="
+											!project_application.project_application_openstack_project &&
+											(project_application?.user_is_pi || project_application?.user_is_admin)
+										"
+										(click)="toggleStartingOfMachines()"
+										[disabled]="toggleLocked"
+									/>
+									<label class="form-check-label" style="vertical-align: middle" for="toggle_starting_of_machines"
+										>Non-administrators are allowed to start machines</label
+									>
 								</div>
 							</li>
 						</ul>
@@ -839,6 +852,7 @@
 						<button
 							(click)="setAddUserInvitationLink(); addUserModal.show()"
 							class="btn btn-outline-success"
+							data-test-id="add_member_btn_modal"
 							id="add_member_btn_modal"
 							style="margin-bottom: 5px"
 							type="button"
@@ -1095,13 +1109,20 @@
 					</div>
 					<div class="row">
 						<div class="col-md-8">
-							<input #searchString id="add_member_input" placeholder="" style="width: 100%" />
+							<input
+								#searchString
+								id="add_member_input"
+								data-test-id="add_member_input"
+								placeholder=""
+								style="width: 100%"
+							/>
 						</div>
 						<div class="col-md-4">
 							<button
 								(click)="filterMembers(searchString.value)"
 								class="btn btn-primary"
 								id="search_member_btn"
+								data-test-id="search_member_btn"
 								type="button"
 							>
 								<i class="fa fa-search"></i> Search Member
@@ -1154,6 +1175,7 @@
 										"
 										class="btn btn-success"
 										id="add_member_btn"
+										data-test-id="add_member_btn"
 										style="padding: 5px; margin: 5px"
 									>
 										<i class="fa fa-plus"></i> Add Member
@@ -1189,6 +1211,7 @@
 					(click)="filteredMembers = null; addUserModal.hide()"
 					class="btn btn-danger"
 					id="close_add_user_modal_btn"
+					data-test-id="close_add_user_modal_btn"
 					type="button"
 				>
 					<i class="fa fa-times"></i> Close
@@ -1369,7 +1392,9 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
+				<h4 class="modal-title" id="notification_title" data-test-id="notification_title">
+					{{ notificationModalTitle }}
+				</h4>
 				<button
 					(click)="notificationModal.hide()"
 					aria-label="Close"
@@ -1381,8 +1406,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="alert alert-{{ notificationModalType }}" role="alert"
-				data-test-id="termination_request_result_div">
+				<div class="alert alert-{{ notificationModalType }}" role="alert" data-test-id="termination_request_result_div">
 					{{ notificationModalMessage }}
 				</div>
 			</div>
@@ -1391,6 +1415,7 @@
 					(click)="resetNotificationModal(); notificationModal.hide()"
 					*ngIf="notificationModalIsClosable === true"
 					class="btn btn-secondary"
+					data-test-id="close_notification"
 					id="close_notification"
 					type="button"
 					type="reset"

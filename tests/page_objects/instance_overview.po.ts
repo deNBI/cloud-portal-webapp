@@ -2,7 +2,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { Util } from '../util';
 
-
 /**
  * Instance Overview Page.
  */
@@ -35,36 +34,32 @@ export class InstanceOverviewPage {
 		expect(this.page.url()).toContain('/vmOverview');
 	}
 
-	async waitForInstanceToBeActive(vm_name: string, timeout: number = 10000): Promise<any> {
+	async waitForInstanceToBeActive(vm_name: string, timeout: number = 10000): Promise<boolean> {
 		console.log(`Waiting for VM ${vm_name} to be shown as active`);
-		await this.page.waitForSelector(
-			`.active-machine:has-text("${vm_name}")`,
-			{
-				state: 'visible', timeout,
-			},
-		);
+		const activeElement = await this.page.waitForSelector(`.active-machine:has-text("${vm_name}")`, {
+			state: 'visible',
+			timeout,
+		});
 		console.log(`VM ${vm_name} active`);
+
+		return activeElement.isVisible();
 	}
 
 	async waitForInstanceToBeShutoff(vm_name: string, timeout: number = 10000): Promise<any> {
 		console.log(`Waiting for VM ${vm_name} to be shown as shutoff`);
-		await this.page.waitForSelector(
-			`.shutoff-machine:has-text("${vm_name}")`,
-			{
-				state: 'visible', timeout,
-			},
-		);
+		await this.page.waitForSelector(`.shutoff-machine:has-text("${vm_name}")`, {
+			state: 'visible',
+			timeout,
+		});
 		console.log(`VM ${vm_name} shutoff`);
 	}
 
 	async waitForInstanceToBeDeleted(vm_name: string, timeout: number = 10000): Promise<any> {
 		console.log(`Waiting for VM ${vm_name} to be shown as deleted`);
-		await this.page.waitForSelector(
-			`.deleted-machine:has-text("${vm_name}")`,
-			{
-				state: 'visible', timeout,
-			},
-		);
+		await this.page.waitForSelector(`.deleted-machine:has-text("${vm_name}")`, {
+			state: 'visible',
+			timeout,
+		});
 		console.log(`VM ${vm_name} deleted`);
 	}
 
@@ -93,7 +88,6 @@ export class InstanceOverviewPage {
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_VM_STOP_BUTTON)).isVisible();
 		await this.page.click(Util.by_data_test_id_str(this.VERIFY_VM_STOP_BUTTON));
 		await this.waitForInstanceToBeShutoff(vm_name, timeout);
-
 	}
 
 	async resumeVirtualMachine(vm_name: string, timeout: number = 10000): Promise<void> {
@@ -109,7 +103,6 @@ export class InstanceOverviewPage {
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_VM_RESUME_BUTTON)).isVisible();
 		await this.page.click(Util.by_data_test_id_str(this.VERIFY_VM_RESUME_BUTTON));
 		await this.waitForInstanceToBeActive(vm_name, timeout);
-
 	}
 
 	async rebootVirtualMachine(vm_name: string, timeout: number = 10000): Promise<void> {
@@ -126,12 +119,10 @@ export class InstanceOverviewPage {
 		await locator_soft_reboot.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_REBOOT_BUTTON)).isVisible();
 		await this.page.click(Util.by_data_test_id_str(this.VERIFY_REBOOT_BUTTON));
-		await this.page.waitForSelector(
-			Util.by_data_test_id_str(this.VM_MESSAGE_ALERT),
-			{
-				state: 'visible', timeout,
-			},
-		);
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT), {
+			state: 'visible',
+			timeout,
+		});
 		const vm_message_alert_locator = this.page.locator(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT));
 		await expect(vm_message_alert_locator).toContainText('Reboot');
 		console.log(`Rebooting message for vm ${vm_name} was shown.`);
@@ -159,29 +150,24 @@ export class InstanceOverviewPage {
 		await this.openVMActionsArea(vm_name).then(result => {
 			locator_actions = result;
 		});
-		const locator_detach_col = locator_actions.locator('.col-md-2:has(.btn-outline-secondary:has-text("Detach Volume"))');
+		const locator_detach_col = locator_actions.locator(
+			'.col-md-2:has(.btn-outline-secondary:has-text("Detach Volume"))',
+		);
 		const locator_detach = locator_detach_col.locator('.btn-outline-secondary:has-text("Detach Volume")');
 		await expect(locator_detach).toBeVisible({ timeout });
 		await locator_detach.click();
-		await this.page.waitForSelector(
-			Util.by_data_test_id_str(this.VOLUME_DETACHMENT_DROPDOWN),
-			{
-				state: 'visible', timeout,
-			},
-		);
-		await this.page.selectOption(
-			Util.by_data_test_id_str(this.VOLUME_DETACHMENT_DROPDOWN),
-			{ index: 1 },
-		);
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.VOLUME_DETACHMENT_DROPDOWN), {
+			state: 'visible',
+			timeout,
+		});
+		await this.page.selectOption(Util.by_data_test_id_str(this.VOLUME_DETACHMENT_DROPDOWN), { index: 1 });
 		const locator_detach_button = this.page.locator(Util.by_data_test_id_str(this.DETACH_VOLUME_BUTTON));
 		await expect(locator_detach_button).toBeEnabled({ timeout: 1000 });
 		await locator_detach_button.click();
-		await this.page.waitForSelector(
-			Util.by_data_test_id_str(this.VM_MESSAGE_ALERT),
-			{
-				state: 'visible', timeout,
-			},
-		);
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT), {
+			state: 'visible',
+			timeout,
+		});
 		const vm_message_alert_locator = this.page.locator(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT));
 		await expect(vm_message_alert_locator).toContainText('detached', { timeout: 1000 });
 		console.log(`Detachment message for volume from vm ${vm_name} was shown.`);
@@ -193,29 +179,24 @@ export class InstanceOverviewPage {
 		await this.openVMActionsArea(vm_name).then(result => {
 			locator_actions = result;
 		});
-		const locator_attach_col = locator_actions.locator('.col-md-2:has(.btn-outline-secondary:has-text("Attach Volume"))');
+		const locator_attach_col = locator_actions.locator(
+			'.col-md-2:has(.btn-outline-secondary:has-text("Attach Volume"))',
+		);
 		const locator_attach = locator_attach_col.locator('.btn-outline-secondary:has-text("Attach Volume")');
 		await expect(locator_attach).toBeVisible();
 		await locator_attach.click();
-		await this.page.waitForSelector(
-			Util.by_data_test_id_str(this.VOLUME_ATTACHMENT_DROPDOWN),
-			{
-				state: 'visible', timeout,
-			},
-		);
-		await this.page.selectOption(
-			Util.by_data_test_id_str(this.VOLUME_ATTACHMENT_DROPDOWN),
-			{ index: 1 },
-		);
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.VOLUME_ATTACHMENT_DROPDOWN), {
+			state: 'visible',
+			timeout,
+		});
+		await this.page.selectOption(Util.by_data_test_id_str(this.VOLUME_ATTACHMENT_DROPDOWN), { index: 1 });
 		const locator_attach_button = this.page.locator(Util.by_data_test_id_str(this.ATTACH_VOLUME_BUTTON));
 		await expect(locator_attach_button).toBeEnabled({ timeout: 1000 });
 		await locator_attach_button.click();
-		await this.page.waitForSelector(
-			Util.by_data_test_id_str(this.VM_MESSAGE_ALERT),
-			{
-				state: 'visible', timeout,
-			},
-		);
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT), {
+			state: 'visible',
+			timeout,
+		});
 		const vm_message_alert_locator = this.page.locator(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT));
 		await expect(vm_message_alert_locator).toContainText('attached', { timeout: 1000 });
 		console.log(`Attachment message for volume from vm ${vm_name} was shown.`);
@@ -225,10 +206,13 @@ export class InstanceOverviewPage {
 		await this.page.waitForSelector(
 			`.instance-card:has(.card-block:has(.active-machine:has-text("${vm_name}"))), .instance-card:has(.card-block:has(.shutoff-machine:has-text("${vm_name}")))`,
 			{
-				state: 'visible', timeout: 30000,
+				state: 'visible',
+				timeout: 30000,
 			},
 		);
-		const locator_instance = this.page.locator(`.instance-card:has(.card-block:has(.active-machine:has-text("${vm_name}"))), .instance-card:has(.card-block:has(.shutoff-machine:has-text("${vm_name}")))`);
+		const locator_instance = this.page.locator(
+			`.instance-card:has(.card-block:has(.active-machine:has-text("${vm_name}"))), .instance-card:has(.card-block:has(.shutoff-machine:has-text("${vm_name}")))`,
+		);
 		const locator_card_body = locator_instance.locator('.card-body');
 		const locator_card_row = locator_card_body.locator('.row');
 		const locator_card_col = locator_card_row.locator('.col-4 ');
@@ -240,5 +224,14 @@ export class InstanceOverviewPage {
 		const locator_action_row = locator_inserted.locator('.row');
 
 		return locator_action_row;
+	}
+
+	async expectWorkshopMachines(amount: number): Promise<string[]> {
+		await this.page.waitForTimeout(2000);
+		const vms = this.page.locator(Util.by_data_test_id_str_prefix(`detail${Util.WORKSHOP_NAME}`));
+		console.log(vms);
+		await expect(vms).toHaveCount(amount);
+
+		return await vms.allTextContents();
 	}
 }
