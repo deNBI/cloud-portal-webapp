@@ -375,6 +375,16 @@
 												Remove Worker Batch
 											</button>
 											<button
+												*ngIf="this.selectedWorkerBatches.length === 1"
+												type="button"
+												style="float: right; margin-bottom: 5px"
+												class="btn btn-primary"
+												data-toggle="modal"
+												(click)="resetBatches()"
+											>
+												Delete selection
+											</button>
+											<button
 												*ngIf="selectedBatch.index === selectedWorkerBatches.length"
 												[disabled]="!selectedBatch.flavor || !selectedBatch.worker_count"
 												type="button"
