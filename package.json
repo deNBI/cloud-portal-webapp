@@ -17,12 +17,8 @@
     "prepare": "husky install"
   },
   "resolutions": {
-    "colors": "1.4.0",
-    "source-map-support": "0.5.21",
-    "follow-redirects": "1.14.9",
-    "engine.io": "6.1.3",
-    "async": "3.2.2",
-    "mime":"1.6.0"
+    "mime":"1.6.0",
+    "jake": "v10.8.5"
   },
   "private": true,
   "dependencies": {
