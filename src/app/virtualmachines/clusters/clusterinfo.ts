@@ -66,6 +66,7 @@ export class Clusterinfo {
 	worker_instances: VirtualMachine[];
 	worker_batches: WorkerBatch[];
 	client: Client;
+	name: string;
 	public_ip: string;
 	cluster_id: string;
 	group_id: string;
