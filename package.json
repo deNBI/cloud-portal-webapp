@@ -59,7 +59,7 @@
     "file-saver": "2.0.5",
     "follow-redirects": "1.14.9",
     "globby": "13.1.1",
-    "html-to-pdfmake": "2.3.10",
+    "html-to-pdfmake": "2.3.11",
     "html2canvas": "1.4.1",
     "http-server": "14.1.0",
     "is-promise": "4.0.0",
