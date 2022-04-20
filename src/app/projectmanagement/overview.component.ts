@@ -219,7 +219,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 					if (this.project_application.project_application_perun_id) {
 						this.getUsedResources();
-						if (this.project_application.user_is_admin || this.project_application.show_member_names) {
+						if (
+							this.project_application.user_is_admin
+							|| this.project_application.show_member_names
+							|| this.is_vo_admin
+						) {
 							this.getMembersOfTheProject();
 						}
 						if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {

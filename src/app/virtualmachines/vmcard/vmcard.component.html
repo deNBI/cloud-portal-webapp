@@ -253,7 +253,7 @@
 
 	<div class="card-body p-x-1 py-h">
 		<div class="row">
-			<div class="col-4">
+			<div class="col-md-auto">
 				<button
 					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					[id]="'showDetailsButton_' + vm?.name"
@@ -268,7 +268,7 @@
 					Show VM details/logs
 				</button>
 			</div>
-			<div class="col-4">
+			<div class="col-md-auto">
 				<button
 					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					*ngIf="vm.cardState !== 1"
@@ -287,7 +287,7 @@
 					... Hide information
 				</button>
 			</div>
-			<div class="col-4">
+			<div class="col-md-auto">
 				<button
 					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					*ngIf="vm.cardState !== 2 && (vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin)"
@@ -327,19 +327,29 @@
 		"
 	>
 		<div *ngIf="vm?.cardState === 1">
-			<div class="row" *ngFor="let mode of vm?.modes">
-				<div class="col-md-1">
-					<span class="font-weight-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
+			<div *ngFor="let mode of vm?.modes">
+				<div class="row">
+					<div class="col-md-1">
+						<span class="font-weight-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
+					</div>
+					<div class="col-md-9">
+						<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
+					</div>
+					<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
+						<div
+							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							(click)="copyToClipboard(mode.copy_field)"
+						>
+							Copy command
+						</div>
+					</div>
 				</div>
-				<div class="col-md-9">
-					<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
-				</div>
-				<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
-					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-						(click)="copyToClipboard(mode.copy_field)"
-					>
-						Copy command
+				<div class="row" *ngIf="mode.name === 'ssh'">
+					<div class="col-md-auto">
+						<p class="font-weight-bold font-xs text-muted">
+							Learn more about persistent terminal sessions when using ssh:
+							<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Tutorial</a>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -367,7 +377,7 @@
 
 		<div *ngIf="vm?.cardState === 2">
 			<div class="row">
-				<div class="col-md-2" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
+				<div class="col-md-auto" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'attachVolume' + vm?.name"
@@ -377,7 +387,7 @@
 					</div>
 				</div>
 				<div
-					class="col-md-2"
+					class="col-md-auto"
 					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) && vm?.volumes.length > 0"
 				>
 					<span
@@ -398,7 +408,7 @@
 					</span>
 				</div>
 				<div
-					class="col-md-2"
+					class="col-md-auto"
 					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) && vm?.volumes.length > 0"
 				>
 					<div
@@ -410,7 +420,7 @@
 					</div>
 				</div>
 				<div
-					class="col-md-2"
+					class="col-md-auto"
 					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) && vm?.volumes.length > 0"
 				>
 					<span
@@ -430,7 +440,7 @@
 						</button>
 					</span>
 				</div>
-				<div class="col-md-2" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
+				<div class="col-md-auto" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'stopVMButton_' + vm?.name"
@@ -449,7 +459,7 @@
 					</div>
 				</div>
 				<div
-					class="col-md-2"
+					class="col-md-auto"
 					*ngIf="vm.client.features['VM_REBOOT'] && !(vm?.status | hasStatus: VirtualMachineStates.staticDELETED)"
 				>
 					<div
@@ -461,7 +471,7 @@
 					</div>
 				</div>
 				<div
-					class="col-md-2"
+					class="col-md-auto"
 					*ngIf="
 						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
 						(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
@@ -476,7 +486,7 @@
 					</div>
 				</div>
 				<div
-					class="col-md-2"
+					class="col-md-auto"
 					*ngIf="
 						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
 						(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) ||
