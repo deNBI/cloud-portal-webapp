@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.222.0",
+  "version": "4.223.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -17,7 +17,7 @@
     "prepare": "husky install"
   },
   "resolutions": {
-    "mime":"1.6.0",
+    "mime":"3.0.0",
     "jake": "v10.8.5"
   },
   "private": true,
@@ -55,7 +55,7 @@
     "d3": "7.4.4",
     "eslint": "8.13.0",
     "export-to-csv": "0.2.1",
-    "express": "^4.17.3",
+    "express": "4.17.3",
     "file-saver": "2.0.5",
     "follow-redirects": "1.14.9",
     "globby": "13.1.1",
@@ -66,7 +66,7 @@
     "jsnlog": "2.30.0",
     "jspdf": "2.5.1",
     "keypairs": "1.2.14",
-    "mime": "^3.0.0",
+    "mime": "3.0.0",
     "moment": "2.29.3",
     "ng2-charts": "3.0.9",
     "ng2-cookies": "1.0.12",
@@ -101,7 +101,7 @@
     "@types/node": "16.11.27",
     "@typescript-eslint/eslint-plugin": "5.20.0",
     "@typescript-eslint/parser": "5.20.0",
-    "async": "^3.2.3",
+    "async": "3.2.3",
     "audit-ci": "6.2.0",
     "autoprefixer": "10.4.4",
     "eslint": "8.13.0",
