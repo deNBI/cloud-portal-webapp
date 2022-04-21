@@ -40,7 +40,7 @@ export class LoginPagePlaywright {
 	async useOrcid(email: string, psw: string): Promise<any> {
 		console.log('Using Orcid Login');
 		await this.page.goto(this.baseURL);
-		await this.page.locator('p:has-text("ORCID")').locator('visible=true').click();
+		await this.page.locator('a', { has: this.page.locator('p:has-text("ORCID")').locator('visible=true') }).click();
 		await this.page.waitForNavigation({ url: 'https://orcid.org/signin**' });
 		await this.page.type('id=username', email);
 		await this.page.type('id=password', psw);
