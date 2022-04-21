@@ -26,7 +26,7 @@ export class LoginPagePlaywright {
 		console.log('Using Google Login');
 
 		await this.page.goto(this.baseURL);
-		await this.page.locator('p:has-text("Google")').locator('visible=true').click();
+		await this.page.locator('a', { has: this.page.locator('p:has-text("Google")').locator('visible=true') }).click();
 		await this.page.type('input[type="email"]', email);
 		await this.page.click('#identifierNext');
 		await this.page.waitForSelector('input[type="password"]', { state: 'visible' });
