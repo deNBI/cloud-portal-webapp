@@ -458,8 +458,8 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	initializeData(): void {
 		this.subscription.add(
 			forkJoin([
-				this.groupService.getSimpleVmAllowedByUser(),
-				this.groupService.getSimpleVmByUser(),
+				this.groupService.getSimpleVmAllowedByUserWithClusterAllowed(),
+				this.groupService.getSimpleVmByUserWithClusterAllowed(),
 				this.userService.getUserInfo(),
 			]).subscribe((result: any): void => {
 				this.userinfo = result[2];

@@ -20,7 +20,10 @@
 
 <div *ngIf="!isLoaded || (singleProject && !projectDataLoaded)" class="loader"></div>
 <div *ngIf="isLoaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
-	<div class="alert alert-warning" role="alert">You are not a member of a SimpleVM project.</div>
+	<div class="alert alert-warning" role="alert">
+		You are not a member of a SimpleVM project which allows clusters. If you think this is an error, please contact us
+		at <a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a>
+	</div>
 </div>
 <div
 	*ngIf="
