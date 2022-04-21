@@ -129,8 +129,8 @@ export class Clusterinfo {
 		});
 	}
 
-	public create_new_batch(): void {
-		const new_batch: WorkerBatch = new WorkerBatch(this.get_batches_count() + 1);
+	public create_new_batch(idx: number): void {
+		const new_batch: WorkerBatch = new WorkerBatch(idx);
 		const image: Image = new Image();
 		image.name = this.master_instance.image;
 		new_batch.image = image;
