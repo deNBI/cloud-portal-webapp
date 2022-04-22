@@ -53,6 +53,20 @@
 					<strong>Instance: {{ worker.name }}</strong>
 				</div>
 				<app-virtualmachineinfo [cluster_machine]="true" [virtualMachine]="worker"></app-virtualmachineinfo>
+				<div class="btn-group">
+					<button
+						*ngIf="
+							(worker?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+							(worker?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) ||
+							(worker?.status | hasStatus: VirtualMachineStates.staticERROR) ||
+							(worker?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED)
+						"
+						class="btn btn-danger"
+						(click)="showDeleteModal(worker)"
+					>
+						Delete instance
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

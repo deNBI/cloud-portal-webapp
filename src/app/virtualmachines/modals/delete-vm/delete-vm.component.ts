@@ -1,6 +1,4 @@
-import {
-	Component, EventEmitter, OnDestroy,
-} from '@angular/core';
+import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 import { elixir_id } from '../../../shared/globalvar';
@@ -10,8 +8,8 @@ import { elixir_id } from '../../../shared/globalvar';
 	templateUrl: './delete-vm.component.html',
 })
 export class DeleteVmComponent implements OnDestroy {
-
 	virtualMachine: VirtualMachine;
+	clusterWorker: boolean = false;
 	public event: EventEmitter<any> = new EventEmitter();
 	private submitted: boolean = false;
 	user_elixir_id: string = elixir_id;
@@ -27,7 +25,7 @@ export class DeleteVmComponent implements OnDestroy {
 
 	deleteVM(): void {
 		this.submitted = true;
-		this.event.emit({ deleteVM: true });
+		this.event.emit({ deleteVM: true, worker: this.virtualMachine });
 		this.bsModalRef.hide();
 	}
 
@@ -36,5 +34,4 @@ export class DeleteVmComponent implements OnDestroy {
 			this.event.emit({ resume: true });
 		}
 	}
-
 }
