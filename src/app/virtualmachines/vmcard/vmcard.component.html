@@ -301,6 +301,7 @@
 						(vm?.status | hasStatus: VirtualMachineStates.staticDELETED)
 					"
 					[id]="'showActionsButton_' + vm?.name"
+					[attr.data-test-id]="'show_actions_button_' + vm?.name"
 					(click)="vm.cardState = 2"
 				>
 					Show actions ...
@@ -383,6 +384,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'attachVolume' + vm?.name"
+						[attr.data-test-id]="'attach_volume_' + vm?.name"
 						(click)="showVolumeModal('attach')"
 					>
 						Attach Volume
@@ -404,6 +406,7 @@
 							[id]="'attachVolume' + vm?.name"
 							disabled
 							(click)="showVolumeModal('attach')"
+							[attr.data-test-id]="'attach_volume_' + vm?.name"
 						>
 							Attach Volume
 						</button>
@@ -415,7 +418,8 @@
 				>
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-						[id]="'attachVolume' + vm?.name"
+						[id]="'detachVolume' + vm?.name"
+						[attr.data-test-id]="'detach_volume_' + vm?.name"
 						(click)="showVolumeModal('detach')"
 					>
 						Detach Volume
@@ -434,9 +438,10 @@
 					>
 						<button
 							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							[id]="'attachVolume' + vm?.name"
+							[id]="'detachVolume' + vm?.name"
 							disabled
 							(click)="showVolumeModal('detach')"
+							[attr.data-test-id]="'detach_volume_' + vm?.name"
 						>
 							Detach Volume
 						</button>
@@ -446,6 +451,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'stopVMButton_' + vm?.name"
+						[attr.data-test-id]="'stop_vm_' + vm?.name"
 						(click)="showStopModal()"
 					>
 						Stop VM
@@ -455,6 +461,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'restartVMButton_' + vm?.name"
+						[attr.data-test-id]="'restart_vm_' + vm?.name"
 						(click)="showRestartModal()"
 					>
 						Start VM
@@ -467,6 +474,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'chooseRebootVMButton_' + vm?.name"
+						[attr.data-test-id]="'reboot_vm_' + vm?.name"
 						(click)="showRebootModal()"
 					>
 						Reboot VM
@@ -482,6 +490,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'createSnapshotVMButton_' + vm?.name"
+						[attr.data-test-id]="'create_snapshot_' + vm?.name"
 						(click)="showSnapshotModal()"
 					>
 						Create Snapshot
@@ -499,6 +508,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'deleteVMButton_' + vm?.name"
+						[attr.data-test-id]="'delete_vm_' + vm?.name"
 						(click)="showDeleteModal()"
 					>
 						Delete VM

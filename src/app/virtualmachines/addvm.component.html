@@ -18,7 +18,7 @@
 	</div>
 </div>
 
-<div *ngIf="!isLoaded || (singleProject && !projectDataLoaded)" class="loader"></div>
+<div *ngIf="!isLoaded || (singleProject && !projectDataLoaded)" class="loader" data-test-id="site-loader"></div>
 <div *ngIf="isLoaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">You are not a member of a SimpleVM project.</div>
 </div>

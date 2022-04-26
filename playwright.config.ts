@@ -9,7 +9,7 @@ const config: PlaywrightTestConfig = {
 	testDir: './tests',
 
 	/* Maximum time one test can run for. Set to 30 min as longest timeout in Util is 30 min. */
-	timeout: 60000 * 30,
+	timeout: 60000 * 10,
 
 	expect: {
 		/**

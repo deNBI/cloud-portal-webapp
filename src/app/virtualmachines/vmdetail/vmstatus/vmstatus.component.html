@@ -3,18 +3,28 @@
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
 		<div
 			[id]="'active_badge_' + vm?.name"
-			[attr.data-test-id]="vm?.name + '_active'"
+			[attr.data-test-id]="'active_' + vm?.name"
 			class="dot-colorless bg-success pulseAnim"
 			style="width: 10px; height: 10px"
 			title="{{ VirtualMachineStates.staticACTIVE }}"
 		></div>
 	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF">
-		<div [id]="'shutoff_badge_' + vm?.name" class="dot-colorless bg-warning" style="width: 10px; height: 10px"></div>
+		<div
+			[id]="'shutoff_badge_' + vm?.name"
+			[attr.data-test-id]="'shutoff_' + vm?.name"
+			class="dot-colorless bg-warning"
+			style="width: 10px; height: 10px"
+		></div>
 		{{ VirtualMachineStates.staticSHUTOFF }}
 	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
-		<div [id]="'deleted_badge_' + vm?.name" class="dot-colorless bg-danger" style="width: 10px; height: 10px"></div>
+		<div
+			[id]="'deleted_badge_' + vm?.name"
+			[attr.data-test-id]="'deleted_' + vm?.name"
+			class="dot-colorless bg-danger"
+			style="width: 10px; height: 10px"
+		></div>
 		{{ VirtualMachineStates.staticDELETED }}
 	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">

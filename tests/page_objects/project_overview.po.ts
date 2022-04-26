@@ -6,7 +6,7 @@ import { Util } from '../util';
  */
 export class ProjectOverViewPage {
 	// GENERAL
-	private PROJECT_LIST: string = 'project_list';
+	private PROJECT_LIST: string = 'project_list_folded';
 	private PROJECT_LIST_TOGGLER: string = 'project_list_folded_toggler';
 	private PROJECT_OVERVIEW_BUTTON_PREFIX: string = 'project_overview_';
 	private SITE_LOADER: string = 'site-loader';
@@ -65,13 +65,15 @@ export class ProjectOverViewPage {
 	async goToProjectOverview(project_name: string) {
 		await this.gotoProfilePage();
 		console.log(`Goto Project overview Page for Project ${project_name}`);
-		const project_list = this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST));
-		if (!project_list) {
+		await this.page.waitForTimeout(3000);
+		const project_list = await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST)).isVisible();
+		if (project_list) {
+			console.log('got no project_list, clicking on toggler!');
 			await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST_TOGGLER)).click();
 		}
 		await Promise.all([
 			this.page.waitForNavigation(),
-			this.page.locator(Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + project_name)).click(),
+			this.page.locator(Util.by_data_test_id_str(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`)).click(),
 		]);
 		console.log(this.page.url());
 		expect(this.page.url()).toContain('/project-management');
