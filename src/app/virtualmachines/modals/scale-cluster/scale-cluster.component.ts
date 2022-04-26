@@ -169,9 +169,24 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 
 	createNewBatchSelectedCluster(): void {
 		this.created_new_batch = true;
-		this.cluster.create_new_batch();
+		const idx: number = this.getBatchUpscaleIndexNumber();
+		this.cluster.create_new_batch(idx);
 		this.selectedBatch = this.cluster.worker_batches[this.cluster.worker_batches.length - 1];
 		this.loadProjectRessource();
+	}
+
+	getBatchUpscaleIndexNumber(): number {
+		const indexList: number[] = [];
+		this.cluster.worker_batches.forEach((cwb: WorkerBatch): void => {
+			indexList.push(cwb.index);
+		});
+		indexList.sort();
+		let idx: number = 1;
+		while (indexList.indexOf(idx) !== -1) {
+			idx += 1;
+		}
+
+		return idx;
 	}
 
 	checkFlavorsUsableForCluster(): void {
