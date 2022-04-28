@@ -254,8 +254,8 @@
 											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
 										"
 									>
-										- Extension by {{ project_application?.project_lifetime_request?.extra_lifetime }} months requested
-										on
+										- Extension by {{ project_application?.project_lifetime_request?.extra_lifetime }}
+										months requested on
 										{{ project_application?.project_lifetime_request?.date_submitted }}
 									</span> </strong
 								><br />
@@ -394,7 +394,8 @@
 								</strong>
 								<strong *ngIf="!project_application?.project_application_openstack_project" class="text-muted"
 									>{{ vmsInUse }} of {{ maximumVMs }} VMS, {{ coresInUse }} of
-									{{ project_application?.project_application_total_cores }} VCPUs and {{ ramInUse }} of
+									{{ project_application?.project_application_total_cores }} VCPUs and {{ ramInUse }}
+									of
 									{{ project_application?.project_application_total_ram }} GBs RAM in use
 									<span
 										*ngIf="
@@ -501,7 +502,16 @@
 						<div class="col-6">
 							<div class="btn-group">
 								<a
-									*ngIf="this.supportMails?.length === 1"
+									*ngIf="!project_application.project_application_openstack_project"
+									class="btn btn-outline-primary"
+									href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}"
+									rel="noopener noreferrer"
+									style="margin-top: 15px"
+									target="_blank"
+									>Contact Support</a
+								>
+								<a
+									*ngIf="supportMails?.length === 1 && project_application.project_application_openstack_project"
 									class="btn btn-outline-primary"
 									href="mailto:{{ project_application?.project_application_compute_center.Support }}"
 									rel="noopener noreferrer"
@@ -510,7 +520,12 @@
 									>Contact Support</a
 								>
 
-								<div *ngIf="this.supportMails?.length > 1" class="dropdown" dropdown style="margin-top: 15px">
+								<div
+									*ngIf="supportMails?.length > 1 && project_application.project_application_openstack_project"
+									class="dropdown"
+									dropdown
+									style="margin-top: 15px"
+								>
 									<button
 										aria-expanded="false"
 										aria-haspopup="true"
@@ -786,25 +801,38 @@
 								<strong>Project settings</strong>
 							</li>
 							<li class="list-group-item">
-
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" id="toggle_member_name_visibility"
-												 [(ngModel)]="project_application.show_member_names"
-												 *ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
-												 (click)="toggleMemberNameVisibility();" [disabled]="toggleLocked">
-									<label class="form-check-label" style="vertical-align: middle"
-												 for="toggle_member_name_visibility">Project member names visible for non-administrators</label>
+									<input
+										class="form-check-input"
+										type="checkbox"
+										id="toggle_member_name_visibility"
+										[(ngModel)]="project_application.show_member_names"
+										*ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
+										(click)="toggleMemberNameVisibility()"
+										[disabled]="toggleLocked"
+									/>
+									<label class="form-check-label" style="vertical-align: middle" for="toggle_member_name_visibility"
+										>Project member names visible for non-administrators</label
+									>
 								</div>
 							</li>
-							<li *ngIf="!project_application.project_application_openstack_project"
-									class="list-group-item">
+							<li *ngIf="!project_application.project_application_openstack_project" class="list-group-item">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" id="toggle_starting_of_machines"
-												 [(ngModel)]="project_application.prevent_machines_starting"
-												 *ngIf="!project_application.project_application_openstack_project && (project_application?.user_is_pi || project_application?.user_is_admin)"
-												 (click)="toggleStartingOfMachines();" [disabled]="toggleLocked">
-									<label class="form-check-label" style="vertical-align: middle"
-												 for="toggle_starting_of_machines">Non-administrators are allowed to start machines</label>
+									<input
+										class="form-check-input"
+										type="checkbox"
+										id="toggle_starting_of_machines"
+										[(ngModel)]="project_application.prevent_machines_starting"
+										*ngIf="
+											!project_application.project_application_openstack_project &&
+											(project_application?.user_is_pi || project_application?.user_is_admin)
+										"
+										(click)="toggleStartingOfMachines()"
+										[disabled]="toggleLocked"
+									/>
+									<label class="form-check-label" style="vertical-align: middle" for="toggle_starting_of_machines"
+										>Non-administrators are allowed to start machines</label
+									>
 								</div>
 							</li>
 						</ul>
@@ -1062,7 +1090,7 @@
 							<div class="spinner"></div>
 						</div>
 					</div>
-					<canvas #creditsChart id="creditsChart"> </canvas>
+					<canvas #creditsChart id="creditsChart"></canvas>
 				</div>
 			</div>
 		</div>
@@ -1181,10 +1209,10 @@
 			</div>
 			<div class="modal-footer">
 				<!--  <button type="button" (click)="addUserModal.hide();
-																					notificationModal.show();
-																					addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
-							Add User
-					</button> -->
+                                                                                    notificationModal.show();
+                                                                                    addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
+                            Add User
+                    </button> -->
 				<button
 					(click)="filteredMembers = null; addUserModal.hide()"
 					class="btn btn-danger"
@@ -1381,8 +1409,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="alert alert-{{ notificationModalType }}" role="alert"
-				data-test-id="termination_request_result_div">
+				<div class="alert alert-{{ notificationModalType }}" role="alert" data-test-id="termination_request_result_div">
 					{{ notificationModalMessage }}
 				</div>
 			</div>
