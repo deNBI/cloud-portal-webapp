@@ -83,6 +83,20 @@
 							<div *ngIf="client_available && projectDataLoaded">
 								<app-resource-overview [ressourceUsage]="selectedProjectRessources"> </app-resource-overview>
 								<div
+									class="alert alert-warning"
+									*ngIf="
+										selectedProject &&
+										((selectedProjectRessources | noVMsPipe) ||
+											(selectedProjectRessources | noRamPipe) ||
+											(selectedProjectRessources | noCoresPipe)) &&
+										client_available &&
+										client_checked
+									"
+								>
+									The following limit/limits has/have been reached: An admin of your project can request more resources
+									if necessary.
+								</div>
+								<div
 									class="alert alert-primary"
 									role="alert"
 									*ngIf="
