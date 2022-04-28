@@ -704,6 +704,10 @@ select option:hover, select option:focus, select option:target {
 	background-color: $deNBI_lightgrey !important;
 }
 
+.text-info-denbi {
+	color: $deNBI_cyan !important;
+}
+
 .sidebar .nav .nav-item .nav-link {
 
 	text-overflow: ellipsis;

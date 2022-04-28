@@ -9,8 +9,12 @@ import { ApplicationRessourceUsage } from '../../applications/application-ressou
 	name: 'noVMsPipe',
 })
 export class NoVMsPipe implements PipeTransform {
-	transform(ressources: ApplicationRessourceUsage): boolean {
-		return ressources.used_vms >= ressources.number_vms;
+	transform(ressources: ApplicationRessourceUsage, additional_vms: number = 0): boolean {
+		if (additional_vms > 0) {
+			return ressources.used_vms + additional_vms > ressources.number_vms;
+		} else {
+			return ressources.used_vms >= ressources.number_vms;
+		}
 	}
 }
 
