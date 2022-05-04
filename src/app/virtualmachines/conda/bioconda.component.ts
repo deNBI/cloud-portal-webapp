@@ -1,21 +1,19 @@
 import {
-	ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild,
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	EventEmitter,
+	HostListener,
+	OnInit,
+	Output,
+	ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { PaginationComponent } from 'ngx-bootstrap/pagination';
 import { BiocondaService } from '../../api-connector/bioconda.service';
-
-export interface CondaVersionBuilds {
-  name: string;
-  versions: string[][];
-}
-
-export interface IBiocondaTool {
-  name: string,
-  version: string,
-  build: string
-}
+import { CondaPackageMeta } from './conda-package-meta';
+import { CondaPackage } from './condaPackage.model';
 
 /**
  * Bioconda component.
@@ -29,9 +27,9 @@ export class BiocondaComponent implements OnInit {
 	FIRST_PAGE: number = 1;
 	DEBOUNCE_TIME: number = 700;
 
-	all_tools: any[] = [];
+	all_tools_meta: CondaPackageMeta[] = [];
 
-	chosen_tools: IBiocondaTool[] = [];
+	chosen_tools: CondaPackage[] = [];
 
 	toolsPerPage: number = 10;
 
@@ -85,71 +83,40 @@ export class BiocondaComponent implements OnInit {
 					this.filterToolName = filterName.trim();
 
 					return this.condaService.getAllTools(1, this.filterToolName);
-
 				}),
 			)
 			.subscribe((res: any): void => {
 				this.setAllTools(res);
 			});
-
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onChange(event: any): void {
 		this.cdr.detectChanges();
-
-	}
-
-	getBuildsByVersion(tool: CondaVersionBuilds, version: string): string[] {
-		return tool.versions[version];
 	}
 
 	getAllTools(page: number): void {
 		this.isSearching = true;
-		this.condaService.getAllTools(page, this.filterToolName).subscribe(
-			(res: any): void => {
-				this.all_tools = [];
-				const packages_dic: any = res['packages'];
+		this.condaService.getAllTools(page, this.filterToolName).subscribe((metas: any): void => {
+			this.all_tools_meta = metas['packages'];
 
-				for (const line in packages_dic) {
-					if (line in packages_dic) {
-						this.all_tools.push({
-							name: line,
-							versions: packages_dic[line]['versions'],
-							home: packages_dic[line]['home'],
-						});
-					}
-				}
-				this.toolsPerPage = res['items_per_page'];
-				this.total_pages = res['total_items'];
-				this.toolsStart = 0;
-				this.toolsEnd = this.toolsPerPage;
+			this.toolsPerPage = metas['items_per_page'];
+			this.total_pages = metas['total_items'];
+			this.toolsStart = 0;
+			this.toolsEnd = this.toolsPerPage;
 
-				this.currentPage = page;
-				this.pagination.selectPage(this.currentPage);
-				this.cdr.detectChanges();
+			this.currentPage = page;
+			this.pagination.selectPage(this.currentPage);
+			this.cdr.detectChanges();
 
-				this.isSearching = false;
-			},
-		);
+			this.isSearching = false;
+		});
 	}
 
 	setAllTools(res: any): void {
 		this.isSearching = true;
 
-		this.all_tools = [];
-
-		const packages_dic: any = res['packages'];
-
-		// tslint:disable-next-line:forin
-		for (const line in packages_dic) {
-			this.all_tools.push({
-				name: line,
-				versions: packages_dic[line]['versions'],
-				home: packages_dic[line]['home'],
-			});
-		}
-		this.toolsPerPage = res['items_per_page'];
+		this.all_tools_meta = res['packages'];
 		this.total_pages = res['total_items'];
 		this.toolsStart = 0;
 		this.toolsEnd = this.toolsPerPage;
@@ -159,37 +126,33 @@ export class BiocondaComponent implements OnInit {
 		this.cdr.detectChanges();
 
 		this.isSearching = false;
-
 	}
 
 	changedNameFilter(text: string): void {
 		this.filternameChanged.next(text);
-
 	}
 
-	addTool(name: string, version: string, build: string): void {
-		const tool: IBiocondaTool = { name, version, build };
+	addTool(name: string, version: string): void {
+		const tool: CondaPackage = new CondaPackage(null, name, version);
 
 		if (!this.is_tool_name_added(tool.name)) {
 			this.chosen_tools.push(tool);
 		} else {
-			this.chosen_tools.forEach((item: IBiocondaTool, index: number): void => {
+			this.chosen_tools.forEach((item: CondaPackage, index: number): void => {
 				if (tool.name === item.name) {
 					this.chosen_tools.splice(index, 1);
 				}
-
 			});
 			this.chosen_tools.push(tool);
-
 		}
 		this.hasTools.emit(this.hasChosenTools());
 	}
 
-	removeTool(tool: IBiocondaTool): void {
+	removeTool(tool: CondaPackage): void {
 		let deleted: boolean = false;
 
-		this.chosen_tools.forEach((item: IBiocondaTool, index: number): void => {
-			if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
+		this.chosen_tools.forEach((item: CondaPackage, index: number): void => {
+			if (tool.name === item.name && tool.version === item.version) {
 				this.chosen_tools.splice(index, 1);
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				deleted = true;
@@ -197,12 +160,11 @@ export class BiocondaComponent implements OnInit {
 		});
 
 		this.hasTools.emit(this.hasChosenTools());
-
 	}
 
 	is_tool_name_added(name: string): boolean {
 		let found: boolean = false;
-		this.chosen_tools.forEach((item: IBiocondaTool): void => {
+		this.chosen_tools.forEach((item: CondaPackage): void => {
 			if (name === item.name) {
 				found = true;
 			}
@@ -211,16 +173,12 @@ export class BiocondaComponent implements OnInit {
 		return found;
 	}
 
-	is_added_values(name: string, version: string, build: string): boolean {
-		const tool: IBiocondaTool = { name, version, build };
+	is_added(name: string, version: string): boolean {
+		const tool: CondaPackage = new CondaPackage(null, name, version);
 
-		return this.is_added(tool);
-	}
-
-	is_added(tool: IBiocondaTool): boolean {
 		let found: boolean = false;
-		this.chosen_tools.forEach((item: IBiocondaTool): void => {
-			if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
+		this.chosen_tools.forEach((item: CondaPackage): void => {
+			if (tool.name === item.name && tool.version === item.version) {
 				found = true;
 			}
 		});
@@ -233,11 +191,10 @@ export class BiocondaComponent implements OnInit {
 	}
 
 	getTimeout(): number {
-		return ((this.chosen_tools.length) * 300) + 840;
+		return this.chosen_tools.length * 300 + 840;
 	}
 
 	hasChosenTools(): boolean {
 		return this.chosen_tools.length > 0;
 	}
-
 }
