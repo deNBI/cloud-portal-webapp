@@ -83,62 +83,22 @@
 							<div *ngIf="client_available && projectDataLoaded">
 								<app-resource-overview [ressourceUsage]="selectedProjectRessources"> </app-resource-overview>
 								<div
-									class="alert alert-primary"
-									role="alert"
+									class="alert alert-warning"
 									*ngIf="
 										selectedProject &&
-										selectedProjectRessources?.used_vms >= selectedProjectRessources?.number_vms &&
+										((selectedProjectRessources | noVMsPipe) ||
+											(selectedProjectRessources | noRamPipe) ||
+											(selectedProjectRessources | noCoresPipe)) &&
 										client_available &&
 										client_checked
 									"
 								>
-									The limit for virtual machines has been reached for this project. Your principal investigator can
-									request more resources if necessary.
-								</div>
-								<div
-									class="alert alert-primary"
-									role="alert"
-									*ngIf="
-										selectedProject &&
-										selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total &&
-										!(selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) &&
-										flavors_loaded &&
-										flavors.length === 0 &&
-										!selectedFlavor
-									"
-								>
-									There is not enough ram available for this project to start a new machine. Your principal investigator
-									can request more resources if necessary.
-								</div>
-								<div
-									class="alert alert-primary"
-									role="alert"
-									*ngIf="
-										selectedProject &&
-										!(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) &&
-										selectedProjectRessources.ram_used < selectedProjectRessources.ram_total &&
-										flavors_loaded &&
-										flavors.length === 0 &&
-										!selectedFlavor
-									"
-								>
-									There are too few cores available for this project to start a new machine. Your principal investigator
-									can request more resources if necessary.
-								</div>
-								<div
-									class="alert alert-primary"
-									role="alert"
-									*ngIf="
-										selectedProject &&
-										selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total &&
-										selectedProjectRessources.ram_used < selectedProjectRessources.ram_total &&
-										flavors_loaded &&
-										flavors.length === 0 &&
-										!selectedFlavor
-									"
-								>
-									There are too few cores and not enough ram available for this project to start a new machine. Your
-									principal investigator can request more resources if necessary.
+									The following limit/limits has/have been reached:
+									<div *ngIf="selectedProjectRessources | noVMsPipe">- Amount of VMs</div>
+									<div *ngIf="selectedProjectRessources | noCoresPipe">- Amount of cores</div>
+									<div *ngIf="selectedProjectRessources | noRamPipe">- Amount of RAM</div>
+									<br />
+									An admin of your project can request more resources if necessary.
 								</div>
 								<div
 									*ngIf="
