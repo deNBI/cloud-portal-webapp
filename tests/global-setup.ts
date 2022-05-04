@@ -1,4 +1,5 @@
 import { chromium, FullConfig } from '@playwright/test';
+// @ts-ignore
 import environment from './environment.json';
 import { LoginPagePlaywright } from './page_objects/login.po';
 
@@ -6,6 +7,10 @@ export const FACILITY_MANAGER_STORAGE: string = 'facilityManagerStorageState.jso
 export const MEMBER_STORAGE: string = 'memberStorageState';
 export const VO_MANAGER_STORAGE: string = 'voManagerState.json';
 
+/**
+ * Global setup
+ * @param config config
+ */
 async function globalSetup(config: FullConfig) {
 	const { baseURL } = config.projects[0].use;
 	const browser = await chromium.launch();
@@ -27,7 +32,6 @@ async function globalSetup(config: FullConfig) {
 	await memberLogin.login(environment.email_user, environment.password_user, environment.auth_user);
 	await memberPage.context().storageState({ path: MEMBER_STORAGE });
 	await browser.close();
-
 }
 
 export default globalSetup;

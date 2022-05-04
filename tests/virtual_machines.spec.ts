@@ -8,8 +8,7 @@ import { VoOverviewPage } from './page_objects/vo_overview.po';
 import { FormularPage } from './page_objects/formular.po';
 
 test.describe.serial('@instances', () => {
-
-	 test.describe('Should delete old simple_vm_instances applications', () => {
+	test.describe('Should delete old simple_vm_instances applications', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
 		test('VO @instances', async ({ page, baseURL }) => {
 			test.setTimeout(60 * 1000);
@@ -58,7 +57,7 @@ test.describe.serial('@instances', () => {
 		});
 	});
 
-	 test.describe('Should start a VM with resenv', () => {
+	test.describe('Should start a VM with resenv', () => {
 		test.use({ storageState: MEMBER_STORAGE });
 		test('Member @instances', async ({ page, baseURL }) => {
 			const addVMPage = new NewInstancePage(page, baseURL);
@@ -165,26 +164,25 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should delete basic active VM', () => {
-		 test.use({ storageState: MEMBER_STORAGE });
-		 test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
-		 test('Member @instances', async ({ page, baseURL }) => {
-			 await page.waitForTimeout(5000);
-			 const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
-			 await vmOverviewPage.goto();
-			 await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
-			 await vmOverviewPage.deleteVirtualMachine(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
-		 });
-	 });
+		test.use({ storageState: MEMBER_STORAGE });
+		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
+		test('Member @instances', async ({ page, baseURL }) => {
+			await page.waitForTimeout(5000);
+			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
+			await vmOverviewPage.goto();
+			await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
+			await vmOverviewPage.deleteVirtualMachine(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
+		});
+	});
 
 	test.describe('Aftercare - Should delete old simple_vm_instances applications', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1);
-		test('VO @simple_vm_application', async ({ page, baseURL }) => {
+		test('VO @instances', async ({ page, baseURL }) => {
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineApplications(Util.INSTANCES_PROJECT_NAME);
 			const voOverviewPage = new VoOverviewPage(page, baseURL);
 			await voOverviewPage.terminateSimpleVMProjects(Util.INSTANCES_PROJECT_NAME);
-
 		});
 	});
 });
