@@ -4,14 +4,13 @@ import { ImageMode } from '../../facility_manager/image-tag';
 import { Clusterinfo } from '../clusters/clusterinfo';
 import { Volume } from '../volumes/volume';
 import { Backend } from '../conda/backend/backend';
-import { CondaPackage } from '../condaPackage.model';
 import { VirtualMachineStates } from './virtualmachinestates';
+import { CondaPackage } from '../conda/condaPackage.model';
 
 /**
  * Virtualmachine class.
  */
 export class VirtualMachine {
-
 	flavor: Flavor;
 	image: string;
 	project: string;
@@ -84,19 +83,22 @@ export class VirtualMachine {
 		const createdDate: Date = new Date(this.created_at_date);
 
 		return Math.floor((Date.now() - createdDate.getTime()) / 86400000);
-
 	}
 
 	public getTerminationStartDateString(): string {
-		if (this.still_used_confirmation_requested_date === null || this.still_used_confirmation_requested_date === undefined) {
+		if (
+			this.still_used_confirmation_requested_date === null
+			|| this.still_used_confirmation_requested_date === undefined
+		) {
 			return '';
 		}
 
-		this.still_used_confirmation_requested_date = new Date(Date.parse(this.still_used_confirmation_requested_date.toString()));
-		const term_date: Date = new Date(this.still_used_confirmation_requested_date.getTime() + (1000 * 60 * 60 * 24 * 14));
+		this.still_used_confirmation_requested_date = new Date(
+			Date.parse(this.still_used_confirmation_requested_date.toString()),
+		);
+		const term_date: Date = new Date(this.still_used_confirmation_requested_date.getTime() + 1000 * 60 * 60 * 24 * 14);
 
 		return term_date.toLocaleDateString();
-
 	}
 
 	setErrorMsgWithTimeout(msg: string, timeout: number = 10000): void {
