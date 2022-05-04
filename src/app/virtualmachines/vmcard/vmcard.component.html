@@ -31,7 +31,7 @@
 						{{ vm?.name }}
 					</span>
 				</ng-template>
-				<app-vmstatus [vm]="vm"> </app-vmstatus>
+				<app-vmstatus [vm]="vm"></app-vmstatus>
 			</div>
 
 			<div class="col-3" style="margin: auto; text-align: center">
@@ -292,7 +292,7 @@
 					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					*ngIf="vm.cardState !== 2 && (vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin)"
 					[disabled]="
-						((vm?.status | statusInProcess: VirtualMachineStates.staticIN_PROCESS_STATE) &&
+						((vm?.status | statusInList: VirtualMachineStates.staticIN_PROCESS_STATE) &&
 							!(vm?.status | hasStatus: VirtualMachineStates.staticCHECKING_CONNECTION) &&
 							!(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED)) ||
 						(vm?.status | hasStatus: VirtualMachineStates.staticNOT_FOUND) ||
@@ -485,15 +485,7 @@
 						Create Snapshot
 					</div>
 				</div>
-				<div
-					class="col-md-auto"
-					*ngIf="
-						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
-						(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) ||
-						(vm?.status | hasStatus: VirtualMachineStates.staticERROR) ||
-						(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED)
-					"
-				>
+				<div class="col-md-auto" *ngIf="vm?.status | statusInList: VirtualMachineStates.staticDELETABLE_STATES">
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'deleteVMButton_' + vm?.name"

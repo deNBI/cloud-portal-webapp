@@ -84,3 +84,5 @@ memberStorageState
 voManagerState.json
 *tests/environment.json
 yarn.lock
+test-results/
+playwright-report/

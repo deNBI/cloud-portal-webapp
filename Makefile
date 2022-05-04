@@ -74,5 +74,24 @@ check_deps: ## Checks dependencies and devDependencies of package.json with a de
 
 .PHONY: default new_environment new_node_modules new_env_and_node serve check_nodeenv clean_env clean_node_modules ng_serve
 
+init_tests: env initialize ## (Re-)Install and initialize playwright tests
+
+initialize:
+	npm init playwright@latest && \
+	rm tests/example.spec.ts
+
+run_tests: env run_playwright ## Runs playwright tests
+
+run_tests_headed: env run_playwright_headed ## Runs playwright tests headed
+
+run_playwright_headed:
+	. env/bin/activate; \
+	npx playwright test --headed
+
+run_playwright:
+	. env/bin/activate; \
+	npx playwright test
+
+
 help:
 	    @egrep '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'

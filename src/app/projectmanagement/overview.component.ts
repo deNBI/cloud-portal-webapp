@@ -31,6 +31,7 @@ import {
 	STATUS_LINK,
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
+	CLOUD_PORTAL_SUPPORT_MAIL,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -70,6 +71,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 	CREDITS_WIKI: string = CREDITS_WIKI;
 	CLOUD_MAIL: string = CLOUD_MAIL;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	PUBLICATIONS_LINK: string = PUBLICATIONS_LINK;
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
 	OPENSTACK_LINK: string = OPENSTACK_LINK;

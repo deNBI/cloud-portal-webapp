@@ -21,6 +21,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 	private static readonly _SPAWNING: string = 'SPAWNING';
 	private static readonly _SCHEDULING: string = 'SCHEDULING';
 	private static readonly _PLANNED: string = 'PLANNED';
+
 	private static readonly _IN_PROCESS_STATES: string[] = [
 		VirtualMachineStates._REBOOTING_STARTED,
 		VirtualMachineStates._REBOOTING_HARD,
@@ -54,6 +55,19 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._DELETING_FAILED,
 	];
 
+	private static readonly _DELETABLE_STATES: string[] = [
+		VirtualMachineStates._ACTIVE,
+		VirtualMachineStates._SHUTOFF,
+		VirtualMachineStates._ERROR,
+		VirtualMachineStates._PORT_CLOSED,
+		VirtualMachineStates._PLANNED,
+		VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
+	];
+
+	static get DELETABLE_STATES(): string[] {
+		return this._DELETABLE_STATES;
+	}
+
 	static get CLIENT_OFFLINE(): string {
 		return this._CLIENT_OFFLINE;
 	}
@@ -61,6 +75,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 	static get REBOOTING(): string {
 		return this._REBOOTING;
 	}
+
 	static get REBOOTING_STARTED(): string {
 		return this._REBOOTING_STARTED;
 	}
@@ -199,5 +214,9 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	public get staticREBOOTING(): string {
 		return VirtualMachineStates.REBOOTING;
+	}
+
+	public get staticDELETABLE_STATES(): string[] {
+		return VirtualMachineStates.DELETABLE_STATES;
 	}
 }

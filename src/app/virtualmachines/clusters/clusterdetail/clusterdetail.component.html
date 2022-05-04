@@ -7,7 +7,7 @@
 <div class="animated fadeIn" *ngIf="isLoaded">
 	<div class="card" style="">
 		<div class="card-header">
-			<span class="font-weight-bold text-muted">Cluster: {{ cluster?.name }} - [ID: {{ cluster?.cluster_id }}]</span>
+			<span class="font-weight-bold text-muted">Cluster: {{ cluster?.name }} - [ID: {{ cluster?.cluster_id }} ]</span>
 		</div>
 		<div class="card-body">
 			<app-clusterinfo *ngIf="!errorOnLoading" [cluster]="cluster"></app-clusterinfo>
@@ -53,6 +53,15 @@
 					<strong>Instance: {{ worker.name }}</strong>
 				</div>
 				<app-virtualmachineinfo [cluster_machine]="true" [virtualMachine]="worker"></app-virtualmachineinfo>
+				<div class="btn-group">
+					<button
+						*ngIf="worker?.status | statusInList: VirtualMachineStates.staticDELETABLE_STATES"
+						class="btn btn-danger"
+						(click)="showDeleteModal(worker)"
+					>
+						Delete instance
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

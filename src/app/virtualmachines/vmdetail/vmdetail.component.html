@@ -171,10 +171,7 @@
 							</div>
 							<div
 								class="col-3"
-								*ngIf="
-									virtualMachine?.status === virtualMachineStates.staticACTIVE ||
-									virtualMachine?.status === virtualMachineStates.staticSHUTOFF
-								"
+								*ngIf="virtualMachine?.status | statusInList: virtualMachineStates.staticDELETABLE_STATES"
 							>
 								<button
 									type="button"
@@ -314,23 +311,19 @@
 					<!-- remove "false" as soon as request ist working -->
 					<div class="card-header"><span class="font-weight-bold text-muted">Installed Conda Packages</span></div>
 					<div class="card-body">
-						<div class="row" *ngFor="let pkg of virtualMachine?.conda_packages">
-							<div class="col-4">
+						<div class="row">
+							<div class="col-4" *ngFor="let pkg of virtualMachine?.conda_packages">
 								<div class="callout">
-									<small class="text-muted">Package name</small><br />
-									<strong class="text-muted">{{ pkg.name }}</strong>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="callout">
-									<small class="text-muted">Version</small><br />
-									<strong class="text-muted">{{ pkg.version }}</strong>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="callout">
-									<small class="text-muted">Build</small><br />
-									<strong class="text-muted">{{ pkg.build }}</strong>
+									<div class="row">
+										<div class="col">
+											<small class="text-muted">Package name</small><br />
+											<strong class="text-muted">{{ pkg.name }}</strong>
+										</div>
+										<div class="col">
+											<small class="text-muted">Version</small><br />
+											<strong class="text-muted">{{ pkg.version }}</strong>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -1320,8 +1313,8 @@
 				<div class="modal-body">
 					<div class="alert alert-warning" role="alert">
 						The volume must still be
-						<a href="{{ WIKI_VOLUME_OVERVIEW }}" rel="noopener noreferrer" target="_blank"> mounted </a> after the
-						attaching to use it.
+						<a href="{{ WIKI_VOLUME_OVERVIEW }}" rel="noopener noreferrer" target="_blank"> mounted </a>
+						after the attaching to use it.
 					</div>
 				</div>
 				<div class="modal-footer">
