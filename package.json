@@ -17,7 +17,7 @@
     "prepare": "husky install"
   },
   "resolutions": {
-    "mime":"3.0.0",
+    "mime": "3.0.0",
     "jake": "v10.8.5"
   },
   "private": true,
@@ -96,7 +96,7 @@
     "@angular/cli": "13.3.4",
     "@angular/compiler-cli": "13.3.5",
     "@compodoc/compodoc": "1.1.19",
-    "@playwright/test": "1.21.1",
+    "@playwright/test": "^1.21.1",
     "@types/jasmine": "4.0.3",
     "@types/node": "16.11.33",
     "@typescript-eslint/eslint-plugin": "5.22.0",
