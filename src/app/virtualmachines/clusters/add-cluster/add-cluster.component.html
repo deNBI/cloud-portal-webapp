@@ -395,11 +395,10 @@
 									projectDataLoaded &&
 									flavors_loaded
 								"
-								class="alert alert-danger col-md-10"
+								class="alert alert-danger col-md-auto"
 								role="alert"
-								style="margin: auto"
 							>
-								<p>Please choose the following before starting a Cluster:</p>
+								<p><strong>Please choose the following before starting a Cluster</strong></p>
 								<p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM</p>
 								<p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM</p>
 								<p *ngIf="!selectedWorkerFlavorSet">- The flavor types of your Worker Batches.</p>
@@ -414,9 +413,8 @@
 									(flavors?.length > 0 || selectedFlavor) &&
 									selectedProjectClient?.bibigrid_available
 								"
-								class="alert alert-warning col-md-10"
+								class="col-auto"
 								role="alert"
-								style="margin: auto"
 							>
 								<div class="form-check">
 									<input
