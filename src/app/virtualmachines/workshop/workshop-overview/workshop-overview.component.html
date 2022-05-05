@@ -26,6 +26,7 @@
 						class="form-control form-select"
 						name="selectedProject"
 						[(ngModel)]="selectedProject"
+						data-test-id="projectSelect"
 						id="projectSelect"
 						(ngModelChange)="projectChange()"
 					>
@@ -72,7 +73,8 @@
 					<div *ngIf="!selectedWorkshop.id">Please select a workshop:</div>
 					<div class="btn-group col-6">
 						<button
-							id="select_workshop_{{ workshop?.shortname }}_btn"
+							id="select_workshop_{{ workshop?.shortname }}"
+							[attr.data-test-id]="'select_workshop_' + workshop?.shortname"
 							*ngFor="let workshop of workshops"
 							[ngClass]="{
 								'btn-outline-success': workshop.shortname === selectedWorkshop?.shortname,
@@ -90,6 +92,7 @@
 							(click)="verifyDeleteModal.show()"
 							type="button"
 							id="cleanup_workshop_button_id"
+							data-test-id="cleanup_workshop_button_id"
 							[disabled]="deleting"
 							*ngIf="selectedWorkshop?.id"
 							style="margin-bottom: 5px; margin-right: 5px"
@@ -99,6 +102,7 @@
 						<button
 							class="btn btn-info"
 							type="button"
+							data-test-id="new_workshop_button_id"
 							id="new_workshop_button_id"
 							style="margin-bottom: 5px; margin-right: 5px"
 							(click)="blankWorkshop()"
@@ -113,6 +117,7 @@
 								required
 								type="text"
 								id="workshop_longname"
+								data-test-id="workshop_longname"
 								style="margin-top: 10px"
 								class="form-control"
 								name="selected_workshop.longname"
@@ -139,6 +144,7 @@
 								required
 								type="text"
 								id="workshop_shortname"
+								data-test-id="workshop_shortname"
 								style="margin-top: 10px"
 								class="form-control"
 								name="selected_workshop.shortname"
@@ -165,6 +171,7 @@
 								class="btn btn-primary"
 								(click)="createNewWorkshop()"
 								type="button"
+								data-test-id="create_workshop_button_id"
 								id="create_workshop_button_id"
 								[disabled]="invalidShortname || invalidLongname"
 								style="margin-bottom: 15px; margin-top: 10px"
@@ -199,18 +206,24 @@
 									<td>
 										<div
 											class="callout callout-info"
+											data-test-id="user_{{ member.projectMember.elixirId }}"
 											style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
 										>
 											<i
 												class="fa fa-id-card"
 												style="width: 1.5em"
 												id="user_name_field_prefix_{{ member.projectMember.elixirId }}"
+												data-test-id="user_name_field_prefix_{{ member.projectMember.elixirId }}"
 											></i
-											>{{ member.projectMember.userName }}<br />
-											<i class="fa fa-envelope" style="width: 1.5em"></i>{{ member.projectMember.email }}<br />
-											<i class="fa fa-user-cog" style="width: 1.5em"></i>
-											<ng-container *ngIf="member.projectMember.isAdmin">Admin</ng-container>
-											<ng-container *ngIf="!member.projectMember.isAdmin">Participant</ng-container>
+											><span>{{ member.projectMember.userName }}</span
+											><br />
+											<i class="fa fa-envelope" style="width: 1.5em"></i><span>{{ member.projectMember.email }}</span
+											><br />
+											<i class="fa fa-user-cog" style="width: 1.5em"></i
+											><span [attr.data-test-id]="'user_role_' + member.projectMember.elixirId">
+												<ng-container *ngIf="member.projectMember.isAdmin">Admin</ng-container>
+												<ng-container *ngIf="!member.projectMember.isAdmin">Participant</ng-container>
+											</span>
 										</div>
 									</td>
 									<ng-container *ngIf="!selectedWorkshop.id">
@@ -234,6 +247,7 @@
 														<a
 															[routerLink]="['/virtualmachines/detail/' + vm?.vm?.openstackid]"
 															id="vm_name_{{ member.projectMember.elixirId }}"
+															[attr.data-test-id]="'vm_name_' + member.projectMember.elixirId"
 														>
 															{{ vm?.vm?.name }}
 														</a>
@@ -245,6 +259,7 @@
 															target="_blank"
 															rel="noopener noreferrer"
 															id="resenv_url_{{ vm?.vm?.name }}"
+															[attr.data-test-id]="'resenv_url_' + vm?.vm?.name"
 														>
 															{{ vm.urlData.resenv_url }}
 														</a>
@@ -291,6 +306,7 @@
 	aria-labelledby="Label"
 	aria-hidden="true"
 	id="verify_delete_modal"
+	data-test-id="verify_delete_modal"
 >
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -318,6 +334,7 @@
 					class="btn btn-success col-md-4"
 					(click)="cleanupWorkshop(); verifyDeleteModal.hide(); deletionStatusModal.show()"
 					id="confirm_delete_workshop_button"
+					data-test-id="confirm_delete_workshop_button"
 				>
 					Yes
 				</button>
@@ -389,6 +406,7 @@
 	aria-labelledby="Label"
 	aria-hidden="true"
 	id="delete_status_modal"
+	data-test-id="delete_status_modal"
 >
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -409,7 +427,7 @@
 					<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
 				</div>
 				<div *ngIf="!deleting">
-					<div *ngIf="deleteSuccess" id="delete_success_id">Cleanup successful.</div>
+					<div *ngIf="deleteSuccess" id="delete_success_id" data-test-id="delete_success_id">Cleanup successful.</div>
 					<div *ngIf="!deleteSuccess" id="delete_fail_id">Cleanup failed.</div>
 				</div>
 			</div>
@@ -418,6 +436,7 @@
 					class="btn btn-danger col-md-4"
 					type="reset"
 					id="close_deletion_status"
+					data-test-id="close_deletion_status"
 					(click)="deletionStatusModal.hide()"
 				>
 					Close
@@ -438,6 +457,7 @@
 	role="dialog"
 	aria-labelledby="Label"
 	aria-hidden="true"
+	data-test-id="creation_status_modal"
 	id="creation_status_modal"
 >
 	<div class="modal-dialog" role="document">
@@ -458,11 +478,25 @@
 				<div *ngIf="workshopCreationMessage.message === ''">
 					<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
 				</div>
-				<div *ngIf="workshopCreationMessage.message !== ''" id="creation_status_message">
-					<div class="alert alert-success" *ngIf="workshopCreationMessage.success" id="creation_success">
+				<div
+					*ngIf="workshopCreationMessage.message !== ''"
+					id="creation_status_message"
+					data-test-id="creation_status_message"
+				>
+					<div
+						class="alert alert-success"
+						*ngIf="workshopCreationMessage.success"
+						id="creation_success"
+						data-test-id="creation_success"
+					>
 						{{ workshopCreationMessage.message }}
 					</div>
-					<div class="alert alert-danger" *ngIf="!workshopCreationMessage.success" id="creation_failure">
+					<div
+						class="alert alert-danger"
+						*ngIf="!workshopCreationMessage.success"
+						id="creation_failure"
+						data-test-id="creation_failure"
+					>
 						{{ workshopCreationMessage.message }}
 					</div>
 				</div>
@@ -471,6 +505,7 @@
 				<button
 					class="btn btn-danger col-md-4"
 					type="reset"
+					data-test-id="close_creation_status_modal"
 					id="close_creation_status_modal"
 					(click)="creationStatusModal.hide()"
 				>

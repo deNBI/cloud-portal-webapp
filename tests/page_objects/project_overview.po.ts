@@ -5,9 +5,14 @@ import { Util } from '../util';
  * Project overview page object.
  */
 export class ProjectOverViewPage {
-	private PROJECT_LIST: string = 'project_list';
+	// GENERAL
+	private PROJECT_LIST: string = 'project_list_folded';
 	private PROJECT_LIST_TOGGLER: string = 'project_list_folded_toggler';
 	private PROJECT_OVERVIEW_BUTTON_PREFIX: string = 'project_overview_';
+	private SITE_LOADER: string = 'site-loader';
+	private PROFILE_LOADER: string = 'div .loader';
+
+	// MODIFICATIONS
 	private OPEN_EXTENSION_REQUEST_BUTTON: string = 'open_extension_request_button';
 	private OPEN_MODIFICATION_REQUEST_BUTTON: string = 'open_modification_request_button';
 	private OPEN_TERMINATION_REQUEST_BUTTON: string = 'open_termination_request_button';
@@ -31,8 +36,16 @@ export class ProjectOverViewPage {
 	private MODIFICATION_REQUEST_VOLUME_LIMIT_INPUT: string = 'modification_request_volume_limit_input';
 	private MODIFICATION_REQUEST_OBJECT_STORAGE_INPUT: string = 'modification_request_object_storage_input';
 
-	private SITE_LOADER: string = 'site-loader';
-	private PROFILE_LOADER: string = 'div .loader';
+	// MEMBER
+	private DEFAULT_MEMBER_EMAIL: string = 'testuserdenbi@gmail.com';
+	private ADD_MEMBER_BTN_MODAL: string = 'add_member_btn_modal';
+	private SEARCH_MEMBER: string = 'add_member_input';
+	private ADD_MEMBER_BTN: string = 'add_member_btn';
+	private SEARCH_MEMBER_BTN: string = 'search_member_btn';
+	private SUCCESS: string = 'Success';
+	private NOTIFICATION_TITLE: string = 'notification_title';
+	private NOTIFICATION_CLOSE: string = 'close_notification';
+	private CLOSE_ADD_MEMBER_MODAL_BTN: string = 'close_add_user_modal_btn';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -52,13 +65,15 @@ export class ProjectOverViewPage {
 	async goToProjectOverview(project_name: string) {
 		await this.gotoProfilePage();
 		console.log(`Goto Project overview Page for Project ${project_name}`);
-		const project_list = this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST));
-		if (!project_list) {
+		await this.page.waitForTimeout(3000);
+		const project_list = await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST)).isVisible();
+		if (project_list) {
+			console.log('got no project_list, clicking on toggler!');
 			await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST_TOGGLER)).click();
 		}
 		await Promise.all([
 			this.page.waitForNavigation(),
-			this.page.locator(Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + project_name)).click(),
+			this.page.locator(Util.by_data_test_id_str(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`)).click(),
 		]);
 		console.log(this.page.url());
 		expect(this.page.url()).toContain('/project-management');
@@ -110,5 +125,15 @@ export class ProjectOverViewPage {
 		await this.page.waitForSelector(
 			`data-test-id=${this.TERMINATION_REQUEST_RESULT_DIV} >> text=${this.TERMINATION_REQUESTED_SUCCESSFULLY}`,
 		);
+	}
+
+	async addMember(member: string = this.DEFAULT_MEMBER_EMAIL) {
+		await this.page.locator(Util.by_data_test_id_str(this.ADD_MEMBER_BTN_MODAL)).click();
+		await this.page.fill(Util.by_data_test_id_str(this.SEARCH_MEMBER), member);
+		await this.page.locator(Util.by_data_test_id_str(this.SEARCH_MEMBER_BTN)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.ADD_MEMBER_BTN)).click();
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_TITLE} >> text=${this.SUCCESS}`);
+		await this.page.locator(Util.by_data_test_id_str(this.NOTIFICATION_CLOSE)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CLOSE_ADD_MEMBER_MODAL_BTN)).click();
 	}
 }

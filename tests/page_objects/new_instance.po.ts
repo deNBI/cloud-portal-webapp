@@ -7,7 +7,6 @@ import { Util } from '../util';
  */
 export class NewInstancePage {
 	private PROJECT_SELECTION_DROPDOWN: string = 'project_selection_dropdown';
-	private PROJECT_SELECTION_PREFIX: string = 'project_option_';
 	private INSTANCE_NAME_INPUT_FIELD: string = 'instance_name_input_field';
 	private FLAVOR_SELECTION_PREFIX: string = 'flavor_';
 	private IMAGE_SELECTION_PREFIX: string = 'image_';
@@ -25,6 +24,7 @@ export class NewInstancePage {
 	private RESENV_URL_INPUT: string = 'resenv_url_input';
 	private ANSIBLE_NEED_OKAY: string = 'ansible_need_okay';
 	private RESENV_ACCORDION_HEADING: string = 'resenv_accordion_heading';
+	private SITE_LOADER: string = 'site-loader';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -39,16 +39,17 @@ export class NewInstancePage {
 		await this.page.goto(`${this.baseURL}/#/virtualmachines/newVM`, { waitUntil: 'networkidle' });
 		console.log(this.page.url());
 		expect(this.page.url()).toContain('/newVM');
+		await this.page.locator('text=New Virtual Machine').waitFor();
 	}
 
 	async selectProject(application_name: string): Promise<any> {
 		console.log('Selecting project');
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
 		const dropdown = await this.page.locator(Util.by_data_test_id_str(this.PROJECT_SELECTION_DROPDOWN)).isVisible();
 		if (dropdown) {
-			await this.page.selectOption(
-				Util.by_data_test_id_str(this.PROJECT_SELECTION_DROPDOWN),
-				{ label: application_name },
-			);
+			await this.page.selectOption(Util.by_data_test_id_str(this.PROJECT_SELECTION_DROPDOWN), {
+				label: application_name,
+			});
 			await this.page.locator(Util.by_data_test_id_str(this.INSTANCE_NAME_INPUT_FIELD)).isVisible();
 		} else {
 			await this.page.locator(Util.by_data_test_id_str(this.INSTANCE_NAME_INPUT_FIELD)).isVisible();
