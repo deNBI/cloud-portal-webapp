@@ -19,6 +19,7 @@ import { VolumeVmComponent } from '../modals/volume-vm/volume-vm.component';
 import { Volume } from '../volumes/volume';
 import { IResponseTemplate } from '../../api-connector/response-template';
 import { RebootVmComponent } from '../modals/reboot-vm/reboot-vm.component';
+import { RecreateBackendVmComponent } from '../modals/recreate-backend-vm/recreate-backend-vm.component';
 
 /**
  * Vm card component to be used by vm-overview. Holds information about a virtual machine.
@@ -168,6 +169,20 @@ export class VmCardComponent implements OnInit, OnDestroy {
 		this.subscribeToBsModalRef();
 	}
 
+	recreateBackend(): void {
+		this.subscription.add(
+			this.virtualmachineservice.recreateVmBackend(this.vm.openstackid).subscribe(
+				(updated_vm: VirtualMachine) => {
+					this.vm.backend = updated_vm.backend;
+					this.vm.setMsgWithTimeout('Backend was successfully recreated!');
+				},
+				() => {
+					this.vm.setErrorMsgWithTimeout('Failed to recreate the backend!', this.ERROR_TIMER);
+				},
+			),
+		);
+	}
+
 	/**
 	 * Run function to stop a vm.
 	 */
@@ -201,6 +216,18 @@ export class VmCardComponent implements OnInit, OnDestroy {
 		const initialState = { virtualMachine: this.vm, mode };
 
 		this.bsModalRef = this.modalService.show(VolumeVmComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeToBsModalRef();
+	}
+
+	/**
+	 * Show attach/detach modal.
+	 */
+	showRecreateBackendModal(): void {
+		this.stopCheckStatusTimer();
+		const initialState = { virtualMachine: this.vm };
+
+		this.bsModalRef = this.modalService.show(RecreateBackendVmComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeToBsModalRef();
 	}
@@ -421,7 +448,9 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	subscribeToBsModalRef(): void {
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
-				if ('resume' in result) {
+				if ('recreateBackendVM' in result) {
+					this.recreateBackend();
+				} else if ('resume' in result) {
 					this.resumeCheckStatusTimer();
 				} else if ('stopVM' in result) {
 					this.stopVM();
