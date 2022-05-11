@@ -120,7 +120,7 @@
 						vm?.res_env_url &&
 						vm?.backend?.playbook_done &&
 						!vm?.backend?.playbook_successful &&
-						vm?.conda_packages?.length == 0 &&
+						vm?.conda_packages?.length === 0 &&
 						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)
 					"
 					class="col-md-1"
