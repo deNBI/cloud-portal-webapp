@@ -69,6 +69,9 @@
 			of the machine that it is still in use, otherwise it will be marked for deletion starting from
 			<strong style="margin-left: 2px"> {{ vm?.getTerminationStartDateString() }} </strong>.
 		</div>
+		<div *ngIf="alertVisible" class="alert alert-info" role="alert">
+			<p>{{ alertMessage }}</p>
+		</div>
 		<div style="margin-top: 10px; margin-bottom: 5px">
 			<div class="row" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
 				<div *ngIf="vm.volumes?.length > 0" class="col-md-1">
