@@ -111,6 +111,21 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 */
 	checkStatusTimer: ReturnType<typeof setTimeout>;
 
+	/**
+	 * Constant message for connection issues with client/OpenStack to ensure that the user knows that the information may not be up-to-date.
+	 */
+	TIMEOUT_ALERT_MESSAGE: string =		'The information available here may not be up-to-date. This is due to connection problems with the compute center. If necessary, try again later.';
+
+	/**
+	 * String which can be filled with information in case any problems occur or additional information needs to be placed.
+	 */
+	alertMessage: string = '';
+
+	/**
+	 * Bool which indicates whether the alert with additional information is shown or not.
+	 */
+	alertVisible: boolean = false;
+
 	constructor(
 		private clipboardService: ClipboardService,
 		private modalService: BsModalService,
@@ -442,6 +457,17 @@ export class VmCardComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	showAlert(message: string): void {
+		switch (message) {
+			case 'TIMEOUT':
+				this.alertMessage = this.TIMEOUT_ALERT_MESSAGE;
+				break;
+			default:
+				this.alertMessage = '';
+		}
+		this.alertVisible = true;
+	}
+
 	/**
 	 * Loop which checks status of a vm depending on its status. Will always stop the timer if it exists first.
 	 */
@@ -466,7 +492,17 @@ export class VmCardComponent implements OnInit, OnDestroy {
 								for (const vol of this.vm.volumes) {
 									volumeIds.push(vol.volume_openstackid);
 								}
-								this.virtualmachineservice.triggerVolumeUpdate(volumeIds).subscribe((): void => {});
+								this.virtualmachineservice.triggerVolumeUpdate(volumeIds).subscribe(
+									(): void => {
+										this.alertVisible = false;
+									},
+									(error: Response): void => {
+										if (error.status === 408) {
+											// timeout for request
+											this.showAlert('TIMEOUT');
+										}
+									},
+								);
 							}
 						}
 						if (final_state) {
