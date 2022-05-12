@@ -1,183 +1,218 @@
 <div *ngIf="isLoaded === false" class="loader"></div>
 
 <div class="card" *ngIf="is_vo_admin && isLoaded">
-  <div class="card-header">
-    <strong>Clients</strong>
-    –Overview
-  </div>
-  <div>
-    <div>
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>Facility</th>
-            <th>Host</th>
-            <th>Port</th>
-            <th>Status</th>
-            <th>Actions</th>
-            <th>Activated</th>
+	<div class="card-header">
+		<strong>Clients</strong>
+		–Overview
+	</div>
+	<div>
+		<div>
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Facility</th>
+							<th>Host</th>
+							<th>Port</th>
+							<th>Status</th>
+							<th>Actions</th>
+							<th>Activated</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let client of clients">
+							<td>{{client.location}}</td>
+							<td>{{client.host}}</td>
+							<td>{{client.port}}</td>
+							<td>{{client.status}}</td>
+							<td>
+								<button
+									type="button"
+									class="btn btn-primary navbar-inverse"
+									style="margin-left: 5px; margin-right: 5px"
+									(click)="selectedClient=client; updateModal.show();"
+								>
+									Update Client
+								</button>
+								<button
+									type="button"
+									class="btn btn-primary navbar-inverse"
+									style="margin-left: 5px; margin-right: 5px"
+									(click)="selectedClient=client; switchActiveModal.show()"
+								>
+									Switch active
+								</button>
+								<button
+									type="button"
+									[disabled]="!client.activated"
+									style="margin-left: 5px; margin-right: 5px"
+									class="btn btn-primary navbar-inverse"
+									(click)="showClientsLimitsModal(client)"
+								>
+									Show Limits
+								</button>
+							</td>
+							<td>{{client.activated}}</td>
+						</tr>
 
-          </tr>
+						<tr>
+							<td>
+								<select
+									class="form-select"
+									name="selectedComputeCenter"
+									[(ngModel)]="selectedComputeCenter"
+									[ngClass]="selectedComputeCenter ? 'is-valid' : 'is-invalid'"
+								>
+									<option value="undefined" disabled selected hidden>Please Select</option>
+									<option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter">
+										{{computecenter.Name}}
+									</option>
+								</select>
+							</td>
+							<td><input type="text" class="form-control" placeholder="Host" #hos /></td>
+							<td><input type="text" class="form-control" placeholder="Port" #port /></td>
+							<td>{{checkStatus}}</td>
 
-          </thead>
-          <tbody>
-          <tr *ngFor="let client of clients">
-            <td>{{client.location}}</td>
-            <td>{{client.host}}</td>
-            <td>{{client.port}}</td>
-            <td>{{client.status}}</td>
-            <td>
-              <button type="button" class="btn btn-primary navbar-inverse" style="margin-left: 5px; margin-right: 5px"
-											(click)="selectedClient=client; updateModal.show();">
-                Update
-                Client
-              </button>
-							<button type="button" class="btn btn-primary navbar-inverse" style="margin-left: 5px; margin-right: 5px"
-											(click)="selectedClient=client; switchActiveModal.show()">
-								Switch active
-							</button>
-              <button type="button" [disabled]="!client.activated" style="margin-left: 5px; margin-right: 5px" 
-                      class="btn btn-primary navbar-inverse" (click)="showClientsLimitsModal(client)">
-                Show
-                Limits
-              </button>
-            </td>
-            <td>{{client.activated}}</td>
-
-          </tr>
-
-          <tr>
-            <td>
-              <select class="form-select" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
-                <option value="undefined" disabled selected hidden> Please Select</option>
-                <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter">
-                  {{computecenter.Name}}
-                </option>
-
-              </select></td>
-            <td><input type="text" class="form-control" placeholder="Host" #hos></td>
-            <td><input type="text" class="form-control" placeholder="Port" #port></td>
-            <td>{{checkStatus}}</td>
-
-            <td>
-              <button type="button" style="padding-right: 5px;margin-right: 5px" class="btn btn-primary navbar-inverse"
-                      (click)="checkClient(hos.value,port.value)">Check Status
-              </button>
-              <button type="button" class="btn btn-primary navbar-inverse"
-                      (click)="postClient(hos.value,port.value,selectedComputeCenter.Name);">Add Client
-              </button>
-            </td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-              <button type="button" class="btn btn-primary navbar-inverse" (click)="getClientsChecked();">Check all Clients
-              </button>
-            </td>
-            <td></td>
-
-          </tr>
-          </tbody>
-
-        </table>
-      </div>
-
-    </div>
-
-
-  </div>
+							<td>
+								<button
+									type="button"
+									style="padding-right: 5px; margin-right: 5px"
+									class="btn btn-primary navbar-inverse"
+									(click)="checkClient(hos.value,port.value)"
+								>
+									Check Status
+								</button>
+								<button
+									type="button"
+									class="btn btn-primary navbar-inverse"
+									(click)="postClient(hos.value,port.value,selectedComputeCenter.Name);"
+								>
+									Add Client
+								</button>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>
+								<button type="button" class="btn btn-primary navbar-inverse" (click)="getClientsChecked();">
+									Check all Clients
+								</button>
+							</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 
-
-<div bsModal #updateModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Update Client</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="updateModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-            <tr>
-              <th>Facility</th>
-              <th>Host</th>
-              <th>Port</th>
-
-
-            </tr>
-
-            </thead>
-            <tbody>
-            <tr>
-              <td>
-                <select class="form-control form-select col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
-                  <option value="undefined" disabled selected hidden> Please Select</option>
-                  <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter"> {{computecenter.Name}}
-                  </option>
-
-                </select></td>
-              <td><input type="text" class="form-control" placeholder="Host" #hostUpdate></td>
-              <td><input type="text" class="form-control" placeholder="Port" #portUpdate></td>
-
-            </tbody>
-          </table>
-        </div>
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary navbar-inverse"
-                (click)="updateClient(hostUpdate.value,portUpdate.value,selectedComputeCenter.Name,selectedClient.id);updateModal.hide();">Update
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="updateModal.hide()">Cancel
-        </button>
-
-
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div bsModal #switchActiveModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-		 aria-labelledby="Label"
-		 aria-hidden="true">
+<div
+	bsModal
+	#updateModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Switch active status Client</h4>
-				<button type="button" class="close" style="cursor:pointer"
-								(click)="switchActiveModal.hide()"
-								aria-label="Close">
+				<h4 class="modal-title">Update Client</h4>
+				<button type="button" class="close" style="cursor: pointer" (click)="updateModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				Do you want to switch the active status for this client?
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Facility</th>
+								<th>Host</th>
+								<th>Port</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<select
+										class="form-control form-select col-md-6"
+										name="selectedComputeCenter"
+										[(ngModel)]="selectedComputeCenter"
+									>
+										<option value="undefined" disabled selected hidden>Please Select</option>
+										<option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter">
+											{{computecenter.Name}}
+										</option>
+									</select>
+								</td>
+								<td><input type="text" class="form-control" placeholder="Host" #hostUpdate /></td>
+								<td><input type="text" class="form-control" placeholder="Port" #portUpdate /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary navbar-inverse"
-								(click)="switchActiveClient(selectedClient.id);switchActiveModal.hide();">Switch
+				<button
+					type="button"
+					class="btn btn-primary navbar-inverse"
+					(click)="updateClient(hostUpdate.value,portUpdate.value,selectedComputeCenter.Name,selectedClient.id);updateModal.hide();"
+				>
+					Update
 				</button>
-				<button class="btn  btn-danger col-md-4" type="reset"
-								(click)="switchActiveModal.hide()">Cancel
-				</button>
-
-
+				<button class="btn btn-danger col-md-4" type="reset" (click)="updateModal.hide()">Cancel</button>
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div
+	bsModal
+	#switchActiveModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Switch active status Client</h4>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="switchActiveModal.hide()"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">Do you want to switch the active status for this client?</div>
+			<div class="modal-footer">
+				<button
+					type="button"
+					class="btn btn-primary navbar-inverse"
+					(click)="switchActiveClient(selectedClient.id);switchActiveModal.hide();"
+				>
+					Switch
+				</button>
+				<button class="btn btn-danger col-md-4" type="reset" (click)="switchActiveModal.hide()">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
