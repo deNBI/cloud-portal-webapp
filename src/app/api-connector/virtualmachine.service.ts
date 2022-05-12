@@ -395,6 +395,14 @@ export class VirtualmachineService {
 		});
 	}
 
+	recreateVmBackend(openstack_id: string): Observable<VirtualMachine> {
+		return this.http
+			.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/backend/`, null, {
+				withCredentials: true,
+			})
+			.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
+	}
+
 	resumeVM(openstack_id: string): Observable<VirtualMachine> {
 		const params: HttpParams = new HttpParams().set('os_action', 'resume');
 
