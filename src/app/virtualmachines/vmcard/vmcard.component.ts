@@ -6,7 +6,12 @@ import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
-import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_PERSISTENT_TERMINAL_LINK } from '../../../links/links';
+import {
+	WIKI_GUACAMOLE_LINK,
+	WIKI_RSTUDIO_LINK,
+	WIKI_PERSISTENT_TERMINAL_LINK,
+	WIKI_JUPYTERLAB_LINK,
+} from '../../../links/links';
 import { TemplateNames } from '../conda/template-names';
 import { StopVmComponent } from '../modals/stop-vm/stop-vm.component';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
@@ -70,6 +75,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 * Link to rstudio wiki
 	 */
 	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
+	WIKI_JUPYTERLAB_LINK: string = WIKI_JUPYTERLAB_LINK;
 
 	/**
 	 * Link to guacamole wiki.
