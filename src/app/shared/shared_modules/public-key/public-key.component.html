@@ -1,169 +1,234 @@
 <th class="col-3" style="width: 25%">
-  <div class="row" style="margin-bottom: 5px">
-    <strong class="col">Public Key</strong>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <alert type="info">
-        <strong>Tutorial:</strong><a class="alert-link" target="_blank" rel="noopener noreferrer"
-                                     href="{{WIKI_GENERATE_KEYS}}">
-        How
-        to generate a ssh keypair?</a>
-      </alert>
-    </div>
-    <div class="col-12">
-      <div class="btn-group" role="group" aria-label="publicKeyButtonGroup">
-         <button class="btn btn-primary" style="float: left; margin: 2px" type="button" (click)="generateKeyModal.show()"
-      id="generateSShKey" data-test-id="generateSShKey">Generate Key
-      </button>
-      <button class="btn btn-primary" style="float: left; margin: 2px" type="button" (click)="public_key='';pubKeyModal.show()"
-      id="setPublicKeyButton" data-test-id="setPublicKeyButton">Set Key
-      </button>
-      <button class="btn btn-primary" style="float: right; margin: 2px" type="button" (click)="copyToClipboard(userinfo?.PublicKey)"
-
-              *ngIf="userinfo?.PublicKey !== 'None'"
-              id="copyPublicKeyButton">Copy Key
-      </button>
-      </div>
-    </div>
-
-
-
-
-
-  </div>
+	<div class="row" style="margin-bottom: 5px">
+		<strong class="col">Public Key</strong>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<alert type="info">
+				<strong>Tutorial:</strong
+				><a class="alert-link" target="_blank" rel="noopener noreferrer" href="{{ WIKI_GENERATE_KEYS }}">
+					How to generate a ssh keypair?</a
+				>
+			</alert>
+		</div>
+		<div class="col-12">
+			<div class="btn-group" role="group" aria-label="publicKeyButtonGroup">
+				<button
+					class="btn btn-primary"
+					style="float: left; margin: 2px"
+					type="button"
+					(click)="generateKeyModal.show()"
+					id="generateSShKey"
+					data-test-id="generateSShKey"
+				>
+					Generate Key
+				</button>
+				<button
+					class="btn btn-primary"
+					style="float: left; margin: 2px"
+					type="button"
+					(click)="public_key = ''; pubKeyModal.show()"
+					id="setPublicKeyButton"
+					data-test-id="setPublicKeyButton"
+				>
+					Set Key
+				</button>
+				<button
+					class="btn btn-primary"
+					style="float: right; margin: 2px"
+					type="button"
+					(click)="copyToClipboard(userinfo?.PublicKey)"
+					*ngIf="userinfo?.PublicKey !== 'None'"
+					id="copyPublicKeyButton"
+				>
+					Copy Key
+				</button>
+			</div>
+		</div>
+	</div>
 </th>
 <td class="col-9" style="width: 75%">
-  <span *ngIf="userinfo.PublicKey === 'None'"> No public key is set</span>
-  <span *ngIf="userinfo.PublicKey !== 'None'"
-        style="word-wrap: break-word; max-width: 80px; white-space: normal">
-
-            <div style="word-break: break-all" data-test-id="user_public_key" id="user_public_key">{{userinfo?.PublicKey}}</div></span>
+	<span *ngIf="userinfo.PublicKey === 'None'"> No public key is set</span>
+	<span *ngIf="userinfo.PublicKey !== 'None'" style="word-wrap: break-word; max-width: 80px; white-space: normal">
+		<div style="word-break: break-all" data-test-id="user_public_key" id="user_public_key">
+			{{ userinfo?.PublicKey }}
+		</div></span
+	>
 </td>
 <td></td>
 
+<div
+	bsModal
+	#generateKeyModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+	id="generate_key_modal"
+	data-test-id="generate_key_modal"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Generate public key</h4>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="generateKeyModal.hide()"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<alert type="danger">
+					<span *ngIf="userinfo?.PublicKey !== 'None'">
+						<strong>Warning!</strong>
+						By replacing the current key, all machines started in the future can only be accessed with the new key.
+						Already running or created machines remain accessible with the old (and hereby replaced) key.
+					</span>
+					<br />
+					<br />Hereby a new keypair is generated, the public key will be set automatically. A download window for the
+					private key will also open.
+					<strong
+						>In order to use the new key, the permissions of the key may have to be adjusted. For this purpose call<br />
+						<code style="color: #777777">chmod 0600 nameOfTheKey</code>.</strong
+					>
+					<alert type="warning">
+						We do not store the private key anywhere!<br />
 
-<div bsModal #generateKeyModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
-     aria-hidden="true" id="generate_key_modal" data-test-id="generate_key_modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Generate public key</h4>
-        <button type="button" class="close" style="cursor: pointer;" (click)="generateKeyModal.hide()"
-                data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+						In case you lose your private key, it is lost permanently!</alert
+					>
+					<div class="form-check">
+						<input
+							class="form-check-input"
+							name="public_key_acknowledgement_checkbox"
+							type="checkbox"
+							id="generate_checkbox"
+							[(ngModel)]="acknowledgement_given"
+							data-test-id="generate_checkbox"
+						/>
+						<label class="form-check-label" for="public_key_acknowledgement_checkbox">
+							I hereby confirm that I am aware of the effects of generating a new SSH-key.
+						</label>
+					</div>
+				</alert>
+			</div>
 
-      </div>
-      <div class="modal-body">
+			<div class="modal-footer">
+				<button
+					[disabled]="!acknowledgement_given"
+					class="btn btn-success col-md4"
+					type="button"
+					id="set_new_ssh_key_button"
+					data-test-id="set_new_ssh_key_button"
+					(click)="generateKey(); generateKeyModal.hide()"
+				>
+					Set
+				</button>
+				<button class="btn btn-primary col-md-4" type="reset" (click)="generateKeyModal.hide()">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
+<div
+	bsModal
+	#pubKeyModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Change public key</h4>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="pubKeyModal.hide()"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<alert type="info" *ngIf="public_key?.length === 0">
+					<strong>Info: </strong> Please enter a valid public key!
+				</alert>
 
-        <alert type="danger">
-
-          <span *ngIf="userinfo?.PublicKey !== 'None'">
-
-            <strong>Warning!</strong>
-            By replacing the current key, all machines started in the future can only be accessed with the new key.
-Already running or created machines remain accessible with the old (and hereby replaced) key.
-          </span>
-           <br>
-           <br>Hereby a new keypair is generated, the public key will be set automatically. A download window for the private key will also open.
-          <strong>In order to use the new key, the permissions of the key may have to be adjusted. For this purpose call<br>
-            <code style="color:#777777">chmod 0600 nameOfTheKey</code>.</strong>
-          <alert type="warning">
-We do not store the private key anywhere!<br>
-
-In case you lose your private key, it is lost permanently!</alert>
-          <div class="form-check">
-            <input class="form-check-input" name="public_key_acknowledgement_checkbox" type="checkbox"
-                   id="generate_checkbox" [(ngModel)]="acknowledgement_given" data-test-id="generate_checkbox">
-            <label class="form-check-label" for="public_key_acknowledgement_checkbox">
-              I hereby confirm that I am aware of the effects of generating a new SSH-key.
-            </label>
-          </div>
-        </alert>
-      </div>
-
-
-      <div class="modal-footer">
-
-
-        <button [disabled]="!acknowledgement_given"
-                class="btn btn-success col-md4" type="button" id="set_new_ssh_key_button" data-test-id="set_new_ssh_key_button"
-                (click)="generateKey();generateKeyModal.hide();">Set
-        </button>
-        <button class="btn  btn-primary col-md-4" type="reset"
-                (click)="generateKeyModal.hide();">Cancel
-        </button>
-
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<div bsModal #pubKeyModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Change public key</h4>
-        <button type="button" class="close" style="cursor: pointer;" (click)="pubKeyModal.hide()"
-                data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-      </div>
-      <div class="modal-body">
-        <alert type="info" *ngIf="public_key?.length === 0 ">
-          <strong>Info: </strong> Please enter a valid public key!
-
-        </alert>
-
-
-        <alert type="success" *ngIf="validatePublicKey()">
-          <strong>Info: </strong> This is a valid public key!
-        </alert>
-        <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
-          <strong>Warning</strong> This is not a valid public key!
-        </alert>
+				<alert type="success" *ngIf="validatePublicKey()"> <strong>Info: </strong> This is a valid public key! </alert>
+				<alert type="danger" *ngIf="!validatePublicKey() && public_key?.length > 0">
+					<strong>Warning</strong> This is not a valid public key!
+				</alert>
 				<alert type="info">
 					Currently supported public key formats are RSA and ECDSA (SHA2, NIST P256, P384 or P521).
 				</alert>
-        <textarea rows="8" type="text" class="form-control input-lg" id="public_key_enter_area" data-test-id="public_key_enter_area"
-                  placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
-                  #publickey></textarea>
+				<textarea
+					rows="8"
+					type="text"
+					class="form-control input-lg"
+					id="public_key_enter_area"
+					data-test-id="public_key_enter_area"
+					placeholder="Please enter a new valid public key."
+					name="public_key"
+					[(ngModel)]="public_key"
+					[ngClass]="validatePublicKey() ? 'is-valid' : 'is-invalid'"
+					#publickey
+				></textarea>
 
-        <br>
+				<br />
 
+				<div
+					class="alert"
+					*ngIf="validatePublicKey()"
+					[ngClass]="acknowledgement_given ? 'alert-info' : 'alert-danger'"
+				>
+					<strong>Warning!</strong> Replacing your current public key with a different one will render all your
+					currently running machines inaccessible.
+					<div class="form-check">
+						<input
+							class="form-check-input"
+							name="public_key_acknowledgement_checkbox"
+							type="checkbox"
+							[ngClass]="acknowledgement_given ? '' : 'is-invalid'"
+							id="public_key_acknowledgement_checkbox"
+							data-test-id="public_key_acknowledgement_checkbox"
+							[(ngModel)]="acknowledgement_given"
+						/>
+						<label class="form-check-label" for="public_key_acknowledgement_checkbox">
+							I hereby confirm that I am aware of the effects of entering a new SSH-key.
+						</label>
+					</div>
+				</div>
+			</div>
 
-        <alert *ngIf="validatePublicKey()" type="danger">
-          <strong>Warning!</strong> Replacing your current public key with a different one will
-          render all your currently running machines inaccessible.
-          <div class="form-check">
-            <input class="form-check-input" name="public_key_acknowledgement_checkbox" type="checkbox"
-                   id="public_key_acknowledgement_checkbox" data-test-id="public_key_acknowledgement_checkbox" [(ngModel)]="acknowledgement_given">
-            <label class="form-check-label" for="public_key_acknowledgement_checkbox">
-              I hereby confirm that I am aware of the effects of entering a new SSH-key.
-            </label>
-          </div>
-        </alert>
-      </div>
-
-
-      <div class="modal-footer">
-
-
-        <button [disabled]="!validatePublicKey() || !acknowledgement_given"
-                class="btn btn-success col-md4" type="button" id="set_new_public_key_button" data-test-id="set_new_public_key_button"
-                (click)="importKey(publickey.value);pubKeyModal.hide();">Set
-        </button>
-        <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide()">Cancel
-        </button>
-
-      </div>
-    </div><!-- /.modal-content -->L
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+			<div class="modal-footer">
+				<button
+					[disabled]="!validatePublicKey() || !acknowledgement_given"
+					class="btn btn-success col-md4"
+					type="button"
+					id="set_new_public_key_button"
+					data-test-id="set_new_public_key_button"
+					(click)="importKey(publickey.value); pubKeyModal.hide()"
+				>
+					Set
+				</button>
+				<button class="btn btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide()">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->L
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

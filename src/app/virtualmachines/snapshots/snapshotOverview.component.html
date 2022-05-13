@@ -1,253 +1,331 @@
 <div *ngIf="isLoaded === false" class="loader"></div>
 <div class="">
-  <div *ngIf="isLoaded">
-    <a style="margin-bottom: 5px"  target="_blank" rel="noopener noreferrer" class="btn btn-secondary" href="{{WIKI_SNAPSHOTS}}"
+	<div *ngIf="isLoaded">
+		<a
+			style="margin-bottom: 5px"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn btn-secondary"
+			href="{{ WIKI_SNAPSHOTS }}"
+			id="volume_ov"
+			>Wiki
+		</a>
 
-          id="volume_ov">Wiki
-  </a>
+		<button
+			type="button"
+			style="margin-bottom: 5px; margin-left: 5px"
+			class="btn btn-secondary"
+			(click)="showFacilities = !showFacilities; reset(); getFacilitySnapshots()"
+			*ngIf="!showFacilities && managerFacilities.length > 0"
+		>
+			Facility Snapshots
+		</button>
+		<button
+			type="button"
+			style="margin-bottom: 5px; margin-left: 5px"
+			class="btn btn-secondary"
+			(click)="showFacilities = !showFacilities; reset(); getSnapshots()"
+			*ngIf="showFacilities"
+		>
+			Own Snapshots
+		</button>
+	</div>
+	<div *ngIf="isLoaded" class="card" style="">
+		<div class="card-header">
+			<strong>Snapshots</strong>
+			–Overview
+		</div>
+		<div class="card-body">
+			<div class="row justify-content-end">
+				<div class="col" *ngIf="snapshot_page.num_pages > 1">
+					<pagination
+						[totalItems]="snapshot_page.total_items"
+						[itemsPerPage]="snapshot_page.items_per_page"
+						(pageChanged)="pageChanged($event)"
+						[(ngModel)]="currentPage"
+						[boundaryLinks]="true"
+						[maxSize]="5"
+						[rotate]="false"
+						#pagination
+					>
+					</pagination>
+				</div>
+				<div class="col">
+					<input
+						type="text"
+						placeholder="name,project,openstackid"
+						class="form-control"
+						name="filter"
+						(ngModelChange)="changedFilter($event)"
+						[ngModel]="filter"
+						(keydown.enter)="$event.preventDefault()"
+					/>
+				</div>
+				<div class="input-group col-3">
+					<input
+						id="items_per_page"
+						class="form-control"
+						name="items_per_page"
+						placeholder="e.g 3"
+						type="number"
+						min="1"
+						max="10"
+						step="1"
+						appMinAmount="1"
+						appMaxAmount="10"
+						appInteger
+						pattern="^([1-9]|1[012])$"
+						[(ngModel)]="snapshot_page.items_per_page"
+						(ngModelChange)="snapshotsPerPageChange.next($event)"
+						[ngClass]="snapshot_page.items_per_page !== undefined ? 'is-valid' : 'is-invalid'"
+					/>
+					<div class="input-group-append mb-3"><span class="input-group-text"> Snapshots per page </span></div>
+				</div>
 
-    <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
-            (click)="showFacilities =!showFacilities; reset(); getFacilitySnapshots();"
-            *ngIf="!showFacilities  && managerFacilities.length >0"> Facility Snapshots
-    </button>
-    <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
-            (click)="showFacilities =!showFacilities; reset(); getSnapshots();"
-            *ngIf="showFacilities"> Own Snapshots
-    </button>
+				<div class="col-2">
+					<div class="dropdown" dropdown>
+						<button
+							class="btn btn-secondary dropdown-toggle"
+							id="actionDropdownMenu"
+							data-toggle="dropdown"
+							type="button"
+							aria-haspopup="true"
+							aria-expanded="false"
+							aria-controls="dropdown-split"
+							dropdownToggle
+							style="width: 100%"
+						>
+							Actions
+						</button>
+						<div
+							class="dropdown-menu dropdown-menu-right"
+							aria-labelledby="dropdownMenu"
+							role="menu"
+							*dropdownMenu
+							id="dropdownMenu"
+						>
+							<button
+								[disabled]="checked_snapshots?.length === 0"
+								class="dropdown-item btn btn-secondary"
+								id="deleteAllSelectedVolumesButton"
+								(click)="deleteSelectedModal.show()"
+							>
+								Delete selected Snapshots
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-  </div>
-  <div *ngIf="isLoaded" class="card" style=" ">
+			<div>
+				<div *ngIf="isSearching; else searchDoneBlock" id="search_spinner" style="margin: 10px; padding: 10px">
+					<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
+				</div>
+				<ng-template #searchDoneBlock>
+					<div class="rTable" id="snapshot_table">
+						<div class="rTableHeading">
+							<div class="rTableHead col-3">Name</div>
+							<div class="rTableHead col-3">Project</div>
+							<div class="rTableHead col-2">Actions</div>
+							<div class="rTableHead col-2">Status</div>
+							<div class="rTableHead col-2">
+								<input type="checkbox" [checked]="all_snapshots_checked" (change)="changeCheckAllSnapshots()" /><strong
+									style="margin-left: 2px"
+									>Select all</strong
+								>
+							</div>
 
-    <div class="card-header">
-      <strong>Snapshots</strong>
-      –Overview
-    </div>
-    <div class="card-body">
-    <div class="row justify-content-end">
-        <div class="col" *ngIf="snapshot_page.num_pages > 1">
-          <pagination
-            [totalItems]="snapshot_page.total_items" [itemsPerPage]="snapshot_page.items_per_page"
-            (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-            [boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
-          </pagination>
-        </div>
-        <div class="col">
-          <input type="text" placeholder="name,project,openstackid" class="form-control"
-                 name="filter" (ngModelChange)='changedFilter($event)'
-                 [ngModel]="filter" (keydown.enter)="$event.preventDefault();">
-        </div>
-      <div class="input-group col-3">
-        <input id="items_per_page" class="form-control"
-               name="items_per_page" placeholder="e.g 3"
-               type="number" min="1" max="10" step="1"
-               appMinAmount="1" appMaxAmount="10" appInteger
-               pattern="^([1-9]|1[012])$" [(ngModel)]="snapshot_page.items_per_page"
-               (ngModelChange)="snapshotsPerPageChange.next($event)">
-        <div class="input-group-append mb-3 "><span class="input-group-text"> Snapshots per page
-                                    </span></div>
-      </div>
+							<!-- th>Client</th-->
+						</div>
 
-      <div class="col-2">
-        <div class="dropdown" dropdown>
-          <button class="btn btn-secondary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
-                  type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-split"
-                  dropdownToggle style="width:100%">
-            Actions
-          </button>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
-               *dropdownMenu id="dropdownMenu">
-            <button [disabled]="checked_snapshots?.length === 0" class="dropdown-item btn btn-secondary"
-                    id="deleteAllSelectedVolumesButton" (click)="deleteSelectedModal.show()"
-            >
-              Delete selected Snapshots
-            </button>
+						<div class="rTableRow" *ngFor="let snapshot of snapshot_page.snapshot_list">
+							<div class="rTableCell" id="{{ snapshot?.snapshot_name }}">{{ snapshot?.snapshot_name }}</div>
+							<div class="rTableCell">{{ snapshot?.snapshot_project }}</div>
+							<div class="rTableCell">
+								<button
+									*ngIf="snapshot.snapshot_created || showFacilities"
+									(click)="setSelectedSnapshot(snapshot); verifyModal.show()"
+									id="delete_button_{{ snapshot?.snapshot_name }}"
+									class="btn btn-primary"
+								>
+									Delete Snapshot
+								</button>
+							</div>
+							<div class="rTableCell">
+								<span
+									*ngIf="snapshot?.snapshot_status === 'active'"
+									style="margin-left: 5px"
+									id="snapshot_active_{{ snapshot?.snapshot_name }}"
+									class="badge bg-success"
+								>
+									{{ snapshot?.snapshot_status | uppercase }}
+								</span>
+								<span *ngIf="snapshot?.snapshot_status !== 'active'" style="margin-left: 5px" class="badge bg-info">
+									{{ snapshot?.snapshot_status | uppercase }}
+								</span>
+							</div>
 
-          </div>
-        </div>
-      </div>
-    </div>
-
-      <div>
-        <div *ngIf="isSearching; else searchDoneBlock" id="search_spinner" style="margin:10px; padding:10px;">
-          <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
-        </div>
-        <ng-template #searchDoneBlock>
-          <div class="rTable" id="snapshot_table">
-            <div class="rTableHeading">
-              <div class="rTableHead col-3 ">Name</div>
-              <div class="rTableHead col-3 ">Project</div>
-              <div class="rTableHead col-2 ">Actions</div>
-              <div class="rTableHead col-2">Status</div>
-              <div class="rTableHead col-2">
-                <input type="checkbox" [checked]="all_snapshots_checked" (change)="changeCheckAllSnapshots()"><strong
-                style="margin-left: 2px;">Select all</strong>
-              </div>
-
-              <!-- th>Client</th-->
-
-            </div>
-
-            <div class="rTableRow" *ngFor="let snapshot of snapshot_page.snapshot_list">
-              <div class="rTableCell " id="{{snapshot?.snapshot_name}}">{{snapshot?.snapshot_name}}</div>
-              <div class="rTableCell ">{{snapshot?.snapshot_project}}</div>
-              <div class="rTableCell ">
-                <button *ngIf="snapshot.snapshot_created  || showFacilities"
-                        (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
-                        id="delete_button_{{snapshot?.snapshot_name}}"
-                        class="btn btn-primary">
-                  Delete Snapshot
-                </button>
-              </div>
-              <div class="rTableCell "> <span *ngIf="snapshot?.snapshot_status === 'active'"
-                                              style="margin-left: 5px" id="snapshot_active_{{snapshot?.snapshot_name}}"
-                                              class="badge bg-success"> {{snapshot?.snapshot_status | uppercase}} </span>
-                <span *ngIf="snapshot?.snapshot_status !== 'active'"
-                      style="margin-left: 5px"
-                      class="badge bg-info"> {{snapshot?.snapshot_status | uppercase}} </span>
-              </div>
-
-              <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
-              <div class="rTableCell "><input type="checkbox" [checked]="isSnapChecked(snapshot)"
-                                              (change)="changeCheckedSnapshot(snapshot)"
-                                              *ngIf="snapshot.snapshot_created  || showFacilities"></div>
-
-            </div>
-
-
-          </div>
-        </ng-template>
-
-      </div>
-    </div>
-  </div>
-  <div *ngIf="snapshot_page.snapshot_list.length === 0 && isLoaded && !isSearching">
-    <div class="alert alert-primary">No snapshots available. Click
-      this <a class="alert-link" href="{{WIKI_SNAPSHOTS}}">link</a> to see how to use and
-      create a snapshot.
-    </div>
-  </div>
+							<!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
+							<div class="rTableCell">
+								<input
+									type="checkbox"
+									[checked]="isSnapChecked(snapshot)"
+									(change)="changeCheckedSnapshot(snapshot)"
+									*ngIf="snapshot.snapshot_created || showFacilities"
+								/>
+							</div>
+						</div>
+					</div>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="snapshot_page.snapshot_list.length === 0 && isLoaded && !isSearching">
+		<div class="alert alert-primary">
+			No snapshots available. Click this <a class="alert-link" href="{{ WIKI_SNAPSHOTS }}">link</a> to see how to use
+			and create a snapshot.
+		</div>
+	</div>
 </div>
 
+<div
+	bsModal
+	#deleteModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	id="delete_modal"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.WAITING">Waiting</h4>
+				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.SUCCESS">Success</h4>
+				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.ERROR">Error</h4>
+				<button type="button" class="close" style="cursor: pointer" (click)="deleteModal.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-primary" role="alert" *ngIf="delete_status === 0">
+					Deleting {{ selected_snapshot?.snapshot_name }}...
+					<i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
+				</div>
+				<div class="alert alert-success" role="alert" *ngIf="delete_status === 1" id="delete_success">
+					{{ selected_snapshot?.snapshot_name }} was succesfully deleted.
+				</div>
+			</div>
+			<div class="alert alert-warning" role="alert" *ngIf="delete_status === 2">
+				When deleting {{ selected_snapshot?.snapshot_name }} an error occured.
+			</div>
+			<div class="alert alert-warning" role="alert" *ngIf="delete_status === 3">
+				Could not delete <strong>{{ selected_snapshot?.snapshot_name }} </strong> because the Client is offline. Please
+				contact <a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a> if you got any
+				questions.
+			</div>
 
-<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     id="delete_modal"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="delete_status === delete_statuses.WAITING ">
-          Waiting </h4>
-        <h4 class="modal-title" *ngIf="delete_status === delete_statuses.SUCCESS">
-          Success </h4>
-        <h4 class="modal-title" *ngIf="delete_status === delete_statuses.ERROR"> Error </h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="deleteModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-primary" role="alert" *ngIf="delete_status === 0">
-          Deleting {{selected_snapshot?.snapshot_name}}... <i
-          class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-        </div>
-        <div class="alert alert-success" role="alert" *ngIf="delete_status === 1" id="delete_success">
-          {{selected_snapshot?.snapshot_name}} was succesfully deleted.
-        </div>
-      </div>
-      <div class="alert alert-warning" role="alert" *ngIf="delete_status === 2">
-        When deleting {{selected_snapshot?.snapshot_name}} an error occured.
-      </div>
-      <div class="alert alert-warning" role="alert" *ngIf="delete_status === 3">
-        Could not delete <strong>{{selected_snapshot?.snapshot_name}} </strong> because the
-        Client is offline.
-        Please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a> if you got any questions.
-      </div>
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary"
-                (click)="delete_status = 0;deleteModal.hide()"
-                id="close_delete_modal">Close
-        </button>
-      </div>
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true"
-     id="verify_modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Delete Snapshot</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="verifyModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <div class="alert alert-warning" role="alert">
-          Are you sure you want to delete {{selected_snapshot?.snapshot_name}}?
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                (click)="deleteSnapshot(selected_snapshot);
-                        ;verifyModal.hide();deleteModal.show()
-                "
-                id="confirm_delete_button">
-          Yes
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="verifyModal.hide();">Cancel
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div bsModal #deleteSelectedModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true"
-     id="delete_all_modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Delete the following Snapshots</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="deleteSelectedModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-warning" role="alert">
-          Are you sure you want to delete:
-          <div *ngFor="let snap of checked_snapshots">
-            <strong>{{snap?.snapshot_name}}</strong>
-          </div>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                (click)="deleteSelectedSnapshots();deleteSelectedModal.hide();"
-                id="confirm_delete_all_button">
-          Yes
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="deleteSelectedModal.hide();">Cancel
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div>
+			<div class="modal-footer">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					(click)="delete_status = 0; deleteModal.hide()"
+					id="close_delete_modal"
+				>
+					Close
+				</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
 </div>
+<!-- /.modal -->
 
+<div
+	bsModal
+	#verifyModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+	id="verify_modal"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Delete Snapshot</h4>
+				<button type="button" class="close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning" role="alert">
+					Are you sure you want to delete {{ selected_snapshot?.snapshot_name }}?
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button
+					class="btn btn-success col-md-4"
+					(click)="deleteSnapshot(selected_snapshot); verifyModal.hide(); deleteModal.show()"
+					id="confirm_delete_button"
+				>
+					Yes
+				</button>
+				<button class="btn btn-danger col-md-4" type="reset" (click)="verifyModal.hide()">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
-
+<div
+	bsModal
+	#deleteSelectedModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+	id="delete_all_modal"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Delete the following Snapshots</h4>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="deleteSelectedModal.hide()"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning" role="alert">
+					Are you sure you want to delete:
+					<div *ngFor="let snap of checked_snapshots">
+						<strong>{{ snap?.snapshot_name }}</strong>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button
+					class="btn btn-success col-md-4"
+					(click)="deleteSelectedSnapshots(); deleteSelectedModal.hide()"
+					id="confirm_delete_all_button"
+				>
+					Yes
+				</button>
+				<button class="btn btn-danger col-md-4" type="reset" (click)="deleteSelectedModal.hide()">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+</div>

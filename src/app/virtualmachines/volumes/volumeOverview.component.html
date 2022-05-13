@@ -92,6 +92,7 @@
 					appInteger
 					pattern="^([1-9]|1[012])$"
 					[(ngModel)]="volume_page.items_per_page"
+					[ngClass]="volume_page.items_per_page !== undefined ? 'is-valid' : 'is-invalid'"
 					(ngModelChange)="volumePerPageChange.next($event)"
 				/>
 				<div class="input-group-append mb-3"><span class="input-group-text"> Volumes per page </span></div>
@@ -592,7 +593,12 @@
 				</div>
 				<strong>To which vm should the volume be attached?</strong>
 
-				<select class="form-control col-md-6 form-select" name="selected_vm" [(ngModel)]="selected_vm">
+				<select
+					class="form-control col-md-6 form-select"
+					name="selected_vm"
+					[(ngModel)]="selected_vm"
+					[ngClass]="selected_vm ? 'is_valid' : 'is-invalid'"
+				>
 					<option value="undefined" disabled selected hidden>Please Select</option>
 					<option *ngFor="let vm of project_vms" [ngValue]="vm">{{ vm.name }}</option>
 				</select>
@@ -902,6 +908,7 @@
 							id="select_project_id"
 							class="form-control form-select"
 							name="selectedProject"
+							[ngClass]="selectedProject !== undefined && selectedProject !== null ? 'is-valid' : 'is-invalid'"
 							[(ngModel)]="selectedProject"
 							(ngModelChange)="
 								getActiveVmsByProject(selectedProject[1]); getSelectedProjectDiskspace(); getSelectedProjectVolumes()
@@ -964,7 +971,8 @@
 						!(
 							selectedProjectVolumesUsed === selectedProjectVolumesMax ||
 							selectedProjectDiskspaceUsed === selectedProjectDiskspaceMax
-						)
+						) &&
+						project_vms?.length > 0
 					"
 					class="form-group row"
 				>
@@ -974,6 +982,7 @@
 							class="form-control form-select col-md-6"
 							name="selected_vm"
 							[(ngModel)]="selected_vm"
+							[ngClass]="selected_vm !== null && selected_vm !== undefined ? 'is-valid' : 'is-invalid'"
 							id="select_vm_id"
 						>
 							<option value="undefined" disabled selected hidden>Please Select</option>
@@ -981,9 +990,12 @@
 						</select>
 					</div>
 				</div>
+				<div class="alert alert-info" *ngIf="selectedProject && project_vms?.length <= 0">
+					There are no VMs to attach volumes to in this project.
+				</div>
 
 				<div *ngIf="selected_vm" class="form-group row">
-					<label class="col-md-3 form-control-label">Volumename</label>
+					<label class="col-md-3 form-control-label">Volume name</label>
 					<div class="col-md-9">
 						<div class="input-group">
 							<input
@@ -992,6 +1004,7 @@
 								placeholder="Volumename"
 								[value]="volumeName"
 								(input)="volumeName = $event.target.value"
+								[ngClass]="volumeName?.length > 0 ? 'is-valid' : 'is-invalid'"
 								id="name_input_id"
 							/>
 						</div>
@@ -1002,15 +1015,24 @@
 					<div class="col-md-9">
 						<div class="input-group">
 							<input
+								class="form-control"
 								min="0"
 								step="1"
 								[value]="diskspace"
-								(input)="diskspace = $event.target.value; calcDiskSpaceSum()"
+								(input)="diskspace = $event.target.value"
+								(change)="calcDiskSpaceSum()"
 								type="number"
 								placeholder="e.g 8 "
 								id="space_input_id"
+								[pattern]="'^[1-9]\d*$'"
+								[formControl]="storageSize"
+								[ngClass]="
+									storageSize.errors || storageSize.value === null || storageSize.value === undefined
+										? 'is-invalid'
+										: 'is-valid'
+								"
 							/>
-							<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+							<span class="input-group-text"> GB </span>
 						</div>
 					</div>
 				</div>
