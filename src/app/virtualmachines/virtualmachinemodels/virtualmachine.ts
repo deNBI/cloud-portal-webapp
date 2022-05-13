@@ -33,12 +33,14 @@ export class VirtualMachine {
 	cardState: number;
 	cluster: Clusterinfo;
 	projectid: number;
-	playbook_successful: boolean = null;
+	playbook_successful: boolean;
+	playbook_done: boolean;
 	res_env_url: string;
 	modes: ImageMode[];
 	volumes: Volume[];
 	still_used_confirmation_requested: boolean;
 	error_msg: string;
+	info_msg: string;
 	msg: string;
 	days_running: number;
 	backend: Backend;

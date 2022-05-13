@@ -36,9 +36,10 @@ export class VirtualmachineService {
 	triggerVolumeUpdate(volumeIds: string[]): Observable<any> {
 		const params: HttpParams = new HttpParams().set('volume_ids', volumeIds.join());
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}volumes/trigger_update/`, {
+		return this.http.get<Response>(`${ApiSettings.getApiBaseURL()}volumes/trigger_update/`, {
 			withCredentials: true,
 			params,
+			observe: 'response',
 		});
 	}
 
@@ -392,6 +393,14 @@ export class VirtualmachineService {
 		return this.http.post<IResponseTemplate>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
 			withCredentials: true,
 		});
+	}
+
+	recreateVmBackend(openstack_id: string): Observable<VirtualMachine> {
+		return this.http
+			.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/backend/`, null, {
+				withCredentials: true,
+			})
+			.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
 	}
 
 	resumeVM(openstack_id: string): Observable<VirtualMachine> {

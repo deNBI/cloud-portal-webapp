@@ -212,9 +212,9 @@
 											*ngIf="
 												has_forc &&
 												selected_workshop &&
-													workshop_data_loaded &&
-													selected_project_ressources?.used_vms < selected_project_ressources?.number_vms &&
-													(flavors?.length > 0 || selected_flavor)
+												workshop_data_loaded &&
+												selected_project_ressources?.used_vms < selected_project_ressources?.number_vms &&
+												(flavors?.length > 0 || selected_flavor)
 											"
 											[isOpen]="true"
 										>
@@ -356,30 +356,32 @@
 						</label>
 					</div>
 				</div>
-				<div
-					*ngIf="
-						((!gave_okay && res_env_okay_needed) ||
-							(!res_env_valid && res_env_component) ||
-							!selected_image ||
-							(!selected_flavor && flavors.length !== 0) ||
-							members_to_add.length < 1) &&
-						flavors.length > 0 &&
-						project_data_loaded &&
-						workshop_data_loaded &&
-						flavors_loaded &&
-						client_available &&
-						selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
-					"
-					class="alert alert-danger col-md-10"
-					role="alert"
-					style="margin: auto"
-				>
-					<p>The following is missing before starting a VM:</p>
-					<p *ngIf="!selected_flavor">- The flavor type of your VM</p>
-					<p *ngIf="!selected_image">- The image you want to run on your VM</p>
-					<p *ngIf="!gave_okay && res_env_okay_needed">- Give your okay to the automated install process</p>
-					<p *ngIf="res_env_needs_template">- A Research-Environment template</p>
-					<p *ngIf="members_to_add.length < 1">- At least one member</p>
+				<div class="form-group row">
+					<div
+						*ngIf="
+							((!gave_okay && res_env_okay_needed) ||
+								(!res_env_valid && res_env_component) ||
+								!selected_image ||
+								(!selected_flavor && flavors.length !== 0) ||
+								members_to_add.length < 1) &&
+							flavors.length > 0 &&
+							project_data_loaded &&
+							workshop_data_loaded &&
+							flavors_loaded &&
+							client_available &&
+							selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
+						"
+						class="alert alert-danger col-md"
+						role="alert"
+						style="margin: 15px"
+					>
+						<p><strong>The following is missing before starting a VM</strong></p>
+						<p *ngIf="!selected_flavor">- The flavor type of your VM</p>
+						<p *ngIf="!selected_image">- The image you want to run on your VM</p>
+						<p *ngIf="!gave_okay && res_env_okay_needed">- Give your okay to the automated install process</p>
+						<p *ngIf="res_env_needs_template">- A Research-Environment template</p>
+						<p *ngIf="members_to_add.length < 1">- At least one member</p>
+					</div>
 				</div>
 				<div
 					*ngIf="
@@ -428,67 +430,67 @@
 						selected_project_ressources?.used_vms + members_to_add.length <= selected_project_ressources?.number_vms &&
 						(flavors?.length > 0 || selected_flavor)
 					"
-					class="alert alert-warning col-md-10"
-					role="alert"
-					style="margin: auto"
+					class="form-group row"
 				>
-					<div class="form-check">
-						<input
-							class="form-check-input"
-							name="vm_responsibility"
-							type="checkbox"
-							id="vm_responsibility"
-							data-test-id="vm_responsibility"
-							[(ngModel)]="vm_responsibility"
-							required
-						/>
-						<label class="form-check-label" for="vm_responsibility">
-							I hereby confirm that I am responsible for the virtual machines and any action performed on it.
-						</label>
+					<div class="col-md">
+						<div class="form-check" style="margin: 15px">
+							<input
+								class="form-check-input"
+								name="vm_responsibility"
+								type="checkbox"
+								id="vm_responsibility"
+								data-test-id="vm_responsibility"
+								[(ngModel)]="vm_responsibility"
+								required
+							/>
+							<label class="form-check-label" for="vm_responsibility">
+								I hereby confirm that I am responsible for the virtual machines and any action performed on it.
+							</label>
+						</div>
 					</div>
-					<div
-						class="form-group row"
-						*ngIf="
-							client_available &&
-							project_data_loaded &&
-							workshop_data_loaded &&
-							selected_project_ressources?.used_vms + members_to_add.length <=
-								selected_project_ressources?.number_vms &&
-							(flavors?.length > 0 || selected_flavor)
-						"
-					>
-						<button
-							style="margin-left: auto; margin-top: 25px; margin-right: auto; width: 8em"
-							id="startVMButton"
-							data-test-id="startVMButton"
-							type="button"
-							[disabled]="
-								!vm_responsibility ||
-								started_machine ||
-								!selected_flavor ||
-								!selected_image ||
-								(!gave_okay && res_env_okay_needed) ||
-								(!res_env_valid && res_env_component) ||
-								members_to_add.length < 1 ||
-								selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram >
-									selected_project_ressources?.ram_total ||
-								selected_project_ressources?.cores_used + members_to_add?.length * selected_flavor?.vcpus >
-									selected_project_ressources?.cores_total ||
-								selected_project_ressources?.used_vms + members_to_add.length > selected_project_ressources?.number_vms
-							"
-							class="btn btn-primary .btn-lg offset-md-8"
-							data-toggle="modal"
-							(click)="start_vms(); reset_all_data(); redirect_modal.show()"
-						>
-							Start VM
-						</button>
-					</div>
+
 					<div class="alert alert-danger" *ngIf="is_loaded && !client_available && selected_project && client_checked">
 						The corresponding client is currently offline. If you have any questions please contact
 						<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a> Check our
 						<a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site
 						of your project is reachable.
 					</div>
+				</div>
+				<div
+					class="form-group row"
+					*ngIf="
+						client_available &&
+						project_data_loaded &&
+						workshop_data_loaded &&
+						selected_project_ressources?.used_vms + members_to_add.length <= selected_project_ressources?.number_vms &&
+						(flavors?.length > 0 || selected_flavor)
+					"
+				>
+					<button
+						style="margin-left: auto; margin-top: 25px; margin-right: auto; width: 8em"
+						id="startVMButton"
+						data-test-id="startVMButton"
+						type="button"
+						[disabled]="
+							!vm_responsibility ||
+							started_machine ||
+							!selected_flavor ||
+							!selected_image ||
+							(!gave_okay && res_env_okay_needed) ||
+							(!res_env_valid && res_env_component) ||
+							members_to_add.length < 1 ||
+							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram >
+								selected_project_ressources?.ram_total ||
+							selected_project_ressources?.cores_used + members_to_add?.length * selected_flavor?.vcpus >
+								selected_project_ressources?.cores_total ||
+							selected_project_ressources?.used_vms + members_to_add.length > selected_project_ressources?.number_vms
+						"
+						class="btn btn-primary .btn-lg offset-md-8"
+						data-toggle="modal"
+						(click)="start_vms(); reset_all_data(); redirect_modal.show()"
+					>
+						Start VM
+					</button>
 				</div>
 			</div>
 		</div>

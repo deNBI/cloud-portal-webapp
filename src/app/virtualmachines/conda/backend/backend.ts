@@ -9,7 +9,8 @@ export class Backend {
 	upstream_url: string;
 	backend_id: number;
 	location_url: string;
-	playbook_successful: number;
+	playbook_successful: boolean;
+	playbook_done: boolean;
 
 	constructor(backend?: Partial<Backend>) {
 		Object.assign(this, backend);
