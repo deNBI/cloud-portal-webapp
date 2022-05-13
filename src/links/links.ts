@@ -9,6 +9,7 @@ export const WIKI_EXTEND_VOLUME: string = `${environment.WIKI_PRE}simple_vm/volu
 export const WIKI_VOLUME_OVERVIEW: string = `${environment.WIKI_PRE}simple_vm/volumes/`;
 export const WIKI_RESENV_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#research-environments`;
 export const WIKI_RSTUDIO_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#rstudio`;
+export const WIKI_JUPYTERLAB_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#jupyterlab`;
 export const WIKI_GUACAMOLE_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#apache-guacamole`;
 export const WIKI_NEW_INSTANCE_LINK: string = `${environment.WIKI_PRE}simple_vm/new_instance/`;
 export const WIKI_INSTANCE_OVERVIEW_LINK: string = `${environment.WIKI_PRE}simple_vm/instance_overview/`;
