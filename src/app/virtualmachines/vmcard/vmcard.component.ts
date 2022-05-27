@@ -6,7 +6,12 @@ import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
-import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_PERSISTENT_TERMINAL_LINK } from '../../../links/links';
+import {
+	WIKI_GUACAMOLE_LINK,
+	WIKI_RSTUDIO_LINK,
+	WIKI_PERSISTENT_TERMINAL_LINK,
+	WIKI_JUPYTERLAB_LINK,
+} from '../../../links/links';
 import { TemplateNames } from '../conda/template-names';
 import { StopVmComponent } from '../modals/stop-vm/stop-vm.component';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
@@ -19,6 +24,7 @@ import { VolumeVmComponent } from '../modals/volume-vm/volume-vm.component';
 import { Volume } from '../volumes/volume';
 import { IResponseTemplate } from '../../api-connector/response-template';
 import { RebootVmComponent } from '../modals/reboot-vm/reboot-vm.component';
+import { RecreateBackendVmComponent } from '../modals/recreate-backend-vm/recreate-backend-vm.component';
 
 /**
  * Vm card component to be used by vm-overview. Holds information about a virtual machine.
@@ -69,6 +75,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 * Link to rstudio wiki
 	 */
 	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
+	WIKI_JUPYTERLAB_LINK: string = WIKI_JUPYTERLAB_LINK;
 
 	/**
 	 * Link to guacamole wiki.
@@ -110,6 +117,21 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 * Timeout object to control check status loop (i.e. stopping and starting check status loop).
 	 */
 	checkStatusTimer: ReturnType<typeof setTimeout>;
+
+	/**
+	 * Constant message for connection issues with client/OpenStack to ensure that the user knows that the information may not be up-to-date.
+	 */
+	TIMEOUT_ALERT_MESSAGE: string =		'The information available here may not be up-to-date. This is due to connection problems with the compute center. If necessary, try again later.';
+
+	/**
+	 * String which can be filled with information in case any problems occur or additional information needs to be placed.
+	 */
+	alertMessage: string = '';
+
+	/**
+	 * Bool which indicates whether the alert with additional information is shown or not.
+	 */
+	alertVisible: boolean = false;
 
 	constructor(
 		private clipboardService: ClipboardService,
@@ -168,6 +190,20 @@ export class VmCardComponent implements OnInit, OnDestroy {
 		this.subscribeToBsModalRef();
 	}
 
+	recreateBackend(): void {
+		this.subscription.add(
+			this.virtualmachineservice.recreateVmBackend(this.vm.openstackid).subscribe(
+				(updated_vm: VirtualMachine) => {
+					this.vm.backend = updated_vm.backend;
+					this.vm.setMsgWithTimeout('Backend was successfully recreated!');
+				},
+				() => {
+					this.vm.setErrorMsgWithTimeout('Failed to recreate the backend!', this.ERROR_TIMER);
+				},
+			),
+		);
+	}
+
 	/**
 	 * Run function to stop a vm.
 	 */
@@ -201,6 +237,18 @@ export class VmCardComponent implements OnInit, OnDestroy {
 		const initialState = { virtualMachine: this.vm, mode };
 
 		this.bsModalRef = this.modalService.show(VolumeVmComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeToBsModalRef();
+	}
+
+	/**
+	 * Show attach/detach modal.
+	 */
+	showRecreateBackendModal(): void {
+		this.stopCheckStatusTimer();
+		const initialState = { virtualMachine: this.vm };
+
+		this.bsModalRef = this.modalService.show(RecreateBackendVmComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeToBsModalRef();
 	}
@@ -421,7 +469,9 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	subscribeToBsModalRef(): void {
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
-				if ('resume' in result) {
+				if ('recreateBackendVM' in result) {
+					this.recreateBackend();
+				} else if ('resume' in result) {
 					this.resumeCheckStatusTimer();
 				} else if ('stopVM' in result) {
 					this.stopVM();
@@ -440,6 +490,17 @@ export class VmCardComponent implements OnInit, OnDestroy {
 				}
 			}),
 		);
+	}
+
+	showAlert(message: string): void {
+		switch (message) {
+			case 'TIMEOUT':
+				this.alertMessage = this.TIMEOUT_ALERT_MESSAGE;
+				break;
+			default:
+				this.alertMessage = '';
+		}
+		this.alertVisible = true;
 	}
 
 	/**
@@ -466,7 +527,17 @@ export class VmCardComponent implements OnInit, OnDestroy {
 								for (const vol of this.vm.volumes) {
 									volumeIds.push(vol.volume_openstackid);
 								}
-								this.virtualmachineservice.triggerVolumeUpdate(volumeIds).subscribe((): void => {});
+								this.virtualmachineservice.triggerVolumeUpdate(volumeIds).subscribe(
+									(): void => {
+										this.alertVisible = false;
+									},
+									(error: Response): void => {
+										if (error.status === 408) {
+											// timeout for request
+											this.showAlert('TIMEOUT');
+										}
+									},
+								);
 							}
 						}
 						if (final_state) {

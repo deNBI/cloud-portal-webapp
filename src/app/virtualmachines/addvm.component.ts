@@ -563,7 +563,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		} = {};
 		this.timeout = 300;
 		if (this.biocondaComponent.hasChosenTools()) {
-			playbook_info['bioconda'] = {
+			playbook_info['conda'] = {
 				packages: this.biocondaComponent.getChosenTools(),
 			};
 			this.timeout += this.biocondaComponent.getTimeout();

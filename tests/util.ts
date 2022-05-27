@@ -13,14 +13,18 @@ export class Util {
 	// OPENSTACK VARIABLES
 	private static _OPENSTACK_APPLICATION_NAME: string = 'PTOpenStack';
 
+	// WORKSHOP VARIABLES
+	private static _WORKSHOP_PROJECT_NAME: string = 'PTWorkshops';
+	private static _WORKSHOP_NAME: string = 'PTWS';
+
 	// INSTANCES VARIABLES
 	private static _INSTANCES_PROJECT_NAME: string = 'PTInstances';
 	private static _BASIC_VM_NAME: string = 'PTBasic';
 	private static _VOLUME_VM_NAME: string = 'PTVolume';
 	private static _VOLUME_NAME: string = 'ProtractorVolume';
 	private static _VOLUME_SPACE: string = '1';
-	private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
-	private static _UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-12-13)';
+	private static _DEFAULT_FLAVOR_TITLE: string = 'de_NBI_default';
+	private static _UBUNTU_18_TITLE: string = 'Ubuntu_18_04_LTS__2021-12-13_';
 	private static _CWLAB: string = 'cwlab';
 	private static _VOLUME_MOUNT_PATH_STRING: string = 'path';
 	private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
@@ -30,7 +34,6 @@ export class Util {
 
 	// GENERAL VARIABLES
 	private static _PI_EMAIL: string = 'test@test.com';
-	private static _WORKSHOP_NAME: string = 'PTWS';
 	private static _ONE_MINUTE_TIMEOUT: number = 60000;
 	private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 2;
 	private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
@@ -113,6 +116,10 @@ export class Util {
 		return this._WORKSHOP_NAME;
 	}
 
+	static get WORKSHOP_PROJECT_NAME(): string {
+		return this._WORKSHOP_PROJECT_NAME;
+	}
+
 	static get INSTANCES_PROJECT_NAME(): string {
 		return this._INSTANCES_PROJECT_NAME;
 	}
@@ -126,7 +133,7 @@ export class Util {
 	}
 
 	static by_data_test_id_str(data_test_id: string): string {
-		return `[data-test-id=${data_test_id}]`;
+		return `[data-test-id="${data_test_id}"]`;
 	}
 
 	static by_data_test_id_str_prefix(data_test_id: string): string {

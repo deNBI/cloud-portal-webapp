@@ -11,6 +11,7 @@
 					class="h5 text-primary"
 					style="margin-left: 10px; padding-right: 5px"
 					id="detail_{{ vm.name }}"
+					[attr.data-test-id]="'detail' + vm.name"
 					[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
 					[ngClass]="{
 						'active-machine': (vm?.status | hasStatus: VirtualMachineStates.staticACTIVE),
@@ -24,6 +25,7 @@
 					<span
 						class="h5 text-primary deleted-machine"
 						id="detail_{{ vm.name }}"
+						[attr.data-test-id]="'detail' + vm.name"
 						style="margin-left: 10px; padding-right: 5px"
 					>
 						<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red">
@@ -67,6 +69,9 @@
 			of the machine that it is still in use, otherwise it will be marked for deletion starting from
 			<strong style="margin-left: 2px"> {{ vm?.getTerminationStartDateString() }} </strong>.
 		</div>
+		<div *ngIf="alertVisible" class="alert alert-info" role="alert">
+			<p>{{ alertMessage }}</p>
+		</div>
 		<div style="margin-top: 10px; margin-bottom: 5px">
 			<div class="row" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
 				<div *ngIf="vm.volumes?.length > 0" class="col-md-1">
@@ -86,7 +91,14 @@
 						</span>
 					</span>
 				</div>
-				<div *ngIf="vm?.res_env_url && vm.backend && vm.backend.playbook_successful === 0" class="col-md-1">
+				<div
+					*ngIf="
+						vm?.res_env_url &&
+						(vm?.backend?.playbook_successful || vm?.conda_packages.length > 0) &&
+						vm?.backend?.playbook_done
+					"
+					class="col-md-1"
+				>
 					<span
 						class="fas fa-globe"
 						style="font-size: 18px; cursor: pointer"
@@ -109,8 +121,9 @@
 				<div
 					*ngIf="
 						vm?.res_env_url &&
-						vm.backend &&
-						vm.backend.playbook_successful !== 0 &&
+						vm?.backend?.playbook_done &&
+						!vm?.backend?.playbook_successful &&
+						vm?.conda_packages?.length === 0 &&
 						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)
 					"
 					class="col-md-1"
@@ -146,13 +159,8 @@
 							style="font-size: 10px; position: relative; top: -12px; left: -10px"
 						>
 							{{ vm?.conda_packages?.length.toString() }}
-							<i *ngIf="vm?.playbook_successful === null" class="fa-spinner fa-spin"> </i>
-							<i
-								*ngIf="!vm?.playbook_successful && vm?.playbook_successful !== undefined"
-								class="fas fa-times"
-								style="color: red"
-							>
-							</i>
+							<i *ngIf="!vm?.playbook_done" class="fa-spinner fa-spin"> </i>
+							<i *ngIf="!vm?.playbook_successful && vm?.playbook_done" class="fas fa-times" style="color: red"> </i>
 							<i *ngIf="vm?.playbook_successful" class="fas fa-check" style="color: green"> </i>
 						</span>
 					</span>
@@ -169,13 +177,8 @@
 							style="font-size: 10px; position: relative; top: -12px; left: -10px"
 						>
 							{{ vm?.conda_packages?.length.toString() }}
-							<i *ngIf="vm?.playbook_successful === null" class="fa-spinner fa-spin"> </i>
-							<i
-								*ngIf="!vm?.playbook_successful && vm?.playbook_successful !== undefined"
-								class="fas fa-times"
-								style="color: red"
-							>
-							</i>
+							<i *ngIf="!vm?.playbook_done" class="fas fa-cog fa-spin"> </i>
+							<i *ngIf="!vm?.playbook_successful && vm?.playbook_done" class="fas fa-times" style="color: red"> </i>
 							<i *ngIf="vm?.playbook_successful" class="fas fa-check" style="color: green"> </i>
 						</span>
 					</span>
@@ -204,15 +207,20 @@
 				style="margin-left: 10px"
 				role="alert"
 				*ngIf="
-					vm?.res_env_url &&
-					vm.backend &&
-					vm.backend.playbook_successful &&
-					vm.backend.playbook_successful !== 0 &&
+					vm?.backend?.playbook_done &&
+					!vm?.backend?.playbook_successful &&
 					(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)
 				"
 			>
-				The installation of your Playbook has failed, you can download the playbook logs on the detailed overview of the
-				vm!
+				Some steps in your playbook have failed!<br />You can download the playbook logs on the detailed overview of the
+				vm!<br />
+				<span *ngIf="vm?.conda_packages?.length > 0"
+					>Usually this is because there are various incompatibilities between the selected conda packages.</span
+				>
+				<br />
+				<span *ngIf="vm?.conda_packages?.length > 0 && vm?.res_env_url"
+					>Your Research environment should still work normally.</span
+				>
 			</div>
 			<div class="col-1"></div>
 			<div class="col-11" style="margin-left: 10px">
@@ -299,6 +307,7 @@
 						(vm?.status | hasStatus: VirtualMachineStates.staticDELETED)
 					"
 					[id]="'showActionsButton_' + vm?.name"
+					[attr.data-test-id]="'show_actions_button_' + vm?.name"
 					(click)="vm.cardState = 2"
 				>
 					Show actions ...
@@ -366,6 +375,9 @@
 				<div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
 					<a href="{{ vm?.res_env_url }}" target="_blank" rel="noopener noreferrer">{{ vm?.res_env_url }}</a>
 					<br />
+					For JupyterLab Token please visit:
+					<a href="{{ WIKI_JUPYTERLAB_LINK }}" rel="noopener noreferrer" target="_blank">{{ WIKI_JUPYTERLAB_LINK }} </a>
+					<br />
 					For RStudio credentials please visit:
 					<a href="{{ WIKI_RSTUDIO_LINK }}" rel="noopener noreferrer" target="_blank">{{ WIKI_RSTUDIO_LINK }} </a>
 					<br />
@@ -381,6 +393,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'attachVolume' + vm?.name"
+						[attr.data-test-id]="'attach_volume_' + vm?.name"
 						(click)="showVolumeModal('attach')"
 					>
 						Attach Volume
@@ -402,6 +415,7 @@
 							[id]="'attachVolume' + vm?.name"
 							disabled
 							(click)="showVolumeModal('attach')"
+							[attr.data-test-id]="'attach_volume_' + vm?.name"
 						>
 							Attach Volume
 						</button>
@@ -413,7 +427,8 @@
 				>
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-						[id]="'attachVolume' + vm?.name"
+						[id]="'detachVolume' + vm?.name"
+						[attr.data-test-id]="'detach_volume_' + vm?.name"
 						(click)="showVolumeModal('detach')"
 					>
 						Detach Volume
@@ -432,9 +447,10 @@
 					>
 						<button
 							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							[id]="'attachVolume' + vm?.name"
+							[id]="'detachVolume' + vm?.name"
 							disabled
 							(click)="showVolumeModal('detach')"
+							[attr.data-test-id]="'detach_volume_' + vm?.name"
 						>
 							Detach Volume
 						</button>
@@ -444,6 +460,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'stopVMButton_' + vm?.name"
+						[attr.data-test-id]="'stop_vm_' + vm?.name"
 						(click)="showStopModal()"
 					>
 						Stop VM
@@ -453,6 +470,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'restartVMButton_' + vm?.name"
+						[attr.data-test-id]="'restart_vm_' + vm?.name"
 						(click)="showRestartModal()"
 					>
 						Start VM
@@ -465,9 +483,20 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'chooseRebootVMButton_' + vm?.name"
+						[attr.data-test-id]="'reboot_vm_' + vm?.name"
 						(click)="showRebootModal()"
 					>
 						Reboot VM
+					</div>
+				</div>
+				<div class="col-md-auto" *ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) && vm?.backend">
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'recreateBackend_' + vm?.name"
+						[attr.data-test-id]="'recreate_backend_' + vm?.name"
+						(click)="showRecreateBackendModal()"
+					>
+						Recreate Backend
 					</div>
 				</div>
 				<div
@@ -480,6 +509,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'createSnapshotVMButton_' + vm?.name"
+						[attr.data-test-id]="'create_snapshot_' + vm?.name"
 						(click)="showSnapshotModal()"
 					>
 						Create Snapshot
@@ -489,6 +519,7 @@
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'deleteVMButton_' + vm?.name"
+						[attr.data-test-id]="'delete_vm_' + vm?.name"
 						(click)="showDeleteModal()"
 					>
 						Delete VM

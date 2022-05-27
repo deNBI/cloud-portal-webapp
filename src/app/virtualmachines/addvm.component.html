@@ -18,7 +18,7 @@
 	</div>
 </div>
 
-<div *ngIf="!isLoaded || (singleProject && !projectDataLoaded)" class="loader"></div>
+<div *ngIf="!isLoaded || (singleProject && !projectDataLoaded)" class="loader" data-test-id="site-loader"></div>
 <div *ngIf="isLoaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">You are not a member of a SimpleVM project.</div>
 </div>
@@ -800,11 +800,10 @@
 											client_available &&
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
 										"
-										class="alert alert-danger col-md-10"
+										class="alert alert-danger col-md-auto"
 										role="alert"
-										style="margin: auto"
 									>
-										<p>The following is missing before starting a VM:</p>
+										<p><strong>The following is missing before starting a VM</strong></p>
 										<p *ngIf="!vm_name">- A name for your instance</p>
 										<p *ngIf="!selectedFlavor">- The flavor type of your VM</p>
 										<p *ngIf="!selectedImage">- The image you want to run on your VM</p>
@@ -821,9 +820,7 @@
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 											(flavors?.length > 0 || selectedFlavor)
 										"
-										class="alert alert-warning col-md-10"
-										role="alert"
-										style="margin: auto"
+										class="col-md-10"
 									>
 										<div class="form-check">
 											<input
