@@ -102,7 +102,7 @@
     "@typescript-eslint/eslint-plugin": "5.26.0",
     "@typescript-eslint/parser": "5.26.0",
     "async": "3.2.3",
-    "audit-ci": "6.2.1",
+    "audit-ci": "6.3.0",
     "autoprefixer": "10.4.7",
     "eslint": "8.16.0",
     "eslint-config-airbnb-base": "15.0.0",
