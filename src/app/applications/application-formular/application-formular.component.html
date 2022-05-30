@@ -293,6 +293,11 @@
 						<div class="form-group row">
 							<h5 class="col-md-12 form-control-label">Resources</h5>
 						</div>
+						<div class="alert alert-primary" role="alert">
+							The amount of resources requested here is not definite. You are able to request more resources after the
+							approval of the project. <br />
+							Please fill in an appropriate estimation of the resources required for your project.
+						</div>
 						<accordion>
 							<ng-container *ngFor="let t of typeList; first as isFirst">
 								<accordion-group *ngIf="checkIfTypeGotSimpleVmFlavor(t)" [isOpen]="isFirst" #groupval>
