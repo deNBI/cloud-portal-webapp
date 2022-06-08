@@ -381,35 +381,40 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				.then((response: {}): void => {
 					if (response['data_points'] !== undefined) {
 						const data_points: number[] = response['data_points'];
-
-						this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
-							type: 'line',
-							data: {
-								labels: response['time_points'],
-								datasets: [
-									{
-										label: 'Credit Usage',
-										data: data_points,
-										borderColor: 'rgba(54, 162, 235, 1)',
-										backgroundColor: 'rgba(54, 162, 235, 0.2)',
-									},
-								],
-							},
-							options: {
-								animation: {
-									duration: 0,
+						if (this.creditsChart !== undefined) {
+							this.creditsChart.data.labels = response['time_points'];
+							this.creditsChart.data.datasets[0].data = data_points;
+							this.creditsChart.update();
+						} else {
+							this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
+								type: 'line',
+								data: {
+									labels: response['time_points'],
+									datasets: [
+										{
+											label: 'Credit Usage',
+											data: data_points,
+											borderColor: 'rgba(54, 162, 235, 1)',
+											backgroundColor: 'rgba(54, 162, 235, 0.2)',
+										},
+									],
 								},
-								layout: {
-									padding: {
-										left: 25,
-										right: 25,
-										top: 25,
-										bottom: 50,
+								options: {
+									animation: {
+										duration: 0,
 									},
+									layout: {
+										padding: {
+											left: 25,
+											right: 25,
+											top: 25,
+											bottom: 50,
+										},
+									},
+									responsive: true,
 								},
-								responsive: true,
-							},
-						});
+							});
+						}
 					}
 					if (!this.creditHistoryLoaded) {
 						this.creditHistoryLoaded = true;
