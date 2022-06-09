@@ -83,7 +83,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row" *ngIf="mode.name === 'ssh'">
+							<div class="row" *ngIf="mode.name === 'SSH' || mode.name === 'ssh'">
 								<div class="col-auto">
 									<p class="font-weight-bold font-xs text-muted">
 										Learn more about persistent terminal sessions when using ssh:
@@ -96,7 +96,8 @@
 								*ngIf="
 									virtualMachine?.res_env_url !== '' &&
 									virtualMachine?.res_env_url !== null &&
-									virtualMachine?.res_env_url !== undefined
+									virtualMachine?.res_env_url !== undefined &&
+									resenv_by_play(virtualMachine)
 								"
 							>
 								<div class="col-md-1">

@@ -24,18 +24,19 @@ import { BiocondaService } from '../../api-connector/bioconda.service';
 import { ResenvTemplate } from '../conda/resenvTemplate.model';
 import { elixir_id, is_vo } from '../../shared/globalvar';
 import {
+	WIKI_CREATE_SNAPSHOT_LINK,
 	WIKI_GUACAMOLE_LINK,
+	WIKI_PERSISTENT_TERMINAL_LINK,
 	WIKI_RSTUDIO_LINK,
 	WIKI_VOLUME_OVERVIEW,
-	WIKI_CREATE_SNAPSHOT_LINK,
 	WIKI_VOLUMES_LINK,
-	WIKI_PERSISTENT_TERMINAL_LINK,
 } from '../../../links/links';
 import { Volume } from '../volumes/volume';
 import { VolumeStates } from '../volumes/volume_states';
 import { Condalog } from '../conda/condalog';
 import { Backend } from '../conda/backend/backend';
 import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component';
+import { TemplateNames } from '../conda/template-names';
 
 /**
  * VM Detail page component
@@ -742,5 +743,18 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		this.biocondaService.deleteUserFromBackend(this.vm_id, userId.toString()).subscribe((): void => {
 			this.getUsersForBackend();
 		});
+	}
+
+	/**
+	 * Return false if resenv was not started by playbook (e.g. by Image instead).
+	 */
+	resenv_by_play(vm: VirtualMachine): boolean {
+		for (const mode of vm.modes) {
+			if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
