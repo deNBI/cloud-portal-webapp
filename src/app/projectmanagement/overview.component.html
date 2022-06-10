@@ -623,7 +623,8 @@
 								<div class="text-muted">
 									We selected your project as one of the few project where we track the resource usage with Cloud
 									Credits usage. You should have received an E-Mail with information about Cloud Credits, if this is not
-									the case, please message us at <a href="mailto:{{ CLOUD_MAIL }}">{{ CLOUD_MAIL }}</a
+									the case, please message us at
+									<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
 									>. For general information about Cloud Credits please visit:<br />
 									- <a href="{{ CREDITS_WIKI }}" rel="noopener noreferrer" target="_blank">Cloud Credits Wiki page</a>
 								</div>
@@ -682,7 +683,7 @@
 						<div class="col-6">
 							<div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-primary">
 								Your approved credits are lower or equal to zero. Please submit a Credits Extension or contact us at
-								<a href="mailto:{{ CLOUD_MAIL }}">{{ CLOUD_MAIL }}</a
+								<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
 								>, so we may calculate and set the correct amount for your project.
 							</div>
 						</div>

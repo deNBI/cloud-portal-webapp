@@ -23,7 +23,6 @@ import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
 import {
-	CLOUD_MAIL,
 	CREDITS_WIKI,
 	OPENSTACK_LINK,
 	PUBLICATIONS_LINK,
@@ -70,7 +69,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT;
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 	CREDITS_WIKI: string = CREDITS_WIKI;
-	CLOUD_MAIL: string = CLOUD_MAIL;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	PUBLICATIONS_LINK: string = PUBLICATIONS_LINK;
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
