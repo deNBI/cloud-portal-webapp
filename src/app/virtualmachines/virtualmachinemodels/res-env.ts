@@ -8,6 +8,7 @@ export class ResearchEnvironment {
 	logo_url: string;
 	info_url: string;
 	title: string;
+	needs_forc_support:boolean=true;
 	incompatible_versions: string[];
 	information_for_display: {
 		[key: string]: string;

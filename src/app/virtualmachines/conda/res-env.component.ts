@@ -94,6 +94,9 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	isValid(): boolean {
+			if (!this.selectedTemplate.needs_forc_support){
+					return true;
+			}
 		if (this.onlyNamespace) {
 			if (this.workshopMode) {
 				return true;

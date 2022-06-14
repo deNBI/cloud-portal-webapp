@@ -151,7 +151,7 @@ export class VirtualmachineService {
 		udp: boolean,
 		new_volumes: Volume[],
 		attach_volumes: Volume[],
-		playbook_information?: string,
+		playbook_information?: any,
 		additional_elixir_ids?: string[],
 	): Observable<any> {
 		const params: HttpParams = new HttpParams()
@@ -168,7 +168,21 @@ export class VirtualmachineService {
 			.set('playbook_information', playbook_information)
 			.set('additional_elixir_ids', JSON.stringify(additional_elixir_ids));
 
-		return this.http.post(this.baseVmUrl, params, {
+		return this.http.post(this.baseVmUrl, {
+				flavor:flavor,
+				image:image,
+				servername:servername,
+				project:project,
+				projectid:projectid,
+				new_volumes:new_volumes,
+				attach_volumes:attach_volumes,
+				http_allowed:http,
+				https_allowed:https,
+				udp_allowed:udp,
+				playbook_information:playbook_information,
+				additional_elixir_ids:additional_elixir_ids
+
+		}, {
 			withCredentials: true,
 		});
 	}
