@@ -19,7 +19,6 @@ import { WIKI_MOTD } from '../../../links/links';
 	providers: [NewsService, FacilityService],
 })
 export class NewsManagerComponent implements OnInit, OnDestroy {
-
 	title: string = 'News Management';
 	public production: boolean = environment.production;
 	WIKI_MOTD: string = WIKI_MOTD;
@@ -40,17 +39,10 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 
 	newsSetAsMOTD: string[] = [];
 	selectedNewsForm: FormGroup = new FormGroup({
-		title: new FormControl(
-			{ value: this.newFacilityNews.title, disabled: false },
-			Validators.required,
-		),
-		text: new FormControl(
-			{ value: this.newFacilityNews.text, disabled: false },
-			Validators.required,
-		),
+		title: new FormControl({ value: this.newFacilityNews.title, disabled: false }, Validators.required),
+		text: new FormControl({ value: this.newFacilityNews.text, disabled: false }, Validators.required),
 		motd: new FormControl({ value: this.newFacilityNews.motd, disabled: false }),
 		valid_till: new FormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
-
 	});
 	allChecked: boolean = true;
 	deletionStatus: number = 0;
@@ -64,10 +56,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 
 	public motdLength: BehaviorSubject<number> = new BehaviorSubject(0);
 
-	constructor(
-		private newsService: NewsService,
-		private facilityService: FacilityService,
-	) {
+	constructor(private newsService: NewsService, private facilityService: FacilityService) {
 		// constructor for NewsManager
 	}
 
@@ -81,8 +70,12 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 				this.subscription.add(
 					this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 						this.managerFacilities = result;
-						this.selectedFacilities = this.managerFacilities.map((facility: [string, number]): [string, number] => facility);
-						this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]): number => facility['FacilityId']);
+						this.selectedFacilities = this.managerFacilities.map(
+							(facility: [string, number]): [string, number] => facility,
+						);
+						this.managerFacilitiesIdOnly = this.managerFacilities.map(
+							(facility: [string, number]): number => facility['FacilityId'],
+						);
 						this.setFormGroup();
 						this.getNewsFromAPI();
 						this.setCurrentNews(null);
@@ -99,7 +92,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		} else {
 			this.facilityToSetMOTD = null;
 		}
-
 	}
 
 	ngOnDestroy() {
@@ -129,8 +121,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 							if (this.facilityToSetMOTD != null) {
 								this.subscription.add(
 									this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD).subscribe(
-										(): void => {
-										},
+										(): void => {},
 										(error: any) => {
 											console.log(error);
 											if ('error' in error) {
@@ -171,8 +162,10 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.tags.push(this.facilityToPost.toString(), 'Facility News');
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
+			news.is_current_motd = true;
 		} else {
 			this.facilityToSetMOTD = null;
+			news.is_current_motd = false;
 		}
 		this.subscription.add(
 			this.newsService.updateFacilityNews(news).subscribe(
@@ -182,8 +175,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 							if (this.facilityToSetMOTD != null) {
 								this.subscription.add(
 									this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD).subscribe(
-										(): void => {
-										},
+										(): void => {},
 										(error: any) => {
 											console.log(error);
 											if ('error' in error) {
@@ -220,7 +212,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 				for (const facility of facilities) {
 					this.facilityMOTDPairs[facility['id']] = facility['motd'];
 				}
-
 			}),
 		);
 	}
@@ -282,7 +273,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		}
 		this.setFormGroup();
 		this.setFacilityToSetMotd();
-
 	}
 
 	/**
@@ -332,14 +322,9 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		this.selectedNewsForm = new FormGroup({
 			title: new FormControl({ value: this.selectedFacilityNews.title, disabled: false }, Validators.required),
 			text: new FormControl({ value: this.selectedFacilityNews.text, disabled: false }, Validators.required),
-			motd: new FormControl(
-				{ value: this.selectedFacilityNews.motd, disabled: false },
-			),
-			tag: new FormControl(
-				{ value: this.selectedFacilityNews.tags, disabled: false },
-			),
+			motd: new FormControl({ value: this.selectedFacilityNews.motd, disabled: false }),
+			tag: new FormControl({ value: this.selectedFacilityNews.tags, disabled: false }),
 			valid_till: new FormControl({ value: this.selectedFacilityNews.valid_till, disabled: false }),
-
 		});
 		this.subscription.add(
 			this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {
