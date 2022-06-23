@@ -18,24 +18,20 @@ export class VoService {
 	}
 
 	sendTestError(): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/test_bug/`, {
 			withCredentials: true,
 		});
 	}
 
 	isVo(): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/status/`, {
 			withCredentials: true,
 		});
 	}
 
 	getNewsletterSubscriptionCounter(): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/counter/`, {
 			withCredentials: true,
-
 		});
 	}
 
@@ -43,35 +39,28 @@ export class VoService {
 		return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	removeResourceFromGroup(groupid: number | string): Observable<object> {
 		return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	resumeProject(groupid: number | string): Observable<object> {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, null, {
 			withCredentials: true,
 		});
-
 	}
 
 	getAllGroupsWithDetails(): Observable<Application[]> {
-
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(applications: Application[]): Application[] => applications.map(
-					(application: Application): Application => new Application(application),
-				),
-			),
-		);
-
+		return this.http
+			.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
+				withCredentials: true,
+			})
+			.pipe(
+				map((applications: Application[]): Application[] => applications.map((application: Application): Application => new Application(application))),
+			);
 	}
 
 	getProjectStatus(groupid: number | string): Observable<IResponseTemplate> {
@@ -113,19 +102,21 @@ export class VoService {
 	}
 
 	sendNewsletterToVo(subject: string, message: string, type: string, reply?: string): Observable<IResponseTemplate> {
-
-		const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply)
+		const params: HttpParams = new HttpParams()
+			.set('subject', subject)
+			.set('message', message)
+			.set('reply', reply)
 			.set('type', type);
 
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/newsletter/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): Observable<any> {
 		const params: HttpParams = new HttpParams()
-			.set('subject', subject).set('message', message)
+			.set('subject', subject)
+			.set('message', message)
 			.set('reply', reply)
 			.set('facility', facility)
 			.set('type', type);
@@ -133,7 +124,6 @@ export class VoService {
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	/**
@@ -157,4 +147,12 @@ export class VoService {
 		});
 	}
 
+	setClusterAllowed(groupid: number | string, set: boolean): Observable<any> {
+		const parameters: HttpParams = new HttpParams().set('allowed', set ? 'allowed' : 'disallowed');
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/toggle_cluster/`, {
+			withCredentials: true,
+			params: parameters,
+		});
+	}
 }

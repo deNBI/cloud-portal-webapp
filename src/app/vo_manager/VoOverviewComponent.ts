@@ -305,6 +305,38 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 		);
 	}
 
+	toggleCluster(project: Application): void {
+		this.voService
+			.setClusterAllowed(project.project_application_perun_id, !project.project_application_cluster_allowed)
+			.subscribe(
+				(result: any): void => {
+					const index = this.projects
+						.map(elem => elem.project_application_perun_id)
+						.indexOf(project.project_application_perun_id);
+					if (index >= 0) {
+						if (result['result'] === 'allowed') {
+							this.projects[index].project_application_cluster_allowed = true;
+						} else if (result['result'] === 'disallowed') {
+							this.projects[index].project_application_cluster_allowed = false;
+						}
+						this.updateNotificationModal(
+							'Success',
+							result['result'] === 'allowed'
+								? `Cluster feature now enabled for project ${project.project_application_shortname}.`
+								: `Cluster feature now disabled for project ${project.project_application_shortname}.`,
+							true,
+							'success',
+						);
+					} else {
+						this.updateNotificationModal('Failed', 'Toggle of cluster feature was not successful', true, 'danger');
+					}
+				},
+				(): void => {
+					this.updateNotificationModal('Failed', 'Toggle of cluster feature was not successful', true, 'danger');
+				},
+			);
+	}
+
 	getMembersOfTheProject(projectid: number, projectname: string): void {
 		this.voService.getVoGroupRichMembers(projectid).subscribe((members: ProjectMember[]): void => {
 			this.usersModalProjectID = projectid;
