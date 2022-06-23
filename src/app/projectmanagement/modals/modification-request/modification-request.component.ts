@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { ApplicationModification } from '../../../applications/application_modification.model';
 import { ResultComponent } from '../result/result.component';
 import { Application } from '../../../applications/application.model/application.model';
-import { CLOUD_MAIL } from '../../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { FlavorType } from '../../../virtualmachines/virtualmachinemodels/flavorType';
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
@@ -19,8 +19,7 @@ import { CreditsService } from '../../../api-connector/credits.service';
 	providers: [FlavorService, CreditsService],
 })
 export class ModificationRequestComponent implements OnInit, OnDestroy {
-
-	CLOUD_MAIL: string = CLOUD_MAIL;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	project: Application;
 	temp_project_modification: ApplicationModification;
@@ -39,8 +38,9 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		private modalService: BsModalService,
 		private flavorService: FlavorService,
 		private creditsService: CreditsService,
-		// eslint-disable-next-line no-empty-function
-	) {}
+	) {
+		// do nothing.
+	}
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
@@ -57,22 +57,21 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			this.temp_project_modification.setByApp(this.project);
 		}
 		this.subscription.add(
-			this.flavorService.getListOfTypesAvailable().subscribe(
-				(result: FlavorType[]) => {
-					this.flavorTypes = result;
-					for (const flavorType of this.flavorTypes) {
-						this.shown_flavors[flavorType.long_name] = [];
-					}
-					this.getFlavors();
-				},
-			),
+			this.flavorService.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
+				this.flavorTypes = result;
+				for (const flavorType of this.flavorTypes) {
+					this.shown_flavors[flavorType.long_name] = [];
+				}
+				this.getFlavors();
+			}),
 		);
 	}
 
 	getFlavors(): void {
 		this.subscription.add(
-			this.flavorService.getListOfFlavorsAvailable(this.project.project_application_id.toString()).subscribe(
-				(flavors: Flavor[]): void => {
+			this.flavorService
+				.getListOfFlavorsAvailable(this.project.project_application_id.toString())
+				.subscribe((flavors: Flavor[]): void => {
 					this.temp_project_modification.flavors = [];
 					for (const flavor of flavors) {
 						if (this.project.project_application_openstack_project || flavor.simple_vm) {
@@ -80,8 +79,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 						}
 					}
 					this.checkFlavorDifferences();
-				},
-			),
+				}),
 		);
 	}
 
@@ -98,7 +96,8 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				this.shown_flavors[flavor.type.long_name].push(disabled_flavor);
 				this.shown_flavors[flavor.type.long_name].push(mod_flavor);
 				this.temp_project_modification.flavors.push(mod_flavor);
-			} else { // else in shown_flavors, may be different than old one
+			} else {
+				// else in shown_flavors, may be different than old one
 				this.shown_flavors[flavor.type.long_name][idx].counter = flavor.counter;
 				const mod_flavor: Flavor = new Flavor(this.shown_flavors[flavor.type.long_name][idx]);
 				this.temp_project_modification.flavors.push(mod_flavor);
@@ -120,11 +119,11 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				flavor.counter = amount;
 				this.temp_project_modification.flavors.push(flavor);
 			}
-		}	else if (amount > 0) {
+		} else if (amount > 0) {
 			flavor.counter = amount;
 			this.temp_project_modification.flavors.push(flavor);
 		}
-		this.min_vm = this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0;
+		this.min_vm =			this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0;
 		this.temp_project_modification.calculateRamCores();
 		this.getExtraCredits();
 	}
@@ -135,19 +134,18 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		}
 
 		this.subscription.add(
-			this.creditsService.getExtraCreditsForResourceExtension(
-				this.temp_project_modification.flavors,
-				this.project.project_application_id.toString(),
-			).subscribe(
-				(credits: number): void => {
+			this.creditsService
+				.getExtraCreditsForResourceExtension(
+					this.temp_project_modification.flavors,
+					this.project.project_application_id.toString(),
+				)
+				.subscribe((credits: number): void => {
 					this.temp_project_modification.extra_credits = credits;
-					this.expected_total_credits = this.project.project_application_initial_credits
-						+ this.temp_project_modification.extra_credits;
+					this.expected_total_credits =						this.project.project_application_initial_credits + this.temp_project_modification.extra_credits;
 					if (this.expected_total_credits <= 0) {
 						this.expected_total_credits = 0;
 					}
-				},
-			),
+				}),
 		);
 	}
 
@@ -161,15 +159,12 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
-		this.bsModalRef.content.event.subscribe(
-			(result: any) => {
-				if ('reload' in result && result['reload']) {
-					this.event.emit({ reload: true });
-				} else {
-					this.event.emit({ reload: false });
-				}
-			},
-		);
+		this.bsModalRef.content.event.subscribe((result: any) => {
+			if ('reload' in result && result['reload']) {
+				this.event.emit({ reload: true });
+			} else {
+				this.event.emit({ reload: false });
+			}
+		});
 	}
-
 }
