@@ -15,6 +15,7 @@ export const WIKI_NEW_INSTANCE_LINK: string = `${environment.WIKI_PRE}simple_vm/
 export const WIKI_INSTANCE_OVERVIEW_LINK: string = `${environment.WIKI_PRE}simple_vm/instance_overview/`;
 export const WIKI_INSTANCE_DETAIL_LINK: string = `${environment.WIKI_PRE}simple_vm/instance_detail/`;
 export const WIKI_LINK_ACCOUNTS: string = `${environment.WIKI_PRE}portal/user_information/#link-accounts-to-elixir`;
+export const LIFESCIENCE_LINKING_ACCOUNTS: string = 'https://profile.aai.lifescience-ri.eu/profile/identities';
 export const WIKI_PUBLICATIONS: string = `${environment.WIKI_PRE}citation_and_publication/#publications`;
 export const WIKI_MEMBER_MANAGEMENT: string = `${environment.WIKI_PRE}portal/project_overview/#member-management`;
 export const WIKI_FAQ: string = `${environment.WIKI_PRE}FAQ/`;
