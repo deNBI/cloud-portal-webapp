@@ -233,14 +233,14 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		let tmp_cores: number = 0;
 		let tmp_gpus: number = 0;
 		if (this.selectedMasterFlavor) {
-			tmp_ram += this.selectedMasterFlavor.ram;
+			tmp_ram += this.selectedMasterFlavor.ram_gib;
 			tmp_cores += this.selectedMasterFlavor.vcpus;
 			tmp_gpus += this.selectedMasterFlavor.gpu;
 		}
 		if (this.selectedWorkerBatches) {
 			this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
 				if (batch.worker_count && batch.flavor) {
-					tmp_ram += batch.flavor.ram * batch.worker_count;
+					tmp_ram += batch.flavor.ram_gib * batch.worker_count;
 					tmp_cores += batch.flavor.vcpus * batch.worker_count;
 					tmp_gpus += batch.flavor.gpu * batch.worker_count;
 				}
