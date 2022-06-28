@@ -14,7 +14,6 @@ import { CreditsService } from '../../api-connector/credits.service';
 import { Application } from '../application.model/application.model';
 import { is_vo } from '../../shared/globalvar';
 import {
-	CLOUD_MAIL,
 	CREDITS_WIKI,
 	OPENSTACK_LINK,
 	POLICY_LINK,
@@ -24,6 +23,7 @@ import {
 	WIKI_WORKSHOPS,
 	WIKI_PERSONAL_DATA,
 	GDPR_LINK,
+	CLOUD_PORTAL_SUPPORT_MAIL,
 } from '../../../links/links';
 
 /**
@@ -59,7 +59,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	simple_vm_min_vm: boolean = false;
 	error: string[];
 	CREDITS_WIKI: string = CREDITS_WIKI;
-	CLOUD_MAIL: string = CLOUD_MAIL;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	SURVEY_LINK: string = SURVEY_LINK;
 	POLICY_LINK: string = POLICY_LINK;
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;

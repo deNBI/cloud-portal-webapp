@@ -24,15 +24,27 @@ const config: PlaywrightTestConfig = {
 
 	/* Retry on CI only */
 	retries: process.env.CI ? 2 : 0,
+	// default 'list' when running locally
+	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
+
+	reporter: process.env.CI
+		? [
+			['github'],
+			[
+				'html',
+				{
+					open: 'never',
+					outputFolder: 'playwright-html-report',
+				},
+			],
+		  ]
+		: [['html', { open: 'never', outputFolder: 'playwright-html-report' }]],
 
 	/* Opt out of parallel tests on CI. */
 	workers: process.env.CI ? 1 : undefined,
 
 	/* order of tests */
 	// testMatch: 'workshops.spec.ts',
-
-	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
-	reporter: 'html',
 
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
@@ -53,11 +65,17 @@ const config: PlaywrightTestConfig = {
 	projects: [
 		{
 			name: 'chromium',
-
-			/* Project-specific settings. */
 			use: {
 				...devices['Desktop Chrome'],
 			},
+		},
+		{
+			name: 'firefox',
+			use: { ...devices['Desktop Firefox'] },
+		},
+		{
+			name: 'safari',
+			use: { ...devices['Desktop Safari'] },
 		},
 	],
 };
