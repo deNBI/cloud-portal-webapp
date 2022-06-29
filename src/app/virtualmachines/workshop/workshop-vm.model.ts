@@ -9,6 +9,7 @@ export class WorkshopVM {
 	email_sent: boolean = false;
 	loadingUrlData: boolean = false;
 	resenv_name: string;
+	has_resenv: boolean;
 
 	constructor(workshopvm?: Partial<WorkshopVM>) {
 		Object.assign(this, workshopvm);
