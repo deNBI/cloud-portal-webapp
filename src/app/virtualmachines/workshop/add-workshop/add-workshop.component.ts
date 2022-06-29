@@ -28,11 +28,9 @@ import { WorkshopService } from '../../../api-connector/workshop.service';
 	selector: 'app-add-workshop',
 	templateUrl: './add-workshop.component.html',
 	styleUrls: ['./add-workshop.component.scss'],
-	providers: [GroupService, ImageService, FlavorService, UserService, VirtualmachineService,
-		WorkshopService],
+	providers: [GroupService, ImageService, FlavorService, UserService, VirtualmachineService, WorkshopService],
 })
 export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
-
 	title: string = 'New workshop VMs';
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
@@ -112,13 +110,13 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	progress_bar_width: number = 0;
 
 	constructor(
-private group_service: GroupService,
-							private image_service: ImageService,
-							private flavor_service: FlavorService,
-							private user_service: UserService,
-							private virtual_machine_service: VirtualmachineService,
-							private workshop_service: WorkshopService,
-							private router: Router,
+		private group_service: GroupService,
+		private image_service: ImageService,
+		private flavor_service: FlavorService,
+		private user_service: UserService,
+		private virtual_machine_service: VirtualmachineService,
+		private workshop_service: WorkshopService,
+		private router: Router,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -143,36 +141,32 @@ private group_service: GroupService,
 	get_applications(): void {
 		this.projects = [];
 		this.subscription.add(
-			this.group_service.getSimpleVmByUserWhereWorkshopAndAdmin().subscribe(
-				(projects: any) => {
-					for (const project of projects) {
-						this.projects.push(project);
-					}
-					this.is_loaded = true;
-				},
-			),
+			this.group_service.getSimpleVmByUserWhereWorkshopAndAdmin().subscribe((projects: any) => {
+				for (const project of projects) {
+					this.projects.push(project);
+				}
+				this.is_loaded = true;
+			}),
 		);
 	}
 
 	get_user_data(): void {
 		this.subscription.add(
-			this.user_service.getUserInfo().subscribe(
-				(result: Userinfo) => {
-					this.userinfo = result;
-				},
-			),
+			this.user_service.getUserInfo().subscribe((result: Userinfo) => {
+				this.userinfo = result;
+			}),
 		);
 	}
 
 	get_members_of_the_project(): void {
 		this.subscription.add(
-			this.group_service.getGroupMembers(this.selected_project[1].toString()).subscribe(
-				(members: ProjectMember[]): void => {
+			this.group_service
+				.getGroupMembers(this.selected_project[1].toString())
+				.subscribe((members: ProjectMember[]): void => {
 					this.project_members = members;
 					this.member_data_loaded = true;
 					this.check_project_data_loaded();
-				},
-			),
+				}),
 		);
 	}
 
@@ -196,7 +190,8 @@ private group_service: GroupService,
 				}
 				this.selected_project_client = client;
 				this.subscription.add(
-					this.image_service.getBlockedImageTagsResenv(Number(this.selected_project_client.id), 'true')
+					this.image_service
+						.getBlockedImageTagsResenv(Number(this.selected_project_client.id), 'true')
 						.subscribe((tags: BlockedImageTagResenv[]): void => {
 							this.blocked_image_tags_resenv = tags;
 						}),
@@ -208,29 +203,27 @@ private group_service: GroupService,
 	get_workshops_for_application(): void {
 		this.workshops = [];
 		this.subscription.add(
-			this.workshop_service.getWorkshops(this.selected_project[1]).subscribe(
-				(workshops: Workshop[]) => {
-					for (const workshop of workshops) {
-						this.subscription.add(
-							this.workshop_service.loadWorkshopWithVms(workshop.id).subscribe(
-								(workshop_with_vms: Workshop) => {
-									this.workshops.push(workshop_with_vms);
-								},
-							),
-						);
-					}
-				},
-			),
+			this.workshop_service.getWorkshops(this.selected_project[1]).subscribe((workshops: Workshop[]) => {
+				for (const workshop of workshops) {
+					this.subscription.add(
+						this.workshop_service.loadWorkshopWithVms(workshop.id).subscribe((workshop_with_vms: Workshop) => {
+							this.workshops.push(workshop_with_vms);
+						}),
+					);
+				}
+			}),
 		);
 	}
 
 	load_project_data(): void {
 		this.subscription.add(
-			this.group_service.getGroupResources(this.selected_project[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
-				this.selected_project_ressources = new ApplicationRessourceUsage(res);
-				this.data_loaded = true;
-				this.check_project_data_loaded();
-			}),
+			this.group_service
+				.getGroupResources(this.selected_project[1].toString())
+				.subscribe((res: ApplicationRessourceUsage): void => {
+					this.selected_project_ressources = new ApplicationRessourceUsage(res);
+					this.data_loaded = true;
+					this.check_project_data_loaded();
+				}),
 		);
 		this.get_images(this.selected_project[1]);
 		this.get_flavors(this.selected_project[1]);
@@ -314,7 +307,7 @@ private group_service: GroupService,
 	set_selected_flavor(flavor: Flavor): void {
 		this.selected_flavor = flavor;
 		this.new_cores = this.selected_flavor.vcpus;
-		this.new_ram = this.selected_flavor.ram;
+		this.new_ram = this.selected_flavor.ram_gib;
 		this.new_gpus = this.selected_flavor.gpu;
 	}
 
@@ -346,7 +339,9 @@ private group_service: GroupService,
 		} = {};
 
 		if (this.res_env_component && this.res_env_component.selectedTemplate.template_name !== 'undefined') {
-			playbook_info[this.res_env_component.selectedTemplate.template_name] = { create_only_backend: `${this.res_env_component.getCreateOnlyBackend()}` };
+			playbook_info[this.res_env_component.selectedTemplate.template_name] = {
+				create_only_backend: `${this.res_env_component.getCreateOnlyBackend()}`,
+			};
 			playbook_info['user_key_url'] = { user_key_url: name };
 		}
 
@@ -379,32 +374,38 @@ private group_service: GroupService,
 			// Playbook and Research-Environment stuff
 			const playbook_information: string = this.get_playbook_information(name);
 			servers.push({
-				name, playbook_information, elixirId: member.elixirId, userName: `${member.lastName}${member.firstName}`,
+				name,
+				playbook_information,
+				elixirId: member.elixirId,
+				userName: `${member.lastName}${member.firstName}`,
 			});
 		}
-		this.delay(500).then((): any => {
-			this.progress_bar_width = 50;
-		}).catch((): any => {
-		});
+		this.delay(500)
+			.then((): any => {
+				this.progress_bar_width = 50;
+			})
+			.catch((): any => {});
 		this.subscription.add(
-			this.virtual_machine_service.startWorkshopVMs(
-				flavor_fixed,
-				this.selected_image,
-				servers,
-				this.selected_project[0],
-				this.selected_project[1].toString(),
-				this.selected_workshop.shortname,
-			).subscribe(() => {
-				this.progress_bar_width = 75;
-				setTimeout(
-					(): void => {
-						void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
+			this.virtual_machine_service
+				.startWorkshopVMs(
+					flavor_fixed,
+					this.selected_image,
+					servers,
+					this.selected_project[0],
+					this.selected_project[1].toString(),
+					this.selected_workshop.shortname,
+				)
+				.subscribe(
+					() => {
+						this.progress_bar_width = 75;
+						setTimeout((): void => {
+							void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
+						}, 2000);
 					},
-					2000,
-				);
-			}, (error: any) => {
-				console.log(error);
-			}),
+					(error: any) => {
+						console.log(error);
+					},
+				),
 		);
 	}
 
@@ -472,5 +473,4 @@ private group_service: GroupService,
 			this.res_env_component.resetData();
 		}
 	}
-
 }
