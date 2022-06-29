@@ -253,8 +253,9 @@
 														</a>
 														<br />
 														<i class="fa fa-heartbeat" style="width: 1.5em"></i>{{ vm.vm.status }}<br />
-														<i class="fa fa-link" style="width: 1.5em"></i>
+														<i *ngIf="vm?.has_resenv" class="fa fa-link" style="width: 1.5em"></i>
 														<a
+															*ngIf="vm?.has_resenv"
 															href="{{ vm.urlData.resenv_url }}"
 															target="_blank"
 															rel="noopener noreferrer"
@@ -263,17 +264,18 @@
 														>
 															{{ vm.urlData.resenv_url }}
 														</a>
-														<br />
+														<br *ngIf="vm?.has_resenv" />
 
-														<i class="fas fa-globe" style="width: 1.5em"></i>{{ vm.resenv_name | uppercase }}
-														<br />
+														<i *ngIf="vm?.has_resenv" class="fas fa-globe" style="width: 1.5em"></i
+														>{{ vm.resenv_name | uppercase }}
+														<br *ngIf="vm?.has_resenv" />
 
 														<i class="fa fa-envelope" style="width: 1.5em"></i
 														><i class="fa fa-check" style="width: 1.5em" *ngIf="vm.email_sent"></i>
 														<i class="fa fa-times" style="width: 1.5em" *ngIf="!vm.email_sent"></i>
 														<button
 															class="btn btn-secondary"
-															[disabled]="!vm?.urlData?.resenv_url"
+															[disabled]="!vm?.urlData?.resenv_url && vm?.has_resenv"
 															(click)="sendWorkshopVMEMailInfo(vm)"
 														>
 															<span *ngIf="vm.email_sent">(Re)</span>Send Mail

@@ -18,7 +18,6 @@ import { BlockedImageTagResenv } from '../../facility_manager/image-tag';
 	providers: [BiocondaService],
 })
 export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
-
 	@Input() clientid: string;
 	@Input() forc_url: string;
 	@Input() onlyNamespace: boolean = false;
@@ -31,12 +30,9 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 
 	templates_to_block: string[] = [];
 
-	user_key_url: FormControl = new FormControl(
-		'',
-		[Validators.required, Validators.pattern('[a-zA-Z]{3,20}')],
-	);
+	user_key_url: FormControl = new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z]{3,20}')]);
 
-	selectedTemplate: ResearchEnvironment = null;
+	selectedTemplate: ResearchEnvironment | undefined = undefined;
 
 	templates: ResearchEnvironment[] = [];
 
@@ -132,7 +128,7 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	okayNeeded(): boolean {
-		return (!this.onlyNamespace && this.selectedTemplate.template_name !== 'undefined');
+		return this.selectedTemplate.template_name !== 'undefined';
 	}
 
 	setOnlyNamespace(template): void {
@@ -169,5 +165,4 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 		this.setSelectedTemplate(null);
 		this.create_only_backend = false;
 	}
-
 }

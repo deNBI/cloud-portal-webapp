@@ -145,6 +145,10 @@
 			</div>
 		</ng-container>
 	</div>
+	<div *ngIf="onlyNamespace && selectedTemplate" class="row">
+		Selected Image has research environment installed:
+		<img alt="{{ selectedTemplate.template_name }}" style="max-width: 100px" src="{{ selectedTemplate.logo_url }}" />
+	</div>
 
 	<div
 		*ngIf="(onlyNamespace || selectedTemplate !== undefinedTemplate) && !workshopMode"
