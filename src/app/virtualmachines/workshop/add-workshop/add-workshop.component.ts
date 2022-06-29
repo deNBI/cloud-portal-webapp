@@ -307,7 +307,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	set_selected_flavor(flavor: Flavor): void {
 		this.selected_flavor = flavor;
 		this.new_cores = this.selected_flavor.vcpus;
-		this.new_ram = this.selected_flavor.ram;
+		this.new_ram = this.selected_flavor.ram_gib;
 		this.new_gpus = this.selected_flavor.gpu;
 	}
 

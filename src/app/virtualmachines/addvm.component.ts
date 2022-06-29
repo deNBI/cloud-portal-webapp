@@ -772,7 +772,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	setSelectedFlavor(flavor: Flavor): void {
 		this.selectedFlavor = flavor;
 		this.newCores = this.selectedFlavor.vcpus;
-		this.newRam = this.selectedFlavor.ram;
+		this.newRam = this.selectedFlavor.ram_gib;
 		this.newGpus = this.selectedFlavor.gpu;
 		this.checkImageAgain();
 	}

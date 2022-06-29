@@ -7,7 +7,8 @@ export class Flavor {
 	id: string;
 	name: string;
 	vcpus: number;
-	ram: number;
+	ram_gib: number;
+	ram_mb: number;
 	rootdisk: number;
 	gpu: number = 0;
 	ephemeral_disk: number = 0;
@@ -15,7 +16,7 @@ export class Flavor {
 	simple_vm: boolean;
 	comment: string;
 	counter: number;
-	credits_per_hour: number;
+	credits_costs_per_hour: number;
 	compute_center: number;
 	disabled: boolean;
 
@@ -27,9 +28,6 @@ export class Flavor {
 			}
 		}
 		this.disabled = false;
-		if (flavor['credits_costs_per_hour']) {
-			this.credits_per_hour = flavor['credits_costs_per_hour'];
-		}
 	}
 
 	public setDisabled(disabled: boolean): void {

@@ -396,7 +396,7 @@
 				</div>
 				<div
 					*ngIf="
-						selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram >
+						selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram_gib >
 							selected_project_ressources?.ram_total ||
 						selected_project_ressources?.cores_used + members_to_add?.length * selected_flavor?.vcpus >
 							selected_project_ressources?.cores_total ||
@@ -411,7 +411,7 @@
 					<p>You do not have enough resources to start that amount of VMs. Missing resources:</p>
 					<p
 						*ngIf="
-							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram >
+							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram_gib >
 							selected_project_ressources?.ram_total
 						"
 					>
@@ -491,7 +491,7 @@
 							(!gave_okay && resenv_selected) ||
 							(!res_env_valid && resenv_selected) ||
 							members_to_add.length < 1 ||
-							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram >
+							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram_gib >
 								selected_project_ressources?.ram_total ||
 							selected_project_ressources?.cores_used + members_to_add?.length * selected_flavor?.vcpus >
 								selected_project_ressources?.cores_total ||
