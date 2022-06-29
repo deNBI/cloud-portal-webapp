@@ -62,8 +62,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	modificationRequestDisabled: boolean = false;
 	lifetimeExtensionDisabled: boolean = false;
 	creditsExtensionDisabled: boolean = false;
-
-	invitation_group_post: string = environment.invitation_group_post;
 	voRegistrationLink: string = environment.voRegistrationLink;
 	invitation_group_pre: string = environment.invitation_group_pre;
 	WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT;
@@ -808,11 +806,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	setAddUserInvitationLink(): void {
-		const uri: string =			this.invitation_group_pre
-			+ this.project_application.perun_name
-			+ this.invitation_group_post
-			+ this.project_application.perun_name;
-		this.invitation_link = uri;
+		this.invitation_link = this.invitation_group_pre + this.project_application.perun_name;
 	}
 
 	copyToClipboard(text: string): void {
