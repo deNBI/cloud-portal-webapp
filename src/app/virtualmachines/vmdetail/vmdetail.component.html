@@ -218,7 +218,7 @@
 							<div class="col-4">
 								<div class="callout">
 									<small class="text-muted">RAM</small><br />
-									<strong class="text-muted">{{ virtualMachine?.flavor?.ram }} GB</strong>
+									<strong class="text-muted">{{ virtualMachine?.flavor?.ram_gib }} GB</strong>
 								</div>
 							</div>
 						</div>
@@ -868,14 +868,14 @@
 					</div>
 					<div class="modal-body">
 						<div><strong>Snapshot Name*</strong></div>
-						<div *ngIf="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM">
+						<div *ngIf="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM">
 							A snapshot also preserves the full state of RAM, therefore only snapshots up to a maximum of 256 GB RAM
 							are supported.
 						</div>
 
 						<div>
 							<input
-								[disabled]="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM"
+								[disabled]="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
 								type="text"
 								style="width: 100%"
 								placeholder="Snapshot Name"
@@ -895,7 +895,7 @@
 						<div><strong>Description</strong></div>
 						<div>
 							<textarea
-								[disabled]="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM"
+								[disabled]="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
 								style="width: 100%"
 								type="textfield"
 								placeholder="Description"
@@ -910,7 +910,7 @@
 						<button
 							class="btn btn-success col-md-4"
 							id="snapshot_create_modal_button"
-							[disabled]="!validSnapshotNameBool || virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM"
+							[disabled]="!validSnapshotNameBool || virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
 							(click)="
 								createSnapshot(virtualMachine.openstackid, snapshotName, snapshotDescription.value);
 								snapshotModal.hide();

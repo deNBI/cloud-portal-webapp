@@ -47,10 +47,11 @@
 								<br />
 								Number of cores: <span id="{{ flavor.name }}_old_cores">{{ flavor.vcpus }}</span>
 								<br />
-								RAM: <span id="{{ flavor.name }}_old_ram">{{ flavor.ram }}</span> GB
+								RAM: <span id="{{ flavor.name }}_old_ram">{{ flavor.ram_gib }}</span> GB
 								<span *ngIf="project?.credits_allowed">
 									<br />
-									Credits per hour: <span id="{{ flavor.name }}_old_cph">{{ flavor.credits_per_hour }}</span> CCs/h
+									Credits per hour:
+									<span id="{{ flavor.name }}_old_cph">{{ flavor.credits_costs_per_hour }}</span> CCs/h
 								</span>
 							</label>
 							<div class="col-6">
@@ -80,10 +81,10 @@
 								<br />
 								Number of cores: <span id="{{ flavor.name }}_cores">{{ flavor.vcpus }}</span>
 								<br />
-								RAM: <span id="{{ flavor.name }}_ram">{{ flavor.ram }}</span> GB
+								RAM: <span id="{{ flavor.name }}_ram">{{ flavor.ram_gib }}</span> GB
 								<span *ngIf="project?.credits_allowed">
 									<br />
-									Credits per hour: <span id="{{ flavor.name }}_cph">{{ flavor.credits_per_hour }}</span> CCs/h
+									Credits per hour: <span id="{{ flavor.name }}_cph">{{ flavor.credits_costs_per_hour }}</span> CCs/h
 								</span>
 							</label>
 							<div class="col-6">

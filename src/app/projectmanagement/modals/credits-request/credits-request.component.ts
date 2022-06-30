@@ -16,7 +16,6 @@ import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor';
 	providers: [CreditsService],
 })
 export class CreditsRequestComponent implements OnInit, OnDestroy {
-
 	project: Application;
 	temp_credits_extension: ApplicationCreditRequest;
 
@@ -91,17 +90,23 @@ export class CreditsRequestComponent implements OnInit, OnDestroy {
 		highMemFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
 		if (standardFlavors.length !== 0) {
 			this.smallExampleFlavor = standardFlavors[0];
-			this.creditsService.getCreditsPerHour(this.smallExampleFlavor.vcpus, this.smallExampleFlavor.ram).toPromise()
+			this.creditsService
+				.getCreditsPerHour(this.smallExampleFlavor.vcpus, this.smallExampleFlavor.ram_gib)
+				.toPromise()
 				.then((credits: number): void => {
 					this.creditsPerHourSmallExample = credits * 4;
-				}).catch((err: Error): void => console.log(err.message));
+				})
+				.catch((err: Error): void => console.log(err.message));
 		}
 		if (highMemFlavors.length !== 0) {
 			this.largeExampleFlavor = highMemFlavors[0];
-			this.creditsService.getCreditsPerHour(this.largeExampleFlavor.vcpus, this.largeExampleFlavor.ram).toPromise()
+			this.creditsService
+				.getCreditsPerHour(this.largeExampleFlavor.vcpus, this.largeExampleFlavor.ram_gib)
+				.toPromise()
 				.then((credits: number): void => {
 					this.creditsPerHourLargeExample = credits;
-				}).catch((err: Error): void => console.log(err.message));
+				})
+				.catch((err: Error): void => console.log(err.message));
 		}
 	}
 
@@ -114,15 +119,12 @@ export class CreditsRequestComponent implements OnInit, OnDestroy {
 		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
-		this.bsModalRef.content.event.subscribe(
-			(result: any) => {
-				if ('reload' in result && result['reload']) {
-					this.event.emit({ reload: true });
-				} else {
-					this.event.emit({ reload: false });
-				}
-			},
-		);
+		this.bsModalRef.content.event.subscribe((result: any) => {
+			if ('reload' in result && result['reload']) {
+				this.event.emit({ reload: true });
+			} else {
+				this.event.emit({ reload: false });
+			}
+		});
 	}
-
 }

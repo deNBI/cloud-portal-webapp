@@ -6,7 +6,6 @@ import { Application } from './application.model/application.model';
  * Application Extension class.
  */
 export class ApplicationModification {
-
 	Id: number;
 	project_application_id: number | string;
 	vms_requested: number;
@@ -27,7 +26,7 @@ export class ApplicationModification {
 	constructor(extension?: Partial<ApplicationModification>) {
 		Object.assign(this, extension);
 		if (extension) {
-			this.extra_credits = (Math.round(extension.extra_credits * 10) / 10);
+			this.extra_credits = Math.round(extension.extra_credits * 10) / 10;
 			if (extension.total_gpu) {
 				this.total_gpu = extension.total_gpu;
 			} else {
@@ -74,7 +73,7 @@ export class ApplicationModification {
 		let cores: number = 0;
 		let gpu: number = 0;
 		for (const flavor of this.flavors) {
-			ram += flavor.ram * flavor.counter;
+			ram += flavor.ram_gib * flavor.counter;
 			cores += flavor.vcpus * flavor.counter;
 			gpu += flavor.gpu * flavor.counter;
 		}
@@ -92,7 +91,6 @@ export class ApplicationModification {
 			}
 
 			return 0;
-
 		} else return 0;
 	}
 

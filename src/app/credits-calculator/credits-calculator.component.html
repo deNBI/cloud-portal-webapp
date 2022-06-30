@@ -1,29 +1,30 @@
 <div *ngIf="!got_all_cc" class="loader"></div>
 <div *ngIf="got_all_cc" class="animated fadeIn">
 	<div class="card">
-		<div class="card-header">
-			Calculate credits for {{selected_facility[0]}}
-		</div>
+		<div class="card-header">Calculate credits for {{ selected_facility[0] }}</div>
 		<div class="card-body">
 			<alert type="danger" dismissible="true">
-				We are slowly rolling out the implementation of Cloud Credits which assist in tracking resource usage.<br>
-				<strong>These Cloud Credits only affect some selected projects and each selected project will get
-					a message with detailed instructions and information.</strong><br>
+				We are slowly rolling out the implementation of Cloud Credits which assist in tracking resource usage.<br />
+				<strong
+					>These Cloud Credits only affect some selected projects and each selected project will get a message with
+					detailed instructions and information.</strong
+				><br />
 			</alert>
 			<alert type="info" dismissible="true">
 				Below you may calculate needed Cloud Credits for an amount of time respectively how long you may run a set of
-				machines non-stop with an available amount of Cloud Credits.<br>
-				Flavors may differ in their resources with each facility, therefore the values displayed here may differ slightly
-				from the values at the final project facility. You can either choose a facility below
-				(if you are member of an approved project running in that facility) or select the Default which is an
-				approximation of each flavor.<br>
-				As our weight function for Cloud Credits computation takes the timestamp of VM creation into account, you may set
-				it below to a different date and time. You will find a link to our weight function on our
-				<a href="{{CREDITS_WIKI}}" target="_blank" rel="noopener noreferrer">Wiki page</a>.<br>
+				machines non-stop with an available amount of Cloud Credits.<br />
+				Flavors may differ in their resources with each facility, therefore the values displayed here may differ
+				slightly from the values at the final project facility. You can either choose a facility below (if you are
+				member of an approved project running in that facility) or select the Default which is an approximation of each
+				flavor.<br />
+				As our weight function for Cloud Credits computation takes the timestamp of VM creation into account, you may
+				set it below to a different date and time. You will find a link to our weight function on our
+				<a href="{{ CREDITS_WIKI }}" target="_blank" rel="noopener noreferrer">Wiki page</a>.<br />
 				To learn more about Cloud Credits, what they are used for and how they are calculated, please visit our
-				<a href="{{CREDITS_WIKI}}" target="_blank" rel="noopener noreferrer">Wiki page</a>.<br>
+				<a href="{{ CREDITS_WIKI }}" target="_blank" rel="noopener noreferrer">Wiki page</a>.<br />
 				If you have questions, suggestions or need help, please E-Mail us at
-				<a class="alert-link" href="mailto: {{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
+				<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+				>.
 			</alert>
 			<div class="row justify-content-center">
 				<div class="col-6">
@@ -31,15 +32,12 @@
 					<select
 						[(ngModel)]="selected_facility"
 						class="form-control form-select"
-						(ngModelChange)="reload_data();"
+						(ngModelChange)="reload_data()"
 						name="selected_facility"
 						id="select_facility"
 					>
-						<option
-							*ngFor="let facility of all_facilities"
-							[ngValue]="facility"
-						>
-							{{facility[0]}}
+						<option *ngFor="let facility of all_facilities" [ngValue]="facility">
+							{{ facility[0] }}
 						</option>
 					</select>
 				</div>
@@ -51,23 +49,32 @@
 							<accordion-group [isOpen]="weights_open" #weightsgroup>
 								<div accordion-heading style="width: 100%; cursor: pointer">
 									<strong>Weights</strong>
-									<i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
-                            'icon-arrow-up': weightsgroup.isOpen, 'icon-arrow-down': !weightsgroup.isOpen}"></i>
+									<i
+										class="pull-right float-right"
+										style="font-size: 25px"
+										[ngClass]="{
+											'icon-arrow-up': weightsgroup.isOpen,
+											'icon-arrow-down': !weightsgroup.isOpen
+										}"
+									></i>
 								</div>
-								<div *ngFor="let weight of resource_weights"
-										 class="callout" [ngClass]="{'callout-success': weight.used}">
+								<div
+									*ngFor="let weight of resource_weights"
+									class="callout"
+									[ngClass]="{ 'callout-success': weight.used }"
+								>
 									<div class="row" style="margin-bottom: 5px">
-										Weights for {{weight.resource_set_date | date:'YYYY-MM-dd'}}:
+										Weights for {{ weight.resource_set_date | date: 'YYYY-MM-dd' }}:
 									</div>
 									<div class="row">
 										<div class="col">
 											<div class="row" *ngFor="let vcpu_weight of weight.vcpus" style="margin-bottom: 3px">
-												VCPUS: {{vcpu_weight.value}} - Weight: {{vcpu_weight.weight}}
+												VCPUS: {{ vcpu_weight.value }} - Weight: {{ vcpu_weight.weight }}
 											</div>
 										</div>
 										<div class="col">
 											<div class="row" *ngFor="let ram_weight of weight.memory_mb">
-												RAM: {{ram_weight.value}} - Weight: {{ram_weight.weight}}
+												RAM: {{ ram_weight.value }} - Weight: {{ ram_weight.weight }}
 											</div>
 										</div>
 									</div>
@@ -79,7 +86,7 @@
 			</div>
 
 			<div class="row col justify-content-center" style="margin-top: 5px">
-				Here you may select the start date of your flavor configuration to affect the weight function:<br>
+				Here you may select the start date of your flavor configuration to affect the weight function:<br />
 			</div>
 			<form [formGroup]="timestamp_group" class="row justify-content-center">
 				<label class="input-group col-2">
@@ -90,14 +97,18 @@
 						#dp="bsDatepicker"
 						(bsValueChange)="reset_used()"
 						[bsConfig]="{
-								adaptivePosition: true,
-								dateInputFormat: 'YYYY-MM-DD',
-								containerClass: 'theme-dark-blue'}"
-						formControlName="date_picker">
-					<button class="btn input-group-append input-group-text"
-									(click)="dp.show()"
-									[attr.aria-expanded]="dp.isOpen"
-									type="button">
+							adaptivePosition: true,
+							dateInputFormat: 'YYYY-MM-DD',
+							containerClass: 'theme-dark-blue'
+						}"
+						formControlName="date_picker"
+					/>
+					<button
+						class="btn input-group-append input-group-text"
+						(click)="dp.show()"
+						[attr.aria-expanded]="dp.isOpen"
+						type="button"
+					>
 						<i class="fa fa-clock"></i>
 					</button>
 				</label>
@@ -111,9 +122,9 @@
 						</div>
 						<div *ngFor="let flavor_type of flavor_types" class="card" style="margin-top: 15px; margin-bottom: 5px">
 							<div class="card-body">
-								<form id="{{flavor_type.long_name}}" #form="ngForm" class="form-horizontal">
+								<form id="{{ flavor_type.long_name }}" #form="ngForm" class="form-horizontal">
 									<h5 class="row">
-										{{flavor_type.long_name}}
+										{{ flavor_type.long_name }}
 									</h5>
 									<div
 										*ngFor="let flavor of shown_flavors[flavor_type.long_name]"
@@ -121,74 +132,74 @@
 										class="form-group row"
 									>
 										<div class="input-group">
-											<label for="{{flavor.id}}" class="input-group-prepend input-group-text col-7">
-												<strong>{{flavor.name}}</strong>: VCPUs: {{flavor.vcpus}} RAM: {{flavor.ram}}
+											<label for="{{ flavor.id }}" class="input-group-prepend input-group-text col-7">
+												<strong>{{ flavor.name }}</strong
+												>: VCPUs: {{ flavor.vcpus }} RAM: {{ flavor.ram_gib }}
 											</label>
 											<input
 												class="form-control col-2"
-												id="{{flavor.id}}"
+												id="{{ flavor.id }}"
 												type="number"
 												value="0"
-												min="0" step="1"
+												min="0"
+												step="1"
 												[ngModel]="0"
 												#name="ngModel"
-												appInteger appMinAmount="0"
+												appInteger
+												appMinAmount="0"
 												[name]="flavor.name"
 												(change)="change_flavor_pair(flavor.name, $event)"
 												[ngClass]="{
-                                'is-invalid': name?.invalid,
-                                'is-valid': name?.valid
-                                }"
-											>
+													'is-invalid': name?.invalid,
+													'is-valid': name?.valid
+												}"
+											/>
 											<div class="input-group-append input-group-text col-3">
-												{{flavor['credits_costs_per_hour']}} Credits/h
+												{{ flavor['credits_costs_per_hour'] }} Credits/h
 											</div>
 										</div>
-
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
 					<div class="col-6">
-						<div style="margin-top: 10px">
-							Please select a calculation:
-						</div>
+						<div style="margin-top: 10px">Please select a calculation:</div>
 						<div style="position: sticky; top: 0">
 							<div class="card" style="margin-top: 15px">
-								<div class="card-header">
-									Calculate needed amount of credits for this configuration based on time
-								</div>
+								<div class="card-header">Calculate needed amount of credits for this configuration based on time</div>
 								<div class="card-body">
-									<label for="ccs_needed">
-										You want to run for:
-									</label>
+									<label for="ccs_needed"> You want to run for: </label>
 									<div class="input-group" style="margin-bottom: 5px" [formGroup]="hours_wanted_group">
-										<input type="number" class="form-control" formControlName="hours_wanted_form"
-													 id="ccs_needed"
-													 [ngClass]="{
-                                'is-invalid': hours_wanted_group?.invalid,
-                                'is-valid': hours_wanted_group?.valid
-                                }"
-										>
-										<div class="input-group-text input-group-append">
-											hours
-										</div>
+										<input
+											type="number"
+											class="form-control"
+											formControlName="hours_wanted_form"
+											id="ccs_needed"
+											[ngClass]="{
+												'is-invalid': hours_wanted_group?.invalid,
+												'is-valid': hours_wanted_group?.valid
+											}"
+										/>
+										<div class="input-group-text input-group-append">hours</div>
 									</div>
 									<div class="alert alert-warning" *ngIf="chosen_flavors.length === 0 || hours_wanted_group?.invalid">
-										<div *ngIf="chosen_flavors.length === 0">
-											You need to choose at least one flavor.
-										</div>
+										<div *ngIf="chosen_flavors.length === 0">You need to choose at least one flavor.</div>
 										<div *ngIf="hours_wanted_group?.invalid">
 											The amount of hours must be an integer higher or equal to 1.
 										</div>
 									</div>
-									<button class="btn btn-primary col" [disabled]="chosen_flavors.length === 0 || hours_wanted_group?.invalid"
-													(click)="calculate_credits_needed()">Calculate</button>
+									<button
+										class="btn btn-primary col"
+										[disabled]="chosen_flavors.length === 0 || hours_wanted_group?.invalid"
+										(click)="calculate_credits_needed()"
+									>
+										Calculate
+									</button>
 									<div *ngIf="credits_needed > 0" style="margin-top: 5px">
-										You will need <strong>{{credits_needed}} Cloud Credits</strong> to run this configuration for
-										{{hours_wanted_group.get('hours_wanted_form').value | floorInteger}} hours
-										non-stop. The configuration costs a total of {{total_cost_per_hour_needed}} CCs/h.
+										You will need <strong>{{ credits_needed }} Cloud Credits</strong> to run this configuration for
+										{{ hours_wanted_group.get('hours_wanted_form').value | floorInteger }} hours non-stop. The
+										configuration costs a total of {{ total_cost_per_hour_needed }} CCs/h.
 									</div>
 								</div>
 							</div>
@@ -197,34 +208,38 @@
 									Calculate available amount of time for this configuration based on credits
 								</div>
 								<div class="card-body">
-									<label for="ccs_time">
-										You have available:
-									</label>
+									<label for="ccs_time"> You have available: </label>
 									<div class="input-group" style="margin-bottom: 5px" [formGroup]="credits_wanted_group">
-										<input type="number" class="form-control" formControlName="credits_wanted_form"
-													 id="ccs_time" [ngClass]="{
-                                'is-invalid': credits_wanted_group?.invalid,
-                                'is-valid': credits_wanted_group?.valid
-                                }">
-										<div class="input-group-append input-group-text">
-											Cloud Credits
-										</div>
+										<input
+											type="number"
+											class="form-control"
+											formControlName="credits_wanted_form"
+											id="ccs_time"
+											[ngClass]="{
+												'is-invalid': credits_wanted_group?.invalid,
+												'is-valid': credits_wanted_group?.valid
+											}"
+										/>
+										<div class="input-group-append input-group-text">Cloud Credits</div>
 									</div>
 
 									<div class="alert alert-warning" *ngIf="chosen_flavors.length === 0 || credits_wanted_group?.invalid">
-										<div *ngIf="chosen_flavors.length === 0">
-											You need to choose at least one flavor.
-										</div>
+										<div *ngIf="chosen_flavors.length === 0">You need to choose at least one flavor.</div>
 										<div *ngIf="credits_wanted_group?.invalid">
 											The amount of Cloud Credits available must be an integer higher or equal to 1.
 										</div>
 									</div>
-									<button class="btn btn-primary col" [disabled]="chosen_flavors.length === 0 || credits_wanted_group?.invalid"
-													(click)="calculate_time_possible()">Calculate</button>
+									<button
+										class="btn btn-primary col"
+										[disabled]="chosen_flavors.length === 0 || credits_wanted_group?.invalid"
+										(click)="calculate_time_possible()"
+									>
+										Calculate
+									</button>
 									<div *ngIf="hours_possible > 0" style="margin-top: 5px">
-										You may run this configuration for <strong>{{hours_possible}} hours</strong> non-stop with
-										{{credits_wanted_group.get('credits_wanted_form').value | floorInteger}} Cloud Credits.
-										The configuration costs a total of {{total_cost_per_hour_time}} CCs/h.
+										You may run this configuration for <strong>{{ hours_possible }} hours</strong> non-stop with
+										{{ credits_wanted_group.get('credits_wanted_form').value | floorInteger }} Cloud Credits. The
+										configuration costs a total of {{ total_cost_per_hour_time }} CCs/h.
 									</div>
 								</div>
 							</div>
