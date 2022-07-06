@@ -12,7 +12,7 @@ export class NewInstancePage {
 	private IMAGE_SELECTION_PREFIX: string = 'image_';
 	private FLAVOR_IMAGE_SELECTED_SUFFIX: string = '_selected';
 	private NORMAL_FLAVOR_TO_SELECT: string = 'de_NBI_tiny';
-	private NORMAL_IMAGE_TO_SELECT: string = 'Ubuntu_18_04_LTS__2021-12-13_';
+	private NORMAL_IMAGE_TO_SELECT: string = 'Ubuntu_18_04_LTS_de_NBI__2022-06-17_';
 	private ADD_NEW_VOLUME_TAB: string = 'add_new_volume_tab';
 	private NEW_VOLUME_NAME_INPUT: string = 'new_volume_name_input';
 	private NEW_VOLUME_MOUNT_PATH_INPUT: string = 'new_volume_mount_path_input';
