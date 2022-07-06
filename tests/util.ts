@@ -143,6 +143,8 @@ export class Util {
 		return `[data-test-id ^=${data_test_id}]`;
 	}
 
+
+
 	static async consoleLogCurrentUrl(page: Page): Promise<void> {
 			const url = await page.url();//get the url of the current page
 			console.log("Current Url: " + url)

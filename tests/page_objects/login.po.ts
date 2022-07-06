@@ -61,13 +61,17 @@ export class LoginPagePlaywright {
 				await this.skipElixirTestWarning();
 				await Util.consoleLogCurrentUrl(this.page)
 
-				await this.page.waitForNavigation({url: '**/userinfo'});
+				const url = await this.page.url()
+				expect(url).toContain('/userinfo');
+
+
 		}
 
 		async skipElixirTestWarning(): Promise<void> {
 				try {
 						await this.page.waitForNavigation({url: `**/oidc/${this.TEST_RP_WARNING}**`});
 						await this.page.locator(`text=${this.TEST_RP_CONTINUE}`).click();
+						await this.page.waitForNavigation({url: '**/userinfo'});
 				} catch (error) {
 						console.log(`Didn't Load Test Warning: ${error}`);
 						await Util.consoleLogCurrentUrl(this.page)
