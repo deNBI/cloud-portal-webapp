@@ -107,7 +107,7 @@ export class InstanceOverviewPage {
 		await expect(locator_stop).toBeVisible();
 		await locator_stop.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_VM_STOP_BUTTON)).isVisible();
-		await this.page.click(Util.by_data_test_id_str(this.VERIFY_VM_STOP_BUTTON));
+		await Util.clickByDataTestIdStr(this.page,this.VERIFY_VM_STOP_BUTTON);
 		await this.waitForInstanceToBeShutoff(vm_name, timeout);
 	}
 
@@ -120,7 +120,7 @@ export class InstanceOverviewPage {
 		await expect(locator_resume).toBeVisible();
 		await locator_resume.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_VM_RESUME_BUTTON)).isVisible();
-		await this.page.click(Util.by_data_test_id_str(this.VERIFY_VM_RESUME_BUTTON));
+		await Util.clickByDataTestIdStr(this.page,this.VERIFY_VM_RESUME_BUTTON);
 		await this.waitForInstanceToBeActive(vm_name, timeout);
 	}
 
@@ -133,7 +133,7 @@ export class InstanceOverviewPage {
 		const locator_soft_reboot = this.page.locator(Util.by_data_test_id_str_prefix(`${this.SOFT_REBOOT_VM}${vm_name}`));
 		await locator_soft_reboot.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_REBOOT_BUTTON)).isVisible();
-		await this.page.click(Util.by_data_test_id_str(this.VERIFY_REBOOT_BUTTON));
+		await Util.clickByDataTestIdStr(this.page,this.VERIFY_REBOOT_BUTTON);
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT), {
 			state: 'visible',
 			timeout,
@@ -151,7 +151,7 @@ export class InstanceOverviewPage {
 		await expect(locator_delete).toBeVisible();
 		await locator_delete.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_DELETE_BUTTON)).isVisible();
-		await this.page.click(Util.by_data_test_id_str(this.VERIFY_DELETE_BUTTON));
+		await Util.clickByDataTestIdStr(this.page,this.VERIFY_DELETE_BUTTON);
 		await this.waitForInstanceToBeDeleted(vm_name, timeout);
 	}
 
