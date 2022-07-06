@@ -920,7 +920,7 @@
 			</div>
 			<div class="modal-body" *ngIf="!error_starting_machine">
 				<p>{{ progress_bar_status }}</p>
-				<p>Redirecting to Instance Overview...</p>
+				<p data-test-id="redirecting_instance_overview">Redirecting to Instance Overview...</p>
 				<p>
 					<br />Learn about persistent terminal sessions in our
 					<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Wiki</a>.
