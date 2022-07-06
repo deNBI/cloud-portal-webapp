@@ -2,6 +2,8 @@
 // const clc = require('cli-color');
 // tslint:disable-next-line:no-require-imports no-var-requires typedef
 
+import {Page} from '@playwright/test';
+
 /**
  * Util test class.
  */
@@ -84,6 +86,7 @@ export class Util {
 		return this._30_MIN_TIMEOUT;
 	}
 
+
 	static get BASIC_SNAPSHOT_NAME(): string {
 		return this._BASIC_SNAPSHOT_NAME;
 	}
@@ -138,5 +141,12 @@ export class Util {
 
 	static by_data_test_id_str_prefix(data_test_id: string): string {
 		return `[data-test-id ^=${data_test_id}]`;
+	}
+
+
+
+	static async consoleLogCurrentUrl(page: Page): Promise<void> {
+			const url = await page.url();//get the url of the current page
+			console.log("Current Url: " + url)
 	}
 }

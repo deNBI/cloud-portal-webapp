@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test';
+import { Util } from '../util';
 
 /**
  * LoginPage.
@@ -26,6 +27,7 @@ export class LoginPagePlaywright {
 		console.log('Using Google Login');
 
 		await this.page.goto(this.baseURL);
+		await Util.consoleLogCurrentUrl(this.page);
 		await this.page.locator('a', { has: this.page.locator('p:has-text("Google")').locator('visible=true') }).click();
 		await this.page.type('input[type="email"]', email);
 		await this.page.click('#identifierNext');
@@ -33,25 +35,40 @@ export class LoginPagePlaywright {
 		await this.page.type('input[type="password"]', psw);
 		await this.page.waitForSelector('#passwordNext', { state: 'visible' });
 		await this.page.click('#passwordNext');
+		await Util.consoleLogCurrentUrl(this.page);
+
 		await this.skipElixirTestWarning();
+		await Util.consoleLogCurrentUrl(this.page);
+
 		await this.page.waitForNavigation({ url: '**/userinfo' });
 	}
 
 	async useOrcid(email: string, psw: string): Promise<any> {
 		console.log('Using Orcid Login');
 		await this.page.goto(this.baseURL);
+		await Util.consoleLogCurrentUrl(this.page);
+
 		await this.page.locator('a', { has: this.page.locator('p:has-text("ORCID")').locator('visible=true') }).click();
+		await Util.consoleLogCurrentUrl(this.page);
+
 		await this.page.waitForNavigation({ url: 'https://orcid.org/signin**' });
 		await this.page.type('id=username', email);
 		await this.page.type('id=password', psw);
 		await this.page.locator('id=signin-button').click();
+		await Util.consoleLogCurrentUrl(this.page);
 
 		await this.skipElixirTestWarning();
-		await this.page.waitForNavigation({ url: '**/userinfo' });
+		await Util.consoleLogCurrentUrl(this.page);
 	}
 
 	async skipElixirTestWarning(): Promise<void> {
-		await this.page.waitForNavigation({ url: `**/oidc/${this.TEST_RP_WARNING}**` });
-		await this.page.locator(`text=${this.TEST_RP_CONTINUE}`).click();
+		try {
+			await this.page.waitForNavigation({ url: `**/oidc/${this.TEST_RP_WARNING}**` });
+			await this.page.locator(`text=${this.TEST_RP_CONTINUE}`).click();
+			await this.page.waitForNavigation({ url: '**/userinfo' });
+		} catch (error) {
+			console.log(`Didn't Load Test Warning: ${error}`);
+			await Util.consoleLogCurrentUrl(this.page);
+		}
 	}
 }
