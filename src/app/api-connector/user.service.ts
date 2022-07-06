@@ -16,14 +16,12 @@ export class UserService {
 	}
 
 	getLoginElixirName(): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/logins/`, {
 			withCredentials: true,
 		});
 	}
 
 	getPreferredMailUser(): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, {
 			withCredentials: true,
 		});
@@ -38,14 +36,12 @@ export class UserService {
 	}
 
 	logoutUser(): Observable<any> {
-
 		return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/logout/`, null, {
 			withCredentials: true,
 		});
 	}
 
 	getPendingPreferredMailUser(): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/pendingPreferredEmails/`, {
 			withCredentials: true,
 		});
@@ -56,27 +52,20 @@ export class UserService {
 
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/${elixir_id}/member/`, {
 			withCredentials: true,
-
 		});
-
 	}
 
 	getUserInfo(): Observable<Userinfo> {
-
-		return this.http.get<Userinfo>(`${ApiSettings.getApiBaseURL()}users/current/userInfo/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(userinfo: Userinfo): Userinfo => new Userinfo(userinfo),
-			),
-		);
+		return this.http
+			.get<Userinfo>(`${ApiSettings.getApiBaseURL()}users/current/userInfo/`, {
+				withCredentials: true,
+			})
+			.pipe(map((userinfo: Userinfo): Userinfo => new Userinfo(userinfo)));
 	}
 
 	getLoggedUserElixirId(): Observable<any> {
-
 		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}users/current/elixir_id/`, {
 			withCredentials: true,
-
 		});
 	}
 
@@ -86,7 +75,6 @@ export class UserService {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
 			withCredentials: true,
 			params,
-
 		});
 	}
 
@@ -108,18 +96,20 @@ export class UserService {
 				headers: skip_header,
 			});
 		}
-
 	}
 
+	getIsCurrentUserVoMember(): Observable<any> {
+		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/member/status/`, {
+			withCredentials: true,
+		});
+	}
 	getMemberByUser(): Observable<any> {
-
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/member/`, {
 			withCredentials: true,
 		});
 	}
 
 	getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> {
-
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/extLogin/member/`, {
 			withCredentials: true,
 			params: {
@@ -134,7 +124,6 @@ export class UserService {
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	setNewsletterSubscriptionWhenNotSubscribed(): Observable<IResponseTemplate> {
@@ -143,19 +132,15 @@ export class UserService {
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	getNewsletterSubscription(): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	sendHelpMail(subject: string, message: string, reply: string): Observable<IResponseTemplate> {
-
 		const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
@@ -164,7 +149,6 @@ export class UserService {
 	}
 
 	getFilteredMembersOfdeNBIVo(searchString: string): Observable<any> {
-
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/filter/`, {
 			withCredentials: true,
 			params: {
@@ -172,5 +156,4 @@ export class UserService {
 			},
 		});
 	}
-
 }
