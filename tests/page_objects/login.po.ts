@@ -51,7 +51,11 @@ export class LoginPagePlaywright {
 	}
 
 	async skipElixirTestWarning(): Promise<void> {
-		await this.page.waitForNavigation({ url: `**/oidc/${this.TEST_RP_WARNING}**` });
-		await this.page.locator(`text=${this.TEST_RP_CONTINUE}`).click();
+		try {
+			await this.page.waitForNavigation({ url: `**/oidc/${this.TEST_RP_WARNING}**` });
+			await this.page.locator(`text=${this.TEST_RP_CONTINUE}`).click();
+		} catch (error) {
+			console.log(`Didn't Load Test Warning: ${error}`);
+		}
 	}
 }
