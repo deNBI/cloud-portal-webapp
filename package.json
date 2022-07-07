@@ -75,6 +75,7 @@
     "ngx-cookie-service": "13.2.1",
     "ngx-owl-carousel-o": "7.0.3",
     "ngx-scrollbar": "9.0.2",
+    "@ng-bootstrap/ng-bootstrap": "12.1.2",
     "pdfmake": "0.2.5",
     "postcss-loader": "7.0.0",
     "postcss-url": "10.1.3",
