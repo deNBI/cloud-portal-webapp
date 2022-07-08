@@ -151,6 +151,6 @@ export class WorkshopOverviewPage {
 	async visitResEnv(url: string) {
 		const response: Response = await this.page.goto(url, { waitUntil: 'networkidle' });
 
-		expect(response.status).toEqual(200);
+		expect(response.status()).toEqual(200);
 	}
 }

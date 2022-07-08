@@ -57,8 +57,8 @@ export class LoginPagePlaywright {
 		await this.page.locator('id=signin-button').click();
 		await Util.consoleLogCurrentUrl(this.page);
 
-		await this.skipElixirTestWarning();
-		await Util.consoleLogCurrentUrl(this.page);
+		// await this.skipElixirTestWarning();
+		// await Util.consoleLogCurrentUrl(this.page);
 	}
 
 	async skipElixirTestWarning(): Promise<void> {
