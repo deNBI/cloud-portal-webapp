@@ -150,8 +150,7 @@ export class WorkshopOverviewPage {
 
 	async visitResEnv(url: string, expected_title: string) {
 		await this.page.goto(url);
-		await this.page.waitForNavigation({ url: '**/oidc/testRpWarning**' });
-		await this.page.locator('text=Continue').click();
+		// await Util.skipElixirTestWarning(this.page)
 		const title = await this.page.title();
 		expect(title).toContain(expected_title);
 	}
