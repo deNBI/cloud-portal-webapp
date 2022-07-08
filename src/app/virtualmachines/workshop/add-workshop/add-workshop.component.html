@@ -95,7 +95,7 @@
 							</div>
 						</div>
 						<div *ngIf="project_data_loaded && client_available && workshop_data_loaded">
-							<app-resource-overview [ressourceUsage]="selected_project_ressources"> </app-resource-overview>
+							<app-resource-overview [ressourceUsage]="selected_project_ressources"></app-resource-overview>
 							<div
 								class="alert alert-primary"
 								role="alert"
@@ -243,6 +243,38 @@
 											>
 											</app-res-env>
 										</accordion-group>
+										<div
+											*ngIf="res_env_okay_needed && workshop_data_loaded"
+											class="row alert"
+											style="margin: 15px"
+											[ngClass]="{
+												'alert-danger': !gave_okay,
+												'alert-success': gave_okay
+											}"
+										>
+											<div class="form-check col">
+												<input
+													class="form-check-input"
+													name="res_env_okay_needed"
+													type="checkbox"
+													id="ansible_need_okay"
+													data-test-id="ansible_need_okay"
+													[(ngModel)]="gave_okay"
+													#respCheck
+													required
+												/>
+												<label class="form-check-label" for="ansible_need_okay">
+													I hereby confirm that I read and acknowledge the following:<br />
+													To set up your virtual machine with your chosen options, we generate a new rsa-keypair which
+													we use to log into your virtual machine.<br />
+													<strong
+														>At the end of the installation process we will remove the temporary key from your machine
+														and copy your public key, the public keys of the other admins of the project onto it,
+														regardless of whether the installation of your selections will succeed or fail.</strong
+													><br /><br />
+												</label>
+											</div>
+										</div>
 										<accordion-group
 											#userAccess
 											[isOpen]="true"
@@ -267,12 +299,18 @@
 													}"
 												></i>
 											</div>
+											<div class="alert alert-warning">
+												If no research environment is selected, only vms can be started for members who have set an SSH
+												key. Otherwise no connection to the VM can be established.
+											</div>
 											<div class="table-responsive">
 												<table class="table table-hover">
 													<thead>
 														<tr>
 															<th>Full Name</th>
 															<th>Vm started for this user in this workshop</th>
+															<th>SSH Key Set</th>
+
 															<th>Action</th>
 														</tr>
 													</thead>
@@ -292,6 +330,10 @@
 																</span>
 															</td>
 															<td>
+																<i *ngIf="member.publicKeySet" style="color: green" class="fa fa-check"></i>&nbsp;
+																<i *ngIf="!member.publicKeySet" style="color: red" class="fa fa-times"></i>&nbsp;
+															</td>
+															<td>
 																<button
 																	*ngIf="members_to_add.indexOf(member) === -1"
 																	type="button"
@@ -300,6 +342,7 @@
 																	class="btn btn-primary"
 																	data-toggle="modal"
 																	(click)="add_member(member)"
+																	[disabled]="!res_env_okay_needed && !member.publicKeySet"
 																>
 																	Add User
 																</button>
@@ -324,43 +367,12 @@
 						</div>
 					</form>
 				</div>
-				<div
-					*ngIf="res_env_okay_needed && workshop_data_loaded"
-					class="row alert"
-					style="margin: 15px"
-					[ngClass]="{
-						'alert-danger': !gave_okay,
-						'alert-success': gave_okay
-					}"
-				>
-					<div class="form-check col">
-						<input
-							class="form-check-input"
-							name="res_env_okay_needed"
-							type="checkbox"
-							id="ansible_need_okay"
-							data-test-id="ansible_need_okay"
-							[(ngModel)]="gave_okay"
-							#respCheck
-							required
-						/>
-						<label class="form-check-label" for="ansible_need_okay">
-							I hereby confirm that I read and acknowledge the following:<br />
-							To set up your virtual machine with your chosen options, we generate a new rsa-keypair which we use to log
-							into your virtual machine.<br />
-							<strong
-								>At the end of the installation process we will remove the temporary key from your machine and copy your
-								public key, the public keys of the other admins of the project onto it, regardless of whether the
-								installation of your selections will succeed or fail.</strong
-							><br /><br />
-						</label>
-					</div>
-				</div>
+
 				<div class="form-group row">
 					<div
 						*ngIf="
-							((!gave_okay && res_env_okay_needed) ||
-								(!res_env_valid && res_env_component) ||
+							((!gave_okay && res_env_okay_needed && resenv_selected) ||
+								(!res_env_valid && res_env_component && resenv_selected) ||
 								!selected_image ||
 								(!selected_flavor && flavors.length !== 0) ||
 								members_to_add.length < 1) &&
@@ -378,14 +390,13 @@
 						<p><strong>The following is missing before starting a VM</strong></p>
 						<p *ngIf="!selected_flavor">- The flavor type of your VM</p>
 						<p *ngIf="!selected_image">- The image you want to run on your VM</p>
-						<p *ngIf="!gave_okay && res_env_okay_needed">- Give your okay to the automated install process</p>
-						<p *ngIf="res_env_needs_template">- A Research-Environment template</p>
+						<p *ngIf="!gave_okay && resenv_selected">- Give your okay to the automated install process</p>
 						<p *ngIf="members_to_add.length < 1">- At least one member</p>
 					</div>
 				</div>
 				<div
 					*ngIf="
-						selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram >
+						selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram_gib >
 							selected_project_ressources?.ram_total ||
 						selected_project_ressources?.cores_used + members_to_add?.length * selected_flavor?.vcpus >
 							selected_project_ressources?.cores_total ||
@@ -400,7 +411,7 @@
 					<p>You do not have enough resources to start that amount of VMs. Missing resources:</p>
 					<p
 						*ngIf="
-							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram >
+							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram_gib >
 							selected_project_ressources?.ram_total
 						"
 					>
@@ -474,12 +485,13 @@
 						[disabled]="
 							!vm_responsibility ||
 							started_machine ||
+							(res_env_okay_needed && !gave_okay) ||
 							!selected_flavor ||
 							!selected_image ||
-							(!gave_okay && res_env_okay_needed) ||
-							(!res_env_valid && res_env_component) ||
+							(!gave_okay && resenv_selected) ||
+							(!res_env_valid && resenv_selected) ||
 							members_to_add.length < 1 ||
-							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram >
+							selected_project_ressources?.ram_used + members_to_add?.length * selected_flavor?.ram_gib >
 								selected_project_ressources?.ram_total ||
 							selected_project_ressources?.cores_used + members_to_add?.length * selected_flavor?.vcpus >
 								selected_project_ressources?.cores_total ||

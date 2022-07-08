@@ -18,13 +18,12 @@ import { setElixirId, setVO } from './shared/globalvar';
  */
 @Injectable()
 export class MemberGuardService implements CanActivate {
-
 	constructor(
-private http: HttpClient,
-private cookieService: CookieService,
-              private router: Router,
-private userService: UserService,
-private voService: VoService,
+		private http: HttpClient,
+		private cookieService: CookieService,
+		private router: Router,
+		private userService: UserService,
+		private voService: VoService,
 	) {
 		// constructor for MemberGuardService
 	}
@@ -49,50 +48,46 @@ private voService: VoService,
 			redirect_url = null;
 		}
 
-		return this.userService.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap((res: any): Observable<any> => {
-			if (res['error']) {
-				window.location.href = environment.login;
-				const subject: Subject<boolean> = new Subject<boolean>();
-				subject.next(false);
+		return this.userService.getOnlyLoggedUserWithRedirect(redirect_url).pipe(
+			switchMap((res: any): Observable<any> => {
+				if (res['error']) {
+					window.location.href = environment.login;
+					const subject: Subject<boolean> = new Subject<boolean>();
+					subject.next(false);
 
-				return subject.asObservable();
+					return subject.asObservable();
+				} else {
+					this.voService.isVo().subscribe((result: IResponseTemplate): void => {
+						setVO(result.value as boolean);
+					});
+					this.userService.getLoggedUserElixirId().subscribe((result: any): void => {
+						setElixirId(result['elixir_id']);
+					});
 
-			} else {
-				this.voService.isVo().subscribe((result: IResponseTemplate): void => {
-					setVO(result.value as boolean);
+					return this.userService.getIsCurrentUserVoMember().pipe(
+						map((memberinfo: any): any => {
+							if (!memberinfo['isMember']) {
+								return this.router.parseUrl('/registration-info');
+							}
+							if (cookieValue && cookieValue !== 'null') {
+								this.cookieService.delete('redirect_after_login', '/', environment.domain);
+								if (this.cookieService.check('redirect_after_login')) {
+									this.cookieService.set('redirect_after_login', null, now(), '/', environment.domain);
+									this.cookieService.set('redirect_after_login', null, now(), '/portal', environment.domain);
+								}
+								let val: string = cookieValue;
+								val = val.substring(2);
+								val = val.substring(0, val.length - 1);
+								cookieValue = null;
 
-				});
-				this.userService.getLoggedUserElixirId().subscribe((result: any): void => {
-					setElixirId(result['elixir_id']);
-				});
+								return this.router.parseUrl(val);
+							}
 
-				return this.userService.getMemberByUser().pipe(map((memberinfo: any): any => {
-					if (memberinfo['name'] === 'MemberNotExistsException') {
-						return this.router.parseUrl('/registration-info');
-
-					}
-					if (cookieValue && cookieValue !== 'null') {
-						this.cookieService.delete('redirect_after_login', '/', environment.domain);
-						if (this.cookieService.check('redirect_after_login')) {
-
-							this.cookieService.set('redirect_after_login', null, now(), '/', environment.domain);
-							this.cookieService.set('redirect_after_login', null, now(), '/portal', environment.domain);
-
-						}
-						let val: string = cookieValue;
-						val = val.substring(2);
-						val = val.substring(0, val.length - 1);
-						cookieValue = null;
-
-						return this.router.parseUrl(val);
-
-					}
-
-					return true;
-
-				}));
-			}
-		}));
-
+							return true;
+						}),
+					);
+				}
+			}),
+		);
 	}
 }

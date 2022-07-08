@@ -121,7 +121,7 @@ test.describe.serial('@workshops', () => {
 			await workshopOverviewPage.selectProject();
 			await workshopOverviewPage.selectWorkshop();
 			const resenv_url_admin = await workshopOverviewPage.getResenvUrlOfUser(environment.elixir_id_user);
-			await workshopOverviewPage.visitResEnv(resenv_url_admin, 'CWLab');
+			await workshopOverviewPage.visitResEnv(resenv_url_admin);
 		});
 	});
 

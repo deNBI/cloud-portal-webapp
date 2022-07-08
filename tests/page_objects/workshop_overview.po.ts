@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,import/no-extraneous-dependencies
-import { expect, Page } from '@playwright/test';
+import { expect, Page, Response } from '@playwright/test';
 import { Util } from '../util';
 
 /**
@@ -148,11 +148,9 @@ export class WorkshopOverviewPage {
 		return await this.page.locator(Util.by_data_test_id_str(`${this.RESENV_URL_PREFIX}${vm_name}`)).textContent();
 	}
 
-	async visitResEnv(url: string, expected_title: string) {
-		await this.page.goto(url);
-		await this.page.waitForNavigation({ url: '**/oidc/testRpWarning**' });
-		await this.page.locator('text=Continue').click();
-		const title = await this.page.title();
-		expect(title).toContain(expected_title);
+	async visitResEnv(url: string) {
+		const response: Response = await this.page.goto(url, { waitUntil: 'networkidle' });
+
+		expect(response.status()).toEqual(200);
 	}
 }
