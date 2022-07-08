@@ -33,7 +33,8 @@ export class Util {
 		private static _ALTERNATIVE_SNAPSHOT_NAME: string = 'PTSnapTwo';
 		private static _RESENV_URL: string = 'PTResenvUrl';
 		private static _RESENV_VM_NAME: string = 'PTResenv';
-
+		private static TEST_RP_WARNING: string = 'testRpWarning';
+		private static TEST_RP_CONTINUE: string = 'Continue';
 		// GENERAL VARIABLES
 		private static _PI_EMAIL: string = 'test@test.com';
 		private static _ONE_MINUTE_TIMEOUT: number = 60000;
@@ -154,4 +155,16 @@ export class Util {
 				const url = await page.url();//get the url of the current page
 				console.log('Current Url: ' + url)
 		}
+
+		static async skipElixirTestWarning(page: Page): Promise<void> {
+				try {
+						await page.waitForNavigation({url: `**/oidc/${Util.TEST_RP_WARNING}**`});
+						await page.locator(`text=${this.TEST_RP_CONTINUE}`).click();
+				} catch (error) {
+						console.log(`Didn't Load Test Warning: ${error}`);
+						await Util.consoleLogCurrentUrl(page);
+				}
+		}
+
+
 }
