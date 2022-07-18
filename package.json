@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.345.0",
+  "version": "4.346.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -129,7 +129,7 @@
     "style-loader": "3.3.1",
     "stylus-loader": "7.0.0",
     "ts-node": "10.8.2",
-    "typescript": "4.6.4",
+    "typescript": "4.7.4",
     "url-loader": "4.1.1",
     "webpack-cli": "4.10.0"
   },
