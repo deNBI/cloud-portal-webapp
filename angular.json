@@ -40,15 +40,15 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": {
-                "scripts": true,
-                "fonts": {
-                  "inline": true
-                },
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                }
+              "scripts": true,
+              "fonts": {
+                "inline": true
               },
+              "styles": {
+                "minify": true,
+                "inlineCritical": false
+              }
+            },
             "namedChunks": true
           },
           "configurations": {
@@ -119,7 +119,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-           "defaultConfiguration": "",
+          "defaultConfiguration": "",
           "options": {
             "browserTarget": "cloud-webapp:build:development",
             "port": 8001,
@@ -188,7 +188,6 @@
       }
     }
   },
-  "defaultProject": "cloud-webapp",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
@@ -197,5 +196,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
