@@ -62,7 +62,6 @@
     "bootstrap": "4.6.1",
     "c3": "0.7.20",
     "chart.js": "3.8.0",
-    "chromedriver": "101.0.0",
     "cli-color": "2.0.3",
     "core-js": "3.23.4",
     "css-loader": "6.7.1",
