@@ -1,7 +1,7 @@
 import {
 	Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NewsService } from '../../api-connector/news.service';
@@ -38,11 +38,11 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	today: Date = new Date();
 
 	newsSetAsMOTD: string[] = [];
-	selectedNewsForm: FormGroup = new FormGroup({
-		title: new FormControl({ value: this.newFacilityNews.title, disabled: false }, Validators.required),
-		text: new FormControl({ value: this.newFacilityNews.text, disabled: false }, Validators.required),
-		motd: new FormControl({ value: this.newFacilityNews.motd, disabled: false }),
-		valid_till: new FormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
+	selectedNewsForm: UntypedFormGroup = new UntypedFormGroup({
+		title: new UntypedFormControl({ value: this.newFacilityNews.title, disabled: false }, Validators.required),
+		text: new UntypedFormControl({ value: this.newFacilityNews.text, disabled: false }, Validators.required),
+		motd: new UntypedFormControl({ value: this.newFacilityNews.motd, disabled: false }),
+		valid_till: new UntypedFormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
 	});
 	allChecked: boolean = true;
 	deletionStatus: number = 0;
@@ -319,12 +319,12 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	 * Builds reference between news-values and form-fields.
 	 */
 	setFormGroup(): void {
-		this.selectedNewsForm = new FormGroup({
-			title: new FormControl({ value: this.selectedFacilityNews.title, disabled: false }, Validators.required),
-			text: new FormControl({ value: this.selectedFacilityNews.text, disabled: false }, Validators.required),
-			motd: new FormControl({ value: this.selectedFacilityNews.motd, disabled: false }),
-			tag: new FormControl({ value: this.selectedFacilityNews.tags, disabled: false }),
-			valid_till: new FormControl({ value: this.selectedFacilityNews.valid_till, disabled: false }),
+		this.selectedNewsForm = new UntypedFormGroup({
+			title: new UntypedFormControl({ value: this.selectedFacilityNews.title, disabled: false }, Validators.required),
+			text: new UntypedFormControl({ value: this.selectedFacilityNews.text, disabled: false }, Validators.required),
+			motd: new UntypedFormControl({ value: this.selectedFacilityNews.motd, disabled: false }),
+			tag: new UntypedFormControl({ value: this.selectedFacilityNews.tags, disabled: false }),
+			valid_till: new UntypedFormControl({ value: this.selectedFacilityNews.valid_till, disabled: false }),
 		});
 		this.subscription.add(
 			this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {

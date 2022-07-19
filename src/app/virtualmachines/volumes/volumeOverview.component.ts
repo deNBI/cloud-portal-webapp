@@ -5,7 +5,7 @@ import {
 	forkJoin, lastValueFrom, Subject, Subscription,
 } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Volume } from './volume';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
 import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
@@ -41,7 +41,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	selected_volume_data_loaded: boolean = false;
 	filter: string;
 	checked_volumes: Volume[] = [];
-	storageSize = new FormControl();
+	storageSize = new UntypedFormControl();
 
 	/**
 	 * Enum of all volume action states.
