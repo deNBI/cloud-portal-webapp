@@ -2,7 +2,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { FullLayoutComponent } from '../../../layouts/full-layout.component';
@@ -26,14 +26,21 @@ export const SCALING_SCRIPT_NAME: string = 'scaling.py';
  * Cluster overview componentn.
  */
 @Component({
-
 	selector: 'app-cluster-overview',
 	templateUrl: './clusterOverview.component.html',
 	styleUrls: ['../../vmOverview.component.scss'],
-	providers: [FacilityService, ImageService, UserService,
-		VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService],
+	providers: [
+		FacilityService,
+		ImageService,
+		UserService,
+		VirtualmachineService,
+		FullLayoutComponent,
+		GroupService,
+		ClientService,
+		GroupService,
+		FlavorService,
+	],
 })
-
 export class ClusterOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
 	title: string = 'Cluster Overview';
 
@@ -96,12 +103,11 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		private imageService: ImageService,
 		private userService: UserService,
 		private virtualmachineservice: VirtualmachineService,
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private clipboardService: ClipboardService,
 		private flavorService: FlavorService,
 	) {
 		super();
-
 	}
 
 	/**
@@ -109,7 +115,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	 */
 	applyFilter(): void {
 		this.isSearching = true;
-		if (typeof (this.cluster_per_site) !== 'number' || this.cluster_per_site <= 0) {
+		if (typeof this.cluster_per_site !== 'number' || this.cluster_per_site <= 0) {
 			this.cluster_per_site = 7;
 		}
 		if (this.tab === 'own') {
@@ -119,7 +125,6 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		} else if (this.tab === 'facility') {
 			this.getAllCLusterFacilities();
 		}
-
 	}
 
 	/**
@@ -179,7 +184,8 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	 */
 	getClusters(): void {
 		this.subscription.add(
-			this.virtualmachineservice.getClusters(this.currentPage, this.cluster_per_site)
+			this.virtualmachineservice
+				.getClusters(this.currentPage, this.cluster_per_site)
 				.subscribe((cluster_page: ClusterPage): void => {
 					this.prepareClusters(cluster_page);
 				}),
@@ -188,11 +194,8 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 	getAllCLusterFacilities(): void {
 		this.subscription.add(
-			this.facilityService.getClustersFacility(
-				this.selectedFacility['FacilityId'],
-				this.currentPage,
-				this.cluster_per_site,
-			)
+			this.facilityService
+				.getClustersFacility(this.selectedFacility['FacilityId'], this.currentPage, this.cluster_per_site)
 				.subscribe((cluster_page_infos: ClusterPage): void => {
 					this.prepareClusters(cluster_page_infos);
 				}),
@@ -211,7 +214,8 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 	getAllClusters(): void {
 		this.subscription.add(
-			this.virtualmachineservice.getAllClusters(this.currentPage, this.cluster_per_site)
+			this.virtualmachineservice
+				.getAllClusters(this.currentPage, this.cluster_per_site)
 				.subscribe((cluster_page_infos: ClusterPage): void => {
 					this.prepareClusters(cluster_page_infos);
 				}),
@@ -230,29 +234,19 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		);
 
 		this.subscription.add(
-			this.filterChanged
-				.pipe(
-					debounceTime(this.FILTER_DEBOUNCE_TIME),
-					distinctUntilChanged(),
-				)
-				.subscribe((): void => {
-					this.applyFilter();
-				}),
+			this.filterChanged.pipe(debounceTime(this.FILTER_DEBOUNCE_TIME), distinctUntilChanged()).subscribe((): void => {
+				this.applyFilter();
+			}),
 		);
 
 		this.subscription.add(
-			this.clusterPerPageChange.pipe(
-				debounceTime(this.DEBOUNCE_TIME),
-				distinctUntilChanged(),
-			)
-				.subscribe((): void => {
-					this.applyFilter();
-				}),
+			this.clusterPerPageChange.pipe(debounceTime(this.DEBOUNCE_TIME), distinctUntilChanged()).subscribe((): void => {
+				this.applyFilter();
+			}),
 		);
 	}
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
 	}
-
 }

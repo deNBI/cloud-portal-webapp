@@ -149,13 +149,10 @@ export class BiocondaComponent implements OnInit {
 	}
 
 	removeTool(tool: CondaPackage): void {
-		let deleted: boolean = false;
-
 		this.chosen_tools.forEach((item: CondaPackage, index: number): void => {
 			if (tool.name === item.name && tool.version === item.version) {
 				this.chosen_tools.splice(index, 1);
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				deleted = true;
 			}
 		});
 
