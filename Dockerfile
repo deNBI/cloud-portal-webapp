@@ -20,7 +20,7 @@ COPY . .
 RUN $(npm bin)/ng build --configuration=custom   --build-optimizer
 
 ### STAGE 2: Setup ###
-FROM nginx:1.23.0-alpine
+FROM nginx:1.23.1-alpine
 
 ## Copy our default nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/

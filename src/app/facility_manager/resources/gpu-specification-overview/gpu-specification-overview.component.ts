@@ -2,7 +2,7 @@ import {
 	Component, EventEmitter, Input, OnInit, Output,
 } from '@angular/core';
 import {
-	FormBuilder, FormControl, FormGroup, Validators,
+	UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators,
 } from '@angular/forms';
 import { FacilityService } from '../../../api-connector/facility.service';
 import { GPUSpecification } from '../gpu-specification';
@@ -18,9 +18,9 @@ import { GPUSpecification } from '../gpu-specification';
 export class GPUSpecificationOverviewComponent implements OnInit {
 	gpuSpecifications: GPUSpecification[];
 	newGPUSpecification: GPUSpecification;
-	newGPUFormGroup: FormGroup;
-	formBuilder: FormBuilder = new FormBuilder();
-	gpuFormGroups: { [id: string]: FormGroup } = {};
+	newGPUFormGroup: UntypedFormGroup;
+	formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
+	gpuFormGroups: { [id: string]: UntypedFormGroup } = {};
 
 	@Input() facility_id: number;
 	@Output() readonly factorChanged: EventEmitter<any> = new EventEmitter();
@@ -35,12 +35,11 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 		this.getGPUSpecifications();
 		console.log(this.facility_id);
 		this.newGPUSpecification = new GPUSpecification(null);
-		this.newGPUFormGroup = this.formBuilder
-			.group({
-				new_gpu_type: [null, Validators.compose([Validators.required, Validators.pattern(/^([A-Za-z0-9]+[ ]*)+$/)])],
-				new_gpu_cores: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
-				new_gpu_ram: [0, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
-			});
+		this.newGPUFormGroup = this.formBuilder.group({
+			new_gpu_type: [null, Validators.compose([Validators.required, Validators.pattern(/^([A-Za-z0-9]+[ ]*)+$/)])],
+			new_gpu_cores: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
+			new_gpu_ram: [0, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
+		});
 		this.listenToChangesForNewGPUs();
 	}
 
@@ -72,22 +71,24 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 		const gpu_type: string = `${gpu.id}_type`;
 		const gpu_cores: string = `${gpu.id}_cores`;
 
-		this.gpuFormGroups[gpu.id].addControl(gpu_ram, new FormControl([null]));
-		this.gpuFormGroups[gpu.id].get(gpu_ram)
+		this.gpuFormGroups[gpu.id].addControl(gpu_ram, new UntypedFormControl([null]));
+		this.gpuFormGroups[gpu.id]
+			.get(gpu_ram)
 			.setValidators([Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]);
-		this.gpuFormGroups[gpu.id].addControl(gpu_type, new FormControl([null]));
-		this.gpuFormGroups[gpu.id].get(gpu_type)
+		this.gpuFormGroups[gpu.id].addControl(gpu_type, new UntypedFormControl([null]));
+		this.gpuFormGroups[gpu.id]
+			.get(gpu_type)
 			.setValidators([Validators.compose([Validators.required, Validators.pattern(/^([A-Za-z0-9]+[ ]*)+$/)])]);
 
-		this.gpuFormGroups[gpu.id].addControl(gpu_cores, new FormControl([null]));
-		this.gpuFormGroups[gpu.id].get(gpu_cores)
+		this.gpuFormGroups[gpu.id].addControl(gpu_cores, new UntypedFormControl([null]));
+		this.gpuFormGroups[gpu.id]
+			.get(gpu_cores)
 			.setValidators([Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]);
 
 		this.gpuFormGroups[gpu.id].get(gpu_ram).setValue(gpu.ram);
 		this.gpuFormGroups[gpu.id].get(gpu_type).setValue(gpu.type);
 		this.gpuFormGroups[gpu.id].get(gpu_cores).setValue(gpu.cores);
 		this.gpuFormGroups[gpu.id].disable();
-
 	}
 
 	deleteGPUSpecification(id: string | number): void {
@@ -98,7 +99,6 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 			});
 			this.gpuSpecifications = gpus.map((gpu: GPUSpecification): GPUSpecification => new GPUSpecification(gpu));
 			this.factorChanged.emit();
-
 		});
 	}
 
@@ -144,17 +144,19 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 
 	addGPUSpecification(): void {
 		this.newGPUSpecification.type = this.newGPUSpecification.type.trim();
-		this.facilityService.addGPUSpecification(this.facility_id, this.newGPUSpecification).subscribe((res: GPUSpecification[]): void => {
-			this.newGPUSpecification = new GPUSpecification(null);
-			res.forEach((gpu: GPUSpecification): void => {
-				this.setupFormGroup(gpu);
+		this.facilityService
+			.addGPUSpecification(this.facility_id, this.newGPUSpecification)
+			.subscribe((res: GPUSpecification[]): void => {
+				this.newGPUSpecification = new GPUSpecification(null);
+				res.forEach((gpu: GPUSpecification): void => {
+					this.setupFormGroup(gpu);
+				});
+				this.gpuSpecifications = res.map((gpu: GPUSpecification): GPUSpecification => new GPUSpecification(gpu));
+				this.gpuSpecifications.forEach((rf: GPUSpecification): void => {
+					this.gpuSpecificationUpdateList[rf.id] = false;
+				});
+				this.factorChanged.emit();
 			});
-			this.gpuSpecifications = res.map((gpu: GPUSpecification): GPUSpecification => new GPUSpecification(gpu));
-			this.gpuSpecifications.forEach((rf: GPUSpecification): void => {
-				this.gpuSpecificationUpdateList[rf.id] = false;
-			});
-			this.factorChanged.emit();
-		});
 	}
 
 	updateGPUSpecification(gpu: GPUSpecification): void {
@@ -163,8 +165,6 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 			this.gpuSpecifications[this.gpuSpecifications.indexOf(gpu)] = machine;
 			this.setupFormGroup(gpu);
 			this.factorChanged.emit();
-
 		});
 	}
-
 }

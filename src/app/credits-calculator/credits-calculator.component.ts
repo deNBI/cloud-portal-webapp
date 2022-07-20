@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { FacilityService } from '../api-connector/facility.service';
 import { FlavorService } from '../api-connector/flavor.service';
 import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor';
 import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 import { CreditsService } from '../api-connector/credits.service';
-import {
-	integerValidator,
-	minAmountValidator,
-} from '../applications/numberValidations.directive';
+import { integerValidator, minAmountValidator } from '../applications/numberValidations.directive';
 import { CREDITS_WIKI, CLOUD_PORTAL_SUPPORT_MAIL } from '../../links/links';
 import { GroupService } from '../api-connector/group.service';
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
@@ -22,7 +19,6 @@ import { ResourceWeight } from './resource-weights.model/resource-weights.model'
 	providers: [FacilityService, FlavorService, CreditsService, GroupService],
 })
 export class CreditsCalculatorComponent implements OnInit {
-
 	title: string = 'Credits Calculator';
 	got_all_cc: boolean = false;
 	got_all_flavor: boolean = false;
@@ -44,39 +40,31 @@ export class CreditsCalculatorComponent implements OnInit {
 	CREDITS_WIKI: string = CREDITS_WIKI;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
-	timestamp_group: FormGroup = new FormGroup(
-		{
-			date_picker: new FormControl(new Date()),
-		},
-	);
+	timestamp_group: UntypedFormGroup = new UntypedFormGroup({
+		date_picker: new UntypedFormControl(new Date()),
+	});
 
-	credits_wanted_group: FormGroup = new FormGroup(
-		{
-			credits_wanted_form: new FormControl(1, [integerValidator, minAmountValidator(1)]),
-		},
-	);
+	credits_wanted_group: UntypedFormGroup = new UntypedFormGroup({
+		credits_wanted_form: new UntypedFormControl(1, [integerValidator, minAmountValidator(1)]),
+	});
 
-	hours_wanted_group: FormGroup = new FormGroup(
-		{
-			hours_wanted_form: new FormControl(1, [integerValidator, minAmountValidator(1)]),
-		},
-	);
+	hours_wanted_group: UntypedFormGroup = new UntypedFormGroup({
+		hours_wanted_form: new UntypedFormControl(1, [integerValidator, minAmountValidator(1)]),
+	});
 
 	constructor(
-private facility_service: FacilityService,
-							private flavor_service: FlavorService,
-							private credits_service: CreditsService,
-							private group_service: GroupService,
+		private facility_service: FacilityService,
+		private flavor_service: FlavorService,
+		private credits_service: CreditsService,
+		private group_service: GroupService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
 	ngOnInit(): void {
-		this.flavor_service.getListOfTypesAvailable().subscribe(
-			(result: FlavorType[]) => {
-				this.flavor_types = result;
-			},
-		);
+		this.flavor_service.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
+			this.flavor_types = result;
+		});
 		this.all_facilities.push(['Default', null]);
 		this.get_facilities();
 		this.get_weights();
@@ -89,9 +77,7 @@ private facility_service: FacilityService,
 				result.forEach((enumeration: ProjectEnumeration): void => {
 					if (enumeration.project_application_status.includes(Application_States.APPROVED)) {
 						if (!facilities.includes(enumeration.compute_center_id)) {
-							this.all_facilities.push(
-								[enumeration.compute_center_name, enumeration.compute_center_id],
-							);
+							this.all_facilities.push([enumeration.compute_center_name, enumeration.compute_center_id]);
 							facilities.push(enumeration.compute_center_id);
 						}
 					}
@@ -107,30 +93,24 @@ private facility_service: FacilityService,
 	}
 
 	get_weights(): void {
-		this.credits_service.getCreditsWeights().subscribe(
-			(weights: ResourceWeight[]) => {
-				this.resource_weights = weights;
-				this.resource_weights.sort(
-					(a, b)	=>	(a.resource_set_timestamp < b.resource_set_timestamp ? -1 : 1),
-				);
-				const len: number = this.resource_weights.length;
-				for (let i = 0; i < len; i += 1) {
-					if (this.calculate_timestamp() <= this.resource_weights[i].resource_set_timestamp
-						|| (i + 1) === len) {
-						this.resource_weights[i].set_used();
-						break;
-					}
+		this.credits_service.getCreditsWeights().subscribe((weights: ResourceWeight[]) => {
+			this.resource_weights = weights;
+			this.resource_weights.sort((a, b) => (a.resource_set_timestamp < b.resource_set_timestamp ? -1 : 1));
+			const len: number = this.resource_weights.length;
+			for (let i = 0; i < len; i += 1) {
+				if (this.calculate_timestamp() <= this.resource_weights[i].resource_set_timestamp || i + 1 === len) {
+					this.resource_weights[i].set_used();
+					break;
 				}
-			},
-		);
+			}
+		});
 	}
 
 	reset_used(): void {
 		const len: number = this.resource_weights.length;
 		for (let i = len - 1; i >= 0; i -= 1) {
 			this.resource_weights[i].set_unused();
-			if (this.calculate_timestamp() >= this.resource_weights[i].resource_set_timestamp
-				|| i === 0) {
+			if (this.calculate_timestamp() >= this.resource_weights[i].resource_set_timestamp || i === 0) {
 				this.resource_weights[i].set_used();
 				this.set_rest_unused(i - 1);
 				break;
@@ -141,7 +121,6 @@ private facility_service: FacilityService,
 	set_rest_unused(start: number): void {
 		if (start >= 0) {
 			for (let i = start; i >= 0; i -= 1) {
-
 				this.resource_weights[i].set_unused();
 			}
 		}
@@ -154,8 +133,11 @@ private facility_service: FacilityService,
 			(result: any) => {
 				this.all_flavors = result;
 				for (const flavor of this.all_flavors) {
-					if (flavor.type.long_name in this.shown_flavors
-						&& flavor['public'] !== false && flavor['default'] !== false) {
+					if (
+						flavor.type.long_name in this.shown_flavors
+						&& flavor['public'] !== false
+						&& flavor['default'] !== false
+					) {
 						this.shown_flavors[flavor.type.long_name].push(flavor);
 					}
 				}
@@ -199,9 +181,7 @@ private facility_service: FacilityService,
 				for (const shown_flavor of this.shown_flavors[flavor_type]) {
 					if (shown_flavor.name === flavor.name) {
 						// Flavor with same name found, updating it instead of pushing
-						this.shown_flavors[flavor_type][
-							this.shown_flavors[flavor_type].indexOf(shown_flavor)
-						] = flavor;
+						this.shown_flavors[flavor_type][this.shown_flavors[flavor_type].indexOf(shown_flavor)] = flavor;
 						changed = true;
 					}
 				}
@@ -219,9 +199,7 @@ private facility_service: FacilityService,
 
 	sort_by_cph(): void {
 		for (const flavor_type in this.shown_flavors) {
-			this.shown_flavors[flavor_type].sort(
-				(a, b)	=>	(a['credits_costs_per_hour'] < b['credits_costs_per_hour'] ? -1 : 1),
-			);
+			this.shown_flavors[flavor_type].sort((a, b) => (a['credits_costs_per_hour'] < b['credits_costs_per_hour'] ? -1 : 1));
 		}
 	}
 
@@ -236,41 +214,36 @@ private facility_service: FacilityService,
 
 	calculate_timestamp(): number {
 		const date: Date = this.timestamp_group.get('date_picker').value;
-		const date_time: Date = new Date(
-			date.getFullYear(),
-			date.getMonth(),
-			date.getDate(),
-		);
+		const date_time: Date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
 		return date_time.getTime() / 1000;
 	}
 
 	calculate_credits_needed(): void {
-		this.credits_service.getPublicCreditsNeeded(
-			this.hours_wanted_group.get('hours_wanted_form').value,
-			this.chosen_flavors,
-			this.selected_facility[0],
-			this.calculate_timestamp(),
-		).subscribe(
-			(result: any) => {
+		this.credits_service
+			.getPublicCreditsNeeded(
+				this.hours_wanted_group.get('hours_wanted_form').value,
+				this.chosen_flavors,
+				this.selected_facility[0],
+				this.calculate_timestamp(),
+			)
+			.subscribe((result: any) => {
 				this.credits_needed = result['credits_needed'];
 				this.total_cost_per_hour_needed = result['cost_per_hour'];
-			},
-		);
+			});
 	}
 
 	calculate_time_possible(): void {
-		this.credits_service.getPublicHoursPossible(
-			this.credits_wanted_group.get('credits_wanted_form').value,
-			this.chosen_flavors,
-			this.selected_facility[0],
-			this.calculate_timestamp(),
-		).subscribe(
-			(result: any) => {
+		this.credits_service
+			.getPublicHoursPossible(
+				this.credits_wanted_group.get('credits_wanted_form').value,
+				this.chosen_flavors,
+				this.selected_facility[0],
+				this.calculate_timestamp(),
+			)
+			.subscribe((result: any) => {
 				this.hours_possible = result['max_hours'];
 				this.total_cost_per_hour_time = result['cost_per_hour'];
-			},
-		);
+			});
 	}
-
 }

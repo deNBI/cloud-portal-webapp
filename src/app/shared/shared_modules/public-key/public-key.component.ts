@@ -17,7 +17,6 @@ import { WIKI_GENERATE_KEYS } from '../../../../links/links';
 	templateUrl: './public-key.component.html',
 	styleUrls: ['./public-key.component.scss'],
 	providers: [ApiSettings, KeyService],
-
 })
 export class PublicKeyComponent extends AbstractBaseClass {
 	WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS;
@@ -26,10 +25,7 @@ export class PublicKeyComponent extends AbstractBaseClass {
 	acknowledgement_given: boolean = false;
 	@Input() userinfo: Userinfo;
 
-	constructor(
-private keyService: KeyService,
-		private clipboardService: ClipboardService,
-	) {
+	constructor(private keyService: KeyService, private clipboardService: ClipboardService) {
 		super();
 	}
 
@@ -47,7 +43,6 @@ private keyService: KeyService,
 	}
 
 	importKey(publicKey: string): void {
-
 		const re: RegExp = /\+/gi;
 
 		this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe((): void => {
@@ -65,12 +60,18 @@ private keyService: KeyService,
 
 	validatePublicKey(): boolean {
 		const valid_rsa: boolean = /^ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key);
-		const valid_ecdsa_521: boolean = /^ecdsa-sha2-nistp521 AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key);
-		const valid_ecdsa_256: boolean = /^ecdsa-sha2-nistp256 AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key);
-		const valid_ecdsa_384: boolean = /^ecdsa-sha2-nistp384 AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key);
+		const valid_ecdsa_521: boolean = /^ecdsa-sha2-nistp521 AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(
+			this.public_key,
+		);
+		const valid_ecdsa_256: boolean = /^ecdsa-sha2-nistp256 AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(
+			this.public_key,
+		);
+		const valid_ecdsa_384: boolean = /^ecdsa-sha2-nistp384 AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(
+			this.public_key,
+		);
+		const valid_ed25519: boolean = /^ssh-ed25519 AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key);
 
-		return valid_rsa || valid_ecdsa_256 || valid_ecdsa_384 || valid_ecdsa_521;
-
+		return valid_rsa || valid_ecdsa_256 || valid_ecdsa_384 || valid_ecdsa_521 || valid_ed25519;
 	}
 
 	getUserPublicKey(): void {
