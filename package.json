@@ -20,14 +20,6 @@
     "mime": "3.0.0",
     "jake": "v10.8.5"
   },
-  "overrides": {
-    "@ng-bootstrap/ng-bootstrap": {
-      "@angular/common": "^13.0.0 || ^14.0.0",
-      "@angular/core": "^13.0.0 || ^14.0.0",
-      "@angular/forms": "^13.0.0 || ^14.0.0",
-      "@angular/localize": "^13.0.0 || ^14.0.0"
-    }
-  },
   "private": true,
   "dependencies": {
     "@angular-eslint/eslint-plugin": "14.0.2",
