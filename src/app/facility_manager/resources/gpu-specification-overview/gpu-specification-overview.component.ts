@@ -36,7 +36,7 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 		console.log(this.facility_id);
 		this.newGPUSpecification = new GPUSpecification(null);
 		this.newGPUFormGroup = this.formBuilder.group({
-			new_gpu_type: [null, Validators.compose([Validators.required, Validators.pattern(/^([A-Za-z0-9]+[ ]*)+$/)])],
+			new_gpu_type: [null, Validators.compose([Validators.required, Validators.pattern(/^(([a-zA-Z0-9])+\s?)*$/)])],
 			new_gpu_cores: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
 			new_gpu_ram: [0, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
 		});
