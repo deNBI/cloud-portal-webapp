@@ -59,7 +59,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 			],
 			new_machine_gpus: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
 			new_machine_local_disk_storage: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
-			new_machine_name: [null, Validators.compose([Validators.required, Validators.pattern(/^([A-Za-z0-9]+[ ]*)+$/)])],
+			new_machine_name: [null, Validators.compose([Validators.required, Validators.pattern(/^(([a-zA-Z0-9])+\s?)*$/)])],
 			new_machine_private_count: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
 			new_machine_public_count: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
 			new_machine_local_disk_encrypted: [null],
