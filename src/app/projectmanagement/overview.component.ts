@@ -23,6 +23,7 @@ import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
 import {
+	CLOUD_PORTAL_SUPPORT_MAIL,
 	CREDITS_WIKI,
 	OPENSTACK_LINK,
 	PUBLICATIONS_LINK,
@@ -30,7 +31,6 @@ import {
 	STATUS_LINK,
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
-	CLOUD_PORTAL_SUPPORT_MAIL,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -155,6 +155,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				if (this.updateCreditsHistoryIntervals) {
 					clearInterval(this.updateCreditsHistoryIntervals);
 					this.creditHistoryLoaded = false;
+					this.creditsChart = undefined;
 				}
 			} catch (someError) {
 				// empty catch
