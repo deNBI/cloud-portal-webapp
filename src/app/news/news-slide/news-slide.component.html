@@ -22,7 +22,7 @@
 
 <div class="card mb-3 text-center" *ngIf="news.horizontal" style="flex-direction: row">
 	<div class="row no-gutters">
-		<div class="col-md-3">
+		<div class="col-md-4" style="max-height: 100%">
 			<img
 				*ngIf="news.preview_image"
 				class=""
@@ -30,15 +30,16 @@
 				alt="{{ news.title }}"
 				style="
 					height: 100%;
-					width: 100px;
+					width: 120px;
 					object-fit: cover;
 					border-top-right-radius: 0;
 					border-bottom-left-radius: 5px;
+					border-top-left-radius: 5px;
 				"
 			/>
 		</div>
-		<div class="col-md-9">
-			<div class="card-body overflow-auto">
+		<div class="col-md-8 text-center" style="max-height: 100%">
+			<div class="card-body overflow-auto" style="max-height: 100%">
 				<h5 class="card-title">{{ news.title }}</h5>
 				<p class="card-text">{{ news.short_text }}</p>
 				<small class="float-left text-muted">
