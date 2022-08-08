@@ -1,14 +1,55 @@
-<div class="card border-bottom-0 border-top-0 text-center">
-		<img *ngIf="news.preview_image" class="card-img-top" src="{{ news.preview_image }}"
-				 alt="{{ news.title}}" style="width: 100%; height: 100px; object-fit: cover;">
-		<div class="card-body overflow-auto">
+<div class="card border-bottom-0 border-top-0 text-center" *ngIf="!news.horizontal">
+	<img
+		*ngIf="news.preview_image"
+		class="card-img-top"
+		src="{{ news.preview_image }}"
+		alt="{{ news.title }}"
+		style="width: 100%; height: 100px; object-fit: cover"
+	/>
+	<div class="card-body overflow-auto">
 		<h5 class="card-title">{{ news.title }}</h5>
-		<p class="card-text">{{news.short_text}}</p>
-			<small class="float-left text-muted">
-				{{news.date | date:'YYYY-MM-dd' }}
-			</small>
-			<small class="float-right">
-				<a [href]="news.url" target="_blank" rel="noopener noreferrer">See full news&nbsp;<i class="fa fa-external-link-alt"></i></a>
-			</small>
+		<p class="card-text">{{ news.short_text }}</p>
+		<small class="float-left text-muted">
+			{{ news.date | date: 'YYYY-MM-dd' }}
+		</small>
+		<small class="float-right">
+			<a [href]="news.url" target="_blank" rel="noopener noreferrer"
+				>See full news&nbsp;<i class="fa fa-external-link-alt"></i
+			></a>
+		</small>
+	</div>
+</div>
+
+<div class="card mb-3 text-center" *ngIf="news.horizontal" style="flex-direction: row">
+	<div class="row no-gutters">
+		<div class="col-md-3">
+			<img
+				*ngIf="news.preview_image"
+				class=""
+				src="{{ news.preview_image }}"
+				alt="{{ news.title }}"
+				style="
+					height: 100%;
+					width: 100px;
+					object-fit: cover;
+					border-top-right-radius: 0;
+					border-bottom-left-radius: 5px;
+				"
+			/>
+		</div>
+		<div class="col-md-9">
+			<div class="card-body overflow-auto">
+				<h5 class="card-title">{{ news.title }}</h5>
+				<p class="card-text">{{ news.short_text }}</p>
+				<small class="float-left text-muted">
+					{{ news.date | date: 'YYYY-MM-dd' }}
+				</small>
+				<small class="float-right">
+					<a [href]="news.url" target="_blank" rel="noopener noreferrer"
+						>See full news&nbsp;<i class="fa fa-external-link-alt"></i
+					></a>
+				</small>
+			</div>
+		</div>
 	</div>
 </div>
