@@ -8,11 +8,12 @@ export class News {
 	short_text: string;
 	url: string;
 	preview_image: string;
+	horizontal: boolean;
 
 	constructor(news?: Partial<News>) {
 		Object.assign(this, news);
 		if (this.preview_image) {
-			this.preview_image = ApiSettings.getWagtailBase().substring(0, ApiSettings.getWagtailBase().length - 1) + this.preview_image;
+			this.preview_image =				ApiSettings.getWagtailBase().substring(0, ApiSettings.getWagtailBase().length - 1) + this.preview_image;
 		}
 	}
 }
