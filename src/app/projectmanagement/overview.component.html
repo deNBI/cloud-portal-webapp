@@ -1087,6 +1087,10 @@
 					{{ project_application?.project_application_shortname }}
 				</div>
 				<div class="card-body justify-content-center align-items-center">
+					<div class="alert alert-info">
+						In the chart below we show you up to 25 equidistant data points. This may result in an unexpected looking
+						graph.
+					</div>
 					<div *ngIf="!creditHistoryLoaded" id="overlay">
 						<div class="w-100 d-flex justify-content-center align-items-center">
 							<div class="spinner"></div>
