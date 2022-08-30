@@ -19,6 +19,7 @@ import { AbstractBaseClass } from '../../../shared/shared_modules/baseClass/abst
 import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
 import { ClusterPage } from '../clusterPage.model';
+import { Clusterstates } from '../clusterstatus/clusterstates';
 
 export const SCALING_SCRIPT_NAME: string = 'scaling.py';
 
@@ -47,6 +48,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	private subscription: Subscription = new Subscription();
 
 	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+	ClusterStates: Clusterstates = new Clusterstates();
 
 	cluster_page: ClusterPage = new ClusterPage();
 	currentPage: number = 1;
@@ -96,6 +98,12 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	clusterPerPageChange: Subject<number> = new Subject<number>();
 
 	filterChanged: Subject<string> = new Subject<string>();
+	filter_status_list: string[] = [
+		Clusterstates.RUNNING,
+		Clusterstates.CREATING,
+		Clusterstates.CONFIGURING,
+		Clusterstates.ERROR,
+	];
 
 	constructor(
 		private facilityService: FacilityService,
@@ -114,6 +122,9 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	 * Apply filter to all vms.
 	 */
 	applyFilter(): void {
+		if (this.filter) {
+			this.filter = this.filter.trim();
+		}
 		this.isSearching = true;
 		if (typeof this.cluster_per_site !== 'number' || this.cluster_per_site <= 0) {
 			this.cluster_per_site = 7;
@@ -185,7 +196,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	getClusters(): void {
 		this.subscription.add(
 			this.virtualmachineservice
-				.getClusters(this.currentPage, this.cluster_per_site)
+				.getClusters(this.currentPage, this.cluster_per_site, this.filter, this.filter_status_list)
 				.subscribe((cluster_page: ClusterPage): void => {
 					this.prepareClusters(cluster_page);
 				}),
@@ -195,7 +206,13 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	getAllCLusterFacilities(): void {
 		this.subscription.add(
 			this.facilityService
-				.getClustersFacility(this.selectedFacility['FacilityId'], this.currentPage, this.cluster_per_site)
+				.getClustersFacility(
+					this.selectedFacility['FacilityId'],
+					this.currentPage,
+					this.cluster_per_site,
+					this.filter,
+					this.filter_status_list,
+				)
 				.subscribe((cluster_page_infos: ClusterPage): void => {
 					this.prepareClusters(cluster_page_infos);
 				}),
@@ -212,10 +229,20 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		this.isSearching = false;
 	}
 
+	changeFilterStatus(status: string): void {
+		this.currentPage = 1;
+		const indexOf: number = this.filter_status_list.indexOf(status);
+		if (indexOf === -1) {
+			this.filter_status_list.push(status);
+		} else {
+			this.filter_status_list.splice(indexOf, 1);
+		}
+	}
+
 	getAllClusters(): void {
 		this.subscription.add(
 			this.virtualmachineservice
-				.getAllClusters(this.currentPage, this.cluster_per_site)
+				.getAllClusters(this.currentPage, this.cluster_per_site, this.filter, this.filter_status_list)
 				.subscribe((cluster_page_infos: ClusterPage): void => {
 					this.prepareClusters(cluster_page_infos);
 				}),
