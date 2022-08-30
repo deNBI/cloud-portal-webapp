@@ -15,8 +15,7 @@ import { Application_States } from '../../shared/shared_modules/baseClass/abstra
 	selector: 'app-application-detail',
 	templateUrl: './application-detail.component.html',
 	styleUrls: ['./application-detail.component.scss'],
-	providers: [FacilityService, UserService,
-		ApplicationsService, CreditsService],
+	providers: [FacilityService, UserService, ApplicationsService, CreditsService],
 })
 export class ApplicationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
 	PI_USER_TAB: number = 0;
@@ -53,7 +52,6 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 	}
 
 	setTab(tab_num: number): void {
-
 		this.setAllTabsFalse();
 		switch (tab_num) {
 			case this.PI_USER_TAB:
@@ -88,15 +86,12 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		facilityService: FacilityService,
 		creditsService: CreditsService,
 	) {
-
 		super(userService, applicationsService, facilityService);
 		this.creditsService = creditsService;
-
 	}
 
 	ngOnInit(): void {
 		this.setTab(this.default_tab);
-		console.log(this.application);
 
 		this.getMemberDetailsByElixirId(this.application);
 		if (this.application.credits_allowed) {
@@ -106,9 +101,12 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 	}
 
 	getCurrentCredits(): void {
-		this.creditsService.getCurrentCreditsOfProject(Number(this.application.project_application_perun_id.toString())).toPromise()
+		this.creditsService
+			.getCurrentCreditsOfProject(Number(this.application.project_application_perun_id.toString()))
+			.toPromise()
 			.then((credits: number): void => {
 				this.current_credits = credits;
-			}).catch((err: Error): void => console.log(err.message));
+			})
+			.catch((err: Error): void => console.log(err.message));
 	}
 }
