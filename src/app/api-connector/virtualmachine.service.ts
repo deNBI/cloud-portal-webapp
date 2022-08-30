@@ -105,13 +105,21 @@ export class VirtualmachineService {
 		});
 	}
 
-	getClusters(page: number, cluster_per_site: number, filter?: string): Observable<ClusterPage> {
+	getClusters(
+		page: number,
+		cluster_per_site: number,
+		filter?: string,
+		filter_status?: string[],
+	): Observable<ClusterPage> {
 		let params: HttpParams = new HttpParams()
 			.set('page', page.toString())
 			.set('cluster_per_site', cluster_per_site.toString());
 
 		if (filter) {
 			params = params.set('filter', filter);
+		}
+		if (filter_status) {
+			params = params.append('filter_status', JSON.stringify(filter_status));
 		}
 
 		return this.http
@@ -224,13 +232,21 @@ export class VirtualmachineService {
 			.pipe(map((vm_page: VirtualMachinePage): VirtualMachinePage => new VirtualMachinePage(vm_page)));
 	}
 
-	getAllClusters(page: number, vm_per_site: number, filter?: string): Observable<ClusterPage> {
+	getAllClusters(
+		page: number,
+		vm_per_site: number,
+		filter?: string,
+		filter_status?: string[],
+	): Observable<ClusterPage> {
 		let params: HttpParams = new HttpParams()
 			.set('page', page.toString())
 			.set('cluster_per_site', vm_per_site.toString());
 
 		if (filter) {
 			params = params.set('filter', filter);
+		}
+		if (filter_status) {
+			params = params.append('filter_status', JSON.stringify(filter_status));
 		}
 
 		return this.http

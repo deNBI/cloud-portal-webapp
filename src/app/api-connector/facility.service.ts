@@ -29,7 +29,6 @@ export class FacilityService {
 	 * @returns
 	 */
 	getComputeCenters(): Observable<any> {
-
 		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/`, {
 			withCredentials: true,
 		});
@@ -41,102 +40,109 @@ export class FacilityService {
 	setSupportMails(facilityId: string, supportMails: string): Observable<any> {
 		const params: HttpParams = new HttpParams().set('mails', supportMails);
 
-		return this.http.post(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/supportMails/`,
-			params,
-			{
-				withCredentials: true,
-				observe: 'response',
-			},
-		);
+		return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/supportMails/`, params, {
+			withCredentials: true,
+			observe: 'response',
+		});
 	}
 
 	/**
 	 * Get support e-mail addresses for computecenter.
 	 */
 	getSupportMails(facilityId: string): Observable<any> {
-		return this.http.get(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/supportMails/`,
-			{
-				withCredentials: true,
-				observe: 'response',
-			},
-		);
+		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/supportMails/`, {
+			withCredentials: true,
+			observe: 'response',
+		});
 	}
 
 	getWfcSubmittedApplications(facility_id: number | string): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/submitted/`, {
 			withCredentials: true,
-
 		});
-
 	}
 
 	getWfcLifetimeRequestedApplications(facility_id: number | string): Observable<Application[]> {
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/lifetime_requests/`, {
-			withCredentials: true,
-
-		});
-
-	}
-
-	getWfcTerminationRequestedApplications(facility_id: number | string): Observable<Application[]> {
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/termination_requests/`, {
-			withCredentials: true,
-		});
-	}
-
-	getClustersFacility(facility_id: string, page: number, vm_per_site: number, filter?: string): Observable<ClusterPage> {
-		let params: HttpParams = new HttpParams().set('page', page.toString()).set('cluster_per_site', vm_per_site.toString());
-
-		if (filter) {
-			params = params.set('filter', filter);
-
-		}
-
-		return this.http.get<ClusterPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/clusters/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(cluster_page: ClusterPage): ClusterPage => new ClusterPage(cluster_page),
-			),
+		return this.http.get<Application[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/lifetime_requests/`,
+			{
+				withCredentials: true,
+			},
 		);
 	}
 
-	getComputeCenterClientLimits(facility_id): Observable<any> {
+	getWfcTerminationRequestedApplications(facility_id: number | string): Observable<Application[]> {
+		return this.http.get<Application[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/termination_requests/`,
+			{
+				withCredentials: true,
+			},
+		);
+	}
 
+	getClustersFacility(
+		facility_id: string,
+		page: number,
+		vm_per_site: number,
+		filter?: string,
+		filter_status?: string[],
+	): Observable<ClusterPage> {
+		let params: HttpParams = new HttpParams()
+			.set('page', page.toString())
+			.set('cluster_per_site', vm_per_site.toString());
+
+		if (filter) {
+			params = params.set('filter', filter);
+		}
+		if (filter_status) {
+			params = params.append('filter_status', JSON.stringify(filter_status));
+		}
+
+		return this.http
+			.get<ClusterPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/clusters/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((cluster_page: ClusterPage): ClusterPage => new ClusterPage(cluster_page)));
+	}
+
+	getComputeCenterClientLimits(facility_id): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/simpleVM/limits/`, {
 			withCredentials: true,
 		});
 	}
 
 	getComputeCenterClientLimitsAvailable(facility_id, application_id): Observable<any> {
-
-		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/simpleVM/${application_id}/limits/`, {
-			withCredentials: true,
-		});
+		return this.http.get(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/simpleVM/${application_id}/limits/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getWfcModificationRequestedApplications(facility_id: number | string): Observable<Application[]> {
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/modifications_requests/`, {
-			withCredentials: true,
-		});
-
+		return this.http.get<Application[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/modifications_requests/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getWfcCreditsRequestedApplications(facility_id: number | string): Observable<Application[]> {
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/credits_requests/`, {
-			withCredentials: true,
-		});
-
+		return this.http.get<Application[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/credits_requests/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getExtensionRequestsCounterFacility(facility_id: number | string): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/extensions_counter/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	/**
@@ -159,18 +165,15 @@ export class FacilityService {
 	 * @returns
 	 */
 	getManagerFacilities(): Observable<any> {
-
 		return this.http.get(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilities/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	getAllMembersOfFacility(facility: number | string, status: number): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/members/`, {
 			withCredentials: true,
 			params: { status: status.toString() },
-
 		});
 	}
 
@@ -181,18 +184,18 @@ export class FacilityService {
 	 * @param status
 	 * @returns
 	 */
-	getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<Application[]> {
-
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
-			withCredentials: true,
-			params: { status: status.toString() },
-		}).pipe(
-			map(
-				(applications: Application[]): Application[] => applications.map(
-					(application: Application): Application => new Application(application),
-				),
-			),
-		);
+	getFacilityAllowedGroupsWithDetailsAndSpecificStatus(
+		facility: number | string,
+		status: number,
+	): Observable<Application[]> {
+		return this.http
+			.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
+				withCredentials: true,
+				params: { status: status.toString() },
+			})
+			.pipe(
+				map((applications: Application[]): Application[] => applications.map((application: Application): Application => new Application(application))),
+			);
 	}
 
 	/**
@@ -202,17 +205,14 @@ export class FacilityService {
 	 * @param elixir_id the id of the member
 	 */
 	getFacilityGroupsByMemberElixirId(facility: number | string, elixir_id: string): Observable<Application[]> {
-
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
-			withCredentials: true,
-			params: { elixir_id: elixir_id.toString() },
-		}).pipe(
-			map(
-				(applications: Application[]): Application[] => applications.map(
-					(application: Application): Application => new Application(application),
-				),
-			),
-		);
+		return this.http
+			.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
+				withCredentials: true,
+				params: { elixir_id: elixir_id.toString() },
+			})
+			.pipe(
+				map((applications: Application[]): Application[] => applications.map((application: Application): Application => new Application(application))),
+			);
 	}
 
 	/**
@@ -222,7 +222,6 @@ export class FacilityService {
 	 * @returns
 	 */
 	getFacilityResources(facility: number | string): Observable<any> {
-
 		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/resources/`, {
 			withCredentials: true,
 		});
@@ -235,7 +234,6 @@ export class FacilityService {
 	 * @returns
 	 */
 	getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<Application[]> {
-
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/`, {
 			withCredentials: true,
 		});
@@ -248,10 +246,12 @@ export class FacilityService {
 	 * @returns
 	 */
 	getFacilityApplicationsHistory(facility: number | string): Observable<Application[]> {
-
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
-			withCredentials: true,
-		});
+		return this.http.get<Application[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -261,10 +261,12 @@ export class FacilityService {
 	 * @param id self-speaking
 	 */
 	getFacilityApplicationById(facility: number | string, id: string): Observable<Application> {
-
-		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${id}/detail/`, {
-			withCredentials: true,
-		});
+		return this.http.get<Application>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${id}/detail/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -274,16 +276,16 @@ export class FacilityService {
 	 * @returns
 	 */
 	getFacilityVolumes(facility: number | string, items_per_page: number, current_page: number): Observable<VolumePage> {
-		const params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
+		const params: HttpParams = new HttpParams()
+			.set('items_per_page', items_per_page.toString())
+			.set('page', current_page.toString());
 
-		return this.http.get<VolumePage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(volume_page: VolumePage): VolumePage => new VolumePage(volume_page),
-			),
-		);
+		return this.http
+			.get<VolumePage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((volume_page: VolumePage): VolumePage => new VolumePage(volume_page)));
 	}
 
 	/**
@@ -294,20 +296,25 @@ export class FacilityService {
 	 * @param snapsPerSite
 	 * @returns
 	 */
-	getFacilitySnapshots(facility: number | string, currentPage: number, snapsPerSite: number, filter?: string): Observable<SnapshotPage> {
-		let params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
+	getFacilitySnapshots(
+		facility: number | string,
+		currentPage: number,
+		snapsPerSite: number,
+		filter?: string,
+	): Observable<SnapshotPage> {
+		let params: HttpParams = new HttpParams()
+			.set('page', currentPage.toString())
+			.set('snaps_per_site', snapsPerSite.toString());
 		if (filter) {
 			params = params.set('filter', filter);
 		}
 
-		return this.http.get<SnapshotPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page),
-			),
-		);
+		return this.http
+			.get<SnapshotPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page)));
 	}
 
 	/**
@@ -317,9 +324,12 @@ export class FacilityService {
 	 * @returns
 	 */
 	getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<Application[]> {
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
-			withCredentials: true,
-		});
+		return this.http.get<Application[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -342,20 +352,34 @@ export class FacilityService {
 		);
 	}
 
-	addVolumeStorageFactor(facility: number | string, volumeStorageFactor: VolumeStorageFactor): Observable<VolumeStorageFactor[]> {
+	addVolumeStorageFactor(
+		facility: number | string,
+		volumeStorageFactor: VolumeStorageFactor,
+	): Observable<VolumeStorageFactor[]> {
 		const params: HttpParams = new HttpParams().set('volumeStorageFactor', JSON.stringify(volumeStorageFactor));
 
-		return this.http.post<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<VolumeStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
-	addObjectStorageFactor(facility: number | string, objectStorageFactor: ObjectStorageFactor): Observable<ObjectStorageFactor[]> {
+	addObjectStorageFactor(
+		facility: number | string,
+		objectStorageFactor: ObjectStorageFactor,
+	): Observable<ObjectStorageFactor[]> {
 		const params: HttpParams = new HttpParams().set('objectStorageFactor', JSON.stringify(objectStorageFactor));
 
-		return this.http.post<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<VolumeStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -365,90 +389,128 @@ export class FacilityService {
 	 * @param resource_machine_id
 	 * @returns
 	 */
-	deleteResourceMachine(facility: number | string, resource_machine_id: number | string): Observable<ResourceMachine[]> {
-
-		return this.http.delete<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine_id}/`, {
-			withCredentials: true,
-		});
+	deleteResourceMachine(
+		facility: number | string,
+		resource_machine_id: number | string,
+	): Observable<ResourceMachine[]> {
+		return this.http.delete<ResourceMachine[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	addResourceMachine(facility: number | string, resource_machine: ResourceMachine): Observable<ResourceMachine[]> {
 		const params: HttpParams = new HttpParams().set('resource_machine', JSON.stringify(resource_machine));
 
-		return this.http.post<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<ResourceMachine[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	updateResourceMachine(facility: number | string, resource_machine: ResourceMachine): Observable<ResourceMachine> {
 		const params: HttpParams = new HttpParams().set('resource_machine', JSON.stringify(resource_machine));
 
 		// tslint:disable-next-line:max-line-length
-		return this.http.post<ResourceMachine>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine.id}/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<ResourceMachine>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine.id}/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getResourceMachine(facility: number | string, resource_machine_id: number | string): Observable<ResourceMachine> {
-
-		return this.http.get<ResourceMachine>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine_id}/`, {
-			withCredentials: true,
-		});
+		return this.http.get<ResourceMachine>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getResourceMachines(facility: number | string): Observable<ResourceMachine[]> {
-
-		return this.http.get<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, {
-			withCredentials: true,
-		});
+		return this.http.get<ResourceMachine[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	updateGPUSpecification(facility: number | string, gpu_specification: GPUSpecification): Observable<GPUSpecification> {
 		const params: HttpParams = new HttpParams().set('gpu_specification', JSON.stringify(gpu_specification));
 
-		return this.http.post<GPUSpecification>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_specification.id}/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<GPUSpecification>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_specification.id}/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getGPUSpecification(facility: number | string, gpu_spec_id: number | string): Observable<GPUSpecification> {
-		return this.http.get<GPUSpecification>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_spec_id}/`, {
-			withCredentials: true,
-		});
+		return this.http.get<GPUSpecification>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_spec_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getGPUSpecifications(facility: number | string): Observable<GPUSpecification[]> {
-		return this.http.get<GPUSpecification[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/`, {
-			withCredentials: true,
-		});
+		return this.http.get<GPUSpecification[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	deleteGPUSpecification(facility: number | string, gpu_spec_id: number | string): Observable<GPUSpecification[]> {
-		return this.http.delete<GPUSpecification[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_spec_id}/`, {
-			withCredentials: true,
-		});
+		return this.http.delete<GPUSpecification[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_spec_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	addGPUSpecification(facility: number | string, gpu_specification: GPUSpecification): Observable<GPUSpecification[]> {
 		const params: HttpParams = new HttpParams().set('gpu_specification', JSON.stringify(gpu_specification));
 
-		return this.http.post<GPUSpecification[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<GPUSpecification[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor> {
-
-		return this.http.get<VolumeStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor_id}/`, {
-			withCredentials: true,
-		});
+		return this.http.get<VolumeStorageFactor>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getObjectStorageFactor(facility: number | string, factor_id: number | string): Observable<ObjectStorageFactor> {
-
-		return this.http.get<ObjectStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor_id}/`, {
-			withCredentials: true,
-		});
+		return this.http.get<ObjectStorageFactor>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -461,9 +523,13 @@ export class FacilityService {
 		const params: HttpParams = new HttpParams().set('factor', JSON.stringify(factor));
 
 		// tslint:disable-next-line:max-line-length
-		return this.http.post<VolumeStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor.id}/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<VolumeStorageFactor>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor.id}/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -476,9 +542,13 @@ export class FacilityService {
 		const params: HttpParams = new HttpParams().set('factor', JSON.stringify(factor));
 
 		// tslint:disable-next-line:max-line-length
-		return this.http.post<ObjectStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor.id}/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<ObjectStorageFactor>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor.id}/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -489,10 +559,12 @@ export class FacilityService {
 	 * @returns
 	 */
 	deleteVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor[]> {
-
-		return this.http.delete<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor_id}/`, {
-			withCredentials: true,
-		});
+		return this.http.delete<VolumeStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -503,48 +575,73 @@ export class FacilityService {
 	 * @returns
 	 */
 	deleteObjectStorageFactor(facility: number | string, factor_id: number | string): Observable<ObjectStorageFactor[]> {
-
-		return this.http.delete<ObjectStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor_id}/`, {
-			withCredentials: true,
-		});
+		return this.http.delete<ObjectStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getGeneralStorageFactors(facility: number | string): Observable<GeneralStorageFactor[]> {
-
-		return this.http.get<GeneralStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/`, {
-			withCredentials: true,
-		});
+		return this.http.get<GeneralStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getGeneralStorageFactor(facility: number | string, factor_id: number | string): Observable<GeneralStorageFactor> {
-
-		return this.http.get<GeneralStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/${factor_id}/`, {
-			withCredentials: true,
-		});
+		return this.http.get<GeneralStorageFactor>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/${factor_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
-	updateGeneralStorageFactor(facility: number | string, factor: GeneralStorageFactor): Observable<GeneralStorageFactor> {
+	updateGeneralStorageFactor(
+		facility: number | string,
+		factor: GeneralStorageFactor,
+	): Observable<GeneralStorageFactor> {
 		const params: HttpParams = new HttpParams().set('factor', JSON.stringify(factor));
 
 		// tslint:disable-next-line:max-line-length
-		return this.http.post<GeneralStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/${factor.id}/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<GeneralStorageFactor>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/${factor.id}/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
-	deleteGeneralStorageFactor(facility: number | string, factor_id: number | string): Observable<GeneralStorageFactor[]> {
-
-		return this.http.delete<GeneralStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/${factor_id}/`, {
-			withCredentials: true,
-		});
+	deleteGeneralStorageFactor(
+		facility: number | string,
+		factor_id: number | string,
+	): Observable<GeneralStorageFactor[]> {
+		return this.http.delete<GeneralStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/${factor_id}/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
-	addGeneralStorageFactor(facility: number | string, generalStorageFactor: GeneralStorageFactor): Observable<GeneralStorageFactor[]> {
+	addGeneralStorageFactor(
+		facility: number | string,
+		generalStorageFactor: GeneralStorageFactor,
+	): Observable<GeneralStorageFactor[]> {
 		const params: HttpParams = new HttpParams().set('generalStorageFactor', JSON.stringify(generalStorageFactor));
 
-		return this.http.post<GeneralStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post<GeneralStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -554,10 +651,12 @@ export class FacilityService {
 	 * @returns
 	 */
 	getVolumeStorageFactors(facility: number | string): Observable<VolumeStorageFactor[]> {
-
-		return this.http.get<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, {
-			withCredentials: true,
-		});
+		return this.http.get<VolumeStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -567,10 +666,12 @@ export class FacilityService {
 	 * @returns
 	 */
 	getObjectStorageFactors(facility: number | string): Observable<ObjectStorageFactor[]> {
-
-		return this.http.get<ObjectStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, {
-			withCredentials: true,
-		});
+		return this.http.get<ObjectStorageFactor[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -583,10 +684,14 @@ export class FacilityService {
 	declineFacilityApplication(facility: number, application_id: number): Observable<any> {
 		const params: HttpParams = new HttpParams().set('action', 'decline');
 
-		return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
-			withCredentials: true,
-			observe: 'response',
-		});
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
+			params,
+			{
+				withCredentials: true,
+				observe: 'response',
+			},
+		);
 	}
 
 	/**
@@ -636,13 +741,15 @@ export class FacilityService {
 	 * @returns
 	 */
 	getFacilityGroupRichMembers(groupid: number, facility: number): Observable<ProjectMember[]> {
-		return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
-			withCredentials: true,
-		});
+		return this.http.get<ProjectMember[]>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getFilteredMembersOfFacility(searchString: string): Observable<any> {
-
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/filterFacility/`, {
 			withCredentials: true,
 			params: {
@@ -662,5 +769,4 @@ export class FacilityService {
 			withCredentials: true,
 		});
 	}
-
 }
