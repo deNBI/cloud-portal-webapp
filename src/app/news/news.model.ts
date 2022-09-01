@@ -9,6 +9,7 @@ export class News {
 	url: string;
 	preview_image: string;
 	horizontal: boolean;
+	object_fit: string = 'cover';
 
 	constructor(news?: Partial<News>) {
 		Object.assign(this, news);
