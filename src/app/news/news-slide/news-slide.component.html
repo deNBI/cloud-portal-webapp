@@ -1,10 +1,11 @@
 <div class="card border-bottom-0 border-top-0 text-center" *ngIf="!news.horizontal">
 	<img
+		[style.object-fit]="news.object_fit"
 		*ngIf="news.preview_image"
 		class="card-img-top"
 		src="{{ news.preview_image }}"
 		alt="{{ news.title }}"
-		style="width: 100%; height: 100px; object-fit: scale-down"
+		style="width: 100%; height: 100px"
 	/>
 	<div class="card-body overflow-auto">
 		<h5 class="card-title">{{ news.title }}</h5>
@@ -27,11 +28,11 @@
 				*ngIf="news.preview_image"
 				class=""
 				src="{{ news.preview_image }}"
+				[style.object-fit]="news.object_fit"
 				alt="{{ news.title }}"
 				style="
 					height: 100%;
 					width: 120px;
-					object-fit: cover;
 					border-top-right-radius: 0;
 					border-bottom-left-radius: 5px;
 					border-top-left-radius: 5px;
