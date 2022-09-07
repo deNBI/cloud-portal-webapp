@@ -18,7 +18,6 @@ import { UserService } from '../../../api-connector/user.service';
 	providers: [FacilityService, ApplicationsService, FlavorService],
 })
 export class ApplicationBaseClassComponent extends AbstractBaseClass {
-
 	/**
 	 * If all Applications are loaded, important for the loader.
 	 *
@@ -63,7 +62,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 	newFlavors: {
 		[id: string]: {
-			counter: number, flavor: Flavor
+			counter: number
+			flavor: Flavor
 		}
 	} = {};
 
@@ -114,7 +114,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		protected facilityService: FacilityService,
 	) {
 		super();
-
 	}
 
 	/**
@@ -131,7 +130,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 				);
 				this.computeCenters.push(compute_center);
 			}
-
 		});
 	}
 
@@ -148,7 +146,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		// tslint:disable-next-line:forin
 		for (const extensionFlavorsKey in this.newFlavors) {
 			const fl: any = this.newFlavors[extensionFlavorsKey];
-			this.totalRAM += fl.flavor.ram * fl.counter;
+			this.totalRAM += fl.flavor.ram_gib * fl.counter;
 			this.totalNumberOfCores += fl.flavor.vcpus * fl.counter;
 			this.totalGPU += fl.flavor.gpu * fl.counter;
 		}
@@ -170,14 +168,13 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		if (!application.project_application_user) {
 			return;
 		}
-		this.userService.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
-			(result: { [key: string]: string }): void => {
-
+		this.userService
+			.getMemberDetailsByElixirId(application.project_application_user.elixir_id)
+			.subscribe((result: { [key: string]: string }): void => {
 				application.project_application_user.username = `${result['firstName']} ${result['lastName']}`;
 
 				application.project_application_user.email = result['email'];
-			},
-		);
+			});
 	}
 
 	/**
@@ -267,7 +264,9 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 		for (const key in this.flavorList) {
 			if (key in this.flavorList) {
-				this.constantStrings[`project_application_${this.flavorList[key].name}`] = `Number of VMs of type  ${this.flavorList[key].name}: `;
+				this.constantStrings[
+					`project_application_${this.flavorList[key].name}`
+				] = `Number of VMs of type  ${this.flavorList[key].name}: `;
 			}
 		}
 	}
@@ -284,28 +283,27 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		if (key in this.constantStrings) {
 			switch (key) {
 				case 'project_application_lifetime': {
-					return (`${this.constantStrings[key]}${val} months`);
+					return `${this.constantStrings[key]}${val} months`;
 				}
-				case ('project_application_volume_limit'): {
-					return (`${this.constantStrings[key]}${val} GB`);
+				case 'project_application_volume_limit': {
+					return `${this.constantStrings[key]}${val} GB`;
 				}
 				case 'project_application_object_storage': {
-					return (`${this.constantStrings[key]}${val}  GB`);
+					return `${this.constantStrings[key]}${val}  GB`;
 				}
 				case 'project_application_report_allowed': {
 					if (val) {
-						return (`${this.constantStrings[key]} Yes`);
+						return `${this.constantStrings[key]} Yes`;
 					} else {
-						return (`${this.constantStrings[key]} No`);
+						return `${this.constantStrings[key]} No`;
 					}
 				}
 				default: {
-					return (`${this.constantStrings[key]}${val}`);
+					return `${this.constantStrings[key]}${val}`;
 				}
 			}
 		} else {
 			return null;
 		}
 	}
-
 }
