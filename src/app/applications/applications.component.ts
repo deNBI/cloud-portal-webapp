@@ -161,6 +161,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	setApplicationToAdjust(application: Application): void {
 		this.selectedApplication = application;
 		this.adjustedApplication = new Application(application);
+		this.adjustedApplication.resetFlavors(this.flavorList);
 		this.checkIfMinimumSelected();
 	}
 
