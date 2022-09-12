@@ -173,6 +173,10 @@ export class Application {
 		this.setDaysRunning();
 	}
 
+	/**
+	 * Can be used to prevent the webapp from using flavors with empty values, which would cause problems with the API.
+	 * @param flavorList list of the latest flavors from the API
+	 */
 	public resetFlavors(flavorList: Flavor[]): void {
 		flavorList.forEach((flv: Flavor) => {
 			const idx: number = this.flavors.findIndex((fl: Flavor): boolean => fl.id === flv.id);
