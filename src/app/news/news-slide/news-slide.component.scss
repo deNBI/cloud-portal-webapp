@@ -10,3 +10,19 @@
 .card:hover {
 	box-shadow: rgb(87, 87, 87) 10px 10px 20px -10px;
 }
+
+.card .card-img-overlay {
+	visibility: hidden;
+}
+
+.card:hover .card-img-overlay {
+	visibility: visible;
+}
+
+.card:hover .card-img {
+	visibility: hidden;
+}
+
+.card .card-img {
+	visibility: visible;
+}
