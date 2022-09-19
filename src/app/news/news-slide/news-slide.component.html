@@ -1,13 +1,53 @@
-<div class="card border-bottom-0 border-top-0 text-center" *ngIf="!news.horizontal">
-	<img
-		[style.object-fit]="news.object_fit"
-		*ngIf="news.preview_image"
-		class="card-img-top"
-		src="{{ news.preview_image }}"
-		alt="{{ news.title }}"
-		style="width: 100%; height: 100px"
-	/>
-	<div class="card-body overflow-auto">
+<div class="card border-bottom-0 border-top-0">
+	<div class="card-img" *ngIf="!news.horizontal">
+		<h5 class="card-title align-items-center justify-content-center" style="height: 6rem; display: flex; margin: 0">
+			{{ news.title }}
+		</h5>
+		<img
+			src="{{ news.preview_image }}"
+			alt="{{ news.title }}"
+			style="
+				object-fit: fill;
+				width: 100%;
+				position: absolute;
+				height: 12rem;
+				filter: blur(5px);
+				-webkit-filter: blur(5px);
+			"
+		/>
+		<img
+			src="{{ news.preview_image }}"
+			alt="{{ news.title }}"
+			style="object-fit: contain; width: 100%; right: 0%; height: 12rem; position: absolute"
+		/>
+	</div>
+	<div class="card-img row" *ngIf="news.horizontal">
+		<div class="col-6 justify-content-center align-items-center">
+			<img
+				src="{{ news.preview_image }}"
+				alt="{{ news.title }}"
+				style="
+					object-fit: fill;
+					width: 100%;
+					position: absolute;
+					height: 100%;
+					filter: blur(5px);
+					-webkit-filter: blur(5px);
+				"
+			/>
+			<img
+				src="{{ news.preview_image }}"
+				alt="{{ news.title }}"
+				style="object-fit: contain; width: 100%; height: 100%; position: absolute"
+			/>
+		</div>
+		<div class="col-6">
+			<h5 class="card-title align-items-center justify-content-center" style="height: 18rem; display: flex; margin: 0">
+				{{ news.title }}
+			</h5>
+		</div>
+	</div>
+	<div class="card-img-overlay text-center overflow-auto">
 		<h5 class="card-title">{{ news.title }}</h5>
 		<p class="card-text">{{ news.short_text }}</p>
 		<small class="float-left text-muted">
@@ -18,40 +58,5 @@
 				>See full news&nbsp;<i class="fa fa-external-link-alt"></i
 			></a>
 		</small>
-	</div>
-</div>
-
-<div class="card mb-3 text-center" *ngIf="news.horizontal" style="flex-direction: row">
-	<div class="row no-gutters">
-		<div class="col-md-4" style="max-height: 100%">
-			<img
-				*ngIf="news.preview_image"
-				class=""
-				src="{{ news.preview_image }}"
-				[style.object-fit]="news.object_fit"
-				alt="{{ news.title }}"
-				style="
-					height: 100%;
-					width: 120px;
-					border-top-right-radius: 0;
-					border-bottom-left-radius: 5px;
-					border-top-left-radius: 5px;
-				"
-			/>
-		</div>
-		<div class="col-md-8 text-center" style="max-height: 100%">
-			<div class="card-body overflow-auto" style="max-height: 100%">
-				<h5 class="card-title">{{ news.title }}</h5>
-				<p class="card-text">{{ news.short_text }}</p>
-				<small class="float-left text-muted">
-					{{ news.date | date: 'YYYY-MM-dd' }}
-				</small>
-				<small class="float-right">
-					<a [href]="news.url" target="_blank" rel="noopener noreferrer"
-						>See full news&nbsp;<i class="fa fa-external-link-alt"></i
-					></a>
-				</small>
-			</div>
-		</div>
 	</div>
 </div>
