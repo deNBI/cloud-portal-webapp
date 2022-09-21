@@ -1044,7 +1044,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
 			this.updateNotificationModal(
 				'Denied',
-				'You cannot leave projects as PI. Please contact cloud-helpdesk@denbi.de for further steps.',
+				`You cannot leave projects as PI. Please contact ${CLOUD_PORTAL_SUPPORT_MAIL} for further steps.`,
 				true,
 				'danger',
 			);
