@@ -19,23 +19,24 @@ import { ResourcemachineOverviewComponent } from './resources/resourcemachine-ov
 import { GPUSpecificationOverviewComponent } from './resources/gpu-specification-overview/gpu-specification-overview.component';
 import { GeneralstoragefactorOverviewComponent } from './resources/generalstoragefactor-overview/generalstoragefactor-overview.component';
 import { ProjectManagementModule } from '../projectmanagement/projectmanagement.module';
+import {NgbPaginationModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * Facilitymanager module.
  */
 @NgModule({
-	imports: [
-		FacilitymanagerRoutingModule,
-		TabsModule,
-		FormsModule,
-		CommonModule,
-		ModalModule.forRoot(),
-		BsDatepickerModule.forRoot(),
+		imports: [
+				FacilitymanagerRoutingModule,
+				TabsModule,
+				FormsModule,
+				CommonModule,
+				ModalModule.forRoot(),
+				BsDatepickerModule.forRoot(),
 
-		ApplicationsModule,
-		ReactiveFormsModule, PipeModuleModule, SharedDirectivesModule, ProjectManagementModule,
+				ApplicationsModule,
+				ReactiveFormsModule, PipeModuleModule, SharedDirectivesModule, ProjectManagementModule, NgbTypeaheadModule, NgbPaginationModule,
 
-	],
+		],
 	declarations: [
 		FacilityProjectsOverviewComponent,
 		ImageTagComponent,

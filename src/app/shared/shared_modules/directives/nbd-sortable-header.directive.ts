@@ -1,8 +1,6 @@
-import {Component, Directive, EventEmitter, Input, Output, PipeTransform} from '@angular/core';
+import {Directive, EventEmitter, Input, Output} from '@angular/core';
 import {Application} from '../../../applications/application.model/application.model';
-import {DecimalPipe} from '@angular/common';
-import {FormControl} from '@angular/forms';
-import {Observable, startWith, map} from 'rxjs';
+
 
 export type SortColumn = keyof Application | '';
 export type SortDirection = 'asc' | 'desc' | '';
@@ -12,6 +10,16 @@ export interface SortEvent {
 		column: SortColumn;
 		direction: SortDirection;
 }
+
+export interface State {
+		page: number;
+		pageSize: number;
+		searchTerm: string;
+		sortColumn: SortColumn;
+		sortDirection: SortDirection;
+}
+
+export const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 @Directive({
 		selector: 'th[sortable]',
@@ -33,14 +41,4 @@ export class NgbdSortableHeader {
 		}
 }
 
-function search(text: string, pipe: PipeTransform, applications: Application[]): Application[] {
-		return applications.filter(application => {
-				const term = text.toLowerCase();
-				return application.project_application_shortname.toLowerCase().includes(term)
-						|| pipe.transform(application.project_application_id).includes(term)
-						|| pipe.transform(application.project_application_current_credits).includes(term)
-						|| pipe.transform(application.project_application_initial_credits).includes(term);
-
-		});
-}
 

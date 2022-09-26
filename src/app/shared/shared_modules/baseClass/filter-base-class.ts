@@ -19,32 +19,6 @@ export abstract class FilterBaseClass extends AbstractBaseClass {
 		filterProjectLongName: string;
 		filterFacilityName: string;
 
-		addOrRemoveFromFilterStatusList(status: Application_States) {
-				const idx = this.filterstatus_list.indexOf(status)
-				if (idx == -1) {
-						this.addToFilterStatusList(status)
-				} else {
-						this.removeStatusFromFilterStatusList(status)
-				}
-
-		}
-
-		addToFilterStatusList(status: Application_States) {
-				const idx = this.filterstatus_list.indexOf(status)
-				if (idx == -1) {
-						console.log('add')
-						this.filterstatus_list.push(status)
-				}
-		}
-
-		removeStatusFromFilterStatusList(status: Application_States) {
-				const idx = this.filterstatus_list.indexOf(status)
-				if (idx != -1) {
-						console.log('remove')
-
-						this.filterstatus_list.splice(idx, 1)
-				}
-		}
 
 		abstract applyFilter(): void
 

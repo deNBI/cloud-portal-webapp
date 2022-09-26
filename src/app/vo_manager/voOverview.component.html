@@ -35,64 +35,101 @@
                 Get JSON
             </button>
 
-            <div class="card" style=" ">
+            <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Projects
                 </div>
 
                 <div class="card-body">
+                    <div class="d-flex justify-content-between p-2">
+                        <ngb-pagination
+                                [collectionSize]="(total$ | async)!" [(page)]="sortProjectService.page"
+                                [pageSize]="sortProjectService.pageSize">
+                        </ngb-pagination>
+
+                        <select class="form-select" style="width: auto" name="pageSize"
+                                [(ngModel)]="sortProjectService.pageSize">
+                            <option [ngValue]="10">10 items per page</option>
+                            <option [ngValue]="25">25 items per page</option>
+                            <option [ngValue]="50">50 items per page</option>
+                        </select>
+                    </div>
 
 
                     <div class="table-responsive">
-                        <form>
-                            <div class="mb-3 row">
-                                <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full
-                                    text
-                                    search:</label>
-                                <div class="col-xs-3 col-sm-auto">
-                                    <input id="table-filtering-search" class="form-control" type="text"
-                                           [formControl]="filter">
-                                </div>
+                        <div class="mb-3 row">
+                            <label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text
+                                search:</label>
+                            <div class="col-xs-3 col-sm-auto">
+                                <input id="table-complete-search" type="text" class="form-control" name="searchTerm"
+                                       [(ngModel)]="sortProjectService.searchTerm">
                             </div>
-                        </form>
+                            <span class="col col-form-label"
+                                  *ngIf="sortProjectService.loading$ | async">Loading...</span>
+                        </div>
+
+
                         <div class="row">
-                            <div class="checkbox col-sm">
+                            <div class="checkbox col">
+                                <label style="margin-top: 7px;margin-bottom: 0px !important;">
+                                    <input type="checkbox"
+                                           (ngModelChange)="sortProjectService.initiateSearch()"
+                                           [(ngModel)]="sortProjectService.showSimpleVM"/>
+                                    <span style="margin-left: 5px; bottom: 5px; position: relative;"
+                                          class="badge bg-info-blue">SimpleVM </span>
+
+                                </label>
+                            </div>
+                            <div class="checkbox col">
+                                <label style="margin-top: 7px;margin-bottom: 0px !important;">
+                                    <input type="checkbox"
+                                           (ngModelChange)="sortProjectService.initiateSearch()"
+
+
+                                           [(ngModel)]="sortProjectService.showOpenStack"/>
+                                    <span style="margin-left: 5px; bottom: 5px; position: relative;"
+                                          class="badge bg-danger">OpenStack  </span>
+
+                                </label>
+
+                            </div>
+                            <div class="checkbox col">
                                 <label>
                                     <input type="checkbox"
-                                           (change)="addOrRemoveFromFilterStatusList(application_states.ACTIVE);filter.updateValueAndValidity()"
-                                           [checked]="filterstatus_list | inList: application_states.ACTIVE "
+                                           (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.ACTIVE);"
+                                           [checked]="sortProjectService.filterStatusList | inList: application_states.ACTIVE "
                                     >
                                     <span style="margin-left: 5px"
                                           class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
 
                                 </label>
                             </div>
-                            <div class="checkbox col-sm">
+                            <div class="checkbox col">
                                 <label>
                                     <input type="checkbox"
-                                           (change)="addOrRemoveFromFilterStatusList(application_states.SUSPENDED);filter.updateValueAndValidity()"
-                                           [checked]="filterstatus_list | inList: application_states.SUSPENDED ">
+                                           (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.SUSPENDED);"
+                                           [checked]="sortProjectService.filterStatusList | inList: application_states.SUSPENDED ">
                                     <span style="margin-left: 5px"
                                           class="badge bg-warning">{{project_states[project_states.SUSPENDED]}} </span>
                                 </label>
                             </div>
 
-                            <div class="checkbox col-sm">
+                            <div class="checkbox col">
                                 <label>
                                     <input type="checkbox"
-                                           (change)="addOrRemoveFromFilterStatusList(application_states.EXPIRED);filter.updateValueAndValidity()"
-                                           [checked]="filterstatus_list | inList: application_states.EXPIRED ">
+                                           (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRED);"
+                                           [checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRED ">
 
                                     <span style="margin-left: 5px"
                                           class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
 
                                 </label>
                             </div>
-                            <div class="checkbox col-sm">
+                            <div class="checkbox col">
                                 <label>
                                     <input type="checkbox"
-                                           (change)="addOrRemoveFromFilterStatusList(application_states.EXPIRES_SOON);filter.updateValueAndValidity()"
-                                           [checked]="filterstatus_list | inList: application_states.EXPIRES_SOON "
+                                           (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRES_SOON);"
+                                           [checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRES_SOON "
 
 
                                     />
@@ -102,11 +139,11 @@
                             </div>
 
 
-                            <div class="checkbox col-sm">
+                            <div class="checkbox col">
                                 <label>
                                     <input type="checkbox"
-                                           (change)="addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_CONFIRMATION);filter.updateValueAndValidity()"
-                                           [checked]="filterstatus_list | inList: application_states.WAIT_FOR_CONFIRMATION "
+                                           (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_CONFIRMATION);"
+                                           [checked]="sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_CONFIRMATION "
                                     />
 
 
@@ -114,22 +151,22 @@
                                           class="badge bg-info">{{application_states[application_states.WAIT_FOR_CONFIRMATION]}}</span>
                                 </label>
                             </div>
-                            <div class="checkbox col-sm">
+                            <div class="checkbox col">
                                 <label>
                                     <input type="checkbox"
-                                           (change)="addOrRemoveFromFilterStatusList(application_states.TERMINATION_REQUESTED);filter.updateValueAndValidity()"
-                                           [checked]="filterstatus_list | inList: application_states.TERMINATION_REQUESTED "
+                                           (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.TERMINATION_REQUESTED);"
+                                           [checked]="sortProjectService.filterStatusList | inList: application_states.TERMINATION_REQUESTED "
 
                                     />
                                     <span style="margin-left: 5px"
                                           class="badge bg-dark">{{application_states[application_states.TERMINATION_REQUESTED]}}</span>
                                 </label>
                             </div>
-                            <div class="checkbox col-sm">
+                            <div class="checkbox col">
                                 <label>
                                     <input type="checkbox"
-                                           (change)="addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_TERMINATION_FM);filter.updateValueAndValidity()"
-                                           [checked]="filterstatus_list | inList: application_states.WAIT_FOR_TERMINATION_FM "
+                                           (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_TERMINATION_FM);"
+                                           [checked]="sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_TERMINATION_FM "
 
                                     />
                                     <span style="margin-left: 5px"
@@ -139,17 +176,33 @@
 
 
                         </div>
-                        <table class="table table-hover">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th></th>
-                                <th>Facility</th>
-                                <th>Project ID</th>
-                                <th>Project Name</th>
-                                <th>Details</th>
-                                <th>Status</th>
-                                <th>Credits</th>
-                                <th>Actions</th>
+                                <th scope="col"></th>
+                                <th scope="col">Facility</th>
+
+                                <th scope="col" sortable="project_application_perun_id" (sort)="onSort($event)">Project
+                                    ID
+                                </th>
+                                <th scope="col" sortable="project_application_shortname" (sort)="onSort($event)">Project
+                                    Name
+                                </th>
+                                <th scope="col">Details</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" sortable="project_application_total_ram" (sort)="onSort($event)">Ram
+                                </th>
+                                <th scope="col" sortable="project_application_total_cores" (sort)="onSort($event)">
+                                    Cores
+                                </th>
+                                <th scope="col" sortable="project_application_total_gpu" (sort)="onSort($event)">GPUs
+                                </th>
+
+
+                                <th scope="col" sortable="project_application_initial_credits" (sort)="onSort($event)">
+                                    Credits
+                                </th>
+                                <th scope="col">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -178,17 +231,18 @@
                                 <td>
                                     <ngb-highlight [result]="project.project_application_compute_center.Name "
                                                    highlightClass="highlight-filter"
-                                                   [term]="filter.value"></ngb-highlight>
+                                                   [term]="sortProjectService.searchTerm"></ngb-highlight>
                                 </td>
                                 <td>
                                     <ngb-highlight [result]="project.project_application_perun_id "
                                                    highlightClass="highlight-filter"
-                                                   [term]="filter.value"></ngb-highlight>
+                                                   [term]="sortProjectService.searchTerm">>
+                                    </ngb-highlight>
                                 </td>
                                 <td>
                                     <ngb-highlight [result]="project.project_application_shortname "
                                                    highlightClass="highlight-filter"
-                                                   [term]="filter.value"></ngb-highlight>
+                                                   [term]="sortProjectService.searchTerm"></ngb-highlight>
                                 </td>
 
                                 <td>
@@ -228,15 +282,37 @@
                                             class="badge bg-secondary">PROTECTED </span>
 
                                 </td>
+                                <td>
+                                    <ngb-highlight [result]="project.project_application_total_ram "
+                                                   highlightClass="highlight-filter"
+                                                   [term]="sortProjectService.searchTerm"></ngb-highlight>
+
+                                </td>
+                                <td>
+                                    <ngb-highlight [result]="project.project_application_total_cores "
+                                                   highlightClass="highlight-filter"
+                                                   [term]="sortProjectService.searchTerm">>
+                                    </ngb-highlight>
+
+                                </td>
+                                <td>
+                                    <ngb-highlight [result]="project.project_application_total_gpu "
+                                                   highlightClass="highlight-filter"
+                                                   [term]="sortProjectService.searchTerm">>
+                                    </ngb-highlight>
+
+                                </td>
 
                                 <td>
                                     <ngb-highlight [result]="project.project_application_current_credits "
                                                    highlightClass="highlight-filter"
-                                                   [term]="filter.value"></ngb-highlight>
+                                                   [term]="sortProjectService.searchTerm">>
+                                    </ngb-highlight>
                                     /
                                     <ngb-highlight [result]="project.project_application_initial_credits "
                                                    highlightClass="highlight-filter"
-                                                   [term]="filter.value"></ngb-highlight>
+                                                   [term]="sortProjectService.searchTerm">>
+                                    </ngb-highlight>
                                 </td>
 
 

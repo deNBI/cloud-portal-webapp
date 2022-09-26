@@ -15,7 +15,8 @@ import { ClientOverviewComponent } from './clients/clientOverview.component';
 import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 import { NumberChartsComponent } from './number-charts/number-charts.component';
 import { ClientLimitsComponent } from './clients/modals/client-limits..component';
-import {NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbPaginationModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
+import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 
 /**
  * VO Manager module.
@@ -31,6 +32,8 @@ import {NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 				PipeModuleModule,
 				NgbTypeaheadModule,
 				ReactiveFormsModule,
+				SharedDirectivesModule,
+				NgbPaginationModule,
 
 		],
 	declarations: [
