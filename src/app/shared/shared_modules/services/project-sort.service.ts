@@ -183,16 +183,27 @@ export class ProjectSortService {
 
 		private _search(): Observable<SearchResult> {
 				const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
+				console.log('_search')
 
 				// 1. sort
 				let sortedApplications = this.sort(this._applications, sortColumn, sortDirection);
+				console.log(1)
+
+				console.log(sortedApplications)
 
 				// 2. filter
 				sortedApplications = sortedApplications.filter(app => this.matches(searchTerm, app));
+				console.log(2)
+
+				console.log(sortedApplications)
+
 				const total = sortedApplications.length;
 
 				// 3. paginate
 				sortedApplications = sortedApplications.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+				console.log(3)
+				console.log(sortedApplications)
+
 				return of({sortedApplications, total});
 
 		}
