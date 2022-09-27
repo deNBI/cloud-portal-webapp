@@ -143,7 +143,7 @@
 										<td>{{ project_application?.project_application_lifetime }} months</td>
 										<td>{{ project_application?.project_application_date_submitted }}</td>
 										<td>
-											<ng-container *ngFor="let st of project_application?.project_application_status">
+											<ng-container *ngFor="let st of project_application?.project_application_statuses">
 												<span *ngIf="st !== 19" class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
 													{{ getStatusById(st) }}
 												</span>
@@ -222,7 +222,7 @@
 				</div>
 
 				<div
-					*ngIf="!project_application?.project_application_status?.includes(Application_States.APPROVED)"
+					*ngIf="!project_application?.project_application_statuses?.includes(Application_States.APPROVED)"
 					class="card-body"
 					id="project_application_status_overview_further"
 				>
@@ -763,7 +763,7 @@
 										<td>{{ project_application?.project_application_lifetime }} months</td>
 										<td>{{ project_application?.project_application_date_submitted }}</td>
 										<td>
-											<ng-container *ngFor="let st of project_application?.project_application_status">
+											<ng-container *ngFor="let st of project_application?.project_application_statuses">
 												<span *ngIf="st !== 19" class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
 													{{ getStatusById(st) }}
 												</span>
