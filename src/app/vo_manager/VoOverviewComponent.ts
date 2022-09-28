@@ -12,7 +12,10 @@ import { FacilityService } from '../api-connector/facility.service';
 import { FullLayoutComponent } from '../layouts/full-layout.component';
 import { Application } from '../applications/application.model/application.model';
 import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
-import { NgbdSortableHeader, SortEvent } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
+import {
+	NgbdSortableHeaderDirective,
+	SortEvent,
+} from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 
 /**
@@ -55,7 +58,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public usersModalProjectID: number;
 	public usersModalProjectName: string;
 	public managerFacilities: [string, number][];
-	@ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
 
 	applictions$: Observable<Application[]>;
 	total$: Observable<number>;
@@ -83,7 +86,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers.forEach(header => {
-			if (header.sortable !== column) {
+			if (header.appSortable !== column) {
 				header.direction = '';
 			}
 		});
