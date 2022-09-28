@@ -514,6 +514,7 @@
 									id="id_project_application_institute"
 									name="project_application_institute"
 									class="form-control"
+									maxlength="256"
 									placeholder="e.g. Center for Biotechnology, Bielefeld"
 									[(ngModel)]="application.project_application_institute"
 									[ngClass]="{
@@ -527,7 +528,7 @@
 												form.controls.project_application_institute?.touched)
 									}"
 								/>
-								<span class="help-block">To which institute do you belong?</span>
+								<span class="help-block">To which institute do you belong? (Up to 256 characters allowed)</span>
 							</div>
 						</div>
 
@@ -546,6 +547,7 @@
 									id="id_project_application_workgroup"
 									name="project_application_workgroup"
 									class="form-control"
+									maxlength="256"
 									[(ngModel)]="application.project_application_workgroup"
 									placeholder="e.g. Computational Metagenomics"
 									[ngClass]="{
@@ -559,7 +561,7 @@
 												form.controls.project_application_workgroup?.touched)
 									}"
 								/>
-								<span class="help-block">To which workgroup do you belong?</span>
+								<span class="help-block">To which workgroup do you belong? (Up to 256 characters allowed)</span>
 							</div>
 						</div>
 						<br />
@@ -1086,6 +1088,7 @@
 												type="text"
 												class="form-control"
 												name="information_public_title_input"
+												maxlength="512"
 												data-test-id="information_public_title_input"
 												placeholder="Choose a public title - Leave blank for existing title."
 												[(ngModel)]="application.dissemination.information_title"
