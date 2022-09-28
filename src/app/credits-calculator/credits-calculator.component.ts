@@ -75,7 +75,7 @@ export class CreditsCalculatorComponent implements OnInit {
 		this.group_service.getGroupsEnumeration().subscribe(
 			(result: ProjectEnumeration[]): void => {
 				result.forEach((enumeration: ProjectEnumeration): void => {
-					if (enumeration.project_application_status.includes(Application_States.APPROVED)) {
+					if (enumeration.project_application_statuses.includes(Application_States.APPROVED)) {
 						if (!facilities.includes(enumeration.compute_center_id)) {
 							this.all_facilities.push([enumeration.compute_center_name, enumeration.compute_center_id]);
 							facilities.push(enumeration.compute_center_id);

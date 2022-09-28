@@ -10,13 +10,11 @@ import { ProjectEnumeration } from '../../projectmanagement/project-enumeration'
 	pure: false,
 })
 export class HasstatusinlistPipe implements PipeTransform {
-
 	transform(appl: Application | ProjectEnumeration, status: number): boolean {
 		if (appl === undefined) {
 			return false;
 		}
 
-		return appl.project_application_status.includes(status);
+		return appl.project_application_statuses.includes(status);
 	}
-
 }

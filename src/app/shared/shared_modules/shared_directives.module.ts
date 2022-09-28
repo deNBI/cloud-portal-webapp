@@ -7,6 +7,7 @@ import {
 	MaxAmoutValidatorDirective,
 	MinAmoutValidatorDirective,
 } from '../../applications/numberValidations.directive';
+import { NgbdSortableHeaderDirective } from './directives/nbd-sortable-header.directive';
 
 /**
  * Shared directives module.
@@ -20,6 +21,7 @@ import {
 		IntegerOrNullValidatorDirective,
 		FloatOrNullValidatorDirective,
 		FloatValidatorDirective,
+		NgbdSortableHeaderDirective,
 	],
 	exports: [
 		MinAmoutValidatorDirective,
@@ -28,9 +30,7 @@ import {
 		IntegerOrNullValidatorDirective,
 		FloatOrNullValidatorDirective,
 		FloatValidatorDirective,
+		NgbdSortableHeaderDirective,
 	],
 })
-
-export class SharedDirectivesModule {
-
-}
+export class SharedDirectivesModule {}

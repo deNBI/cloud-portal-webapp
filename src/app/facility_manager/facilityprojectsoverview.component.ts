@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {
+	Component, Input, OnInit, QueryList, ViewChildren,
+} from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { environment } from '../../environments/environment';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -8,9 +9,14 @@ import { GroupService } from '../api-connector/group.service';
 import { UserService } from '../api-connector/user.service';
 import { FacilityService } from '../api-connector/facility.service';
 import { NewsService } from '../api-connector/news.service';
-import { FilterBaseClass } from '../shared/shared_modules/baseClass/filter-base-class';
 import { WordPressTag } from './newsmanagement/wp-tags';
 import { Application } from '../applications/application.model/application.model';
+import {
+	NgbdSortableHeaderDirective,
+	SortEvent,
+} from '../shared/shared_modules/directives/nbd-sortable-header.directive';
+import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
+import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Facility Project overview component.
@@ -18,10 +24,9 @@ import { Application } from '../applications/application.model/application.model
 @Component({
 	selector: 'app-facility-projects',
 	templateUrl: 'facilityprojectsoverview.component.html',
-	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService],
+	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService],
 })
-export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit {
-
+export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
 	@Input() voRegistrationLink: string = environment.voRegistrationLink;
 
 	title: string = 'Projects Overview';
@@ -74,10 +79,16 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	facilitySupportMails: string = '';
 	supportMailEditing: boolean = false;
 
+	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
+
+	applictions$: Observable<Application[]>;
+	total$: Observable<number>;
+
 	constructor(
 		private groupService: GroupService,
 		private facilityService: FacilityService,
 		private newsService: NewsService,
+		public sortProjectService: ProjectSortService,
 	) {
 		super();
 	}
@@ -113,7 +124,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 					this.emailSubject = `[${this.selectedFacility['Facility']}: ${pro.perun_name}]`;
 				} else {
 					this.emailSubject = `[${this.selectedFacility['Facility']}]`;
-
 				}
 				break;
 		}
@@ -126,20 +136,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 			this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 			this.getFacilityProjects(this.managerFacilities[0]['FacilityId']);
 			this.title = `${this.title}:${this.selectedFacility['Facility']}`;
-
 		});
 		this.sendNews = true;
-		this.show_openstack_projects = true;
-		this.show_simple_vm_projects = true;
 
-		this.filterChanged
-			.pipe(
-				debounceTime(this.FILTER_DEBOUNCE_TIME),
-				distinctUntilChanged(),
-			)
-			.subscribe((): void => {
-				this.applyFilter();
-			});
 		/** needs refactoring in case we introduce tags to wagtail
 		 * this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
 			if (!(('code' in tags) && tags['code'] === 'wp-die')) {
@@ -148,6 +147,18 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 				}
 			}
 		}); * */
+	}
+
+	onSort({ column, direction }: SortEvent) {
+		// resetting other headers
+		this.headers.forEach(header => {
+			if (header.appSortable !== column) {
+				header.direction = '';
+			}
+		});
+
+		this.sortProjectService.sortColumn = column;
+		this.sortProjectService.sortDirection = direction;
 	}
 
 	searchForUserInFacility(searchString: string): void {
@@ -159,11 +170,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 		const searchString: string = bare_searchString.toLowerCase();
 
 		this.allFacilityMembers.forEach((member: object): void => {
-
-			if (member['elixirId'].toLowerCase().includes(searchString)
+			if (
+				member['elixirId'].toLowerCase().includes(searchString)
 				|| member['email'].toLowerCase().includes(searchString)
 				|| member['firstName'].toLowerCase().includes(searchString)
-				|| member['lastName'].toLowerCase().includes(searchString)) {
+				|| member['lastName'].toLowerCase().includes(searchString)
+			) {
 				this.filteredMembers.push(member);
 			}
 		});
@@ -171,7 +183,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
 	getProjectsByMemberElixirId(): void {
 		// tslint:disable-next-line:max-line-length
-		this.facilityService.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter)
+		this.facilityService
+			.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter)
 			.subscribe((applications: Application[]): void => {
 				this.projects_filtered = [];
 				for (const group of applications) {
@@ -181,42 +194,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 					this.projects_filtered.push(group);
 				}
 			});
-	}
-
-	applyFilter(): void {
-		if (this.filter) {
-			this.filter = this.filter.trim();
-		}
-		if (this.filter && this.filter.includes('@elixir-europe')) {
-			this.getProjectsByMemberElixirId();
-
-		}
-		this.projects_filtered = this.projects.filter((project: Application): boolean => this.checkFilter(project));
-
-	}
-
-	checkFilter(project: Application): boolean {
-
-		if (this.filter === '' || !this.filter) {
-			if ((project.project_application_openstack_project && this.show_openstack_projects)
-				|| (!project.project_application_openstack_project && this.show_simple_vm_projects)) {
-				return this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached);
-			}
-
-			return false;
-
-		} else {
-			if ((project.project_application_openstack_project && this.show_openstack_projects)
-				|| (!project.project_application_openstack_project && this.show_simple_vm_projects)) {
-
-				return (this.isFilterLongProjectName(project.project_application_name, this.filter)
-						|| this.isFilterProjectId(project.project_application_perun_id.toString(), this.filter))
-					|| (this.isFilterProjectName(project.perun_name, this.filter)
-						&& this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached));
-			}
-
-			return false;
-		}
 	}
 
 	/**
@@ -253,19 +230,21 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 		this.projects = [];
 
 		// tslint:disable-next-line:max-line-length
-		this.facilityService.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(
-			(applications: Application[]): void => {
+		this.facilityService
+			.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED)
+			.subscribe((applications: Application[]): void => {
 				for (const group of applications) {
 					if (group.project_application_lifetime > 0) {
 						group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
 					}
 					this.projects.push(group);
 				}
-				this.applyFilter();
-				this.isLoaded = true;
+				this.sortProjectService.applications = this.projects;
+				this.applictions$ = this.sortProjectService.applications$;
+				this.total$ = this.sortProjectService.total$;
 
-			},
-		);
+				this.isLoaded = true;
+			});
 		this.facilityService.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
 			(result: any[]): void => {
 				this.membersLoaded = true;
@@ -276,7 +255,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 				this.membersLoaded = false;
 			},
 		);
-
 	}
 
 	/**
@@ -304,7 +282,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	 * @param alternative_news_text the news text for WordPress, in case it shall be different from the original text
 	 * @param selectedMember the specific member the mail is sent to in case one specific member is chosen
 	 */
-	sendMailToFacility(facility: string, subject: string, message: string, reply?: string, send?: any, alternative_news_text?: string): void {
+	sendMailToFacility(
+		facility: string,
+		subject: string,
+		message: string,
+		reply?: string,
+		send?: any,
+		alternative_news_text?: string,
+	): void {
 		this.emailStatus = 0;
 		if (this.selectedProjectType === 'USER') {
 			const tempMailList: string[] = [];
@@ -318,35 +303,36 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 			reply = reply.trim();
 		}
 		const chosenTags: string = this.selectedTags.toString();
-		this.facilityService.sendMailToFacility(
-			facility,
-			encodeURIComponent(subject),
-			encodeURIComponent(message),
-			this.selectedProjectType,
-			encodeURIComponent(reply),
-			send,
-			encodeURIComponent(alternative_news_text),
-			chosenTags,
-		).subscribe(
-			(result: any): void => {
-				if (result.status === 201) {
-					this.emailStatus = 1;
-				} else {
+		this.facilityService
+			.sendMailToFacility(
+				facility,
+				encodeURIComponent(subject),
+				encodeURIComponent(message),
+				this.selectedProjectType,
+				encodeURIComponent(reply),
+				send,
+				encodeURIComponent(alternative_news_text),
+				chosenTags,
+			)
+			.subscribe(
+				(result: any): void => {
+					if (result.status === 201) {
+						this.emailStatus = 1;
+					} else {
+						this.emailStatus = 2;
+					}
+				},
+				(): void => {
 					this.emailStatus = 2;
-				}
-			},
-			(): void => {
-				this.emailStatus = 2;
-			},
-			(): void => {
-				this.filteredMembers = [];
-				this.selectedProjectType = 'ALL';
-				this.emailReply = '';
-				this.selectedMember = [];
-				this.memberFilter = '';
-			},
-		);
-
+				},
+				(): void => {
+					this.filteredMembers = [];
+					this.selectedProjectType = 'ALL';
+					this.emailReply = '';
+					this.selectedMember = [];
+					this.memberFilter = '';
+				},
+			);
 	}
 
 	/**
@@ -369,18 +355,17 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	}
 
 	getMembersOfTheProject(projectid: number, projectname: string): void {
-		this.facilityService.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
+		this.facilityService
+			.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
 			.subscribe((members: ProjectMember[]): void => {
 				this.usersModalProjectID = projectid;
 				this.usersModalProjectName = projectname;
 				this.usersModalProjectMembers = members;
-
 			});
 	}
 
 	public showMembersOfTheProject(project_id: number, projectname: string): void {
 		this.getMembersOfTheProject(project_id, projectname);
-
 	}
 
 	public resetEmailModal(): void {
@@ -396,20 +381,17 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	}
 
 	getFacilitySupportMails(): void {
-		this.facilityService.getSupportMails(this.selectedFacility['FacilityId']).subscribe(
-			(result: any) => {
-				this.facilitySupportMails = result['body'];
-				if (this.facilitySupportMails === '' || this.facilitySupportMails === null) {
-					this.facilitySupportMails = 'example@mail1.com, example@mail2.com';
-				}
-			},
-		);
+		this.facilityService.getSupportMails(this.selectedFacility['FacilityId']).subscribe((result: any) => {
+			this.facilitySupportMails = result['body'];
+			if (this.facilitySupportMails === '' || this.facilitySupportMails === null) {
+				this.facilitySupportMails = 'example@mail1.com, example@mail2.com';
+			}
+		});
 	}
 
 	setFacilitySupportMails(supportMails: string): void {
 		const facilityId = this.selectedFacility['FacilityId'];
 		this.facilityService.setSupportMails(facilityId, supportMails).subscribe((result: any): void => {
-
 			if (result.ok) {
 				this.updateNotificationModal(
 					'Facility support mails changed',
@@ -431,5 +413,4 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	toggleSupportMailEditing(): void {
 		this.supportMailEditing = !this.supportMailEditing;
 	}
-
 }

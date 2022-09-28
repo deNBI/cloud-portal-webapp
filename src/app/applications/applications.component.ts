@@ -286,7 +286,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			(res: Response): void => {
 				if (application.project_application_openstack_project) {
 					const applicationToGet: Application = application;
-					applicationToGet.project_application_status = [];
+					applicationToGet.project_application_statuses = [];
 					this.getApplication(applicationToGet);
 					this.showNotificationModal('Success', 'The request has been sent to the facility manager.', 'success');
 				} else {
@@ -331,7 +331,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					}
 				} else {
 					const applicationToGet: Application = application;
-					applicationToGet.project_application_status = [];
+					applicationToGet.project_application_statuses = [];
 					this.getApplication(applicationToGet);
 				}
 			},
@@ -367,7 +367,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					}
 				} else {
 					const applicationToGet: Application = application;
-					applicationToGet.project_application_status = [];
+					applicationToGet.project_application_statuses = [];
 					this.getApplication(applicationToGet);
 				}
 			},
@@ -571,7 +571,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					this.showNotificationModal('Failed', result['Error'], 'danger');
 				} else {
 					const applicationToGet: Application = application;
-					applicationToGet.project_application_status = [];
+					applicationToGet.project_application_statuses = [];
 					this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
 					this.getApplication(applicationToGet);
 					this.switchApproveLocked(false);
