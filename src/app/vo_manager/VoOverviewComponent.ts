@@ -1,14 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import {
+	Component, OnInit, QueryList, ViewChildren,
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
 import { VoService } from '../api-connector/vo.service';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { GroupService } from '../api-connector/group.service';
 import { ComputecenterComponent } from '../projectmanagement/computecenter.component';
-import { FilterBaseClass } from '../shared/shared_modules/baseClass/filter-base-class';
 import { IResponseTemplate } from '../api-connector/response-template';
 import { FacilityService } from '../api-connector/facility.service';
 import { FullLayoutComponent } from '../layouts/full-layout.component';
 import { Application } from '../applications/application.model/application.model';
+import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
+import {
+	NgbdSortableHeaderDirective,
+	SortEvent,
+} from '../shared/shared_modules/directives/nbd-sortable-header.directive';
+import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 
 /**
  * Vo Overview component.
@@ -16,9 +24,9 @@ import { Application } from '../applications/application.model/application.model
 @Component({
 	selector: 'app-vo-overview',
 	templateUrl: 'voOverview.component.html',
-	providers: [VoService, GroupService, FacilityService],
+	providers: [VoService, GroupService, FacilityService, ProjectSortService],
 })
-export class VoOverviewComponent extends FilterBaseClass implements OnInit {
+export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	title: string = 'VO Overview';
 	public emailSubject: string;
 	public emailReply: string = '';
@@ -33,6 +41,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
 	show_openstack_projects: boolean = true;
 	show_simple_vm_projects: boolean = true;
+	show_simple_vm: boolean = true;
+	show_openstack: boolean = true;
 
 	selectedProjectType: string = 'ALL';
 	selectedFacility: string | number = 'ALL';
@@ -48,6 +58,10 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	public usersModalProjectID: number;
 	public usersModalProjectName: string;
 	public managerFacilities: [string, number][];
+	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
+
+	applictions$: Observable<Application[]>;
+	total$: Observable<number>;
 
 	// public selectedFacility: [string, number];
 
@@ -57,6 +71,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 		private voService: VoService,
 		private groupservice: GroupService,
 		private facilityService: FacilityService,
+		public sortProjectService: ProjectSortService,
 	) {
 		super();
 	}
@@ -66,6 +81,18 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
 			this.newsletterSubscriptionCounter = result.value as number;
 		});
+	}
+
+	onSort({ column, direction }: SortEvent) {
+		// resetting other headers
+		this.headers.forEach(header => {
+			if (header.appSortable !== column) {
+				header.direction = '';
+			}
+		});
+
+		this.sortProjectService.sortColumn = column;
+		this.sortProjectService.sortDirection = direction;
 	}
 
 	switchShowSimpleVmProjects(): void {
@@ -102,26 +129,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
 	sendTestBug(): void {
 		this.voService.sendTestError().subscribe();
-	}
-
-	applyFilter(): void {
-		this.projects_filtered = this.projects.filter((project: Application): boolean => this.checkFilter(project));
-	}
-
-	checkFilter(project: Application): boolean {
-		let facNameFilter: boolean = true;
-		if (project.project_application_compute_center) {
-			facNameFilter = this.isFilterFacilityName(project.project_application_compute_center.Name.toLowerCase());
-		}
-
-		return (
-			facNameFilter
-			&& this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached)
-			&& this.isFilterProjectName(project.perun_name)
-			&& this.isFilterProjectId(project.project_application_perun_id.toString())
-			&& ((project.project_application_openstack_project && this.show_openstack_projects)
-				|| (!project.project_application_openstack_project && this.show_simple_vm_projects))
-		);
 	}
 
 	sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
@@ -181,7 +188,10 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				}
 				this.projects.push(application);
 			}
-			this.applyFilter();
+			this.sortProjectService.applications = this.projects;
+			this.applictions$ = this.sortProjectService.applications$;
+			this.total$ = this.sortProjectService.total$;
+
 			this.isLoaded = true;
 		});
 	}
@@ -233,11 +243,11 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
 				if (!this.selectedProject.project_application_openstack_project) {
 					this.projects.splice(indexAll, 1);
+					this.sortProjectService.applications = this.projects;
 				} else {
 					this.getProjectStatus(this.projects[indexAll]);
 				}
 				this.fullLayout.getGroupsEnumeration();
-				this.applyFilter();
 				if (this.selectedProject.project_application_openstack_project) {
 					this.updateNotificationModal(
 						'Success',
@@ -266,7 +276,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
 	getProjectStatus(project: Application): void {
 		this.voService.getProjectStatus(project.project_application_perun_id).subscribe((res: any): void => {
-			project.project_application_status = res['status'];
+			project.project_application_statuses = res['status'];
 		});
 	}
 

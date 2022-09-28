@@ -14,7 +14,6 @@ import { ProjectMemberApplication } from '../../projectmanagement/project_member
  * Application class.
  */
 export class Application {
-
 	project_application_id: number | string;
 	project_application_report_allowed: boolean = false;
 	project_application_name: string;
@@ -34,7 +33,7 @@ export class Application {
 	project_application_hash: string;
 	project_application_user: User;
 	project_application_pi: User = new User();
-	project_application_status: number[] = [];
+	project_application_statuses: number[] = [];
 	project_application_compute_center: ComputecenterComponent;
 	project_application_openstack_project: boolean;
 	project_application_total_gpu: number = 0;
@@ -49,8 +48,8 @@ export class Application {
 	project_modification_request: ApplicationModification;
 	project_credit_request: ApplicationCreditRequest = null;
 	project_application_perun_id: number | string;
-	project_application_total_cores: number;
-	project_application_total_ram: number;
+	project_application_total_cores: number = 0;
+	project_application_total_ram: number = 0;
 	project_application_initial_credits: number = 0;
 	project_application_current_credits: number = 0;
 	project_application_date_approved: string;
@@ -129,11 +128,11 @@ export class Application {
 	}
 
 	public hasSubmittedStatus(): boolean {
-		return this.project_application_status?.includes(Application_States.SUBMITTED);
+		return this.project_application_statuses?.includes(Application_States.SUBMITTED);
 	}
 
 	public hasTerminatedStatus(): boolean {
-		return this.project_application_status?.includes(Application_States.TERMINATED);
+		return this.project_application_statuses?.includes(Application_States.TERMINATED);
 	}
 
 	public addEdamTerm(term: EdamOntologyTerm): void {
@@ -153,13 +152,11 @@ export class Application {
 		if (this.flavors) {
 			for (const flavor of this.flavors) {
 				if (flavor.name === flavor_to_test.name) {
-
 					return flavor.counter;
 				}
 			}
 
 			return 0;
-
 		} else return 0;
 	}
 
@@ -183,7 +180,7 @@ export class Application {
 
 	public calcTotalModificationCredits(): number {
 		if (this.project_modification_request != null) {
-			const total_credits: number = Number(this.project_application_initial_credits) + Number(this.project_modification_request.extra_credits);
+			const total_credits: number =				Number(this.project_application_initial_credits) + Number(this.project_modification_request.extra_credits);
 			if (total_credits <= 0) {
 				return 0;
 			} else {
@@ -196,18 +193,21 @@ export class Application {
 
 	public calcCreditsExtensionCredits(): number {
 		if (this.project_credit_request != null) {
-			return (Math.round(this.project_application_initial_credits * 10) / 10)
-				+ (Math.round((this.project_credit_request.extra_credits * 10) / 10));
+			return (
+				Math.round(this.project_application_initial_credits * 10) / 10
+				+ Math.round((this.project_credit_request.extra_credits * 10) / 10)
+			);
 		} else {
 			return this.project_application_initial_credits;
 		}
 	}
 
 	public calcLifetimeExtensionCredits(): number {
-
 		if (this.project_lifetime_request != null) {
-			return (Math.round(this.project_application_initial_credits * 10) / 10)
-				+ (Math.round((this.project_lifetime_request.extra_credits * 10) / 10));
+			return (
+				Math.round(this.project_application_initial_credits * 10) / 10
+				+ Math.round((this.project_lifetime_request.extra_credits * 10) / 10)
+			);
 		} else {
 			return this.project_application_initial_credits;
 		}
@@ -218,22 +218,27 @@ export class Application {
 	}
 
 	private setDaysRunning(): void {
-		if (this.project_application_status != null) {
-			if (this.project_application_status.includes(Application_States.APPROVED)) {
-				this.DaysRunning = Math
-					.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
+		if (this.project_application_statuses != null) {
+			if (this.project_application_statuses.includes(Application_States.APPROVED)) {
+				this.DaysRunning = Math.ceil(
+					Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime()) / (1000 * 3600 * 24),
+				);
 			}
 		}
 	}
 
 	private setDates(): void {
 		if (this.project_application_lifetime && this.project_application_lifetime > 0) {
-			this.date_end = moment(moment(this.project_application_date_approved)
-				.add(this.project_application_lifetime, 'months').toDate()).format('DD.MM.YYYY');
-			this.lifetime_days = Math.abs(moment(moment(this.date_end, 'DD.MM.YYYY').toDate())
-				.diff(moment(this.project_application_date_approved), 'days'));
+			this.date_end = moment(
+				moment(this.project_application_date_approved).add(this.project_application_lifetime, 'months').toDate(),
+			).format('DD.MM.YYYY');
+			this.lifetime_days = Math.abs(
+				moment(moment(this.date_end, 'DD.MM.YYYY').toDate()).diff(
+					moment(this.project_application_date_approved),
+					'days',
+				),
+			);
 			this.project_application_date_approved = moment(this.project_application_date_approved).format('DD.MM.YYYY');
 		}
 	}
-
 }
