@@ -1,20 +1,18 @@
-import { AbstractBaseClass } from './abstract-base-class';
+import { AbstractBaseClass, Application_States } from './abstract-base-class';
 
 /**
  * Base class for filtering.
  */
 export abstract class FilterBaseClass extends AbstractBaseClass {
-
-	filterstatus_list: { [status: string]: boolean } = {
-		ACTIVE: true,
-		SUSPENDED: true,
-		DELETED: false,
-		EXPIRED: false,
-		'EXPIRES SOON': true,
-		WAIT_FOR_CONFIRMATION: false,
-		TERMINATION_REQUESTED: true,
-		EXPIRES_SOON: true,
-	};
+	filterstatus_list: number[] = [
+		Application_States.ACTIVE,
+		Application_States.SUSPENDED,
+		//	Application_States.DELETED,
+		Application_States.EXPIRED,
+		Application_States.WAIT_FOR_CONFIRMATION,
+		Application_States.TERMINATION_REQUESTED,
+		Application_States.EXPIRES_SOON,
+	];
 	filterProjectName: string;
 	filterProjectId: string;
 	filterProjectLongName: string;
@@ -25,7 +23,6 @@ export abstract class FilterBaseClass extends AbstractBaseClass {
 	abstract checkFilter(obj: any): void
 
 	isFilterProjectId(id: string, filter?: string): boolean {
-
 		if (filter) {
 			this.filterProjectId = filter;
 		}
@@ -43,7 +40,6 @@ export abstract class FilterBaseClass extends AbstractBaseClass {
 	}
 
 	isFilterLongProjectName(name: string, filter?: string): boolean {
-
 		if (filter) {
 			this.filterProjectLongName = filter;
 		}
@@ -127,11 +123,9 @@ export abstract class FilterBaseClass extends AbstractBaseClass {
 		}
 
 		return false;
-
 	}
 
 	changeFilterStatus(status: string): void {
 		this.filterstatus_list[status] = !this.filterstatus_list[status];
 	}
-
 }
