@@ -947,7 +947,7 @@
 									<td>{{ application?.project_application_date_submitted }}</td>
 									<td>{{ application?.project_application_institute }}</td>
 									<td>
-										<span *ngFor="let st of application?.project_application_status">{{ getStatusById(st) }}</span>
+										<span *ngFor="let st of application?.project_application_statuses">{{ getStatusById(st) }}</span>
 									</td>
 									<td>
 										<button

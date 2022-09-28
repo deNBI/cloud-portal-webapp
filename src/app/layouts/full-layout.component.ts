@@ -20,19 +20,20 @@ import { WIKI, WIKI_FAQ, STATUS_LINK } from '../../links/links';
  * FullLayout component.
  */
 @Component({
-	           selector: 'app-dashboard',
-	           templateUrl: './full-layout.component.html',
-	           providers: [ApplicationsService,
-		           VirtualmachineService,
-		           VoService,
-		           GroupService,
-		           UserService,
-		           FacilityService,
-		           ClientService,
-		           ApiSettings],
+	selector: 'app-dashboard',
+	templateUrl: './full-layout.component.html',
+	providers: [
+		ApplicationsService,
+		VirtualmachineService,
+		VoService,
+		GroupService,
+		UserService,
+		FacilityService,
+		ClientService,
+		ApiSettings,
+	],
 })
 export class FullLayoutComponent extends ApplicationBaseClassComponent implements OnInit {
-
 	public year: number = new Date().getFullYear();
 	public disabled: boolean = false;
 	public status: { isopen: boolean } = { isopen: false };
@@ -64,11 +65,11 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	STATUS_LINK: string = STATUS_LINK;
 
 	constructor(
-private voService: VoService,
-private groupService: GroupService,
-userService: UserService,
-facilityService: FacilityService,
-applicationsService: ApplicationsService,
+		private voService: VoService,
+		private groupService: GroupService,
+		userService: UserService,
+		facilityService: FacilityService,
+		applicationsService: ApplicationsService,
 		private virtualMachineService: VirtualmachineService,
 	) {
 		super(userService, applicationsService, facilityService);
@@ -154,7 +155,6 @@ applicationsService: ApplicationsService,
 		this.userService.getLoginElixirName().subscribe((login: IResponseTemplate): void => {
 			this.login_name = login.value as string;
 		});
-
 	}
 
 	toggleOverviews(): void {
@@ -170,29 +170,27 @@ applicationsService: ApplicationsService,
 	 * @param enumeration
 	 */
 	pushAdditionalStates(enumeration: ProjectEnumeration): void {
-
 		const days_left: number = this.getDaysLeft(enumeration);
 		const days_running: number = this.getDaysRunning(enumeration);
-		if (enumeration.project_application_status.includes(Application_States.APPROVED)) {
+		if (enumeration.project_application_statuses.includes(Application_States.APPROVED)) {
 			if (days_left < 14 && days_left >= 0) {
-				enumeration.project_application_status.push(Application_States.EXPIRES_SOON);
-
+				enumeration.project_application_statuses.push(Application_States.EXPIRES_SOON);
 			} else if (days_left < 0) {
-				enumeration.project_application_status.push(Application_States.EXPIRED);
-
+				enumeration.project_application_statuses.push(Application_States.EXPIRED);
 			}
 			if (days_running < 14) {
-				enumeration.project_application_status.push(Application_States.APPROVED_LAST_2_WEEKS);
+				enumeration.project_application_statuses.push(Application_States.APPROVED_LAST_2_WEEKS);
 			}
 		}
-
 	}
 
 	getDaysLeft(projEnum: ProjectEnumeration): number {
-		const expirationDate: string = moment(moment(projEnum.project_start_date)
-			.add(projEnum.project_lifetime, 'months').toDate()).format('DD.MM.YYYY');
-		const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY')
-			.toDate()).diff(moment(projEnum.project_start_date), 'days'));
+		const expirationDate: string = moment(
+			moment(projEnum.project_start_date).add(projEnum.project_lifetime, 'months').toDate(),
+		).format('DD.MM.YYYY');
+		const lifetimeDays: number = Math.abs(
+			moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(projEnum.project_start_date), 'days'),
+		);
 
 		const daysRunning: number = this.getDaysRunning(projEnum);
 
@@ -200,8 +198,8 @@ applicationsService: ApplicationsService,
 	}
 
 	getDaysRunning(projectEnumeration: ProjectEnumeration): number {
-		return Math.ceil((Math.abs(Date.now() - new Date(projectEnumeration.project_start_date).getTime()))
-			/ (1000 * 3600 * 24));
+		return Math.ceil(
+			Math.abs(Date.now() - new Date(projectEnumeration.project_start_date).getTime()) / (1000 * 3600 * 24),
+		);
 	}
-
 }
