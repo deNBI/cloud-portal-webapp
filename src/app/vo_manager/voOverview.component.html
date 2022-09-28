@@ -49,6 +49,7 @@
 				<div class="card-body">
 					<div class="d-flex justify-content-between p-2">
 						<ngb-pagination
+								[maxSize]="10" [rotate]="true" [boundaryLinks]="true"
 							[collectionSize]="(total$ | async)!"
 							[(page)]="sortProjectService.page"
 							[pageSize]="sortProjectService.pageSize"
@@ -203,15 +204,15 @@
 									<th scope="col"></th>
 									<th scope="col">Facility</th>
 
-									<th scope="col" sortable="project_application_perun_id" (sort)="onSort($event)">Project ID</th>
-									<th scope="col" sortable="project_application_shortname" (sort)="onSort($event)">Project Name</th>
+									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Project ID</th>
+									<th scope="col" appSortable="project_application_shortname" (sort)="onSort($event)">Project Name</th>
 									<th scope="col">Details</th>
 									<th scope="col">Status</th>
-									<th scope="col" sortable="project_application_total_ram" (sort)="onSort($event)">Ram</th>
-									<th scope="col" sortable="project_application_total_cores" (sort)="onSort($event)">Cores</th>
-									<th scope="col" sortable="project_application_total_gpu" (sort)="onSort($event)">GPUs</th>
+									<th scope="col" appSortable="project_application_total_ram" (sort)="onSort($event)">Ram</th>
+									<th scope="col" appSortable="project_application_total_cores" (sort)="onSort($event)">Cores</th>
+									<th scope="col" appSortable="project_application_total_gpu" (sort)="onSort($event)">GPUs</th>
 
-									<th scope="col" sortable="project_application_initial_credits" (sort)="onSort($event)">Credits</th>
+									<th scope="col" appSortable="project_application_initial_credits" (sort)="onSort($event)">Credits</th>
 									<th scope="col">Actions</th>
 								</tr>
 							</thead>
