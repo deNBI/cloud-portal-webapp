@@ -41,10 +41,10 @@
 					</div>
 
 					<form id="application_form" #form="ngForm" class="form-horizontal">
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<h5 class="col-md-6 form-control-label">General Information</h5>
 						</div>
-						<div class="form-group row" *ngIf="openstack_project">
+						<div class="form-group row mb-3" *ngIf="openstack_project">
 							<label class="col-md-4"
 								><strong
 									>Cloud Project
@@ -61,7 +61,7 @@
 								storage and network configurations.
 							</div>
 						</div>
-						<div class="form-group row" *ngIf="simple_vm_project">
+						<div class="form-group row mb-3" *ngIf="simple_vm_project">
 							<label class="col-md-4">
 								<strong
 									>Simple Virtual Machines Project
@@ -79,7 +79,7 @@
 							<div class="col-md-8">This type of project allows you to start virtual machines with SSH access.</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label
 								class="col-md-4 form-control-label"
 								data-test-id="project_application_name_input"
@@ -118,7 +118,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label
 								class="col-md-4 form-control-label"
 								data-test-id="project_application_shortname_input"
@@ -166,7 +166,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label
 								class="col-md-4 form-control-label"
 								data-test-id="project_application_description_input"
@@ -213,7 +213,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_lifetime"
 								><strong
 									>Desired lifetime*
@@ -257,7 +257,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row" *ngIf="!openstack_project">
+						<div class="form-group row mb-3" *ngIf="!openstack_project">
 							<label
 								data-test-id="project_application_workshop_input"
 								class="col-md-4 form-control-label"
@@ -290,7 +290,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<h5 class="col-md-12 form-control-label">Resources</h5>
 						</div>
 						<div class="alert alert-primary" role="alert">
@@ -318,7 +318,7 @@
 										available for your project.
 									</div>
 									<div *ngFor="let f of flavorList; let i = index">
-										<div *ngIf="f.type.shortcut === t.shortcut && f.simple_vm" class="form-group row">
+										<div *ngIf="f.type.shortcut === t.shortcut && f.simple_vm" class="form-group row mb-3">
 											<label class="col-md-4 form-control-label" for="{{ f.name }}"
 												><strong>{{ f.name }}</strong
 												><br />
@@ -364,7 +364,7 @@
 								</accordion-group>
 							</ng-container>
 						</accordion>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_volume_counter"
 								><strong
 									>Number of storage volumes*
@@ -397,7 +397,7 @@
 								<span class="help-block">How many storage volumes do you want to use?</span>
 							</div>
 						</div>
-						<div class="form-group row" [hidden]="form.controls.project_application_volume_counter?.value === 0">
+						<div class="form-group row mb-3" [hidden]="form.controls.project_application_volume_counter?.value === 0">
 							<label class="col-md-4 form-control-label" for="id_project_application_volume_limit"
 								><strong>
 									Volume Storage Total Limit*
@@ -433,7 +433,7 @@
 								<span class="help-block">How much total extra storage do you need for your VMs?</span>
 							</div>
 						</div>
-						<div class="form-group row" *ngIf="openstack_project">
+						<div class="form-group row mb-3" *ngIf="openstack_project">
 							<label class="col-md-4 form-control-label" for="id_project_application_object_storage"
 								>Object Storage
 								<i
@@ -466,7 +466,7 @@
 							</div>
 						</div>
 						<br />
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_comment"
 								><strong>Comment</strong></label
 							>
@@ -483,7 +483,7 @@
 								<span class="help-block">Additional information you want to share?</span>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4"></label>
 							<div class="col-md-8">
 								<div class="alert alert-primary" role="alert">
@@ -493,11 +493,11 @@
 							</div>
 						</div>
 						<br />
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<h5 class="col-md-6 form-control-label">Institutional Information</h5>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label
 								class="col-md-4 form-control-label"
 								data-test-id="project_application_institute_input"
@@ -532,7 +532,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_workgroup"
 								><strong
 									>Workgroup Name*
@@ -565,10 +565,10 @@
 							</div>
 						</div>
 						<br />
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<h5 class="col-md-6 form-control-label">Additional Information</h5>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
 							<div class="col-md-8" style="z-index: 999">
 								<div
@@ -606,7 +606,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_person_related_data"
 								><strong>Person Related Data*</strong></label
 							>
@@ -680,7 +680,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4"></label>
 							<div class="col-md-8">
 								<div class="alert alert-primary" role="alert" *ngIf="!personalData.checked">
@@ -719,7 +719,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row" *ngIf="openstack_project">
+						<div class="form-group row mb-3" *ngIf="openstack_project">
 							<label class="col-md-4 form-control-label" for="id_project_application_openstack_basic_introduction"
 								><strong>Training</strong></label
 							>
@@ -741,7 +741,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row" *ngIf="openstack_project">
+						<div class="form-group row mb-3" *ngIf="openstack_project">
 							<label class="col-md-4 form-control-label" for="id_project_application_cloud_service"
 								><strong>Service</strong></label
 							>
@@ -763,7 +763,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row" *ngIf="application?.project_application_cloud_service">
+						<div class="form-group row mb-3" *ngIf="application?.project_application_cloud_service">
 							<label class="col-md-4 form-control-label" for="id_project_application_cloud_service_develop"
 								><strong>New service*</strong></label
 							>
@@ -789,7 +789,7 @@
 						</div>
 
 						<div
-							class="form-group row"
+							class="form-group row mb-3"
 							*ngIf="
 								!application?.project_application_cloud_service_develop &&
 								application?.project_application_cloud_service
@@ -826,7 +826,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_horizon_switch"
 								><strong>Horizon 2020</strong></label
 							>
@@ -863,7 +863,7 @@
 								/>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_elixir_switch"
 								><strong>Elixir Project</strong></label
 							>
@@ -899,7 +899,7 @@
 								/>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_dfg_switch"
 								><strong>DFG</strong></label
 							>
@@ -934,7 +934,7 @@
 								/>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_bmbf_switch"
 								><strong>BMBF</strong></label
 							>
@@ -971,7 +971,7 @@
 								/>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_bmbf_switch"
 								><strong>NFDI</strong></label
 							>
@@ -1005,7 +1005,7 @@
 								/>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_report_allowed"
 								><strong>Dissemination</strong></label
 							>
@@ -1026,7 +1026,7 @@
 							</div>
 						</div>
 						<div *ngIf="application?.project_application_report_allowed">
-							<div class="form-group row col-md-12">
+							<div class="form-group row mb-3 col-md-12">
 								<div class="alert alert-primary col-md-auto">
 									<span
 										>Please specify which information about your project and which platforms may be used to publish
@@ -1055,12 +1055,12 @@
 										></i>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<div class="col-md-4">
 											<h6><strong>Type of Information</strong></h6>
 										</div>
 									</div>
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label"><strong>All</strong></label>
 										<div class="col-md-2">
 											<div class="form-check">
@@ -1075,7 +1075,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Project Title</label>
 										<div class="col-md-2">
 											<div class="form-check">
@@ -1095,7 +1095,7 @@
 											/>
 										</div>
 									</div>
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Research Topics</label>
 										<div class="col-md-2">
 											<div class="form-check">
@@ -1121,7 +1121,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Description</label>
 										<div class="col-md-2">
 											<div class="form-check">
@@ -1147,7 +1147,7 @@
 											></textarea>
 										</div>
 									</div>
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Resources</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1163,7 +1163,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Lifetime</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1179,7 +1179,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Project Type</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1195,7 +1195,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Name of PI</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1211,7 +1211,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Institution</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1227,7 +1227,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Workgroup</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1243,7 +1243,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Project Affiliation</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1261,7 +1261,7 @@
 
 									<hr class="my-4" />
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<div class="col-md-4">
 											<h6><strong>Platforms</strong></h6>
 										</div>
@@ -1276,7 +1276,7 @@
 									>
 										Please select at least one Platform.
 									</div>
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">de.NBI Platforms</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1292,7 +1292,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row">
+									<div class="form-group row mb-3">
 										<label class="col-md-4 form-control-label">Twitter</label>
 										<div class="col-md-4">
 											<div class="form-check">
@@ -1313,7 +1313,7 @@
 							</accordion>
 						</div>
 
-						<div class="form-group row" *ngIf="!is_validation">
+						<div class="form-group row mb-3" *ngIf="!is_validation">
 							<label class="col-md-4 form-control-label"
 								><strong
 									>Principal Investigator*
@@ -1337,7 +1337,7 @@
 								</div>
 							</div>
 						</div>
-						<div *ngIf="application?.project_application_pi_approved" class="form-group row">
+						<div *ngIf="application?.project_application_pi_approved" class="form-group row mb-3">
 							<label
 								class="col-md-4 form-control-label"
 								for="project_application_responsibility"
@@ -1364,7 +1364,7 @@
 						</div>
 						<div
 							*ngIf="!application?.project_application_pi_approved && !is_validation"
-							class="form-group row justify-content-center"
+							class="form-group row mb-3 justify-content-center"
 						>
 							<div class="col-md-4"></div>
 							<div class="col-md-8 alert alert-primary">
@@ -1374,7 +1374,7 @@
 								where they will be able to approve this application.
 							</div>
 						</div>
-						<div *ngIf="!application?.project_application_pi_approved && !is_validation" class="form-group row">
+						<div *ngIf="!application?.project_application_pi_approved && !is_validation" class="form-group row mb-3">
 							<label class="col-md-4 form-control-label" for="id_project_application_pi_email"
 								><strong>Principal Investigator Email* </strong></label
 							>
@@ -1420,7 +1420,7 @@
 				<div class="card-footer">
 					<div
 						*ngIf="application?.flavors.length === 0 && !application?.project_application_openstack_project"
-						class="form-group row alert alert-danger"
+						class="form-group row mb-3 alert alert-danger"
 					>
 						Please select at least one flavor.
 					</div>
@@ -1432,18 +1432,18 @@
 							(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
 							(!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)
 						"
-						class="form-group row alert alert-warning"
+						class="form-group row mb-3 alert alert-warning"
 					>
 						Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled
 						in correctly.
 					</div>
-					<div class="form-group row" *ngIf="!is_validation">
+					<div class="form-group row mb-3" *ngIf="!is_validation">
 						<p class="col-md-12 form-control-label">
 							By submitting this application you agree to the
 							<a [href]="POLICY_LINK" target="_blank">cloud usage policy</a>.
 						</p>
 					</div>
-					<div *ngIf="is_validation" class="form-group row">
+					<div *ngIf="is_validation" class="form-group row mb-3">
 						<label class="col-md-4 form-control-label" for="project_application_responsibility">
 							<strong>Confirmation of Responsibility*</strong>
 						</label>

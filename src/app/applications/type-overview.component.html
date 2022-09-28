@@ -1,300 +1,306 @@
 <div class="animated fadeIn">
-  <!-- Begin Card -->
-  <div class="card" style=" ">
-    <!-- Begin Card Header -->
-    <div class="card-header">
-      <i class="fa fa-align-justify"></i> Our de.NBI Cloud Project Types
-    <!-- End Card Header -->
-    </div>
-    <!-- Begin Container-Fluid -->
-    <div class="container-fluid">
-      <!-- Begin Card Body -->
-      <div class="card-body">
-        <!-- Row with new App Buttons -->
-        <div class="row">
-
-          <div class="col-6 text-center">
-            <a [routerLink]="['/applications/newSimpleVmApplication']">
-              <button data-test-id="newSimpleVMBtn" id="newSimpleVMBtn" class="btn btn-outline-simplevm" style="border-color: #00ADEF !important;">
-                New SimpleVM Application
-              </button>
-            </a>
-          </div>
-          <div class="col-6 text-center">
-            <a [routerLink]="['/applications/newCloudApplication']">
-              <button data-test-id="newOpenstackBtn" id="newOpenstackBtn" class="btn btn-outline-openstack" style="border-color: #ED1944 !important;">
-                New Openstack Application
-              </button>
-            </a>
-          </div>
-          <!-- End row with new App Buttons -->
-        </div>
-        <br>
-        <!-- Start Row with Project Types -->
-        <div class="row">
-
-          <!-- SimpleVM -->
-          <div class="col-lg-6 col-12">
-            <!-- Logo -->
-            <div class="row justify-content-center">
-              <div style="height: 100px; width: 100px" class="img_bigger">
-                <figure>
-                  <img src="{{simpleVM_logo_link}}" alt="SimpleVM" style="max-height: 100%; width: 100%">
-                </figure>
-              </div>
-            </div>
-            <br>
-            <!-- Ease of Use -->
-            <div class="row">
-              <div style="height: 40px; width: 40px" class="col-3">
-                <img class="float-right" src="{{simpleVM_ease_logo}}" alt="Ease" style="height: 100%; width: auto">
-              </div>
-              <div class="col-9">
-                <strong>Ease of Use</strong> – SimpleVM lets you start and stop VMs with a few clicks which
-                means that there is no additional configuration necessary.
-              </div>
-            </div>
-            <br>
-            <!-- Flat Learning Curve -->
-            <div class="row">
-              <div style="height: 40px; width: 40px" class="col-3">
-                <img class="float-right" src="{{simpleVM_curve_logo}}" alt="Curve" style="height: 100%; width: auto">
-              </div>
-              <div class="col-9">
-                <strong>Flat Learning Curve</strong> – If you want to use SimpleVM you don’t have to learn about
-                resource management, like network configurations or storage management. No background knowledge
-                in Cloud Computing is necessary.
-              </div>
-            </div>
-            <br>
-            <!-- Remote Desktop -->
-            <div class="row">
-              <div style="height: 40px; width: 40px" class="col-3">
-                <img class="float-right" src="{{simpleVM_remote_logo}}" alt="Remote" style="height: 100%; width: auto">
-              </div>
-              <div class="col-9">
-                <strong>Remote Desktop</strong> – If you don’t want to use SimpleVM via terminal you can easily
-                connect to your VM using a Remote Desktop.
-              </div>
-            </div>
-            <br>
+	<!-- Begin Card -->
+	<div class="card" style="">
+		<!-- Begin Card Header -->
+		<div class="card-header">
+			<i class="fa fa-align-justify"></i> Our de.NBI Cloud Project Types
+			<!-- End Card Header -->
+		</div>
+		<!-- Begin Container-Fluid -->
+		<div class="container-fluid">
+			<!-- Begin Card Body -->
+			<div class="card-body">
+				<!-- Row with new App Buttons -->
+				<div class="row">
+					<div class="col-6 text-center">
+						<a [routerLink]="['/applications/newSimpleVmApplication']">
+							<button
+								data-test-id="newSimpleVMBtn"
+								id="newSimpleVMBtn"
+								class="btn btn-outline-simplevm"
+								style="border-color: #00adef !important"
+							>
+								New SimpleVM Application
+							</button>
+						</a>
+					</div>
+					<div class="col-6 text-center">
+						<a [routerLink]="['/applications/newCloudApplication']">
+							<button
+								data-test-id="newOpenstackBtn"
+								id="newOpenstackBtn"
+								class="btn btn-outline-openstack"
+								style="border-color: #ed1944 !important"
+							>
+								New Openstack Application
+							</button>
+						</a>
+					</div>
+					<!-- End row with new App Buttons -->
+				</div>
+				<br />
+				<!-- Start Row with Project Types -->
+				<div class="row">
+					<!-- SimpleVM -->
+					<div class="col-lg-6 col-12">
+						<!-- Logo -->
+						<div class="row justify-content-center">
+							<div style="height: 100px; width: 100px" class="img_bigger">
+								<figure>
+									<img src="{{ simpleVM_logo_link }}" alt="SimpleVM" style="max-height: 100%; width: 100%" />
+								</figure>
+							</div>
+						</div>
+						<br />
+						<!-- Ease of Use -->
 						<div class="row">
 							<div style="height: 40px; width: 40px" class="col-3">
-								<i class="fa fa-chalkboard-teacher" style="color: #125ca7; font-size: 40px; float: right"></i>
+								<img class="float-end" src="{{ simpleVM_ease_logo }}" alt="Ease" style="height: 100%; width: auto" />
 							</div>
 							<div class="col-9">
-								<strong>Workshop support</strong> – Create a workshop and start multiple configured VMs for your participants
-								with just a few clicks. To learn more about our workshop support click
+								<strong>Ease of Use</strong> – SimpleVM lets you start and stop VMs with a few clicks which means that
+								there is no additional configuration necessary.
+							</div>
+						</div>
+						<br />
+						<!-- Flat Learning Curve -->
+						<div class="row">
+							<div style="height: 40px; width: 40px" class="col-3">
+								<img class="float-end" src="{{ simpleVM_curve_logo }}" alt="Curve" style="height: 100%; width: auto" />
+							</div>
+							<div class="col-9">
+								<strong>Flat Learning Curve</strong> – If you want to use SimpleVM you don’t have to learn about
+								resource management, like network configurations or storage management. No background knowledge in Cloud
+								Computing is necessary.
+							</div>
+						</div>
+						<br />
+						<!-- Remote Desktop -->
+						<div class="row">
+							<div style="height: 40px; width: 40px" class="col-3">
+								<img
+									class="float-end"
+									src="{{ simpleVM_remote_logo }}"
+									alt="Remote"
+									style="height: 100%; width: auto"
+								/>
+							</div>
+							<div class="col-9">
+								<strong>Remote Desktop</strong> – If you don’t want to use SimpleVM via terminal you can easily connect
+								to your VM using a Remote Desktop.
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div style="height: 40px; width: 40px" class="col-3">
+								<i class="fa fa-chalkboard-teacher float-end" style="color: #125ca7; font-size: 40px"></i>
+							</div>
+							<div class="col-9">
+								<strong>Workshop support</strong> – Create a workshop and start multiple configured VMs for your
+								participants with just a few clicks. To learn more about our workshop support click
 								<a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">here</a>.
 							</div>
 						</div>
-						<br>
-            <!-- Use cases -->
-            <div>
-              <div class="row">
-              <div class="col-3"></div>
-              <div class="col-3">
-                <strong>Typical use cases:</strong>
-              </div>
-            </div>
-              <br>
-            <div class="row">
-              <div class="col-3"></div>
-              <div class="col-9">
-                <strong> &bull; Tools and Pipelines</strong>
-                – SimpleVM is a quick way to get up and running with your tools and pipelines in the cloud.
-              </div>
-            </div>
-              <br>
-              <div class="row">
-                <div class="col-3"></div>
-                <div class="col-9">
-                  <strong> &bull; Remote Desktop</strong>
-                  – Launch your own Desktop or a browser based IDE in the cloud (based on Apache Guacamole, RStudio, Theia IDE and more)
-									and be able to run programs with graphical user interfaces in addition to the command-line.
-                </div>
-              </div>
-            </div>
-            <br>
-            <br>
-            <!-- Want to learn more with Button for smaller Screen-->
-            <div class="row d-block d-lg-none">
-              <div class="col text-center">
-                <div class="row justify-content-center">
-                  <strong>Want to learn more about SimpleVM?</strong>
-                </div>
-                <div class="row justify-content-center">
-                  <a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
-                    <button class="btn btn-primary">
-                      Click Here!
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <!-- End div SimpleVM-->
-          </div>
+						<br />
+						<!-- Use cases -->
+						<div>
+							<div class="row">
+								<div class="col-3"></div>
+								<div class="col-3">
+									<strong>Typical use cases:</strong>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-3"></div>
+								<div class="col-9">
+									<strong> &bull; Tools and Pipelines</strong>
+									– SimpleVM is a quick way to get up and running with your tools and pipelines in the cloud.
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-3"></div>
+								<div class="col-9">
+									<strong> &bull; Remote Desktop</strong>
+									– Launch your own Desktop or a browser based IDE in the cloud (based on Apache Guacamole, RStudio,
+									Theia IDE and more) and be able to run programs with graphical user interfaces in addition to the
+									command-line.
+								</div>
+							</div>
+						</div>
+						<br />
+						<br />
+						<!-- Want to learn more with Button for smaller Screen-->
+						<div class="row d-block d-lg-none">
+							<div class="col text-center">
+								<div class="row justify-content-center">
+									<strong>Want to learn more about SimpleVM?</strong>
+								</div>
+								<div class="row justify-content-center">
+									<a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
+										<button class="btn btn-primary">Click Here!</button>
+									</a>
+								</div>
+							</div>
+						</div>
+						<!-- End div SimpleVM-->
+					</div>
 
-          <!-- Force Newline between no and lg Breakpoint -->
-          <!-- Want to learn Difference with Button for smaller Screen -->
-          <div class="w-100 d-block d-lg-none">
-            <br>
-            <div class="row justify-content-center">
-              <strong>Want to learn the Difference between SimpleVM and Openstack?</strong>
-            </div>
-            <div class="row justify-content-center">
-              <a href="{{ PROJECT_TYPES_LINK }}" target="_blank" rel="noopener noreferrer">
-                <button class="btn btn-success">
-                  Click Here!
-                </button>
-              </a>
-            </div>
-            <br>
-          </div>
+					<!-- Force Newline between no and lg Breakpoint -->
+					<!-- Want to learn Difference with Button for smaller Screen -->
+					<div class="w-100 d-block d-lg-none">
+						<br />
+						<div class="row justify-content-center">
+							<strong>Want to learn the Difference between SimpleVM and Openstack?</strong>
+						</div>
+						<div class="row justify-content-center">
+							<a href="{{ PROJECT_TYPES_LINK }}" target="_blank" rel="noopener noreferrer">
+								<button class="btn btn-success">Click Here!</button>
+							</a>
+						</div>
+						<br />
+					</div>
 
-          <!-- Openstack -->
-          <div class="col-lg-6 col-12">
-            <!-- Logo -->
-            <div class="row justify-content-center">
-              <div style="height: 100px; width: 100px" class="img_bigger">
-                <figure>
-                  <img src="{{openstack_logo_link}}" alt="Openstack" style="max-height: 100%; width: 100%">
-                </figure>
-              </div>
-            </div>
-            <br>
-            <!-- Scalability -->
-            <div class="row">
-              <div style="height: 40px; width: 40px" class="col-3">
-                <img class="float-right" src="{{openstack_scale_logo}}" alt="Scale" style="height: 100%; width: auto">
-              </div>
-              <div class="col-9">
-                <strong>Scalability</strong> – Easy scaling of virtual machines and distribution of data for
-                efficient computations.
-              </div>
-            </div>
-            <br>
-            <!-- Configurability -->
-            <div class="row">
-              <div style="height: 40px; width: 40px" class="float-left col-3">
-                <img class="float-right" src="{{openstack_conf_logo}}" alt="Configuration"
-                     style="height: 100%; width: auto">
-              </div>
-              <div class="col-9">
-                <strong>Configurability</strong> – OpenStack allows the configuration of any resource type
-                available, such as virtual machines, network, block and object storage.
-              </div>
-            </div>
-            <br>
-            <!-- Api Access -->
-            <div class="row">
-              <div style="height: 40px; width: 40px" class="float-left col-3">
-                <img class="float-right" src="{{openstack_api_logo}}" alt="API" style="height: 100%; width: auto">
-              </div>
-              <div class="col-9">
-                <strong>API Access</strong> – Any interaction with OpenStack can be automated via its API
-                enabling users to script actions, e.g. starting and stopping of virtual machines.
-              </div>
-            </div>
-            <br>
-            <!-- Use cases -->
-            <div>
-              <div class="row">
-                <div class="col-3"></div>
-                <div class="col-3">
-                  <strong>Typical use cases:</strong>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-3"></div>
-                <div class="col-9">
-                  <strong> &bull; Distributed Workflows</strong>
-                  – Distribution of workflows on multiple virtual machines.
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-3"></div>
-                <div class="col-9">
-                  <strong> &bull; Services</strong>
-                  – The ability to offer services for other researchers.
-                </div>
-              </div>
-            </div>
-            <br>
-            <br>
-            <!-- Want to learn more with Button for smaller Screen-->
-            <div class="row d-block d-lg-none">
-              <div class="col text-center">
-                <div class="row justify-content-center">
-                  <strong>Want to learn more about Openstack?</strong>
-                </div>
-                <div class="row justify-content-center">
-                  <a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
-                    <button class="btn btn-primary">
-                      Click Here!
-                    </button>
-                  </a>
-                </div>
-              </div>
-              <br>
-            </div>
-            <!-- End div Openstack -->
-          </div>
-          <!-- End Row with Project Types-->
-        </div>
-        <!-- Learn more Buttons for bigger Screens -->
-        <div class="w-100 d-none d-lg-block">
-          <div class="row">
-            <!-- Learn more about SimpleVM -->
-            <div class="col-4 text-center">
-              <div class="row justify-content-center">
-                <strong>Want to learn more about SimpleVM?</strong>
-              </div>
-              <div class="row justify-content-center">
-                <a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
-                  <button class="btn btn-primary">
-                    Click Here!
-                  </button>
-                </a>
-              </div>
-            </div>
-            <!-- Learn Difference -->
-            <div class="col-4 text-center">
-              <div class="row justify-content-center">
-                <strong>Want to learn the Difference?</strong>
-              </div>
-              <div class="row justify-content-center">
-                <a href="{{ PROJECT_TYPES_LINK }}" target="_blank" rel="noopener noreferrer">
-                  <button class="btn btn-success">
-                    Click Here!
-                  </button>
-                </a>
-              </div>
-            </div>
-            <!-- Learn more about Openstack -->
-            <div class="col-4 text-center">
-              <div class="row justify-content-center">
-                <strong>Want to learn more about Openstack?</strong>
-              </div>
-              <div class="row justify-content-center">
-                <a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
-                  <button class="btn btn-primary">
-                    Click Here!
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div>
-          <br>
-        <!-- End learn more Buttons Bigger Screen -->
-        </div>
-      <!-- End Card Body -->
-      </div>
-    <!-- End Container -->
-    </div>
-  <!-- End Card -->
-  </div>
-<!-- End fadeIn Animation -->
+					<!-- Openstack -->
+					<div class="col-lg-6 col-12">
+						<!-- Logo -->
+						<div class="row justify-content-center">
+							<div style="height: 100px; width: 100px" class="img_bigger">
+								<figure>
+									<img src="{{ openstack_logo_link }}" alt="Openstack" style="max-height: 100%; width: 100%" />
+								</figure>
+							</div>
+						</div>
+						<br />
+						<!-- Scalability -->
+						<div class="row">
+							<div style="height: 40px; width: 40px" class="col-3">
+								<img class="float-end" src="{{ openstack_scale_logo }}" alt="Scale" style="height: 100%; width: auto" />
+							</div>
+							<div class="col-9">
+								<strong>Scalability</strong> – Easy scaling of virtual machines and distribution of data for efficient
+								computations.
+							</div>
+						</div>
+						<br />
+						<!-- Configurability -->
+						<div class="row">
+							<div style="height: 40px; width: 40px" class="float-left col-3">
+								<img
+									class="float-end"
+									src="{{ openstack_conf_logo }}"
+									alt="Configuration"
+									style="height: 100%; width: auto"
+								/>
+							</div>
+							<div class="col-9">
+								<strong>Configurability</strong> – OpenStack allows the configuration of any resource type available,
+								such as virtual machines, network, block and object storage.
+							</div>
+						</div>
+						<br />
+						<!-- Api Access -->
+						<div class="row">
+							<div style="height: 40px; width: 40px" class="float-left col-3">
+								<img class="float-end" src="{{ openstack_api_logo }}" alt="API" style="height: 100%; width: auto" />
+							</div>
+							<div class="col-9">
+								<strong>API Access</strong> – Any interaction with OpenStack can be automated via its API enabling users
+								to script actions, e.g. starting and stopping of virtual machines.
+							</div>
+						</div>
+						<br />
+						<!-- Use cases -->
+						<div>
+							<div class="row">
+								<div class="col-3"></div>
+								<div class="col-3">
+									<strong>Typical use cases:</strong>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-3"></div>
+								<div class="col-9">
+									<strong> &bull; Distributed Workflows</strong>
+									– Distribution of workflows on multiple virtual machines.
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-3"></div>
+								<div class="col-9">
+									<strong> &bull; Services</strong>
+									– The ability to offer services for other researchers.
+								</div>
+							</div>
+						</div>
+						<br />
+						<br />
+						<!-- Want to learn more with Button for smaller Screen-->
+						<div class="row d-block d-lg-none">
+							<div class="col text-center">
+								<div class="row justify-content-center">
+									<strong>Want to learn more about Openstack?</strong>
+								</div>
+								<div class="row justify-content-center">
+									<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
+										<button class="btn btn-primary">Click Here!</button>
+									</a>
+								</div>
+							</div>
+							<br />
+						</div>
+						<!-- End div Openstack -->
+					</div>
+					<!-- End Row with Project Types-->
+				</div>
+				<!-- Learn more Buttons for bigger Screens -->
+				<div class="w-100 d-none d-lg-block">
+					<div class="row">
+						<!-- Learn more about SimpleVM -->
+						<div class="col-4 text-center">
+							<div class="row justify-content-center">
+								<strong>Want to learn more about SimpleVM?</strong>
+							</div>
+							<div class="row justify-content-center">
+								<a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
+									<button class="btn btn-primary">Click Here!</button>
+								</a>
+							</div>
+						</div>
+						<!-- Learn Difference -->
+						<div class="col-4 text-center">
+							<div class="row justify-content-center">
+								<strong>Want to learn the Difference?</strong>
+							</div>
+							<div class="row justify-content-center">
+								<a href="{{ PROJECT_TYPES_LINK }}" target="_blank" rel="noopener noreferrer">
+									<button class="btn btn-success">Click Here!</button>
+								</a>
+							</div>
+						</div>
+						<!-- Learn more about Openstack -->
+						<div class="col-4 text-center">
+							<div class="row justify-content-center">
+								<strong>Want to learn more about Openstack?</strong>
+							</div>
+							<div class="row justify-content-center">
+								<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
+									<button class="btn btn-primary">Click Here!</button>
+								</a>
+							</div>
+						</div>
+					</div>
+					<br />
+					<!-- End learn more Buttons Bigger Screen -->
+				</div>
+				<!-- End Card Body -->
+			</div>
+			<!-- End Container -->
+		</div>
+		<!-- End Card -->
+	</div>
+	<!-- End fadeIn Animation -->
 </div>
