@@ -49,6 +49,7 @@
 				<div class="card-body">
 					<div class="d-flex justify-content-between p-2">
 						<ngb-pagination
+								[maxSize]="10" [rotate]="true" [boundaryLinks]="true"
 							[collectionSize]="(total$ | async)!"
 							[(page)]="sortProjectService.page"
 							[pageSize]="sortProjectService.pageSize"
