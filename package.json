@@ -18,7 +18,8 @@
   },
   "resolutions": {
     "mime": "3.0.0",
-    "jake": "v10.8.5"
+    "jake": "v10.8.5",
+    "d3-color": "v3.1.0"
   },
   "private": true,
   "dependencies": {
