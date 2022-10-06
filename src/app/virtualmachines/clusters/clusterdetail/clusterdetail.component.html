@@ -1,111 +1,184 @@
 <div *ngIf="notFoundCluster" class="alert alert-primary">
-	<strong>The Cluster could not be found.</strong>
+    <strong>The Cluster could not be found.</strong>
 </div>
 
 <div *ngIf="!isLoaded && !notFoundCluster" class="loader"></div>
 
 <div class="animated fadeIn" *ngIf="isLoaded">
-	<div class="card" style="">
-		<div class="card-header">
-			<span class="font-weight-bold text-muted">Cluster: {{ cluster?.name }} - [ID: {{ cluster?.cluster_id }} ]</span>
-		</div>
-		<div class="card-body">
-			<app-clusterinfo *ngIf="!errorOnLoading" [cluster]="cluster"></app-clusterinfo>
-			<div class="alert alert-danger" *ngIf="errorOnLoading">
-				The detailed cluster information cannot be loaded right now. It is possible that the facility on which your
-				cluster is running cannot be reached at the moment. Please check our
-				<a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a>
-			</div>
+    <div class="card" style="">
+        <div class="card-header">
+            <span class="font-weight-bold text-muted">Cluster: {{ cluster?.name }} - [ID: {{ cluster?.cluster_id }}
+                ]</span>
+        </div>
+        <div class="card-body">
+            <app-clusterinfo *ngIf="!errorOnLoading" [cluster]="cluster"></app-clusterinfo>
+            <div *ngIf="cluster.master_instance?.status === virtualMachineStates.staticACTIVE">
+                <span class="text-muted font-weight-bold card-title"
+                      style="margin-left: 15px"> Connect Information</span>
+                <div class="p-x-1 py-h">
+                    <div *ngFor="let mode of cluster.master_instance?.modes">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="callout">
+                                    <small class="text-muted">via</small><br/>
+                                    <strong class="text-muted">{{ mode.name }}</strong>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="callout">
+                                    <small class="text-muted">with</small><br/>
+                                    <strong class="text-muted" [innerHTML]="mode?.description"></strong>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div
+                                        class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
+                                        id="copyCommandButton"
+                                        style="margin-top: 20px"
+                                        (click)="copyToClipboard(mode.copy_field)"
+                                >
+                                    Copy Command
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="mode.name === 'SSH' || mode.name === 'ssh'">
+                            <div class="col-auto">
+                                <p class="font-weight-bold font-xs text-muted">
+                                    Learn more about persistent terminal sessions when using ssh:
+                                    <a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank"
+                                       rel="noopener noreferrer">Tutorial</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                                class="row"
+                                *ngIf="
+									cluster.master_instance?.res_env_url !== '' &&
+									cluster.master_instance?.res_env_url !== null &&
+									cluster.master_instance?.res_env_url !== undefined &&
+									resenv_by_play(cluster.master_instance)
+								"
+                        >
+                            <div class="col-md-1">
+                                <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
+                            </div>
+                            <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+                                <a href="{{ cluster.master_instance?.res_env_url }}" rel="noopener noreferrer"
+                                   target="_blank">{{
+                                    cluster.master_instance?.res_env_url
+                                    }}</a>
+                                <br/>
+                                For RStudio credentials please visit:
+                                <a href="{{ WIKI_RSTUDIO_LINK }}" rel="noopener noreferrer" target="_blank">{{
+                                    WIKI_RSTUDIO_LINK
+                                    }}</a>
+                                <br/>
+                                For Apache Guacamole credentials please visit:
+                                <a href="{{ WIKI_GUACAMOLE_LINK }}" rel="noopener noreferrer" target="_blank">{{
+                                    WIKI_GUACAMOLE_LINK
+                                    }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger" *ngIf="errorOnLoading">
+                The detailed cluster information cannot be loaded right now. It is possible that the facility on which
+                your
+                cluster is running cannot be reached at the moment. Please check our
+                <a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a>
+            </div>
 
-			<div class="card-body" *ngIf="cluster?.status !== 'Deleted' && !errorOnLoading">
-				<div class="card-title"><strong>Actions</strong></div>
-				<div class="row">
-					<div class="col-2">
-						<button
-							type="button"
-							class="btn btn-danger"
-							style="width: 100%"
-							id="deleteCluster"
-							(click)="verifyModal.show()"
-						>
-							<strong>Delete Cluster</strong>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
+            <div class="card-body" *ngIf="cluster?.status !== 'Deleted' && !errorOnLoading">
+                <div class="card-title"><strong>Actions</strong></div>
+                <div class="row">
+                    <div class="col-2">
+                        <button
+                                type="button"
+                                class="btn btn-danger"
+                                style="width: 100%"
+                                id="deleteCluster"
+                                (click)="verifyModal.show()"
+                        >
+                            <strong>Delete Cluster</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="card" style="" *ngIf="cluster?.master_instance">
-			<div class="card-header"><span class="font-weight-bold text-muted">Master Instance</span></div>
+        <div class="card" style="" *ngIf="cluster?.master_instance">
+            <div class="card-header"><span class="font-weight-bold text-muted">Master Instance</span></div>
 
-			<div class="card-body">
-				<div class="card-title">
-					<strong>Instance: {{ cluster?.master_instance.name }}</strong>
-				</div>
-				<app-virtualmachineinfo [virtualMachine]="cluster?.master_instance"></app-virtualmachineinfo>
-			</div>
-		</div>
-		<div class="card" style="">
-			<div class="card-header"><span class="font-weight-bold text-muted">Worker Instances</span></div>
+            <div class="card-body">
+                <div class="card-title">
+                    <strong>Instance: {{ cluster?.master_instance.name }}</strong>
+                </div>
+                <app-virtualmachineinfo [virtualMachine]="cluster?.master_instance"></app-virtualmachineinfo>
+            </div>
+        </div>
+        <div class="card" style="">
+            <div class="card-header"><span class="font-weight-bold text-muted">Worker Instances</span></div>
 
-			<div class="card-body" *ngFor="let worker of cluster?.worker_instances">
-				<div class="card-title">
-					<strong>Instance: {{ worker.name }}</strong>
-				</div>
-				<app-virtualmachineinfo [cluster_machine]="true" [virtualMachine]="worker"></app-virtualmachineinfo>
-				<div class="btn-group">
-					<button
-						*ngIf="worker?.status | statusInList: VirtualMachineStates.staticDELETABLE_STATES"
-						class="btn btn-danger"
-						(click)="showDeleteModal(worker)"
-					>
-						Delete instance
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="card-body" *ngFor="let worker of cluster?.worker_instances">
+                <div class="card-title">
+                    <strong>Instance: {{ worker.name }}</strong>
+                </div>
+                <app-virtualmachineinfo [cluster_machine]="true" [virtualMachine]="worker"></app-virtualmachineinfo>
+                <div class="btn-group">
+                    <button
+                            *ngIf="worker?.status | statusInList: VirtualMachineStates.staticDELETABLE_STATES"
+                            class="btn btn-danger"
+                            (click)="showDeleteModal(worker)"
+                    >
+                        Delete instance
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div
-	bsModal
-	#verifyModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
-	id="verify_modal"
+        bsModal
+        #verifyModal="bs-modal"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="Label"
+        aria-hidden="true"
+        id="verify_modal"
 >
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Delete Cluster</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-warning" role="alert">
-					<p>Are you sure you want to delete {{ cluster?.cluster_id }}?</p>
-					This will also delete the virtual machines:
-					<p>{{ cluster?.master_instance.name }}</p>
-					<p *ngFor="let vm of cluster?.worker_instances">{{ vm.name }}</p>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button
-					class="btn btn-success col-md-4"
-					(click)="deleteCluster(); verifyModal.hide()"
-					id="confirm_delete_button"
-				>
-					Yes
-				</button>
-				<button class="btn btn-danger col-md-4" type="reset" (click)="verifyModal.hide()">Cancel</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Cluster</h4>
+                <button type="button" class="close" style="cursor: pointer" (click)="verifyModal.hide()"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                    <p>Are you sure you want to delete {{ cluster?.cluster_id }}?</p>
+                    This will also delete the virtual machines:
+                    <p>{{ cluster?.master_instance.name }}</p>
+                    <p *ngFor="let vm of cluster?.worker_instances">{{ vm.name }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                        class="btn btn-success col-md-4"
+                        (click)="deleteCluster(); verifyModal.hide()"
+                        id="confirm_delete_button"
+                >
+                    Yes
+                </button>
+                <button class="btn btn-danger col-md-4" type="reset" (click)="verifyModal.hide()">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
