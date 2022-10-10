@@ -13,6 +13,8 @@ export class Image {
 	is_snapshot: boolean;
 	logo_url: string;
 	min_ram: number;
+	os_version: string;
+	os_distro: string;
 	min_disk: number;
 	modes: ImageMode[];
 
