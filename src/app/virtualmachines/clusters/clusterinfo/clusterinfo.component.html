@@ -1,34 +1,34 @@
+<div class="row">
+    <div class="col-3">
 
-      <div class="row">
-        <div class="col-3">
-
-          <app-clusterstatus [cluster]="cluster"></app-clusterstatus>
-        </div>
-        <div class="col-3">
-          <div class="callout callout-success">
+        <app-clusterstatus [cluster]="cluster"></app-clusterstatus>
+    </div>
+    <div class="col-3">
+        <div class="callout callout-success">
             <small class="text-muted">Created at (y-m-d)</small><br>
             <strong class="text-muted">{{cluster?.launch_date | date: 'yyyy.MM.dd HH:mm'}}</strong>
-          </div>
         </div>
-        <div class="col-3">
-          <div class="callout">
+    </div>
+    <div class="col-3">
+        <div class="callout">
             <small class="text-muted">Part of</small><br>
-            <a [routerLink]="['/project-management/' + cluster?.application_id]" rel="noopener noreferrer" target="_blank">
-              <strong class="text-muted">{{cluster?.project}}</strong></a>
-          </div>
+            <a [routerLink]="['/project-management/' + cluster?.application_id]" rel="noopener noreferrer"
+               target="_blank">
+                <strong class="text-muted">{{cluster?.project}}</strong></a>
         </div>
-        <div class="col-3">
-          <div class="callout">
+    </div>
+    <div class="col-3">
+        <div class="callout">
             <small class="text-muted">Created by</small><br>
             <strong class="text-muted">{{cluster?.userlogin}}</strong>
-          </div>
         </div>
-      </div>
-      <div class="row">
-         <div class="col-3">
-          <div class="callout">
+    </div>
+</div>
+<div class="row" *ngIf="cluster?.public_ip">
+    <div class="col-3">
+        <div class="callout">
             <small class="text-muted">Public IP</small><br>
             <strong class="text-muted">{{cluster?.public_ip}}</strong>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
