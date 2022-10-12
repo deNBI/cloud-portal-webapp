@@ -23,7 +23,6 @@ export class ImageService {
 
 	getImages(project_id: number, filter?: string): Observable<Image[]> {
 		let params: HttpParams = new HttpParams().set('project_id', project_id.toString());
-		console.log(filter);
 		if (filter) {
 			params = new HttpParams().set('project_id', project_id.toString()).set('filter', filter);
 		}
