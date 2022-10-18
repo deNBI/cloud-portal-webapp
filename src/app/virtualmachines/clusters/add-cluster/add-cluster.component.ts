@@ -302,6 +302,13 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	reloadFlavors(): void {
+		this.flavors_loaded = false;
+		this.selectedMasterFlavor = undefined;
+		this.selectedFlavor = undefined;
+		this.getFlavors(this.selectedProject[1]);
+	}
+
 	/**
 	 * Validate the public key of the user.
 	 */

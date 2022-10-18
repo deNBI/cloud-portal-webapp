@@ -14,14 +14,15 @@ import { Image } from './virtualmachinemodels/image';
 	selector: 'app-flavor-detail',
 	templateUrl: 'flavordetail.component.html',
 	providers: [FlavorService],
-
 })
 export class FlavorDetailComponent implements OnInit, OnChanges {
 	@Input() selectedFlavor: Flavor;
 	@Input() selectedImage: Image;
 	@Input() creditsAllowed: boolean;
 	@Input() flavors: Flavor[];
+	@Input() allowReload: boolean = false;
 	@Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
+	@Output() readonly reloadFlavors: EventEmitter<any> = new EventEmitter<any>();
 
 	regexp_data_test_id: RegExp = /[ ().]/g;
 	selected_flavor_types: Flavor[] = [];
@@ -52,15 +53,13 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 		pullDrag: false,
 		dots: true,
 		navSpeed: 700,
-		navText: ['<i class=\'fa fa-chevron-left\'></i>',
-			'<i class=\'fa fa-chevron-right\'></i>'],
+		navText: ['<i class=\'fa fa-chevron-left\'></i>', '<i class=\'fa fa-chevron-right\'></i>'],
 		responsive: {
 			0: {
 				items: 1,
 			},
 			550: {
 				items: 2,
-
 			},
 			800: {
 				items: 3,
@@ -72,9 +71,7 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 		nav: true,
 	};
 
-	constructor(
-		private flavorService: FlavorService,
-	) {
+	constructor(private flavorService: FlavorService) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -82,7 +79,6 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 		this.window_size = window.innerWidth;
 		this.flavor_types = this.flavorService.sortFlavors(this.flavors);
 		this.possible_flavors = this.flavor_types[this.selected_flavor_type];
-
 	}
 
 	ngOnChanges() {
@@ -102,10 +98,14 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 	 * @param flavor Flavor which will become the selected Flavor.
 	 */
 	setSelectedFlavor(flavor: Flavor): void {
-
 		this.selectedFlavor = flavor;
 		this.selectedFlavorChange.emit(this.selectedFlavor);
+	}
 
+	emitFlavorReload(): void {
+		this.selectedFlavor = undefined;
+		this.selected_flavor_type = 'Standard Flavors';
+		this.reloadFlavors.emit();
 	}
 
 	setSelectedFlavorType(key: string): void {
@@ -117,5 +117,4 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 	unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
 		return 0;
 	}
-
 }
