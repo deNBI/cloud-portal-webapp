@@ -172,6 +172,8 @@
 												[selectedFlavor]="selectedMasterFlavor"
 												id="master_id_flavor_detail"
 												[flavors]="flavors"
+												[allowReload]="true"
+												(reloadFlavors)="reloadFlavors()"
 												(selectedFlavorChange)="setMasterFlavor($event); resetBatches(); calculateNewValues()"
 											></app-flavor-detail>
 										</div>
