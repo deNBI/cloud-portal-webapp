@@ -292,6 +292,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		);
 	}
 
+	reloadFlavors(): void {
+		this.flavors_loaded = false;
+		this.isLoaded = false;
+		this.selectedFlavor = undefined;
+		this.getFlavors(this.selectedProject[1]);
+	}
+
 	getDetachedVolumesByProject(): void {
 		this.subscription.add(
 			this.virtualmachineservice
