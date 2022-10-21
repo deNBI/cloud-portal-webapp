@@ -21,56 +21,44 @@ export class ImageService {
 		this.http = http;
 	}
 
-	getImages(project_id: number): Observable<Image[]> {
-		const params: HttpParams = new HttpParams().set('project_id', project_id.toString());
+	getImages(project_id: number, filter?: string): Observable<Image[]> {
+		let params: HttpParams = new HttpParams().set('project_id', project_id.toString());
+		if (filter) {
+			params = new HttpParams().set('project_id', project_id.toString()).set('filter', filter);
+		}
 
-		return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}images/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(images: Image[]): Image[] => images.map(
-					(image: Image): Image => new Image(image),
-				),
-			),
-		);
-
+		return this.http
+			.get<Image[]>(`${ApiSettings.getApiBaseURL()}images/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((images: Image[]): Image[] => images.map((image: Image): Image => new Image(image))));
 	}
 
 	getImageByProjectAndName(project_id: number, name: string): Observable<Image> {
 		const params: HttpParams = new HttpParams().set('name', name);
 
-		return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}images/project/${project_id}/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(image: Image): Image => new Image(image),
-			),
-		);
-
+		return this.http
+			.get<Image>(`${ApiSettings.getApiBaseURL()}images/project/${project_id}/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((image: Image): Image => new Image(image)));
 	}
 
 	checkSnapshotNameAvailable(snapshot_name: string, client_id: string): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
 			withCredentials: true,
 			params: { snapshot_name, client_id },
-
 		});
-
 	}
 
 	getSnapshot(openstack_id: string): Observable<Image> {
-
-		return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}snapshots/${openstack_id}/status/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(image: Image): Image => new Image(image),
-			),
-		);
-
+		return this.http
+			.get<Image>(`${ApiSettings.getApiBaseURL()}snapshots/${openstack_id}/status/`, {
+				withCredentials: true,
+			})
+			.pipe(map((image: Image): Image => new Image(image)));
 	}
 
 	getImageTags(facility: number): Observable<any> {
@@ -80,7 +68,6 @@ export class ImageService {
 			withCredentials: true,
 			params,
 		});
-
 	}
 
 	getImageModes(facility: number): Observable<any> {
@@ -90,7 +77,6 @@ export class ImageService {
 			withCredentials: true,
 			params,
 		});
-
 	}
 
 	getBlockedImageTags(facility_id: number): Observable<any> {
@@ -108,34 +94,30 @@ export class ImageService {
 	}
 
 	addImageMode(mode: ImageMode, facility: number): Observable<ImageMode> {
-
 		const params: HttpParams = new HttpParams().set('facility', facility.toString()).set('mode', JSON.stringify(mode));
 
 		return this.http.post<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	updateImageMode(mode: ImageMode): Observable<ImageMode> {
-
 		const params: HttpParams = new HttpParams().set('mode', JSON.stringify(mode));
 
 		return this.http.patch<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/${mode.id}/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	addImageTags(imageTag: string, imageModes: ImageMode[], facility: number): Observable<ImageTag> {
-
 		const params: HttpParams = new HttpParams()
-			.set('imageTag', imageTag).set('facility', facility.toString()).set('imageModes', JSON.stringify(imageModes));
+			.set('imageTag', imageTag)
+			.set('facility', facility.toString())
+			.set('imageModes', JSON.stringify(imageModes));
 
 		return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	addBlockedImageTag(imageTag: string, facility_id: number): Observable<BlockedImageTag> {
@@ -147,7 +129,11 @@ export class ImageService {
 		});
 	}
 
-	addBlockedImageTagResenv(imageTag: string, resenvs: string[], facility_id: number): Observable<BlockedImageTagResenv> {
+	addBlockedImageTagResenv(
+		imageTag: string,
+		resenvs: string[],
+		facility_id: number,
+	): Observable<BlockedImageTagResenv> {
 		const params: HttpParams = new HttpParams()
 			.set('imageTag', imageTag)
 			.set('facility_id', facility_id.toString())
@@ -162,41 +148,32 @@ export class ImageService {
 		return this.http.get<ImageLogo[]>(`${ApiSettings.getApiBaseURL()}imageLogoTags/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	addImageLogos(imageTag: string, url: string): Observable<ImageLogo> {
-
 		const params: HttpParams = new HttpParams().set('tag', imageTag).set('url', url);
 
 		return this.http.post<ImageLogo>(`${ApiSettings.getApiBaseURL()}imageLogoTags/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	deleteImageLogoTag(imageTag: string | number): Observable<IResponseTemplate> {
-
 		return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageLogoTags/${imageTag}/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	deleteImageTag(id: string): Observable<IResponseTemplate> {
-
 		return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${id}/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	deleteImageMode(id: string): Observable<IResponseTemplate> {
-
 		return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageModes/${id}/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	deleteBlockedImageTag(imageTag: string, facility_id: number): Observable<IResponseTemplate> {
@@ -206,7 +183,6 @@ export class ImageService {
 			withCredentials: true,
 			params,
 		});
-
 	}
 
 	deleteBlockedImageTagResenv(imageTag: string, facility_id: number): Observable<IResponseTemplate> {
@@ -216,49 +192,42 @@ export class ImageService {
 			withCredentials: true,
 			params,
 		});
-
 	}
 
 	createSnapshot(snaptshot_instance: string, snapshot_name: string, description: string): Observable<SnapshotModel> {
-
 		const params: HttpParams = new HttpParams()
 			.set('snapshot_name', snapshot_name)
 			.set('snapshot_instance', snaptshot_instance)
 			.set('description', description);
 
-		return this.http.post<SnapshotModel>(`${ApiSettings.getApiBaseURL()}snapshots/`, params, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(snapshot: SnapshotModel): SnapshotModel => new SnapshotModel(snapshot),
-			),
-		);
-
+		return this.http
+			.post<SnapshotModel>(`${ApiSettings.getApiBaseURL()}snapshots/`, params, {
+				withCredentials: true,
+			})
+			.pipe(map((snapshot: SnapshotModel): SnapshotModel => new SnapshotModel(snapshot)));
 	}
 
 	deleteSnapshot(snapshot_id: string): Observable<IResponseTemplate> {
 		return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/${snapshot_id}/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	getSnapshotsByUser(currentPage: number, snapsPerSite: number, filter?: string): Observable<SnapshotPage> {
-		let params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
+		let params: HttpParams = new HttpParams()
+			.set('page', currentPage.toString())
+			.set('snaps_per_site', snapsPerSite.toString());
 
 		if (filter) {
 			params = params.set('filter', filter);
 		}
 
-		return this.http.get<SnapshotPage>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page),
-			),
-		);
-
+		return this.http
+			.get<SnapshotPage>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page)));
 	}
 
 	sortImages(images: Image[]): { [name: string]: Image[] } {
@@ -276,5 +245,4 @@ export class ImageService {
 
 		return image_types;
 	}
-
 }

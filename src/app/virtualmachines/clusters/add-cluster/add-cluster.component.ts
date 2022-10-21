@@ -264,7 +264,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 */
 	getImages(project_id: number): void {
 		this.subscription.add(
-			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
+			this.imageService.getImages(project_id, 'cluster').subscribe((images: Image[]): void => {
 				this.images = images.filter((image: Image): boolean => {
 					let not_blocked: boolean = true;
 					this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
@@ -300,6 +300,13 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				},
 			),
 		);
+	}
+
+	reloadFlavors(): void {
+		this.flavors_loaded = false;
+		this.selectedMasterFlavor = undefined;
+		this.selectedFlavor = undefined;
+		this.getFlavors(this.selectedProject[1]);
 	}
 
 	/**
