@@ -54,6 +54,10 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 		this.condaService = condaService;
 	}
 
+	setUserKeyUrl(url: string): void {
+		this.user_key_url.setValue(url);
+	}
+
 	getUserKeyUrl(): string {
 		return this.user_key_url.value;
 	}

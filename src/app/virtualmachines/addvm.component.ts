@@ -765,6 +765,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				if (template.template_name === mode.name) {
 					this.resenvSelected = true;
 					this.resEnvComponent.setOnlyNamespace(template);
+					if (!this.resEnvComponent.getUserKeyUrl()) {
+						this.resEnvComponent.setUserKeyUrl(this.vm_name);
+					}
 
 					return;
 				}
@@ -773,6 +776,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.resenvSelected = false;
 		if (this.resEnvComponent) {
 			this.resEnvComponent.unsetOnlyNamespace();
+			if (!this.resEnvComponent.getUserKeyUrl()) {
+				this.resEnvComponent.setUserKeyUrl(this.vm_name);
+			}
 		}
 	}
 
@@ -795,6 +801,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	ngDoCheck(): void {
 		if (this.resEnvComponent) {
+			if (!this.resEnvComponent.getUserKeyUrl()) {
+				this.resEnvComponent.setUserKeyUrl(this.vm_name);
+			}
 			this.resEnvValid = this.resEnvComponent.isValid();
 			this.resEnvNeedsName = this.resEnvComponent.needsName();
 			this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
