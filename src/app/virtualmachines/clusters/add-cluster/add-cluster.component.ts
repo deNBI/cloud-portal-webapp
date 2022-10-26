@@ -62,6 +62,10 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	flavors_loaded: boolean = false;
 
+	projects_loaded: boolean;
+
+	userinfo_loaded: boolean;
+
 	create_error: IResponseTemplate;
 
 	/**
@@ -131,7 +135,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 *
 	 * @type {boolean}
 	 */
-	isLoaded: boolean = false;
 
 	/**
 	 * All projects of the user.
@@ -264,7 +267,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 */
 	getImages(project_id: number): void {
 		this.subscription.add(
-			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
+			this.imageService.getImages(project_id, 'cluster').subscribe((images: Image[]): void => {
 				this.images = images.filter((image: Image): boolean => {
 					let not_blocked: boolean = true;
 					this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
@@ -300,6 +303,13 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				},
 			),
 		);
+	}
+
+	reloadFlavors(): void {
+		this.flavors_loaded = false;
+		this.selectedMasterFlavor = undefined;
+		this.selectedFlavor = undefined;
+		this.getFlavors(this.selectedProject[1]);
 	}
 
 	/**
@@ -463,6 +473,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				this.userService.getUserInfo(),
 			]).subscribe((result: any): void => {
 				this.userinfo = result[2];
+				this.userinfo_loaded = true;
 				this.validatePublicKey();
 				const allowedMemberGroups: any = result[0];
 				const membergroups: any = result[1];
@@ -472,13 +483,12 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				for (const project of allowedMemberGroups) {
 					this.allowedProjects.push(project);
 				}
-
+				this.projects_loaded = true;
 				if (this.projects.length === 1) {
 					this.selectedProject = this.projects[0];
 					this.singleProject = true;
 					this.getSelectedProjectClient();
 				}
-				this.isLoaded = true;
 			}),
 		);
 	}

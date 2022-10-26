@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded && userinfo?.PublicKey === 'None'">
+<div *ngIf="userinfo_loaded && userinfo?.PublicKey === 'None'">
 	<div>
 		<div class="card" style="">
 			<div class="card-header"><i class="fa fa-align-justify"></i> Public Key</div>
@@ -18,8 +18,8 @@
 	</div>
 </div>
 
-<div *ngIf="!isLoaded || (singleProject && !projectDataLoaded)" class="loader"></div>
-<div *ngIf="isLoaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
+<div *ngIf="singleProject && !projectDataLoaded" class="loader"></div>
+<div *ngIf="userinfo_loaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">
 		You are not a member of a SimpleVM project which allows clusters. If you think this is an error, please contact us
 		at <a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a>
@@ -27,7 +27,7 @@
 </div>
 <div
 	*ngIf="
-		isLoaded &&
+		userinfo_loaded &&
 		userinfo?.PublicKey !== 'None' &&
 		projects.length > 0 &&
 		(!singleProject || (singleProject && projectDataLoaded))
@@ -66,7 +66,7 @@
 						</div>
 						<div class="row justify-content-center">
 							<span
-								*ngIf="(client_available || selectedProject) && (!projectDataLoaded || !flavors_loaded)"
+								*ngIf="(client_available || selectedProject) && !projectDataLoaded"
 								class="spinner-border text-info"
 							>
 							</span>
@@ -75,9 +75,7 @@
 							<div
 								class="alert alert-danger"
 								role="alert"
-								*ngIf="
-									client_available && !selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded
-								"
+								*ngIf="client_available && !selectedProjectClient?.bibigrid_available && projectDataLoaded"
 							>
 								Starting a cluster is currently not possible!<br />
 								If you have any questions please contact
@@ -86,11 +84,7 @@
 								site of your project is reachable.
 							</div>
 
-							<div
-								*ngIf="
-									client_available && selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded
-								"
-							>
+							<div *ngIf="client_available && selectedProjectClient?.bibigrid_available && projectDataLoaded">
 								<app-resource-overview
 									[ressourceUsage]="selectedProjectRessources"
 									[newCores]="newCores"
@@ -120,7 +114,7 @@
 									</div>
 								</accordion>
 
-								<div *ngIf="projectDataLoaded && flavors_loaded && flavors_usable.length > 0 && !vm_limit_reached">
+								<div *ngIf="projectDataLoaded && flavors_usable.length > 0 && !vm_limit_reached">
 									<div
 										class="form-group row col-md-12"
 										style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
@@ -169,11 +163,18 @@
 									>
 										<div class="col">
 											<app-flavor-detail
+												*ngIf="userinfo_loaded && flavors_loaded"
 												[selectedFlavor]="selectedMasterFlavor"
 												id="master_id_flavor_detail"
 												[flavors]="flavors"
+												[allowReload]="true"
+												(reloadFlavors)="reloadFlavors()"
 												(selectedFlavorChange)="setMasterFlavor($event); resetBatches(); calculateNewValues()"
 											></app-flavor-detail>
+											<div class="d-flex align-items-center" *ngIf="userinfo_loaded && !flavors_loaded">
+												<strong>Loading flavors ...</strong>
+												<div class="spinner-border m-sm-auto" role="status"></div>
+											</div>
 										</div>
 									</div>
 
@@ -392,8 +393,7 @@
 										!selectedMasterImage ||
 										!selectedWorkerFlavorSet) &&
 									selectedProject &&
-									projectDataLoaded &&
-									flavors_loaded
+									projectDataLoaded
 								"
 								class="alert alert-danger col-md-auto"
 								role="alert"
@@ -463,7 +463,7 @@
 						<div
 							*ngIf="
 								projectDataLoaded &&
-								(flavors_loaded || !client_available) &&
+								!client_available &&
 								selectedProject &&
 								!(allowedProjects | inAllowed: selectedProject)
 							"
@@ -477,7 +477,7 @@
 					</form>
 				</div>
 
-				<div class="alert alert-danger" *ngIf="isLoaded && !client_available && selectedProject && client_checked">
+				<div class="alert alert-danger" *ngIf="!client_available && selectedProject && client_checked">
 					The corresponding client is currently offline. If you have any questions please contact
 					<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
 					>.

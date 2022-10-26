@@ -2,6 +2,11 @@
 	<div class="card-header" style="text-align: center">
 		<strong>Flavor*</strong><br />
 		<span class="text-muted">Flavors specify the amount of resources for your machine.</span>
+		<div class="row">
+			<div class="col-md-4 text-center mx-auto">
+				<button class="btn btn-outline-secondary" (click)="emitFlavorReload()">Reload flavors</button>
+			</div>
+		</div>
 
 		<ul class="nav nav-tabs card-header-tabs" style="overflow: hidden" role="tablist">
 			<li class="nav-item" style="cursor: pointer" *ngFor="let item of flavor_types | keyvalue: unsorted">
@@ -285,6 +290,24 @@
 						</ng-template>
 					</ng-container>
 				</owl-carousel-o>
+			</div>
+			<div
+				class="alert alert-info"
+				*ngIf="selected_flavor_type === 'Graphics Processing Unit' && (flavors | hasUnavailableFlavors)"
+			>
+				<strong>Please consider</strong><br />
+				<p>
+					If a GPU flavor you want to use is not available at the given time, for example because all resources of this
+					type are occupied, you have 2 possible courses of action:
+				</p>
+				<ul>
+					<li>
+						You can wait until the desired resource is free again. Please bear in mind that this form is not updated
+						automatically. Update the view yourself by using the reload button above or by refreshing of this page.
+					</li>
+					<li>You use a different flavor.</li>
+				</ul>
+				<p><strong>Please bear in mind that it can take a long time until a certain resource is free again!</strong></p>
 			</div>
 		</div>
 	</div>
