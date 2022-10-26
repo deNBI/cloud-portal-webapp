@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded && userinfo?.PublicKey === 'None'">
+<div *ngIf="userinfo_loaded && userinfo?.PublicKey === 'None'">
 	<div>
 		<div class="card">
 			<div class="card-header"><i class="fa fa-align-justify"></i> Public Key</div>
@@ -18,16 +18,17 @@
 	</div>
 </div>
 
-<div *ngIf="!isLoaded || (singleProject && !projectDataLoaded)" class="loader" data-test-id="site-loader"></div>
-<div *ngIf="isLoaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
+<div
+	*ngIf="(singleProject && !projectDataLoaded) || (!singleProject && !projects_loaded)"
+	class="loader"
+	data-test-id="site-loader"
+></div>
+<div *ngIf="userinfo_loaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">You are not a member of a SimpleVM project.</div>
 </div>
 <div
 	*ngIf="
-		isLoaded &&
-		userinfo?.PublicKey !== 'None' &&
-		projects.length > 0 &&
-		(!singleProject || (singleProject && projectDataLoaded))
+		userinfo?.PublicKey !== 'None' && projects.length > 0 && (!singleProject || (singleProject && projectDataLoaded))
 	"
 	class="animated fadeIn"
 >
@@ -100,12 +101,9 @@
 									<br />
 									An admin of your project can request more resources if necessary.
 								</div>
+
 								<div
-									*ngIf="
-										selectedProject &&
-										selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
-										flavors.length > 0
-									"
+									*ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms"
 									class="form-group row col"
 									style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px; margin-top: 25px"
 								>
@@ -161,6 +159,7 @@
 									>
 										<div class="col">
 											<app-flavor-detail
+												*ngIf="userinfo_loaded && flavors_loaded"
 												[selectedFlavor]="selectedFlavor"
 												id="id_flavor_detail"
 												[flavors]="flavors"
@@ -169,6 +168,10 @@
 												(reloadFlavors)="reloadFlavors()"
 											>
 											</app-flavor-detail>
+											<div class="d-flex align-items-center" *ngIf="userinfo_loaded && !flavors_loaded">
+												<strong>Loading flavors ...</strong>
+												<div class="spinner-border m-sm-auto" role="status"></div>
+											</div>
 										</div>
 									</div>
 									<div class="row col-md-12" *ngIf="selectedFlavor?.ephemeral_disk > 0">
@@ -185,7 +188,7 @@
 										class="form-group row col-md-12"
 										style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px"
 									>
-										<div class="col">
+										<div class="col" *ngIf="image_loaded">
 											<app-image-detail
 												*ngIf="images?.length > 0"
 												[selectedImage]="selectedImage"
@@ -194,6 +197,13 @@
 												(selectedImageChange)="setSelectedImage($event)"
 												id="id_image_detail"
 											></app-image-detail>
+											<div class="alert alert-info" *ngIf="images.length === 0">
+												There are no images available at the moment.
+											</div>
+										</div>
+										<div *ngIf="!image_loaded">
+											<strong>Loading images ...</strong>
+											<div class="spinner-border m-sm-auto" role="status"></div>
 										</div>
 									</div>
 								</div>
@@ -620,6 +630,7 @@
 											></i>
 										</div>
 										<app-res-env
+											*ngIf="selectedProject && projectDataLoaded && selectedFlavor"
 											#resEnv
 											[clientid]="client_id"
 											[forc_url]="forc_url"
@@ -890,7 +901,7 @@
 					</form>
 				</div>
 
-				<div class="alert alert-danger" *ngIf="isLoaded && !client_available && selectedProject && client_checked">
+				<div class="alert alert-danger" *ngIf="!client_available && selectedProject && client_checked">
 					The corresponding client is currently offline. If you have any questions please contact
 					<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a> Check our
 					<a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site

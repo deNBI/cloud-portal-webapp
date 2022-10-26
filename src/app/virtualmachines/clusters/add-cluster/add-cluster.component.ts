@@ -62,6 +62,10 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	flavors_loaded: boolean = false;
 
+	projects_loaded: boolean;
+
+	userinfo_loaded: boolean;
+
 	create_error: IResponseTemplate;
 
 	/**
@@ -131,7 +135,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 *
 	 * @type {boolean}
 	 */
-	isLoaded: boolean = false;
 
 	/**
 	 * All projects of the user.
@@ -470,6 +473,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				this.userService.getUserInfo(),
 			]).subscribe((result: any): void => {
 				this.userinfo = result[2];
+				this.userinfo_loaded = true;
 				this.validatePublicKey();
 				const allowedMemberGroups: any = result[0];
 				const membergroups: any = result[1];
@@ -479,13 +483,12 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				for (const project of allowedMemberGroups) {
 					this.allowedProjects.push(project);
 				}
-
+				this.projects_loaded = true;
 				if (this.projects.length === 1) {
 					this.selectedProject = this.projects[0];
 					this.singleProject = true;
 					this.getSelectedProjectClient();
 				}
-				this.isLoaded = true;
 			}),
 		);
 	}
