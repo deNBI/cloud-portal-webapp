@@ -291,7 +291,10 @@
 					</ng-container>
 				</owl-carousel-o>
 			</div>
-			<div class="alert alert-info" *ngIf="selected_flavor_type === 'Graphics Processing Unit'">
+			<div
+				class="alert alert-info"
+				*ngIf="selected_flavor_type === 'Graphics Processing Unit' && (flavors | hasUnavailableFlavors)"
+			>
 				<strong>Please consider</strong><br />
 				<p>
 					If a GPU flavor you want to use is not available at the given time, for example because all resources of this
@@ -300,10 +303,11 @@
 				<ul>
 					<li>
 						You can wait until the desired resource is free again. Please bear in mind that this form is not updated
-						automatically. Update the view yourself by using the reload button above or refreshing this page
+						automatically. Update the view yourself by using the reload button above or by refreshing of this page.
 					</li>
-					<li>You use a different flavor</li>
+					<li>You use a different flavor.</li>
 				</ul>
+				<p><strong>Please bear in mind that it can take a long time until a certain resource is free again!</strong></p>
 			</div>
 		</div>
 	</div>
