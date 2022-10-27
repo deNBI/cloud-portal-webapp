@@ -750,6 +750,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	hasImageResenv(): void {
 		if (!this.resEnvComponent) {
+			this.resEnvComponent.unsetOnlyNamespace();
+
 			return;
 		}
 		for (const mode of this.selectedImage.modes) {

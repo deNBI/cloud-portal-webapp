@@ -70,6 +70,7 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 		if (template === null) {
 			this.selectedTemplate = this.undefinedTemplate;
 			this.user_key_url.setValue('');
+			this.create_only_backend = false;
 
 			return;
 		}
