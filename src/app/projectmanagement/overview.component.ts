@@ -74,6 +74,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	OPENSTACK_LINK: string = OPENSTACK_LINK;
 	STATUS_LINK: string = STATUS_LINK;
 	@ViewChild('creditsChart') creditsCanvas: ElementRef;
+	@ViewChild('publicKeyModal') publicKeyModal: any;
+	publicKeyToShow: string = '';
+	publicKeyMemberName: string = '';
 	project_id: string;
 	application_id: string;
 	credits: number = 0;
@@ -1082,6 +1085,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					),
 			);
 		}
+	}
+
+	showPublicKeyModal(member: ProjectMember): void {
+		this.publicKeyToShow = member.publicKey;
+		this.publicKeyMemberName = `${member.firstName} ${member.lastName}`;
+		this.publicKeyModal.show();
 	}
 
 	/**
