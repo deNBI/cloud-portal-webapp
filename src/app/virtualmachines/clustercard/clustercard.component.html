@@ -204,6 +204,9 @@
 						<div
 							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							(click)="copyToClipboard(mode.copy_field)"
+							[closeDelay]="3000"
+							ngbTooltip="Copied!"
+							triggers="click:blur"
 						>
 							Copy command
 						</div>

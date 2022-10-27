@@ -40,6 +40,9 @@
 					(click)="copyToClipboard(userinfo?.PublicKey)"
 					*ngIf="userinfo?.PublicKey !== 'None'"
 					id="copyPublicKeyButton"
+					[closeDelay]="3000"
+					ngbTooltip="Copied!"
+					triggers="click:blur"
 				>
 					Copy Key
 				</button>
