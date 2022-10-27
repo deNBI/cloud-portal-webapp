@@ -947,6 +947,20 @@
 										<span *ngIf="member.isPi" class="badge badge-pill bg-danger">PI</span>
 										<span *ngIf="!member.isPi && !member.isAdmin" class="badge badge-pill bg-warning">MEMBER</span>
 									</td>
+									<td *ngIf="!(project_application.user_is_pi || project_application.user_is_admin || is_vo_admin)">
+										<div class="btn-group" role="group">
+											<button
+												[disabled]="!member?.publicKey"
+												class="btn btn-outline-secondary"
+												style="margin: 2px"
+												type="button"
+												(click)="showPublicKeyModal(member)"
+											>
+												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>
+												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>Public Key
+											</button>
+										</div>
+									</td>
 									<td *ngIf="project_application.user_is_pi || project_application.user_is_admin || is_vo_admin">
 										<div class="btn-group" role="group">
 											<button
@@ -987,8 +1001,8 @@
 												type="button"
 												(click)="showPublicKeyModal(member)"
 											>
-												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>&nbsp;
-												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>&nbsp; Public Key
+												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>
+												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>Public Key
 											</button>
 										</div>
 									</td>
@@ -1176,7 +1190,15 @@
 											<span [hidden]="showLink">Hide</span>
 											link
 										</button>
-										<button (click)="copyToClipboard(invitation_link)" class="btn btn-success">Copy link</button>
+										<button
+											(click)="copyToClipboard(invitation_link)"
+											class="btn btn-success"
+											[closeDelay]="3000"
+											ngbTooltip="Copied!"
+											triggers="click:blur"
+										>
+											Copy link
+										</button>
 									</div>
 								</li>
 							</ul>
@@ -1579,6 +1601,9 @@
 					class="btn btn-secondary"
 					data-test-id="copy_key"
 					id="copy_key"
+					[closeDelay]="3000"
+					ngbTooltip="Copied!"
+					triggers="click:blur"
 				>
 					Copy Key
 				</button>
