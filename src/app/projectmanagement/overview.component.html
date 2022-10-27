@@ -947,6 +947,20 @@
 										<span *ngIf="member.isPi" class="badge badge-pill bg-danger">PI</span>
 										<span *ngIf="!member.isPi && !member.isAdmin" class="badge badge-pill bg-warning">MEMBER</span>
 									</td>
+									<td *ngIf="!(project_application.user_is_pi || project_application.user_is_admin || is_vo_admin)">
+										<div class="btn-group" role="group">
+											<button
+												[disabled]="!member?.publicKey"
+												class="btn btn-outline-secondary"
+												style="margin: 2px"
+												type="button"
+												(click)="showPublicKeyModal(member)"
+											>
+												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>
+												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>Public Key
+											</button>
+										</div>
+									</td>
 									<td *ngIf="project_application.user_is_pi || project_application.user_is_admin || is_vo_admin">
 										<div class="btn-group" role="group">
 											<button
@@ -958,6 +972,7 @@
 											>
 												<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
 											</button>
+
 											<button
 												(click)="removeAdmin(member.userId, member.userName); notificationModal.show()"
 												*ngIf="
@@ -978,6 +993,16 @@
 												type="button"
 											>
 												<i class="fa fa-trash"></i>&nbsp; Remove member
+											</button>
+											<button
+												[disabled]="!member?.publicKey"
+												class="btn btn-outline-secondary"
+												style="margin: 2px"
+												type="button"
+												(click)="showPublicKeyModal(member)"
+											>
+												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>
+												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>Public Key
 											</button>
 										</div>
 									</td>
@@ -1165,7 +1190,15 @@
 											<span [hidden]="showLink">Hide</span>
 											link
 										</button>
-										<button (click)="copyToClipboard(invitation_link)" class="btn btn-success">Copy link</button>
+										<button
+											(click)="copyToClipboard(invitation_link)"
+											class="btn btn-success"
+											[closeDelay]="3000"
+											ngbTooltip="Copied!"
+											triggers="click:blur"
+										>
+											Copy link
+										</button>
 									</div>
 								</li>
 							</ul>
@@ -1531,6 +1564,57 @@
 					Yes
 				</button>
 				<button (click)="leaveProjectModal.hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+	#publicKeyModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="Label"
+	bsModal
+	class="modal fade"
+	role="dialog"
+	tabindex="-1"
+>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="public_key_modal" data-test-id="public_key_modal">
+					Public Key - {{ publicKeyMemberName }}
+				</h4>
+				<button (click)="publicKeyModal.hide()" aria-label="Close" class="close" style="cursor: pointer" type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" style="word-break: break-word">
+				<div class="alert alert-info" role="alert" data-test-id="public_key_modal_id">
+					{{ publicKeyToShow }}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button
+					(click)="copyToClipboard(publicKeyToShow)"
+					class="btn btn-secondary"
+					data-test-id="copy_key"
+					id="copy_key"
+					[closeDelay]="3000"
+					ngbTooltip="Copied!"
+					triggers="click:blur"
+				>
+					Copy Key
+				</button>
+				<button
+					(click)="publicKeyModal.hide()"
+					class="btn btn-secondary"
+					data-test-id="close_notification"
+					id="close_notification"
+				>
+					Close
+				</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
