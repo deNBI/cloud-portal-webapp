@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import { ElementRef, ViewChild } from '@angular/core'
+
 enum Lifetime_States {
 	EXPIRED = 0,
 	EXPIRES_SOON = 1,

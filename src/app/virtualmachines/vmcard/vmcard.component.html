@@ -107,6 +107,9 @@
 						[attr.data-test-id]="'resenv_visible_' + vm?.name"
 						title="{{ 'Research Environment installed: ' + vm?.backend?.template }}"
 						(click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name)"
+						[closeDelay]="3000"
+						ngbTooltip="Copied!"
+						triggers="click:blur"
 					>
 						<span
 							class="badge badge-pill badge-secondary"
@@ -135,6 +138,9 @@
 						data-placement="right"
 						title="{{ 'Research Environment failed to install: ' + vm?.backend?.template }}"
 						(click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name)"
+						[closeDelay]="3000"
+						ngbTooltip="Copied!"
+						triggers="click:blur"
 					>
 						<span
 							class="badge badge-pill badge-secondary"
@@ -191,6 +197,9 @@
 						data-placement="right"
 						title="{{ 'Master node of cluster with ' + vm?.cluster.instances_count + ' workers' }}"
 						(click)="this.copyToClipboard(vm?.res_env_url)"
+						[closeDelay]="3000"
+						ngbTooltip="Copied!"
+						triggers="click:blur"
 					>
 						<span
 							class="badge badge-pill badge-secondary"
@@ -348,6 +357,9 @@
 						<div
 							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							(click)="copyToClipboard(mode.copy_field)"
+							[closeDelay]="3000"
+							ngbTooltip="Copied!"
+							triggers="click:blur"
 						>
 							Copy command
 						</div>
