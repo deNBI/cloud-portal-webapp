@@ -101,7 +101,12 @@
 									<br />
 									An admin of your project can request more resources if necessary.
 								</div>
+        <div class="d-flex align-items-center"
+                                     *ngIf="!initial_loaded">
 
+                                    <div class="spinner-border m-sm-auto text-info" role="status"></div>
+                                </div>
+                                <ng-container *ngIf="initial_loaded">
 								<div
 									*ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms"
 									class="form-group row col"
@@ -201,7 +206,8 @@
 												There are no images available at the moment.
 											</div>
 										</div>
-										<div *ngIf="!image_loaded">
+
+										<div *ngIf="!image_loaded" class="d-flex align-items-center" >
 											<strong>Loading images ...</strong>
 											<div class="spinner-border m-sm-auto" role="status"></div>
 										</div>
@@ -888,7 +894,7 @@
 											Start VM
 										</button>
 									</div>
-								</div>
+								</div></ng-container>
 							</div>
 						</div>
 						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
