@@ -1,91 +1,94 @@
 <div *ngIf="userinfo_loaded && userinfo?.PublicKey === 'None'">
-	<div>
-		<div class="card">
-			<div class="card-header"><i class="fa fa-align-justify"></i> Public Key</div>
+    <div>
+        <div class="card">
+            <div class="card-header"><i class="fa fa-align-justify"></i> Public Key</div>
 
-			<div class="card-body">
-				<div style="padding: 5px" class="alert alert-primary">
-					<strong>Info: </strong> You need to set a valid SSH Key before you can start a machine. Please set a valid key
-					below or on your <a href="#/userinfo">personal data page</a>.
-				</div>
-				<div style="width: 100%" class="table-responsive">
-					<table class="table table-striped">
-						<tr app-public-key [userinfo]="userinfo"></tr>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="card-body">
+                <div style="padding: 5px" class="alert alert-primary">
+                    <strong>Info: </strong> You need to set a valid SSH Key before you can start a machine. Please set a
+                    valid key
+                    below or on your <a href="#/userinfo">personal data page</a>.
+                </div>
+                <div style="width: 100%" class="table-responsive">
+                    <table class="table table-striped">
+                        <tr app-public-key [userinfo]="userinfo"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div
-	*ngIf="(singleProject && !projectDataLoaded) || (!singleProject && !projects_loaded)"
-	class="loader"
-	data-test-id="site-loader"
+        *ngIf="(singleProject && !projectDataLoaded) || (!singleProject && !projects_loaded)"
+        class="loader"
+        data-test-id="site-loader"
 ></div>
 <div *ngIf="userinfo_loaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
-	<div class="alert alert-warning" role="alert">You are not a member of a SimpleVM project.</div>
+    <div class="alert alert-warning" role="alert">You are not a member of a SimpleVM project.</div>
 </div>
 <div
-	*ngIf="
+        *ngIf="
 		userinfo?.PublicKey !== 'None' && projects.length > 0 && (!singleProject || (singleProject && projectDataLoaded))
 	"
-	class="animated fadeIn"
+        class="animated fadeIn"
 >
-	<div class="row">
-		<div class="col-md-12">
-			<div class="card" style="">
-				<div class="card-header">
-					<strong>New Virtual Machine</strong>
-					<span *ngIf="singleProject" id="singleProjectNameSpan">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="">
+                <div class="card-header">
+                    <strong>New Virtual Machine</strong>
+                    <span *ngIf="singleProject" id="singleProjectNameSpan">
 						- <strong>{{ this.selectedProject[0] }}</strong></span
-					>
-				</div>
+                    >
+                </div>
 
-				<div class="card-body">
-					<form id="application_form" #f="ngForm" class="form-horizontal">
-						<div
-							class="form-group row col-md-12 justify-content-center"
-							*ngIf="!singleProject"
-							style="padding-right: 3rem; padding-left: 3rem"
-						>
-							<div class="col-md-8">
-								<label for="projectSelect"><strong>Please select a project</strong></label>
-								<select
-									required
-									class="form-control form-select"
-									name="projectSelect"
-									*ngIf="!singleProject"
-									[(ngModel)]="selectedProject"
-									id="projectSelect"
-									data-test-id="project_selection_dropdown"
-									(ngModelChange)="getSelectedProjectClient(); resetChecks()"
-								>
-									<option value="undefined" disabled selected hidden>Please Select</option>
-									<option
-										*ngFor="let project of projects"
-										[ngValue]="project"
-										id="id_option_{{ project[0] }}"
-										[attr.data-test-id]="'project_option_' + project[0]"
-										label="{{ project[0] }}"
-									>
-										{{ project[0] }}
-									</option>
-								</select>
-								<label *ngIf="singleProject"
-									><strong>{{ selectedProject[0] }}</strong></label
-								>
-							</div>
-						</div>
-						<div class="row justify-content-center">
-							<span *ngIf="client_available && !projectDataLoaded" class="spinner-border text-info"></span>
-						</div>
-						<div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
-							<div *ngIf="client_available && projectDataLoaded">
-								<app-resource-overview [ressourceUsage]="selectedProjectRessources"> </app-resource-overview>
-								<div
-									class="alert alert-warning"
-									*ngIf="
+                <div class="card-body">
+                    <form id="application_form" #f="ngForm" class="form-horizontal">
+                        <div
+                                class="form-group row col-md-12 justify-content-center"
+                                *ngIf="!singleProject"
+                                style="padding-right: 3rem; padding-left: 3rem"
+                        >
+                            <div class="col-md-8">
+                                <label for="projectSelect"><strong>Please select a project</strong></label>
+                                <select
+                                        required
+                                        class="form-control form-select"
+                                        name="projectSelect"
+                                        *ngIf="!singleProject"
+                                        [(ngModel)]="selectedProject"
+                                        id="projectSelect"
+                                        data-test-id="project_selection_dropdown"
+                                        (ngModelChange)="getSelectedProjectClient(); resetChecks()"
+                                >
+                                    <option value="undefined" disabled selected hidden>Please Select</option>
+                                    <option
+                                            *ngFor="let project of projects"
+                                            [ngValue]="project"
+                                            id="id_option_{{ project[0] }}"
+                                            [attr.data-test-id]="'project_option_' + project[0]"
+                                            label="{{ project[0] }}"
+                                    >
+                                        {{ project[0] }}
+                                    </option>
+                                </select>
+                                <label *ngIf="singleProject"
+                                ><strong>{{ selectedProject[0] }}</strong></label
+                                >
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <span *ngIf="client_available && !projectDataLoaded"
+                                  class="spinner-border text-info"></span>
+                        </div>
+                        <div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
+                            <div *ngIf="client_available && projectDataLoaded">
+                                <app-resource-overview
+                                        [ressourceUsage]="selectedProjectRessources"></app-resource-overview>
+                                <div
+                                        class="alert alert-warning"
+                                        *ngIf="
 										selectedProject &&
 										((selectedProjectRessources | noVMsPipe) ||
 											(selectedProjectRessources | noRamPipe) ||
@@ -93,145 +96,155 @@
 										client_available &&
 										client_checked
 									"
-								>
-									The following limit/limits has/have been reached:
-									<div *ngIf="selectedProjectRessources | noVMsPipe">- Amount of VMs</div>
-									<div *ngIf="selectedProjectRessources | noCoresPipe">- Amount of cores</div>
-									<div *ngIf="selectedProjectRessources | noRamPipe">- Amount of RAM</div>
-									<br />
-									An admin of your project can request more resources if necessary.
-								</div>
+                                >
+                                    The following limit/limits has/have been reached:
+                                    <div *ngIf="selectedProjectRessources | noVMsPipe">- Amount of VMs</div>
+                                    <div *ngIf="selectedProjectRessources | noCoresPipe">- Amount of cores</div>
+                                    <div *ngIf="selectedProjectRessources | noRamPipe">- Amount of RAM</div>
+                                    <br/>
+                                    An admin of your project can request more resources if necessary.
+                                </div>
+                                <div class="d-flex align-items-center"
+                                     *ngIf="!initial_loaded">
 
-								<div
-									*ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms"
-									class="form-group row col"
-									style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px; margin-top: 25px"
-								>
-									<div class="col">
-										<label for="id_instance_name">Please choose a name<br /> </label>
-										<div class="input-group">
-											<input
-												required
-												id="id_instance_name"
-												name="instance_name"
-												class="form-control"
-												type="text"
-												placeholder="Instance name"
-												[(ngModel)]="vm_name"
-												pattern="[a-zA-Z0-9]+"
-												data-test-id="instance_name_input_field"
-												[ngClass]="{
+                                    <div class="spinner-border m-sm-auto text-info" role="status"></div>
+                                </div>
+                                <ng-container *ngIf="initial_loaded">
+                                    <div
+                                            *ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms"
+                                            class="form-group row col"
+                                            style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px; margin-top: 25px"
+                                    >
+                                        <div class="col">
+                                            <label for="id_instance_name">Please choose a name<br/> </label>
+                                            <div class="input-group">
+                                                <input
+                                                        required
+                                                        id="id_instance_name"
+                                                        name="instance_name"
+                                                        class="form-control"
+                                                        type="text"
+                                                        placeholder="Instance name"
+                                                        [(ngModel)]="vm_name"
+                                                        pattern="[a-zA-Z0-9]+"
+                                                        data-test-id="instance_name_input_field"
+                                                        [ngClass]="{
 													'is-invalid':
 														f.controls.instance_name?.invalid &&
 														(f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
 													'is-valid': f.controls.instance_name?.valid
 												}"
-											/>
-											<div class="input-group-append">
-												<button class="btn btn-outline-primary" (click)="generateRandomName()">
-													Generate a random name for me
-												</button>
-											</div>
-										</div>
-										<div
-											class="alert alert-danger"
-											style="margin-top: 5px; margin-bottom: 5px"
-											*ngIf="
+                                                />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary"
+                                                            (click)="generateRandomName()">
+                                                        Generate a random name for me
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div
+                                                    class="alert alert-danger"
+                                                    style="margin-top: 5px; margin-bottom: 5px"
+                                                    *ngIf="
 												f.controls.instance_name?.errors &&
 												(f.controls.instance_name?.dirty || f.controls.instance_name?.touched)
 											"
-										>
-											Allowed characters are upper and lower case letters (a-z A-Z) and arabic numbers (0-9).
-										</div>
-									</div>
-								</div>
+                                            >
+                                                Allowed characters are upper and lower case letters (a-z A-Z) and arabic
+                                                numbers (0-9).
+                                            </div>
+                                        </div>
+                                    </div>
 
-								<div
-									*ngIf="
+                                    <div
+                                            *ngIf="
 										selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 										(flavors?.length > 0 || selectedFlavor)
 									"
-								>
-									<div
-										*ngIf="selectedProject"
-										class="form-group row col-md-12"
-										style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-									>
-										<div class="col">
-											<app-flavor-detail
-												*ngIf="userinfo_loaded && flavors_loaded"
-												[selectedFlavor]="selectedFlavor"
-												id="id_flavor_detail"
-												[flavors]="flavors"
-												[creditsAllowed]="credits_allowed"
-												(selectedFlavorChange)="setSelectedFlavor($event)"
-												(reloadFlavors)="reloadFlavors()"
-											>
-											</app-flavor-detail>
-											<div class="d-flex align-items-center" *ngIf="userinfo_loaded && !flavors_loaded">
-												<strong>Loading flavors ...</strong>
-												<div class="spinner-border m-sm-auto" role="status"></div>
-											</div>
-										</div>
-									</div>
-									<div class="row col-md-12" *ngIf="selectedFlavor?.ephemeral_disk > 0">
-										<div class="col-md-2"></div>
-										<div class="col-md-10 alert alert-primary">
-											<strong>Information for ephemeral flavors:</strong>
-											Ephemeral storage is not best suited for persistent data. Read more
-											<a href="{{ WIKI_EPHEMERAL_LINK }}" target="_blank" rel="noopener noreferrer">here</a>.
-										</div>
-									</div>
+                                    >
+                                        <div
+                                                *ngIf="selectedProject"
+                                                class="form-group row col-md-12"
+                                                style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+                                        >
+                                            <div class="col">
+                                                <app-flavor-detail
+                                                        *ngIf="userinfo_loaded && flavors_loaded"
+                                                        [selectedFlavor]="selectedFlavor"
+                                                        id="id_flavor_detail"
+                                                        [flavors]="flavors"
+                                                        [creditsAllowed]="credits_allowed"
+                                                        (selectedFlavorChange)="setSelectedFlavor($event)"
+                                                        (reloadFlavors)="reloadFlavors()"
+                                                >
+                                                </app-flavor-detail>
+                                                <div class="d-flex align-items-center"
+                                                     *ngIf="userinfo_loaded && !flavors_loaded">
+                                                    <strong>Loading flavors ...</strong>
+                                                    <div class="spinner-border m-sm-auto" role="status"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row col-md-12" *ngIf="selectedFlavor?.ephemeral_disk > 0">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-10 alert alert-primary">
+                                                <strong>Information for ephemeral flavors:</strong>
+                                                Ephemeral storage is not best suited for persistent data. Read more
+                                                <a href="{{ WIKI_EPHEMERAL_LINK }}" target="_blank"
+                                                   rel="noopener noreferrer">here</a>.
+                                            </div>
+                                        </div>
 
-									<div
-										*ngIf="selectedProject"
-										class="form-group row col-md-12"
-										style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px"
-									>
-										<div class="col" *ngIf="image_loaded">
-											<app-image-detail
-												*ngIf="images?.length > 0"
-												[selectedImage]="selectedImage"
-												[images]="images"
-												[selectedFlavor]="selectedFlavor"
-												(selectedImageChange)="setSelectedImage($event)"
-												id="id_image_detail"
-											></app-image-detail>
-											<div class="alert alert-info" *ngIf="images.length === 0">
-												There are no images available at the moment.
-											</div>
-										</div>
-										<div *ngIf="!image_loaded">
-											<strong>Loading images ...</strong>
-											<div class="spinner-border m-sm-auto" role="status"></div>
-										</div>
-									</div>
-								</div>
+                                        <div
+                                                *ngIf="selectedProject"
+                                                class="form-group row col-md-12"
+                                                style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px"
+                                        >
+                                            <div class="col" *ngIf="image_loaded">
+                                                <app-image-detail
+                                                        *ngIf="images?.length > 0"
+                                                        [selectedImage]="selectedImage"
+                                                        [images]="images"
+                                                        [selectedFlavor]="selectedFlavor"
+                                                        (selectedImageChange)="setSelectedImage($event)"
+                                                        id="id_image_detail"
+                                                ></app-image-detail>
+                                                <div class="alert alert-info" *ngIf="images.length === 0">
+                                                    There are no images available at the moment.
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!image_loaded">
+                                                <strong>Loading images ...</strong>
+                                                <div class="spinner-border m-sm-auto" role="status"></div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-								<div
-									id="volumeDiv"
-									class="form-group row col-md-12"
-									style="margin-bottom: 25px; padding-left: 3rem; padding-right: 3rem"
-									*ngIf="
+                                    <div
+                                            id="volumeDiv"
+                                            class="form-group row col-md-12"
+                                            style="margin-bottom: 25px; padding-left: 3rem; padding-right: 3rem"
+                                            *ngIf="
 										selectedProject &&
 										selectedProject[1] !== FREEMIUM_ID &&
 										selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 										(flavors.length !== 0 || selectedFlavor)
 									"
-								>
-									<!-- Buttons Row -->
-									<div class="col">
-										<div class="card border-left-0 border-right-0 border-bottom-0 rounded-0 border-light">
-											<div class="card-header" style="text-align: center">
-												<strong>Volumes</strong><br />
-												<span class="text-muted"
-													>Volumes offer more space for your data, comparable to an external harddrive. You may create
+                                    >
+                                        <!-- Buttons Row -->
+                                        <div class="col">
+                                            <div class="card border-left-0 border-right-0 border-bottom-0 rounded-0 border-light">
+                                                <div class="card-header" style="text-align: center">
+                                                    <strong>Volumes</strong><br/>
+                                                    <span class="text-muted"
+                                                    >Volumes offer more space for your data, comparable to an external harddrive. You may create
 													new volumes or attach existing ones.</span
-												>
-												<ul class="nav nav-tabs card-header-tabs" style="overflow: hidden" role="tablist">
-													<li class="nav-item" style="cursor: pointer">
-														<a
-															[ngClass]="{
+                                                    >
+                                                    <ul class="nav nav-tabs card-header-tabs" style="overflow: hidden"
+                                                        role="tablist">
+                                                        <li class="nav-item" style="cursor: pointer">
+                                                            <a
+                                                                    [ngClass]="{
 																active: showAddVol,
 																disabled:
 																	selectedProjectRessources.used_volumes + volumesToMount?.length >=
@@ -239,92 +252,97 @@
 																	selectedProjectRessources.used_volume_storage + getStorageInList() >=
 																		selectedProjectRessources.max_volume_storage
 															}"
-															id="openAddVolumeFormButton"
-															data-test-id="add_new_volume_tab"
-															(click)="toggleShowAddVol()"
-															class="nav-link"
-															>New Volume <span class="fa fa-plus-circle"></span
-														></a>
-													</li>
-													<li class="nav-item" style="cursor: pointer">
-														<a
-															[ngClass]="{ active: showAttachVol, disabled: detached_project_volumes?.length < 1 }"
-															id="openAttachVolumeFormButton"
-															(click)="toggleShowAttachVol()"
-															class="nav-link"
-															>Attach existing Volume <span class="fa fa-plus-circle"></span
-														></a>
-													</li>
-												</ul>
-											</div>
-											<div class="card-body">
-												<!-- Error messages -->
-												<div
-													class="row col"
-													*ngIf="
+                                                                    id="openAddVolumeFormButton"
+                                                                    data-test-id="add_new_volume_tab"
+                                                                    (click)="toggleShowAddVol()"
+                                                                    class="nav-link"
+                                                            >New Volume <span class="fa fa-plus-circle"></span
+                                                            ></a>
+                                                        </li>
+                                                        <li class="nav-item" style="cursor: pointer">
+                                                            <a
+                                                                    [ngClass]="{ active: showAttachVol, disabled: detached_project_volumes?.length < 1 }"
+                                                                    id="openAttachVolumeFormButton"
+                                                                    (click)="toggleShowAttachVol()"
+                                                                    class="nav-link"
+                                                            >Attach existing Volume <span
+                                                                    class="fa fa-plus-circle"></span
+                                                            ></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="card-body">
+                                                    <!-- Error messages -->
+                                                    <div
+                                                            class="row col"
+                                                            *ngIf="
 														this.selectedProjectRessources.used_volumes + this.volumesToMount?.length >=
 														this.selectedProjectRessources.volume_counter
 													"
-												>
-													<div class="col">
-														<div class="alert alert-primary">
-															You can't create a new volume, because you have reached the maximum number of volumes
-															available for this project.
-														</div>
-													</div>
-												</div>
-												<div
-													class="row col"
-													*ngIf="
+                                                    >
+                                                        <div class="col">
+                                                            <div class="alert alert-primary">
+                                                                You can't create a new volume, because you have reached
+                                                                the maximum number of volumes
+                                                                available for this project.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                            class="row col"
+                                                            *ngIf="
 														this.selectedProjectRessources.used_volume_storage + getStorageInList() >=
 														this.selectedProjectRessources.max_volume_storage
 													"
-												>
-													<div class="col">
-														<div class="alert alert-primary">
-															You can't create a new volume, because you have reached the maximum amount of storage (in
-															GB) available for this project.
-														</div>
-													</div>
-												</div>
-												<!-- New/Attach volume -->
-												<div class="form-group row col-md-12">
-													<div class="col">
-														<div id="addVolumeDiv" *ngIf="showAddVol">
-															<div class="form-group row">
-																<div class="col-md-2"><strong>Name</strong></div>
-																<div class="col-md-10" style="width: 100%">
-																	<input
-																		type="text"
-																		placeholder="Enter a name here..."
-																		id="volume_name"
-																		class="form-control"
-																		name="volume_name"
-																		data-test-id="new_volume_name_input"
-																		[(ngModel)]="volumeName"
-																		[ngClass]="{
+                                                    >
+                                                        <div class="col">
+                                                            <div class="alert alert-primary">
+                                                                You can't create a new volume, because you have reached
+                                                                the maximum amount of storage (in
+                                                                GB) available for this project.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- New/Attach volume -->
+                                                    <div class="form-group row col-md-12">
+                                                        <div class="col">
+                                                            <div id="addVolumeDiv" *ngIf="showAddVol">
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2"><strong>Name</strong></div>
+                                                                    <div class="col-md-10" style="width: 100%">
+                                                                        <input
+                                                                                type="text"
+                                                                                placeholder="Enter a name here..."
+                                                                                id="volume_name"
+                                                                                class="form-control"
+                                                                                name="volume_name"
+                                                                                data-test-id="new_volume_name_input"
+                                                                                [(ngModel)]="volumeName"
+                                                                                [ngClass]="{
 																			'is-invalid': !this.checkInputVolumeString(volumeName),
 																			'is-valid': this.checkInputVolumeString(volumeName)
 																		}"
-																		style="width: 100%"
-																	/>
-																</div>
-															</div>
-															<div class="form-group row">
-																<div class="col-md-2"><strong>Mountpath</strong></div>
-																<div class="input-group col-md-10">
-																	<div class="input-group-prepend">
-																		<span class="input-group-text" id="basic-addon3">/vol/</span>
-																	</div>
-																	<input
-																		type="text"
-																		placeholder="path"
-																		id="volume_mount_path"
-																		class="form-control"
-																		name="volume_mount_path"
-																		data-test-id="new_volume_mount_path_input"
-																		[(ngModel)]="volumeMountPath"
-																		[ngClass]="{
+                                                                                style="width: 100%"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2"><strong>Mountpath</strong>
+                                                                    </div>
+                                                                    <div class="input-group col-md-10">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text"
+                                                                                  id="basic-addon3">/vol/</span>
+                                                                        </div>
+                                                                        <input
+                                                                                type="text"
+                                                                                placeholder="path"
+                                                                                id="volume_mount_path"
+                                                                                class="form-control"
+                                                                                name="volume_mount_path"
+                                                                                data-test-id="new_volume_mount_path_input"
+                                                                                [(ngModel)]="volumeMountPath"
+                                                                                [ngClass]="{
 																			'is-invalid':
 																				!this.checkInputVolumeString(volumeMountPath) ||
 																				!this.checkIfMountPathIsUsable(volumeMountPath),
@@ -332,34 +350,35 @@
 																				this.checkInputVolumeString(volumeMountPath) &&
 																				this.checkIfMountPathIsUsable(volumeMountPath)
 																		}"
-																	/>
-																</div>
-															</div>
-															<div class="form-group row">
-																<div class="col-md-2"><strong>Storage</strong></div>
-																<div class="input-group col-md-10" style="width: 100%">
-																	<input
-																		min="0"
-																		step="1"
-																		[(ngModel)]="volumeStorage"
-																		data-test-id="new_volume_storage_input"
-																		style="height: auto"
-																		id="volume_space"
-																		name="vm_volume_storage"
-																		class="form-control"
-																		type="number"
-																		[max]="
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2"><strong>Storage</strong></div>
+                                                                    <div class="input-group col-md-10"
+                                                                         style="width: 100%">
+                                                                        <input
+                                                                                min="0"
+                                                                                step="1"
+                                                                                [(ngModel)]="volumeStorage"
+                                                                                data-test-id="new_volume_storage_input"
+                                                                                style="height: auto"
+                                                                                id="volume_space"
+                                                                                name="vm_volume_storage"
+                                                                                class="form-control"
+                                                                                type="number"
+                                                                                [max]="
 																			selectedProjectRessources.max_volume_storage -
 																			selectedProjectRessources.used_volume_storage
 																		"
-																		placeholder="e.g 8"
-																		appMinAmount="0"
-																		appMaxAmount="{{
+                                                                                placeholder="e.g 8"
+                                                                                appMinAmount="0"
+                                                                                appMaxAmount="{{
 																			selectedProjectRessources.max_volume_storage -
 																				selectedProjectRessources.used_volume_storage
 																		}}"
-																		appInteger
-																		[ngClass]="{
+                                                                                appInteger
+                                                                                [ngClass]="{
 																			'is-invalid':
 																				!this.checkStorageNumber() &&
 																				(f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched),
@@ -367,438 +386,483 @@
 																				this.checkStorageNumber() &&
 																				(f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched)
 																		}"
-																	/>
-																	<div class="input-group-append" style="height: auto">
+                                                                        />
+                                                                        <div class="input-group-append"
+                                                                             style="height: auto">
 																		<span class="input-group-text">
 																			GB (max
-																			{{
-																				selectedProjectRessources.max_volume_storage -
-																					(this.selectedProjectRessources.used_volume_storage + this.getStorageInList())
-																			}}
-																			)
+                                                                            {{
+                                                                            selectedProjectRessources.max_volume_storage -
+                                                                            (this.selectedProjectRessources.used_volume_storage + this.getStorageInList())
+                                                                            }}
+                                                                            )
 																		</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<ng-container *ngIf="showAttachVol">
-															<select
-																style="margin-bottom: 5px; margin-top: 5px"
-																class="form-control form-select"
-																name="selected_detached_vol_select"
-																[(ngModel)]="selected_detached_vol"
-																id="selected_detached_vol_select"
-															>
-																<option [ngValue]="undefined_detached_vol" disabled selected>
-																	Please select a volume
-																</option>
-																<option
-																	*ngFor="let vol of detached_project_volumes"
-																	[ngValue]="vol"
-																	id="id_option_{{ vol.volume_name }}"
-																	(click)="selected_detached_vol = vol"
-																>
-																	{{ vol.volume_name }} ({{ vol.volume_storage }} GB)
-																</option>
-															</select>
-															<div
-																class="rTableRow"
-																*ngIf="selected_detached_vol && selected_detached_vol !== undefined_detached_vol"
-															>
-																<div class="rTableCellNoBorder col-2">
-																	{{ selected_detached_vol.volume_name }}
-																</div>
-																<div class="rTableCellNoBorder col">
-																	<div class="input-group">
-																		<div class="input-group-prepend">
-																			<span class="input-group-text">/vol/</span>
-																		</div>
-																		<input
-																			type="text"
-																			placeholder="path"
-																			id="volume_attach_mount_path"
-																			class="form-control"
-																			name="volume_mount_path"
-																			[(ngModel)]="selected_detached_vol.volume_path"
-																			[ngClass]="{
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <ng-container *ngIf="showAttachVol">
+                                                                <select
+                                                                        style="margin-bottom: 5px; margin-top: 5px"
+                                                                        class="form-control form-select"
+                                                                        name="selected_detached_vol_select"
+                                                                        [(ngModel)]="selected_detached_vol"
+                                                                        id="selected_detached_vol_select"
+                                                                >
+                                                                    <option [ngValue]="undefined_detached_vol" disabled
+                                                                            selected>
+                                                                        Please select a volume
+                                                                    </option>
+                                                                    <option
+                                                                            *ngFor="let vol of detached_project_volumes"
+                                                                            [ngValue]="vol"
+                                                                            id="id_option_{{ vol.volume_name }}"
+                                                                            (click)="selected_detached_vol = vol"
+                                                                    >
+                                                                        {{ vol.volume_name }} ({{ vol.volume_storage }}
+                                                                        GB)
+                                                                    </option>
+                                                                </select>
+                                                                <div
+                                                                        class="rTableRow"
+                                                                        *ngIf="selected_detached_vol && selected_detached_vol !== undefined_detached_vol"
+                                                                >
+                                                                    <div class="rTableCellNoBorder col-2">
+                                                                        {{ selected_detached_vol.volume_name }}
+                                                                    </div>
+                                                                    <div class="rTableCellNoBorder col">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text">/vol/</span>
+                                                                            </div>
+                                                                            <input
+                                                                                    type="text"
+                                                                                    placeholder="path"
+                                                                                    id="volume_attach_mount_path"
+                                                                                    class="form-control"
+                                                                                    name="volume_mount_path"
+                                                                                    [(ngModel)]="selected_detached_vol.volume_path"
+                                                                                    [ngClass]="{
 																				'is-invalid': !this.checkIfMountPathIsUsable(selected_detached_vol.volume_path),
 																				'is-valid': this.checkIfMountPathIsUsable(selected_detached_vol.volume_path)
 																			}"
-																		/>
-																	</div>
-																</div>
-																<div class="rTableCellNoBorder col-2">
-																	{{ selected_detached_vol.volume_storage }} GB
-																</div>
-																<div class="rTableCellNoBorder col-2">
-																	<button
-																		class="btn btn-success"
-																		(click)="addAttachVolume(selected_detached_vol)"
-																		[disabled]="!this.checkIfMountPathIsUsable(selected_detached_vol.volume_path)"
-																	>
-																		Add
-																		<span class="fa fa-plus"></span>
-																	</button>
-																</div>
-															</div>
-														</ng-container>
-													</div>
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="rTableCellNoBorder col-2">
+                                                                        {{ selected_detached_vol.volume_storage }} GB
+                                                                    </div>
+                                                                    <div class="rTableCellNoBorder col-2">
+                                                                        <button
+                                                                                class="btn btn-success"
+                                                                                (click)="addAttachVolume(selected_detached_vol)"
+                                                                                [disabled]="!this.checkIfMountPathIsUsable(selected_detached_vol.volume_path)"
+                                                                        >
+                                                                            Add
+                                                                            <span class="fa fa-plus"></span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                        </div>
 
-													<div class="form-group col-md-12 row" *ngIf="showAddVol || showAttachVol">
-														<div class="btn-toolbar col" role="group" *ngIf="showAddVol">
-															<button class="btn btn-danger col-md-4" (click)="toggleShowAddVol()" type="button">
-																Discard <span class="fa fa-times"></span>
-															</button>
-															<button
-																*ngIf="showAddVol"
-																class="btn btn-success col-md-4"
-																(click)="this.addVolumeToList(); toggleShowAddVol()"
-																[disabled]="!checkVolumeValidity()"
-																id="addVolumeConfirmationButton"
-																data-test-id="add_volume_confirmation_button"
-																type="button"
-															>
-																Add Volume <span class="fa fa-check"></span>
-															</button>
-														</div>
-														<div class="col" role="group" *ngIf="showAttachVol">
-															<button class="btn btn-danger col-md-4" (click)="toggleShowAttachVol()" type="button">
-																Close selection <span class="fa fa-times"></span>
-															</button>
-														</div>
-													</div>
-												</div>
-												<!-- Volume list to mount/attach/create -->
-												<div class="row col-md-12" *ngIf="volumesToMount?.length > 0 || volumesToAttach?.length > 0">
-													<div class="col-md-2"><strong>Volumes to mount</strong></div>
-													<div class="col-md-10">
-														<div
-															class="rTableRow"
-															[hidden]="
+                                                        <div class="form-group col-md-12 row"
+                                                             *ngIf="showAddVol || showAttachVol">
+                                                            <div class="btn-toolbar col" role="group"
+                                                                 *ngIf="showAddVol">
+                                                                <button class="btn btn-danger col-md-4"
+                                                                        (click)="toggleShowAddVol()" type="button">
+                                                                    Discard <span class="fa fa-times"></span>
+                                                                </button>
+                                                                <button
+                                                                        *ngIf="showAddVol"
+                                                                        class="btn btn-success col-md-4"
+                                                                        (click)="this.addVolumeToList(); toggleShowAddVol()"
+                                                                        [disabled]="!checkVolumeValidity()"
+                                                                        id="addVolumeConfirmationButton"
+                                                                        data-test-id="add_volume_confirmation_button"
+                                                                        type="button"
+                                                                >
+                                                                    Add Volume <span class="fa fa-check"></span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="col" role="group" *ngIf="showAttachVol">
+                                                                <button class="btn btn-danger col-md-4"
+                                                                        (click)="toggleShowAttachVol()" type="button">
+                                                                    Close selection <span class="fa fa-times"></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Volume list to mount/attach/create -->
+                                                    <div class="row col-md-12"
+                                                         *ngIf="volumesToMount?.length > 0 || volumesToAttach?.length > 0">
+                                                        <div class="col-md-2"><strong>Volumes to mount</strong></div>
+                                                        <div class="col-md-10">
+                                                            <div
+                                                                    class="rTableRow"
+                                                                    [hidden]="
 																!(volumesToMount?.length > 0 || volumesToAttach?.length > 0 || selected_detached_vol)
 															"
-														>
-															<div class="rTableHeadNoBorder col-md-3"><strong>Name</strong></div>
-															<div class="rTableHeadNoBorder col-md-4"><strong>Mountpath</strong></div>
-															<div class="rTableHeadNoBorder col-md-2"><strong>Storage</strong></div>
-															<div class="rTableHeadNoBorder col-md-1"></div>
-														</div>
-														<ng-container *ngFor="let vol of volumesToMount">
-															<div class="rTableRow">
-																<div class="rTableCellNoBorder">{{ vol.volume_name }} (New)</div>
-																<div class="rTableCellNoBorder">/vol/{{ vol.volume_path }}</div>
-																<div class="rTableCellNoBorder">{{ vol.volume_storage }} GB</div>
-																<div class="rTableCellNoBorder">
-																	<button class="btn btn-danger" (click)="removeVolFromList(vol)">
-																		Remove
-																		<span class="fa fa-trash"></span>
-																	</button>
-																</div>
-															</div>
-														</ng-container>
-														<ng-container *ngFor="let vol of volumesToAttach">
-															<div class="rTableRow">
-																<div class="rTableCellNoBorder">{{ vol.volume_name }} (Existing)</div>
-																<div class="rTableCellNoBorder">/vol/{{ vol.volume_path }}</div>
-																<div class="rTableCellNoBorder">{{ vol.volume_storage }} GB</div>
-																<div class="rTableCellNoBorder">
-																	<button class="btn btn-danger" (click)="removeAttachVolume(vol)">
-																		Remove
-																		<span class="fa fa-trash"></span>
-																	</button>
-																</div>
-															</div>
-														</ng-container>
-														<!--                    <ng-container *ngIf="detached_project_volumes.length < DETACHED_VOL_SWITCH_MAX">-->
-														<!--                      <ng-container *ngFor="let vol of detached_project_volumes">-->
-														<!--                        <div class="rTableRow" *ngIf="!showAttachVol">-->
-														<!--                          <div class="rTableCellNoBorder">-->
-														<!--                            {{vol.volume_name}}-->
+                                                            >
+                                                                <div class="rTableHeadNoBorder col-md-3">
+                                                                    <strong>Name</strong></div>
+                                                                <div class="rTableHeadNoBorder col-md-4"><strong>Mountpath</strong>
+                                                                </div>
+                                                                <div class="rTableHeadNoBorder col-md-2">
+                                                                    <strong>Storage</strong></div>
+                                                                <div class="rTableHeadNoBorder col-md-1"></div>
+                                                            </div>
+                                                            <ng-container *ngFor="let vol of volumesToMount">
+                                                                <div class="rTableRow">
+                                                                    <div class="rTableCellNoBorder">{{ vol.volume_name }}
+                                                                        (New)
+                                                                    </div>
+                                                                    <div class="rTableCellNoBorder">
+                                                                        /vol/{{ vol.volume_path }}</div>
+                                                                    <div class="rTableCellNoBorder">{{ vol.volume_storage }}
+                                                                        GB
+                                                                    </div>
+                                                                    <div class="rTableCellNoBorder">
+                                                                        <button class="btn btn-danger"
+                                                                                (click)="removeVolFromList(vol)">
+                                                                            Remove
+                                                                            <span class="fa fa-trash"></span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                            <ng-container *ngFor="let vol of volumesToAttach">
+                                                                <div class="rTableRow">
+                                                                    <div class="rTableCellNoBorder">{{ vol.volume_name }}
+                                                                        (Existing)
+                                                                    </div>
+                                                                    <div class="rTableCellNoBorder">
+                                                                        /vol/{{ vol.volume_path }}</div>
+                                                                    <div class="rTableCellNoBorder">{{ vol.volume_storage }}
+                                                                        GB
+                                                                    </div>
+                                                                    <div class="rTableCellNoBorder">
+                                                                        <button class="btn btn-danger"
+                                                                                (click)="removeAttachVolume(vol)">
+                                                                            Remove
+                                                                            <span class="fa fa-trash"></span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                            <!--                    <ng-container *ngIf="detached_project_volumes.length < DETACHED_VOL_SWITCH_MAX">-->
+                                                            <!--                      <ng-container *ngFor="let vol of detached_project_volumes">-->
+                                                            <!--                        <div class="rTableRow" *ngIf="!showAttachVol">-->
+                                                            <!--                          <div class="rTableCellNoBorder">-->
+                                                            <!--                            {{vol.volume_name}}-->
 
-														<!--                          </div>-->
-														<!--                          <div class="rTableCellNoBorder">-->
-														<!--                            <div class="input-group">-->
+                                                            <!--                          </div>-->
+                                                            <!--                          <div class="rTableCellNoBorder">-->
+                                                            <!--                            <div class="input-group">-->
 
-														<!--                              <div class="input-group-prepend">-->
-														<!--                                <span class="input-group-text">/vol/</span>-->
-														<!--                              </div>-->
-														<!--                              <input type="text" placeholder="volume."-->
-														<!--                                     id="volume_attach_mount_path" class="form-control" name="volume_mount_path"-->
-														<!--                                     [(ngModel)]="vol.volume_path"-->
-														<!--                                     [ngClass]="{'is-invalid': !this.checkIfMountPathIsUsable(vol.volume_path),-->
-														<!--                             'is-valid':this.checkIfMountPathIsUsable(vol.volume_path)}">-->
+                                                            <!--                              <div class="input-group-prepend">-->
+                                                            <!--                                <span class="input-group-text">/vol/</span>-->
+                                                            <!--                              </div>-->
+                                                            <!--                              <input type="text" placeholder="volume."-->
+                                                            <!--                                     id="volume_attach_mount_path" class="form-control" name="volume_mount_path"-->
+                                                            <!--                                     [(ngModel)]="vol.volume_path"-->
+                                                            <!--                                     [ngClass]="{'is-invalid': !this.checkIfMountPathIsUsable(vol.volume_path),-->
+                                                            <!--                             'is-valid':this.checkIfMountPathIsUsable(vol.volume_path)}">-->
 
-														<!--                            </div>-->
-														<!--                          </div>-->
-														<!--                          <div class="rTableCellNoBorder">{{vol.volume_storage}}-->
+                                                            <!--                            </div>-->
+                                                            <!--                          </div>-->
+                                                            <!--                          <div class="rTableCellNoBorder">{{vol.volume_storage}}-->
 
-														<!--                          </div>-->
-														<!--                          <div class="rTableCellNoBorder">-->
-														<!--                            <button class="btn btn-success" (click)="addAttachVolume(vol)"-->
-														<!--                                    [disabled]="!this.checkIfMountPathIsUsable(vol.volume_path)"-->
-														<!--                            >Add-->
-														<!--                              <span class="fa fa-plus"></span>-->
-														<!--                            </button>-->
+                                                            <!--                          </div>-->
+                                                            <!--                          <div class="rTableCellNoBorder">-->
+                                                            <!--                            <button class="btn btn-success" (click)="addAttachVolume(vol)"-->
+                                                            <!--                                    [disabled]="!this.checkIfMountPathIsUsable(vol.volume_path)"-->
+                                                            <!--                            >Add-->
+                                                            <!--                              <span class="fa fa-plus"></span>-->
+                                                            <!--                            </button>-->
 
-														<!--                          </div>-->
+                                                            <!--                          </div>-->
 
-														<!--                        </div>-->
-														<!--                      </ng-container>-->
-														<!--                    </ng-container>-->
-													</div>
-													<div class="form-group col-md-12 row">
-														<div class="col-md-2"></div>
-														<div class="col-md-10">
-															<div
-																class="alert alert-warning col"
-																role="alert"
-																*ngIf="volumesToMount?.length > 0 || volumesToAttach?.length > 0"
-															>
-																In a few cases the automatic mounting might not work, then the volume must be
-																<a href="{{ WIKI_VOLUME_OVERVIEW }}"> mounted</a> manually!
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+                                                            <!--                        </div>-->
+                                                            <!--                      </ng-container>-->
+                                                            <!--                    </ng-container>-->
+                                                        </div>
+                                                        <div class="form-group col-md-12 row">
+                                                            <div class="col-md-2"></div>
+                                                            <div class="col-md-10">
+                                                                <div
+                                                                        class="alert alert-warning col"
+                                                                        role="alert"
+                                                                        *ngIf="volumesToMount?.length > 0 || volumesToAttach?.length > 0"
+                                                                >
+                                                                    In a few cases the automatic mounting might not
+                                                                    work, then the volume must be
+                                                                    <a href="{{ WIKI_VOLUME_OVERVIEW }}"> mounted</a>
+                                                                    manually!
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-								<accordion class="col-md-12">
-									<accordion-group
-										#autoGroup
-										*ngIf="
+                                    <accordion class="col-md-12">
+                                        <accordion-group
+                                            #autoGroup
+                                            *ngIf="
 											selectedProject &&
 											projectDataLoaded &&
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 											(flavors.length !== 0 || selectedFlavor)
 										"
-									>
-										<div accordion-heading style="width: 100%; cursor: pointer">
-											<strong>Tools </strong> powered by
-											<img src="{{ conda_img_path }}" alt="Conda® " style="height: 12px; width: auto" /><span
-												class="badge bg-primary"
-												style="margin-left: 5px"
-												>BETA</span
-											>
-											<i
-												class="pull-right float-right"
-												style="font-size: 25px"
-												[ngClass]="{
+                                        >
+                                            <div accordion-heading style="width: 100%; cursor: pointer">
+                                                <strong>Tools </strong> powered by
+                                                <img src="{{ conda_img_path }}" alt="Conda® "
+                                                     style="height: 12px; width: auto"/><span
+                                                    class="badge bg-primary"
+                                                    style="margin-left: 5px"
+                                            >BETA</span
+                                            >
+                                                <i
+                                                        class="pull-right float-right"
+                                                        style="font-size: 25px"
+                                                        [ngClass]="{
 													'icon-arrow-up': autoGroup.isOpen,
 													'icon-arrow-down': !autoGroup.isOpen
 												}"
-											></i>
-										</div>
+                                                ></i>
+                                            </div>
 
-										<div class="alert alert-primary role alert" style="max-width: 100%; margin: 20px 25px">
-											<p>
-												Please be aware that all Bioconda tools and packages are provided by third parties. de.NBI Cloud
-												is not responsible for the functionality of the packages provided. In case of problems during
-												installation or use, please contact the developers of the respective packages.
-											</p>
-										</div>
+                                            <div class="alert alert-primary role alert"
+                                                 style="max-width: 100%; margin: 20px 25px">
+                                                <p>
+                                                    Please be aware that all Bioconda tools and packages are provided by
+                                                    third parties. de.NBI Cloud
+                                                    is not responsible for the functionality of the packages provided.
+                                                    In case of problems during
+                                                    installation or use, please contact the developers of the respective
+                                                    packages.
+                                                </p>
+                                            </div>
 
-										<div class="col">
-											<app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
-										</div>
-									</accordion-group>
+                                            <div class="col">
+                                                <app-bioconda #bioconda
+                                                              (hasTools)="hasChosenTools($event)"></app-bioconda>
+                                            </div>
+                                        </accordion-group>
 
-									<accordion-group
-										#resEnvGroup
-										*ngIf="
+                                        <accordion-group
+                                            #resEnvGroup
+                                            *ngIf="
 											has_forc &&
 											selectedProject &&
 											projectDataLoaded &&
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 											(flavors?.length > 0 || selectedFlavor)
 										"
-										[isOpen]="resenvSelected"
-									>
-										<div accordion-heading data-test-id="resenv_accordion_heading" style="width: 100%; cursor: pointer">
-											<strong>Browser-based Research Environments</strong>
-											(e.g. RStudio, Apache Guacamole, Theia IDE)
-											<span class="badge bg-primary">BETA</span>
-											<i
-												class="pull-right float-right"
-												style="font-size: 25px"
-												[ngClass]="{
+                                            [isOpen]="resenvSelected"
+                                        >
+                                            <div accordion-heading data-test-id="resenv_accordion_heading"
+                                                 style="width: 100%; cursor: pointer">
+                                                <strong>Browser-based Research Environments</strong>
+                                                (e.g. RStudio, Apache Guacamole, Theia IDE)
+                                                <span class="badge bg-primary">BETA</span>
+                                                <i
+                                                        class="pull-right float-right"
+                                                        style="font-size: 25px"
+                                                        [ngClass]="{
 													'icon-arrow-up': resEnvGroup.isOpen,
 													'icon-arrow-down': !resEnvGroup.isOpen
 												}"
-											></i>
-										</div>
-										<app-res-env
-											*ngIf="selectedProject && projectDataLoaded && selectedFlavor"
-											#resEnv
-											[clientid]="client_id"
-											[forc_url]="forc_url"
-											[selectedImageTags]="selectedImage?.tags"
-											[blockedImageTagsResenv]="blockedImageTagsResenv"
-											[onlyNamespace]="resenvSelected"
-										></app-res-env>
-									</accordion-group>
-									<accordion-group
-										#userAccess
-										*ngIf="
+                                                ></i>
+                                            </div>
+                                            <app-res-env
+                                                    *ngIf="selectedProject && projectDataLoaded && selectedFlavor"
+                                                    #resEnv
+                                                    [clientid]="client_id"
+                                                    [forc_url]="forc_url"
+                                                    [selectedImageTags]="selectedImage?.tags"
+                                                    [blockedImageTagsResenv]="blockedImageTagsResenv"
+                                                    [onlyNamespace]="resenvSelected"
+                                            ></app-res-env>
+                                        </accordion-group>
+                                        <accordion-group
+                                            #userAccess
+                                            *ngIf="
 											selectedProject &&
 											projectDataLoaded &&
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 											(flavors?.length > 0 || selectedFlavor)
 										"
-									>
-										<div accordion-heading style="width: 100%; cursor: pointer">
-											<strong
-												>Grant access for specific project members of <em>{{ selectedProject[0] }}</em></strong
-											>
-											<i
-												class="pull-right float-right"
-												style="font-size: 25px"
-												[ngClass]="{
+                                        >
+                                            <div accordion-heading style="width: 100%; cursor: pointer">
+                                                <strong
+                                                >Grant access for specific project members of
+                                                    <em>{{ selectedProject[0] }}</em></strong
+                                                >
+                                                <i
+                                                        class="pull-right float-right"
+                                                        style="font-size: 25px"
+                                                        [ngClass]="{
 													'icon-arrow-up': userAccess.isOpen,
 													'icon-arrow-down': !userAccess.isOpen
 												}"
-											></i>
-										</div>
-										<app-project-user-list
-											[members_to_add]="members_to_add"
-											[user_member_id]="userinfo.MemberId"
-											[project_id]="selectedProject[1]"
-										></app-project-user-list>
-									</accordion-group>
+                                                ></i>
+                                            </div>
+                                            <app-project-user-list
+                                                    [members_to_add]="members_to_add"
+                                                    [user_member_id]="userinfo.MemberId"
+                                                    [project_id]="selectedProject[1]"
+                                            ></app-project-user-list>
+                                        </accordion-group>
 
-									<accordion-group
-										#optionalGroup
-										id="optional_accordion"
-										*ngIf="
+                                        <accordion-group
+                                            #optionalGroup
+                                            id="optional_accordion"
+                                            *ngIf="
 											selectedProject &&
 											selectedProject[1] !== FREEMIUM_ID &&
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 											(flavors.length !== 0 || selectedFlavor)
 										"
-									>
-										<div accordion-heading style="width: 100%; cursor: pointer">
-											<strong>Optional parameters</strong>
-											<i
-												class="pull-right float-right"
-												style="font-size: 25px"
-												[ngClass]="{
+                                        >
+                                            <div accordion-heading style="width: 100%; cursor: pointer">
+                                                <strong>Optional parameters</strong>
+                                                <i
+                                                        class="pull-right float-right"
+                                                        style="font-size: 25px"
+                                                        [ngClass]="{
 													'icon-arrow-up': optionalGroup.isOpen,
 													'icon-arrow-down': !optionalGroup.isOpen
 												}"
-											></i>
-										</div>
+                                                ></i>
+                                            </div>
 
-										<div
-											*ngIf="
+                                            <div
+                                                    *ngIf="
 												selectedProject &&
 												selectedProject[1] !== FREEMIUM_ID &&
 												selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
 											"
-											class="form-group row"
-										>
-											<label class="col-md-2 form-control-label">Working on the road</label>
-											<div class="col-md-4 form-check">
-												<input
-													type="checkbox"
-													class="form-check-input"
-													name="udp_allowed"
-													[disabled]="!mosh_mode_available"
-													[(ngModel)]="udp_allowed"
-												/>
-												<label class="form-check-label"
-													><strong>
-														<a href="{{ WIKI_MOSH_LINK }}" rel="noopener noreferrer" target="_blank">Open UDP ports</a>
-														<i
-															data-balloon="This selection is necessary for using MOSH.
+                                                    class="form-group row"
+                                            >
+                                                <label class="col-md-2 form-control-label">Working on the road</label>
+                                                <div class="col-md-4 form-check">
+                                                    <input
+                                                            type="checkbox"
+                                                            class="form-check-input"
+                                                            name="udp_allowed"
+                                                            [disabled]="!mosh_mode_available"
+                                                            [(ngModel)]="udp_allowed"
+                                                    />
+                                                    <label class="form-check-label"
+                                                    ><strong>
+                                                        <a href="{{ WIKI_MOSH_LINK }}" rel="noopener noreferrer"
+                                                           target="_blank">Open UDP ports</a>
+                                                        <i
+                                                                data-balloon="This selection is necessary for using MOSH.
                         UDP is better suited for unstable/switching connections, e.g. during train travel."
-															data-balloon-pos="down"
-															data-balloon-length="large"
-															><i
-																class="icon-question menu_links"
-																style="cursor: pointer; margin-left: 2px"
-															></i></i></strong
-												></label>
-											</div>
-											<div class="alert alert-primary col-md-6" *ngIf="!mosh_mode_available">
-												To use MOSH with UDP ports, please select an Image which supports MOSH. Learn more about MOSH
-												<a href="https://mosh.org" target="_blank" rel="noopener noreferrer">here</a>.
-											</div>
-										</div>
-										<div
-											*ngIf="
+                                                                data-balloon-pos="down"
+                                                                data-balloon-length="large"
+                                                        ><i
+                                                                class="icon-question menu_links"
+                                                                style="cursor: pointer; margin-left: 2px"
+                                                        ></i></i></strong
+                                                    ></label>
+                                                </div>
+                                                <div class="alert alert-primary col-md-6" *ngIf="!mosh_mode_available">
+                                                    To use MOSH with UDP ports, please select an Image which supports
+                                                    MOSH. Learn more about MOSH
+                                                    <a href="https://mosh.org" target="_blank"
+                                                       rel="noopener noreferrer">here</a>.
+                                                </div>
+                                            </div>
+                                            <div
+                                                    *ngIf="
 												selectedProject &&
 												selectedProject[1] !== FREEMIUM_ID &&
 												selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 												udp_allowed &&
 												mosh_mode_available
 											"
-											class="form-group row"
-										>
-											<label class="col-md-2 form-control-label">Install MOSH</label>
-											<div class="col-6">
-												<label
-													><strong style="padding-right: 10px; bottom: 15px; position: relative">
-														<i
-															data-balloon="This selection will install MOSH on your virtual machine."
-															data-balloon-pos="down"
-															data-balloon-length="large"
-															><i class="icon-question menu_links" style="cursor: pointer"></i></i></strong
-												></label>
+                                                    class="form-group row"
+                                            >
+                                                <label class="col-md-2 form-control-label">Install MOSH</label>
+                                                <div class="col-6">
+                                                    <label
+                                                    ><strong
+                                                            style="padding-right: 10px; bottom: 15px; position: relative">
+                                                        <i
+                                                                data-balloon="This selection will install MOSH on your virtual machine."
+                                                                data-balloon-pos="down"
+                                                                data-balloon-length="large"
+                                                        ><i class="icon-question menu_links"
+                                                            style="cursor: pointer"></i></i></strong
+                                                    ></label>
 
-												<label class="switch switch-label switch-pill switch-success">
-													<input type="checkbox" class="switch-input" name="install_mosh" [(ngModel)]="install_mosh" />
-													<div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
-													<!--<span class="switch-handle"></span>-->
-												</label>
-											</div>
-										</div>
-									</accordion-group>
-								</accordion>
-								<div>
-									<div
-										*ngIf="hasTools || install_mosh || resEnvOkayNeeded"
-										class="row alert"
-										style="margin: 15px"
-										[ngClass]="{
+                                                    <label class="switch switch-label switch-pill switch-success">
+                                                        <input type="checkbox" class="switch-input" name="install_mosh"
+                                                               [(ngModel)]="install_mosh"/>
+                                                        <div class="switch-slider" data-checked="✓"
+                                                             data-unchecked="✕"></div>
+                                                        <!--<span class="switch-handle"></span>-->
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </accordion-group>
+                                    </accordion>
+                                    <div>
+                                        <div
+                                                *ngIf="hasTools || install_mosh || resEnvOkayNeeded"
+                                                class="row alert"
+                                                style="margin: 15px"
+                                                [ngClass]="{
 											'alert-danger': !gaveOkay,
 											'alert-success': gaveOkay
 										}"
-									>
-										<div class="form-check col">
-											<input
-												class="form-check-input"
-												name="gaveOkay"
-												type="checkbox"
-												data-test-id="ansible_need_okay"
-												id="ansible_need_okay"
-												[(ngModel)]="gaveOkay"
-												#respCheck
-												required
-											/>
-											<label class="form-check-label" for="ansible_need_okay">
-												I hereby confirm that I read and acknowledge the following:<br />
-												To set up your virtual machine with your chosen options, we generate a new rsa-keypair which we
-												use to log into your virtual machine.<br />
-												<strong
-													>At the end of the installation process we will remove the temporary key from your machine and
-													copy your public key onto it, regardless of whether the installation of your selections will
-													succeed or fail.</strong
-												><br /><br />
-												<div *ngIf="hasTools">
-													<strong>Conda specifics:</strong><br />
-													We install Miniconda3, create a conda environment called 'denbi' and install your chosen
-													tools.<br />
-													For you convenience we initialize the .bashrc and set an alias, so that you are able to load
-													the environment simply by typing 'denbi'.<br />
-												</div>
-											</label>
-										</div>
-									</div>
+                                        >
+                                            <div class="form-check col">
+                                                <input
+                                                        class="form-check-input"
+                                                        name="gaveOkay"
+                                                        type="checkbox"
+                                                        data-test-id="ansible_need_okay"
+                                                        id="ansible_need_okay"
+                                                        [(ngModel)]="gaveOkay"
+                                                        #respCheck
+                                                        required
+                                                />
+                                                <label class="form-check-label" for="ansible_need_okay">
+                                                    I hereby confirm that I read and acknowledge the following:<br/>
+                                                    To set up your virtual machine with your chosen options, we generate
+                                                    a new rsa-keypair which we
+                                                    use to log into your virtual machine.<br/>
+                                                    <strong
+                                                    >At the end of the installation process we will remove the temporary
+                                                        key from your machine and
+                                                        copy your public key onto it, regardless of whether the
+                                                        installation of your selections will
+                                                        succeed or fail.</strong
+                                                    ><br/><br/>
+                                                    <div *ngIf="hasTools">
+                                                        <strong>Conda specifics:</strong><br/>
+                                                        We install Miniconda3, create a conda environment called 'denbi'
+                                                        and install your chosen
+                                                        tools.<br/>
+                                                        For you convenience we initialize the .bashrc and set an alias,
+                                                        so that you are able to load
+                                                        the environment simply by typing 'denbi'.<br/>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
 
-									<div
-										*ngIf="
+                                        <div
+                                                *ngIf="
 											(!vm_name ||
 												(!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)) ||
 												(!resEnvValid && resEnvComponent) ||
@@ -812,58 +876,59 @@
 											client_available &&
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
 										"
-										class="alert alert-danger col-md-auto"
-										role="alert"
-									>
-										<p><strong>The following is missing before starting a VM</strong></p>
-										<p *ngIf="!vm_name">- A name for your instance</p>
-										<p *ngIf="!selectedFlavor">- The flavor type of your VM</p>
-										<p *ngIf="!selectedImage">- The image you want to run on your VM</p>
-										<p *ngIf="!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)">
-											- Give your okay to the automated install process
-										</p>
-										<p *ngIf="resEnvNeedsName">- An url name for your Research-Environment</p>
-										<p *ngIf="resEnvNeedsTemplate">- A Research-Environment template</p>
-									</div>
-									<div
-										*ngIf="
+                                                class="alert alert-danger col-md-auto"
+                                                role="alert"
+                                        >
+                                            <p><strong>The following is missing before starting a VM</strong></p>
+                                            <p *ngIf="!vm_name">- A name for your instance</p>
+                                            <p *ngIf="!selectedFlavor">- The flavor type of your VM</p>
+                                            <p *ngIf="!selectedImage">- The image you want to run on your VM</p>
+                                            <p *ngIf="!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)">
+                                                - Give your okay to the automated install process
+                                            </p>
+                                            <p *ngIf="resEnvNeedsName">- An url name for your Research-Environment</p>
+                                            <p *ngIf="resEnvNeedsTemplate">- A Research-Environment template</p>
+                                        </div>
+                                        <div
+                                                *ngIf="
 											client_available &&
 											projectDataLoaded &&
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 											(flavors?.length > 0 || selectedFlavor)
 										"
-										class="col-md-10"
-									>
-										<div class="form-check">
-											<input
-												class="form-check-input"
-												name="vm_responsibility"
-												type="checkbox"
-												id="vm_responsibility"
-												data-test-id="vm_responsibility_input"
-												[(ngModel)]="vm_responsibility"
-												required
-											/>
-											<label class="form-check-label" for="vm_responsibility">
-												I hereby confirm that I am responsible for the virtual machine and any action performed on it.
-											</label>
-										</div>
-									</div>
-									<div
-										class="form-group row"
-										*ngIf="
+                                                class="col-md-10"
+                                        >
+                                            <div class="form-check">
+                                                <input
+                                                        class="form-check-input"
+                                                        name="vm_responsibility"
+                                                        type="checkbox"
+                                                        id="vm_responsibility"
+                                                        data-test-id="vm_responsibility_input"
+                                                        [(ngModel)]="vm_responsibility"
+                                                        required
+                                                />
+                                                <label class="form-check-label" for="vm_responsibility">
+                                                    I hereby confirm that I am responsible for the virtual machine and
+                                                    any action performed on it.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div
+                                                class="form-group row"
+                                                *ngIf="
 											client_available &&
 											projectDataLoaded &&
 											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
 											(flavors?.length > 0 || selectedFlavor)
 										"
-									>
-										<button
-											style="margin-left: auto; margin-top: 25px; margin-right: auto; width: 8em"
-											id="startVMButton"
-											type="button"
-											data-test-id="start_vm_button"
-											[disabled]="
+                                        >
+                                            <button
+                                                    style="margin-left: auto; margin-top: 25px; margin-right: auto; width: 8em"
+                                                    id="startVMButton"
+                                                    type="button"
+                                                    data-test-id="start_vm_button"
+                                                    [disabled]="
 												!vm_responsibility ||
 												!vm_name ||
 												started_machine ||
@@ -872,9 +937,9 @@
 												(!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)) ||
 												(!resEnvValid && resEnvComponent)
 											"
-											class="btn btn-primary .btn-lg offset-md-8"
-											data-toggle="modal"
-											(click)="
+                                                    class="btn btn-primary .btn-lg offset-md-8"
+                                                    data-toggle="modal"
+                                                    (click)="
 												startVM(
 													selectedFlavor.name,
 													f.controls.instance_name.value,
@@ -884,84 +949,87 @@
 												resetData();
 												redirectModal.show()
 											"
-										>
-											Start VM
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
-							<div class="alert alert-info">
-								You are not allowed to start a machine in this project, as the administrators of the project do not
-								allow non-administrators to start machines.
-								<p *ngIf="singleProject">This is the only SimpleVm project you are a member of.</p>
-							</div>
-						</div>
-					</form>
-				</div>
+                                            >
+                                                Start VM
+                                            </button>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
+                            <div class="alert alert-info">
+                                You are not allowed to start a machine in this project, as the administrators of the
+                                project do not
+                                allow non-administrators to start machines.
+                                <p *ngIf="singleProject">This is the only SimpleVm project you are a member of.</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-				<div class="alert alert-danger" *ngIf="!client_available && selectedProject && client_checked">
-					The corresponding client is currently offline. If you have any questions please contact
-					<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a> Check our
-					<a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site
-					of your project is reachable.
-				</div>
-			</div>
+                <div class="alert alert-danger" *ngIf="!client_available && selectedProject && client_checked">
+                    The corresponding client is currently offline. If you have any questions please contact
+                    <a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a> Check our
+                    <a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if
+                    the site
+                    of your project is reachable.
+                </div>
+            </div>
 
-			<!--/.col-->
-		</div>
-	</div>
-	<div class="col-md-6"></div>
+            <!--/.col-->
+        </div>
+    </div>
+    <div class="col-md-6"></div>
 </div>
 
 <div
-	bsModal
-	#redirectModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="myModalLabel"
-	aria-hidden="true"
-	id="redirect_modal"
+        bsModal
+        #redirectModal="bs-modal"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myModalLabel"
+        aria-hidden="true"
+        id="redirect_modal"
 >
-	<div class="modal-dialog modal-info" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">{{ !error_starting_machine ? 'Redirecting' : 'Error starting VM' }}</h4>
-			</div>
-			<div class="modal-body" *ngIf="!error_starting_machine">
-				<p>{{ progress_bar_status }}</p>
-				<p data-test-id="redirecting_instance_overview">Redirecting to Instance Overview...</p>
-				<p>
-					<br />Learn about persistent terminal sessions in our
-					<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Wiki</a>.
-				</p>
-				<div class="progress">
-					<div
-						class="progress-bar progress-bar-striped {{ progress_bar_animated }} bg-info"
-						role="progressbar"
-						style="width: 0"
-						aria-valuemin="0"
-						aria-valuemax="100"
-						[style.width.%]="progress_bar_width"
-					></div>
-				</div>
-				<span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{ newVm?.name }}</span>
-			</div>
-			<div class="modal-body" *ngIf="error_starting_machine">
-				<p>An error occurred while trying to start the machine. Please reload this page.</p>
-			</div>
-			<div class="modal-footer" *ngIf="error_starting_machine">
-				<div class="row">
-					<div class="col">
-						<button class="btn btn-danger" (click)="redirectModal.hide()">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+    <div class="modal-dialog modal-info" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ !error_starting_machine ? 'Redirecting' : 'Error starting VM' }}</h4>
+            </div>
+            <div class="modal-body" *ngIf="!error_starting_machine">
+                <p>{{ progress_bar_status }}</p>
+                <p data-test-id="redirecting_instance_overview">Redirecting to Instance Overview...</p>
+                <p>
+                    <br/>Learn about persistent terminal sessions in our
+                    <a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Wiki</a>.
+                </p>
+                <div class="progress">
+                    <div
+                            class="progress-bar progress-bar-striped {{ progress_bar_animated }} bg-info"
+                            role="progressbar"
+                            style="width: 0"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            [style.width.%]="progress_bar_width"
+                    ></div>
+                </div>
+                <span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{ newVm?.name }}</span>
+            </div>
+            <div class="modal-body" *ngIf="error_starting_machine">
+                <p>An error occurred while trying to start the machine. Please reload this page.</p>
+            </div>
+            <div class="modal-footer" *ngIf="error_starting_machine">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-danger" (click)="redirectModal.hide()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
