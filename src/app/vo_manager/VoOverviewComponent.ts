@@ -36,6 +36,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public emailHeader: string;
 	public emailVerify: string;
 	public emailType: number;
+	public emailAdminsOnly: boolean;
 	public selectedProject: Application;
 	computecenters: ComputecenterComponent[] = [];
 
@@ -116,11 +117,18 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		}
 		switch (this.emailType) {
 			case 0: {
-				this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
+				this.sendMailToVo(
+					subject,
+					message,
+					this.selectedFacility.toString(),
+					this.selectedProjectType,
+					this.emailAdminsOnly,
+					reply,
+				);
 				break;
 			}
 			case 1: {
-				this.sendNewsletterToVo(subject, message, this.selectedProjectType, reply);
+				this.sendNewsletterToVo(subject, message, this.selectedProjectType, this.emailAdminsOnly, reply);
 				break;
 			}
 			default:
@@ -131,12 +139,19 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.voService.sendTestError().subscribe();
 	}
 
-	sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
+	sendNewsletterToVo(
+		subject: string,
+		message: string,
+		selectedProjectType: string,
+		adminsOnly: boolean,
+		reply?: string,
+	): void {
 		this.voService
 			.sendNewsletterToVo(
 				encodeURIComponent(subject),
 				encodeURIComponent(message),
 				selectedProjectType,
+				adminsOnly,
 				encodeURIComponent(reply),
 			)
 			.subscribe((result: IResponseTemplate): void => {
@@ -148,9 +163,23 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 			});
 	}
 
-	sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void {
+	sendMailToVo(
+		subject: string,
+		message: string,
+		facility: string,
+		type: string,
+		adminsOnly: boolean,
+		reply?: string,
+	): void {
 		this.voService
-			.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
+			.sendMailToVo(
+				encodeURIComponent(subject),
+				encodeURIComponent(message),
+				facility,
+				type,
+				adminsOnly,
+				encodeURIComponent(reply),
+			)
 			.subscribe((result: IResponseTemplate): void => {
 				if ((result.value as boolean) === true) {
 					this.emailStatus = 1;
@@ -166,12 +195,12 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.emailType = type;
 		switch (this.emailType) {
 			case 0: {
-				this.emailHeader = 'Send email to all members of the vo';
+				this.emailHeader = 'Send email to selected members of the VO';
 				this.emailVerify = 'Are you sure you want to send this email to all members of the vo?';
 				break;
 			}
 			case 1: {
-				this.emailHeader = 'Send newsletter to vo';
+				this.emailHeader = 'Send newsletter to VO';
 				this.emailVerify = 'Are you sure you want to send this newsletter?';
 				break;
 			}
@@ -204,6 +233,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.emailVerify = null;
 		this.emailReply = '';
 		this.emailStatus = 0;
+		this.emailAdminsOnly = false;
 	}
 
 	public resetNotificationModal(): void {
