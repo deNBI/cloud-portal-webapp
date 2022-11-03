@@ -36,7 +36,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public emailHeader: string;
 	public emailVerify: string;
 	public emailType: number;
-	public emailAdminsOnly: boolean;
+	public emailAdminsOnly: boolean = false;
 	public selectedProject: Application;
 	computecenters: ComputecenterComponent[] = [];
 
@@ -115,6 +115,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		if (reply) {
 			reply = reply.trim();
 		}
+		console.log(this.emailAdminsOnly);
 		switch (this.emailType) {
 			case 0: {
 				this.sendMailToVo(
