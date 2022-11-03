@@ -90,6 +90,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	WIKI_MOSH_LINK: string = WIKI_MOSH_LINK;
 	WIKI_PERSISTENT_TERMINAL_LINK = WIKI_PERSISTENT_TERMINAL_LINK;
 	blockedImageTagsResenv: BlockedImageTagResenv[];
+	initial_loaded: boolean = false;
 
 	forc_url: string = '';
 	client_id: string;
@@ -283,12 +284,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 					this.flavors = flavors;
 					this.flavor_types = this.flavorService.sortFlavors(this.flavors);
 					this.flavors_loaded = true;
+					this.initial_loaded = true;
 				},
 				(error: any) => {
 					console.log(error);
 					this.flavors = [];
 					this.flavor_types = {};
 					this.flavors_loaded = true;
+					this.initial_loaded = true;
 				},
 			),
 		);
@@ -814,6 +817,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 	resetChecks(): void {
+		this.initial_loaded = false;
 		this.gaveOkay = false;
 		this.hasTools = false;
 		this.newVm = null;

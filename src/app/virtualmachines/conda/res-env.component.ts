@@ -55,7 +55,9 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	setUserKeyUrl(url: string): void {
-		this.user_key_url.setValue(url);
+		if (this.needsName()) {
+			this.user_key_url.setValue(url);
+		}
 	}
 
 	getUserKeyUrl(): string {

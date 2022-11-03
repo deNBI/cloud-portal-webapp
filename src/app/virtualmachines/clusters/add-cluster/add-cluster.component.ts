@@ -67,6 +67,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	userinfo_loaded: boolean;
 
 	create_error: IResponseTemplate;
+	initial_loaded: boolean = false;
 
 	/**
 	 * All flavors of a project.
@@ -210,6 +211,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.flavor_types = this.flavorService.sortFlavors(this.flavors_usable);
 
 		this.flavors_loaded = true;
+		this.initial_loaded = true;
 	}
 
 	calcMaxWorkerInstancesByFlavor(): void {
@@ -300,6 +302,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.flavors = [];
 					this.flavors_usable = [];
 					this.flavors_loaded = true;
+					this.initial_loaded = true;
 				},
 			),
 		);
@@ -494,6 +497,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	}
 
 	loadProjectData(): void {
+		this.initial_loaded = false;
 		this.projectDataLoaded = false;
 		this.flavors = [];
 		this.flavors_loaded = false;
