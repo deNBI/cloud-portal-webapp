@@ -5,5 +5,6 @@
 export enum ImageTypes {
 	IMAGE = 'IMAGE',
 	SNAPSHOT = 'SNAPSHOT',
+	RESENV = 'RESENV',
 	CUSTOM = 'CUSTOM',
 }

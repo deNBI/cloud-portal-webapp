@@ -11,6 +11,7 @@ import {
 } from '../facility_manager/image-tag';
 import { SnapshotPage } from '../virtualmachines/snapshots/snapshotPage.model';
 import { ImageTypes } from '../virtualmachines/virtualmachinemodels/imageTypes';
+import { TemplateNames } from '../virtualmachines/conda/template-names';
 
 /**
  * Service which provides image methods.
@@ -234,15 +235,15 @@ export class ImageService {
 		const image_types: { [name: string]: Image[] } = {};
 		image_types[ImageTypes.IMAGE] = [];
 		image_types[ImageTypes.SNAPSHOT] = [];
-		image_types[ImageTypes.CUSTOM] = [];
+		image_types[ImageTypes.RESENV] = [];
 
 		for (const image of images) {
 			if (image.is_snapshot) {
 				image_types[ImageTypes.SNAPSHOT].push(image);
 			} else if (image.tags.includes('base_image')) {
 				image_types[ImageTypes.IMAGE].push(image);
-			} else {
-				image_types[ImageTypes.CUSTOM].push(image);
+			} else if (image.tags.filter(x => TemplateNames.ALL_TEMPLATE_NAMES.includes(x)).length > 0) {
+				image_types[ImageTypes.RESENV].push(image);
 			}
 		}
 
