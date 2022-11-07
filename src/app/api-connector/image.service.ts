@@ -234,12 +234,15 @@ export class ImageService {
 		const image_types: { [name: string]: Image[] } = {};
 		image_types[ImageTypes.IMAGE] = [];
 		image_types[ImageTypes.SNAPSHOT] = [];
+		image_types[ImageTypes.CUSTOM] = [];
 
 		for (const image of images) {
 			if (image.is_snapshot) {
 				image_types[ImageTypes.SNAPSHOT].push(image);
-			} else {
+			} else if (image.tags.includes('base_image')) {
 				image_types[ImageTypes.IMAGE].push(image);
+			} else {
+				image_types[ImageTypes.CUSTOM].push(image);
 			}
 		}
 

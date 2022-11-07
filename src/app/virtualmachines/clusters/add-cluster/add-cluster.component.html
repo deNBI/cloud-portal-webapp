@@ -73,21 +73,20 @@
                                     class="spinner-border text-info"
                             >
 							</span>
-                        </div>
-                        <div *ngIf="projectDataLoaded && selectedProject && (allowedProjects | inAllowed: selectedProject)">
-                            <div
-                                    class="alert alert-danger"
-                                    role="alert"
-                                    *ngIf="client_available && !selectedProjectClient?.bibigrid_available && projectDataLoaded"
-                            >
-                                Starting a cluster is currently not possible!<br/>
-                                If you have any questions please contact
-                                <a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a>
-                                Check our
-                                <a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status
-                                    overview</a> to see if the
-                                site of your project is reachable.
-                            </div>
+						</div>
+						<div *ngIf="projectDataLoaded && selectedProject && (allowedProjects | inAllowed: selectedProject)">
+							<div
+								class="alert alert-danger"
+								role="alert"
+								*ngIf="client_available && !selectedProjectClient?.bibigrid_available && projectDataLoaded"
+							>
+								Starting a cluster is currently not possible!<br />
+								If you have any questions please contact
+								<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a>
+								Check our
+								<a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the
+								site of your project is reachable.
+							</div>
 
                             <div *ngIf="client_available && selectedProjectClient?.bibigrid_available && projectDataLoaded">
                                 <app-resource-overview
@@ -109,299 +108,287 @@
 											client_available &&
 											client_checked
 										"
-                                    >
-                                        The following limit/limits has/have been reached:
-                                        <div *ngIf="selectedProjectRessources | noVMsPipe">- Amount of VMs</div>
-                                        <div *ngIf="selectedProjectRessources | noCoresPipe">- Amount of cores</div>
-                                        <div *ngIf="selectedProjectRessources | noRamPipe">- Amount of RAM</div>
-                                        <br/>
-                                        An admin of your project can request more resources if necessary.
-                                    </div>
-                                </accordion>
-                                <div class="d-flex align-items-center"
-                                     *ngIf="!initial_loaded">
+									>
+										The following limit/limits has/have been reached:
+										<div *ngIf="selectedProjectRessources | noVMsPipe">- Amount of VMs</div>
+										<div *ngIf="selectedProjectRessources | noCoresPipe">- Amount of cores</div>
+										<div *ngIf="selectedProjectRessources | noRamPipe">- Amount of RAM</div>
+										<br />
+										An admin of your project can request more resources if necessary.
+									</div>
+								</accordion>
+								<div class="d-flex align-items-center" *ngIf="!initial_loaded">
+									<div class="spinner-border m-sm-auto text-info" role="status"></div>
+								</div>
+								<ng-container *ngIf="initial_loaded">
+									<div *ngIf="projectDataLoaded && flavors_usable.length > 0 && !vm_limit_reached">
+										<div
+											class="form-group row col-md-12"
+											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+										>
+											<strong>Please choose a name</strong><br />
 
-                                    <div class="spinner-border m-sm-auto text-info" role="status"></div>
-                                </div>
-                                <ng-container *ngIf="initial_loaded">
+											<div class="input-group">
+												<input
+													required
+													id="id_cluster_name"
+													name="cluster_name"
+													class="form-control"
+													type="text"
+													placeholder="Cluster name"
+													[(ngModel)]="cluster_name"
+													data-test-id="instance_name_input_field"
+													[ngClass]="{
+														'is-invalid':
+															f.controls.instance_name?.invalid &&
+															(f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+														'is-valid': f.controls.instance_name?.valid
+													}"
+												/>
+												<div class="input-group-append">
+													<button class="btn btn-outline-primary" (click)="generateRandomName()">
+														Generate a random name for me
+													</button>
+												</div>
+											</div>
+										</div>
 
-                                    <div *ngIf="projectDataLoaded && flavors_usable.length > 0 && !vm_limit_reached">
-                                        <div
-                                                class="form-group row col-md-12"
-                                                style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-                                        >
-                                            <strong>Please choose a name</strong><br/>
+										<div
+											class="form-group row col-md-12"
+											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+										>
+											<strong>Please choose your master instance</strong><br />
+											<span class="text-muted"
+												>This will be the master node of your cluster. Please choose its resources and the image for all
+												nodes. The master node can not be changed afterwards.</span
+											>
+										</div>
 
-                                            <div class="input-group">
-                                                <input
-                                                        required
-                                                        id="id_cluster_name"
-                                                        name="cluster_name"
-                                                        class="form-control"
-                                                        type="text"
-                                                        placeholder="Cluster name"
-                                                        [(ngModel)]="cluster_name"
-                                                        data-test-id="instance_name_input_field"
-                                                        [ngClass]="{
-													'is-invalid':
-														f.controls.instance_name?.invalid &&
-														(f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
-													'is-valid': f.controls.instance_name?.valid
-												}"
-                                                />
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-outline-primary"
-                                                            (click)="generateRandomName()">
-                                                        Generate a random name for me
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+										<div
+											class="form-group row col-md-12"
+											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+										>
+											<div class="col">
+												<app-flavor-detail
+													*ngIf="userinfo_loaded && flavors_loaded"
+													[selectedFlavor]="selectedMasterFlavor"
+													id="master_id_flavor_detail"
+													[flavors]="flavors"
+													[allowReload]="true"
+													(reloadFlavors)="reloadFlavors()"
+													(selectedFlavorChange)="setMasterFlavor($event); resetBatches(); calculateNewValues()"
+												></app-flavor-detail>
+												<div class="d-flex align-items-center" *ngIf="userinfo_loaded && !flavors_loaded">
+													<strong>Loading flavors ...</strong>
+													<div class="spinner-border m-sm-auto" role="status"></div>
+												</div>
+											</div>
+										</div>
 
-                                        <div
-                                                class="form-group row col-md-12"
-                                                style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-                                        >
-                                            <strong>Please choose your master instance</strong><br/>
-                                            <span class="text-muted"
-                                            >This will be the master node of your cluster. Please choose its resources and the image for all
-											nodes. The master node can not be changed afterwards.</span
-                                            >
-                                        </div>
+										<div
+											class="form-group row col-md-12"
+											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+										>
+											<div class="col">
+												<div class="alert alert-info" *ngIf="images?.length === 0 || !images">
+													There are no images available for selection at the moment. Please contact the support of the
+													facility where your project is running.
+												</div>
 
-                                        <div
-                                                class="form-group row col-md-12"
-                                                style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-                                        >
-                                            <div class="col">
-                                                <app-flavor-detail
-                                                        *ngIf="userinfo_loaded && flavors_loaded"
-                                                        [selectedFlavor]="selectedMasterFlavor"
-                                                        id="master_id_flavor_detail"
-                                                        [flavors]="flavors"
-                                                        [allowReload]="true"
-                                                        (reloadFlavors)="reloadFlavors()"
-                                                        (selectedFlavorChange)="setMasterFlavor($event); resetBatches(); calculateNewValues()"
-                                                ></app-flavor-detail>
-                                                <div class="d-flex align-items-center"
-                                                     *ngIf="userinfo_loaded && !flavors_loaded">
-                                                    <strong>Loading flavors ...</strong>
-                                                    <div class="spinner-border m-sm-auto" role="status"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+												<app-image-detail
+													*ngIf="images?.length > 0"
+													[selectedImage]="selectedMasterImage"
+													[images]="images"
+													[selectedFlavor]="selectedMasterFlavor"
+													(selectedImageChange)="
+														selectedMasterImage = $event; this.selectedWorkerBatches[0].image = selectedMasterImage
+													"
+													id="master_id_image_detail"
+												></app-image-detail>
+												<div
+													class="alert alert-info"
+													*ngIf="selectedMasterImage"
+													style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+												>
+													This image will also be used for every worker!
+												</div>
+											</div>
+										</div>
 
-                                        <div
-                                                class="form-group row col-md-12"
-                                                style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-                                        >
-                                            <div class="col">
-                                                <div class="alert alert-info" *ngIf="images?.length === 0 || !images">
-                                                    There are no images available for selection at the moment. Please
-                                                    contact the support of the
-                                                    facility where your project is running.
-                                                </div>
-
-                                                <app-image-detail
-                                                        *ngIf="images?.length > 0"
-                                                        [selectedImage]="selectedMasterImage"
-                                                        [images]="images"
-                                                        [selectedFlavor]="selectedMasterFlavor"
-                                                        (selectedImageChange)="
-													selectedMasterImage = $event; this.selectedWorkerBatches[0].image = selectedMasterImage
-												"
-                                                        id="master_id_image_detail"
-                                                ></app-image-detail>
-                                                <div
-                                                        class="alert alert-info"
-                                                        *ngIf="selectedMasterImage"
-                                                        style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-                                                >
-                                                    This image will also be used for every worker!
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <accordion
-                                                class="col"
-                                                *ngIf="
-											selectedProject &&
-											projectDataLoaded &&
-											selectedProjectRessources?.used_vms + 2 <= selectedProjectRessources?.number_vms &&
-											(flavors.length !== 0 || selectedFlavor) &&
-											images?.length > 0
-										"
-                                        >
-                                            <div
-                                                    class="alert alert-primary"
-                                                    role="alert"
-                                                    style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-                                                    *ngIf="
-												(!selectedMasterFlavor || !selectedMasterImage) &&
-												selectedProjectRessources?.used_vms + 2 <= selectedProjectRessources?.number_vms
-											"
-                                            >
-                                                Please select a master instance configuration before selecting the
-                                                worker instances!
-                                            </div>
-                                        </accordion>
-
-                                        <accordion class="col"
-                                                   style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem">
-                                            <accordion-group
-                                                #workerInstancesGroup
-                                                [isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)"
-                                                (isOpenChange)="resizeFix()"
-                                                [isDisabled]="true"
-                                                *ngIf="
+										<accordion
+											class="col"
+											*ngIf="
 												selectedProject &&
 												projectDataLoaded &&
 												selectedProjectRessources?.used_vms + 2 <= selectedProjectRessources?.number_vms &&
-												(flavors.length !== 0 || selectedFlavor)
+												(flavors.length !== 0 || selectedFlavor) &&
+												images?.length > 0
 											"
-                                            >
-                                                <div accordion-heading style="width: 100%; text-align: center">
-                                                    <strong *ngIf="!selectedMasterFlavor || !selectedMasterImage"
-                                                    >Worker Instances [disabled]
-                                                    </strong>
-                                                    <strong *ngIf="selectedMasterFlavor && selectedMasterImage"
-                                                            style="text-align: center"
-                                                    >Worker Instances
-                                                    </strong>
+										>
+											<div
+												class="alert alert-primary"
+												role="alert"
+												style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+												*ngIf="
+													(!selectedMasterFlavor || !selectedMasterImage) &&
+													selectedProjectRessources?.used_vms + 2 <= selectedProjectRessources?.number_vms
+												"
+											>
+												Please select a master instance configuration before selecting the worker instances!
+											</div>
+										</accordion>
 
-                                                    <ul
-                                                            *ngIf="selectedMasterFlavor && selectedMasterImage"
-                                                            class="nav nav-tabs card-header-tabs"
-                                                            style="overflow: hidden"
-                                                            role="tablist"
-                                                    >
-                                                        <li
-                                                                class="nav-item"
-                                                                style="cursor: pointer"
-                                                                (click)="setSelectedBatch(batch)"
-                                                                *ngFor="let batch of selectedWorkerBatches"
-                                                        >
-                                                            <a [ngClass]="{ active: selectedBatch === batch }"
-                                                               class="nav-link"
-                                                            >Batch {{ batch.index }}
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+										<accordion class="col" style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem">
+											<accordion-group
+												#workerInstancesGroup
+												[isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)"
+												(isOpenChange)="resizeFix()"
+												[isDisabled]="true"
+												*ngIf="
+													selectedProject &&
+													projectDataLoaded &&
+													selectedProjectRessources?.used_vms + 2 <= selectedProjectRessources?.number_vms &&
+													(flavors.length !== 0 || selectedFlavor)
+												"
+											>
+												<div accordion-heading style="width: 100%; text-align: center">
+													<strong *ngIf="!selectedMasterFlavor || !selectedMasterImage"
+														>Worker Instances [disabled]
+													</strong>
+													<strong *ngIf="selectedMasterFlavor && selectedMasterImage" style="text-align: center"
+														>Worker Instances
+													</strong>
 
-                                                <div
-                                                        class="alert alert-warning"
-                                                        *ngIf="selectedBatch.usable_flavors.length < 1 && !selectedBatch.flavor"
-                                                >
-                                                    Not enough resources available to start another worker batch with a
-                                                    different flavor!
-                                                </div>
-                                                <span *ngIf="selectedBatch.usable_flavors.length > 0 || selectedBatch.flavor">
-												<div class="form-group row">
-													<app-flavor-detail
-                                                            [selectedFlavor]="selectedBatch.flavor"
-                                                            [selectedImage]="selectedMasterImage"
-                                                            [flavors]="selectedBatch.usable_flavors"
-                                                            id="selected_batch_id_flavor_detail"
-                                                            (selectedFlavorChange)="
-															selectedBatch.flavor = $event;
-															selectedWorkerFlavorSet = true;
-															calcMaxWorkerInstancesByFlavor()
-														"
-                                                    ></app-flavor-detail>
+													<ul
+														*ngIf="selectedMasterFlavor && selectedMasterImage"
+														class="nav nav-tabs card-header-tabs"
+														style="overflow: hidden"
+														role="tablist"
+													>
+														<li
+															class="nav-item"
+															style="cursor: pointer"
+															(click)="setSelectedBatch(batch)"
+															*ngFor="let batch of selectedWorkerBatches"
+														>
+															<a [ngClass]="{ active: selectedBatch === batch }" class="nav-link"
+																>Batch {{ batch.index }}
+															</a>
+														</li>
+													</ul>
 												</div>
 
-												<div class="alert alert-danger" role="alert"
-                                                     *ngIf="!selectedBatch.flavor">
-													Please first select a worker flavor before you can set the number of workers.
+												<div
+													class="alert alert-warning"
+													*ngIf="selectedBatch.usable_flavors.length < 1 && !selectedBatch.flavor"
+												>
+													Not enough resources available to start another worker batch with a different flavor!
 												</div>
-												<div class="form-group row col-md-12">
-													<label class="col-md-2 form-control-label"
-                                                    ><strong
-                                                    >Count*
-															<span *ngIf="selectedBatch.max_worker_count"
-                                                            >(max {{ selectedBatch.max_worker_count }} )</span
-                                                            ></strong
-                                                    ></label
-                                                    >
-													<div class="col-md-10">
-														<input
-                                                                class="form-control"
-                                                                id="workerInstancesCount_{{ selectedBatch.index }}"
-                                                                [disabled]="!selectedBatch.flavor || selectedBatch !== selectedBatch"
-                                                                name="workerInstancesCount_{{ selectedBatch.index }}"
-                                                                placeholder="e.g 1"
-                                                                id="selected_batck_worker_count"
-                                                                type="number"
-                                                                min="1"
-                                                                [max]="selectedBatch.max_worker_count"
-                                                                step="1"
-                                                                [(ngModel)]="selectedBatch.worker_count"
-                                                                required
-                                                                appMinAmount="1"
-                                                                appMaxAmount="{{ selectedBatch.max_worker_count }}"
-                                                                appInteger
-                                                                (ngModelChange)="changeCount()"
-                                                                [ngClass]="{
-																'is-invalid':
-																	f.controls['workerInstancesCount_' + selectedBatch.index]?.invalid &&
-																	(f.controls['workerInstancesCount_' + selectedBatch.index]?.dirty ||
-																		f.controls['workerInstancesCount_' + selectedBatch.index]?.touched),
-																'is-valid':
-																	f.controls['workerInstancesCount_' + selectedBatch.index]?.valid &&
-																	(f.controls['workerInstancesCount_' + selectedBatch.index]?.dirty ||
-																		f.controls['workerInstancesCount_' + selectedBatch.index]?.touched)
-															}"
-                                                        />
-													</div></div
-                                                ></span>
-                                                <button
-                                                        *ngIf="this.selectedWorkerBatches.length > 1"
-                                                        type="button"
-                                                        style="float: right; margin-bottom: 5px"
-                                                        class="btn btn-primary"
-                                                        data-toggle="modal"
-                                                        (click)="removeBatch(selectedBatch)"
-                                                >
-                                                    Remove Worker Batch
-                                                </button>
-                                                <button
-                                                        *ngIf="this.selectedWorkerBatches.length === 1"
-                                                        type="button"
-                                                        style="float: right; margin-bottom: 5px"
-                                                        class="btn btn-primary"
-                                                        data-toggle="modal"
-                                                        (click)="resetBatches()"
-                                                >
-                                                    Delete selection
-                                                </button>
-                                                <button
-                                                        *ngIf="selectedBatch.index === selectedWorkerBatches.length"
-                                                        [disabled]="!selectedBatch.flavor || !selectedBatch.worker_count"
-                                                        type="button"
-                                                        style="float: left; margin-bottom: 5px"
-                                                        class="btn btn-primary"
-                                                        data-toggle="modal"
-                                                        (click)="addBatch()"
-                                                >
-                                                    Add Worker Batch
-                                                </button>
-                                                <button
-                                                        *ngIf="selectedBatch.index !== selectedWorkerBatches.length"
-                                                        [disabled]="!selectedBatch.flavor || !selectedBatch.worker_count"
-                                                        type="button"
-                                                        style="float: left; margin-bottom: 5px"
-                                                        class="btn btn-primary"
-                                                        data-toggle="modal"
-                                                        (click)="setSelectedBatch(selectedWorkerBatches[selectedBatch.index])"
-                                                >
-                                                    Next Batch
-                                                </button>
-                                            </accordion-group>
-                                        </accordion>
-                                    </div>
-                                </ng-container>
-                            </div>
+												<span *ngIf="selectedBatch.usable_flavors.length > 0 || selectedBatch.flavor">
+													<div class="form-group row">
+														<app-flavor-detail
+															[selectedFlavor]="selectedBatch.flavor"
+															[selectedImage]="selectedMasterImage"
+															[flavors]="selectedBatch.usable_flavors"
+															id="selected_batch_id_flavor_detail"
+															(selectedFlavorChange)="
+																selectedBatch.flavor = $event;
+																selectedWorkerFlavorSet = true;
+																calcMaxWorkerInstancesByFlavor()
+															"
+														></app-flavor-detail>
+													</div>
+
+													<div class="alert alert-danger" role="alert" *ngIf="!selectedBatch.flavor">
+														Please first select a worker flavor before you can set the number of workers.
+													</div>
+													<div class="form-group row col-md-12">
+														<label class="col-md-2 form-control-label"
+															><strong
+																>Count*
+																<span *ngIf="selectedBatch.max_worker_count"
+																	>(max {{ selectedBatch.max_worker_count }} )</span
+																></strong
+															></label
+														>
+														<div class="col-md-10">
+															<input
+																class="form-control"
+																id="workerInstancesCount_{{ selectedBatch.index }}"
+																[disabled]="!selectedBatch.flavor || selectedBatch !== selectedBatch"
+																name="workerInstancesCount_{{ selectedBatch.index }}"
+																placeholder="e.g 1"
+																id="selected_batck_worker_count"
+																type="number"
+																min="1"
+																[max]="selectedBatch.max_worker_count"
+																step="1"
+																[(ngModel)]="selectedBatch.worker_count"
+																required
+																appMinAmount="1"
+																appMaxAmount="{{ selectedBatch.max_worker_count }}"
+																appInteger
+																(ngModelChange)="changeCount()"
+																[ngClass]="{
+																	'is-invalid':
+																		f.controls['workerInstancesCount_' + selectedBatch.index]?.invalid &&
+																		(f.controls['workerInstancesCount_' + selectedBatch.index]?.dirty ||
+																			f.controls['workerInstancesCount_' + selectedBatch.index]?.touched),
+																	'is-valid':
+																		f.controls['workerInstancesCount_' + selectedBatch.index]?.valid &&
+																		(f.controls['workerInstancesCount_' + selectedBatch.index]?.dirty ||
+																			f.controls['workerInstancesCount_' + selectedBatch.index]?.touched)
+																}"
+															/>
+														</div></div
+												></span>
+												<button
+													*ngIf="this.selectedWorkerBatches.length > 1"
+													type="button"
+													style="float: right; margin-bottom: 5px"
+													class="btn btn-primary"
+													data-toggle="modal"
+													(click)="removeBatch(selectedBatch)"
+												>
+													Remove Worker Batch
+												</button>
+												<button
+													*ngIf="this.selectedWorkerBatches.length === 1"
+													type="button"
+													style="float: right; margin-bottom: 5px"
+													class="btn btn-primary"
+													data-toggle="modal"
+													(click)="resetBatches()"
+												>
+													Delete selection
+												</button>
+												<button
+													*ngIf="selectedBatch.index === selectedWorkerBatches.length"
+													[disabled]="!selectedBatch.flavor || !selectedBatch.worker_count"
+													type="button"
+													style="float: left; margin-bottom: 5px"
+													class="btn btn-primary"
+													data-toggle="modal"
+													(click)="addBatch()"
+												>
+													Add Worker Batch
+												</button>
+												<button
+													*ngIf="selectedBatch.index !== selectedWorkerBatches.length"
+													[disabled]="!selectedBatch.flavor || !selectedBatch.worker_count"
+													type="button"
+													style="float: left; margin-bottom: 5px"
+													class="btn btn-primary"
+													data-toggle="modal"
+													(click)="setSelectedBatch(selectedWorkerBatches[selectedBatch.index])"
+												>
+													Next Batch
+												</button>
+											</accordion-group>
+										</accordion>
+									</div>
+								</ng-container>
+							</div>
 
                             <div
                                     *ngIf="

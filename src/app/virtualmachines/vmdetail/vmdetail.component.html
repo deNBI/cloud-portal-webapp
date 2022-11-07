@@ -78,6 +78,9 @@
 										id="copyCommandButton"
 										style="margin-top: 20px"
 										(click)="copyToClipboard(mode.copy_field)"
+										[closeDelay]="3000"
+										ngbTooltip="Copied!"
+										triggers="click:blur"
 									>
 										Copy Command
 									</div>

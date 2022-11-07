@@ -50,8 +50,31 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 
 		subscription: Subscription = new Subscription();
 
-		constructor(private condaService: BiocondaService) {
-				this.condaService = condaService;
+	constructor(private condaService: BiocondaService) {
+		this.condaService = condaService;
+	}
+
+	setUserKeyUrl(url: string): void {
+		if (this.needsName()) {
+			this.user_key_url.setValue(url);
+		}
+	}
+
+	getUserKeyUrl(): string {
+		return this.user_key_url.value;
+	}
+
+	getCreateOnlyBackend(): boolean {
+		return this.create_only_backend;
+	}
+
+	setSelectedTemplate(template: ResearchEnvironment): void {
+		if (template === null) {
+			this.selectedTemplate = this.undefinedTemplate;
+			this.user_key_url.setValue('');
+			this.create_only_backend = false;
+
+			return;
 		}
 
 		setUserKeyUrl(url: string): void {
