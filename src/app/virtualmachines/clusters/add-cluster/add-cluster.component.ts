@@ -1,171 +1,170 @@
 import {
-		ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild,
+	ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
-import {forkJoin, Subscription} from 'rxjs';
-import {Router} from '@angular/router';
-import {KeyValue} from '@angular/common';
-import {GroupService} from '../../../api-connector/group.service';
-import {ImageService} from '../../../api-connector/image.service';
-import {KeyService} from '../../../api-connector/key.service';
-import {FlavorService} from '../../../api-connector/flavor.service';
-import {VirtualmachineService} from '../../../api-connector/virtualmachine.service';
-import {ApiSettings} from '../../../api-connector/api-settings.service';
-import {ClientService} from '../../../api-connector/client.service';
-import {UserService} from '../../../api-connector/user.service';
-import {VoService} from '../../../api-connector/vo.service';
-import {Image} from '../../virtualmachinemodels/image';
-import {IResponseTemplate} from '../../../api-connector/response-template';
-import {Flavor} from '../../virtualmachinemodels/flavor';
-import {Userinfo} from '../../../userinfo/userinfo.model';
-import {Client} from '../../../vo_manager/clients/client.model';
-import {BiocondaComponent} from '../../conda/bioconda.component';
-import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
-import {WorkerBatch} from '../clusterinfo';
-import {CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK} from '../../../../links/links';
-import {RandomNameGenerator} from '../../../shared/randomNameGenerator';
+import { forkJoin, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { KeyValue } from '@angular/common';
+import { GroupService } from '../../../api-connector/group.service';
+import { ImageService } from '../../../api-connector/image.service';
+import { KeyService } from '../../../api-connector/key.service';
+import { FlavorService } from '../../../api-connector/flavor.service';
+import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
+import { ApiSettings } from '../../../api-connector/api-settings.service';
+import { ClientService } from '../../../api-connector/client.service';
+import { UserService } from '../../../api-connector/user.service';
+import { VoService } from '../../../api-connector/vo.service';
+import { Image } from '../../virtualmachinemodels/image';
+import { IResponseTemplate } from '../../../api-connector/response-template';
+import { Flavor } from '../../virtualmachinemodels/flavor';
+import { Userinfo } from '../../../userinfo/userinfo.model';
+import { Client } from '../../../vo_manager/clients/client.model';
+import { BiocondaComponent } from '../../conda/bioconda.component';
+import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
+import { WorkerBatch } from '../clusterinfo';
+import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links';
+import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
 
 /**
  * Cluster Component
  */
 @Component({
-		selector: 'app-add-cluster',
-		templateUrl: './add-cluster.component.html',
-		styleUrls: ['./add-cluster.component.scss'],
-		providers: [
-				GroupService,
-				ImageService,
-				KeyService,
-				FlavorService,
-				VirtualmachineService,
-				ApiSettings,
-				KeyService,
-				ClientService,
-				UserService,
-				VoService,
-		],
+	selector: 'app-add-cluster',
+	templateUrl: './add-cluster.component.html',
+	styleUrls: ['./add-cluster.component.scss'],
+	providers: [
+		GroupService,
+		ImageService,
+		KeyService,
+		FlavorService,
+		VirtualmachineService,
+		ApiSettings,
+		KeyService,
+		ClientService,
+		UserService,
+		VoService,
+	],
 })
 export class AddClusterComponent implements OnInit, OnDestroy {
-		is_vo: boolean = false;
-		CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
-		STATUS_LINK: string = STATUS_LINK;
+	is_vo: boolean = false;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	STATUS_LINK: string = STATUS_LINK;
 
-		client_checked: boolean = false;
-		timeout: number = 0;
-		title: string = 'New Cluster';
+	client_checked: boolean = false;
+	timeout: number = 0;
+	title: string = 'New Cluster';
 
-		CLUSTER_IMAGES_BLOCKLIST: string[] = ['16.04'];
+	CLUSTER_IMAGES_BLOCKLIST: string[] = ['16.04'];
 
-		/**
-		 * All image of a project.
-		 */
-		images: Image[];
+	/**
+	 * All image of a project.
+	 */
+	images: Image[];
 
-		flavors_loaded: boolean = false;
+	flavors_loaded: boolean = false;
 
-		projects_loaded: boolean;
+	projects_loaded: boolean;
 
-		userinfo_loaded: boolean;
+	userinfo_loaded: boolean;
 
 	create_error: IResponseTemplate;
 	initial_loaded: boolean = false;
 
-		/**
-		 * All flavors of a project.
-		 */
-		flavors: Flavor[] = [];
+	/**
+	 * All flavors of a project.
+	 */
+	flavors: Flavor[] = [];
 
-		flavors_usable: Flavor[] = [];
-		selected_flavor_types: Flavor[] = [];
-		selected_flavor_type: string = 'Standard Flavors';
-		flavor_types: { [name: string]: Flavor[] } = {};
-		vm_limit_reached: boolean = false;
-		cores_limit_reached: boolean = false;
-		ram_limit_reached: boolean = false;
+	flavors_usable: Flavor[] = [];
+	selected_flavor_types: Flavor[] = [];
+	selected_flavor_type: string = 'Standard Flavors';
+	flavor_types: { [name: string]: Flavor[] } = {};
+	vm_limit_reached: boolean = false;
+	cores_limit_reached: boolean = false;
+	ram_limit_reached: boolean = false;
 
-		cluster_id: string;
-		cluster_error: string;
-		cluster_started: boolean = false;
-		cluster_responsibility: boolean = false;
-		initial_loaded: boolean = false;
+	cluster_id: string;
+	cluster_error: string;
+	cluster_started: boolean = false;
+	cluster_responsibility: boolean = false;
 
-		/**
-		 * Selected Image.
-		 */
-		selectedImage: Image;
-		selectedMasterImage: Image;
-		selectedWorkerBatches: WorkerBatch[] = [new WorkerBatch(1)];
-		selectedBatch: WorkerBatch = this.selectedWorkerBatches[0];
+	/**
+	 * Selected Image.
+	 */
+	selectedImage: Image;
+	selectedMasterImage: Image;
+	selectedWorkerBatches: WorkerBatch[] = [new WorkerBatch(1)];
+	selectedBatch: WorkerBatch = this.selectedWorkerBatches[0];
 
-		maxWorkerInstances: number;
+	maxWorkerInstances: number;
 
-		singleProject: boolean = false;
-		cluster_name: string = '';
+	singleProject: boolean = false;
+	cluster_name: string = '';
 
-		/**
-		 * Selected Flavor.
-		 */
-		selectedMasterFlavor: Flavor;
-		selectedFlavor: Flavor;
-		selectedWorkerFlavorSet: boolean = false;
+	/**
+	 * Selected Flavor.
+	 */
+	selectedMasterFlavor: Flavor;
+	selectedFlavor: Flavor;
+	selectedWorkerFlavorSet: boolean = false;
 
-		workerInstancesCount: number;
+	workerInstancesCount: number;
 
-		/**
-		 * Userinfo from the user.
-		 */
-		userinfo: Userinfo;
+	/**
+	 * Userinfo from the user.
+	 */
+	userinfo: Userinfo;
 
-		/**
-		 * Selected Project vms client.
-		 */
-		selectedProjectClient: Client;
+	/**
+	 * Selected Project vms client.
+	 */
+	selectedProjectClient: Client;
 
-		selectedProjectRessources: ApplicationRessourceUsage;
+	selectedProjectRessources: ApplicationRessourceUsage;
 
-		/**
-		 * The selected project ['name',id].
-		 */
-		selectedProject: [string, number];
+	/**
+	 * The selected project ['name',id].
+	 */
+	selectedProject: [string, number];
 
-		/**
-		 * If the client for a project is viable.
-		 */
-		client_available: boolean = false;
+	/**
+	 * If the client for a project is viable.
+	 */
+	client_available: boolean = false;
 
-		/**
-		 * If the data for the site is initialized.
-		 *
-		 * @type {boolean}
-		 */
+	/**
+	 * If the data for the site is initialized.
+	 *
+	 * @type {boolean}
+	 */
 
-		/**
-		 * All projects of the user.
-		 *
-		 * @type {any[]}
-		 */
-		projects: [string, number][] = [];
+	/**
+	 * All projects of the user.
+	 *
+	 * @type {any[]}
+	 */
+	projects: [string, number][] = [];
 
-		/**
-		 * All projects of the user where the user is allowed to start machines.
-		 *
-		 * @type {any[]}
-		 */
-		allowedProjects: [string, number][] = [];
+	/**
+	 * All projects of the user where the user is allowed to start machines.
+	 *
+	 * @type {any[]}
+	 */
+	allowedProjects: [string, number][] = [];
 
-		/**
-		 * If all project data is loaded.
-		 *
-		 * @type {boolean}
-		 */
-		projectDataLoaded: boolean = false;
+	/**
+	 * If all project data is loaded.
+	 *
+	 * @type {boolean}
+	 */
+	projectDataLoaded: boolean = false;
 
-		newCores: number = 0;
-		newRam: number = 0;
-		newVms: number = 2;
-		newGpus: number = 0;
-		subscription: Subscription = new Subscription();
+	newCores: number = 0;
+	newRam: number = 0;
+	newVms: number = 2;
+	newGpus: number = 0;
+	subscription: Subscription = new Subscription();
 
-		@ViewChild('bioconda', {static: true}) biocondaComponent: BiocondaComponent;
+	@ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
 
 	constructor(
 		private groupService: GroupService,
@@ -253,11 +252,33 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 			});
 		}
 
-		calcWorkerInstancesCount(): void {
-				let count: number = 0;
-				this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-						batch.valid_batch = batch.worker_count <= batch.max_worker_count && batch.worker_count > 0;
-						count += batch.worker_count;
+		this.newRam = tmp_ram;
+		this.newCores = tmp_cores;
+		this.newGpus = tmp_gpus;
+	}
+
+	generateRandomName(): void {
+		const rng: RandomNameGenerator = new RandomNameGenerator();
+		this.cluster_name = `${rng.randomName()}Cluster`;
+	}
+
+	/**
+	 * Get images for the project.
+	 *
+	 * @param project_id
+	 */
+	getImages(project_id: number): void {
+		this.subscription.add(
+			this.imageService.getImages(project_id, 'cluster').subscribe((images: Image[]): void => {
+				this.images = images.filter((image: Image): boolean => {
+					let not_blocked: boolean = true;
+					this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
+						if (image.name.includes(str)) {
+							not_blocked = false;
+						}
+					});
+
+					return not_blocked;
 				});
 				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
 			}),
@@ -537,4 +558,5 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				}
 			}
 		}
+	}
 }

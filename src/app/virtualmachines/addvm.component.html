@@ -1,94 +1,91 @@
 <div *ngIf="userinfo_loaded && userinfo?.PublicKey === 'None'">
-    <div>
-        <div class="card">
-            <div class="card-header"><i class="fa fa-align-justify"></i> Public Key</div>
+	<div>
+		<div class="card">
+			<div class="card-header"><i class="fa fa-align-justify"></i> Public Key</div>
 
-            <div class="card-body">
-                <div style="padding: 5px" class="alert alert-primary">
-                    <strong>Info: </strong> You need to set a valid SSH Key before you can start a machine. Please set a
-                    valid key
-                    below or on your <a href="#/userinfo">personal data page</a>.
-                </div>
-                <div style="width: 100%" class="table-responsive">
-                    <table class="table table-striped">
-                        <tr app-public-key [userinfo]="userinfo"></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+			<div class="card-body">
+				<div style="padding: 5px" class="alert alert-primary">
+					<strong>Info: </strong> You need to set a valid SSH Key before you can start a machine. Please set a valid key
+					below or on your <a href="#/userinfo">personal data page</a>.
+				</div>
+				<div style="width: 100%" class="table-responsive">
+					<table class="table table-striped">
+						<tr app-public-key [userinfo]="userinfo"></tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div
-        *ngIf="(singleProject && !projectDataLoaded) || (!singleProject && !projects_loaded)"
-        class="loader"
-        data-test-id="site-loader"
+	*ngIf="(singleProject && !projectDataLoaded) || (!singleProject && !projects_loaded)"
+	class="loader"
+	data-test-id="site-loader"
 ></div>
 <div *ngIf="userinfo_loaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
-    <div class="alert alert-warning" role="alert">You are not a member of a SimpleVM project.</div>
+	<div class="alert alert-warning" role="alert">You are not a member of a SimpleVM project.</div>
 </div>
 <div
-        *ngIf="
+	*ngIf="
 		userinfo?.PublicKey !== 'None' && projects.length > 0 && (!singleProject || (singleProject && projectDataLoaded))
 	"
-        class="animated fadeIn"
+	class="animated fadeIn"
 >
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card" style="">
-                <div class="card-header">
-                    <strong>New Virtual Machine</strong>
-                    <span *ngIf="singleProject" id="singleProjectNameSpan">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card" style="">
+				<div class="card-header">
+					<strong>New Virtual Machine</strong>
+					<span *ngIf="singleProject" id="singleProjectNameSpan">
 						- <strong>{{ this.selectedProject[0] }}</strong></span
-                    >
-                </div>
+					>
+				</div>
 
-                <div class="card-body">
-                    <form id="application_form" #f="ngForm" class="form-horizontal">
-                        <div
-                                class="form-group row col-md-12 justify-content-center"
-                                *ngIf="!singleProject"
-                                style="padding-right: 3rem; padding-left: 3rem"
-                        >
-                            <div class="col-md-8">
-                                <label for="projectSelect"><strong>Please select a project</strong></label>
-                                <select
-                                        required
-                                        class="form-control form-select"
-                                        name="projectSelect"
-                                        *ngIf="!singleProject"
-                                        [(ngModel)]="selectedProject"
-                                        id="projectSelect"
-                                        data-test-id="project_selection_dropdown"
-                                        (ngModelChange)="getSelectedProjectClient(); resetChecks()"
-                                >
-                                    <option value="undefined" disabled selected hidden>Please Select</option>
-                                    <option
-                                            *ngFor="let project of projects"
-                                            [ngValue]="project"
-                                            id="id_option_{{ project[0] }}"
-                                            [attr.data-test-id]="'project_option_' + project[0]"
-                                            label="{{ project[0] }}"
-                                    >
-                                        {{ project[0] }}
-                                    </option>
-                                </select>
-                                <label *ngIf="singleProject"
-                                ><strong>{{ selectedProject[0] }}</strong></label
-                                >
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <span *ngIf="client_available && !projectDataLoaded"
-                                  class="spinner-border text-info"></span>
-                        </div>
-                        <div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
-                            <div *ngIf="client_available && projectDataLoaded">
-                                <app-resource-overview
-                                        [ressourceUsage]="selectedProjectRessources"></app-resource-overview>
-                                <div
-                                        class="alert alert-warning"
-                                        *ngIf="
+				<div class="card-body">
+					<form id="application_form" #f="ngForm" class="form-horizontal">
+						<div
+							class="form-group row col-md-12 justify-content-center"
+							*ngIf="!singleProject"
+							style="padding-right: 3rem; padding-left: 3rem"
+						>
+							<div class="col-md-8">
+								<label for="projectSelect"><strong>Please select a project</strong></label>
+								<select
+									required
+									class="form-control form-select"
+									name="projectSelect"
+									*ngIf="!singleProject"
+									[(ngModel)]="selectedProject"
+									id="projectSelect"
+									data-test-id="project_selection_dropdown"
+									(ngModelChange)="getSelectedProjectClient(); resetChecks()"
+								>
+									<option value="undefined" disabled selected hidden>Please Select</option>
+									<option
+										*ngFor="let project of projects"
+										[ngValue]="project"
+										id="id_option_{{ project[0] }}"
+										[attr.data-test-id]="'project_option_' + project[0]"
+										label="{{ project[0] }}"
+									>
+										{{ project[0] }}
+									</option>
+								</select>
+								<label *ngIf="singleProject"
+									><strong>{{ selectedProject[0] }}</strong></label
+								>
+							</div>
+						</div>
+						<div class="row justify-content-center">
+							<span *ngIf="client_available && !projectDataLoaded" class="spinner-border text-info"></span>
+						</div>
+						<div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
+							<div *ngIf="client_available && projectDataLoaded">
+								<app-resource-overview [ressourceUsage]="selectedProjectRessources"> </app-resource-overview>
+								<div
+									class="alert alert-warning"
+									*ngIf="
 										selectedProject &&
 										((selectedProjectRessources | noVMsPipe) ||
 											(selectedProjectRessources | noRamPipe) ||
@@ -924,68 +921,67 @@
 					</form>
 				</div>
 
-                <div class="alert alert-danger" *ngIf="!client_available && selectedProject && client_checked">
-                    The corresponding client is currently offline. If you have any questions please contact
-                    <a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a> Check our
-                    <a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if
-                    the site
-                    of your project is reachable.
-                </div>
-            </div>
+				<div class="alert alert-danger" *ngIf="!client_available && selectedProject && client_checked">
+					The corresponding client is currently offline. If you have any questions please contact
+					<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a> Check our
+					<a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site
+					of your project is reachable.
+				</div>
+			</div>
 
-            <!--/.col-->
-        </div>
-    </div>
-    <div class="col-md-6"></div>
+			<!--/.col-->
+		</div>
+	</div>
+	<div class="col-md-6"></div>
 </div>
 
 <div
-        bsModal
-        #redirectModal="bs-modal"
-        class="modal fade"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="myModalLabel"
-        aria-hidden="true"
-        id="redirect_modal"
+	bsModal
+	#redirectModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+	aria-hidden="true"
+	id="redirect_modal"
 >
-    <div class="modal-dialog modal-info" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{{ !error_starting_machine ? 'Redirecting' : 'Error starting VM' }}</h4>
-            </div>
-            <div class="modal-body" *ngIf="!error_starting_machine">
-                <p>{{ progress_bar_status }}</p>
-                <p data-test-id="redirecting_instance_overview">Redirecting to Instance Overview...</p>
-                <p>
-                    <br/>Learn about persistent terminal sessions in our
-                    <a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Wiki</a>.
-                </p>
-                <div class="progress">
-                    <div
-                            class="progress-bar progress-bar-striped {{ progress_bar_animated }} bg-info"
-                            role="progressbar"
-                            style="width: 0"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                            [style.width.%]="progress_bar_width"
-                    ></div>
-                </div>
-                <span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{ newVm?.name }}</span>
-            </div>
-            <div class="modal-body" *ngIf="error_starting_machine">
-                <p>An error occurred while trying to start the machine. Please reload this page.</p>
-            </div>
-            <div class="modal-footer" *ngIf="error_starting_machine">
-                <div class="row">
-                    <div class="col">
-                        <button class="btn btn-danger" (click)="redirectModal.hide()">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
+	<div class="modal-dialog modal-info" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">{{ !error_starting_machine ? 'Redirecting' : 'Error starting VM' }}</h4>
+			</div>
+			<div class="modal-body" *ngIf="!error_starting_machine">
+				<p>{{ progress_bar_status }}</p>
+				<p data-test-id="redirecting_instance_overview">Redirecting to Instance Overview...</p>
+				<p>
+					<br />Learn about persistent terminal sessions in our
+					<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Wiki</a>.
+				</p>
+				<div class="progress">
+					<div
+						class="progress-bar progress-bar-striped {{ progress_bar_animated }} bg-info"
+						role="progressbar"
+						style="width: 0"
+						aria-valuemin="0"
+						aria-valuemax="100"
+						[style.width.%]="progress_bar_width"
+					></div>
+				</div>
+				<span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{ newVm?.name }}</span>
+			</div>
+			<div class="modal-body" *ngIf="error_starting_machine">
+				<p>An error occurred while trying to start the machine. Please reload this page.</p>
+			</div>
+			<div class="modal-footer" *ngIf="error_starting_machine">
+				<div class="row">
+					<div class="col">
+						<button class="btn btn-danger" (click)="redirectModal.hide()">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
