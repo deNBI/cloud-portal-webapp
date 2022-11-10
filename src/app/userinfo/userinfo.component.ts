@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { Userinfo } from './userinfo.model';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { KeyService } from '../api-connector/key.service';
@@ -7,6 +7,7 @@ import { UserService } from '../api-connector/user.service';
 import { GroupService } from '../api-connector/group.service';
 import { IResponseTemplate } from '../api-connector/response-template';
 import { LIFESCIENCE_LINKING_ACCOUNTS, WIKI_LINK_ACCOUNTS } from '../../links/links';
+import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
 
 /**
  * UserInformation component.
@@ -38,6 +39,28 @@ export class UserInfoComponent implements OnInit {
 	 * @type {boolean}
 	 */
 	isLoaded: boolean = false;
+
+	/**
+	 * If the data used for summary of leave-vo-modal is collected
+	 *
+	 * @type {boolean}
+	 */
+	summaryLoaded: boolean = false;
+
+	/**
+	 * Subscription to accumulate all requests for summary
+	 *
+	 * @type {Subscription}
+	 */
+	// TODO: checkout how to summarize subscriptions on virtualmachine service
+	summarySubscription: Subscription = new Subscription();
+
+	/**
+	 * summary of projects the user is member of
+	 *
+	 * @type {boolean}
+	 */
+	userProjects: string[] = [];
 
 	/**
 	 * If the user is part of a project.
@@ -148,5 +171,26 @@ export class UserInfoComponent implements OnInit {
 
 	joinFreemium(): void {
 		this.groupService.addMemberToFreemium().subscribe();
+	}
+
+	/**
+	 * Collects data to show for user, when opening Leave Virtual Organisation Modal.
+	 */
+	getUserSummary(): void {
+		if (!this.summaryLoaded) {
+			this.userService.getLoggedUser().subscribe({
+				next: () => {
+					this.groupService.getGroupsEnumeration().subscribe({
+						next: (res: ProjectEnumeration[]) => {
+							this.userProjects = res.map((pr: ProjectEnumeration) => pr.project_name);
+						},
+						error: () => {},
+					});
+				},
+				error: (err: any) => {
+					console.log(err);
+				},
+			});
+		}
 	}
 }
