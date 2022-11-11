@@ -231,7 +231,7 @@ export class ImageService {
 			.pipe(map((snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page)));
 	}
 
-	sortImages(images: Image[]): { [name: string]: Image[] } {
+	sortImages(images: Image[], resenv_names: string[] = []): { [name: string]: Image[] } {
 		const image_types: { [name: string]: Image[] } = {};
 		image_types[ImageTypes.IMAGE] = [];
 		image_types[ImageTypes.SNAPSHOT] = [];
@@ -242,7 +242,7 @@ export class ImageService {
 				image_types[ImageTypes.SNAPSHOT].push(image);
 			} else if (image.tags.includes('base_image')) {
 				image_types[ImageTypes.IMAGE].push(image);
-			} else if (image.tags.filter(x => TemplateNames.ALL_TEMPLATE_NAMES.includes(x)).length > 0) {
+			} else if (image.tags.filter(x => resenv_names.includes(x)).length > 0) {
 				image_types[ImageTypes.RESENV].push(image);
 			}
 		}
