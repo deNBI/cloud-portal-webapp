@@ -532,6 +532,7 @@
 							<select
 								class="form-control form-select"
 								[(ngModel)]="selectedFacility"
+								(ngModelChange)="this.adjustVerifyText()"
 								name="selectedFacility"
 								id="selectedFacility"
 							>
@@ -549,14 +550,15 @@
 							<select
 								class="form-control form-select"
 								[(ngModel)]="selectedProjectType"
+								(ngModelChange)="adjustVerifyText()"
 								name="selectedProjectType"
 								id="selectedProjectType"
 							>
-								<option value="ALL" selected>All</option>
-								<option value="ALL_GM" *ngIf="emailType === 0">All active projects</option>
-								<option value="EXP" *ngIf="emailType === 0">All expired projects</option>
-								<option value="SVP">Simple VM projects</option>
-								<option value="OVP">OpenStack projects</option>
+								<option [ngValue]="'ALL'" [defaultSelected]="true">All</option>
+								<option [ngValue]="'ALL_GM'" *ngIf="emailType === 0">All active projects</option>
+								<option [ngValue]="'EXP'" *ngIf="emailType === 0">All expired projects</option>
+								<option [ngValue]="'SVP'">Simple VM projects</option>
+								<option [ngValue]="'OVP'">OpenStack projects</option>
 							</select>
 						</div>
 					</div>
@@ -568,6 +570,7 @@
 									type="checkbox"
 									[ngModelOptions]="{ standalone: true }"
 									[(ngModel)]="emailAdminsOnly"
+									(ngModelChange)="this.adjustVerifyText()"
 									id="adminOnlyCheckbox"
 								/>
 								<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>

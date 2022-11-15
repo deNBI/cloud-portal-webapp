@@ -197,15 +197,59 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		switch (this.emailType) {
 			case 0: {
 				this.emailHeader = 'Send email to selected members of the VO';
-				this.emailVerify = 'Are you sure you want to send this email to all members of the vo?';
 				break;
 			}
 			case 1: {
 				this.emailHeader = 'Send newsletter to VO';
-				this.emailVerify = 'Are you sure you want to send this newsletter?';
 				break;
 			}
 			default:
+		}
+		this.emailVerify = 'Are you sure you want to send this newsletter to all members of the de.NBI VO?';
+	}
+
+	getFacilityName(): string {
+		if (this.selectedFacility === 'ALL') {
+			return 'of the de.NBI VO';
+		} else {
+			const temp_cc = this.computecenters.find(cc => cc.FacilityId === this.selectedFacility);
+			if (temp_cc === undefined) {
+				return 'of the de.NBI VO';
+			} else {
+				return `of the facility "${temp_cc.Name}"`;
+			}
+		}
+	}
+
+	getMailConfinementByProjectType(): string {
+		switch (this.selectedProjectType) {
+			case 'ALL_GM':
+				return 'of all active projects';
+			case 'EXP':
+				return 'of all expired projects';
+			case 'SVP':
+				return 'of all SimpleVM projects';
+			case 'OVP':
+				return 'of all OpenStack projects';
+			default:
+				return '';
+		}
+	}
+
+	adjustVerifyText(): void {
+		switch (this.emailType) {
+			case 0: {
+				this.emailVerify = `Are you sure you want to send this email to all ${
+					this.emailAdminsOnly ? ' group administrators' : 'members'
+				} ${this.getMailConfinementByProjectType()} ${this.getFacilityName()} ?`;
+				break;
+			}
+			case 1: {
+				this.emailVerify = `Are you sure you want to send this newsletter to all members ${this.getMailConfinementByProjectType()} ${this.getFacilityName()} ?`;
+				break;
+			}
+			default:
+				this.emailVerify = 'Are you sure you want to send this?';
 		}
 	}
 
