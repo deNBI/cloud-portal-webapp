@@ -126,28 +126,62 @@
 					Note: Your LifeScienceAI account will not be deleted by leaving the virtual organisation. If you wish to delete this account, please contact the corresponding support.
 				</div>
 
-				<table class="table" *ngIf="summaryLoaded">
+				<div *ngIf="summaryLoaded" ><h5>Projects</h5>
+				<table class="table">
 					<thead>
 					<tr>
-						<th scope="col">Project</th>
+						<th scope="col">Name</th>
 						<th>Type</th>
-						<th>Role</th>
+						<th>Your role</th>
 					</tr>
 					</thead>
 					<tbody>
 					<tr *ngFor="let prj of userProjects">
-						<th scope="row">{{prj.project_name}}</th>
+						<th scope="row">{{prj.project_application_shortname}}</th>
 						<td>
-							<span *ngIf="prj.is_open_stack" class="badge bg-warning">OpenStack</span>
-							<span *ngIf="!prj.is_open_stack" class="badge bg-info-blue">SimpleVM</span>
+							<span *ngIf="prj.project_application_openstack_project" class="badge bg-warning">OpenStack</span>
+							<span *ngIf="!prj.project_application_openstack_project" class="badge bg-info-blue">SimpleVM</span>
 						</td>
-						<td></td>
+						<td>
+							<span *ngIf="!prj.user_is_admin && !prj.user_is_pi" class="badge bg-info">Member</span>
+							<span *ngIf="prj.user_is_admin"	class="badge bg-success">Admin</span>
+							<span *ngIf="prj.user_is_pi" class="badge badge-danger">PI</span>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<h5>Virtual machines</h5>
+				<table class="table">
+					<thead>
+					<tr>
+						<th scope="col">Name</th>
+						<th>Flavor</th>
+						<th>Image</th>
+						<th>Project</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr *ngFor="let vm of userVirtualMachines">
+						<th scope="row">{{vm.name}}</th>
+						<td>{{vm.flavor.name}}</td>
+						<td>{{vm.image}}</td>
+						<td>{{vm.project}}</td>
 					</tr>
 					</tbody>
 				</table>
 			</div>
+				<div class="alert alert-danger" *ngIf="isUserAdmin() || isUserPi()">
+					<!-- text -->Hello World!
+				</div>
+			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" (click)="leaveVoModal.hide()">Close</button>
+					<button type="button" class="btn btn-primary"
+									(click)="leaveVirtualOrganisation();"
+									[disabled]="isUserAdmin() || isUserPi()"
+					>Leave VO</button>
+
+					<button type="button" class="btn btn-secondary" (click)="leaveVoModal.hide()">Close</button>
+
 			</div>
 		</div>
 		<!-- /.modal-content -->

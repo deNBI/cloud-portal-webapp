@@ -11,6 +11,9 @@ import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
 import { ApplicationsService } from "../api-connector/applications.service";
 import { VirtualmachineService } from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "../virtualmachines/virtualmachinemodels/virtualmachine";
+import {VirtualMachineStates} from "../virtualmachines/virtualmachinemodels/virtualmachinestates";
+import {Application} from "../applications/application.model/application.model";
+import {Project} from "@playwright/test";
 
 /**
  * UserInformation component.
@@ -63,7 +66,7 @@ export class UserInfoComponent implements OnInit {
 	 *
 	 * @type {ProjectEnumeration[]}
 	 */
-	userProjects: ProjectEnumeration[] = [];
+	userProjects: Application[] = [];
 
 
 	/**
@@ -189,32 +192,51 @@ export class UserInfoComponent implements OnInit {
 		this.groupService.addMemberToFreemium().subscribe();
 	}
 
+
+	// TODO: PIPE?
+	isUserPi(): boolean {
+		return this.userProjects.some((application: Application) => application.user_is_pi);
+	}
+
+	isUserAdmin(): boolean {
+		return this.userProjects.some((application: Application) => application.user_is_admin);
+	}
+
+	leaveVirtualOrganisation(): void {
+		console.log('Not Implemented yet');
+	}
+
 	/**
 	 * Collects data to show for user, when opening Leave Virtual Organisation Modal.
 	 */
 	getUserSummary(): void {
+
+		// TODO CHECK HOW TO JOIN ALL REQUESTS
 		if (!this.summaryLoaded) {
 			this.userService.getLoggedUser().subscribe({
 				next: (res: any) => {
 					console.log(res);
 
 					this.groupService.getGroupsEnumeration().subscribe({
-						next: (res: ProjectEnumeration[]) => {
-							this.userProjects = res.map((pr: ProjectEnumeration) => pr);
-							const application_ids: string[] = this.userProjects.map((pr: ProjectEnumeration) => pr.application_id);
-							for (let app of application_ids) {
-								this.applicationsService.getApplication(app).subscribe({
-									next: (resapp: any) => {
-										// TODO: need to fork stuff and check where the user is PI, admin or something - if has admin or pi role
-										// also show another alert - and especially in case of pi prevent from leaving
+						next: (res_enumerations: ProjectEnumeration[]) => {
+							const application_ids: string[] = res_enumerations.map((pr: ProjectEnumeration) => pr.application_id);
+
+							forkJoin(application_ids.map(app_id => this.applicationsService.getFullApplicationByUserPermissions(app_id))).subscribe(
+								{
+									next: (userProjectResult: Application[]) => {
+										this.userProjects = userProjectResult;
 									}
 								});
-							}
-							// TODO: get all VMs but not as page - if longer than certain number just [...]
-							let vmFilter: string[] = [];
-							this.vmService.getVmsFromLoggedInUser(null, null, null, vmFilter, false, false, true).subscribe({
+							const vmFilter: string[] = [
+								VirtualMachineStates.ACTIVE,
+								VirtualMachineStates.SHUTOFF,
+								VirtualMachineStates.CLIENT_OFFLINE,
+							];
+							VirtualMachineStates.IN_PROCESS_STATES.forEach((state: string) => vmFilter.push(state));
+							this.vmService.getVmsFromLoggedInUser(0, 25, '', vmFilter, false, false, true).subscribe({
 								next: (res: VirtualMachine[]) => {
 									this.userVirtualMachines = res;
+									console.log(res);
 								}
 							});
 							this.summaryLoaded = true;
