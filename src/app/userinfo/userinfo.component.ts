@@ -8,6 +8,9 @@ import { GroupService } from '../api-connector/group.service';
 import { IResponseTemplate } from '../api-connector/response-template';
 import { LIFESCIENCE_LINKING_ACCOUNTS, WIKI_LINK_ACCOUNTS } from '../../links/links';
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
+import { ApplicationsService } from "../api-connector/applications.service";
+import { VirtualmachineService } from "../api-connector/virtualmachine.service";
+import {VirtualMachine} from "../virtualmachines/virtualmachinemodels/virtualmachine";
 
 /**
  * UserInformation component.
@@ -58,9 +61,17 @@ export class UserInfoComponent implements OnInit {
 	/**
 	 * summary of projects the user is member of
 	 *
-	 * @type {boolean}
+	 * @type {ProjectEnumeration[]}
 	 */
-	userProjects: string[] = [];
+	userProjects: ProjectEnumeration[] = [];
+
+
+	/**
+	 * summary of vms the user has
+	 *
+	 * @type {VirtualMachine[]}
+	 */
+	userVirtualMachines: VirtualMachine[] = [];
 
 	/**
 	 * If the user is part of a project.
@@ -90,10 +101,15 @@ export class UserInfoComponent implements OnInit {
 	WIKI_LINK_ACCOUNTS: string = WIKI_LINK_ACCOUNTS;
 	LIFESCIENCE_LINKING_ACCOUNTS: string = LIFESCIENCE_LINKING_ACCOUNTS;
 
-	constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
+	constructor(private groupService: GroupService, private userService: UserService,
+							private keyService: KeyService, private applicationsService: ApplicationsService,
+							private vmService: VirtualmachineService,
+	) {
 		this.groupService = groupService;
 		this.userService = userService;
 		this.keyService = keyService;
+		this.applicationsService = applicationsService;
+		this.vmService = vmService;
 	}
 
 	requestChangePreferredMailUser(email: string): void {
@@ -179,10 +195,30 @@ export class UserInfoComponent implements OnInit {
 	getUserSummary(): void {
 		if (!this.summaryLoaded) {
 			this.userService.getLoggedUser().subscribe({
-				next: () => {
+				next: (res: any) => {
+					console.log(res);
+
 					this.groupService.getGroupsEnumeration().subscribe({
 						next: (res: ProjectEnumeration[]) => {
-							this.userProjects = res.map((pr: ProjectEnumeration) => pr.project_name);
+							this.userProjects = res.map((pr: ProjectEnumeration) => pr);
+							const application_ids: string[] = this.userProjects.map((pr: ProjectEnumeration) => pr.application_id);
+							for (let app of application_ids) {
+								this.applicationsService.getApplication(app).subscribe({
+									next: (resapp: any) => {
+										// TODO: need to fork stuff and check where the user is PI, admin or something - if has admin or pi role
+										// also show another alert - and especially in case of pi prevent from leaving
+									}
+								});
+							}
+							// TODO: get all VMs but not as page - if longer than certain number just [...]
+							let vmFilter: string[] = [];
+							this.vmService.getVmsFromLoggedInUser(null, null, null, vmFilter, false, false, true).subscribe({
+								next: (res: VirtualMachine[]) => {
+									this.userVirtualMachines = res;
+								}
+							});
+							this.summaryLoaded = true;
+							console.log(res);
 						},
 						error: () => {},
 					});

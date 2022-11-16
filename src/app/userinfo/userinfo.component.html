@@ -119,7 +119,33 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body"></div>
+			<div class="modal-body">
+				<div class="alert alert-warning">
+					Please be aware that by leaving the de.NBI VO, access to all projects and machines listed here will no longer be possible. You will also need to re-register for the VO in order to submit a new project application.
+
+					Note: Your LifeScienceAI account will not be deleted by leaving the virtual organisation. If you wish to delete this account, please contact the corresponding support.
+				</div>
+
+				<table class="table" *ngIf="summaryLoaded">
+					<thead>
+					<tr>
+						<th scope="col">Project</th>
+						<th>Type</th>
+						<th>Role</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr *ngFor="let prj of userProjects">
+						<th scope="row">{{prj.project_name}}</th>
+						<td>
+							<span *ngIf="prj.is_open_stack" class="badge bg-warning">OpenStack</span>
+							<span *ngIf="!prj.is_open_stack" class="badge bg-info-blue">SimpleVM</span>
+						</td>
+						<td></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" (click)="leaveVoModal.hide()">Close</button>
 			</div>

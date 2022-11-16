@@ -266,13 +266,14 @@ export class VirtualmachineService {
 	}
 
 	getVmsFromLoggedInUser(
-		page: number,
-		vm_per_site: number,
+		page?: number,
+		vm_per_site?: number,
 		filter?: string,
 		filter_status?: string[],
 		filter_cluster: boolean = false,
 		filter_set_for_termination: boolean = false,
-	): Observable<VirtualMachinePage> {
+		not_paginated: boolean = false
+	): Observable<VirtualMachinePage | VirtualMachine[]> {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 
 		if (filter) {
@@ -289,7 +290,7 @@ export class VirtualmachineService {
 		}
 
 		return this.http
-			.get<VirtualMachinePage>(this.baseVmUrl, {
+			.get<VirtualMachinePage | VirtualMachine[]>(this.baseVmUrl, {
 				withCredentials: true,
 				params,
 			})
