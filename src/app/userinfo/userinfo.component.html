@@ -194,6 +194,7 @@
 					<button type="button" class="btn btn-primary"
 									(click)="this.leaveVoModal.hide(); this.confirmLeaveModal.show();"
 									[disabled]="!summaryLoaded || (userIsLoneAdmin || userIsProjectPi)"
+
 					>Leave VO</button>
 
 					<button type="button" class="btn btn-secondary" (click)="leaveVoModal.hide()">Close</button>
@@ -234,9 +235,50 @@
 				<button type="button" class="btn btn-success"
 								(click)="this.leaveVirtualOrganisation(); this.confirmLeaveModal.hide();"
 								[disabled]="!summaryLoaded || (userIsLoneAdmin || userIsProjectPi)"
+
 				>Confirm Leave</button>
 
 				<button type="button" class="btn btn-danger" (click)="confirmLeaveModal.hide()">Abort</button>
+
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div
+	bsModal
+	#leaveResultModal="bs-modal"
+	id="leaveResultModal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Leaving of VO {{this.leavingSucceeded ? 'successful' : 'failed'}}</h4>
+				<button type="button" class="close" style="cursor: pointer" (click)="leaveResultModal.hide();" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-info" [ngClass]="leavingSucceeded ? 'alert-info' : 'alert-danger'">
+					<strong *ngIf="leavingSucceeded">You have leaved the de.NBI VO successfully! You will get logged out now.</strong>
+					<strong *ngIf="!leavingSucceeded">An error occurred leaving the de.NBI VO! PLease contact the support!</strong>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+								(click)="this.leaveVirtualOrganisation(); this.leaveResultModal.hide();"
+				>OK</button>
+
+
 
 			</div>
 		</div>

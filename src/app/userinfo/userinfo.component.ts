@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {forkJoin, Subscription} from 'rxjs';
 import {Userinfo} from './userinfo.model';
 import {ApiSettings} from '../api-connector/api-settings.service';
@@ -17,6 +17,9 @@ import {Project} from "@playwright/test";
 import {CLOUD_PORTAL_SUPPORT_MAIL} from "../../links/links";
 import {ProjectMember} from "../projectmanagement/project_member.model";
 import {application} from "express";
+import {Application_States} from "../shared/shared_modules/baseClass/abstract-base-class";
+import {HttpResponse} from "@angular/common/http";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
 /**
  * UserInformation component.
@@ -65,10 +68,12 @@ export class UserInfoComponent implements OnInit {
 
 	userIsOpenStackUser: boolean = false;
 
+	leavingSucceeded: boolean = false;
+
 	/**
 	 * summary of projects the user is member of
 	 *
-	 * @type {ProjectEnumeration[]}
+	 * @type {Application[]}
 	 */
 	userProjects: Application[] = [];
 
@@ -109,6 +114,8 @@ export class UserInfoComponent implements OnInit {
 		+ 'You will receive the newsletter until you deactivate the option in the settings again.';
 	WIKI_LINK_ACCOUNTS: string = WIKI_LINK_ACCOUNTS;
 	LIFESCIENCE_LINKING_ACCOUNTS: string = LIFESCIENCE_LINKING_ACCOUNTS;
+
+	@ViewChild('leaveResultModal') leaveResultModal: BsModalRef;
 
 	constructor(private groupService: GroupService, private userService: UserService,
 							private keyService: KeyService, private applicationsService: ApplicationsService,
@@ -224,7 +231,21 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	leaveVirtualOrganisation(): void {
-		// TODO: request to endpoint to delete member/user and remove user from all groups - if not done automatically by perun
+		this.userService.deleteUserFromVO(this.userInfo.MemberId).subscribe({
+			next: (response: HttpResponse<any>) => {
+				console.log("yes");
+				this.showLeaveResultModal(true);
+			},
+			error: (err: any) => {
+				console.log(err);
+				this.showLeaveResultModal(false);
+		}
+		});
+	}
+
+	showLeaveResultModal(success: boolean): void {
+		this.leavingSucceeded = success;
+		// Todo open modal;
 	}
 
 	/**
@@ -249,11 +270,14 @@ export class UserInfoComponent implements OnInit {
 				next: (res_enumerations: ProjectEnumeration[]) => {
 					const application_ids: string[] = res_enumerations.map((pr: ProjectEnumeration) => pr.application_id);
 
+
 					forkJoin(application_ids.map(app_id => this.applicationsService.getFullApplicationByUserPermissions(app_id))).subscribe(
 						{
 							next: (userProjectResult: Application[]) => {
 								this.userProjects = userProjectResult;
-								const group_ids: string[] = this.userProjects.map((user_application: Application) => user_application.project_application_perun_id.toString());
+								const group_ids: string[] = this.userProjects
+									.filter((pr_app: Application) => pr_app.project_application_statuses.includes(Application_States.APPROVED))
+									.map((user_application: Application) => user_application.project_application_perun_id.toString());
 								forkJoin(group_ids.map(group_id => this.groupService.getGroupMembers(group_id))).subscribe(
 									{
 										next: (project_members: ProjectMember[][]) => {
