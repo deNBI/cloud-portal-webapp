@@ -49,7 +49,9 @@
 				<div class="card-body">
 					<div class="d-flex justify-content-between p-2">
 						<ngb-pagination
-								[maxSize]="10" [rotate]="true" [boundaryLinks]="true"
+							[maxSize]="10"
+							[rotate]="true"
+							[boundaryLinks]="true"
 							[collectionSize]="(total$ | async)!"
 							[(page)]="sortProjectService.page"
 							[pageSize]="sortProjectService.pageSize"
@@ -70,7 +72,6 @@
 								<input
 									id="table-complete-search"
 									[attr.data-test-id]="'filter_project_name'"
-
 									type="text"
 									class="form-control"
 									name="searchTerm"
@@ -430,7 +431,7 @@
 												(click)="setProtected(project, true); notificationModal.show()"
 												*ngIf="!(project | hasstatusinlist: application_states.PROTECTED)"
 											>
-												<i class="fa fa-trash"></i>&nbsp;Set Protected
+												<i class="fas fa-lock"></i>&nbsp;Set Protected
 											</button>
 											<button
 												style="margin-left: 5px"
@@ -440,7 +441,7 @@
 												(click)="setProtected(project, false); notificationModal.show()"
 												*ngIf="project | hasstatusinlist: application_states.PROTECTED"
 											>
-												<i class="fa fa-trash"></i>&nbsp;Set Unprotected
+												<i class="fas fa-lock-open"></i>&nbsp;Set Unprotected
 											</button>
 										</div>
 									</td>
@@ -531,6 +532,7 @@
 							<select
 								class="form-control form-select"
 								[(ngModel)]="selectedFacility"
+								(ngModelChange)="this.adjustVerifyText()"
 								name="selectedFacility"
 								id="selectedFacility"
 							>
@@ -543,21 +545,36 @@
 					</div>
 
 					<div class="form-group row">
-						<label class="col-md-12 control-label"
-							><strong>Which project members should receive the email?</strong></label
-						>
+						<label class="col-md-12 control-label"><strong>Who shall receive the email?</strong></label>
 						<div class="col-md-12">
 							<select
 								class="form-control form-select"
 								[(ngModel)]="selectedProjectType"
+								(ngModelChange)="adjustVerifyText()"
 								name="selectedProjectType"
 								id="selectedProjectType"
 							>
-								<option value="ALL" selected>All</option>
-								<option value="ALL_GM">All active Group Members</option>
-								<option value="SVP">Simple VM</option>
-								<option value="OVP">OpenStack</option>
+								<option [ngValue]="'ALL'" [defaultSelected]="true">All</option>
+								<option [ngValue]="'ALL_GM'" *ngIf="emailType === 0">All active projects</option>
+								<option [ngValue]="'EXP'" *ngIf="emailType === 0">All expired projects</option>
+								<option [ngValue]="'SVP'">Simple VM projects</option>
+								<option [ngValue]="'OVP'">OpenStack projects</option>
 							</select>
+						</div>
+					</div>
+					<div class="form-group row" *ngIf="emailType === 0">
+						<div class="col-md-auto">
+							<div class="form-check">
+								<input
+									class="form-check-input"
+									type="checkbox"
+									[ngModelOptions]="{ standalone: true }"
+									[(ngModel)]="emailAdminsOnly"
+									(ngModelChange)="this.adjustVerifyText()"
+									id="adminOnlyCheckbox"
+								/>
+								<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
+							</div>
 						</div>
 					</div>
 					<div
