@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.519.0",
+  "version": "4.523.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -23,7 +23,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-eslint/eslint-plugin": "14.1.2",
+    "@angular-eslint/eslint-plugin": "14.2.0",
     "@angular/animations": "14.2.10",
     "@angular/cdk": "14.2.7",
     "@angular/common": "14.2.10",
@@ -49,8 +49,8 @@
     "bootstrap": "4.6.2",
     "chart.js": "3.9.1",
     "cli-color": "2.0.3",
-    "core-js": "3.26.0",
-    "css-loader": "6.7.1",
+    "core-js": "3.26.1",
+    "css-loader": "6.7.2",
     "cssnano": "5.1.14",
     "d3": "7.6.1",
     "eslint": "8.27.0",
@@ -85,14 +85,14 @@
     "ts-helpers": "1.1.2",
     "tslib": "2.4.1",
     "uglify-js": "3.17.4",
-    "zone.js": "0.11.8"
+    "zone.js": "0.12.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "14.2.9",
-    "@angular-eslint/builder": "14.1.2",
-    "@angular-eslint/eslint-plugin-template": "14.1.2",
-    "@angular-eslint/schematics": "14.1.2",
-    "@angular-eslint/template-parser": "14.1.2",
+    "@angular-devkit/build-angular": "^14.2.9",
+    "@angular-eslint/builder": "14.2.0",
+    "@angular-eslint/eslint-plugin-template": "14.2.0",
+    "@angular-eslint/schematics": "14.2.0",
+    "@angular-eslint/template-parser": "14.2.0",
     "@angular/cli": "14.2.9",
     "@angular/compiler-cli": "14.2.10",
     "@compodoc/compodoc": "1.1.19",
@@ -123,7 +123,7 @@
     "npm-run-all": "4.1.5",
     "prettier": "2.7.1",
     "raw-loader": "4.0.2",
-    "sass-loader": "13.1.0",
+    "sass-loader": "13.2.0",
     "script-loader": "0.7.2",
     "source-map-loader": "4.0.1",
     "style-loader": "3.3.1",
