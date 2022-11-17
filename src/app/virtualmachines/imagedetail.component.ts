@@ -20,6 +20,7 @@ import { Flavor } from './virtualmachinemodels/flavor';
 export class ImageDetailComponent implements OnInit {
 	@Input() selectedImage: Image;
 	@Input() images: Image[];
+	@Input() resenv_names: string[];
 	@Input() selectedFlavor: Flavor;
 	@Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
 
@@ -76,7 +77,7 @@ export class ImageDetailComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.window_size = window.innerWidth;
-		this.image_types = this.imageService.sortImages(this.images);
+		this.image_types = this.imageService.sortImages(this.images, this.resenv_names);
 		this.image_selection = this.image_types[this.selected_image_type];
 
 	}
