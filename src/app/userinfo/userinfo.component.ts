@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { forkJoin, Subscription } from 'rxjs';
-import { Userinfo } from './userinfo.model';
-import { ApiSettings } from '../api-connector/api-settings.service';
-import { KeyService } from '../api-connector/key.service';
-import { UserService } from '../api-connector/user.service';
-import { GroupService } from '../api-connector/group.service';
-import { IResponseTemplate } from '../api-connector/response-template';
-import { LIFESCIENCE_LINKING_ACCOUNTS, WIKI_LINK_ACCOUNTS } from '../../links/links';
-import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
-import { ApplicationsService } from "../api-connector/applications.service";
-import { VirtualmachineService } from "../api-connector/virtualmachine.service";
+import {Component, OnInit} from '@angular/core';
+import {forkJoin, Subscription} from 'rxjs';
+import {Userinfo} from './userinfo.model';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {KeyService} from '../api-connector/key.service';
+import {UserService} from '../api-connector/user.service';
+import {GroupService} from '../api-connector/group.service';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {LIFESCIENCE_LINKING_ACCOUNTS, WIKI_LINK_ACCOUNTS} from '../../links/links';
+import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
+import {ApplicationsService} from "../api-connector/applications.service";
+import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "../virtualmachines/virtualmachinemodels/virtualmachine";
 import {VirtualMachineStates} from "../virtualmachines/virtualmachinemodels/virtualmachinestates";
 import {Application} from "../applications/application.model/application.model";
 import {Project} from "@playwright/test";
 import {CLOUD_PORTAL_SUPPORT_MAIL} from "../../links/links";
+import {ProjectMember} from "../projectmanagement/project_member.model";
+import {application} from "express";
 
 /**
  * UserInformation component.
@@ -57,13 +59,11 @@ export class UserInfoComponent implements OnInit {
 	 */
 	summaryLoaded: boolean = false;
 
-	/**
-	 * Subscription to accumulate all requests for summary
-	 *
-	 * @type {Subscription}
-	 */
-	// TODO: checkout how to summarize subscriptions on virtualmachine service
-	summarySubscription: Subscription = new Subscription();
+	userIsProjectPi: boolean = false;
+
+	userIsLoneAdmin: boolean = false;
+
+	userIsOpenStackUser: boolean = false;
 
 	/**
 	 * summary of projects the user is member of
@@ -71,6 +71,8 @@ export class UserInfoComponent implements OnInit {
 	 * @type {ProjectEnumeration[]}
 	 */
 	userProjects: Application[] = [];
+
+
 
 
 	/**
@@ -103,7 +105,7 @@ export class UserInfoComponent implements OnInit {
 	/**
 	 * Text refering to newsletter registration
 	 */
-	dsgvo_text: string =		'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. '
+	dsgvo_text: string = 'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. '
 		+ 'You will receive the newsletter until you deactivate the option in the settings again.';
 	WIKI_LINK_ACCOUNTS: string = WIKI_LINK_ACCOUNTS;
 	LIFESCIENCE_LINKING_ACCOUNTS: string = LIFESCIENCE_LINKING_ACCOUNTS;
@@ -196,18 +198,44 @@ export class UserInfoComponent implements OnInit {
 		this.groupService.addMemberToFreemium().subscribe();
 	}
 
-	// TODO: PIPE?
 	isUserPi(): boolean {
-		return this.userProjects.some((application: Application) => application.user_is_pi);
+		return this.userProjects.some((app: Application) => app.user_is_pi);
 	}
 
-	// TODO: ADJUST to check if any of those projects has only him as admin.
-	isUserLoneAdmin(): boolean {
-		return this.userProjects.some((application: Application) => application.user_is_admin);
+	isUserLoneAdmin(userId: number, userProjectMembers: ProjectMember[][]): boolean {
+		for (const project_members of userProjectMembers) {
+			const groupAdmins: ProjectMember[] = project_members.filter((singleMember: ProjectMember) => {
+				return singleMember.isAdmin;
+			});
+
+			if (groupAdmins.length === 1) {
+				if (groupAdmins[0].userId.toString() === userId.toString()) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+
+	}
+
+	isOpenStackUser(): boolean {
+		return this.userProjects.some((app: Application) => app.project_application_openstack_project);
 	}
 
 	leaveVirtualOrganisation(): void {
-		console.log('Not Implemented yet');
+		// TODO: request to endpoint to delete member/user and remove user from all groups - if not done automatically by perun
+	}
+
+	/**
+	 *
+	 * @param userProjectMembers
+	 */
+	transformUserResults(userProjectMembers: ProjectMember[][]): void {
+		this.userIsProjectPi = this.isUserPi();
+		this.userIsLoneAdmin = this.isUserLoneAdmin(this.userInfo.Id, userProjectMembers);
+		this.userIsOpenStackUser = this.isOpenStackUser();
+		this.summaryLoaded = true;
 	}
 
 	/**
@@ -215,44 +243,42 @@ export class UserInfoComponent implements OnInit {
 	 */
 	getUserSummary(): void {
 
-		// TODO CHECK HOW TO JOIN ALL REQUESTS
 		if (!this.summaryLoaded) {
-			this.userService.getLoggedUser().subscribe({
-				next: (res: any) => {
-					console.log(res);
 
-					this.groupService.getGroupsEnumeration().subscribe({
-						next: (res_enumerations: ProjectEnumeration[]) => {
-							const application_ids: string[] = res_enumerations.map((pr: ProjectEnumeration) => pr.application_id);
+			this.groupService.getGroupsEnumeration().subscribe({
+				next: (res_enumerations: ProjectEnumeration[]) => {
+					const application_ids: string[] = res_enumerations.map((pr: ProjectEnumeration) => pr.application_id);
 
-							forkJoin(application_ids.map(app_id => this.applicationsService.getFullApplicationByUserPermissions(app_id))).subscribe(
-								{
-									next: (userProjectResult: Application[]) => {
-										this.userProjects = userProjectResult;
+					forkJoin(application_ids.map(app_id => this.applicationsService.getFullApplicationByUserPermissions(app_id))).subscribe(
+						{
+							next: (userProjectResult: Application[]) => {
+								this.userProjects = userProjectResult;
+								const group_ids: string[] = this.userProjects.map((user_application: Application) => user_application.project_application_perun_id.toString());
+								forkJoin(group_ids.map(group_id => this.groupService.getGroupMembers(group_id))).subscribe(
+									{
+										next: (project_members: ProjectMember[][]) => {
+											this.transformUserResults(project_members);
+										}
 									}
-								});
-							const vmFilter: string[] = [
-								VirtualMachineStates.ACTIVE,
-								VirtualMachineStates.SHUTOFF,
-								VirtualMachineStates.CLIENT_OFFLINE,
-							];
-							VirtualMachineStates.IN_PROCESS_STATES.forEach((state: string) => vmFilter.push(state));
-							this.vmService.getVmsFromLoggedInUser(0, 25, '', vmFilter, false, false, true).subscribe({
-								next: (res: VirtualMachine[]) => {
-									this.userVirtualMachines = res;
-									console.log(res);
-								}
-							});
-							this.summaryLoaded = true;
-							console.log(res);
-						},
-						error: () => {},
+								)
+							}
+						});
+					const vmFilter: string[] = [
+						VirtualMachineStates.ACTIVE,
+						VirtualMachineStates.SHUTOFF,
+						VirtualMachineStates.CLIENT_OFFLINE,
+					];
+					VirtualMachineStates.IN_PROCESS_STATES.forEach((state: string) => vmFilter.push(state));
+					this.vmService.getVmsFromLoggedInUser(0, 25, '', vmFilter, false, false, true).subscribe({
+						next: (res: VirtualMachine[]) => {
+							this.userVirtualMachines = res;
+						}
 					});
 				},
-				error: (err: any) => {
-					console.log(err);
+				error: () => {
 				},
 			});
+
 		}
 	}
 }

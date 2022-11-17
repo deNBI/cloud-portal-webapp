@@ -122,11 +122,16 @@
 			<div class="modal-body">
 				<div class="alert alert-warning">
 					Please be aware that by leaving the de.NBI VO, access to all projects and machines listed here will no longer be possible. You will also need to re-register for the VO in order to submit a new project application.
-
-					Note: Your LifeScienceAI account will not be deleted by leaving the virtual organisation. If you wish to delete this account, please contact the corresponding support.
+					<br>
+					<strong>Note</strong>: Your LifeScienceAI account will not be deleted by leaving the virtual organisation. If you wish to delete this account, please contact the corresponding support.
 				</div>
 
-				<div *ngIf="summaryLoaded" ><h5>Projects</h5>
+				<div *ngIf="!summaryLoaded" class="row">
+					<div class="spinner-grow col-md-auto mx-auto" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
+				<div *ngIf="summaryLoaded"><h5>Projects</h5>
 				<table class="table">
 					<thead>
 					<tr>
@@ -150,8 +155,14 @@
 					</tr>
 					</tbody>
 				</table>
+
 				<h5>Virtual machines</h5>
-				<table class="table">
+					<div class="alert alert-warning" *ngIf="userIsOpenStackUser">
+						<strong>Note</strong>: As you are a member of an OpenStack project the following machine summary might be incomplete.
+						Please check the corresponding dashboard of your facility to see which machines are in use by you.
+					</div>
+
+					<table class="table">
 					<thead>
 					<tr>
 						<th scope="col">Name</th>
@@ -171,21 +182,61 @@
 				</table>
 			</div>
 				<!-- pipes -->
-				<div class="alert alert-danger" *ngIf="isUserLoneAdmin() || isUserPi()">
-					<p *ngIf="isUserPi()">As you are a PI <span *ngIf="isUserLoneAdmin()">and lone admin</span> of at least one cloud project, you can not use this process to leave the de.NBI VO.
-					Please contact our support <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">via mail</a> to perform the necessary steps</p>.
-					<p *ngIf="isUserLoneAdmin() && !isUserPi()">As you are lone administrator of at least one cloud project, you are not able to leave the virtual organization using this process.
+				<div class="alert alert-danger" *ngIf="userIsLoneAdmin  || userIsProjectPi">
+					<p *ngIf="userIsProjectPi">As you are a PI <span *ngIf="userIsLoneAdmin">and lone admin</span> of at least one cloud project, you can not use this process to leave the de.NBI VO.
+					Please contact our support <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">via mail</a> to perform the necessary steps.</p>
+					<p *ngIf="userIsLoneAdmin && !userIsProjectPi">As you are lone administrator of at least one cloud project, you are not able to leave the virtual organization using this process.
 						Make sure that you select other persons responsible for the administration of the corresponding projects!</p>
 
 				</div>
 			</div>
 			<div class="modal-footer">
 					<button type="button" class="btn btn-primary"
-									(click)="leaveVirtualOrganisation();"
-									[disabled]="isUserAdmin() || isUserPi()"
+									(click)="this.leaveVoModal.hide(); this.confirmLeaveModal.show();"
+									[disabled]="!summaryLoaded || (userIsLoneAdmin || userIsProjectPi)"
 					>Leave VO</button>
 
 					<button type="button" class="btn btn-secondary" (click)="leaveVoModal.hide()">Close</button>
+
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div
+	bsModal
+	#confirmLeaveModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Please confirm</h4>
+				<button type="button" class="close" style="cursor: pointer" (click)="confirmLeaveModal.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning">
+					<strong>Are you sure? Please confirm that you are leaving the VO!</strong>
+				</div>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"
+								(click)="this.leaveVirtualOrganisation(); this.confirmLeaveModal.hide();"
+								[disabled]="!summaryLoaded || (userIsLoneAdmin || userIsProjectPi)"
+				>Confirm Leave</button>
+
+				<button type="button" class="btn btn-danger" (click)="confirmLeaveModal.hide()">Abort</button>
 
 			</div>
 		</div>
