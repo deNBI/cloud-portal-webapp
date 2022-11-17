@@ -36,6 +36,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public emailHeader: string;
 	public emailVerify: string;
 	public emailType: number;
+	public emailAdminsOnly: boolean = false;
 	public selectedProject: Application;
 	computecenters: ComputecenterComponent[] = [];
 
@@ -114,13 +115,21 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		if (reply) {
 			reply = reply.trim();
 		}
+		console.log(this.emailAdminsOnly);
 		switch (this.emailType) {
 			case 0: {
-				this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
+				this.sendMailToVo(
+					subject,
+					message,
+					this.selectedFacility.toString(),
+					this.selectedProjectType,
+					this.emailAdminsOnly,
+					reply,
+				);
 				break;
 			}
 			case 1: {
-				this.sendNewsletterToVo(subject, message, this.selectedProjectType, reply);
+				this.sendNewsletterToVo(subject, message, this.selectedProjectType, this.emailAdminsOnly, reply);
 				break;
 			}
 			default:
@@ -131,12 +140,19 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.voService.sendTestError().subscribe();
 	}
 
-	sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
+	sendNewsletterToVo(
+		subject: string,
+		message: string,
+		selectedProjectType: string,
+		adminsOnly: boolean,
+		reply?: string,
+	): void {
 		this.voService
 			.sendNewsletterToVo(
 				encodeURIComponent(subject),
 				encodeURIComponent(message),
 				selectedProjectType,
+				adminsOnly,
 				encodeURIComponent(reply),
 			)
 			.subscribe((result: IResponseTemplate): void => {
@@ -148,9 +164,23 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 			});
 	}
 
-	sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void {
+	sendMailToVo(
+		subject: string,
+		message: string,
+		facility: string,
+		type: string,
+		adminsOnly: boolean,
+		reply?: string,
+	): void {
 		this.voService
-			.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
+			.sendMailToVo(
+				encodeURIComponent(subject),
+				encodeURIComponent(message),
+				facility,
+				type,
+				adminsOnly,
+				encodeURIComponent(reply),
+			)
 			.subscribe((result: IResponseTemplate): void => {
 				if ((result.value as boolean) === true) {
 					this.emailStatus = 1;
@@ -166,16 +196,60 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.emailType = type;
 		switch (this.emailType) {
 			case 0: {
-				this.emailHeader = 'Send email to all members of the vo';
-				this.emailVerify = 'Are you sure you want to send this email to all members of the vo?';
+				this.emailHeader = 'Send email to selected members of the VO';
 				break;
 			}
 			case 1: {
-				this.emailHeader = 'Send newsletter to vo';
-				this.emailVerify = 'Are you sure you want to send this newsletter?';
+				this.emailHeader = 'Send newsletter to VO';
 				break;
 			}
 			default:
+		}
+		this.emailVerify = 'Are you sure you want to send this newsletter to all members of the de.NBI VO?';
+	}
+
+	getFacilityName(): string {
+		if (this.selectedFacility === 'ALL') {
+			return 'of the de.NBI VO';
+		} else {
+			const temp_cc = this.computecenters.find(cc => cc.FacilityId === this.selectedFacility);
+			if (temp_cc === undefined) {
+				return 'of the de.NBI VO';
+			} else {
+				return `of the facility "${temp_cc.Name}"`;
+			}
+		}
+	}
+
+	getMailConfinementByProjectType(): string {
+		switch (this.selectedProjectType) {
+			case 'ALL_GM':
+				return 'of all active projects';
+			case 'EXP':
+				return 'of all expired projects';
+			case 'SVP':
+				return 'of all SimpleVM projects';
+			case 'OVP':
+				return 'of all OpenStack projects';
+			default:
+				return '';
+		}
+	}
+
+	adjustVerifyText(): void {
+		switch (this.emailType) {
+			case 0: {
+				this.emailVerify = `Are you sure you want to send this email to all ${
+					this.emailAdminsOnly ? ' group administrators' : 'members'
+				} ${this.getMailConfinementByProjectType()} ${this.getFacilityName()} ?`;
+				break;
+			}
+			case 1: {
+				this.emailVerify = `Are you sure you want to send this newsletter to all members ${this.getMailConfinementByProjectType()} ${this.getFacilityName()} ?`;
+				break;
+			}
+			default:
+				this.emailVerify = 'Are you sure you want to send this?';
 		}
 	}
 
@@ -204,6 +278,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.emailVerify = null;
 		this.emailReply = '';
 		this.emailStatus = 0;
+		this.emailAdminsOnly = false;
 	}
 
 	public resetNotificationModal(): void {
