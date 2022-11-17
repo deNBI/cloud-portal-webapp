@@ -11,7 +11,6 @@ import {
 } from '../facility_manager/image-tag';
 import { SnapshotPage } from '../virtualmachines/snapshots/snapshotPage.model';
 import { ImageTypes } from '../virtualmachines/virtualmachinemodels/imageTypes';
-import { TemplateNames } from '../virtualmachines/conda/template-names';
 
 /**
  * Service which provides image methods.
