@@ -170,8 +170,13 @@
 					</tbody>
 				</table>
 			</div>
-				<div class="alert alert-danger" *ngIf="isUserAdmin() || isUserPi()">
-					<!-- text -->Hello World!
+				<!-- pipes -->
+				<div class="alert alert-danger" *ngIf="isUserLoneAdmin() || isUserPi()">
+					<p *ngIf="isUserPi()">As you are a PI <span *ngIf="isUserLoneAdmin()">and lone admin</span> of at least one cloud project, you can not use this process to leave the de.NBI VO.
+					Please contact our support <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">via mail</a> to perform the necessary steps</p>.
+					<p *ngIf="isUserLoneAdmin() && !isUserPi()">As you are lone administrator of at least one cloud project, you are not able to leave the virtual organization using this process.
+						Make sure that you select other persons responsible for the administration of the corresponding projects!</p>
+
 				</div>
 			</div>
 			<div class="modal-footer">

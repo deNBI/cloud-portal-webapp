@@ -14,6 +14,7 @@ import {VirtualMachine} from "../virtualmachines/virtualmachinemodels/virtualmac
 import {VirtualMachineStates} from "../virtualmachines/virtualmachinemodels/virtualmachinestates";
 import {Application} from "../applications/application.model/application.model";
 import {Project} from "@playwright/test";
+import {CLOUD_PORTAL_SUPPORT_MAIL} from "../../links/links";
 
 /**
  * UserInformation component.
@@ -24,6 +25,9 @@ import {Project} from "@playwright/test";
 	providers: [GroupService, UserService, ApiSettings, KeyService],
 })
 export class UserInfoComponent implements OnInit {
+
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+
 	/**
 	 * Information of the logged in User
 	 */
@@ -192,13 +196,13 @@ export class UserInfoComponent implements OnInit {
 		this.groupService.addMemberToFreemium().subscribe();
 	}
 
-
 	// TODO: PIPE?
 	isUserPi(): boolean {
 		return this.userProjects.some((application: Application) => application.user_is_pi);
 	}
 
-	isUserAdmin(): boolean {
+	// TODO: ADJUST to check if any of those projects has only him as admin.
+	isUserLoneAdmin(): boolean {
 		return this.userProjects.some((application: Application) => application.user_is_admin);
 	}
 
