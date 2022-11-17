@@ -196,6 +196,7 @@
 													*ngIf="images?.length > 0"
 													[selectedImage]="selectedMasterImage"
 													[images]="images"
+													[isCluster]="true"
 													[selectedFlavor]="selectedMasterFlavor"
 													(selectedImageChange)="
 														selectedMasterImage = $event; this.selectedWorkerBatches[0].image = selectedMasterImage
