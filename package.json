@@ -19,7 +19,8 @@
   "resolutions": {
     "mime": "3.0.0",
     "jake": "v10.8.5",
-    "d3-color": "v3.1.0"
+    "d3-color": "v3.1.0",
+    "loader-utils": "3.2.1"
   },
   "private": true,
   "dependencies": {
