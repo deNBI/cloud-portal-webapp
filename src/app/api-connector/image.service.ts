@@ -250,9 +250,9 @@ export class ImageService {
 				image_types[ImageTypes.CLUSTER_IMAGE].push(image);
 			} else if (image.tags.filter(x => resenv_names.includes(x)).length > 0) {
 				image_types[ImageTypes.RESENV].push(image);
-			}
-       else {
+			} else {
 				image_types[ImageTypes.CUSTOM].push(image);
+			}
 		}
 
 		return image_types;
