@@ -15,7 +15,6 @@ import { Flavor } from './virtualmachinemodels/flavor';
 	templateUrl: 'imagedetail.component.html',
 	styleUrls: ['./imagedetail.component.scss'],
 	providers: [ImageService],
-
 })
 export class ImageDetailComponent implements OnInit {
 	@Input() selectedImage: Image;
@@ -23,6 +22,7 @@ export class ImageDetailComponent implements OnInit {
 	@Input() resenv_names: string[];
 	@Input() selectedFlavor: Flavor;
 	@Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
+	@Input() isCluster: boolean = false;
 
 	regexp_data_test_id: RegExp = /[ ().]/g;
 	carousel_activated: boolean = true;
@@ -49,15 +49,13 @@ export class ImageDetailComponent implements OnInit {
 		pullDrag: false,
 		dots: true,
 		navSpeed: 700,
-		navText: ['<i class=\'fa fa-chevron-left\'></i>',
-			'<i class=\'fa fa-chevron-right\'></i>'],
+		navText: ['<i class=\'fa fa-chevron-left\'></i>', '<i class=\'fa fa-chevron-right\'></i>'],
 		responsive: {
 			0: {
 				items: 1,
 			},
 			550: {
 				items: 2,
-
 			},
 			800: {
 				items: 3,
@@ -69,17 +67,19 @@ export class ImageDetailComponent implements OnInit {
 		nav: true,
 	};
 
-	constructor(
-		private imageService: ImageService,
-	) {
+	constructor(private imageService: ImageService) {
 		// eslint-disable-next-line no-empty-function
 	}
 
 	ngOnInit(): void {
+		if (this.isCluster) {
+			this.selected_image_type = ImageTypes.CLUSTER_IMAGE;
+		} else {
+			this.selected_image_type = ImageTypes.IMAGE;
+		}
 		this.window_size = window.innerWidth;
 		this.image_types = this.imageService.sortImages(this.images, this.resenv_names);
 		this.image_selection = this.image_types[this.selected_image_type];
-
 	}
 
 	setSelectedImageType(key: string): void {
@@ -95,5 +95,4 @@ export class ImageDetailComponent implements OnInit {
 	@HostListener('window:resize', ['$event']) onResize(event: any): void {
 		this.window_size = window.innerWidth;
 	}
-
 }
