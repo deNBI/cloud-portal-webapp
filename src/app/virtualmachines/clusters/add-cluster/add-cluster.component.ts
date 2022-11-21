@@ -23,6 +23,8 @@ import { ApplicationRessourceUsage } from '../../../applications/application-res
 import { WorkerBatch } from '../clusterinfo';
 import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links';
 import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
+import { ResearchEnvironment } from '../../virtualmachinemodels/res-env';
+import { BiocondaService } from '../../../api-connector/bioconda.service';
 
 /**
  * Cluster Component
@@ -42,6 +44,7 @@ import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
 		ClientService,
 		UserService,
 		VoService,
+		BiocondaService,
 	],
 })
 export class AddClusterComponent implements OnInit, OnDestroy {
@@ -86,6 +89,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	cluster_error: string;
 	cluster_started: boolean = false;
 	cluster_responsibility: boolean = false;
+	resenv_names: string[] = [];
 
 	/**
 	 * Selected Image.
@@ -175,6 +179,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private voService: VoService,
 		private router: Router,
+		private condaService: BiocondaService,
 		private cdRef: ChangeDetectorRef,
 	) {
 		// eslint-disable-next-line no-empty-function
@@ -260,6 +265,20 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	generateRandomName(): void {
 		const rng: RandomNameGenerator = new RandomNameGenerator();
 		this.cluster_name = `${rng.randomName()}Cluster`;
+	}
+
+	/**
+	 * Get resenv names for the project.
+	 *
+	 */
+	getResEnvNames(): void {
+		this.subscription.add(
+			this.condaService
+				.getForcTemplates(this.selectedProjectClient.id)
+				.subscribe((resenvs: ResearchEnvironment[]): void => {
+					resenvs.forEach(resenv => this.resenv_names.push(resenv.template_name));
+				}),
+		);
 	}
 
 	/**
@@ -460,6 +479,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.projectDataLoaded = true;
 				}
 				this.selectedProjectClient = client;
+				this.getResEnvNames();
 			}),
 		);
 	}
