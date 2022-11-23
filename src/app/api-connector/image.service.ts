@@ -17,6 +17,9 @@ import { ImageTypes } from '../virtualmachines/virtualmachinemodels/imageTypes';
  */
 @Injectable()
 export class ImageService {
+	BASE_IMAGE_TAG = 'base_image';
+	BASE_CLUSTER_IMAGE_TAG = 'base_cluster';
+
 	constructor(private http: HttpClient) {
 		this.http = http;
 	}
@@ -230,17 +233,23 @@ export class ImageService {
 			.pipe(map((snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page)));
 	}
 
-	sortImages(images: Image[]): { [name: string]: Image[] } {
+	sortImages(images: Image[], resenv_names: string[] = []): { [name: string]: Image[] } {
 		const image_types: { [name: string]: Image[] } = {};
 		image_types[ImageTypes.IMAGE] = [];
 		image_types[ImageTypes.SNAPSHOT] = [];
 		image_types[ImageTypes.CUSTOM] = [];
+		image_types[ImageTypes.CLUSTER_IMAGE] = [];
+		image_types[ImageTypes.RESENV] = [];
 
 		for (const image of images) {
 			if (image.is_snapshot) {
 				image_types[ImageTypes.SNAPSHOT].push(image);
-			} else if (image.tags.includes('base_image')) {
+			} else if (image.tags.includes(this.BASE_IMAGE_TAG)) {
 				image_types[ImageTypes.IMAGE].push(image);
+			} else if (image.tags.includes(this.BASE_CLUSTER_IMAGE_TAG)) {
+				image_types[ImageTypes.CLUSTER_IMAGE].push(image);
+			} else if (image.tags.filter(x => resenv_names.includes(x)).length > 0) {
+				image_types[ImageTypes.RESENV].push(image);
 			} else {
 				image_types[ImageTypes.CUSTOM].push(image);
 			}

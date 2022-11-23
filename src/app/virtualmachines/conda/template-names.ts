@@ -5,15 +5,16 @@ export class TemplateNames {
 	private static _RSTUDIO: string = 'rstudio';
 	private static _THEIA: string = 'theiaide';
 	private static _GUACAMOLE: string = 'guacamole';
-	private static _JUPYTERNOTEBOOK: string = 'jupyternotebook';
-	private static _CWLAB: string = 'cwlab';
+	private static _JUPYTERLAB: string = 'jupyterlab';
+	private static _VSCODE: string = 'vscode';
 
-	private static _ALL_TEMPLATES: string[] =		[
+	private static _ALL_TEMPLATES: string[] = [
 		TemplateNames._RSTUDIO,
 		TemplateNames._THEIA,
 		TemplateNames._GUACAMOLE,
-		TemplateNames._JUPYTERNOTEBOOK,
-		TemplateNames._CWLAB];
+		TemplateNames._JUPYTERLAB,
+		TemplateNames._VSCODE,
+	];
 
 	static get RSTUDIO(): string {
 		return this._RSTUDIO;
@@ -39,23 +40,23 @@ export class TemplateNames {
 		this._GUACAMOLE = value;
 	}
 
-	static get JUPYTERNOTEBOOK(): string {
-		return this._JUPYTERNOTEBOOK;
+	static get JUPYTERLAB(): string {
+		return this._JUPYTERLAB;
 	}
 
-	static set JUPYTERNOTEBOOK(value: string) {
-		this._JUPYTERNOTEBOOK = value;
+	static set JUPYTERLAB(value: string) {
+		this._JUPYTERLAB = value;
 	}
 
-	static get CWLAB(): string {
-		return this._CWLAB;
+	static get VSCODE(): string {
+		return this._VSCODE;
 	}
 
-	static set CWLAB(value: string) {
-		this._CWLAB = value;
+	static set VSCODE(value: string) {
+		this._VSCODE = value;
 	}
 
-	static get ALL_TEMPLATE_NAMES(): string [] {
+	static get ALL_TEMPLATE_NAMES(): string[] {
 		return this._ALL_TEMPLATES;
 	}
 }
