@@ -24,7 +24,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-eslint/eslint-plugin": "14.3.1",
+    "@angular-eslint/eslint-plugin": "14.4.0",
     "@angular/animations": "14.2.11",
     "@angular/cdk": "14.2.7",
     "@angular/common": "14.2.11",
@@ -90,10 +90,10 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "14.2.10",
-    "@angular-eslint/builder": "14.3.1",
-    "@angular-eslint/eslint-plugin-template": "14.3.1",
-    "@angular-eslint/schematics": "14.3.1",
-    "@angular-eslint/template-parser": "14.3.1",
+    "@angular-eslint/builder": "14.4.0",
+    "@angular-eslint/eslint-plugin-template": "14.4.0",
+    "@angular-eslint/schematics": "14.4.0",
+    "@angular-eslint/template-parser": "14.4.0",
     "@angular/cli": "14.2.10",
     "@angular/compiler-cli": "14.2.11",
     "@compodoc/compodoc": "1.1.19",
