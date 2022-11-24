@@ -525,6 +525,11 @@
 				</button>
 			</div>
 			<div class="modal-body">
+				<div class="alert alert-info">
+					Workshop projects and their members or administrators only receive mails, when they are explicitly chosen. If
+					other restrictions are selected, the mails of administrators and members of workshops are excluded from the
+					list of mails.
+				</div>
 				<form class="form-horizontal" id="email_form" #f="ngForm">
 					<div class="form-group row" *ngIf="emailType === 0">
 						<label class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
@@ -559,6 +564,7 @@
 								<option [ngValue]="'EXP'" *ngIf="emailType === 0">All expired projects</option>
 								<option [ngValue]="'SVP'">Simple VM projects</option>
 								<option [ngValue]="'OVP'">OpenStack projects</option>
+								<option [ngValue]="'WSH'">Workshops</option>
 							</select>
 						</div>
 					</div>
