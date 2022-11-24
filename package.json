@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.535.0",
+  "version": "4.537.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -37,7 +37,7 @@
     "@angular/router": "14.2.12",
     "@angular/service-worker": "14.2.12",
     "@angular/upgrade": "14.2.12",
-    "@coreui/coreui": "4.2.2",
+    "@coreui/coreui": "4.2.3",
     "@ng-bootstrap/ng-bootstrap": "13.1.1",
     "@ng-select/ng-select": "9.1.0",
     "@sindresorhus/transliterate": "1.5.0",
@@ -108,7 +108,7 @@
     "eslint": "8.28.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jsdoc": "39.6.2",
+    "eslint-plugin-jsdoc": "39.6.3",
     "eslint-plugin-no-null": "latest",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "exports-loader": "4.0.0",

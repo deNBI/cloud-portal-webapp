@@ -231,6 +231,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				return 'of all SimpleVM projects';
 			case 'OVP':
 				return 'of all OpenStack projects';
+			case 'WSH':
+				return 'of all Workshops';
 			default:
 				return '';
 		}
