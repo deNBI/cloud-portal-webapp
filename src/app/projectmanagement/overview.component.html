@@ -808,9 +808,10 @@
 										type="checkbox"
 										id="toggle_member_name_visibility"
 										[(ngModel)]="project_application.show_member_names"
-										*ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
 										(click)="toggleMemberNameVisibility()"
-										[disabled]="toggleLocked"
+										[disabled]="
+											toggleLocked || !(project_application?.user_is_pi || project_application?.user_is_admin)
+										"
 									/>
 									<label class="help-block" style="vertical-align: middle" for="toggle_member_name_visibility"
 										>Project member names visible for non-administrators</label
@@ -824,12 +825,11 @@
 										type="checkbox"
 										id="toggle_starting_of_machines"
 										[(ngModel)]="project_application.prevent_machines_starting"
-										*ngIf="
-											!project_application.project_application_openstack_project &&
-											(project_application?.user_is_pi || project_application?.user_is_admin)
-										"
+										*ngIf="!project_application.project_application_openstack_project"
 										(click)="toggleStartingOfMachines()"
-										[disabled]="toggleLocked"
+										[disabled]="
+											toggleLocked || !(project_application?.user_is_pi || project_application?.user_is_admin)
+										"
 									/>
 									<label class="help-block" style="vertical-align: middle" for="toggle_starting_of_machines"
 										>Non-administrators are allowed to start machines</label
