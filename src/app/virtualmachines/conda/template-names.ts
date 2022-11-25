@@ -8,12 +8,13 @@ export class TemplateNames {
 	private static _JUPYTERLAB: string = 'jupyterlab';
 	private static _VSCODE: string = 'vscode';
 
-	private static _ALL_TEMPLATES: string[] =		[
+	private static _ALL_TEMPLATES: string[] = [
 		TemplateNames._RSTUDIO,
 		TemplateNames._THEIA,
 		TemplateNames._GUACAMOLE,
 		TemplateNames._JUPYTERLAB,
-		TemplateNames._VSCODE];
+		TemplateNames._VSCODE,
+	];
 
 	static get RSTUDIO(): string {
 		return this._RSTUDIO;
@@ -55,7 +56,7 @@ export class TemplateNames {
 		this._VSCODE = value;
 	}
 
-	static get ALL_TEMPLATE_NAMES(): string [] {
+	static get ALL_TEMPLATE_NAMES(): string[] {
 		return this._ALL_TEMPLATES;
 	}
 }
