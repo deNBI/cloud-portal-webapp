@@ -954,6 +954,7 @@
 			<div class="modal-body" *ngIf="!error_starting_machine">
 				<p>{{ progress_bar_status }}</p>
 				<p data-test-id="redirecting_instance_overview">Redirecting to Instance Overview...</p>
+				<!--				<p>Name of your VM: <span *ngIf="newVm?.status" data-test-id="new_vm_name" id="new_vm_name">{{ newVm?.status }}</span></p>-->
 				<p>
 					<br />Learn about persistent terminal sessions in our
 					<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Wiki</a>.
@@ -968,7 +969,9 @@
 						[style.width.%]="progress_bar_width"
 					></div>
 				</div>
-				<span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{ newVm?.name }}</span>
+				<span [hidden]="true" *ngIf="newVm?.status" data-test-id="new_vm_name" id="new_vm_name">{{
+					newVm?.status
+				}}</span>
 			</div>
 			<div class="modal-body" *ngIf="error_starting_machine">
 				<p>An error occurred while trying to start the machine. Please reload this page.</p>
