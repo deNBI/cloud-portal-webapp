@@ -820,9 +820,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	ngDoCheck(): void {
 		if (this.resEnvComponent) {
-			if (!this.resEnvComponent.getUserKeyUrl()) {
-				this.resEnvComponent.setUserKeyUrl(this.vm_name);
-			}
 			this.resEnvValid = this.resEnvComponent.isValid();
 			this.resEnvNeedsName = this.resEnvComponent.needsName();
 			this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
