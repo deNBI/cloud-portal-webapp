@@ -31,8 +31,8 @@ export class ImageDetailComponent implements OnInit {
 	carousel_window_min_xl_9: number = 1700;
 	carousel_window_min_xl_8: number = 1380;
 	carousel_window_min_xl6: number = 1200;
-	img_height: string = '120px';
-	img_width: string = '210px';
+	img_height: string = '120px!important';
+	img_width: string = '210px!important';
 	image_visible: boolean = true;
 	selected_image_type: string = ImageTypes.IMAGE;
 	image_types: { [name: string]: Image[] } = {};
