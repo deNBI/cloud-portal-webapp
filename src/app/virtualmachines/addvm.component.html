@@ -80,7 +80,7 @@
 						<div class="row justify-content-center">
 							<span *ngIf="client_available && !projectDataLoaded" class="spinner-border text-info"></span>
 						</div>
-						<div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
+						<div *ngIf="selectedProject && (allowedProjects | inAllowed : selectedProject)">
 							<div *ngIf="client_available && projectDataLoaded">
 								<app-resource-overview [ressourceUsage]="selectedProjectRessources"> </app-resource-overview>
 								<div
@@ -196,6 +196,7 @@
 													*ngIf="images?.length > 0"
 													[selectedImage]="selectedImage"
 													[images]="images"
+													[resenv_names]="resenv_names"
 													[selectedFlavor]="selectedFlavor"
 													(selectedImageChange)="setSelectedImage($event)"
 													id="id_image_detail"
@@ -911,7 +912,7 @@
 								>
 							</div>
 						</div>
-						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
+						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed : selectedProject)">
 							<div class="alert alert-info">
 								You are not allowed to start a machine in this project, as the administrators of the project do not
 								allow non-administrators to start machines.
@@ -953,6 +954,7 @@
 			<div class="modal-body" *ngIf="!error_starting_machine">
 				<p>{{ progress_bar_status }}</p>
 				<p data-test-id="redirecting_instance_overview">Redirecting to Instance Overview...</p>
+				<!--				<p>Name of your VM: <span *ngIf="newVm?.status" data-test-id="new_vm_name" id="new_vm_name">{{ newVm?.status }}</span></p>-->
 				<p>
 					<br />Learn about persistent terminal sessions in our
 					<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Wiki</a>.
@@ -967,7 +969,9 @@
 						[style.width.%]="progress_bar_width"
 					></div>
 				</div>
-				<span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{ newVm?.name }}</span>
+				<span [hidden]="true" *ngIf="newVm?.status" data-test-id="new_vm_name" id="new_vm_name">{{
+					newVm?.status
+				}}</span>
 			</div>
 			<div class="modal-body" *ngIf="error_starting_machine">
 				<p>An error occurred while trying to start the machine. Please reload this page.</p>

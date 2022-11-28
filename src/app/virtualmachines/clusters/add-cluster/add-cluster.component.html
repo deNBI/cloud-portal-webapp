@@ -71,7 +71,7 @@
 							>
 							</span>
 						</div>
-						<div *ngIf="projectDataLoaded && selectedProject && (allowedProjects | inAllowed: selectedProject)">
+						<div *ngIf="projectDataLoaded && selectedProject && (allowedProjects | inAllowed : selectedProject)">
 							<div
 								class="alert alert-danger"
 								role="alert"
@@ -99,7 +99,7 @@
 										class="alert alert-warning"
 										*ngIf="
 											selectedProject &&
-											((selectedProjectRessources | noVMsPipe: 2) ||
+											((selectedProjectRessources | noVMsPipe : 2) ||
 												(selectedProjectRessources | noRamPipe) ||
 												(selectedProjectRessources | noCoresPipe)) &&
 											client_available &&
@@ -186,16 +186,13 @@
 											class="form-group row col-md-12"
 											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
 										>
-											<div class="col">
-												<div class="alert alert-info" *ngIf="images?.length === 0 || !images">
-													There are no images available for selection at the moment. Please contact the support of the
-													facility where your project is running.
-												</div>
-
+											<div class="col" *ngIf="imagesLoaded">
 												<app-image-detail
 													*ngIf="images?.length > 0"
 													[selectedImage]="selectedMasterImage"
 													[images]="images"
+													[isCluster]="true"
+													[resenv_names]="resenv_names"
 													[selectedFlavor]="selectedMasterFlavor"
 													(selectedImageChange)="
 														selectedMasterImage = $event; this.selectedWorkerBatches[0].image = selectedMasterImage
@@ -209,6 +206,13 @@
 												>
 													This image will also be used for every worker!
 												</div>
+												<div class="alert alert-info" *ngIf="images.length === 0">
+													There are no images available at the moment.
+												</div>
+											</div>
+											<div *ngIf="!imagesLoaded" class="d-flex align-items-center">
+												<strong>Loading images ...</strong>
+												<div class="spinner-border m-sm-auto" role="status"></div>
 											</div>
 										</div>
 
@@ -470,7 +474,7 @@
 								projectDataLoaded &&
 								!client_available &&
 								selectedProject &&
-								!(allowedProjects | inAllowed: selectedProject)
+								!(allowedProjects | inAllowed : selectedProject)
 							"
 						>
 							<div class="alert alert-info">

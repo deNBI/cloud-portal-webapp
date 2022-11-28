@@ -6,12 +6,20 @@
 			snapshot of a running machine.</span
 		>
 		<ul class="nav nav-tabs card-header-tabs" style="overflow: hidden" role="tablist">
-			<li class="nav-item" style="cursor: pointer">
+			<li class="nav-item" style="cursor: pointer" *ngIf="!isCluster">
 				<a
 					class="nav-link"
 					(click)="setSelectedImageType(imageTypes.IMAGE)"
 					[ngClass]="{ active: selected_image_type === imageTypes.IMAGE }"
 					>Base Images</a
+				>
+			</li>
+			<li class="nav-item" style="cursor: pointer" *ngIf="isCluster">
+				<a
+					class="nav-link"
+					(click)="setSelectedImageType(imageTypes.CLUSTER_IMAGE)"
+					[ngClass]="{ active: selected_image_type === imageTypes.CLUSTER_IMAGE }"
+					>Base Cluster Images</a
 				>
 			</li>
 			<li class="nav-item">
@@ -25,8 +33,8 @@
 			<li class="nav-item">
 				<a
 					class="nav-link"
-					(click)="setSelectedImageType(imageTypes.CUSTOM)"
-					[ngClass]="{ active: selected_image_type === imageTypes.CUSTOM }"
+					(click)="setSelectedImageType(imageTypes.RESENV)"
+					[ngClass]="{ active: selected_image_type === imageTypes.RESENV }"
 					>Research Environments</a
 				>
 			</li>
@@ -85,7 +93,8 @@
 							<div *ngIf="selectedImage?.logo_url && image_visible" (mouseenter)="setImageVisible()">
 								<img
 									src="{{ selectedImage?.logo_url }}"
-									[ngStyle]="{ width: img_width, height: img_height }"
+									[style]="{ width: img_width, height: img_height }"
+									style="object-fit: scale-down"
 									alt="{{ selectedImage?.description }}"
 								/>
 							</div>
@@ -94,21 +103,6 @@
 					<div class="card-footer text-muted" *ngIf="selectedImage?.min_disk > 0">
 						Requirements:
 						<div class="scroll-flavor">
-							<!-- min ram quickfix <div class="row" *ngIf="selectedImage?.min_ram > 0">
-								<div class="col-2">
-
-									<figure class="image-card-icons">
-										<img src="{{RAM_ICON_PATH}}" alt="">
-									</figure>
-								</div>
-								<div class="col-10">
-
-									{{selectedImage?.min_ram}} GB min Ram <i *ngIf="selectedFlavor?.ram < selectedImage?.min_ram" class="fas fa-times"
-																													 style="color: red !important;"></i>&nbsp;
-									<i *ngIf="selectedFlavor?.ram >= selectedImage?.min_ram" class="fa fa-check"
-										 style="color: green !important;"></i>&nbsp;
-								</div>
-							</div> -->
 							<div class="row" *ngIf="selectedImage?.min_disk > 0">
 								<div class="col-2">
 									<i class="image-card-icons">

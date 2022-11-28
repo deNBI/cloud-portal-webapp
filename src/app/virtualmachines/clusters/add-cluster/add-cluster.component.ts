@@ -23,6 +23,8 @@ import { ApplicationRessourceUsage } from '../../../applications/application-res
 import { WorkerBatch } from '../clusterinfo';
 import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links';
 import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
+import { ResearchEnvironment } from '../../virtualmachinemodels/res-env';
+import { BiocondaService } from '../../../api-connector/bioconda.service';
 
 /**
  * Cluster Component
@@ -42,6 +44,7 @@ import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
 		ClientService,
 		UserService,
 		VoService,
+		BiocondaService,
 	],
 })
 export class AddClusterComponent implements OnInit, OnDestroy {
@@ -59,6 +62,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 * All image of a project.
 	 */
 	images: Image[];
+	imagesLoaded: boolean = false;
 
 	flavors_loaded: boolean = false;
 
@@ -86,6 +90,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	cluster_error: string;
 	cluster_started: boolean = false;
 	cluster_responsibility: boolean = false;
+	resenv_names: string[] = [];
 
 	/**
 	 * Selected Image.
@@ -175,6 +180,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private voService: VoService,
 		private router: Router,
+		private condaService: BiocondaService,
 		private cdRef: ChangeDetectorRef,
 	) {
 		// eslint-disable-next-line no-empty-function
@@ -263,13 +269,30 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	}
 
 	/**
+	 * Get resenv names for the project.
+	 *
+	 */
+	getResEnvNames(): void {
+		this.subscription.add(
+			this.condaService
+				.getForcTemplates(this.selectedProjectClient.id)
+				.subscribe((resenvs: ResearchEnvironment[]): void => {
+					resenvs.forEach(resenv => this.resenv_names.push(resenv.template_name));
+				}),
+		);
+	}
+
+	/**
 	 * Get images for the project.
 	 *
 	 * @param project_id
 	 */
 	getImages(project_id: number): void {
+		this.imagesLoaded = false;
 		this.subscription.add(
 			this.imageService.getImages(project_id, 'cluster').subscribe((images: Image[]): void => {
+				this.imagesLoaded = true;
+
 				this.images = images.filter((image: Image): boolean => {
 					let not_blocked: boolean = true;
 					this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
@@ -460,6 +483,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.projectDataLoaded = true;
 				}
 				this.selectedProjectClient = client;
+				this.getResEnvNames();
 			}),
 		);
 	}
@@ -498,6 +522,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	loadProjectData(): void {
 		this.initial_loaded = false;
+		this.imagesLoaded = false;
 		this.projectDataLoaded = false;
 		this.flavors = [];
 		this.flavors_loaded = false;
