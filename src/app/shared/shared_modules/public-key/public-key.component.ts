@@ -22,7 +22,6 @@ import { NotificationModalComponent } from '../../modal/notification-modal';
 })
 export class PublicKeyComponent extends AbstractBaseClass {
 	WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS;
-
 	public_key: string;
 	acknowledgement_given: boolean = false;
 	@Input() userinfo: Userinfo;
