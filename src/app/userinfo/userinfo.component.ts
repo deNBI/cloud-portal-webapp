@@ -1,25 +1,22 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {forkJoin, Subscription} from 'rxjs';
-import {Userinfo} from './userinfo.model';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {KeyService} from '../api-connector/key.service';
-import {UserService} from '../api-connector/user.service';
-import {GroupService} from '../api-connector/group.service';
-import {IResponseTemplate} from '../api-connector/response-template';
-import {LIFESCIENCE_LINKING_ACCOUNTS, WIKI_LINK_ACCOUNTS} from '../../links/links';
-import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
-import {ApplicationsService} from "../api-connector/applications.service";
-import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-import {VirtualMachine} from "../virtualmachines/virtualmachinemodels/virtualmachine";
-import {VirtualMachineStates} from "../virtualmachines/virtualmachinemodels/virtualmachinestates";
-import {Application} from "../applications/application.model/application.model";
-import {Project} from "@playwright/test";
-import {CLOUD_PORTAL_SUPPORT_MAIL} from "../../links/links";
-import {ProjectMember} from "../projectmanagement/project_member.model";
-import {application} from "express";
-import {Application_States} from "../shared/shared_modules/baseClass/abstract-base-class";
-import {HttpResponse} from "@angular/common/http";
-import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import { Component, OnInit } from '@angular/core';
+import { forkJoin } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Userinfo } from './userinfo.model';
+import { ApiSettings } from '../api-connector/api-settings.service';
+import { KeyService } from '../api-connector/key.service';
+import { UserService } from '../api-connector/user.service';
+import { GroupService } from '../api-connector/group.service';
+import { IResponseTemplate } from '../api-connector/response-template';
+import { LIFESCIENCE_LINKING_ACCOUNTS, WIKI_LINK_ACCOUNTS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../links/links';
+import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
+import { ApplicationsService } from '../api-connector/applications.service';
+import { VirtualmachineService } from '../api-connector/virtualmachine.service';
+import { VirtualMachine } from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import { VirtualMachineStates } from '../virtualmachines/virtualmachinemodels/virtualmachinestates';
+import { Application } from '../applications/application.model/application.model';
+import { ProjectMember } from '../projectmanagement/project_member.model';
+import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { NotificationModalComponent } from '../shared/modal/notification-modal';
 
 /**
  * UserInformation component.
@@ -30,7 +27,6 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 	providers: [GroupService, UserService, ApiSettings, KeyService],
 })
 export class UserInfoComponent implements OnInit {
-
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	/**
@@ -77,9 +73,6 @@ export class UserInfoComponent implements OnInit {
 	 */
 	userProjects: Application[] = [];
 
-
-
-
 	/**
 	 * summary of vms the user has
 	 *
@@ -110,16 +103,18 @@ export class UserInfoComponent implements OnInit {
 	/**
 	 * Text refering to newsletter registration
 	 */
-	dsgvo_text: string = 'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. '
+	dsgvo_text: string =		'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. '
 		+ 'You will receive the newsletter until you deactivate the option in the settings again.';
 	WIKI_LINK_ACCOUNTS: string = WIKI_LINK_ACCOUNTS;
 	LIFESCIENCE_LINKING_ACCOUNTS: string = LIFESCIENCE_LINKING_ACCOUNTS;
 
-	@ViewChild('leaveResultModal') leaveResultModal: BsModalRef;
-
-	constructor(private groupService: GroupService, private userService: UserService,
-							private keyService: KeyService, private applicationsService: ApplicationsService,
-							private vmService: VirtualmachineService,
+	constructor(
+		private groupService: GroupService,
+		private userService: UserService,
+		private keyService: KeyService,
+		private applicationsService: ApplicationsService,
+		private vmService: VirtualmachineService,
+		private modalService: BsModalService,
 	) {
 		this.groupService = groupService;
 		this.userService = userService;
@@ -211,9 +206,7 @@ export class UserInfoComponent implements OnInit {
 
 	isUserLoneAdmin(userId: number, userProjectMembers: ProjectMember[][]): boolean {
 		for (const project_members of userProjectMembers) {
-			const groupAdmins: ProjectMember[] = project_members.filter((singleMember: ProjectMember) => {
-				return singleMember.isAdmin;
-			});
+			const groupAdmins: ProjectMember[] = project_members.filter((singleMember: ProjectMember) => singleMember.isAdmin);
 
 			if (groupAdmins.length === 1) {
 				if (groupAdmins[0].userId.toString() === userId.toString()) {
@@ -223,7 +216,6 @@ export class UserInfoComponent implements OnInit {
 		}
 
 		return false;
-
 	}
 
 	isOpenStackUser(): boolean {
@@ -232,20 +224,35 @@ export class UserInfoComponent implements OnInit {
 
 	leaveVirtualOrganisation(): void {
 		this.userService.deleteUserFromVO(this.userInfo.MemberId).subscribe({
-			next: (response: HttpResponse<any>) => {
-				console.log("yes");
+			next: () => {
 				this.showLeaveResultModal(true);
 			},
-			error: (err: any) => {
-				console.log(err);
+			error: () => {
 				this.showLeaveResultModal(false);
-		}
+			},
 		});
 	}
 
 	showLeaveResultModal(success: boolean): void {
-		this.leavingSucceeded = success;
-		// Todo open modal;
+		// eslint-disable-next-line no-shadow,@typescript-eslint/no-shadow
+		const initialState = {
+			notificationModalTitle: success ? 'Success' : 'An error occured',
+			notificationModalType: success ? 'info' : 'danger',
+			notificationModalMessage: success
+				? 'You have successfully ended your membership in the de.NBI VO. Press the button below to logout!'
+				: 'An error occurred while requesting the end of your VO membership. Please try again or contact our helpdesk!',
+		};
+		const openedModal: BsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
+		openedModal.onHide.subscribe({
+			next: () => {
+				if (success) {
+					this.userService.logoutUser().subscribe((redirect: any): void => {
+						window.location.href = redirect['redirect'];
+					});
+				}
+			},
+			error: (): any => {},
+		});
 	}
 
 	/**
@@ -263,30 +270,26 @@ export class UserInfoComponent implements OnInit {
 	 * Collects data to show for user, when opening Leave Virtual Organisation Modal.
 	 */
 	getUserSummary(): void {
-
 		if (!this.summaryLoaded) {
-
 			this.groupService.getGroupsEnumeration().subscribe({
 				next: (res_enumerations: ProjectEnumeration[]) => {
 					const application_ids: string[] = res_enumerations.map((pr: ProjectEnumeration) => pr.application_id);
 
-
-					forkJoin(application_ids.map(app_id => this.applicationsService.getFullApplicationByUserPermissions(app_id))).subscribe(
-						{
-							next: (userProjectResult: Application[]) => {
-								this.userProjects = userProjectResult;
-								const group_ids: string[] = this.userProjects
-									.filter((pr_app: Application) => pr_app.project_application_statuses.includes(Application_States.APPROVED))
-									.map((user_application: Application) => user_application.project_application_perun_id.toString());
-								forkJoin(group_ids.map(group_id => this.groupService.getGroupMembers(group_id))).subscribe(
-									{
-										next: (project_members: ProjectMember[][]) => {
-											this.transformUserResults(project_members);
-										}
-									}
-								)
-							}
-						});
+					forkJoin(
+						application_ids.map(app_id => this.applicationsService.getFullApplicationByUserPermissions(app_id)),
+					).subscribe({
+						next: (userProjectResult: Application[]) => {
+							this.userProjects = userProjectResult;
+							const group_ids: string[] = this.userProjects
+								.filter((pr_app: Application) => pr_app.project_application_statuses.includes(Application_States.APPROVED))
+								.map((user_application: Application) => user_application.project_application_perun_id.toString());
+							forkJoin(group_ids.map(group_id => this.groupService.getGroupMembers(group_id))).subscribe({
+								next: (project_members: ProjectMember[][]) => {
+									this.transformUserResults(project_members);
+								},
+							});
+						},
+					});
 					const vmFilter: string[] = [
 						VirtualMachineStates.ACTIVE,
 						VirtualMachineStates.SHUTOFF,
@@ -296,13 +299,11 @@ export class UserInfoComponent implements OnInit {
 					this.vmService.getVmsFromLoggedInUser(0, 25, '', vmFilter, false, false, true).subscribe({
 						next: (res: VirtualMachine[]) => {
 							this.userVirtualMachines = res;
-						}
+						},
 					});
 				},
-				error: () => {
-				},
+				error: () => {},
 			});
-
 		}
 	}
 }
