@@ -9,6 +9,7 @@ import { WorkshopService } from '../../../api-connector/workshop.service';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
 import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import { WorkshopTimeFrame } from '../workshopTimeFrame.model';
 
 interface MemberVm {
 	projectMember: ProjectMember
@@ -34,6 +35,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	workshops: Workshop[] = [];
 	selectedWorkshop: Workshop;
 	memberVms: MemberVm[] = [];
+	workshopTimeFramesLoaded: boolean = false;
+	workshopTimeFrames: WorkshopTimeFrame[] = [];
 	loadedVmsForWorkshop: number[] = [];
 	projects: [string, number][] = [];
 	selectedProject: [string, number];
@@ -118,6 +121,24 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.invalidShortname = true;
 		this.invalidLongname = true;
 		this.loadVmsForSelectedProject();
+		this.loadCalenderForSelectedProject();
+	}
+
+	loadCalenderForSelectedProject(): void {
+		this.workshopTimeFramesLoaded = false;
+		this.subscription.add(
+			this.workshopService.loadWorkshopCalender(this.selectedWorkshop.id).subscribe({
+				next: (wsTimeFrames: WorkshopTimeFrame[]) => {
+					console.log(wsTimeFrames);
+					this.workshopTimeFrames = wsTimeFrames;
+					this.workshopTimeFramesLoaded = true;
+				},
+				error: () => {
+					this.workshopTimeFramesLoaded = true;
+					// TODO what to do in case of error?
+				},
+			}),
+		);
 	}
 
 	loadVmsForSelectedProject(): void {
