@@ -21,7 +21,14 @@
 		</div>
 		<div class="card-body" style="color: #58595b" tabindex="-1">
 			<div tabindex="-1">
-				<div *ngIf="!image?.logo_url || !image_visible" class="col" tabindex="-1" (mouseleave)="setImageVisible()">
+				<div
+					*ngIf="!image?.logo_url || !image_visible"
+					class="col"
+					tabindex="-1"
+					[style]="{ width: img_width, height: img_height }"
+					style="overflow-y: scroll"
+					(mouseleave)="setImageVisible()"
+				>
 					{{ image?.description }}
 				</div>
 				<div *ngIf="image?.logo_url && image_visible" (mouseenter)="setImageVisible()" tabindex="-1">
@@ -77,6 +84,8 @@
 				*ngIf="!selectedImage?.logo_url || !image_visible"
 				class="col"
 				tabindex="-1"
+				[style]="{ width: img_width, height: img_height }"
+				style="overflow-y: scroll"
 				(mouseleave)="setImageVisible()"
 			>
 				{{ selectedImage?.description }}

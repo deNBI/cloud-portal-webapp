@@ -87,6 +87,8 @@
 								*ngIf="!selectedImage?.logo_url || !image_visible"
 								class="col scroll-image"
 								(mouseleave)="setImageVisible()"
+								[style]="{ width: img_width, height: img_height }"
+								style="overflow-y: scroll"
 							>
 								{{ selectedImage?.description }}
 							</div>
