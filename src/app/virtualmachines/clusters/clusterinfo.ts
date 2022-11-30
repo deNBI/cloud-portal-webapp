@@ -104,17 +104,6 @@ export class Clusterinfo {
 				this.worker_batches = [];
 				this.set_worker_batches(cl.worker_batches);
 			}
-			if (cl.launch_date) {
-				const dt = new Date(cl.launch_date);
-				this.launch_date = dt.toLocaleDateString(undefined, {
-					year: 'numeric',
-					month: 'numeric',
-					day: 'numeric',
-					hour: 'numeric',
-					minute: '2-digit',
-					hour12: false,
-				});
-			}
 			this.sortWorkerByStatus();
 		}
 	}
