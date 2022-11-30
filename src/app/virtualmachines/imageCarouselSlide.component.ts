@@ -33,6 +33,8 @@ export class ImageCarouselSlideComponent implements OnInit {
 	}
 
 	public setImageVisible(): void {
-		this.image_visible = !this.image_visible;
+		if (this.image.logo_url) {
+			this.image_visible = !this.image_visible;
+		}
 	}
 }
