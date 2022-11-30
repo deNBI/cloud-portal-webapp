@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {
+	HttpClient, HttpHeaders, HttpParams, HttpResponse,
+} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
