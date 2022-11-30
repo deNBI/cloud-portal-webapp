@@ -79,7 +79,9 @@
 						title="{{ selectedImage?.name }}"
 					>
 						<i *ngIf="selectedImage?.is_snapshot" class="fa fa-camera" aria-hidden="true"></i>
-						<strong>{{ selectedImage?.name }}</strong>
+						<strong [attr.data-test-id]="selectedImage?.name.replace(regexp_data_test_id, '_')">{{
+							selectedImage?.name
+						}}</strong>
 					</div>
 					<div class="card-body">
 						<div class="scroll-image">
