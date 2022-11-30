@@ -106,7 +106,7 @@ export class Clusterinfo {
 			}
 			if (cl.launch_date) {
 				const dt = new Date(cl.launch_date);
-				this.launch_date = dt.toLocaleDateString(null, {
+				this.launch_date = dt.toLocaleDateString(undefined, {
 					year: 'numeric',
 					month: 'numeric',
 					day: 'numeric',
