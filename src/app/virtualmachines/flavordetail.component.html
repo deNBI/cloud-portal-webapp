@@ -9,7 +9,7 @@
 		</div>
 
 		<ul class="nav nav-tabs card-header-tabs" style="overflow: hidden" role="tablist">
-			<li class="nav-item" style="cursor: pointer" *ngFor="let item of flavor_types | keyvalue: unsorted">
+			<li class="nav-item" style="cursor: pointer" *ngFor="let item of flavor_types | keyvalue : unsorted">
 				<a
 					[ngClass]="{ active: selected_flavor_type === item.key }"
 					(click)="setSelectedFlavorType(item.key)"
@@ -122,12 +122,14 @@
 											data-toggle="tooltip"
 											data-placement="top"
 											title="{{ flavor?.name }}"
-											[attr.data-test-id]="'flavor_' + flavor?.name.replace(regexp_data_test_id, '_')"
 											[ngClass]="{ 'bg-success': selectedFlavor === flavor }"
 										>
 											<strong>{{ flavor.name }}</strong>
 										</div>
-										<div class="card-body">
+										<div
+											class="card-body"
+											[attr.data-test-id]="'flavor_' + flavor?.name.replace(regexp_data_test_id, '_')"
+										>
 											<div class="scroll-flavor">
 												<div class="col">
 													<div class="row">

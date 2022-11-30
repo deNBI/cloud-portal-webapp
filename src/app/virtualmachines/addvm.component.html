@@ -193,6 +193,7 @@
 										>
 											<div class="col" *ngIf="image_loaded">
 												<app-image-detail
+													data-test-id="image_section"
 													*ngIf="images?.length > 0"
 													[selectedImage]="selectedImage"
 													[images]="images"
