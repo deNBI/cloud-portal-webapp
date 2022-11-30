@@ -290,56 +290,65 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="card-body" *ngIf="selectedWorkshop">
+					<div class="card-body" *ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded">
 						<h5 class="card-title">Calender</h5>
 						<div class="alert alert-info">
 							You can enter time slots for the workshop in which work is actively carried out in the portal or on the
 							machines. This enables the de.NBI Cloud Team to improve the planning of portal updates, for example, so as
 							not to hinder or restrict the work of the participants at peak times. Please consider, that the existing
-							timeframes are displayed using the "Central European Time". Please enter your dates using the UTC
-							timezone.
+							timeframes are displayed using the "Central European Time". Please enter your dates using this timezone.
+							You can see the corresponding UTC time below. Please enter the time slots day by day, to be more precise!
 						</div>
 						<h6 class="card-title">New</h6>
 						<div class="card">
 							<div class="card-body">
 								<form id="new_timeframe_form" #newTimeFrameForm="ngForm" class="form-horizontal">
-									<div class="mb-3">
-										<label for="description_input_field" class="form-label">Description</label>
-										<input
-											type="text"
-											class="form-control"
-											id="description_input_field"
-											aria-describedby="descriptionHelp"
-										/>
-										<div id="emailHelp" class="form-text">
-											You are free to enter a short description of the planned event
+									<div class="form-row">
+										<div class="mb-3">
+											<label for="description_input_field" class="form-label">Description</label>
+											<input
+												type="text"
+												class="form-control"
+												id="description_input_field"
+												aria-describedby="descriptionHelp"
+											/>
+											<div id="emailHelp" class="form-text">
+												You are free to enter a short description of the planned event
+											</div>
 										</div>
 									</div>
-									<div class="mb-3">
-										<label for="start_date_time_input_field" class="form-label">Start Time</label>
-										<input
-											type="text"
-											class="form-control"
-											id="start_date_time_input_field"
-											aria-describedby="descriptionHelp"
-										/>
-										<div id="startTimeHelp" class="form-text">
-											You are free to enter a short description of the planned event
+									<div class="form-row">
+										<div class="mb-3">
+											<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
+										</div>
+
+										<div class="mb-3">
+											<label class="form-label">Start Time</label>
+											<app-timepicker (timeChange)="startTimeChanged($event)"></app-timepicker>
+										</div>
+
+										<div class="mb-3">
+											<label class="form-label">End Time</label>
+											<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
 										</div>
 									</div>
-									<div class="mb-3">
-										<label for="end_date_time_input_field" class="form-label">End Time</label>
-										<input
-											type="text"
-											class="form-control"
-											id="end_date_time_input_field"
-											aria-describedby="descriptionHelp"
-										/>
-										<div id="endTimeHelp" class="form-text">
-											You are free to enter a short description of the planned event
+
+									<div class="form-row">
+										<div class="col-md-auto">
+											<button
+												class="btn btn-outline-primary"
+												(click)="createNewTimeFrame()"
+												[disabled]="!(this.newWorkShopTimeFrame | isValidTimeFrame)"
+											>
+												Add new timeframe
+											</button>
+										</div>
+										<div class="col-md-auto" *ngIf="!(this.newWorkShopTimeFrame | isValidTimeFrame)">
+											<div class="alert alert-info">
+												Please select a timeframe, where the start time is before the end time!
+											</div>
 										</div>
 									</div>
-									<!-- need to change form to accept timepicks/dates -->
 								</form>
 							</div>
 						</div>

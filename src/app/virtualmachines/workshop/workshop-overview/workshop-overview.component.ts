@@ -27,11 +27,11 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
-
 	subscription: Subscription = new Subscription();
 	resend_info: boolean = false;
 	sending_mails = false;
 	sending_done = false;
+	newWorkShopTimeFrame: WorkshopTimeFrame = null;
 	workshops: Workshop[] = [];
 	selectedWorkshop: Workshop;
 	memberVms: MemberVm[] = [];
@@ -85,6 +85,35 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.getMembersOfTheProject();
 	}
 
+	dayChanged(date: { year: number; month: number; day: number }): void {
+		this.newWorkShopTimeFrame.start_time.setDate(date.day);
+		this.newWorkShopTimeFrame.start_time.setMonth(date.month);
+		this.newWorkShopTimeFrame.start_time.setFullYear(date.year);
+
+		this.newWorkShopTimeFrame.end_time.setDate(date.day);
+		this.newWorkShopTimeFrame.end_time.setMonth(date.month);
+		this.newWorkShopTimeFrame.end_time.setFullYear(date.year);
+		console.log(this.newWorkShopTimeFrame);
+	}
+
+	startTimeChanged(time: { hour: number; minute: number }): void {
+		this.newWorkShopTimeFrame.start_time.setHours(time.hour);
+		this.newWorkShopTimeFrame.start_time.setMinutes(time.minute);
+	}
+
+	endTimeChanged(time: { hour: number; minute: number }): void {
+		this.newWorkShopTimeFrame.end_time.setHours(time.hour);
+		this.newWorkShopTimeFrame.end_time.setMinutes(time.minute);
+	}
+
+	createNewTimeFrame(): void {
+		this.workshopService.addWorkshopTimeFrame(this.newWorkShopTimeFrame).subscribe({
+			next: (result: any) => {
+				console.log(result);
+			},
+		});
+	}
+
 	getWorkshopsForProject(): void {
 		this.projectWorkshopsLoading = true;
 		this.subscription.add(
@@ -117,6 +146,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	workshopChange(workshop: Workshop): void {
 		this.selectedWorkshop = workshop;
+		this.newWorkShopTimeFrame = new WorkshopTimeFrame({ workshop: this.selectedWorkshop, start_time: new Date() });
 		this.newWorkshop = false;
 		this.invalidShortname = true;
 		this.invalidLongname = true;
