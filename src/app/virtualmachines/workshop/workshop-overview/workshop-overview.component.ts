@@ -87,11 +87,11 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	dayChanged(date: { year: number; month: number; day: number }): void {
 		this.newWorkShopTimeFrame.start_time.setDate(date.day);
-		this.newWorkShopTimeFrame.start_time.setMonth(date.month);
+		this.newWorkShopTimeFrame.start_time.setMonth(date.month - 1);
 		this.newWorkShopTimeFrame.start_time.setFullYear(date.year);
 
 		this.newWorkShopTimeFrame.end_time.setDate(date.day);
-		this.newWorkShopTimeFrame.end_time.setMonth(date.month);
+		this.newWorkShopTimeFrame.end_time.setMonth(date.month - 1);
 		this.newWorkShopTimeFrame.end_time.setFullYear(date.year);
 		console.log(this.newWorkShopTimeFrame);
 	}
@@ -107,9 +107,17 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	}
 
 	createNewTimeFrame(): void {
-		this.workshopService.addWorkshopTimeFrame(this.newWorkShopTimeFrame).subscribe({
-			next: (result: any) => {
-				console.log(result);
+		this.workshopService.addWorkshopTimeFrame(this.selectedWorkshop, this.newWorkShopTimeFrame).subscribe({
+			next: () => {
+				this.loadCalenderForSelectedProject();
+			},
+		});
+	}
+
+	deleteWorkshopTimeFrame(timeframe: WorkshopTimeFrame): void {
+		this.workshopService.removeWorkshopTimeFrame(this.selectedWorkshop, timeframe).subscribe({
+			next: () => {
+				this.loadCalenderForSelectedProject();
 			},
 		});
 	}

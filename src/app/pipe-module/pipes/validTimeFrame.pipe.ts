@@ -10,6 +10,9 @@ import { WorkshopTimeFrame } from '../../virtualmachines/workshop/workshopTimeFr
 })
 export class ValidTimeFramePipe implements PipeTransform {
 	transform(timeframe: WorkshopTimeFrame): boolean {
-		return Date.now() <= timeframe.start_time.getTime() && timeframe.start_time.getTime() < timeframe.end_time.getTime();
+		return (
+			new Date().getTime() <= timeframe.start_time.getTime()
+			&& timeframe.start_time.getTime() < timeframe.end_time.getTime()
+		);
 	}
 }

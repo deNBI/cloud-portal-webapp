@@ -311,6 +311,8 @@
 												class="form-control"
 												id="description_input_field"
 												aria-describedby="descriptionHelp"
+												[(ngModel)]="newWorkShopTimeFrame.description"
+												[ngModelOptions]="{ standalone: true }"
 											/>
 											<div id="emailHelp" class="form-text">
 												You are free to enter a short description of the planned event
@@ -345,7 +347,7 @@
 										</div>
 										<div class="col-md-auto" *ngIf="!(this.newWorkShopTimeFrame | isValidTimeFrame)">
 											<div class="alert alert-info">
-												Please select a timeframe, where the start time is before the end time!
+												Please select a timeframe, where the start time is before the end time and in the future!
 											</div>
 										</div>
 									</div>
@@ -354,17 +356,15 @@
 						</div>
 						<h6 class="card-title">Existing</h6>
 						<ul class="list-group">
-							<li
-								class="list-group-item d-flex justify-content-between align-items-center"
-								*ngFor="let wstimeframe of this.workshopTimeFrames"
-							>
+							<li class="list-group-item" *ngFor="let wstimeframe of this.workshopTimeFrames">
 								<strong
 									>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
 									{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
 								>
 								: {{ wstimeframe.description }}
-								<button class="btn btn-outline-info">Edit</button>
-								<button class="btn btn-outline-danger">Remove</button>
+								<button class="btn btn-outline-danger align-self-end" (click)="deleteWorkshopTimeFrame(wstimeframe)">
+									Remove
+								</button>
 							</li>
 						</ul>
 					</div>

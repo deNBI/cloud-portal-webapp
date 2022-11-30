@@ -1,6 +1,7 @@
 import { Workshop } from './workshop.model';
 
 export class WorkshopTimeFrame {
+	id: string = '';
 	workshop: Workshop = new Workshop();
 	start_time: Date = new Date();
 	end_time: Date = new Date();
