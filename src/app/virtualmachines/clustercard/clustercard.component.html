@@ -168,6 +168,7 @@
 					<a
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
 						[id]="'delete_' + cluster?.cluster_id"
+						[attr.data-test-id]="'delete_cluster_' + cluster?.cluster_id"
 						(click)="showDeleteModal()"
 						onClick="return false;"
 					>
