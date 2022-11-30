@@ -18,7 +18,7 @@
 	</div>
 </div>
 
-<div *ngIf="singleProject && !projectDataLoaded" class="loader"></div>
+<div *ngIf="singleProject && !projectDataLoaded" class="loader" data-test-id="site-loader"></div>
 <div *ngIf="userinfo_loaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">
 		You are not a member of a SimpleVM project which allows clusters. If you think this is an error, please contact us
@@ -38,7 +38,7 @@
 		<div class="col-md-12">
 			<div class="card" style="">
 				<div class="card-header">
-					<strong>New Cluster</strong>
+					<strong data-test-id="new-cluster-heading">New Cluster</strong>
 					<span *ngIf="singleProject" id="singleProjectNameSpan">
 						- <strong>{{ this.selectedProject[0] }}</strong></span
 					>
@@ -53,6 +53,7 @@
 									required
 									class="form-control form-select"
 									name="projectSelect"
+									data-test-id="project_selection_dropdown"
 									[(ngModel)]="selectedProject"
 									id="projectSelect"
 									(ngModelChange)="getSelectedProjectClient()"
@@ -134,7 +135,7 @@
 													type="text"
 													placeholder="Cluster name"
 													[(ngModel)]="cluster_name"
-													data-test-id="instance_name_input_field"
+													data-test-id="cluster_name_input_field"
 													[ngClass]="{
 														'is-invalid':
 															f.controls.instance_name?.invalid &&
@@ -150,69 +151,73 @@
 											</div>
 										</div>
 
-										<div
-											class="form-group row col-md-12"
-											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-										>
-											<strong>Please choose your master instance</strong><br />
-											<span class="text-muted"
-												>This will be the master node of your cluster. Please choose its resources and the image for all
-												nodes. The master node can not be changed afterwards.</span
+										<div data-test-id="master_section">
+											<div
+												class="form-group row col-md-12"
+												style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
 											>
-										</div>
+												<strong>Please choose your master instance</strong><br />
+												<span class="text-muted"
+													>This will be the master node of your cluster. Please choose its resources and the image for
+													all nodes. The master node can not be changed afterwards.</span
+												>
+											</div>
 
-										<div
-											class="form-group row col-md-12"
-											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-										>
-											<div class="col">
-												<app-flavor-detail
-													*ngIf="userinfo_loaded && flavors_loaded"
-													[selectedFlavor]="selectedMasterFlavor"
-													id="master_id_flavor_detail"
-													[flavors]="flavors"
-													[allowReload]="true"
-													(reloadFlavors)="reloadFlavors()"
-													(selectedFlavorChange)="setMasterFlavor($event); resetBatches(); calculateNewValues()"
-												></app-flavor-detail>
-												<div class="d-flex align-items-center" *ngIf="userinfo_loaded && !flavors_loaded">
-													<strong>Loading flavors ...</strong>
+											<div
+												class="form-group row col-md-12"
+												style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+											>
+												<div class="col">
+													<app-flavor-detail
+														*ngIf="userinfo_loaded && flavors_loaded"
+														[selectedFlavor]="selectedMasterFlavor"
+														id="master_id_flavor_detail"
+														data-test-id="master_flavors_section"
+														[flavors]="flavors"
+														[allowReload]="true"
+														(reloadFlavors)="reloadFlavors()"
+														(selectedFlavorChange)="setMasterFlavor($event); resetBatches(); calculateNewValues()"
+													></app-flavor-detail>
+													<div class="d-flex align-items-center" *ngIf="userinfo_loaded && !flavors_loaded">
+														<strong data-test-id="loading_flavors">Loading flavors ...</strong>
+														<div class="spinner-border m-sm-auto" role="status"></div>
+													</div>
+												</div>
+											</div>
+
+											<div
+												class="form-group row col-md-12"
+												style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+											>
+												<div class="col" *ngIf="imagesLoaded">
+													<app-image-detail
+														*ngIf="images?.length > 0"
+														[selectedImage]="selectedMasterImage"
+														[images]="images"
+														[isCluster]="true"
+														data-test-id="master_images_section"
+														[resenv_names]="resenv_names"
+														[selectedFlavor]="selectedMasterFlavor"
+														(selectedImageChange)="
+															selectedMasterImage = $event; this.selectedWorkerBatches[0].image = selectedMasterImage
+														"
+														id="master_id_image_detail"
+													></app-image-detail>
+													<div
+														class="alert alert-info"
+														*ngIf="selectedMasterImage"
+														style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
+													>
+														This image will also be used for every worker!
+													</div>
+													<div class="alert alert-info" *ngIf="images.length === 0">
+														There are no images available at the moment.
+													</div>
+												</div>
+												<div *ngIf="!imagesLoaded" class="d-flex align-items-center" data-test-id="loading_images">
+													<strong>Loading images ...</strong>
 													<div class="spinner-border m-sm-auto" role="status"></div>
 												</div>
-											</div>
-										</div>
-
-										<div
-											class="form-group row col-md-12"
-											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-										>
-											<div class="col" *ngIf="imagesLoaded">
-												<app-image-detail
-													*ngIf="images?.length > 0"
-													[selectedImage]="selectedMasterImage"
-													[images]="images"
-													[isCluster]="true"
-													[resenv_names]="resenv_names"
-													[selectedFlavor]="selectedMasterFlavor"
-													(selectedImageChange)="
-														selectedMasterImage = $event; this.selectedWorkerBatches[0].image = selectedMasterImage
-													"
-													id="master_id_image_detail"
-												></app-image-detail>
-												<div
-													class="alert alert-info"
-													*ngIf="selectedMasterImage"
-													style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
-												>
-													This image will also be used for every worker!
-												</div>
-												<div class="alert alert-info" *ngIf="images.length === 0">
-													There are no images available at the moment.
-												</div>
-											</div>
-											<div *ngIf="!imagesLoaded" class="d-flex align-items-center">
-												<strong>Loading images ...</strong>
-												<div class="spinner-border m-sm-auto" role="status"></div>
 											</div>
 										</div>
 
@@ -288,6 +293,7 @@
 												<span *ngIf="selectedBatch.usable_flavors.length > 0 || selectedBatch.flavor">
 													<div class="form-group row">
 														<app-flavor-detail
+															data-test-id="worker_flavors_section"
 															[selectedFlavor]="selectedBatch.flavor"
 															[selectedImage]="selectedMasterImage"
 															[flavors]="selectedBatch.usable_flavors"
@@ -314,6 +320,7 @@
 														>
 														<div class="col-md-10">
 															<input
+																data-test-id="worker_counter"
 																class="form-control"
 																id="workerInstancesCount_{{ selectedBatch.index }}"
 																[disabled]="!selectedBatch.flavor || selectedBatch !== selectedBatch"
@@ -431,6 +438,7 @@
 										name="cluster_responsibility"
 										type="checkbox"
 										id="cluster_responsibility"
+										data-test-id="cluster_responsibility_input"
 										[(ngModel)]="cluster_responsibility"
 										required
 									/>
@@ -452,6 +460,7 @@
 									style="margin-left: auto; margin-top: 25px; margin-right: auto; width: 8em"
 									id="startClusterButton"
 									type="button"
+									data-test-id="start_cluster_button"
 									[disabled]="
 										!cluster_responsibility ||
 										!selectedMasterFlavor ||
@@ -514,10 +523,11 @@
 			<div class="modal-header">
 				<h4>{{ !cluster_error ? 'Cluster Start' : 'Error while starting cluster' }}</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" data-test-id="redirecting_cluster_overview">
 				<span *ngIf="!cluster_started && !cluster_error"> Starting Cluster.. </span>
 				<span *ngIf="cluster_id && cluster_started && !cluster_error">
-					The ID of your new cluster is <strong id="new_cluster_id">{{ cluster_id }}</strong
+					The ID of your new cluster is
+					<strong id="new_cluster_id" data-test-id="new_cluster_id">{{ cluster_id }}</strong
 					>.</span
 				>
 				<span *ngIf="cluster_error">{{ cluster_error }}</span>
