@@ -80,7 +80,7 @@
 						<div class="row justify-content-center">
 							<span *ngIf="client_available && !projectDataLoaded" class="spinner-border text-info"></span>
 						</div>
-						<div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
+						<div *ngIf="selectedProject && (allowedProjects | inAllowed : selectedProject)">
 							<div *ngIf="client_available && projectDataLoaded">
 								<app-resource-overview [ressourceUsage]="selectedProjectRessources"> </app-resource-overview>
 								<div
@@ -912,7 +912,7 @@
 								>
 							</div>
 						</div>
-						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
+						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed : selectedProject)">
 							<div class="alert alert-info">
 								You are not allowed to start a machine in this project, as the administrators of the project do not
 								allow non-administrators to start machines.
