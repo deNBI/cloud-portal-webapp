@@ -10,6 +10,7 @@ import { InAllowedPipe } from './pipes/in-allowed.pipe';
 import { NoCoresPipe, NoRamPipe, NoVMsPipe } from './pipes/ressources';
 import { HasUnavailableFlavorsPipe } from './pipes/has-unavailable-flavors.pipe';
 import { ValidTimeFramePipe } from './pipes/validTimeFrame.pipe';
+import { PublicKeyPipe } from './pipes/publicKey.pipe';
 
 /**
  * Pipemodule
@@ -29,6 +30,7 @@ import { ValidTimeFramePipe } from './pipes/validTimeFrame.pipe';
 		NoCoresPipe,
 		NoRamPipe,
 		ValidTimeFramePipe,
+		PublicKeyPipe,
 	],
 	exports: [
 		FlavorCounterPipe,
@@ -44,6 +46,7 @@ import { ValidTimeFramePipe } from './pipes/validTimeFrame.pipe';
 		NoCoresPipe,
 		NoRamPipe,
 		ValidTimeFramePipe,
+		PublicKeyPipe,
 	],
 	imports: [CommonModule],
 })

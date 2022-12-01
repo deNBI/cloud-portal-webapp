@@ -79,6 +79,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 	ngOnInit(): void {
 		this.getVoProjects();
+		this.getComputeCenters();
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
 			this.newsletterSubscriptionCounter = result.value as number;
 		});

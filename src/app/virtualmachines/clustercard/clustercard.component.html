@@ -19,7 +19,7 @@
 			<div class="col-3" style="margin: auto; text-align: center">
 				{{ cluster?.userlogin }}
 				<br />
-				{{ cluster?.launch_date }}
+				{{ cluster?.launch_date | date : 'yyyy.MM.dd HH:mm' }}
 			</div>
 		</div>
 		<div
@@ -162,13 +162,13 @@
 					class="col-md-auto"
 					*ngIf="
 						cluster?.status !== VirtualMachineStates.staticDELETED &&
-						cluster?.status !== VirtualMachineStates.staticNOT_FOUND &&
 						cluster?.status !== VirtualMachineStates.staticDELETING
 					"
 				>
 					<a
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
 						[id]="'delete_' + cluster?.cluster_id"
+						[attr.data-test-id]="'delete_cluster_' + cluster?.cluster_id"
 						(click)="showDeleteModal()"
 						onClick="return false;"
 					>
