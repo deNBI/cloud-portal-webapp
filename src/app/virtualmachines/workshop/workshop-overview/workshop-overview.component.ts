@@ -2,6 +2,7 @@ import {
 	Component, OnInit, OnDestroy, ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { Workshop } from '../workshop.model';
 import { GroupService } from '../../../api-connector/group.service';
 import { UrlData } from '../workshop-urlinfo.model';
@@ -10,6 +11,7 @@ import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
 import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { WorkshopTimeFrame } from '../workshopTimeFrame.model';
+import { NotificationModalComponent } from '../../../shared/modal/notification-modal';
 
 interface MemberVm {
 	projectMember: ProjectMember
@@ -36,6 +38,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	selectedWorkshop: Workshop;
 	memberVms: MemberVm[] = [];
 	workshopTimeFramesLoaded: boolean = false;
+	errorLoadingTimeFrames: boolean = false;
 	workshopTimeFrames: WorkshopTimeFrame[] = [];
 	loadedVmsForWorkshop: number[] = [];
 	projects: [string, number][] = [];
@@ -55,7 +58,11 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
-	constructor(private workshopService: WorkshopService, private groupService: GroupService) {
+	constructor(
+		private workshopService: WorkshopService,
+		private groupService: GroupService,
+		private modalService: BsModalService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -110,6 +117,20 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.workshopService.addWorkshopTimeFrame(this.selectedWorkshop, this.newWorkShopTimeFrame).subscribe({
 			next: () => {
 				this.loadCalenderForSelectedProject();
+				const initialState = {
+					notificationModalTitle: 'Success',
+					notificationModalType: 'info',
+					notificationModalMessage: 'The new timeframe got successfully added to the calender!',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState });
+			},
+			error: () => {
+				const initialState = {
+					notificationModalTitle: 'Error',
+					notificationModalType: 'danger',
+					notificationModalMessage: 'An error occured while adding the timeframe to the calender!',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState });
 			},
 		});
 	}
@@ -118,6 +139,20 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.workshopService.removeWorkshopTimeFrame(this.selectedWorkshop, timeframe).subscribe({
 			next: () => {
 				this.loadCalenderForSelectedProject();
+				const initialState = {
+					notificationModalTitle: 'Success',
+					notificationModalType: 'info',
+					notificationModalMessage: 'The selected timeframe got successfully removed from the calender!',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState });
+			},
+			error: () => {
+				const initialState = {
+					notificationModalTitle: 'Error',
+					notificationModalType: 'danger',
+					notificationModalMessage: 'An error occured while removing the timeframe from the calender!',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState });
 			},
 		});
 	}
@@ -170,10 +205,11 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 					console.log(wsTimeFrames);
 					this.workshopTimeFrames = wsTimeFrames;
 					this.workshopTimeFramesLoaded = true;
+					this.errorLoadingTimeFrames = false;
 				},
 				error: () => {
 					this.workshopTimeFramesLoaded = true;
-					// TODO what to do in case of error?
+					this.errorLoadingTimeFrames = true;
 				},
 			}),
 		);

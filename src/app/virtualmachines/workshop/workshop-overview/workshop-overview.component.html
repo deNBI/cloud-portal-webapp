@@ -290,14 +290,17 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="card-body" *ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded">
+					<div
+						class="card-body"
+						*ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded && !this.errorLoadingTimeFrames"
+					>
 						<h5 class="card-title">Calender</h5>
 						<div class="alert alert-info">
 							You can enter time slots for the workshop in which work is actively carried out in the portal or on the
 							machines. This enables the de.NBI Cloud Team to improve the planning of portal updates, for example, so as
 							not to hinder or restrict the work of the participants at peak times. Please consider, that the existing
 							timeframes are displayed using the "Central European Time". Please enter your dates using this timezone.
-							You can see the corresponding UTC time below. Please enter the time slots day by day, to be more precise!
+							Please enter the time slots day by day, to be more precise!
 						</div>
 						<h6 class="card-title">Add new timeframes</h6>
 						<div class="card">
@@ -370,6 +373,14 @@
 								</button>
 							</li>
 						</ul>
+					</div>
+					<div
+						class="card-body"
+						*ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded && this.errorLoadingTimeFrames"
+					>
+						<div class="alert alert-danger">
+							An error occurred while loading the timeframes of this calender - please try again later!
+						</div>
 					</div>
 					<div class="card-body" *ngIf="selectedWorkshop.id && !this.workshopTimeFramesLoaded">
 						<span class="spinner-border-sm"></span>
