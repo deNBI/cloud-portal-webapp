@@ -88,12 +88,10 @@ export class WorkshopService {
 	}
 
 	removeWorkshopTimeFrame(workshop: Workshop, timeframe: WorkshopTimeFrame): Observable<any> {
-		console.log(timeframe);
 		const params: HttpParams = new HttpParams().set('timeframe_id', timeframe.id).set('process', 'delete');
 
-		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}workshops/${workshop.id}/calender/`, {
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}workshops/${workshop.id}/calender/`, params, {
 			withCredentials: true,
-			params,
 		});
 	}
 
