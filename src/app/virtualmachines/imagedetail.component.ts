@@ -40,6 +40,16 @@ export class ImageDetailComponent implements OnInit {
 	imageTypes = ImageTypes;
 	image_selection: Image[];
 
+	filterTimeout = null;
+	filterDebounceTime: number = 300;
+
+	filterImagesWithDebounce() {
+		clearTimeout(this.filterTimeout);
+		this.filterTimeout = setTimeout(() => {
+			this.filterImages();
+		}, this.filterDebounceTime);
+	}
+
 	filterImages(): void {
 		if (this.filter) {
 			this.image_selection = this.images.filter(image => image.name.toLowerCase().includes(this.filter.toLowerCase()));

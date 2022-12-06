@@ -21,8 +21,8 @@
 				type="text"
 				placeholder="Filter Names"
 				style="margin-left: 5px"
-				[(ngModel)]="filter"
-				(ngModelChange)="filterFlavors()"
+				[ngModel]="filter"
+				(ngModelChange)="filter = $event; filterFlavorsWithDebounce()"
 			/>
 		</ul>
 	</div>
@@ -100,7 +100,9 @@
 				</div>
 			</div>
 			<div *ngIf="!selectedFlavor" class="col-12" style="padding-top: 10px">
-				<owl-carousel-o [options]="customOptions">
+				<div *ngIf="possible_flavors.length == 0" class="alert alert-warning" role="alert">No flavors found.</div>
+
+				<owl-carousel-o [options]="customOptions" *ngIf="possible_flavors.length > 0">
 					<ng-container *ngFor="let flavor of possible_flavors">
 						<ng-template carouselSlide>
 							<div>
@@ -206,7 +208,7 @@
 				}"
 				style="padding-top: 10px"
 			>
-				<owl-carousel-o [options]="customOptions">
+				<owl-carousel-o [options]="customOptions" *ngIf="possible_flavors.length">
 					<ng-container *ngFor="let flavor of possible_flavors">
 						<ng-template carouselSlide>
 							<div>

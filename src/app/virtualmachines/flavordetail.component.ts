@@ -31,12 +31,21 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 	flavors_per_row: number = 4;
 	possible_flavors: Flavor[] = [];
 	filter: string = '';
+	filterTimeout = null;
+	filterDebounceTime: number = 300;
 
 	carousel_activated: boolean = true;
 	window_size: number;
 	carousel_window_min_xl_9: number = 1700;
 	carousel_window_min_xl_8: number = 1380;
 	carousel_window_min_xl6: number = 1200;
+
+	filterFlavorsWithDebounce() {
+		clearTimeout(this.filterTimeout);
+		this.filterTimeout = setTimeout(() => {
+			this.filterFlavors();
+		}, this.filterDebounceTime);
+	}
 
 	filterFlavors(): void {
 		if (this.filter) {
