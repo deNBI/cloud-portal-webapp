@@ -30,11 +30,21 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 	flavor_types: { [name: string]: Flavor[] } = {};
 	flavors_per_row: number = 4;
 	possible_flavors: Flavor[] = [];
+	filter: string = '';
+
 	carousel_activated: boolean = true;
 	window_size: number;
 	carousel_window_min_xl_9: number = 1700;
 	carousel_window_min_xl_8: number = 1380;
 	carousel_window_min_xl6: number = 1200;
+
+	filterFlavors(): void {
+		if (this.filter) {
+			this.possible_flavors = this.flavors.filter(image => image.name.toLowerCase().includes(this.filter.toLowerCase()));
+		} else {
+			this.possible_flavors = this.flavor_types[this.selected_flavor_type];
+		}
+	}
 
 	// icons for graphics within flavor cards:
 

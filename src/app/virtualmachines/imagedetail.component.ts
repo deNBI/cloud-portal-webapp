@@ -23,6 +23,7 @@ export class ImageDetailComponent implements OnInit {
 	@Input() selectedFlavor: Flavor;
 	@Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
 	@Input() isCluster: boolean = false;
+	filter: string = '';
 
 	regexp_data_test_id: RegExp = /[ ().]/g;
 	carousel_activated: boolean = true;
@@ -38,6 +39,15 @@ export class ImageDetailComponent implements OnInit {
 	image_types: { [name: string]: Image[] } = {};
 	imageTypes = ImageTypes;
 	image_selection: Image[];
+
+	filterImages(): void {
+		if (this.filter) {
+			this.image_selection = this.images.filter(image => image.name.toLowerCase().includes(this.filter.toLowerCase()));
+		} else {
+			this.image_selection = this.image_types[this.selected_image_type];
+		}
+	}
+
 	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 	RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
 	STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
