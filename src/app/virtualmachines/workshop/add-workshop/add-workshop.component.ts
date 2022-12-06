@@ -23,12 +23,22 @@ import {
 } from '../../../../links/links';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { WorkshopService } from '../../../api-connector/workshop.service';
+import { ResearchEnvironment } from '../../virtualmachinemodels/res-env';
+import { BiocondaService } from '../../../api-connector/bioconda.service';
 
 @Component({
 	selector: 'app-add-workshop',
 	templateUrl: './add-workshop.component.html',
 	styleUrls: ['./add-workshop.component.scss'],
-	providers: [GroupService, ImageService, FlavorService, UserService, VirtualmachineService, WorkshopService],
+	providers: [
+		GroupService,
+		ImageService,
+		FlavorService,
+		UserService,
+		VirtualmachineService,
+		WorkshopService,
+		BiocondaService,
+	],
 })
 export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	title: string = 'New workshop VMs';
@@ -108,6 +118,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	started_machine: boolean = false;
 	progress_bar_animated: string = 'progress-bar-animated';
 	progress_bar_width: number = 0;
+	resenv_names: string[] = [];
 
 	constructor(
 		private group_service: GroupService,
@@ -117,6 +128,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		private virtual_machine_service: VirtualmachineService,
 		private workshop_service: WorkshopService,
 		private router: Router,
+		private condaService: BiocondaService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -189,6 +201,8 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 					this.client_checked = true;
 				}
 				this.selected_project_client = client;
+				this.getResEnvNames();
+
 				this.subscription.add(
 					this.image_service
 						.getBlockedImageTagsResenv(Number(this.selected_project_client.id), 'true')
@@ -249,6 +263,16 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 				this.image_loaded = true;
 				this.check_project_data_loaded();
 			}),
+		);
+	}
+
+	getResEnvNames(): void {
+		this.subscription.add(
+			this.condaService
+				.getForcTemplates(this.selected_project_client.id)
+				.subscribe((resenvs: ResearchEnvironment[]): void => {
+					resenvs.forEach(resenv => this.resenv_names.push(resenv.template_name));
+				}),
 		);
 	}
 
