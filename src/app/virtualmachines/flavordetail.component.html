@@ -17,13 +17,20 @@
 					>{{ item.key }}
 				</a>
 			</li>
-			<input
-				type="text"
-				placeholder="Filter Names"
-				style="margin-left: 5px"
-				[ngModel]="filter"
-				(ngModelChange)="filter = $event; filterFlavorsWithDebounce()"
-			/>
+			<li class="nav-item">
+				<div class="form-floating" style="height: 38px">
+					<input
+						type="text"
+						id="filterFlavorNames"
+						placeholder="Filter flavors by name"
+						class="form-control"
+						style="margin-left: 5px; height: 38px"
+						[ngModel]="filter"
+						(ngModelChange)="filter = $event; filterFlavorsWithDebounce()"
+					/>
+					<label for="filterFlavorNames" style="padding: 0.5rem 0.75rem">Filter flavors by name</label>
+				</div>
+			</li>
 		</ul>
 	</div>
 	<div class="card-body">

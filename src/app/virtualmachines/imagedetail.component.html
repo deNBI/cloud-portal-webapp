@@ -43,13 +43,20 @@
 					>Research Environments</a
 				>
 			</li>
-
-			<input
-				type="text"
-				placeholder="Filter Names"
-				[(ngModel)]="filter"
-				(ngModelChange)="filter = $event; filterImagesWithDebounce()"
-			/>
+			<li class="nav-item">
+				<div class="form-floating" style="height: 38px">
+					<input
+						type="text"
+						id="filterImagesNames"
+						class="form-control"
+						placeholder="Filter images by names"
+						style="margin-left: 5px; height: 38px"
+						[(ngModel)]="filter"
+						(ngModelChange)="filter = $event; filterImagesWithDebounce()"
+					/>
+					<label for="filterImagesNames" style="padding: 0.5rem 0.75rem">Filter images by name</label>
+				</div>
+			</li>
 		</ul>
 	</div>
 	<div class="card-body">
