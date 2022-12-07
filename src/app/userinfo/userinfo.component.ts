@@ -58,6 +58,10 @@ export class UserInfoComponent implements OnInit {
 	 */
 	summaryLoaded: boolean = false;
 
+	summaryError: boolean = false;
+
+	userHasNoGroups: boolean = false;
+
 	userIsProjectPi: boolean = false;
 
 	userIsLoneAdmin: boolean = false;
@@ -263,6 +267,7 @@ export class UserInfoComponent implements OnInit {
 		this.userIsProjectPi = this.isUserPi();
 		this.userIsLoneAdmin = this.isUserLoneAdmin(this.userInfo.Id, userProjectMembers);
 		this.userIsOpenStackUser = this.isOpenStackUser();
+		this.summaryError = false;
 		this.summaryLoaded = true;
 	}
 
@@ -274,35 +279,46 @@ export class UserInfoComponent implements OnInit {
 			this.groupService.getGroupsEnumeration().subscribe({
 				next: (res_enumerations: ProjectEnumeration[]) => {
 					const application_ids: string[] = res_enumerations.map((pr: ProjectEnumeration) => pr.application_id);
-
-					forkJoin(
-						application_ids.map(app_id => this.applicationsService.getFullApplicationByUserPermissions(app_id)),
-					).subscribe({
-						next: (userProjectResult: Application[]) => {
-							this.userProjects = userProjectResult;
-							const group_ids: string[] = this.userProjects
-								.filter((pr_app: Application) => pr_app.project_application_statuses.includes(Application_States.APPROVED))
-								.map((user_application: Application) => user_application.project_application_perun_id.toString());
-							forkJoin(group_ids.map(group_id => this.groupService.getGroupMembers(group_id))).subscribe({
-								next: (project_members: ProjectMember[][]) => {
-									this.transformUserResults(project_members);
-								},
-							});
-						},
-					});
-					const vmFilter: string[] = [
-						VirtualMachineStates.ACTIVE,
-						VirtualMachineStates.SHUTOFF,
-						VirtualMachineStates.CLIENT_OFFLINE,
-					];
-					VirtualMachineStates.IN_PROCESS_STATES.forEach((state: string) => vmFilter.push(state));
-					this.vmService.getVmsFromLoggedInUser(0, 25, '', vmFilter, false, false, true).subscribe({
-						next: (res: VirtualMachine[]) => {
-							this.userVirtualMachines = res;
-						},
-					});
+					if (application_ids.length > 0) {
+						forkJoin(
+							application_ids.map(app_id => this.applicationsService.getFullApplicationByUserPermissions(app_id)),
+						).subscribe({
+							next: (userProjectResult: Application[]) => {
+								this.userProjects = userProjectResult;
+								const group_ids: string[] = this.userProjects
+									.filter((pr_app: Application) => pr_app.project_application_statuses.includes(Application_States.APPROVED))
+									.map((user_application: Application) => user_application.project_application_perun_id.toString());
+								forkJoin(group_ids.map(group_id => this.groupService.getGroupMembers(group_id))).subscribe({
+									next: (project_members: ProjectMember[][]) => {
+										this.transformUserResults(project_members);
+									},
+								});
+							},
+						});
+						const vmFilter: string[] = [
+							VirtualMachineStates.ACTIVE,
+							VirtualMachineStates.SHUTOFF,
+							VirtualMachineStates.CLIENT_OFFLINE,
+						];
+						VirtualMachineStates.IN_PROCESS_STATES.forEach((state: string) => vmFilter.push(state));
+						this.vmService.getVmsFromLoggedInUser(0, 25, '', vmFilter, false, false, true).subscribe({
+							next: (res: VirtualMachine[]) => {
+								this.userVirtualMachines = res;
+								this.summaryError = false;
+							},
+							error: () => {
+								this.summaryError = true;
+							},
+						});
+					} else {
+						this.userHasNoGroups = true;
+						this.summaryError = false;
+						this.summaryLoaded = true;
+					}
 				},
-				error: () => {},
+				error: () => {
+					this.summaryError = true;
+				},
 			});
 		}
 	}

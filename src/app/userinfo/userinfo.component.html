@@ -121,9 +121,15 @@
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning">
-					Please be aware that by leaving the de.NBI VO, access to all projects and machines listed here will no longer be possible. You will also need to re-register for the VO in order to submit a new project application.
-					<br>
-					<strong>Note</strong>: Your LifeScienceAI account will not be deleted by leaving the virtual organisation. If you wish to delete this account, please contact the corresponding support.
+					Please be aware that by leaving the de.NBI VO, access to all projects and machines listed here will no longer
+					be possible. You will also need to re-register for the VO in order to submit a new project application.
+					<br />
+					<strong>Note</strong>: Your LifeScienceAI account will not be deleted by leaving the virtual organisation. If
+					you wish to delete this account, please contact the corresponding support.
+				</div>
+				<div class="alert alert-danger" *ngIf="summaryError">
+					An error occurred when requesting your saved data! Please try again later. If this problem persists, please
+					contact our support!
 				</div>
 
 				<div *ngIf="!summaryLoaded" class="row">
@@ -131,74 +137,83 @@
 						<span class="visually-hidden">Loading...</span>
 					</div>
 				</div>
-				<div *ngIf="summaryLoaded"><h5>Projects</h5>
-				<table class="table">
-					<thead>
-					<tr>
-						<th scope="col">Name</th>
-						<th>Type</th>
-						<th>Your role</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr *ngFor="let prj of userProjects">
-						<th scope="row">{{prj.project_application_shortname}}</th>
-						<td>
-							<span *ngIf="prj.project_application_openstack_project" class="badge bg-warning">OpenStack</span>
-							<span *ngIf="!prj.project_application_openstack_project" class="badge bg-info-blue">SimpleVM</span>
-						</td>
-						<td>
-							<span *ngIf="!prj.user_is_admin && !prj.user_is_pi" class="badge bg-info">Member</span>
-							<span *ngIf="prj.user_is_admin"	class="badge bg-success">Admin</span>
-							<span *ngIf="prj.user_is_pi" class="badge badge-danger">PI</span>
-						</td>
-					</tr>
-					</tbody>
-				</table>
+				<div *ngIf="summaryLoaded && !userHasNoGroups">
+					<h5>Projects</h5>
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Name</th>
+								<th>Type</th>
+								<th>Your role</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let prj of userProjects">
+								<th scope="row">{{ prj.project_application_shortname }}</th>
+								<td>
+									<span *ngIf="prj.project_application_openstack_project" class="badge bg-warning">OpenStack</span>
+									<span *ngIf="!prj.project_application_openstack_project" class="badge bg-info-blue">SimpleVM</span>
+								</td>
+								<td>
+									<span *ngIf="!prj.user_is_admin && !prj.user_is_pi" class="badge bg-info">Member</span>
+									<span *ngIf="prj.user_is_admin" class="badge bg-success">Admin</span>
+									<span *ngIf="prj.user_is_pi" class="badge badge-danger">PI</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 
-				<h5>Virtual machines</h5>
+					<h5>Virtual machines</h5>
 					<div class="alert alert-warning" *ngIf="userIsOpenStackUser">
-						<strong>Note</strong>: As you are a member of an OpenStack project the following machine summary might be incomplete.
-						Please check the corresponding dashboard of your facility to see which machines are in use by you.
+						<strong>Note</strong>: As you are a member of an OpenStack project the following machine summary might be
+						incomplete. Please check the corresponding dashboard of your facility to see which machines are in use by
+						you.
 					</div>
 
 					<table class="table">
-					<thead>
-					<tr>
-						<th scope="col">Name</th>
-						<th>Flavor</th>
-						<th>Image</th>
-						<th>Project</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr *ngFor="let vm of userVirtualMachines">
-						<th scope="row">{{vm.name}}</th>
-						<td>{{vm.flavor.name}}</td>
-						<td>{{vm.image}}</td>
-						<td>{{vm.project}}</td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
+						<thead>
+							<tr>
+								<th scope="col">Name</th>
+								<th>Flavor</th>
+								<th>Image</th>
+								<th>Project</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let vm of userVirtualMachines">
+								<th scope="row">{{ vm.name }}</th>
+								<td>{{ vm.flavor.name }}</td>
+								<td>{{ vm.image }}</td>
+								<td>{{ vm.project }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 				<!-- pipes -->
-				<div class="alert alert-danger" *ngIf="userIsLoneAdmin  || userIsProjectPi">
-					<p *ngIf="userIsProjectPi">As you are a PI <span *ngIf="userIsLoneAdmin">and lone admin</span> of at least one cloud project, you can not use this process to leave the de.NBI VO.
-					Please contact our support <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">via mail</a> to perform the necessary steps.</p>
-					<p *ngIf="userIsLoneAdmin && !userIsProjectPi">As you are lone administrator of at least one cloud project, you are not able to leave the virtual organization using this process.
-						Make sure that you select other persons responsible for the administration of the corresponding projects!</p>
-
+				<div class="alert alert-danger" *ngIf="userIsLoneAdmin || userIsProjectPi">
+					<p *ngIf="userIsProjectPi">
+						As you are a PI <span *ngIf="userIsLoneAdmin">and lone admin</span> of at least one cloud project, you can
+						not use this process to leave the de.NBI VO. Please contact our support
+						<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">via mail</a> to perform the necessary steps.
+					</p>
+					<p *ngIf="userIsLoneAdmin && !userIsProjectPi">
+						As you are lone administrator of at least one cloud project, you are not able to leave the virtual
+						organization using this process. Make sure that you select other persons responsible for the administration
+						of the corresponding projects!
+					</p>
 				</div>
 			</div>
 			<div class="modal-footer">
-					<button type="button" class="btn btn-primary"
-									(click)="this.leaveVoModal.hide(); this.confirmLeaveModal.show();"
-									[disabled]="!summaryLoaded || (userIsLoneAdmin || userIsProjectPi)"
+				<button
+					type="button"
+					class="btn btn-primary"
+					(click)="this.leaveVoModal.hide(); this.confirmLeaveModal.show()"
+					[disabled]="!summaryLoaded || userIsLoneAdmin || userIsProjectPi || summaryError"
+				>
+					Leave VO
+				</button>
 
-					>Leave VO</button>
-
-					<button type="button" class="btn btn-secondary" (click)="leaveVoModal.hide()">Close</button>
-
+				<button type="button" class="btn btn-secondary" (click)="leaveVoModal.hide()">Close</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -220,7 +235,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Please confirm</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="confirmLeaveModal.hide()" aria-label="Close">
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="confirmLeaveModal.hide()"
+					aria-label="Close"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -228,18 +249,18 @@
 				<div class="alert alert-warning">
 					<strong>Are you sure? Please confirm that you are leaving the VO!</strong>
 				</div>
-
-
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-success"
-								(click)="this.leaveVirtualOrganisation(); this.confirmLeaveModal.hide();"
-								[disabled]="!summaryLoaded || (userIsLoneAdmin || userIsProjectPi)"
-
-				>Confirm Leave</button>
+				<button
+					type="button"
+					class="btn btn-success"
+					(click)="this.leaveVirtualOrganisation(); this.confirmLeaveModal.hide()"
+					[disabled]="!summaryLoaded || userIsLoneAdmin || userIsProjectPi || !summaryError"
+				>
+					Confirm Leave
+				</button>
 
 				<button type="button" class="btn btn-danger" (click)="confirmLeaveModal.hide()">Abort</button>
-
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -261,25 +282,35 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Leaving of VO {{this.leavingSucceeded ? 'successful' : 'failed'}}</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="leaveResultModal.hide();" aria-label="Close">
+				<h4 class="modal-title">Leaving of VO {{ this.leavingSucceeded ? 'successful' : 'failed' }}</h4>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="leaveResultModal.hide()"
+					aria-label="Close"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-info" [ngClass]="leavingSucceeded ? 'alert-info' : 'alert-danger'">
-					<strong *ngIf="leavingSucceeded">You have leaved the de.NBI VO successfully! You will get logged out now.</strong>
-					<strong *ngIf="!leavingSucceeded">An error occurred leaving the de.NBI VO! PLease contact the support!</strong>
+					<strong *ngIf="leavingSucceeded"
+						>You have leaved the de.NBI VO successfully! You will get logged out now.</strong
+					>
+					<strong *ngIf="!leavingSucceeded"
+						>An error occurred leaving the de.NBI VO! PLease contact the support!</strong
+					>
 				</div>
-
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-								(click)="this.leaveVirtualOrganisation(); this.leaveResultModal.hide();"
-				>OK</button>
-
-
-
+				<button
+					type="button"
+					class="btn btn-secondary"
+					(click)="this.leaveVirtualOrganisation(); this.leaveResultModal.hide()"
+				>
+					OK
+				</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->

@@ -170,8 +170,10 @@
 					<strong>Info: </strong> Please enter a valid public key!
 				</alert>
 
-				<alert type="success" *ngIf="validatePublicKey()"> <strong>Info: </strong> This is a valid public key! </alert>
-				<alert type="danger" *ngIf="!validatePublicKey() && public_key?.length > 0">
+				<alert type="success" *ngIf="this.public_key | isValidKeyPipe">
+					<strong>Info: </strong> This is a valid public key!
+				</alert>
+				<alert type="danger" *ngIf="!(this.public_key | isValidKeyPipe) && public_key?.length > 0">
 					<strong>Warning</strong> This is not a valid public key!
 				</alert>
 				<alert type="info">
@@ -186,7 +188,7 @@
 					placeholder="Please enter a new valid public key."
 					name="public_key"
 					[(ngModel)]="public_key"
-					[ngClass]="validatePublicKey() ? 'is-valid' : 'is-invalid'"
+					[ngClass]="(this.public_key | isValidKeyPipe) ? 'is-valid' : 'is-invalid'"
 					#publickey
 				></textarea>
 
@@ -194,7 +196,7 @@
 
 				<div
 					class="alert"
-					*ngIf="validatePublicKey()"
+					*ngIf="this.public_key | isValidKeyPipe"
 					[ngClass]="acknowledgement_given ? 'alert-info' : 'alert-danger'"
 				>
 					<strong>Warning!</strong> Replacing your current public key with a different one will render all your
@@ -218,7 +220,7 @@
 
 			<div class="modal-footer">
 				<button
-					[disabled]="!validatePublicKey() || !acknowledgement_given"
+					[disabled]="!(this.public_key | isValidKeyPipe) || !acknowledgement_given"
 					class="btn btn-success col-md4"
 					type="button"
 					id="set_new_public_key_button"
@@ -235,3 +237,47 @@
 	<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<div
+	bsModal
+	#pubKeyResponseModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Setting of public key of public key</h4>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="pubKeyResponseModal.hide()"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body"></div>
+
+			<div class="modal-footer">
+				<button
+					class="btn btn-success"
+					type="button"
+					id="close_new_public_key_response_modal_button"
+					data-test-id="close_new_public_key_response_modal_button"
+					(click)="this.pubKeyResponseModal.hide()"
+				>
+					OK
+				</button>
+				<button class="btn btn-primary col-md-4" type="reset" (click)="pubKeyResponseModal.hide()">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->L
+	</div>
+	<!-- /.modal-dialog -->
+</div>
