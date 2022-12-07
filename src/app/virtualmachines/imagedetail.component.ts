@@ -27,8 +27,9 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 	@Input() client: Client;
 	@Input() project_id: number;
 	images_loaded: boolean = false;
-	resenv_names: string[];
+	resenv_names: string[] = [];
 	images: Image[] = [];
+	filter: string = '';
 
 	subscription: Subscription = new Subscription();
 	regexp_data_test_id: RegExp = /[ ().]/g;
@@ -45,6 +46,25 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 	image_types: { [name: string]: Image[] } = {};
 	imageTypes = ImageTypes;
 	image_selection: Image[];
+
+	filterTimeout = null;
+	filterDebounceTime: number = 300;
+
+	filterImagesWithDebounce() {
+		clearTimeout(this.filterTimeout);
+		this.filterTimeout = setTimeout(() => {
+			this.filterImages();
+		}, this.filterDebounceTime);
+	}
+
+	filterImages(): void {
+		if (this.filter) {
+			this.image_selection = this.images.filter(image => image.name.toLowerCase().includes(this.filter.toLowerCase()));
+		} else {
+			this.image_selection = this.image_types[this.selected_image_type];
+		}
+	}
+
 	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 	RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
 	STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
@@ -79,11 +99,6 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		if (this.isCluster) {
-			this.selected_image_type = ImageTypes.CLUSTER_IMAGE;
-		} else {
-			this.selected_image_type = ImageTypes.IMAGE;
-		}
 		this.window_size = window.innerWidth;
 		this.prepareImages();
 	}
@@ -94,13 +109,24 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 
 	prepareImages(): void {
 		this.images_loaded = false;
+		this.images = [];
+		let image_mode = '';
+		if (this.isCluster) {
+			image_mode = 'cluster';
+		}
 		forkJoin([
 			this.condaService.getForcTemplates(this.client.id),
-			this.imageService.getImages(this.project_id),
-		]).subscribe((res: any) => {
+
+			this.imageService.getImages(this.project_id, image_mode),
+		]).subscribe(async (res: any) => {
 			res[0].forEach(resenv => this.resenv_names.push(resenv.template_name));
 			this.images = res[1];
 			this.image_types = this.imageService.sortImages(this.images, this.resenv_names);
+			if (this.isCluster) {
+				this.selected_image_type = ImageTypes.CLUSTER_IMAGE;
+			} else {
+				this.selected_image_type = ImageTypes.IMAGE;
+			}
 			this.image_selection = this.image_types[this.selected_image_type];
 			this.images_loaded = true;
 		});

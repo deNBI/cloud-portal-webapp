@@ -23,7 +23,6 @@ import {
 } from '../../../../links/links';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { WorkshopService } from '../../../api-connector/workshop.service';
-import { ResearchEnvironment } from '../../virtualmachinemodels/res-env';
 import { BiocondaService } from '../../../api-connector/bioconda.service';
 
 @Component({
@@ -102,9 +101,8 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	flavors: Flavor[] = [];
 	selected_flavor: Flavor = undefined;
 	flavors_loaded: boolean = false;
-	images: Image[] = [];
+
 	selected_image: Image = undefined;
-	image_loaded: boolean = false;
 	data_loaded: boolean = false;
 	selected_project_ressources: ApplicationRessourceUsage;
 	selected_flavor_type: string = 'Standard Flavors';
@@ -201,8 +199,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 					this.client_checked = true;
 				}
 				this.selected_project_client = client;
-				this.getResEnvNames();
-
 				this.subscription.add(
 					this.image_service
 						.getBlockedImageTagsResenv(Number(this.selected_project_client.id), 'true')
@@ -239,7 +235,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 					this.check_project_data_loaded();
 				}),
 		);
-		this.get_images(this.selected_project[1]);
 		this.get_flavors(this.selected_project[1]);
 		this.get_members_of_the_project();
 	}
@@ -252,27 +247,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 					this.forc_url = response['forc_url'];
 				}
 			}),
-		);
-	}
-
-	get_images(id: number): void {
-		this.subscription.add(
-			this.image_service.getImages(id).subscribe((images: Image[]): void => {
-				this.images = images;
-				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
-				this.image_loaded = true;
-				this.check_project_data_loaded();
-			}),
-		);
-	}
-
-	getResEnvNames(): void {
-		this.subscription.add(
-			this.condaService
-				.getForcTemplates(this.selected_project_client.id)
-				.subscribe((resenvs: ResearchEnvironment[]): void => {
-					resenvs.forEach(resenv => this.resenv_names.push(resenv.template_name));
-				}),
 		);
 	}
 
@@ -297,7 +271,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	}
 
 	check_project_data_loaded(): void {
-		if (this.image_loaded && this.flavors_loaded && this.data_loaded && this.member_data_loaded) {
+		if (this.flavors_loaded && this.data_loaded && this.member_data_loaded) {
 			this.project_data_loaded = true;
 			this.is_loaded = true;
 		}
@@ -463,10 +437,8 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.client_available = false;
 		this.project_data_loaded = false;
 		this.flavors = [];
-		this.image_loaded = false;
 		this.data_loaded = false;
 		this.flavors_loaded = false;
-		this.images = [];
 		this.selected_workshop = null;
 		this.credits_allowed = false;
 		this.project_members = [];

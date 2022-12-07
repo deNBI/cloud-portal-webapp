@@ -189,9 +189,8 @@
 												class="form-group row col-md-12"
 												style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
 											>
-												<div class="col" *ngIf="imagesLoaded">
+												<div class="col">
 													<app-image-detail
-														*ngIf="images?.length > 0"
 														[selectedImage]="selectedMasterImage"
 														[isCluster]="true"
 														data-test-id="master_images_section"
@@ -210,13 +209,6 @@
 													>
 														This image will also be used for every worker!
 													</div>
-													<div class="alert alert-info" *ngIf="images.length === 0">
-														There are no images available at the moment.
-													</div>
-												</div>
-												<div *ngIf="!imagesLoaded" class="d-flex align-items-center" data-test-id="loading_images">
-													<strong>Loading images ...</strong>
-													<div class="spinner-border m-sm-auto" role="status"></div>
 												</div>
 											</div>
 										</div>
@@ -227,8 +219,7 @@
 												selectedProject &&
 												projectDataLoaded &&
 												selectedProjectRessources?.used_vms + 2 <= selectedProjectRessources?.number_vms &&
-												(flavors.length !== 0 || selectedFlavor) &&
-												images?.length > 0
+												(flavors.length !== 0 || selectedFlavor)
 											"
 										>
 											<div
