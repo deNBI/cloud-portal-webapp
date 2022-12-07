@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="card">
+	<div class="card-header">
+		<span class="card-title">Entered timeframes</span>
+	</div>
+	<div class="card-body">
+		<div *ngIf="!workshopTimeFramesLoaded">
+			<span class="spinner-border-sm"></span>
+		</div>
+		<div *ngIf="workshopTimeFramesLoaded">
+			<div class="alert alert-info">
+				Note that only future and already running timeframes are displayed here.
+			</div>
+			<ul class="list-group" *ngIf="!errorLoadingTimeFrames">
+				<li class="list-group-item"*ngFor="let wstf of this.workshopTimeFrames">
+					<strong
+					>{{ wstf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
+						{{ wstf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
+					>
+					: {{ wstf.description }} : {{ wstf.workshop.longname }}
+				</li>
+			</ul>
+			<div class="alert alert-danger" *ngIf="errorLoadingTimeFrames">
+				An error occurred loading the entered workshop timeframes!
+			</div>
+		</div>
+	</div>
+</div>

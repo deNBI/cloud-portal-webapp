@@ -71,6 +71,18 @@ export class WorkshopService {
 			);
 	}
 
+	loadWorkshopTimeFrames(): Observable<WorkshopTimeFrame[]> {
+		return this.http
+			.get<WorkshopTimeFrame[]>(`${ApiSettings.getApiBaseURL()}workshops/calender/all/`, {
+				withCredentials: true,
+			})
+			.pipe(
+				map((workshopTimeFrames: WorkshopTimeFrame[]): WorkshopTimeFrame[] => workshopTimeFrames.map(
+					(workshopTimeFrame: WorkshopTimeFrame): WorkshopTimeFrame => new WorkshopTimeFrame(workshopTimeFrame),
+				)),
+			);
+	}
+
 	addWorkshopTimeFrame(workshop: Workshop, timeframe: WorkshopTimeFrame): Observable<WorkshopTimeFrame> {
 		const params: HttpParams = new HttpParams()
 			.set('start_time', timeframe.start_time.toJSON())

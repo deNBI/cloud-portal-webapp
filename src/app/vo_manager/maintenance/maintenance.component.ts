@@ -7,6 +7,9 @@ import * as d3 from 'd3';
 
 import { NumbersService } from '../../api-connector/numbers.service';
 import 'svg2pdf.js';
+import {WorkshopService} from "../../api-connector/workshop.service";
+import {Subscription} from "rxjs";
+import {WorkshopTimeFrame} from "../../virtualmachines/workshop/workshopTimeFrame.model";
 
 /**
  * Component to display graphs which illustrate numbers for VO.
@@ -15,19 +18,39 @@ import 'svg2pdf.js';
 	selector: 'app-maintenance',
 	templateUrl: './maintenance.component.html',
 	styleUrls: ['./maintenance.component.scss'],
-	providers: [NumbersService],
+	providers: [WorkshopService],
 })
 export class MaintenanceComponent implements OnInit {
-	is_vo_admin: boolean = true;
+	subscription: Subscription = new Subscription();
+	is_vo_admin: boolean = false;
 	title: string = 'Maintenance';
 
-	constructor() {
+	workshopTimeFramesLoaded: boolean = false;
+	workshopTimeFrames: WorkshopTimeFrame[] = [];
+	errorLoadingTimeFrames: boolean = false;
+
+	// eslint-disable-next-line no-empty-function
+
+	constructor(private workshopService: WorkshopService) {
 
 	}
 
-
 	ngOnInit(): void {
-
+		this.workshopTimeFramesLoaded = false;
+		this.subscription.add(
+			this.workshopService.loadWorkshopTimeFrames().subscribe({
+				next: (wsTimeFrames: WorkshopTimeFrame[]) => {
+					console.log(wsTimeFrames);
+					this.workshopTimeFrames = wsTimeFrames;
+					this.workshopTimeFramesLoaded = true;
+					this.errorLoadingTimeFrames = false;
+				},
+				error: () => {
+					this.workshopTimeFramesLoaded = true;
+					this.errorLoadingTimeFrames = true;
+				},
+			}),
+		);
 	}
 
 
