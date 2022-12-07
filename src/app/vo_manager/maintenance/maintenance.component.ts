@@ -34,7 +34,7 @@ export class MaintenanceComponent implements OnInit {
 	maintenanceTimeFrames: MaintenanceTimeFrame[] = [];
 	errorWorkshopTimeFrames: boolean = false;
 	errorMaintenanceTimeFrames: boolean = false;
-	newMaintenanceTimeFrame: MaintenanceTimeFrame = new MaintenanceTimeFrame();
+	newMaintenanceTimeFrame: MaintenanceTimeFrame = null;
 
 	// eslint-disable-next-line no-empty-function
 
@@ -43,10 +43,17 @@ export class MaintenanceComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.newMaintenanceTimeFrame = new MaintenanceTimeFrame(
+			{
+				name: '', start_time: new Date(), end_time: new Date(), message: '',
+			},
+		);
 		this.workshopTimeFramesLoaded = false;
+		this.maintenanceTimeFramesLoaded = false;
 		this.subscription.add(
 			this.workshopService.loadWorkshopTimeFrames().subscribe({
 				next: (wsTimeFrames: WorkshopTimeFrame[]) => {
+					console.log(wsTimeFrames);
 					this.workshopTimeFrames = wsTimeFrames;
 					this.workshopTimeFramesLoaded = true;
 					this.errorWorkshopTimeFrames = false;
@@ -56,11 +63,11 @@ export class MaintenanceComponent implements OnInit {
 					this.errorWorkshopTimeFrames = true;
 				},
 			}),
-
 		);
 		this.subscription.add(
 			this.voService.loadMaintenanceTimeFrames().subscribe({
 				next: (mtTimeFrames: MaintenanceTimeFrame[]) => {
+					console.log(mtTimeFrames);
 					this.maintenanceTimeFrames = mtTimeFrames;
 					this.maintenanceTimeFramesLoaded = true;
 					this.errorMaintenanceTimeFrames = false;
@@ -69,12 +76,29 @@ export class MaintenanceComponent implements OnInit {
 					this.maintenanceTimeFramesLoaded = true;
 					this.errorMaintenanceTimeFrames = true;
 				},
-			}),
+			})
 		);
+
 	}
 
-	empty(): void {
-		return;
+	dayChanged(date: { year: number; month: number; day: number }): void {
+		this.newMaintenanceTimeFrame.start_time.setDate(date.day);
+		this.newMaintenanceTimeFrame.start_time.setMonth(date.month - 1);
+		this.newMaintenanceTimeFrame.start_time.setFullYear(date.year);
+
+		this.newMaintenanceTimeFrame.end_time.setDate(date.day);
+		this.newMaintenanceTimeFrame.end_time.setMonth(date.month - 1);
+		this.newMaintenanceTimeFrame.end_time.setFullYear(date.year);
+	}
+
+	startTimeChanged(time: { hour: number; minute: number }): void {
+		this.newMaintenanceTimeFrame.start_time.setHours(time.hour);
+		this.newMaintenanceTimeFrame.start_time.setMinutes(time.minute);
+	}
+
+	endTimeChanged(time: { hour: number; minute: number }): void {
+		this.newMaintenanceTimeFrame.end_time.setHours(time.hour);
+		this.newMaintenanceTimeFrame.end_time.setMinutes(time.minute);
 	}
 
 	createNewTimeFrame(): void {

@@ -166,7 +166,7 @@ export class VoService {
 	}
 
 	loadMaintenanceTimeFrames(): Observable<MaintenanceTimeFrame[]> {
-		return this.http.get<MaintenanceTimeFrame[]>(`${ApiSettings.getApiBaseURL()}vo/maintenance/`, {
+		return this.http.get<MaintenanceTimeFrame[]>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, {
 			withCredentials: true,
 		}).pipe(
 				map((maintenanceTimeFrames: MaintenanceTimeFrame[]): MaintenanceTimeFrame[] => maintenanceTimeFrames.map(
@@ -182,7 +182,7 @@ export class VoService {
 			.set('name', timeframe.name)
 			.set('message', timeframe.message);
 
-		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}vo/maintenance/`,
+		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`,
 			params,
 			{
 				withCredentials: true,

@@ -100,7 +100,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.newWorkShopTimeFrame.end_time.setDate(date.day);
 		this.newWorkShopTimeFrame.end_time.setMonth(date.month - 1);
 		this.newWorkShopTimeFrame.end_time.setFullYear(date.year);
-		console.log(this.newWorkShopTimeFrame);
 	}
 
 	startTimeChanged(time: { hour: number; minute: number }): void {

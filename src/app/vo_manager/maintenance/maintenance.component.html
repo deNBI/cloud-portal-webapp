@@ -11,7 +11,7 @@
 			<div class="alert alert-info">
 				Note that only future and already running timeframes are displayed here.
 			</div>
-			<ul class="list-group" *ngIf="!errorLoadingTimeFrames">
+			<ul class="list-group" *ngIf="!errorWorkshopTimeFrames">
 				<li class="list-group-item"*ngFor="let wstf of this.workshopTimeFrames">
 					<strong
 					>{{ wstf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
@@ -32,12 +32,12 @@
 		</div>
 		<div>
 		<ul class="list-group" *ngIf="!errorWorkshopTimeFrames">
-			<li class="list-group-item"*ngFor="let wstf of this.workshopTimeFrames">
+			<li class="list-group-item"*ngFor="let mtf of this.maintenanceTimeFrames">
 				<strong
-				>{{ wstf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
-					{{ wstf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
+				>{{ mtf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
+					{{ mtf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
 				>
-				: {{ wstf.description }} : {{ wstf.workshop.longname }}
+				: {{ mtf.name }} : {{ mtf.message }}
 			</li>
 		</ul>
 		</div>
@@ -50,17 +50,17 @@
 		<form id="new_timeframe_form" #newTimeFrameForm="ngForm" class="form-horizontal">
 			<div class="form-row align-content-start">
 				<div class="mb-3 mx-auto">
-					<app-datepicker (dayChange)="empty();"></app-datepicker>
+					<app-datepicker (dayChange)="dayChanged($event);"></app-datepicker>
 				</div>
 
 				<div class="mb-3 mx-auto">
 					<label class="form-label">Start Time</label>
-					<app-timepicker (timeChange)="empty();"></app-timepicker>
+					<app-timepicker (timeChange)="startTimeChanged($event);"></app-timepicker>
 				</div>
 
 				<div class="mb-3 mx-auto">
 					<label class="form-label">End Time</label>
-					<app-timepicker (timeChange)="empty();"></app-timepicker>
+					<app-timepicker (timeChange)="endTimeChanged($event);"></app-timepicker>
 				</div>
 			</div>
 
