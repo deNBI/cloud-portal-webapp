@@ -193,10 +193,10 @@
 													<app-image-detail
 														*ngIf="images?.length > 0"
 														[selectedImage]="selectedMasterImage"
-														[images]="images"
 														[isCluster]="true"
 														data-test-id="master_images_section"
-														[resenv_names]="resenv_names"
+														[client]="selectedProjectClient"
+														[project_id]="selectedProject[1]"
 														[selectedFlavor]="selectedMasterFlavor"
 														(selectedImageChange)="
 															selectedMasterImage = $event; this.selectedWorkerBatches[0].image = selectedMasterImage

@@ -197,8 +197,8 @@
 										<app-image-detail
 											*ngIf="images?.length > 0"
 											[selectedImage]="selected_image"
-											[images]="images"
-											[resenv_names]="resenv_names"
+											[client]="selected_project_client"
+											[project_id]="selected_project[1]"
 											[selectedFlavor]="selected_flavor"
 											(selectedImageChange)="set_selected_image($event)"
 											id="id_image_detail"
