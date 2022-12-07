@@ -10,6 +10,9 @@ import 'svg2pdf.js';
 import {WorkshopService} from "../../api-connector/workshop.service";
 import {Subscription} from "rxjs";
 import {WorkshopTimeFrame} from "../../virtualmachines/workshop/workshopTimeFrame.model";
+import {VoService} from "../../api-connector/vo.service";
+import {MaintenanceTimeFrame} from "./maintenanceTimeFrame.model";
+import {NotificationModalComponent} from "../../shared/modal/notification-modal";
 
 /**
  * Component to display graphs which illustrate numbers for VO.
@@ -18,7 +21,7 @@ import {WorkshopTimeFrame} from "../../virtualmachines/workshop/workshopTimeFram
 	selector: 'app-maintenance',
 	templateUrl: './maintenance.component.html',
 	styleUrls: ['./maintenance.component.scss'],
-	providers: [WorkshopService],
+	providers: [WorkshopService, VoService],
 })
 export class MaintenanceComponent implements OnInit {
 	subscription: Subscription = new Subscription();
@@ -26,12 +29,16 @@ export class MaintenanceComponent implements OnInit {
 	title: string = 'Maintenance';
 
 	workshopTimeFramesLoaded: boolean = false;
+	maintenanceTimeFramesLoaded: boolean = false;
 	workshopTimeFrames: WorkshopTimeFrame[] = [];
-	errorLoadingTimeFrames: boolean = false;
+	maintenanceTimeFrames: MaintenanceTimeFrame[] = [];
+	errorWorkshopTimeFrames: boolean = false;
+	errorMaintenanceTimeFrames: boolean = false;
+	newMaintenanceTimeFrame: MaintenanceTimeFrame = new MaintenanceTimeFrame();
 
 	// eslint-disable-next-line no-empty-function
 
-	constructor(private workshopService: WorkshopService) {
+	constructor(private workshopService: WorkshopService, private voService: VoService) {
 
 	}
 
@@ -40,17 +47,58 @@ export class MaintenanceComponent implements OnInit {
 		this.subscription.add(
 			this.workshopService.loadWorkshopTimeFrames().subscribe({
 				next: (wsTimeFrames: WorkshopTimeFrame[]) => {
-					console.log(wsTimeFrames);
 					this.workshopTimeFrames = wsTimeFrames;
 					this.workshopTimeFramesLoaded = true;
-					this.errorLoadingTimeFrames = false;
+					this.errorWorkshopTimeFrames = false;
 				},
 				error: () => {
 					this.workshopTimeFramesLoaded = true;
-					this.errorLoadingTimeFrames = true;
+					this.errorWorkshopTimeFrames = true;
+				},
+			}),
+
+		);
+		this.subscription.add(
+			this.voService.loadMaintenanceTimeFrames().subscribe({
+				next: (mtTimeFrames: MaintenanceTimeFrame[]) => {
+					this.maintenanceTimeFrames = mtTimeFrames;
+					this.maintenanceTimeFramesLoaded = true;
+					this.errorMaintenanceTimeFrames = false;
+				},
+				error: () => {
+					this.maintenanceTimeFramesLoaded = true;
+					this.errorMaintenanceTimeFrames = true;
 				},
 			}),
 		);
+	}
+
+	empty(): void {
+		return;
+	}
+
+	createNewTimeFrame(): void {
+		this.voService.addMaintenanceTimeFrame(this.newMaintenanceTimeFrame).subscribe({
+			next: () => {
+				//this.loadCalenderForSelectedProject();
+				const initialState = {
+					notificationModalTitle: 'Success',
+					notificationModalType: 'info',
+					notificationModalMessage: 'The new timeframe got successfully added to the calender!',
+				};
+				//this.modalService.show(NotificationModalComponent, { initialState });
+				console.log("worked");
+			},
+			error: () => {
+				const initialState = {
+					notificationModalTitle: 'Error',
+					notificationModalType: 'danger',
+					notificationModalMessage: 'An error occured while adding the timeframe to the calender!',
+				};
+				//this.modalService.show(NotificationModalComponent, { initialState });
+				console.log("error");
+			},
+		});
 	}
 
 

@@ -18,6 +18,8 @@ import { NumberChartsComponent } from './number-charts/number-charts.component';
 import { ClientLimitsComponent } from './clients/modals/client-limits..component';
 import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import {DatePickerComponent} from "../shared/datepicking/datepicker.component";
+import {TimepickerComponent} from "../shared/datepicking/timepicker.component";
 
 /**
  * VO Manager module.
@@ -35,6 +37,8 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 		ReactiveFormsModule,
 		SharedDirectivesModule,
 		NgbPaginationModule,
+		DatePickerComponent,
+		TimepickerComponent,
 	],
 	declarations: [
 		VoOverviewComponent,

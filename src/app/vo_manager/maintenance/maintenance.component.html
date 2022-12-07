@@ -1,8 +1,9 @@
 <div class="card">
 	<div class="card-header">
-		<span class="card-title">Entered timeframes</span>
+		Timeframes
 	</div>
 	<div class="card-body">
+		<h5 class="card-title">Workshop Timeframes</h5>
 		<div *ngIf="!workshopTimeFramesLoaded">
 			<span class="spinner-border-sm"></span>
 		</div>
@@ -19,9 +20,92 @@
 					: {{ wstf.description }} : {{ wstf.workshop.longname }}
 				</li>
 			</ul>
-			<div class="alert alert-danger" *ngIf="errorLoadingTimeFrames">
+			<div class="alert alert-danger" *ngIf="errorWorkshopTimeFrames">
 				An error occurred loading the entered workshop timeframes!
 			</div>
 		</div>
+	</div>
+	<div class="card-body">
+		<h5 class="card-title">Maintenance Timeframes</h5>
+		<div *ngIf="!maintenanceTimeFramesLoaded">
+			<span class="spinner-border-sm"></span>
+		</div>
+		<div>
+		<ul class="list-group" *ngIf="!errorWorkshopTimeFrames">
+			<li class="list-group-item"*ngFor="let wstf of this.workshopTimeFrames">
+				<strong
+				>{{ wstf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
+					{{ wstf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
+				>
+				: {{ wstf.description }} : {{ wstf.workshop.longname }}
+			</li>
+		</ul>
+		</div>
+		<div class="alert alert-danger" *ngIf="errorMaintenanceTimeFrames">
+			An error occurred loading the entered maintenance timeframes!
+		</div>
+	</div>
+	<div class="card-body">
+		<h5 class="card-title">Add new maintenance timeframe</h5>
+		<form id="new_timeframe_form" #newTimeFrameForm="ngForm" class="form-horizontal">
+			<div class="form-row align-content-start">
+				<div class="mb-3 mx-auto">
+					<app-datepicker (dayChange)="empty();"></app-datepicker>
+				</div>
+
+				<div class="mb-3 mx-auto">
+					<label class="form-label">Start Time</label>
+					<app-timepicker (timeChange)="empty();"></app-timepicker>
+				</div>
+
+				<div class="mb-3 mx-auto">
+					<label class="form-label">End Time</label>
+					<app-timepicker (timeChange)="empty();"></app-timepicker>
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="mb-3">
+					<label for="name_input_field" class="form-label">Name</label>
+					<input
+						type="text"
+						class="form-control"
+						id="name_input_field"
+						aria-describedby="descriptionHelp"
+						[(ngModel)]="newMaintenanceTimeFrame.name"
+						[ngModelOptions]="{ standalone: true }"
+					/>
+				</div>
+				<div class="mb-3">
+					<label for="message_input_field" class="form-label">Message</label>
+					<input
+						type="text"
+						class="form-control"
+						id="message_input_field"
+						aria-describedby="descriptionHelp"
+						[(ngModel)]="newMaintenanceTimeFrame.message"
+						[ngModelOptions]="{ standalone: true }"
+					/>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="mb-3">
+					<button
+						class="btn btn-outline-primary"
+						(click)="createNewTimeFrame()"
+						[disabled]="!(this.newMaintenanceTimeFrame | isValidTimeFrame)"
+					>
+						Add new timeframe
+					</button>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-md-auto mx-auto" *ngIf="!(this.newMaintenanceTimeFrame | isValidTimeFrame)">
+					<div class="alert alert-info">
+						Please select a timeframe, where the start time is before the end time and in the future!
+					</div>
+				</div>
+			</div>
+		</form>
 	</div>
 </div>

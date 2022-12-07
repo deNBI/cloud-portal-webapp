@@ -7,6 +7,9 @@ import { IResponseTemplate } from './response-template';
 import { Resources } from '../vo_manager/resources/resources';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { Application } from '../applications/application.model/application.model';
+import {MaintenanceComponent} from "../vo_manager/maintenance/maintenance.component";
+import {MaintenanceTimeFrame} from "../vo_manager/maintenance/maintenanceTimeFrame.model";
+import {WorkshopTimeFrame} from "../virtualmachines/workshop/workshopTimeFrame.model";
 
 /**
  * Service which provides vo methods.
@@ -161,4 +164,30 @@ export class VoService {
 			params: parameters,
 		});
 	}
+
+	loadMaintenanceTimeFrames(): Observable<MaintenanceTimeFrame[]> {
+		return this.http.get<MaintenanceTimeFrame[]>(`${ApiSettings.getApiBaseURL()}vo/maintenance/`, {
+			withCredentials: true,
+		}).pipe(
+				map((maintenanceTimeFrames: MaintenanceTimeFrame[]): MaintenanceTimeFrame[] => maintenanceTimeFrames.map(
+					(maintenanceTimeFrame: MaintenanceTimeFrame): MaintenanceTimeFrame => new MaintenanceTimeFrame(maintenanceTimeFrame),
+				)),
+			);
+	}
+
+	addMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<MaintenanceTimeFrame> {
+		const params: HttpParams = new HttpParams()
+			.set('start_time', timeframe.start_time.toJSON())
+			.set('end_time', timeframe.end_time.toJSON())
+			.set('name', timeframe.name)
+			.set('message', timeframe.message);
+
+		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}vo/maintenance/`,
+			params,
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
 }
