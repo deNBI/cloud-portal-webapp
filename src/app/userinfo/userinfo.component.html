@@ -206,7 +206,7 @@
 			<div class="modal-footer">
 				<button
 					type="button"
-					class="btn btn-primary"
+					class="btn btn-danger"
 					(click)="this.leaveVoModal.hide(); this.confirmLeaveModal.show()"
 					[disabled]="!summaryLoaded || userIsLoneAdmin || userIsProjectPi || summaryError"
 				>
@@ -255,7 +255,7 @@
 					type="button"
 					class="btn btn-success"
 					(click)="this.leaveVirtualOrganisation(); this.confirmLeaveModal.hide()"
-					[disabled]="!summaryLoaded || userIsLoneAdmin || userIsProjectPi || !summaryError"
+					[disabled]="!summaryLoaded || userIsLoneAdmin || userIsProjectPi || summaryError"
 				>
 					Confirm Leave
 				</button>
