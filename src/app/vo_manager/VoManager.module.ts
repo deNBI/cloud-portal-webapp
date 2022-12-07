@@ -17,6 +17,7 @@ import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 import { NumberChartsComponent } from './number-charts/number-charts.component';
 import { ClientLimitsComponent } from './clients/modals/client-limits..component';
 import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 /**
  * VO Manager module.
@@ -41,6 +42,7 @@ import { SharedDirectivesModule } from '../shared/shared_modules/shared_directiv
 		ClientOverviewComponent,
 		NumberChartsComponent,
 		ClientLimitsComponent,
+		MaintenanceComponent,
 	],
 	providers: [VoService, VoGuardService],
 })

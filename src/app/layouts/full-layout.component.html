@@ -454,6 +454,12 @@
 			</li>
 
 			<li class="nav-item" *ngIf="is_vo_admin">
+				<a class="nav-link" routerLinkActive="active" [routerLink]="['/vo-manager/maintenance']"
+				><i class="nav-icon fas fa-chart-pie"></i> Maintenance</a
+				>
+			</li>
+
+			<li class="nav-item" *ngIf="is_vo_admin">
 				<a class="nav-link" routerLinkActive="active" [routerLink]="['/vo-manager/resources']"
 					><i class="nav-icon fas fa-server"></i> Resources</a
 				>
@@ -464,6 +470,7 @@
 					><i class="nav-icon fas fa-chart-pie"></i> Numbers</a
 				>
 			</li>
+
 		</ul>
 	</ng-scrollbar>
 
