@@ -103,6 +103,7 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 	ngOnChanges() {
 		this.flavor_types = this.flavorService.sortFlavors(this.flavors);
 		this.possible_flavors = this.flavor_types[this.selected_flavor_type];
+		this.filterFlavors();
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -119,6 +120,7 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 	setSelectedFlavor(flavor: Flavor): void {
 		this.selectedFlavor = flavor;
 		this.selectedFlavorChange.emit(this.selectedFlavor);
+		console.log(this.possible_flavors);
 	}
 
 	emitFlavorReload(): void {
