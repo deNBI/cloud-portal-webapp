@@ -26,11 +26,16 @@
 										class="btn btn-primary"
 										href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}"
 										target="_blank"
-										style="color: #fff"
+										style="margin: 2px"
 										rel="noopener noreferrer"
 										>Link accounts</a
 									>
-									<button class="btn btn-primary" type="button" (click)="this.getUserSummary(); leaveVoModal.show()">
+									<button
+										class="btn btn-danger"
+										type="button"
+										(click)="this.getUserSummary(); leaveVoModal.show()"
+										style="margin: 2px"
+									>
 										Leave Virtual Organisation
 									</button>
 								</div>
