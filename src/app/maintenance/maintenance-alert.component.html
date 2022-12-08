@@ -1,25 +1,36 @@
-<div class="card" style="margin-bottom: 10px">
-	<div class="card-header" style="text-align: center">
-		<strong>Upcoming Maintenance</strong>
-	</div>
-	<div class="card-body">
-		<div *ngIf="!frames_loaded" class="row justify-content-center">
-			<span class="spinner-border text-info"></span>
+<div *ngIf="!frames_loaded" class="row justify-content-center">
+	<span class="spinner-border text-info"></span>
+</div>
+<div
+	class="callout"
+	*ngIf="frames_loaded"
+	[ngClass]="{
+		'callout-warning': error_on_loading,
+		'callout-info': maintenanceTimeFrames.length === 0,
+		'callout-danger': maintenanceTimeFrames.length > 0
+	}"
+>
+	<div *ngIf="maintenanceTimeFrames.length > 0 && !error_on_loading">
+		<div class="alert alert-info">
+			The following maintenance timeframes have been announced and may result into downtimes of the portal during this
+			period. Access to virtual machines that have already been started is not affected.
 		</div>
-		<div *ngIf="frames_loaded && maintenanceTimeFrames.length > 0 && !error_on_loading">
-			<ul class="list-group">
-				<li *ngFor="let tf of maintenanceTimeFrames">
-					<strong>{{ tf.name }}</strong>
+		<ul class="list-group">
+			<li
+				class="list-group-item d-flex justify-content-between align-items-start"
+				*ngFor="let tf of maintenanceTimeFrames"
+			>
+				<div class="ms-2 me-auto">
+					<div class="fw-bold">{{ tf.name }}</div>
 					{{ tf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} - {{ tf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}
-					{{ tf.message.length > 0 ? ' : ' + tf.message : '' }}
-				</li>
-			</ul>
-		</div>
-		<div class="card-text" *ngIf="frames_loaded && maintenanceTimeFrames.length === 0 && !error_on_loading">
-			Currently, no downtimes due to updates or maintenance work have been announced.
-		</div>
-		<div class="card-text" *ngIf="frames_loaded && error_on_loading">
-			An error occurred loading possible maintenance timeframes.
-		</div>
+					<br />
+					{{ tf.message.length > 0 ? tf.message : '' }}
+				</div>
+			</li>
+		</ul>
 	</div>
+	<div *ngIf="maintenanceTimeFrames.length === 0 && !error_on_loading">
+		Currently, no downtimes due to updates or maintenance work have been announced.
+	</div>
+	<div *ngIf="frames_loaded && error_on_loading">An error occurred loading possible maintenance timeframes.</div>
 </div>
