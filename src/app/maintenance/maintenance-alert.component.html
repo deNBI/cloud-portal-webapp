@@ -1,0 +1,25 @@
+<div class="card" style="margin-bottom: 10px">
+	<div class="card-header" style="text-align: center">
+		<strong>Upcoming Maintenance</strong>
+	</div>
+	<div class="card-body">
+		<div *ngIf="!frames_loaded" class="row justify-content-center">
+			<span class="spinner-border text-info"></span>
+		</div>
+		<div *ngIf="frames_loaded && maintenanceTimeFrames.length > 0 && !error_on_loading">
+			<ul class="list-group">
+				<li *ngFor="let tf of maintenanceTimeFrames">
+					<strong>{{ tf.name }}</strong>
+					{{ tf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} - {{ tf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}
+					{{ tf.message.length > 0 ? ' : ' + tf.message : '' }}
+				</li>
+			</ul>
+		</div>
+		<div class="card-text" *ngIf="frames_loaded && maintenanceTimeFrames.length === 0 && !error_on_loading">
+			Currently, no downtimes due to updates or maintenance work have been announced.
+		</div>
+		<div class="card-text" *ngIf="frames_loaded && error_on_loading">
+			An error occurred loading possible maintenance timeframes.
+		</div>
+	</div>
+</div>
