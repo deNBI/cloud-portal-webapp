@@ -17,6 +17,20 @@
 					>{{ item.key }}
 				</a>
 			</li>
+			<li class="nav-item">
+				<div class="form-floating" style="height: 38px">
+					<input
+						type="text"
+						id="filterFlavorNames"
+						placeholder="Filter flavors by name"
+						class="form-control"
+						style="margin-left: 5px; height: 38px"
+						[ngModel]="filter"
+						(ngModelChange)="filter = $event; filterFlavorsWithDebounce()"
+					/>
+					<label for="filterFlavorNames" style="padding: 0.5rem 0.75rem">Filter flavors by name</label>
+				</div>
+			</li>
 		</ul>
 	</div>
 	<div class="card-body">
@@ -93,7 +107,9 @@
 				</div>
 			</div>
 			<div *ngIf="!selectedFlavor" class="col-12" style="padding-top: 10px">
-				<owl-carousel-o [options]="customOptions">
+				<div *ngIf="possible_flavors.length === 0" class="alert alert-warning" role="alert">No flavors found.</div>
+
+				<owl-carousel-o [options]="customOptions" *ngIf="possible_flavors.length > 0">
 					<ng-container *ngFor="let flavor of possible_flavors">
 						<ng-template carouselSlide>
 							<div>
@@ -199,7 +215,7 @@
 				}"
 				style="padding-top: 10px"
 			>
-				<owl-carousel-o [options]="customOptions">
+				<owl-carousel-o [options]="customOptions" *ngIf="possible_flavors.length">
 					<ng-container *ngFor="let flavor of possible_flavors">
 						<ng-template carouselSlide>
 							<div>
