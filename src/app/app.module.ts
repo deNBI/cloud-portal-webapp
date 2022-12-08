@@ -48,7 +48,6 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
  * App module.
  */
 @NgModule({
-
 	imports: [
 		NgScrollbarModule,
 		BrowserModule,
@@ -108,5 +107,4 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 	],
 	bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

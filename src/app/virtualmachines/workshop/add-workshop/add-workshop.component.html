@@ -190,14 +190,10 @@
 									style="padding-right: 3rem; padding-left: 3rem"
 								>
 									<div class="col">
-										<div class="alert alert-info" *ngIf="images?.length === 0 || !images">
-											There are no images available for selection at the moment. Please contact the support of the
-											facility where your project is running.
-										</div>
 										<app-image-detail
-											*ngIf="images?.length > 0"
 											[selectedImage]="selected_image"
-											[images]="images"
+											[client]="selected_project_client"
+											[project_id]="selected_project[1]"
 											[selectedFlavor]="selected_flavor"
 											(selectedImageChange)="set_selected_image($event)"
 											id="id_image_detail"
