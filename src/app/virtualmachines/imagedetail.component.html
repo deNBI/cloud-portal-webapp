@@ -155,7 +155,7 @@
 			</div>
 
 			<div *ngIf="!selectedImage" class="col-md-12" style="padding-top: 10px">
-				<div *ngIf="image_selection.length == 0" class="alert alert-warning" role="alert">No images found.</div>
+				<div *ngIf="image_selection.length === 0" class="alert alert-warning" role="alert">No images found.</div>
 
 				<owl-carousel-o *ngIf="carousel_activated && image_selection.length > 0" [options]="customOptions">
 					<ng-container *ngFor="let image of image_selection">
