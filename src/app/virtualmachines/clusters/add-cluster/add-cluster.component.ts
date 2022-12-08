@@ -23,7 +23,6 @@ import { ApplicationRessourceUsage } from '../../../applications/application-res
 import { WorkerBatch } from '../clusterinfo';
 import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links';
 import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
-import { ResearchEnvironment } from '../../virtualmachinemodels/res-env';
 import { BiocondaService } from '../../../api-connector/bioconda.service';
 
 /**
@@ -55,14 +54,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	client_checked: boolean = false;
 	timeout: number = 0;
 	title: string = 'New Cluster';
-
-	CLUSTER_IMAGES_BLOCKLIST: string[] = ['16.04'];
-
-	/**
-	 * All image of a project.
-	 */
-	images: Image[];
-	imagesLoaded: boolean = false;
 
 	flavors_loaded: boolean = false;
 
@@ -269,46 +260,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 * Get resenv names for the project.
-	 *
-	 */
-	getResEnvNames(): void {
-		this.subscription.add(
-			this.condaService
-				.getForcTemplates(this.selectedProjectClient.id)
-				.subscribe((resenvs: ResearchEnvironment[]): void => {
-					resenvs.forEach(resenv => this.resenv_names.push(resenv.template_name));
-				}),
-		);
-	}
-
-	/**
-	 * Get images for the project.
-	 *
-	 * @param project_id
-	 */
-	getImages(project_id: number): void {
-		this.imagesLoaded = false;
-		this.subscription.add(
-			this.imageService.getImages(project_id, 'cluster').subscribe((images: Image[]): void => {
-				this.imagesLoaded = true;
-
-				this.images = images.filter((image: Image): boolean => {
-					let not_blocked: boolean = true;
-					this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
-						if (image.name.includes(str)) {
-							not_blocked = false;
-						}
-					});
-
-					return not_blocked;
-				});
-				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
-			}),
-		);
-	}
-
-	/**
 	 * Get flavors for the project.
 	 *
 	 * @param project_id
@@ -483,7 +434,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.projectDataLoaded = true;
 				}
 				this.selectedProjectClient = client;
-				this.getResEnvNames();
 			}),
 		);
 	}
@@ -522,14 +472,11 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	loadProjectData(): void {
 		this.initial_loaded = false;
-		this.imagesLoaded = false;
 		this.projectDataLoaded = false;
 		this.flavors = [];
 		this.flavors_loaded = false;
-		this.images = [];
 		this.selectedImage = undefined;
 		this.selectedFlavor = undefined;
-		this.getImages(this.selectedProject[1]);
 		this.subscription.add(
 			this.groupService
 				.getGroupResources(this.selectedProject[1].toString())
