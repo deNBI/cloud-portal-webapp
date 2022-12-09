@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+	HttpClient, HttpHeaders, HttpParams, HttpResponse,
+} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
@@ -13,6 +15,14 @@ import { Userinfo } from '../userinfo/userinfo.model';
 export class UserService {
 	constructor(private http: HttpClient) {
 		this.http = http;
+	}
+
+	deleteUserFromVO(memberId: number): Observable<any> {
+		const params: HttpParams = new HttpParams().set('member_id', memberId);
+
+		return this.http.post<HttpResponse<any>>(`${ApiSettings.getApiBaseURL()}users/current/delete/`, params, {
+			withCredentials: true,
+		});
 	}
 
 	getLoginElixirName(): Observable<IResponseTemplate> {
