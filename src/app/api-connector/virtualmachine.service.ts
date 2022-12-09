@@ -266,13 +266,14 @@ export class VirtualmachineService {
 	}
 
 	getVmsFromLoggedInUser(
-		page: number,
-		vm_per_site: number,
+		page?: number,
+		vm_per_site?: number,
 		filter?: string,
 		filter_status?: string[],
 		filter_cluster: boolean = false,
 		filter_set_for_termination: boolean = false,
-	): Observable<VirtualMachinePage> {
+		not_paginated: boolean = false,
+	): Observable<VirtualMachinePage | VirtualMachine[]> {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 
 		if (filter) {
@@ -288,12 +289,22 @@ export class VirtualmachineService {
 			params = params.append('filter_set_for_termination', 'true');
 		}
 
-		return this.http
-			.get<VirtualMachinePage>(this.baseVmUrl, {
+		if (not_paginated) {
+			params = params.append('not_paginated', JSON.stringify(not_paginated));
+		}
+
+		const temp_resp: any = this.http
+			.get<VirtualMachinePage | VirtualMachine[]>(this.baseVmUrl, {
 				withCredentials: true,
 				params,
-			})
-			.pipe(map((vm_page: VirtualMachinePage) => new VirtualMachinePage(vm_page)));
+			});
+
+		if (not_paginated) {
+			return temp_resp;
+		} else {
+			return temp_resp.pipe(map((vm_page: VirtualMachinePage) => new VirtualMachinePage(vm_page)));
+		}
+
 	}
 
 	getCondaLogs(openstack_id: string): Observable<Condalog> {

@@ -111,7 +111,7 @@
 									<input
 										type="checkbox"
 										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.ACTIVE)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.ACTIVE"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.ACTIVE"
 									/>
 									<span style="margin-left: 5px" class="badge bg-success"
 										>{{ project_states[project_states.ACTIVE] }}
@@ -123,7 +123,7 @@
 									<input
 										type="checkbox"
 										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.SUSPENDED)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.SUSPENDED"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.SUSPENDED"
 									/>
 									<span style="margin-left: 5px" class="badge bg-warning"
 										>{{ project_states[project_states.SUSPENDED] }}
@@ -136,7 +136,7 @@
 									<input
 										type="checkbox"
 										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRED)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRED"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.EXPIRED"
 									/>
 
 									<span style="margin-left: 5px" class="badge bg-danger">{{
@@ -149,7 +149,7 @@
 									<input
 										type="checkbox"
 										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRES_SOON)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRES_SOON"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.EXPIRES_SOON"
 									/>
 									<span style="margin-left: 5px" class="badge bg-warning">{{
 										lifetime_states[lifetime_states.EXPIRES_SOON]
@@ -164,7 +164,7 @@
 										(change)="
 											sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_CONFIRMATION)
 										"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_CONFIRMATION"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.WAIT_FOR_CONFIRMATION"
 									/>
 
 									<span style="margin-left: 5px" class="badge bg-info">{{
@@ -179,7 +179,7 @@
 										(change)="
 											sortProjectService.addOrRemoveFromFilterStatusList(application_states.TERMINATION_REQUESTED)
 										"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.TERMINATION_REQUESTED"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.TERMINATION_REQUESTED"
 									/>
 									<span style="margin-left: 5px" class="badge bg-dark">{{
 										application_states[application_states.TERMINATION_REQUESTED]
@@ -193,7 +193,9 @@
 										(change)="
 											sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_TERMINATION_FM)
 										"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_TERMINATION_FM"
+										[checked]="
+											sortProjectService.filterStatusList | inList : application_states.WAIT_FOR_TERMINATION_FM
+										"
 									/>
 									<span style="margin-left: 5px" class="badge bg-dark">{{
 										application_states[application_states.WAIT_FOR_TERMINATION_FM]
@@ -276,52 +278,52 @@
 									</td>
 									<td>
 										<span
-											*ngIf="project | hasstatusinlist: project_states.ACTIVE"
+											*ngIf="project | hasstatusinlist : project_states.ACTIVE"
 											style="margin-left: 5px"
 											class="badge bg-success"
 											>{{ project_states[project_states.ACTIVE] }}
 										</span>
 										<span
 											*ngIf="
-												(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
-												!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
+												(project?.lifetime_reached | hasStatus : lifetime_states.EXPIRED) &&
+												!(project | hasstatusinlist : application_states.WAIT_FOR_CONFIRMATION)
 											"
 											style="margin-left: 5px"
 											class="badge bg-danger"
 											>{{ lifetime_states[lifetime_states.EXPIRED] }}
 										</span>
 										<span
-											*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
+											*ngIf="project?.lifetime_reached | hasStatus : lifetime_states.EXPIRES_SOON"
 											style="margin-left: 5px"
 											class="badge bg-warning"
 											>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
 										>
 										<span
-											*ngIf="project | hasstatusinlist: project_states.SUSPENDED"
+											*ngIf="project | hasstatusinlist : project_states.SUSPENDED"
 											style="margin-left: 5px"
 											class="badge bg-warning"
 											>{{ project_states[project_states.SUSPENDED] }}
 										</span>
 										<span
-											*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
+											*ngIf="project | hasstatusinlist : application_states.WAIT_FOR_CONFIRMATION"
 											style="margin-left: 5px"
 											class="badge bg-info"
 											>WAIT FOR CONFIRMATION
 										</span>
 										<span
-											*ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
+											*ngIf="project | hasstatusinlist : application_states.TERMINATION_REQUESTED"
 											style="margin-left: 5px"
 											class="badge bg-dark"
 											>TERMINATION REQUESTED
 										</span>
 										<span
-											*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+											*ngIf="project | hasstatusinlist : application_states.WAIT_FOR_TERMINATION_FM"
 											style="margin-left: 5px"
 											class="badge bg-dark"
 											>WAIT FOR TERMINATION BY FM
 										</span>
 										<span
-											*ngIf="project | hasstatusinlist: application_states.PROTECTED"
+											*ngIf="project | hasstatusinlist : application_states.PROTECTED"
 											style="margin-left: 5px"
 											class="badge bg-secondary"
 											>PROTECTED
@@ -382,7 +384,7 @@
 												<i class="fa fa-users"></i>&nbsp;Show Members
 											</button>
 											<button
-												*ngIf="project | hasstatusinlist: project_states.ACTIVE"
+												*ngIf="project | hasstatusinlist : project_states.ACTIVE"
 												style="margin-left: 5px; margin-bottom: 5px"
 												type="button"
 												class="btn btn-warning"
@@ -392,7 +394,7 @@
 											</button>
 
 											<button
-												*ngIf="project | hasstatusinlist: project_states.SUSPENDED"
+												*ngIf="project | hasstatusinlist : project_states.SUSPENDED"
 												style="margin-left: 5px"
 												type="button"
 												class="btn btn-success"
@@ -407,7 +409,7 @@
 												[id]="'show_terminate_' + project?.project_application_id"
 												[attr.data-test-id]="'show_terminate_' + project?.perun_name"
 												(click)="selectedProject = project; terminateModal.show()"
-												*ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)"
+												*ngIf="!(project | hasstatusinlist : application_states.WAIT_FOR_TERMINATION_FM)"
 											>
 												<i class="fa fa-trash"></i>&nbsp;Terminate Project
 											</button>
@@ -419,7 +421,7 @@
 												[id]="'show_terminate_' + project?.project_application_id"
 												[attr.data-test-id]="'show_terminate_' + project?.project_application_id"
 												(click)="selectedProject = project; terminateModal.show()"
-												*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+												*ngIf="project | hasstatusinlist : application_states.WAIT_FOR_TERMINATION_FM"
 											>
 												Processed by FM
 											</button>
@@ -429,7 +431,7 @@
 												class="btn btn-info"
 												[id]="'set_protected_' + project?.project_application_perun_id"
 												(click)="setProtected(project, true); notificationModal.show()"
-												*ngIf="!(project | hasstatusinlist: application_states.PROTECTED)"
+												*ngIf="!(project | hasstatusinlist : application_states.PROTECTED)"
 											>
 												<i class="fas fa-lock"></i>&nbsp;Set Protected
 											</button>
@@ -439,7 +441,7 @@
 												class="btn btn-info"
 												[id]="'set_unprotected_' + project?.project_application_perun_id"
 												(click)="setProtected(project, false); notificationModal.show()"
-												*ngIf="project | hasstatusinlist: application_states.PROTECTED"
+												*ngIf="project | hasstatusinlist : application_states.PROTECTED"
 											>
 												<i class="fas fa-lock-open"></i>&nbsp;Set Unprotected
 											</button>
