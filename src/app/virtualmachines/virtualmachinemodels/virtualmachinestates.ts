@@ -64,7 +64,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._PORT_CLOSED,
 		VirtualMachineStates._PLANNED,
 		VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
-		VirtualMachineStates._CREATION_FAILED
+		VirtualMachineStates._CREATION_FAILED,
 	];
 
 	static get DELETABLE_STATES(): string[] {
