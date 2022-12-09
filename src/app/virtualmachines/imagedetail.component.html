@@ -1,4 +1,9 @@
-<div class="card border-left-0 border-right-0 border-bottom-0 rounded-0 border-light">
+<div *ngIf="!images_loaded" class="d-flex align-items-center">
+	<strong>Loading images ...</strong>
+	<div class="spinner-border m-sm-auto" role="status"></div>
+</div>
+
+<div class="card border-left-0 border-right-0 border-bottom-0 rounded-0 border-light" *ngIf="images_loaded">
 	<div class="card-header" style="text-align: center">
 		<strong>Image*</strong><br />
 		<span class="text-muted"
@@ -38,10 +43,24 @@
 					>Research Environments</a
 				>
 			</li>
+			<li class="nav-item">
+				<div class="form-floating" style="height: 38px">
+					<input
+						type="text"
+						id="filterImagesNames"
+						class="form-control"
+						placeholder="Filter images by names"
+						style="margin-left: 5px; height: 38px"
+						[(ngModel)]="filter"
+						(ngModelChange)="filter = $event; filterImagesWithDebounce()"
+					/>
+					<label for="filterImagesNames" style="padding: 0.5rem 0.75rem">Filter images by name</label>
+				</div>
+			</li>
 		</ul>
 	</div>
 	<div class="card-body">
-		<div class="alert alert-primary" *ngIf="images?.length === 0 || !images">
+		<div class="alert alert-primary" *ngIf="(images?.length === 0 || !images) && images_loaded">
 			There are no images available for selection at the moment. Please contact the support of the facility where your
 			project is running.
 		</div>
@@ -136,7 +155,9 @@
 			</div>
 
 			<div *ngIf="!selectedImage" class="col-md-12" style="padding-top: 10px">
-				<owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
+				<div *ngIf="image_selection.length === 0" class="alert alert-warning" role="alert">No images found.</div>
+
+				<owl-carousel-o *ngIf="carousel_activated && image_selection.length > 0" [options]="customOptions">
 					<ng-container *ngFor="let image of image_selection">
 						<ng-template carouselSlide>
 							<app-image-slide
@@ -159,7 +180,7 @@
 				}"
 				style="padding-top: 10px"
 			>
-				<owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
+				<owl-carousel-o *ngIf="carousel_activated && image_selection.length > 0" [options]="customOptions">
 					<ng-container *ngFor="let image of image_selection">
 						<ng-template carouselSlide>
 							<app-image-slide
