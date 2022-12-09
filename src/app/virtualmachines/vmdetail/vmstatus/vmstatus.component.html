@@ -54,6 +54,10 @@
 		<div [id]="'error_badge_' + vm?.name" class="dot-colorless bg-danger"></div>
 		{{ VirtualMachineStates.staticERROR }}
 	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticCREATION_FAILED">
+		<div [id]="'error_badge_' + vm?.name" class="dot-colorless bg-danger"></div>
+		{{ VirtualMachineStates.staticCREATION_FAILED }}
+	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD_PLAYBOOK">
 		<div [id]="'build_playbook_badge_' + vm?.name" class="dot-colorless pulseAnimProcess"></div>
 		{{ VirtualMachineStates.staticBUILD_PLAYBOOK }}
