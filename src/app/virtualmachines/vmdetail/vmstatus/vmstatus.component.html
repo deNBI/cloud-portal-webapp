@@ -99,10 +99,12 @@
 		<div [id]="'powering_on_badge_' + vm?.name" class="dot-colorless pulseAnimProcess"></div>
 		{{ VirtualMachineStates.staticPOWERING_ON }}
 	</ng-container>
-	<ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
-		<div [id]="'powering_off_badge_' + vm?.name" class="dot-colorless bg-info pulseAnimProcess"></div>
+<ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
+		<div [id]="'checking_connection_' + vm?.name" class="dot-colorless bg-info pulseAnimProcess"
+			ngbTooltip="This status indicates that the system is currently checking if the SSH port of the virtual machine is open. If the virtual machine remains in this state for an extended period of time, please contact support for assistance."></div>
 		{{ VirtualMachineStates.staticCHECKING_CONNECTION }}
 	</ng-container>
+
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
 		<div
 			[id]="'client_offline_badge_' + vm?.name"
