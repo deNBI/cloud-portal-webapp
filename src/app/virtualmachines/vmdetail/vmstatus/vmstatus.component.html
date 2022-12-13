@@ -43,6 +43,14 @@
 		<div [id]="'ppb_badge_' + vm?.name" class="dot-colorless pulseAnimProcess"></div>
 		{{ VirtualMachineStates.staticBUILD }}
 	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticPLANNED">
+		<span
+			ngbTooltip="This status indicates that the vm is planned for creation. If the virtual machine remains in this state for an extended period of time, please contact support for assistance."
+		>
+			<div [id]="'planned_' + vm?.name" class="dot-colorless pulseAnimProcess"></div>
+			{{ VirtualMachineStates.staticPLANNED }}</span
+		>
+	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticNOT_FOUND">
 		<div [id]="'not_found_badge_' + vm?.name" class="dot-colorless bg-dark"></div>
 		{{ VirtualMachineStates.staticNOT_FOUND }}
@@ -100,9 +108,14 @@
 		{{ VirtualMachineStates.staticPOWERING_ON }}
 	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
-		<div [id]="'powering_off_badge_' + vm?.name" class="dot-colorless bg-info pulseAnimProcess"></div>
-		{{ VirtualMachineStates.staticCHECKING_CONNECTION }}
+		<span
+			ngbTooltip="This status indicates that the system is currently checking if the SSH port of the virtual machine is open. If the virtual machine remains in this state for an extended period of time, please contact support for assistance."
+		>
+			<div [id]="'checking_connection_' + vm?.name" class="dot-colorless bg-info pulseAnimProcess"></div>
+			{{ VirtualMachineStates.staticCHECKING_CONNECTION }}</span
+		>
 	</ng-container>
+
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
 		<div
 			[id]="'client_offline_badge_' + vm?.name"
