@@ -181,6 +181,105 @@
 						</div>
 						<div class="w-100"></div>
 					</div>
+
+					<ng-container>
+						<div
+							class="card-body"
+							*ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded && !this.errorLoadingTimeFrames"
+						>
+							<h5 class="card-title">Calender</h5>
+							<div class="alert alert-info">
+								You can enter time slots for the workshop in which work is actively carried out in the portal or on the
+								machines. This enables the de.NBI Cloud Team to improve the planning of portal updates, for example, so
+								as not to hinder or restrict the work of the participants at peak times. Please consider, that the
+								existing timeframes are displayed using the "Central European Time". Please enter your dates using this
+								timezone. Please enter the time slots day by day, to be more precise!
+							</div>
+							<h6 class="card-title">Add new timeframes</h6>
+							<div class="card">
+								<div class="card-body">
+									<form id="new_timeframe_form" #newTimeFrameForm="ngForm" class="form-horizontal">
+										<div class="form-row align-content-start">
+											<div class="mb-3 mx-auto">
+												<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
+											</div>
+
+											<div class="mb-3 mx-auto">
+												<label class="form-label">Start Time</label>
+												<app-timepicker (timeChange)="startTimeChanged($event)"></app-timepicker>
+											</div>
+
+											<div class="mb-3 mx-auto">
+												<label class="form-label">End Time</label>
+												<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
+											</div>
+										</div>
+
+										<div class="form-row">
+											<div class="mb-3">
+												<label for="description_input_field" class="form-label">Short Description</label>
+												<input
+													type="text"
+													class="form-control"
+													id="description_input_field"
+													aria-describedby="descriptionHelp"
+													[(ngModel)]="newWorkShopTimeFrame.description"
+													[ngModelOptions]="{ standalone: true }"
+												/>
+												<div id="emailHelp" class="form-text">
+													You are free to enter a short description of the planned event
+												</div>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="mb-3">
+												<button
+													class="btn btn-outline-primary"
+													(click)="createNewTimeFrame()"
+													[disabled]="!(this.newWorkShopTimeFrame | isValidTimeFrame)"
+												>
+													Add new timeframe
+												</button>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="col-md-auto mx-auto" *ngIf="!(this.newWorkShopTimeFrame | isValidTimeFrame)">
+												<div class="alert alert-info">
+													Please select a timeframe, where the start time is before the end time and in the future!
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<hr />
+							<h6 class="card-title">Existing timeframes</h6>
+							<ul class="list-group">
+								<li class="list-group-item" *ngFor="let wstimeframe of this.workshopTimeFrames">
+									<strong
+										>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
+										{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
+									>
+									: {{ wstimeframe.description }}
+									<button class="btn btn-outline-danger align-self-end" (click)="deleteWorkshopTimeFrame(wstimeframe)">
+										Remove
+									</button>
+								</li>
+							</ul>
+						</div>
+						<div
+							class="card-body"
+							*ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded && this.errorLoadingTimeFrames"
+						>
+							<div class="alert alert-danger">
+								An error occurred while loading the timeframes of this calender - please try again later!
+							</div>
+						</div>
+						<div class="card-body" *ngIf="selectedWorkshop.id && !this.workshopTimeFramesLoaded">
+							<span class="spinner-border-sm"></span>
+						</div>
+					</ng-container>
+
 					<div class="table-responsive" *ngIf="projectMembersLoaded">
 						<table class="table table-hover">
 							<thead>
@@ -289,101 +388,6 @@
 								</tr>
 							</tbody>
 						</table>
-					</div>
-					<div
-						class="card-body"
-						*ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded && !this.errorLoadingTimeFrames"
-					>
-						<h5 class="card-title">Calender</h5>
-						<div class="alert alert-info">
-							You can enter time slots for the workshop in which work is actively carried out in the portal or on the
-							machines. This enables the de.NBI Cloud Team to improve the planning of portal updates, for example, so as
-							not to hinder or restrict the work of the participants at peak times. Please consider, that the existing
-							timeframes are displayed using the "Central European Time". Please enter your dates using this timezone.
-							Please enter the time slots day by day, to be more precise!
-						</div>
-						<h6 class="card-title">Add new timeframes</h6>
-						<div class="card">
-							<div class="card-body">
-								<form id="new_timeframe_form" #newTimeFrameForm="ngForm" class="form-horizontal">
-									<div class="form-row align-content-start">
-										<div class="mb-3 mx-auto">
-											<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
-										</div>
-
-										<div class="mb-3 mx-auto">
-											<label class="form-label">Start Time</label>
-											<app-timepicker (timeChange)="startTimeChanged($event)"></app-timepicker>
-										</div>
-
-										<div class="mb-3 mx-auto">
-											<label class="form-label">End Time</label>
-											<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
-										</div>
-									</div>
-
-									<div class="form-row">
-										<div class="mb-3">
-											<label for="description_input_field" class="form-label">Short Description</label>
-											<input
-												type="text"
-												class="form-control"
-												id="description_input_field"
-												aria-describedby="descriptionHelp"
-												[(ngModel)]="newWorkShopTimeFrame.description"
-												[ngModelOptions]="{ standalone: true }"
-											/>
-											<div id="emailHelp" class="form-text">
-												You are free to enter a short description of the planned event
-											</div>
-										</div>
-									</div>
-									<div class="form-row">
-										<div class="mb-3">
-											<button
-												class="btn btn-outline-primary"
-												(click)="createNewTimeFrame()"
-												[disabled]="!(this.newWorkShopTimeFrame | isValidTimeFrame)"
-											>
-												Add new timeframe
-											</button>
-										</div>
-									</div>
-									<div class="form-row">
-										<div class="col-md-auto mx-auto" *ngIf="!(this.newWorkShopTimeFrame | isValidTimeFrame)">
-											<div class="alert alert-info">
-												Please select a timeframe, where the start time is before the end time and in the future!
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-						<hr />
-						<h6 class="card-title">Existing timeframes</h6>
-						<ul class="list-group">
-							<li class="list-group-item" *ngFor="let wstimeframe of this.workshopTimeFrames">
-								<strong
-									>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
-									{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
-								>
-								: {{ wstimeframe.description }}
-								<button class="btn btn-outline-danger align-self-end" (click)="deleteWorkshopTimeFrame(wstimeframe)">
-									Remove
-								</button>
-							</li>
-						</ul>
-					</div>
-					<div
-						class="card-body"
-						*ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded && this.errorLoadingTimeFrames"
-					>
-						<div class="alert alert-danger">
-							An error occurred while loading the timeframes of this calender - please try again later!
-						</div>
-					</div>
-					<div class="card-body" *ngIf="selectedWorkshop.id && !this.workshopTimeFramesLoaded">
-						<span class="spinner-border-sm"></span>
 					</div>
 				</div>
 			</div>

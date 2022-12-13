@@ -83,15 +83,24 @@ export class WorkshopService {
 			);
 	}
 
-	addWorkshopTimeFrame(workshop: Workshop, timeframe: WorkshopTimeFrame): Observable<WorkshopTimeFrame> {
+	addWorkshopTimeFrame(
+		application_id: number | string,
+		timeframe: WorkshopTimeFrame,
+		workshop: Workshop,
+	): Observable<WorkshopTimeFrame> {
 		const params: HttpParams = new HttpParams()
 			.set('start_time', timeframe.start_time.toJSON())
 			.set('end_time', timeframe.end_time.toJSON())
 			.set('description', timeframe.description)
 			.set('process', 'add');
+		if (workshop.id) {
+			params.set('workshop', workshop.id);
+		} else {
+			params.set('workshop', null);
+		}
 
 		return this.http.post<WorkshopTimeFrame>(
-			`${ApiSettings.getApiBaseURL()}workshops/${workshop.id}/calender/`,
+			`${ApiSettings.getApiBaseURL()}workshops/${application_id}/calender/`,
 			params,
 			{
 				withCredentials: true,
@@ -99,10 +108,10 @@ export class WorkshopService {
 		);
 	}
 
-	removeWorkshopTimeFrame(workshop: Workshop, timeframe: WorkshopTimeFrame): Observable<any> {
+	removeWorkshopTimeFrame(application_id: number | string, timeframe: WorkshopTimeFrame): Observable<any> {
 		const params: HttpParams = new HttpParams().set('timeframe_id', timeframe.id).set('process', 'delete');
 
-		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}workshops/${workshop.id}/calender/`, params, {
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}workshops/${application_id}/calender/`, params, {
 			withCredentials: true,
 		});
 	}

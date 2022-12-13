@@ -33,7 +33,15 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 		this.subscription.add(
 			this.maintenanceService.getFutureMaintenanceTimeFrames().subscribe({
 				next: (mtf: MaintenanceTimeFrame[]) => {
-					this.maintenanceTimeFrames = mtf;
+					this.maintenanceTimeFrames = mtf.sort((a, b) => {
+						if (a.start_time < b.start_time) {
+							return -1;
+						} else if (a.start_time > b.start_time) {
+							return 1;
+						} else {
+							return 0;
+						}
+					});
 					this.error_on_loading = false;
 					this.frames_loaded = true;
 				},

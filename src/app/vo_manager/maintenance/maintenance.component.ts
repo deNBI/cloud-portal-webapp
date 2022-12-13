@@ -89,7 +89,15 @@ export class MaintenanceComponent implements OnInit {
 	reloadTimeFrames(): void {
 		this.workshopService.loadWorkshopTimeFrames().subscribe({
 			next: (wsTimeFrames: WorkshopTimeFrame[]) => {
-				this.workshopTimeFrames = wsTimeFrames;
+				this.workshopTimeFrames = wsTimeFrames.sort((a, b) => {
+					if (a.start_time < b.start_time) {
+						return -1;
+					} else if (a.start_time > b.start_time) {
+						return 1;
+					} else {
+						return 0;
+					}
+				});
 				this.workshopTimeFramesLoaded = true;
 				this.errorWorkshopTimeFrames = false;
 			},
@@ -100,7 +108,15 @@ export class MaintenanceComponent implements OnInit {
 		});
 		this.voService.loadMaintenanceTimeFrames().subscribe({
 			next: (mtTimeFrames: MaintenanceTimeFrame[]) => {
-				this.maintenanceTimeFrames = mtTimeFrames;
+				this.maintenanceTimeFrames = mtTimeFrames.sort((a, b) => {
+					if (a.start_time < b.start_time) {
+						return -1;
+					} else if (a.start_time > b.start_time) {
+						return 1;
+					} else {
+						return 0;
+					}
+				});
 				this.maintenanceTimeFramesLoaded = true;
 				this.errorMaintenanceTimeFrames = false;
 			},
