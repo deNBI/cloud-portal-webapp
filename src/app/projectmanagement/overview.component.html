@@ -6,8 +6,8 @@
 	<div class="row">
 		<div
 			*ngIf="
-				(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
-				(project_application | hasstatusinlist: Application_States.DECLINED)
+				(project_application | hasstatusinlist : Application_States.SUBMITTED) ||
+				(project_application | hasstatusinlist : Application_States.DECLINED)
 			"
 			class="col-12"
 		>
@@ -49,9 +49,9 @@
 
 				<div
 					*ngIf="
-						!(project_application | hasstatusinlist: Application_States.APPROVED) &&
-						!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
-						!(project_application | hasstatusinlist: Application_States.DECLINED)
+						!(project_application | hasstatusinlist : Application_States.APPROVED) &&
+						!(project_application | hasstatusinlist : Application_States.TERMINATED) &&
+						!(project_application | hasstatusinlist : Application_States.DECLINED)
 					"
 					class="card-body"
 					id="project_application_status_overview"
@@ -72,8 +72,8 @@
 							<button
 								(click)="deleteModal.show()"
 								*ngIf="
-									(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
-									(project_application | hasstatusinlist: Application_States.DECLINED)
+									(project_application | hasstatusinlist : Application_States.SUBMITTED) ||
+									(project_application | hasstatusinlist : Application_States.DECLINED)
 								"
 								class="btn btn-outline-danger col-6"
 								id="remove_application_button"
@@ -162,9 +162,9 @@
 		<div
 			*ngIf="
 				project_application &&
-				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
-				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
-				!(project_application | hasstatusinlist: Application_States.SUBMITTED)
+				!(project_application | hasstatusinlist : Application_States.TERMINATED) &&
+				!(project_application | hasstatusinlist : Application_States.DECLINED) &&
+				!(project_application | hasstatusinlist : Application_States.SUBMITTED)
 			"
 			class="col-12"
 		>
@@ -207,9 +207,9 @@
 						</div>
 						<div
 							*ngIf="
-								(project_application | hasstatusinlist: Application_States.APPROVED) ||
-								(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-								(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)
+								(project_application | hasstatusinlist : Application_States.APPROVED) ||
+								(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+								(project_application | hasstatusinlist : Application_States.MODIFICATION_DECLINED)
 							"
 							class="col"
 						>
@@ -232,7 +232,7 @@
 				</div>
 
 				<div
-					*ngIf="project_application | hasstatusinlist: Application_States.APPROVED"
+					*ngIf="project_application | hasstatusinlist : Application_States.APPROVED"
 					class="card-body"
 					id="projectMainInformationDiv"
 				>
@@ -250,8 +250,8 @@
 									>{{ project_application?.project_application_date_approved }} - {{ project_application?.date_end }}
 									<span
 										*ngIf="
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+											(project_application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
 										"
 									>
 										- Extension by {{ project_application?.project_lifetime_request?.extra_lifetime }}
@@ -280,8 +280,8 @@
 									*ngIf="
 										!project_application.user_is_admin &&
 										!(
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+											(project_application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
 											lifetimeExtensionDisabled
 										)
 									"
@@ -300,8 +300,8 @@
 									*ngIf="
 										project_application.user_is_admin &&
 										!(
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+											(project_application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
 											lifetimeExtensionDisabled
 										)
 									"
@@ -313,8 +313,8 @@
 								</button>
 								<button
 									*ngIf="
-										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+										(project_application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
 										lifetimeExtensionDisabled
 									"
 									class="btn btn-outline-secondary"
@@ -327,9 +327,9 @@
 								<ng-container
 									*ngIf="
 										!project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
-										!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
-										!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+										(project_application | hasstatusinlist : Application_States.APPROVED) &&
+										!(project_application | hasstatusinlist : Application_States.TERMINATION_REQUESTED) &&
+										!(project_application | hasstatusinlist : Application_States.WAIT_FOR_TERMINATION_FM)
 									"
 								>
 									<span
@@ -345,9 +345,9 @@
 									(click)="terminateModal.show()"
 									*ngIf="
 										project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
-										!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
-										!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+										(project_application | hasstatusinlist : Application_States.APPROVED) &&
+										!(project_application | hasstatusinlist : Application_States.TERMINATION_REQUESTED) &&
+										!(project_application | hasstatusinlist : Application_States.WAIT_FOR_TERMINATION_FM)
 									"
 									class="btn btn-outline-danger"
 									id="show_termination_modal_button"
@@ -358,8 +358,8 @@
 								<button
 									(click)="terminateModal.show()"
 									*ngIf="
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+										(project_application | hasstatusinlist : Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_TERMINATION_FM)
 									"
 									class="btn btn-outline-secondary"
 									disabled
@@ -384,8 +384,8 @@
 									and {{ project_application?.project_application_total_ram }} GBs of RAM
 									<span
 										*ngIf="
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+											(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
 										"
 									>
 										- Resource modification requested on
@@ -399,8 +399,8 @@
 									{{ project_application?.project_application_total_ram }} GBs RAM in use
 									<span
 										*ngIf="
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+											(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
 										"
 									>
 										- Resource modification requested on
@@ -427,10 +427,10 @@
 								<ng-container
 									*ngIf="
 										!project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
+										(project_application | hasstatusinlist : Application_States.APPROVED) &&
 										!(
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+											(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
 											modificationRequestDisabled
 										)
 									"
@@ -449,8 +449,8 @@
 									*ngIf="
 										project_application.user_is_admin &&
 										!(
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+											(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
 											modificationRequestDisabled
 										)
 									"
@@ -462,8 +462,8 @@
 								</button>
 								<button
 									*ngIf="
-										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+										(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
 										modificationRequestDisabled
 									"
 									class="btn btn-outline-secondary"
@@ -594,8 +594,8 @@
 									>
 									<span
 										*ngIf="
-											(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+											(project_application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
 										"
 									>
 										- {{ project_application?.project_credit_request?.extra_credits }} additional credits requested on
@@ -635,8 +635,8 @@
 								*ngIf="
 									!project_application.user_is_admin &&
 									!(
-										(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+										(project_application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
 										creditsExtensionDisabled
 									)
 								"
@@ -655,8 +655,8 @@
 								*ngIf="
 									project_application.user_is_admin &&
 									!(
-										(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+										(project_application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
 										creditsExtensionDisabled
 									)
 								"
@@ -668,8 +668,8 @@
 							</button>
 							<button
 								*ngIf="
-									(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-									(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+									(project_application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+									(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
 									creditsExtensionDisabled
 								"
 								class="btn btn-outline-secondary"
@@ -788,9 +788,9 @@
 				id="projectSettingsCard"
 				*ngIf="
 					project_application &&
-					((project_application | hasstatusinlist: Application_States.APPROVED) ||
-						(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-						(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED))
+					((project_application | hasstatusinlist : Application_States.APPROVED) ||
+						(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+						(project_application | hasstatusinlist : Application_States.MODIFICATION_DECLINED))
 				"
 			>
 				<div class="card-header"><i class="fas fa-cogs"></i> Project Settings</div>
@@ -846,9 +846,9 @@
 		<div
 			*ngIf="
 				project_application &&
-				((project_application | hasstatusinlist: Application_States.APPROVED) ||
-					(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-					(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)) &&
+				((project_application | hasstatusinlist : Application_States.APPROVED) ||
+					(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+					(project_application | hasstatusinlist : Application_States.MODIFICATION_DECLINED)) &&
 				(project_application.show_member_names || project_application.user_is_admin || is_vo_admin)
 			"
 			class="col"
@@ -1019,10 +1019,10 @@
 			*ngIf="
 				project_application &&
 				(project_application?.user_is_pi || project_application?.user_is_admin) &&
-				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
-				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
-				!(project_application | hasstatusinlist: Application_States.SUBMITTED) &&
-				!(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION)
+				!(project_application | hasstatusinlist : Application_States.TERMINATED) &&
+				!(project_application | hasstatusinlist : Application_States.DECLINED) &&
+				!(project_application | hasstatusinlist : Application_States.SUBMITTED) &&
+				!(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION)
 			"
 			class="col"
 		>
@@ -1100,9 +1100,9 @@
 			*ngIf="
 				project_application &&
 				project_application.credits_allowed &&
-				((project_application | hasstatusinlist: Application_States.APPROVED) ||
-					(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-					(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED))
+				((project_application | hasstatusinlist : Application_States.APPROVED) ||
+					(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+					(project_application | hasstatusinlist : Application_States.MODIFICATION_DECLINED))
 			"
 			class="col"
 		>

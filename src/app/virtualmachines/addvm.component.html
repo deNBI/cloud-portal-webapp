@@ -191,25 +191,16 @@
 											class="form-group row col-md-12"
 											style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px"
 										>
-											<div class="col" *ngIf="image_loaded">
+											<div class="col">
 												<app-image-detail
 													data-test-id="image_section"
-													*ngIf="images?.length > 0"
 													[selectedImage]="selectedImage"
-													[images]="images"
-													[resenv_names]="resenv_names"
+													[client]="selectedProjectClient"
+													[project_id]="selectedProject[1]"
 													[selectedFlavor]="selectedFlavor"
 													(selectedImageChange)="setSelectedImage($event)"
 													id="id_image_detail"
 												></app-image-detail>
-												<div class="alert alert-info" *ngIf="images.length === 0">
-													There are no images available at the moment.
-												</div>
-											</div>
-
-											<div *ngIf="!image_loaded" class="d-flex align-items-center">
-												<strong>Loading images ...</strong>
-												<div class="spinner-border m-sm-auto" role="status"></div>
 											</div>
 										</div>
 									</div>

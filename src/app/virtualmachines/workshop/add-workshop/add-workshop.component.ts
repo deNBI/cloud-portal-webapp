@@ -23,12 +23,21 @@ import {
 } from '../../../../links/links';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { WorkshopService } from '../../../api-connector/workshop.service';
+import { BiocondaService } from '../../../api-connector/bioconda.service';
 
 @Component({
 	selector: 'app-add-workshop',
 	templateUrl: './add-workshop.component.html',
 	styleUrls: ['./add-workshop.component.scss'],
-	providers: [GroupService, ImageService, FlavorService, UserService, VirtualmachineService, WorkshopService],
+	providers: [
+		GroupService,
+		ImageService,
+		FlavorService,
+		UserService,
+		VirtualmachineService,
+		WorkshopService,
+		BiocondaService,
+	],
 })
 export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	title: string = 'New workshop VMs';
@@ -92,9 +101,8 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	flavors: Flavor[] = [];
 	selected_flavor: Flavor = undefined;
 	flavors_loaded: boolean = false;
-	images: Image[] = [];
+
 	selected_image: Image = undefined;
-	image_loaded: boolean = false;
 	data_loaded: boolean = false;
 	selected_project_ressources: ApplicationRessourceUsage;
 	selected_flavor_type: string = 'Standard Flavors';
@@ -108,6 +116,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	started_machine: boolean = false;
 	progress_bar_animated: string = 'progress-bar-animated';
 	progress_bar_width: number = 0;
+	resenv_names: string[] = [];
 
 	constructor(
 		private group_service: GroupService,
@@ -117,6 +126,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		private virtual_machine_service: VirtualmachineService,
 		private workshop_service: WorkshopService,
 		private router: Router,
+		private condaService: BiocondaService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -225,7 +235,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 					this.check_project_data_loaded();
 				}),
 		);
-		this.get_images(this.selected_project[1]);
 		this.get_flavors(this.selected_project[1]);
 		this.get_members_of_the_project();
 	}
@@ -237,17 +246,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 					this.has_forc = true;
 					this.forc_url = response['forc_url'];
 				}
-			}),
-		);
-	}
-
-	get_images(id: number): void {
-		this.subscription.add(
-			this.image_service.getImages(id).subscribe((images: Image[]): void => {
-				this.images = images;
-				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
-				this.image_loaded = true;
-				this.check_project_data_loaded();
 			}),
 		);
 	}
@@ -273,7 +271,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	}
 
 	check_project_data_loaded(): void {
-		if (this.image_loaded && this.flavors_loaded && this.data_loaded && this.member_data_loaded) {
+		if (this.flavors_loaded && this.data_loaded && this.member_data_loaded) {
 			this.project_data_loaded = true;
 			this.is_loaded = true;
 		}
@@ -439,10 +437,8 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.client_available = false;
 		this.project_data_loaded = false;
 		this.flavors = [];
-		this.image_loaded = false;
 		this.data_loaded = false;
 		this.flavors_loaded = false;
-		this.images = [];
 		this.selected_workshop = null;
 		this.credits_allowed = false;
 		this.project_members = [];

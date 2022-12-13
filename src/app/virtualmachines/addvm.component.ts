@@ -25,7 +25,6 @@ import { is_vo } from '../shared/globalvar';
 import { RandomNameGenerator } from '../shared/randomNameGenerator';
 import { Volume } from './volumes/volume';
 import { UserService } from '../api-connector/user.service';
-import { ImageService } from '../api-connector/image.service';
 import { GroupService } from '../api-connector/group.service';
 import { KeyService } from '../api-connector/key.service';
 import { FlavorService } from '../api-connector/flavor.service';
@@ -36,7 +35,7 @@ import { BlockedImageTagResenv } from '../facility_manager/image-tag';
 import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { ApplicationsService } from '../api-connector/applications.service';
-import { ResearchEnvironment } from './virtualmachinemodels/res-env';
+import { ImageService } from '../api-connector/image.service';
 
 /**
  * Start virtualmachine component.
@@ -46,7 +45,6 @@ import { ResearchEnvironment } from './virtualmachinemodels/res-env';
 	templateUrl: 'addvm.component.html',
 	providers: [
 		GroupService,
-		ImageService,
 		KeyService,
 		FlavorService,
 		VirtualmachineService,
@@ -54,6 +52,7 @@ import { ResearchEnvironment } from './virtualmachinemodels/res-env';
 		UserService,
 		ApplicationsService,
 		BiocondaService,
+		ImageService,
 	],
 })
 export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
@@ -118,21 +117,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	showAddVol: boolean = false;
 
-	/**
-	 * All image of a project.
-	 */
-	images: Image[];
-	image_loaded: boolean = false;
-
 	flavors_loaded: boolean = false;
 	error_starting_machine: boolean = false;
 
 	create_error: IResponseTemplate;
-
-	/**
-	 * All resenv names of a project for filtering resenv images.
-	 */
-	resenv_names: string[] = [];
 
 	/**
 	 * All flavors of a project.
@@ -268,20 +256,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 	/**
-	 * Get images for the project.
-	 *
-	 * @param project_id
-	 */
-	getImages(project_id: number): void {
-		this.subscription.add(
-			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
-				this.images = images;
-				this.image_loaded = true;
-			}),
-		);
-	}
-
-	/**
 	 * Get flavors for the project.
 	 *
 	 * @param project_id
@@ -310,18 +284,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.flavors_loaded = false;
 		this.selectedFlavor = undefined;
 		this.getFlavors(this.selectedProject[1]);
-	}
-
-	/**
-	 * Get resenv names for the project.
-	 *
-	 */
-	getResEnvNames(): void {
-		this.subscription.add(
-			this.condaService.getForcTemplates(this.client_id).subscribe((resenvs: ResearchEnvironment[]): void => {
-				resenvs.forEach(resenv => this.resenv_names.push(resenv.template_name));
-			}),
-		);
 	}
 
 	getDetachedVolumesByProject(): void {
@@ -647,7 +609,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 					this.client_checked = true;
 					this.getForc(client.id);
-					this.getResEnvNames();
 				} else {
 					this.client_available = false;
 					this.client_checked = true;
@@ -722,9 +683,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	loadProjectData(): void {
 		this.projectDataLoaded = false;
 		this.flavors = [];
-		this.image_loaded = false;
 		this.flavors_loaded = false;
-		this.images = [];
 		this.selectedImage = undefined;
 		this.selectedFlavor = undefined;
 		this.getDetachedVolumesByProject();
@@ -737,7 +696,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 					this.generateRandomName();
 				}),
 		);
-		this.getImages(this.selectedProject[1]);
 		this.getFlavors(this.selectedProject[1]);
 	}
 
@@ -860,8 +818,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.volumesToAttach = [];
 		this.started_machine = false;
 		this.showAddVol = false;
-		this.images = [];
-		this.image_loaded = false;
 		this.flavors_loaded = false;
 		this.flavors = [];
 		this.selected_flavor_types = [];

@@ -62,7 +62,9 @@
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-warning" role="alert">
-			Restarted instances will lose any data not saved in persistent storage. Are you sure to
+			Restarted instances will lose any data not saved in persistent storage.<br>
+			Any mounted volumes will need to be remounted after the reboot.<br>
+			Are you sure to
 			<strong>{{ reboot_type }}</strong> reboot {{ virtualMachine?.name }}?
 		</div>
 	</div>
