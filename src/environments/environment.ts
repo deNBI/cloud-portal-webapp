@@ -10,15 +10,12 @@ export const environment: any = {
 	freemium_project_id: 10392,
 	domain: 'localhost',
 	invitation_group_pre:
-		'https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fsignup.aai.lifescience-ri.eu'
-		+ '%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi-dev%26group%3D',
-	invitation_group_post:
-		'&targetexisting=https%3A%2F%2Fsignup.aai.lifescience-ri.eu%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi-dev%26group%3D',
+		'https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=denbi-dev&group=',
 	apiBaseUrl: 'http://localhost:8000/api/v0/',
 	apiBase: 'http://localhost:8000/',
 	wagtailBase: 'http://localhost:8005/',
 	voRegistrationLink:
-		'https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fsignup.aai.lifescience-ri.eu%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi-dev',
+		'https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=denbi-dev',
 	login: 'http://localhost:8000/api/v0/loggedUser/',
 	webapp: 'http://localhost:8001/',
 	matomoServer: '',
