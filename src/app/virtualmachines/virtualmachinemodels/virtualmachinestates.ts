@@ -83,6 +83,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		return this._REBOOTING_STARTED;
 	}
 
+	static get PLANNED(): string {
+		return this._PLANNED;
+	}
+
 	static get REBOOTING_HARD(): string {
 		return this._REBOOTING_HARD;
 	}
@@ -169,6 +173,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	public get staticBUILD(): string {
 		return VirtualMachineStates.BUILD;
+	}
+
+	public get staticPLANNED(): string {
+		return VirtualMachineStates.PLANNED;
 	}
 
 	public get staticCHECKING_CONNECTION(): string {
