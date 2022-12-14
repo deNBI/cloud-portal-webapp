@@ -86,18 +86,14 @@ export class WorkshopService {
 	addWorkshopTimeFrame(
 		application_id: number | string,
 		timeframe: WorkshopTimeFrame,
-		workshop: Workshop,
 	): Observable<WorkshopTimeFrame> {
 		const params: HttpParams = new HttpParams()
 			.set('start_time', timeframe.start_time.toJSON())
 			.set('end_time', timeframe.end_time.toJSON())
 			.set('description', timeframe.description)
-			.set('process', 'add');
-		if (workshop.id) {
-			params.set('workshop', workshop.id);
-		} else {
-			params.set('workshop', null);
-		}
+			.set('process', 'add')
+			.set('workshop_id', timeframe.workshop?.id);
+		console.log(params);
 
 		return this.http.post<WorkshopTimeFrame>(
 			`${ApiSettings.getApiBaseURL()}workshops/${application_id}/calender/`,

@@ -183,10 +183,6 @@
 					</div>
 
 					<ng-container>
-						<div
-							class="card-body"
-							*ngIf="selectedWorkshop.id && this.workshopTimeFramesLoaded && !this.errorLoadingTimeFrames"
-						>
 							<h5 class="card-title">Calender</h5>
 							<div class="alert alert-info">
 								You can enter time slots for the workshop in which work is actively carried out in the portal or on the
@@ -195,77 +191,116 @@
 								existing timeframes are displayed using the "Central European Time". Please enter your dates using this
 								timezone. Please enter the time slots day by day, to be more precise!
 							</div>
-							<h6 class="card-title">Add new timeframes</h6>
-							<div class="card">
-								<div class="card-body">
-									<form id="new_timeframe_form" #newTimeFrameForm="ngForm" class="form-horizontal">
-										<div class="form-row align-content-start">
-											<div class="mb-3 mx-auto">
-												<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
-											</div>
-
-											<div class="mb-3 mx-auto">
-												<label class="form-label">Start Time</label>
-												<app-timepicker (timeChange)="startTimeChanged($event)"></app-timepicker>
-											</div>
-
-											<div class="mb-3 mx-auto">
-												<label class="form-label">End Time</label>
-												<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
-											</div>
-										</div>
-
-										<div class="form-row">
-											<div class="mb-3">
-												<label for="description_input_field" class="form-label">Short Description</label>
-												<input
-													type="text"
-													class="form-control"
-													id="description_input_field"
-													aria-describedby="descriptionHelp"
-													[(ngModel)]="newWorkShopTimeFrame.description"
-													[ngModelOptions]="{ standalone: true }"
-												/>
-												<div id="emailHelp" class="form-text">
-													You are free to enter a short description of the planned event
-												</div>
-											</div>
-										</div>
-										<div class="form-row">
-											<div class="mb-3">
-												<button
-													class="btn btn-outline-primary"
-													(click)="createNewTimeFrame()"
-													[disabled]="!(this.newWorkShopTimeFrame | isValidTimeFrame)"
-												>
-													Add new timeframe
-												</button>
-											</div>
-										</div>
-										<div class="form-row">
-											<div class="col-md-auto mx-auto" *ngIf="!(this.newWorkShopTimeFrame | isValidTimeFrame)">
-												<div class="alert alert-info">
-													Please select a timeframe, where the start time is before the end time and in the future!
-												</div>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-							<hr />
+						<div class="card-body" *ngIf="workshopTimeFramesLoaded && !errorLoadingTimeFrames">
 							<h6 class="card-title">Existing timeframes</h6>
-							<ul class="list-group">
-								<li class="list-group-item" *ngFor="let wstimeframe of this.workshopTimeFrames">
-									<strong
-										>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
-										{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
-									>
-									: {{ wstimeframe.description }}
-									<button class="btn btn-outline-danger align-self-end" (click)="deleteWorkshopTimeFrame(wstimeframe)">
+							<table class="table" *ngIf="workshopTimeFrames.length > 0">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Start time</th>
+										<th scope="col">End time</th>
+										<th scope="col">Workshop</th>
+										<th scope="col">Description</th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+								<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index;">
+									<th scope="row">{{i + 1}}</th>
+									<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+									<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+									<td>{{wstimeframe.workshop?.longname}}</td>
+									<td>{{ wstimeframe.description }}</td>
+									<td><button class="btn btn-outline-danger" (click)="deleteWorkshopTimeFrame(wstimeframe)">
 										Remove
-									</button>
-								</li>
-							</ul>
+									</button></td>
+								</tr>
+								</tbody>
+							</table>
+							<div class="alert alert-info" *ngIf="workshopTimeFrames.length === 0">There are no entered timeframes yet</div>
+							<hr />
+							</div>
+						<div class="card-body">
+							<h6 class="card-title">Add new timeframes</h6>
+							<!-- toast -->
+							<app-information-toast
+								[title]="informationTitle"
+								[message]="informationMessage"
+								[type]="informationType"
+							></app-information-toast>
+							<!-- toast -->
+							<form id="new_timeframe_form" #newTimeFrameForm="ngForm" class="form-horizontal">
+								<div class="form-row align-content-start">
+									<div class="mb-3 mx-auto">
+										<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
+									</div>
+
+									<div class="mb-3 mx-auto">
+										<label class="form-label">Start Time</label>
+										<app-timepicker (timeChange)="startTimeChanged($event)"></app-timepicker>
+									</div>
+
+									<div class="mb-3 mx-auto">
+										<label class="form-label">End Time</label>
+										<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="mb-3">
+										<label for="description_input_field" class="form-label">Short Description</label>
+										<input
+											type="text"
+											class="form-control"
+											id="description_input_field"
+											aria-describedby="descriptionHelp"
+											[(ngModel)]="newWorkShopTimeFrame.description"
+											[ngModelOptions]="{ standalone: true }"
+										/>
+										<div id="emailHelp" class="form-text">
+											You are free to enter a short description of the planned event
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="mb-3">
+										<label for="description_input_field" class="form-label">Connected Workshop</label>
+										<select
+											id="workshop_input_field"
+											class="form-select"
+											aria-describedby="workshopHelp"
+											[(ngModel)]="newWorkShopTimeFrame.workshop"
+											[ngModelOptions]="{ standalone: true }"
+											(ngModelChange)="printChange();"
+										>
+											<option [ngValue]="null" [defaultSelected]="true">No specific workshop</option>
+											<option *ngFor="let ws of workshops" [ngValue]="ws">{{ws.shortname}}</option>
+										</select>
+										<div id="workshopHelp" class="form-text">
+											You are free to select a specific workshop this timeframe gets connected with. Otherwise it will be just linked with your project.
+										</div>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="mb-3">
+										<button
+											class="btn btn-outline-primary"
+											(click)="createNewTimeFrame()"
+											[disabled]="!(this.newWorkShopTimeFrame | isValidTimeFrame) || (!workshopTimeFramesLoaded || errorLoadingTimeFrames)"
+										>
+											Add new timeframe
+										</button>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="col-md-auto mx-auto" *ngIf="!(this.newWorkShopTimeFrame | isValidTimeFrame)">
+										<div class="alert alert-info">
+											Please select a timeframe, where the start time is before the end time and in the future!
+										</div>
+									</div>
+								</div>
+							</form>
 						</div>
 						<div
 							class="card-body"
@@ -619,3 +654,5 @@
 	</div>
 	<!-- /.modal -->
 </div>
+
+

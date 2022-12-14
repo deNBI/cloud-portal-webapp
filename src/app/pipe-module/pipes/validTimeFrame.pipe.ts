@@ -11,6 +11,10 @@ import {MaintenanceTimeFrame} from "../../vo_manager/maintenance/maintenanceTime
 })
 export class ValidTimeFramePipe implements PipeTransform {
 	transform(timeframe: WorkshopTimeFrame | MaintenanceTimeFrame): boolean {
+		if (timeframe === null || timeframe.start_time === null || timeframe.end_time === null) {
+			return false;
+		}
+
 		return (
 			new Date().getTime() <= timeframe.start_time.getTime()
 			&& timeframe.start_time.getTime() < timeframe.end_time.getTime()

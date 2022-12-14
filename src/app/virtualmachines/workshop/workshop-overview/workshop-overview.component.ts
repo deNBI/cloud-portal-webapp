@@ -2,7 +2,6 @@ import {
 	Component, OnInit, OnDestroy, ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { Workshop } from '../workshop.model';
 import { GroupService } from '../../../api-connector/group.service';
 import { UrlData } from '../workshop-urlinfo.model';
@@ -11,7 +10,7 @@ import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
 import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { WorkshopTimeFrame } from '../workshopTimeFrame.model';
-import { NotificationModalComponent } from '../../../shared/modal/notification-modal';
+import {NgForm} from "@angular/forms";
 
 interface MemberVm {
 	projectMember: ProjectMember
@@ -49,6 +48,9 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	projectWorkshopsLoaded: boolean = false;
 	projectMembersLoading: boolean = false;
 	projectMembersLoaded: boolean = false;
+	informationTitle: string = '';
+	informationType: string = '';
+	informationMessage: string = '';
 	deleting: boolean = false;
 	deleteSuccess: boolean = false;
 	invalidShortname: boolean = true;
@@ -61,12 +63,14 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	constructor(
 		private workshopService: WorkshopService,
 		private groupService: GroupService,
-		private modalService: BsModalService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
 	ngOnInit(): void {
+		this.newWorkShopTimeFrame = new WorkshopTimeFrame({
+			id: null, end_time: new Date(), start_time: new Date(), workshop: new Workshop(), project: null, description: '',
+		});
 		this.getProjects();
 	}
 
@@ -90,6 +94,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.resetsOnProjectChange();
 		this.getWorkshopsForProject();
 		this.getMembersOfTheProject();
+		this.loadCalenderForSelectedProject();
 	}
 
 	dayChanged(date: { year: number; month: number; day: number }): void {
@@ -114,46 +119,40 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	createNewTimeFrame(): void {
 		this.workshopService
-			.addWorkshopTimeFrame(this.selectedProject[1], this.newWorkShopTimeFrame, this.selectedWorkshop)
+			.addWorkshopTimeFrame(this.selectedProject[1], this.newWorkShopTimeFrame)
 			.subscribe({
 				next: () => {
 					this.loadCalenderForSelectedProject();
-					const initialState = {
-						notificationModalTitle: 'Success',
-						notificationModalType: 'info',
-						notificationModalMessage: 'The new timeframe got successfully added to the calender!',
-					};
-					this.modalService.show(NotificationModalComponent, { initialState });
+					this.informationTitle = 'Success';
+					this.informationType = 'success';
+					this.informationMessage = 'The new timeframe got successfully added to the calender!';
+
 				},
 				error: () => {
-					const initialState = {
-						notificationModalTitle: 'Error',
-						notificationModalType: 'danger',
-						notificationModalMessage: 'An error occured while adding the timeframe to the calender!',
-					};
-					this.modalService.show(NotificationModalComponent, { initialState });
+					this.informationTitle = 'Error';
+					this.informationType = 'danger';
+					this.informationMessage = 'An error occured while adding the timeframe to the calender!';
 				},
 			});
+	}
+
+	printChange(): void {
+		console.log(this.newWorkShopTimeFrame.workshop);
 	}
 
 	deleteWorkshopTimeFrame(timeframe: WorkshopTimeFrame): void {
 		this.workshopService.removeWorkshopTimeFrame(this.selectedProject[1], timeframe).subscribe({
 			next: () => {
 				this.loadCalenderForSelectedProject();
-				const initialState = {
-					notificationModalTitle: 'Success',
-					notificationModalType: 'info',
-					notificationModalMessage: 'The selected timeframe got successfully removed from the calender!',
-				};
-				this.modalService.show(NotificationModalComponent, { initialState });
+				this.informationTitle = 'Success';
+				this.informationType = 'info';
+				this.informationMessage = 'The selected timeframe got successfully removed from the calender!';
+
 			},
 			error: () => {
-				const initialState = {
-					notificationModalTitle: 'Error',
-					notificationModalType: 'danger',
-					notificationModalMessage: 'An error occured while removing the timeframe from the calender!',
-				};
-				this.modalService.show(NotificationModalComponent, { initialState });
+				this.informationTitle = 'Error';
+				this.informationType = 'danger';
+				this.informationMessage = 'An error occured while removing the timeframe from the calender!';
 			},
 		});
 	}
@@ -195,13 +194,12 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.invalidShortname = true;
 		this.invalidLongname = true;
 		this.loadVmsForSelectedProject();
-		this.loadCalenderForSelectedProject();
 	}
 
 	loadCalenderForSelectedProject(): void {
 		this.workshopTimeFramesLoaded = false;
 		this.subscription.add(
-			this.workshopService.loadWorkshopCalender(this.selectedWorkshop.id).subscribe({
+			this.workshopService.loadWorkshopCalender(this.selectedProject[1]).subscribe({
 				next: (wsTimeFrames: WorkshopTimeFrame[]) => {
 					this.workshopTimeFrames = wsTimeFrames.sort((a, b) => {
 						if (a.start_time < b.start_time) {
@@ -212,6 +210,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 							return 0;
 						}
 					});
+					console.log(this.workshopTimeFrames);
 					this.workshopTimeFramesLoaded = true;
 					this.errorLoadingTimeFrames = false;
 				},
