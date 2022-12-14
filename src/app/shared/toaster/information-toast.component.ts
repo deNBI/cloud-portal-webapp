@@ -12,8 +12,8 @@ export class InformationToastComponent implements OnChanges{
 	@Input() type: string = 'info';
 
 	ngOnChanges() {
-
 		this.toggleToast();
+
 	}
 
 	position = 'top';

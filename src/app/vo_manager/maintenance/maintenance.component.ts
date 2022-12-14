@@ -156,7 +156,9 @@ export class MaintenanceComponent implements OnInit {
 	): boolean {
 		return (
 			(first_start >= second_start && first_start <= second_end)
-			|| (first_end >= second_start && first_start <= second_end)
+			|| (first_end >= second_start && first_end <= second_end)
+			|| (second_start >= first_start && second_start <= first_end)
+			|| (second_end >= first_start && second_end <= first_end)
 		);
 	}
 

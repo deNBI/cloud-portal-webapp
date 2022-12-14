@@ -93,7 +93,6 @@ export class WorkshopService {
 			.set('description', timeframe.description)
 			.set('process', 'add')
 			.set('workshop_id', timeframe.workshop?.id);
-		console.log(params);
 
 		return this.http.post<WorkshopTimeFrame>(
 			`${ApiSettings.getApiBaseURL()}workshops/${application_id}/calender/`,

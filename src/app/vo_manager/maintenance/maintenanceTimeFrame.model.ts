@@ -7,7 +7,6 @@ export class MaintenanceTimeFrame {
 
 	constructor(maintenanceTimeFrame?: Partial<MaintenanceTimeFrame>) {
 		Object.assign(this, maintenanceTimeFrame);
-		console.log(maintenanceTimeFrame);
 		this.start_time = new Date();
 		this.end_time = new Date();
 		if (maintenanceTimeFrame.name) {

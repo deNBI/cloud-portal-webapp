@@ -1,5 +1,5 @@
 import {
-	Component, OnInit, OnDestroy, ViewChild,
+	Component, OnInit, OnDestroy, ViewChild, TemplateRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Workshop } from '../workshop.model';
@@ -10,7 +10,7 @@ import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
 import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { WorkshopTimeFrame } from '../workshopTimeFrame.model';
-import {NgForm} from "@angular/forms";
+
 
 interface MemberVm {
 	projectMember: ProjectMember
@@ -25,6 +25,8 @@ interface MemberVm {
 })
 export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	title: string = 'Workshop management';
+
+	@ViewChild('confirmInterferingSlotModal') confirmInterfereModal: any;
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
@@ -57,6 +59,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	invalidLongname: boolean = true;
 	newWorkshop: boolean = false;
 	workshopCreationMessage: { message: string; success: boolean } = { message: '', success: false };
+	listOfOverlaps: WorkshopTimeFrame[] = [];
+
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
@@ -118,13 +122,59 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	}
 
 	createNewTimeFrame(): void {
+		if (this.checkTimeFrameOverlap()) {
+			this.confirmInterfereModal.show();
+
+		} else {
+			this.processAddAfterConfirm();
+		}
+	}
+
+
+	datesOverlap(
+		first_start: number | Date,
+		first_end: number | Date,
+		second_start: number,
+		second_end: number,
+	): boolean {
+		return (
+			(first_start >= second_start && first_start <= second_end)
+			|| (first_end >= second_start && first_end <= second_end)
+			|| (second_start >= first_start && second_start <= first_end)
+			|| (second_end >= first_start && second_end <= first_end)
+		);
+	}
+
+	checkTimeFrameOverlap(): boolean {
+		// eslint-disable-next-line prefer-const
+		let interferingTimeframes: WorkshopTimeFrame[] = [];
+		const critical_start: Date = this.newWorkShopTimeFrame.start_time;
+		critical_start.setHours(critical_start.getHours() - 2);
+		const critical_start_time: number = critical_start.getTime();
+		const critical_end: Date = this.newWorkShopTimeFrame.end_time;
+		critical_end.setHours(critical_end.getHours() + 2);
+		const critical_end_time: number = critical_end.getTime();
+		this.workshopTimeFrames.forEach((wstf: WorkshopTimeFrame) => {
+			const start_time: number = new Date(wstf.start_time).getTime();
+			const end_time: number = new Date(wstf.end_time).getTime();
+			if (this.datesOverlap(start_time, end_time, critical_start_time, critical_end_time)) {
+				interferingTimeframes.push(wstf);
+			}
+		});
+		this.listOfOverlaps = interferingTimeframes;
+
+		return (interferingTimeframes.length > 0);
+	}
+
+
+	processAddAfterConfirm(): void {
 		this.workshopService
 			.addWorkshopTimeFrame(this.selectedProject[1], this.newWorkShopTimeFrame)
 			.subscribe({
 				next: () => {
 					this.loadCalenderForSelectedProject();
 					this.informationTitle = 'Success';
-					this.informationType = 'success';
+					this.informationType = 'info';
 					this.informationMessage = 'The new timeframe got successfully added to the calender!';
 
 				},
@@ -136,9 +186,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 			});
 	}
 
-	printChange(): void {
-		console.log(this.newWorkShopTimeFrame.workshop);
-	}
 
 	deleteWorkshopTimeFrame(timeframe: WorkshopTimeFrame): void {
 		this.workshopService.removeWorkshopTimeFrame(this.selectedProject[1], timeframe).subscribe({
@@ -210,7 +257,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 							return 0;
 						}
 					});
-					console.log(this.workshopTimeFrames);
 					this.workshopTimeFramesLoaded = true;
 					this.errorLoadingTimeFrames = false;
 				},

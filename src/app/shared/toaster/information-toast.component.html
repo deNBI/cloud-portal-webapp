@@ -8,8 +8,8 @@
 		</c-toast-header>
 		<c-toast-body>
 			<p>{{this.message}}</p>
-			<c-progress thin>
-				<c-progress-bar [value]="percentage"></c-progress-bar>
+			<c-progress [height]="1">
+				<c-progress-bar [value]="percentage" color="primary"></c-progress-bar>
 			</c-progress>
 		</c-toast-body>
 	</c-toast>
