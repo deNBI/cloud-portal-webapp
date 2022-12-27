@@ -979,7 +979,7 @@
 					<label class="col-md-3 form-control-label">Vm</label>
 					<div class="col-md-9">
 						<select
-							class="form-control form-select col-md-6"
+							class="form-control form-select"
 							name="selected_vm"
 							[(ngModel)]="selected_vm"
 							[ngClass]="selected_vm !== null && selected_vm !== undefined ? 'is-valid' : 'is-invalid'"
@@ -1018,13 +1018,13 @@
 								class="form-control"
 								min="0"
 								step="1"
-								[value]="diskspace"
-								(input)="diskspace = $event.target.value"
+								[(ngModel)]="diskspace"
 								(change)="calcDiskSpaceSum()"
+								(ngModelChange)="calcDiskSpaceSum(); checkAvailableVolumeSpaceForCreation()"
 								type="number"
 								placeholder="e.g 8 "
 								id="space_input_id"
-								[pattern]="'^[1-9]\d*$'"
+								[pattern]="'^[0-9]+$'"
 								[formControl]="storageSize"
 								[ngClass]="
 									storageSize.errors || storageSize.value === null || storageSize.value === undefined

@@ -5,7 +5,7 @@ import {
 	forkJoin, lastValueFrom, Subject, Subscription,
 } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { UntypedFormControl } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, ValidatorFn } from '@angular/forms';
 import { Volume } from './volume';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
 import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
@@ -41,7 +41,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	selected_volume_data_loaded: boolean = false;
 	filter: string;
 	checked_volumes: Volume[] = [];
-	storageSize = new UntypedFormControl();
+	storageSize: UntypedFormControl = null;
 
 	/**
 	 * Enum of all volume action states.
@@ -601,8 +601,15 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 							this.check_status_loop(vol);
 						}
 					});
+					this.storageSize = new UntypedFormControl({ defaultValue: 1 }, this.checkAvailableVolumeSpaceForCreation());
 				}),
 		);
+	}
+
+	checkAvailableVolumeSpaceForCreation(): ValidatorFn {
+		return (control: AbstractControl): { [key: string]: any } | null => (control.value > 0 && this.selectedProjectDiskSpaceSum <= this.selectedProjectDiskspaceMax
+			? null
+			: { wrongNumber: control.value });
 	}
 
 	async updateVolume(volume: Volume): Promise<void> {
