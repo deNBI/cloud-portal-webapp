@@ -156,7 +156,9 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 		VolumeStates.IN_USE,
 		VirtualMachineStates.DELETED,
 		VirtualMachineStates.DELETING_FAILED,
+		VolumeStates.ERROR,
 	];
+	errorState: number = 0;
 
 	constructor(
 		private facilityService: FacilityService,
@@ -480,6 +482,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 				}
 			},
 			(): void => {
+				this.errorState = 0;
 				this.errorModal.show();
 			},
 		);
@@ -507,9 +510,16 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 	deleteVolume(volume: Volume): void {
 		volume.volume_status = VolumeStates.DELETING;
-		this.vmService.deleteVolume(volume.volume_openstackid).subscribe((): void => {
-			volume.volume_status = VolumeStates.DELETED;
-		});
+		this.vmService.deleteVolume(volume.volume_openstackid).subscribe(
+			(): void => {
+				volume.volume_status = VolumeStates.DELETED;
+			},
+			(error: any) => {
+				console.log(error);
+				this.errorState = 1;
+				this.errorModal.show();
+			},
+		);
 	}
 
 	/**
@@ -549,6 +559,9 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 					setTimeout((): void => {
 						volume.error_msg = null;
 					}, 5000);
+				} else {
+					this.errorState = 2;
+					this.errorModal.show();
 				}
 				this.check_status_loop(volume, 0);
 			},

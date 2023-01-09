@@ -1086,7 +1086,9 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Create & Attach Volume</h4>
+				<h4 *ngIf="errorState === 0" class="modal-title">Create & Attach Volume</h4>
+				<h4 *ngIf="errorState === 1" class="modal-title">Delete Volume</h4>
+				<h4 *ngIf="errorState === 2" class="modal-title">Detach Volume</h4>
 				<button
 					type="button"
 					class="close"
@@ -1099,7 +1101,16 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<p>An error occured during creation of the volume. Please try again and make sure to choose valid values!</p>
+				<p *ngIf="errorState === 0">
+					An error occured during creation of the volume. Please try again and make sure to choose valid values!
+				</p>
+				<p *ngIf="errorState === 1">
+					An error occured during deletion of the volume. Please reload the page and try again.
+				</p>
+				<p *ngIf="errorState === 2">
+					An error occured during detachment of the volume. Please reload the page and try again.
+				</p>
+				<p>If the problem persists, please contact our support!</p>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-danger col-md-4" type="reset" (click)="errorModal.hide()">Close</button>
