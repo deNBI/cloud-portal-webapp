@@ -70,7 +70,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	getFlavors(): void {
 		this.subscription.add(
 			this.flavorService
-				.getListOfFlavorsAvailable(this.project.project_application_id.toString())
+				.getListOfFlavorsAvailable(this.project.project_application_id.toString(), true)
 				.subscribe((flavors: Flavor[]): void => {
 					this.temp_project_modification.flavors = [];
 					for (const flavor of flavors) {
