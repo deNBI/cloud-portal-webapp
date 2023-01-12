@@ -603,6 +603,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		document.body.classList.remove('modal-open');
 	}
 
+	showConfirmationModal(application: Application, action: string): void {
+		const initialState = { application, action };
+		// TODO: implement ConfirmActionComponent
+		//this.bsModalRef = this.modalService.show(ConfirmActionComponent, {initialState});
+		this.subscribeToBsModalRef();
+	}
+
 	showClientsLimitsModal(
 		compute_center_id: string,
 		application: Application,

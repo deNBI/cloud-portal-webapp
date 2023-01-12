@@ -487,7 +487,7 @@
 														<i class="fa fa-check"></i>&nbsp;
 														<span class="d-none">Approve Modification</span>
 													</button>
-
+													<!-- TODO: FIX - need modal first, also for other declines! -->
 													<button
 														*ngIf="
 															(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
@@ -496,8 +496,9 @@
 														type="button"
 														class="btn btn-danger"
 														style="margin: 2px"
-														(click)="declineModificationRequest(application)"
+														(click)="showConfirmModal(application, 'declineModification');">
 													>
+														<!-- declineModificationRequest(application) -->
 														<i class="fa fa-times"></i>&nbsp;
 														<span class="d-none">Decline Modification</span>
 													</button>
