@@ -1,0 +1,30 @@
+<div class="modal-header">
+	<h4 class="modal-title" data-test-id="confirmation_modal_title">{{ modalTitle }}</h4>
+	<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<div class="alert alert-danger" role="alert" id="confirmation_modal_message">
+		<p data-test-id="confirmation_modal_message">
+			{{ modalMessage }} for {{ application.project_application_shortname }}
+		</p>
+	</div>
+</div>
+<div class="modal-footer">
+	<button
+		class="btn btn-danger col-md-4"
+		type="reset"
+		data-test-id="close_confirmation_modal_btn"
+		(click)="sendClosed(); bsModalRef.hide()"
+	>
+		Close
+	</button>
+	<button
+		class="btn btn-success col-md-4"
+		data-test-id="confirm_confirmation_model_btn"
+		(click)="confirmDecline(); bsModalRef.hide()"
+	>
+		Confirm
+	</button>
+</div>

@@ -21,6 +21,7 @@ import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 import { CreditsService } from '../api-connector/credits.service';
 import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limits..component';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
+import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -605,8 +606,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	showConfirmationModal(application: Application, action: string): void {
 		const initialState = { application, action };
-		// TODO: implement ConfirmActionComponent
-		//this.bsModalRef = this.modalService.show(ConfirmActionComponent, {initialState});
+		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState });
 		this.subscribeToBsModalRef();
 	}
 
@@ -649,6 +649,15 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 				if ('closed' in result) {
 					this.switchApproveLocked(false);
+				}
+				if (result['action'] === 'confirmModificationDecline') {
+					this.declineModificationRequest(result['application']);
+				}
+				if (result['action'] === 'confirmExtensionDecline') {
+					this.declineLifetimeExtension(result['application']);
+				}
+				if (result['action'] === 'confirmCreditsDecline') {
+					this.declineCreditExtension(result['application']);
 				}
 			}),
 		);
