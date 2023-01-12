@@ -61,7 +61,7 @@
 										name="flavor.name + '_old'"
 										id="{{ flavor.name }}_old"
 										type="text"
-										value="{{ project | flavorCounter: flavor }}"
+										value="{{ project | flavorCounter : flavor }}"
 										placeholder="0"
 										[disabled]="flavor.disabled"
 										aria-describedby="{{ flavor.name }}_old_help"
@@ -82,6 +82,7 @@
 								Number of cores: <span id="{{ flavor.name }}_cores">{{ flavor.vcpus }}</span>
 								<br />
 								RAM: <span id="{{ flavor.name }}_ram">{{ flavor.ram_gib }}</span> GB
+								<span id="{{ flavor.name }}_ram" *ngIf="flavor.gpu > 0"><br />Number of GPUs: {{ flavor.gpu }}</span>
 								<span *ngIf="project?.credits_allowed">
 									<br />
 									Credits per hour: <span id="{{ flavor.name }}_cph">{{ flavor.credits_costs_per_hour }}</span> CCs/h
@@ -98,12 +99,12 @@
 										step="1"
 										attr.data-test-id="{{ flavor.type.shortcut + '_' + i }}"
 										placeholder="e.g 1"
-										[ngModel]="temp_project_modification | flavorCounter: flavor"
+										[ngModel]="temp_project_modification | flavorCounter : flavor"
 										#name="ngModel"
 										(change)="checkFlavorPairs(flavor, $event)"
 										appMinAmount="0"
 										appInteger
-										value="{{ temp_project_modification | flavorCounter: flavor }}"
+										value="{{ temp_project_modification | flavorCounter : flavor }}"
 										[disabled]="flavor.disabled"
 										aria-describedby="{{ flavor.name }}_help"
 										[ngClass]="{
