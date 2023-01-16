@@ -51,10 +51,10 @@ export class PublicKeyComponent extends AbstractBaseClass {
 		validateKey(): void {
 
 				this.keyService.validateKey(this.public_key.trim()).subscribe((res: any) => {
-						this.validated_key = res['status'] == 'valid';
-				}, error => (
+						this.validated_key = res['status'] === 'valid';
+				}, () => (
 						this.validated_key = false
-				))
+				));
 		}
 
 		importKey(): void {
