@@ -235,13 +235,7 @@
 														style="margin: 2px"
 														[id]="'approve_' + application?.project_application_shortname"
 														[attr.data-test-id]="'approve_' + application?.project_application_shortname"
-														(click)="
-															createOpenStackProjectGroup(
-																application,
-																selectedCenter[application.project_application_id]
-															);
-															switchApproveLocked(true)
-														"
+														(click)="this.showConfirmationModal(application, 'approveApplication')"
 														[disabled]="!selectedCenter[application.project_application_id] || approveLocked"
 														type="button"
 														class="btn btn-success"
@@ -277,7 +271,7 @@
 														id="btn_decline_{{ application.project_application_shortname }}"
 														[attr.data-test-id]="'btn_decline_' + application.project_application_shortname"
 														style="margin: 2px"
-														(click)="declineApplication(application)"
+														(click)="showConfirmationModal(application, 'declineApplication')"
 													>
 														<i class="fas fa-times"></i>&nbsp;
 														<span class="d-none">Decline</span>
@@ -458,7 +452,7 @@
 														"
 														style="margin: 2px"
 														[attr.data-test-id]="'modification_approval_' + application?.project_application_shortname"
-														(click)="approveModificationRequest(application)"
+														(click)="showConfirmationModal(application, 'approveModification')"
 														type="button"
 														class="btn btn-success"
 													>
@@ -654,7 +648,7 @@
 															application?.project_lifetime_request
 														"
 														style="margin: 2px"
-														(click)="approveLifetimeExtension(application)"
+														(click)="showConfirmationModal(application, 'approveExtension')"
 														type="button"
 														class="btn btn-success"
 													>
@@ -820,7 +814,7 @@
 														[id]="'credit_extension_approval_' + application?.project_application_shortname"
 														*ngIf="application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED"
 														style="margin: 2px"
-														(click)="approveCreditExtension(application)"
+														(click)="showConfirmationModal(application, 'approveCredits')"
 														type="button"
 														class="btn btn-success"
 													>
