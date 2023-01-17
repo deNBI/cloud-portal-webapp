@@ -23,66 +23,76 @@ import { NotificationModalComponent } from '../../modal/notification-modal';
 export class PublicKeyComponent extends AbstractBaseClass {
 	WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS;
 	public_key: string;
+	validated_key: boolean = false;
 	acknowledgement_given: boolean = false;
-	@Input() userinfo: Userinfo;
+		@Input() userinfo: Userinfo;
 
-	constructor(
-		private keyService: KeyService,
-		private clipboardService: ClipboardService,
-		private modalService: BsModalService,
-	) {
-		super();
-	}
-
-	downloadPem(data: string): void {
-		const blob: Blob = new Blob([data], { type: 'pem' });
-		const url: string = window.URL.createObjectURL(blob);
-		saveAs(url, `${this.userinfo.UserLogin}_ecdsa`);
-	}
-
-	generateKey(): void {
-		this.keyService.generateKey().subscribe((res: any): void => {
-			this.getUserPublicKey();
-			this.downloadPem(res['private_key']);
-		});
-	}
-
-	importKey(publicKey: string): void {
-		const re: RegExp = /\+/gi;
-
-		this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe({
-			next: (): void => {
-				this.getUserPublicKey();
-				const initialState = {
-					notificationModalTitle: 'Success',
-					notificationModalType: 'info',
-					notificationModalMessage: 'The new public key got successfully set',
-				};
-				this.modalService.show(NotificationModalComponent, { initialState });
-			},
-			error: (): any => {
-				const initialState = {
-					notificationModalTitle: 'Error',
-					notificationModalType: 'danger',
-					notificationModalMessage:
-						'We were not able successfully set a new public key. Please enter a valid public key!',
-				};
-				this.modalService.show(NotificationModalComponent, { initialState });
-			},
-		});
-	}
-
-	copyToClipboard(text: string): void {
-		if (this.clipboardService.isSupported) {
-			this.clipboardService.copy(text);
-		} else {
-			super.copyToClipboard(text);
+		constructor(
+				private keyService: KeyService,
+				private clipboardService: ClipboardService,
+				private modalService: BsModalService,
+		) {
+			super();
 		}
-	}
 
-	getUserPublicKey(): void {
-		this.keyService.getKey().subscribe((key: IResponseTemplate): void => {
-			this.userinfo.PublicKey = key.value as string;
-		});
-	}
+		downloadPem(data: string): void {
+			const blob: Blob = new Blob([data], { type: 'pem' });
+			const url: string = window.URL.createObjectURL(blob);
+			saveAs(url, `${this.userinfo.UserLogin}_ecdsa`);
+		}
+
+		generateKey(): void {
+			this.keyService.generateKey().subscribe((res: any): void => {
+				this.getUserPublicKey();
+				this.downloadPem(res['private_key']);
+			});
+		}
+
+		validateKey(): void {
+
+			this.keyService.validateKey(this.public_key.trim()).subscribe((res: any) => {
+				this.validated_key = res['status'] === 'valid';
+			}, () => {
+				this.validated_key = false;
+			});
+		}
+
+		importKey(): void {
+			const re: RegExp = /\+/gi;
+
+			this.keyService.postKey(this.public_key.replace(re, '%2B').trim()).subscribe({
+				next: (): void => {
+					this.getUserPublicKey();
+					const initialState = {
+						notificationModalTitle: 'Success',
+						notificationModalType: 'info',
+						notificationModalMessage: 'The new public key got successfully set',
+					};
+					this.modalService.show(NotificationModalComponent, { initialState });
+				},
+				error: (): any => {
+					const initialState = {
+						notificationModalTitle: 'Error',
+						notificationModalType: 'danger',
+						notificationModalMessage:
+												'We were not able successfully set a new public key. Please enter a valid public key!',
+					};
+					this.modalService.show(NotificationModalComponent, { initialState });
+				},
+			});
+		}
+
+		copyToClipboard(text: string): void {
+			if (this.clipboardService.isSupported) {
+				this.clipboardService.copy(text);
+			} else {
+				super.copyToClipboard(text);
+			}
+		}
+
+		getUserPublicKey(): void {
+			this.keyService.getKey().subscribe((key: IResponseTemplate): void => {
+				this.userinfo.PublicKey = key.value as string;
+			});
+		}
 }
