@@ -23,6 +23,7 @@ import { NotificationModalComponent } from '../../modal/notification-modal';
 export class PublicKeyComponent extends AbstractBaseClass {
 	WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS;
 	public_key: string;
+	validated_key: boolean = false;
 	acknowledgement_given: boolean = false;
 	@Input() userinfo: Userinfo;
 
@@ -47,10 +48,21 @@ export class PublicKeyComponent extends AbstractBaseClass {
 		});
 	}
 
-	importKey(publicKey: string): void {
+	validateKey(): void {
+		this.keyService.validateKey(this.public_key.trim()).subscribe(
+			(res: any) => {
+				this.validated_key = res['status'] === 'valid';
+			},
+			() => {
+				this.validated_key = false;
+			},
+		);
+	}
+
+	importKey(): void {
 		const re: RegExp = /\+/gi;
 
-		this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe({
+		this.keyService.postKey(this.public_key.replace(re, '%2B').trim()).subscribe({
 			next: (): void => {
 				this.getUserPublicKey();
 				const initialState = {
