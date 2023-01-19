@@ -189,4 +189,14 @@ export class VoService {
 		);
 	}
 
+	deleteMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<any> {
+
+		return this.http.delete<MaintenanceTimeFrame>(
+			`${ApiSettings.getApiBaseURL()}voManagers/maintenance/${timeframe.id}/delete/`,
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
 }

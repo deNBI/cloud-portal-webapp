@@ -49,6 +49,7 @@
 					<th scope="col">End time</th>
 					<th scope="col">Name</th>
 					<th scope="col">Message</th>
+					<th scope="col">Action</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -58,7 +59,10 @@
 					<td>{{ mtf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
 					<td>{{ mtf.name }}</td>
 					<td>{{ (mtf.message.length > 25 ) ? (mtf.message | slice:0:25) + '...' : (mtf.message) }}</td>
-
+					<td><div class="btn-group">
+						<button class="btn btn-danger" role="button" (click)="deleteTimeFrame(mtf);">Delete</button>
+						<!-- TODO: add update timeframe (via modal) -->
+					</div></td>
 				</tr>
 				</tbody>
 			</table>

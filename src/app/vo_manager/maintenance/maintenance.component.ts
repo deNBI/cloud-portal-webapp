@@ -177,10 +177,34 @@ export class MaintenanceComponent implements OnInit {
 				const initialState = {
 					notificationModalTitle: 'Error',
 					notificationModalType: 'danger',
-					notificationModalMessage: 'An error occured while adding the timeframe to the calender!',
+					notificationModalMessage: 'An error occurred while adding the timeframe to the calender!',
 				};
 				this.modalService.show(NotificationModalComponent, { initialState });
 			},
 		});
 	}
+
+	deleteTimeFrame(timeframe: MaintenanceTimeFrame): void {
+		this.voService.deleteMaintenanceTimeFrame(timeframe).subscribe({
+			next: () => {
+				this.reloadTimeFrames();
+				const initialState = {
+					notificationModalTitle: 'Success',
+					notificationModalType: 'info',
+					notificationModalMessage: 'The new maintenance got successfully deleted from the calender!',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState });
+			},
+			error: () => {
+				const initialState = {
+					notificationModalTitle: 'Error',
+					notificationModalType: 'danger',
+					notificationModalMessage: 'An error occurred while deleting the timeframe.',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState });
+			},
+		});
+	}
+
+
 }
