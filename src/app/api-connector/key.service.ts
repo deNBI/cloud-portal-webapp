@@ -9,17 +9,14 @@ import { IResponseTemplate } from './response-template';
  */
 @Injectable()
 export class KeyService {
-
 	constructor(private http: HttpClient) {
 		this.http = http;
 	}
 
 	getKey(): Observable<IResponseTemplate> {
-
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, {
 			withCredentials: true,
 		});
-
 	}
 
 	postKey(public_key_param: string): Observable<IResponseTemplate> {
@@ -32,17 +29,18 @@ export class KeyService {
 	}
 
 	validateKey(public_key_param: string): Observable<IResponseTemplate> {
-
-		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/validate/`, { public_key: public_key_param }, {
-			withCredentials: true,
-		});
+		return this.http.post<IResponseTemplate>(
+			`${ApiSettings.getApiBaseURL()}users/current/public_key/validate/`,
+			{ public_key: public_key_param },
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	generateKey(): Observable<any> {
-
 		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}users/current/public_key/generate/`, {
 			withCredentials: true,
 		});
 	}
-
 }

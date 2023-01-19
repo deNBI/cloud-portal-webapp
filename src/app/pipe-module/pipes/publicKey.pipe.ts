@@ -7,7 +7,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 	name: 'isValidKeyPipe',
 })
 export class PublicKeyPipe implements PipeTransform {
-
 	transform(key: string): boolean {
 		key = key.trim();
 		const valid_rsa: boolean = /^ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(key);
