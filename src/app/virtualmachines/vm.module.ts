@@ -50,7 +50,7 @@ import { NewsModule } from '../news/news.module';
 import { RecreateBackendVmComponent } from './modals/recreate-backend-vm/recreate-backend-vm.component';
 import { DatePickerComponent } from '../shared/datepicking/datepicker.component';
 import { TimepickerComponent } from '../shared/datepicking/timepicker.component';
-import {SharedModuleModule} from "../shared/shared_modules/shared-module.module";
+import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 
 /**
  * VM module.

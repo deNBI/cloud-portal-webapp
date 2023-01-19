@@ -1,5 +1,5 @@
 import {
-	Component, OnInit, OnDestroy, ViewChild, TemplateRef,
+	Component, OnInit, OnDestroy, ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Workshop } from '../workshop.model';
@@ -10,7 +10,6 @@ import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
 import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { WorkshopTimeFrame } from '../workshopTimeFrame.model';
-
 
 interface MemberVm {
 	projectMember: ProjectMember
@@ -60,7 +59,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	newWorkshop: boolean = false;
 	workshopCreationMessage: { message: string; success: boolean } = { message: '', success: false };
 	listOfOverlaps: WorkshopTimeFrame[] = [];
-
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
@@ -130,7 +128,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		}
 	}
 
-
 	datesOverlap(
 		first_start: number | Date,
 		first_end: number | Date,
@@ -166,7 +163,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		return (interferingTimeframes.length > 0);
 	}
 
-
 	processAddAfterConfirm(): void {
 		this.workshopService
 			.addWorkshopTimeFrame(this.selectedProject[1], this.newWorkShopTimeFrame)
@@ -185,7 +181,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 				},
 			});
 	}
-
 
 	deleteWorkshopTimeFrame(timeframe: WorkshopTimeFrame): void {
 		this.workshopService.removeWorkshopTimeFrame(this.selectedProject[1], timeframe).subscribe({

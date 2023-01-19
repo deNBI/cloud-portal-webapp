@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { WorkshopTimeFrame } from '../../virtualmachines/workshop/workshopTimeFrame.model';
-import {MaintenanceTimeFrame} from "../../vo_manager/maintenance/maintenanceTimeFrame.model";
+import { MaintenanceTimeFrame } from '../../vo_manager/maintenance/maintenanceTimeFrame.model';
 
 /**
  * Pipe to check if the timeframe set is valid, which means that the start-time is before the end time.

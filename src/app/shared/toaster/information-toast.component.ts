@@ -1,11 +1,11 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({
 	selector: 'app-information-toast',
 	templateUrl: './information-toast.component.html',
 	styleUrls: ['./information-toast.component.scss'],
 })
-export class InformationToastComponent implements OnChanges{
+export class InformationToastComponent implements OnChanges {
 
 	@Input() message: string = '';
 	@Input() title: string = '';
