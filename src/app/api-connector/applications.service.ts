@@ -25,21 +25,23 @@ export class ApplicationsService {
 	}
 
 	getApplicationValidationByHash(hash: string): Observable<Application> {
-
 		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
 			withCredentials: true,
 		});
 	}
 
 	resetPIValidation(application: Application): Observable<Application> {
-
-		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/validation/${application.project_application_id}/reset/`, null, {
-			withCredentials: true,
-		});
+		return this.http.post<Application>(
+			`${ApiSettings.getApiBaseURL()}project_applications/validation/${application.project_application_id}/reset/`,
+			null,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	validateApplicationAsPIByHash(hash: string, application: Application): Observable<any> {
-			console.log(application.project_application_edam_terms)
+		console.log(application.project_application_edam_terms);
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, application, {
 			withCredentials: true,
@@ -47,23 +49,19 @@ export class ApplicationsService {
 	}
 
 	getApplication(app_id: string): Observable<Application> {
-		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(app: Application) => new Application(app),
-			),
-		);
+		return this.http
+			.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
+				withCredentials: true,
+			})
+			.pipe(map((app: Application) => new Application(app)));
 	}
 
 	getFullApplicationByUserPermissions(app_id: string): Observable<Application> {
-		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/byPermission/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(app: Application) => new Application(app),
-			),
-		);
+		return this.http
+			.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/byPermission/`, {
+				withCredentials: true,
+			})
+			.pipe(map((app: Application) => new Application(app)));
 	}
 
 	getApplicationPerunId(app_id: string): Observable<any> {
@@ -90,7 +88,6 @@ export class ApplicationsService {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/edam_terms/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	/**
@@ -108,40 +105,31 @@ export class ApplicationsService {
 	getAllApplications(): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/`, {
 			withCredentials: true,
-
 		});
 	}
 
 	getSubmittedApplications(): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/submitted/`, {
 			withCredentials: true,
-
 		});
-
 	}
 
 	getExtensionRequestsCounter(): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/extensions_counter/`, {
 			withCredentials: true,
-
 		});
-
 	}
 
 	getLifetimeRequestedApplications(): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/lifetime_requests/`, {
 			withCredentials: true,
-
 		});
-
 	}
 
 	getModificationRequestedApplications(): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/modifications_requests/`, {
 			withCredentials: true,
-
 		});
-
 	}
 
 	getCreditsExtensionRequest(): Observable<any> {
@@ -151,50 +139,33 @@ export class ApplicationsService {
 	}
 
 	addNewApplication(application: Application): Observable<Application> {
-
 		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/`, application, {
 			withCredentials: true,
 		});
-
 	}
 
 	requestModification(modification: ApplicationModification): Observable<any> {
-		return this.http.post(
-			`${ApiSettings.getApiBaseURL()}project_applications/modifications/`,
-			modification,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/`, modification, {
+			withCredentials: true,
+		});
 	}
 
 	requestAdditionalLifetime(lifetimeRequest: ApplicationLifetimeExtension): Observable<any> {
-		return this.http.post(
-			`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/`,
-			lifetimeRequest,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/`, lifetimeRequest, {
+			withCredentials: true,
+		});
 	}
 
 	requestAdditionalCredits(creditRequest: ApplicationCreditRequest): Observable<any> {
-		return this.http.post(
-			`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`,
-			creditRequest,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`, creditRequest, {
+			withCredentials: true,
+		});
 	}
 
 	deleteAdditionalCreditsRequests(request_id: number | string): Observable<any> {
-		return this.http.delete(
-			`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/`,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/`, {
+			withCredentials: true,
+		});
 	}
 
 	declineAdditionalCredits(request_id: number | string): Observable<any> {
@@ -208,13 +179,9 @@ export class ApplicationsService {
 	}
 
 	declineApplication(app_id: number | string): Observable<any> {
-		return this.http.post(
-			`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/decline/`,
-			null,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/decline/`, null, {
+			withCredentials: true,
+		});
 	}
 
 	approveAdditionalCreditsRequest(request_id: number | string): Observable<any> {
@@ -224,7 +191,6 @@ export class ApplicationsService {
 			{
 				withCredentials: true,
 				observe: 'response',
-
 			},
 		);
 	}
@@ -251,12 +217,9 @@ export class ApplicationsService {
 	}
 
 	deleteAdditionalLifetimeRequests(request_id: number | string): Observable<any> {
-		return this.http.delete(
-			`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/`,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/`, {
+			withCredentials: true,
+		});
 	}
 
 	approveModificationRequest(request_id: number | string): Observable<any> {
@@ -266,7 +229,6 @@ export class ApplicationsService {
 			{
 				withCredentials: true,
 				observe: 'response',
-
 			},
 		);
 	}
@@ -282,20 +244,14 @@ export class ApplicationsService {
 	}
 
 	deleteModificationRequest(request_id: number | string): Observable<any> {
-		return this.http.delete(
-			`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/`,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/`, {
+			withCredentials: true,
+		});
 	}
 
 	deleteApplication(application_id: string | number): Observable<any> {
-
 		return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, {
 			withCredentials: true,
 		});
-
 	}
-
 }
