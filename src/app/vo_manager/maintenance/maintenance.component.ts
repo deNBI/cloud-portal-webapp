@@ -205,6 +205,4 @@ export class MaintenanceComponent implements OnInit {
 			},
 		});
 	}
-
-
 }
