@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.575.0",
+  "version": "4.576.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -50,7 +50,7 @@
     "bootstrap": "4.6.2",
     "chart.js": "3.9.1",
     "cli-color": "2.0.3",
-    "core-js": "3.27.1",
+    "core-js": "3.27.2",
     "css-loader": "6.7.3",
     "cssnano": "5.1.14",
     "d3": "7.8.1",
