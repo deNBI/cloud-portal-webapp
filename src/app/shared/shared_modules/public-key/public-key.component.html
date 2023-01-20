@@ -103,8 +103,8 @@
 					<alert type="warning">
 						We do not store the private key anywhere!<br />
 
-						In case you lose your private key, it is lost permanently!</alert
-					>
+						In case you lose your private key, it is lost permanently!
+					</alert>
 					<div class="form-check">
 						<input
 							class="form-check-input"
@@ -170,10 +170,10 @@
 					<strong>Info: </strong> Please enter a valid public key!
 				</alert>
 
-				<alert type="success" *ngIf="this.public_key | isValidKeyPipe">
+				<alert type="success" *ngIf="(this.public_key | isValidKeyPipe) && validated_key">
 					<strong>Info: </strong> This is a valid public key!
 				</alert>
-				<alert type="danger" *ngIf="!(this.public_key | isValidKeyPipe) && public_key?.length > 0">
+				<alert type="danger" *ngIf="(!(this.public_key | isValidKeyPipe) || !validated_key) && public_key?.length > 0">
 					<strong>Warning</strong> This is not a valid public key!
 				</alert>
 				<alert type="info">
@@ -188,7 +188,8 @@
 					placeholder="Please enter a new valid public key."
 					name="public_key"
 					[(ngModel)]="public_key"
-					[ngClass]="(this.public_key | isValidKeyPipe) ? 'is-valid' : 'is-invalid'"
+					(ngModelChange)="public_key = $event.trim(); validateKey()"
+					[ngClass]="(public_key | isValidKeyPipe) && validated_key ? 'is-valid' : 'is-invalid'"
 					#publickey
 				></textarea>
 
@@ -196,7 +197,7 @@
 
 				<div
 					class="alert"
-					*ngIf="this.public_key | isValidKeyPipe"
+					*ngIf="(this.public_key | isValidKeyPipe) && validated_key"
 					[ngClass]="acknowledgement_given ? 'alert-info' : 'alert-danger'"
 				>
 					<strong>Warning!</strong> Replacing your current public key with a different one will render all your
@@ -220,12 +221,12 @@
 
 			<div class="modal-footer">
 				<button
-					[disabled]="!(this.public_key | isValidKeyPipe) || !acknowledgement_given"
+					[disabled]="!(this.public_key | isValidKeyPipe) || !validated_key || !acknowledgement_given"
 					class="btn btn-success col-md4"
 					type="button"
 					id="set_new_public_key_button"
 					data-test-id="set_new_public_key_button"
-					(click)="importKey(publickey.value); pubKeyModal.hide()"
+					(click)="importKey(); pubKeyModal.hide()"
 				>
 					Set
 				</button>

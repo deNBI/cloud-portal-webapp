@@ -824,7 +824,7 @@
 										class="form-check-input"
 										type="checkbox"
 										id="toggle_starting_of_machines"
-										[(ngModel)]="project_application.prevent_machines_starting"
+										[(ngModel)]="project_application.allow_machines_starting"
 										*ngIf="!project_application.project_application_openstack_project"
 										(click)="toggleStartingOfMachines()"
 										[disabled]="

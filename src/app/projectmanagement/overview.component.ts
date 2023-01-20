@@ -499,7 +499,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			if (!this.project_application?.project_application_openstack_project) {
 				if (
 					this.vmsInUse < this.maximumVMs
-					&& (this.project_application.user_is_admin || !this.project_application.prevent_machines_starting)
+					&& (this.project_application.user_is_admin || this.project_application.allow_machines_starting)
 				) {
 					return true;
 				}
@@ -587,7 +587,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.toggleLocked = true;
 		this.groupService.toggleStartingMachines(this.project_application.project_application_perun_id).subscribe(
 			(res: any): void => {
-				this.project_application.prevent_machines_starting = res['prevent_starting'];
+				this.project_application.allow_machines_starting = res['allow_machines_starting'];
 				this.toggleLocked = false;
 			},
 			() => {
