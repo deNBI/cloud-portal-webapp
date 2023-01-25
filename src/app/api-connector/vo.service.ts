@@ -146,7 +146,7 @@ export class VoService {
 	/**
 	 * Get members of a project with emails.
 	 *
-	 * @param groupid id of the the group
+	 * @param groupid id of the group
 	 * @returns
 	 */
 	getVoGroupRichMembers(groupid: number | string): Observable<ProjectMember[]> {
