@@ -37,6 +37,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public emailVerify: string;
 	public emailType: number;
 	public emailAdminsOnly: boolean = false;
+	public expiredTemplated: boolean = false;
 	public selectedProject: Application;
 	computecenters: ComputecenterComponent[] = [];
 
@@ -116,7 +117,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		if (reply) {
 			reply = reply.trim();
 		}
-		console.log(this.emailAdminsOnly);
 		switch (this.emailType) {
 			case 0: {
 				this.sendMailToVo(
@@ -125,6 +125,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 					this.selectedFacility.toString(),
 					this.selectedProjectType,
 					this.emailAdminsOnly,
+					this.expiredTemplated,
 					reply,
 				);
 				break;
@@ -171,6 +172,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		facility: string,
 		type: string,
 		adminsOnly: boolean,
+		expiredTemplate: boolean,
 		reply?: string,
 	): void {
 		this.voService
@@ -180,6 +182,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				facility,
 				type,
 				adminsOnly,
+				expiredTemplate,
 				encodeURIComponent(reply),
 			)
 			.subscribe((result: IResponseTemplate): void => {
@@ -253,6 +256,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 			}
 			default:
 				this.emailVerify = 'Are you sure you want to send this?';
+		}
+		if (this.selectedProjectType !== 'EXP') {
+			this.expiredTemplated = false;
 		}
 	}
 
