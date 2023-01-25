@@ -3,10 +3,13 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
+const VO_NAME: string = window['env']['VO_NAME'] || 'denbi-dev';
+
 export const environment: any = {
 	WIKI_PRE: 'https://portal-dev.denbi.de/wiki/',
 	production: false,
 	vo: 3334,
+	voName: VO_NAME,
 	freemium_project_id: 10392,
 	domain: 'localhost',
 	invitation_group_pre:
