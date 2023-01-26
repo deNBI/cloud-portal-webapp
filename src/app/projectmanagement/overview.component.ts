@@ -63,7 +63,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	lifetimeExtensionDisabled: boolean = false;
 	creditsExtensionDisabled: boolean = false;
 	voRegistrationLink: string = environment.voRegistrationLink;
-	invitation_group_pre: string = environment.invitation_group_pre;
+	vo_name: string = environment.voName;
 	WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT;
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 	CREDITS_WIKI: string = CREDITS_WIKI;
@@ -810,7 +810,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	setAddUserInvitationLink(): void {
-		const uri: string = this.invitation_group_pre + this.project_application.perun_name;
+		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.perun_name}`;
+		const elixir_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=${encodeURIComponent(
+			project_reg,
+		)}&targetexisting=${encodeURIComponent(project_reg)}&targetextended=${encodeURIComponent(project_reg)}`;
+		const uri: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=lifescience&targetnew=${encodeURIComponent(
+			elixir_reg,
+		)}&targetexisting=${encodeURIComponent(elixir_reg)}&targetextended=${encodeURIComponent(elixir_reg)}`;
 		this.invitation_link = uri;
 	}
 
