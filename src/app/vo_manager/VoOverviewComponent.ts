@@ -1,3 +1,4 @@
+import { ngxCsv } from 'ngx-csv/ngx-csv';
 import {
 	Component, OnInit, QueryList, ViewChildren,
 } from '@angular/core';
@@ -403,5 +404,38 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 	showMembersOfTheProject(projectid: number, projectname: string): void {
 		this.getMembersOfTheProject(projectid, projectname);
+	}
+
+	exportCSV(): void {
+		const data = [];
+		this.applictions$.subscribe({
+			next(result) {
+				result.forEach((application) => {
+					data.push({
+						openstack: application.project_application_openstack_project,
+						facility: application.project_application_compute_center.Name,
+						project_id: application.project_application_id,
+						project_name: application.project_application_name,
+						description: application.project_application_description,
+						date_created: application.project_application_date_approved,
+						date_expiration: application.date_end,
+						days_running: application.DaysRunning,
+						lifetime_days: application.lifetime_days,
+						status: application.project_application_statuses.toString(),
+						number_ram: application.project_application_total_ram,
+						number_cores: application.project_application_total_cores,
+						number_gpus: application.project_application_total_gpu,
+						current_credits: application.project_application_current_credits,
+						initial_credits: application.project_application_initial_credits,
+					});
+				});
+			},
+			error(msg) {
+				console.log(msg);
+			},
+		});
+		if (data.length > 0) {
+			const csv = new ngxCsv(data, 'projects', { showLabels: true, headers: Object.keys(data[0]) });
+		}
 	}
 }
