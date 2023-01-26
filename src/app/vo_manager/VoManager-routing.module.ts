@@ -23,7 +23,6 @@ const routes: Routes = [
 		data: {
 			title: 'Vo Resources',
 		},
-
 	},
 	{
 		path: 'clientsOverview',
@@ -32,7 +31,6 @@ const routes: Routes = [
 		data: {
 			title: 'Clients',
 		},
-
 	},
 
 	{
@@ -52,7 +50,6 @@ const routes: Routes = [
 			title: 'Maintenance',
 		},
 	},
-
 ];
 
 /**
@@ -62,5 +59,4 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class VoManagerRoutingModule {
-}
+export class VoManagerRoutingModule {}

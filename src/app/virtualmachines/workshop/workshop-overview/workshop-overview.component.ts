@@ -62,16 +62,18 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
-	constructor(
-		private workshopService: WorkshopService,
-		private groupService: GroupService,
-	) {
+	constructor(private workshopService: WorkshopService, private groupService: GroupService) {
 		// eslint-disable-next-line no-empty-function
 	}
 
 	ngOnInit(): void {
 		this.newWorkShopTimeFrame = new WorkshopTimeFrame({
-			id: null, end_time: new Date(), start_time: new Date(), workshop: new Workshop(), project: null, description: '',
+			id: null,
+			end_time: new Date(),
+			start_time: new Date(),
+			workshop: new Workshop(),
+			project: null,
+			description: '',
 		});
 		this.getProjects();
 	}
@@ -122,7 +124,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	createNewTimeFrame(): void {
 		if (this.checkTimeFrameOverlap()) {
 			this.confirmInterfereModal.show();
-
 		} else {
 			this.processAddAfterConfirm();
 		}
@@ -160,26 +161,23 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		});
 		this.listOfOverlaps = interferingTimeframes;
 
-		return (interferingTimeframes.length > 0);
+		return interferingTimeframes.length > 0;
 	}
 
 	processAddAfterConfirm(): void {
-		this.workshopService
-			.addWorkshopTimeFrame(this.selectedProject[1], this.newWorkShopTimeFrame)
-			.subscribe({
-				next: () => {
-					this.loadCalenderForSelectedProject();
-					this.informationTitle = 'Success';
-					this.informationType = 'info';
-					this.informationMessage = 'The new timeframe got successfully added to the calender!';
-
-				},
-				error: () => {
-					this.informationTitle = 'Error';
-					this.informationType = 'danger';
-					this.informationMessage = 'An error occured while adding the timeframe to the calender!';
-				},
-			});
+		this.workshopService.addWorkshopTimeFrame(this.selectedProject[1], this.newWorkShopTimeFrame).subscribe({
+			next: () => {
+				this.loadCalenderForSelectedProject();
+				this.informationTitle = 'Success';
+				this.informationType = 'info';
+				this.informationMessage = 'The new timeframe got successfully added to the calender!';
+			},
+			error: () => {
+				this.informationTitle = 'Error';
+				this.informationType = 'danger';
+				this.informationMessage = 'An error occured while adding the timeframe to the calender!';
+			},
+		});
 	}
 
 	deleteWorkshopTimeFrame(timeframe: WorkshopTimeFrame): void {
@@ -189,7 +187,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 				this.informationTitle = 'Success';
 				this.informationType = 'info';
 				this.informationMessage = 'The selected timeframe got successfully removed from the calender!';
-
 			},
 			error: () => {
 				this.informationTitle = 'Error';
