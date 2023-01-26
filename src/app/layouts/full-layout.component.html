@@ -113,7 +113,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="This project was initially approved within the last 2 weeks."
-							*ngIf="application | hasstatusinlist: Application_States.APPROVED_LAST_2_WEEKS"
+							*ngIf="application | hasstatusinlist : Application_States.APPROVED_LAST_2_WEEKS"
 						>
 							<i class="fas fa-plus-circle"></i>
 						</div>
@@ -123,8 +123,8 @@
 							data-placement="right"
 							title="The project lifetime expires soon."
 							*ngIf="
-								(application | hasstatusinlist: Application_States.EXPIRES_SOON) &&
-								!(application | hasstatusinlist: Application_States.EXPIRED)
+								(application | hasstatusinlist : Application_States.EXPIRES_SOON) &&
+								!(application | hasstatusinlist : Application_States.EXPIRED)
 							"
 						>
 							<i class="fas fa-exclamation-circle"></i>
@@ -134,7 +134,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="The lifetime of this project is expired."
-							*ngIf="application | hasstatusinlist: Application_States.EXPIRED"
+							*ngIf="application | hasstatusinlist : Application_States.EXPIRED"
 						>
 							<i class="fas fa-ban"></i>
 						</div>
@@ -143,7 +143,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="The termination of the project was requested."
-							*ngIf="application | hasstatusinlist: Application_States.TERMINATION_REQUESTED"
+							*ngIf="application | hasstatusinlist : Application_States.TERMINATION_REQUESTED"
 						>
 							<i class="fas fa-trash"></i>
 						</div>
@@ -153,8 +153,8 @@
 							data-placement="right"
 							title="An extension request was submitted for this project."
 							*ngIf="
-								(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-								(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+								(application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+								(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
 							"
 						>
 							<i class="fas fa-edit"></i>
@@ -165,8 +165,8 @@
 							data-placement="right"
 							title="A modification request was submitted for this project."
 							*ngIf="
-								(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-								(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+								(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+								(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
 							"
 						>
 							<i class="fas fa-edit"></i>
@@ -176,7 +176,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="The project application was submitted but not approved yet."
-							*ngIf="application | hasstatusinlist: Application_States.SUBMITTED"
+							*ngIf="application | hasstatusinlist : Application_States.SUBMITTED"
 						>
 							<i class="fas fa-edit"></i>
 						</div>
@@ -186,8 +186,8 @@
 							data-placement="right"
 							title="A request for additional credits was submitted for this project."
 							*ngIf="
-								(application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-								(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+								(application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+								(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
 							"
 						>
 							<i class="fas fa-coins"></i>
@@ -202,10 +202,12 @@
 				[ngClass]="{ show: show_projects }"
 				*ngIf="project_enumeration?.length > 3"
 			>
-				<a class="nav-link nav-group-toggle"
-					 id="project_list_folded_toggler"
-					 data-test-id="project_list_folded_toggler"
-					 (click)="toggleProjectsNav()">
+				<a
+					class="nav-link nav-group-toggle"
+					id="project_list_folded_toggler"
+					data-test-id="project_list_folded_toggler"
+					(click)="toggleProjectsNav()"
+				>
 					<i class="nav-icon fas fa-list"></i> Projects</a
 				>
 				<ul class="nav-group-items">
@@ -251,7 +253,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="This project was initially approved within the last 2 weeks."
-								*ngIf="application | hasstatusinlist: Application_States.APPROVED_LAST_2_WEEKS"
+								*ngIf="application | hasstatusinlist : Application_States.APPROVED_LAST_2_WEEKS"
 							>
 								<i class="fas fa-plus-circle"></i>
 							</div>
@@ -261,8 +263,8 @@
 								data-placement="right"
 								title="The project lifetime expires soon."
 								*ngIf="
-									(application | hasstatusinlist: Application_States.EXPIRES_SOON) &&
-									!(application | hasstatusinlist: Application_States.EXPIRED)
+									(application | hasstatusinlist : Application_States.EXPIRES_SOON) &&
+									!(application | hasstatusinlist : Application_States.EXPIRED)
 								"
 							>
 								<i class="fas fa-exclamation-circle"></i>
@@ -272,7 +274,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="The lifetime of this project is expired."
-								*ngIf="application | hasstatusinlist: Application_States.EXPIRED"
+								*ngIf="application | hasstatusinlist : Application_States.EXPIRED"
 							>
 								<i class="fas fa-ban"></i>
 							</div>
@@ -281,7 +283,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="The termination of the project was requested."
-								*ngIf="application | hasstatusinlist: Application_States.TERMINATION_REQUESTED"
+								*ngIf="application | hasstatusinlist : Application_States.TERMINATION_REQUESTED"
 							>
 								<i class="fas fa-trash"></i>
 							</div>
@@ -291,8 +293,8 @@
 								data-placement="right"
 								title="An extension request was submitted for this project."
 								*ngIf="
-									(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-									(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+									(application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+									(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
 								"
 							>
 								<i class="fas fa-edit"></i>
@@ -303,8 +305,8 @@
 								data-placement="right"
 								title="A modification request was submitted for this project."
 								*ngIf="
-									(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-									(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+									(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+									(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
 								"
 							>
 								<i class="fas fa-edit"></i>
@@ -314,7 +316,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="The project application was submitted but not approved yet."
-								*ngIf="application | hasstatusinlist: Application_States.SUBMITTED"
+								*ngIf="application | hasstatusinlist : Application_States.SUBMITTED"
 							>
 								<i class="fas fa-edit"></i>
 							</div>
@@ -324,8 +326,8 @@
 								data-placement="right"
 								title="A request for additional credits was submitted for this project."
 								*ngIf="
-									(application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-									(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+									(application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+									(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
 								"
 							>
 								<i class="fas fa-coins"></i>
@@ -455,7 +457,7 @@
 
 			<li class="nav-item" *ngIf="is_vo_admin">
 				<a class="nav-link" routerLinkActive="active" [routerLink]="['/vo-manager/maintenance']"
-				><i class="nav-icon fas fa-tools"></i> Maintenance</a
+					><i class="nav-icon fas fa-tools"></i> Maintenance</a
 				>
 			</li>
 
@@ -470,7 +472,6 @@
 					><i class="nav-icon fas fa-chart-pie"></i> Numbers</a
 				>
 			</li>
-
 		</ul>
 	</ng-scrollbar>
 

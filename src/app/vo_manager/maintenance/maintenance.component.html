@@ -9,24 +9,24 @@
 			<div class="alert alert-info">Note that only future and already running timeframes are displayed here.</div>
 			<table class="table" *ngIf="workshopTimeFrames.length > 0 && !errorWorkshopTimeFrames">
 				<thead>
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Start time</th>
-					<th scope="col">End time</th>
-					<th scope="col">Project</th>
-					<th scope="col">Workshop</th>
-					<th scope="col">Description</th>
-				</tr>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Start time</th>
+						<th scope="col">End time</th>
+						<th scope="col">Project</th>
+						<th scope="col">Workshop</th>
+						<th scope="col">Description</th>
+					</tr>
 				</thead>
 				<tbody>
-				<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index;">
-					<th scope="row">{{i + 1}}</th>
-					<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-					<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-					<td>{{ wstimeframe.project.project_application_shortname }}</td>
-					<td>{{ wstimeframe.workshop?.longname }}</td>
-					<td>{{ wstimeframe.description }}</td>
-				</tr>
+					<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index">
+						<th scope="row">{{ i + 1 }}</th>
+						<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+						<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+						<td>{{ wstimeframe.project.project_application_shortname }}</td>
+						<td>{{ wstimeframe.workshop?.longname }}</td>
+						<td>{{ wstimeframe.description }}</td>
+					</tr>
 				</tbody>
 			</table>
 
@@ -43,27 +43,29 @@
 		<div>
 			<table class="table" *ngIf="maintenanceTimeFrames.length > 0 && !errorMaintenanceTimeFrames">
 				<thead>
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Start time</th>
-					<th scope="col">End time</th>
-					<th scope="col">Name</th>
-					<th scope="col">Message</th>
-					<th scope="col">Action</th>
-				</tr>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Start time</th>
+						<th scope="col">End time</th>
+						<th scope="col">Name</th>
+						<th scope="col">Message</th>
+						<th scope="col">Action</th>
+					</tr>
 				</thead>
 				<tbody>
-				<tr *ngFor="let mtf of this.maintenanceTimeFrames; let i = index;">
-					<th scope="row">{{i + 1}}</th>
-					<td>{{ mtf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-					<td>{{ mtf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-					<td>{{ mtf.name }}</td>
-					<td>{{ (mtf.message.length > 25 ) ? (mtf.message | slice:0:25) + '...' : (mtf.message) }}</td>
-					<td><div class="btn-group">
-						<button class="btn btn-danger" role="button" (click)="deleteTimeFrame(mtf);">Delete</button>
-						<!-- TODO: add update timeframe (via modal) -->
-					</div></td>
-				</tr>
+					<tr *ngFor="let mtf of this.maintenanceTimeFrames; let i = index">
+						<th scope="row">{{ i + 1 }}</th>
+						<td>{{ mtf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+						<td>{{ mtf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+						<td>{{ mtf.name }}</td>
+						<td>{{ mtf.message.length > 25 ? (mtf.message | slice : 0 : 25) + '...' : mtf.message }}</td>
+						<td>
+							<div class="btn-group">
+								<button class="btn btn-danger" role="button" (click)="deleteTimeFrame(mtf)">Delete</button>
+								<!-- TODO: add update timeframe (via modal) -->
+							</div>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
