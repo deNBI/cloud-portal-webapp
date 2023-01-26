@@ -1,0 +1,232 @@
+<div class="card">
+	<div class="card-header">Timeframes</div>
+	<div class="card-body">
+		<h5 class="card-title">Workshop Timeframes</h5>
+		<div *ngIf="!workshopTimeFramesLoaded">
+			<span class="spinner-border-sm"></span>
+		</div>
+		<div *ngIf="workshopTimeFramesLoaded">
+			<div class="alert alert-info">Note that only future and already running timeframes are displayed here.</div>
+			<table class="table" *ngIf="workshopTimeFrames.length > 0 && !errorWorkshopTimeFrames">
+				<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Start time</th>
+					<th scope="col">End time</th>
+					<th scope="col">Project</th>
+					<th scope="col">Workshop</th>
+					<th scope="col">Description</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index;">
+					<th scope="row">{{i + 1}}</th>
+					<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+					<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+					<td>{{ wstimeframe.project.project_application_shortname }}</td>
+					<td>{{ wstimeframe.workshop?.longname }}</td>
+					<td>{{ wstimeframe.description }}</td>
+				</tr>
+				</tbody>
+			</table>
+
+			<div class="alert alert-danger" *ngIf="errorWorkshopTimeFrames">
+				An error occurred loading the entered workshop timeframes!
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		<h5 class="card-title">Maintenance Timeframes</h5>
+		<div *ngIf="!maintenanceTimeFramesLoaded">
+			<span class="spinner-border-sm"></span>
+		</div>
+		<div>
+			<table class="table" *ngIf="maintenanceTimeFrames.length > 0 && !errorMaintenanceTimeFrames">
+				<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Start time</th>
+					<th scope="col">End time</th>
+					<th scope="col">Name</th>
+					<th scope="col">Message</th>
+					<th scope="col">Action</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr *ngFor="let mtf of this.maintenanceTimeFrames; let i = index;">
+					<th scope="row">{{i + 1}}</th>
+					<td>{{ mtf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+					<td>{{ mtf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+					<td>{{ mtf.name }}</td>
+					<td>{{ (mtf.message.length > 25 ) ? (mtf.message | slice:0:25) + '...' : (mtf.message) }}</td>
+					<td><div class="btn-group">
+						<button class="btn btn-danger" role="button" (click)="deleteTimeFrame(mtf);">Delete</button>
+						<!-- TODO: add update timeframe (via modal) -->
+					</div></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="alert alert-danger" *ngIf="errorMaintenanceTimeFrames">
+			An error occurred loading the entered maintenance timeframes!
+		</div>
+	</div>
+	<div class="card-body">
+		<h5 class="card-title">Add new maintenance timeframe</h5>
+		<form id="new_timeframe_form" [formGroup]="addTimeFrameForm" class="form-horizontal">
+			<div class="form-row align-content-start">
+				<div class="mb-3 mx-auto">
+					<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
+				</div>
+
+				<div class="mb-3 mx-auto">
+					<label class="form-label">Start Time</label>
+					<app-timepicker (timeChange)="startTimeChanged($event)"></app-timepicker>
+				</div>
+
+				<div class="mb-3 mx-auto">
+					<label class="form-label">End Time</label>
+					<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="mb-3">
+					<label for="name_input_field" class="form-label">Name</label>
+					<input
+						type="text"
+						required
+						class="form-control"
+						formControlName="name_input_field"
+						id="name_input_field"
+						aria-describedby="descriptionHelp"
+						[(ngModel)]="newMaintenanceTimeFrame.name"
+						[ngClass]="{
+							'is-invalid':
+								(f['name_input_field'].dirty || f['name_input_field'].touched) && f['name_input_field'].invalid,
+							'is-valid': f['name_input_field'].valid
+						}"
+					/>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="mb-3">
+					<textarea
+						rows="8"
+						type="text"
+						class="form-control input-lg"
+						id="message_input_field"
+						data-test-id="message_input_field"
+						placeholder="You are free to enter a description"
+						name="public_key"
+						[(ngModel)]="newMaintenanceTimeFrame.message"
+						[ngModelOptions]="{ standalone: true }"
+					></textarea>
+
+					<label for="message_input_field" class="form-label">Message</label>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="mb-3">
+					<button
+						class="btn btn-outline-primary"
+						(click)="checkData(); this.confirmModal.show()"
+						[disabled]="!(this.newMaintenanceTimeFrame | isValidTimeFrame)"
+					>
+						Add new timeframe
+					</button>
+				</div>
+			</div>
+			<div class="form-row">
+				<div
+					class="col-md-auto mx-auto"
+					*ngIf="
+						!(this.newMaintenanceTimeFrame | isValidTimeFrame) ||
+						this.addTimeFrameForm.controls['name_input_field'].invalid
+					"
+				>
+					<div class="alert alert-info">
+						Please select a timeframe, where the start time is before the end time and in the future!
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div
+	bsModal
+	#confirmModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-hidden="true"
+	id="confirmModal"
+>
+	<div class="modal-dialog modal-info modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Confirm new timeframe</h4>
+			</div>
+			<div class="modal-body">
+				<div *ngIf="!this.timeSpotsChecked">
+					<span class="spinner-border-sm"></span>
+				</div>
+				<div *ngIf="this.timeSpotsChecked">
+					<div class="alert alert-success" *ngIf="!this.timeSpotCritical">
+						There are no entered timeframes which collide with this maintenance timeframe.
+					</div>
+					<div class="alert alert-warning" *ngIf="this.timeSpotCritical">
+						Please check the listed timeframes below. These may collide with the maintenance timeframe you want to
+						enter.
+					</div>
+					<div>
+						<strong>Your timeframe</strong>
+						<ul class="list-group">
+							<li class="list-group-item text-center">
+								<strong
+									>{{ newMaintenanceTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
+									{{ newMaintenanceTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
+								>
+							</li>
+						</ul>
+					</div>
+					<table class="table" *ngIf="timeSpotCritical">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Workshop</th>
+								<th scope="col">Timeframe</th>
+								<th scope="col">Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let critTimeFrame of this.criticalTimeSpots; let i = index">
+								<th scope="row">{{ i + 1 }}</th>
+								<td>{{ critTimeFrame.workshop.longname }}</td>
+								<td>
+									{{ critTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
+									{{ critTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}
+								</td>
+								<td>{{ critTimeFrame.description }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col">
+						<button class="btn btn-success" (click)="confirmModal.hide(); this.createNewTimeFrame()">Confirm</button>
+					</div>
+					<div class="col">
+						<button class="btn btn-info" (click)="confirmModal.hide()">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -7,6 +7,7 @@ import { IResponseTemplate } from './response-template';
 import { Resources } from '../vo_manager/resources/resources';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { Application } from '../applications/application.model/application.model';
+import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model';
 
 /**
  * Service which provides vo methods.
@@ -159,6 +160,36 @@ export class VoService {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/protected/`, {
 			withCredentials: true,
 			params: parameters,
+		});
+	}
+
+	loadMaintenanceTimeFrames(): Observable<MaintenanceTimeFrame[]> {
+		return this.http
+			.get<MaintenanceTimeFrame[]>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, {
+				withCredentials: true,
+			})
+			.pipe(
+				map((maintenanceTimeFrames: MaintenanceTimeFrame[]): MaintenanceTimeFrame[] => maintenanceTimeFrames.map(
+					(maintenanceTimeFrame: MaintenanceTimeFrame): MaintenanceTimeFrame => new MaintenanceTimeFrame(maintenanceTimeFrame),
+				)),
+			);
+	}
+
+	addMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<MaintenanceTimeFrame> {
+		const params: HttpParams = new HttpParams()
+			.set('start_time', timeframe.start_time.toJSON())
+			.set('end_time', timeframe.end_time.toJSON())
+			.set('name', timeframe.name)
+			.set('message', timeframe.message);
+
+		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, params, {
+			withCredentials: true,
+		});
+	}
+
+	deleteMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<any> {
+		return this.http.delete<any>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/${timeframe.id}/`, {
+			withCredentials: true,
 		});
 	}
 }
