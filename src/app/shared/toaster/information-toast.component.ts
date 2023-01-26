@@ -6,14 +6,12 @@ import { Component, Input, OnChanges } from '@angular/core';
 	styleUrls: ['./information-toast.component.scss'],
 })
 export class InformationToastComponent implements OnChanges {
-
 	@Input() message: string = '';
 	@Input() title: string = '';
 	@Input() type: string = 'info';
 
 	ngOnChanges() {
 		this.toggleToast();
-
 	}
 
 	position = 'top';

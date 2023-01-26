@@ -83,10 +83,7 @@ export class WorkshopService {
 			);
 	}
 
-	addWorkshopTimeFrame(
-		application_id: number | string,
-		timeframe: WorkshopTimeFrame,
-	): Observable<WorkshopTimeFrame> {
+	addWorkshopTimeFrame(application_id: number | string, timeframe: WorkshopTimeFrame): Observable<WorkshopTimeFrame> {
 		const params: HttpParams = new HttpParams()
 			.set('start_time', timeframe.start_time.toJSON())
 			.set('end_time', timeframe.end_time.toJSON())
