@@ -8,6 +8,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationsModule } from '../applications/applications.module';
 import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module';
 import { ProjectOsDetailsComponent } from './project-os-details/project-os-details.component';
@@ -39,6 +40,7 @@ import { ResultComponent } from './modals/result/result.component';
 		BsDropdownModule,
 		AlertModule,
 		NgSelectModule,
+		NgbModule,
 	],
 	declarations: [
 		OverviewComponent,
@@ -50,9 +52,6 @@ import { ResultComponent } from './modals/result/result.component';
 		DoiComponent,
 		ResultComponent,
 	],
-	exports: [
-		ProjectOsDetailsComponent,
-	],
+	exports: [ProjectOsDetailsComponent],
 })
-export class ProjectManagementModule {
-}
+export class ProjectManagementModule {}

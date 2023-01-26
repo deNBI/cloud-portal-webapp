@@ -21,6 +21,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 	private static readonly _SPAWNING: string = 'SPAWNING';
 	private static readonly _SCHEDULING: string = 'SCHEDULING';
 	private static readonly _PLANNED: string = 'PLANNED';
+	private static readonly _CREATION_FAILED: string = 'CREATION_FAILED';
 
 	private static readonly _IN_PROCESS_STATES: string[] = [
 		VirtualMachineStates._REBOOTING_STARTED,
@@ -53,6 +54,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._ERROR,
 		VirtualMachineStates._CLIENT_OFFLINE,
 		VirtualMachineStates._DELETING_FAILED,
+		VirtualMachineStates._CREATION_FAILED,
 	];
 
 	private static readonly _DELETABLE_STATES: string[] = [
@@ -62,6 +64,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._PORT_CLOSED,
 		VirtualMachineStates._PLANNED,
 		VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
+		VirtualMachineStates._CREATION_FAILED,
 	];
 
 	static get DELETABLE_STATES(): string[] {
@@ -78,6 +81,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	static get REBOOTING_STARTED(): string {
 		return this._REBOOTING_STARTED;
+	}
+
+	static get PLANNED(): string {
+		return this._PLANNED;
 	}
 
 	static get REBOOTING_HARD(): string {
@@ -144,6 +151,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		return this._NOT_IN_PROCESS_STATES;
 	}
 
+	static get CREATION_FAILED(): string {
+		return this._CREATION_FAILED;
+	}
+
 	public get staticPREPARE_PLAYBOOK_BUILD(): string {
 		return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
 	}
@@ -162,6 +173,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	public get staticBUILD(): string {
 		return VirtualMachineStates.BUILD;
+	}
+
+	public get staticPLANNED(): string {
+		return VirtualMachineStates.PLANNED;
 	}
 
 	public get staticCHECKING_CONNECTION(): string {
@@ -218,5 +233,9 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	public get staticDELETABLE_STATES(): string[] {
 		return VirtualMachineStates.DELETABLE_STATES;
+	}
+
+	public get staticCREATION_FAILED(): string {
+		return VirtualMachineStates.CREATION_FAILED;
 	}
 }

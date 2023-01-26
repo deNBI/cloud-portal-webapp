@@ -5,14 +5,14 @@ import { ImageService } from '../../api-connector/image.service';
 import { SnapshotModel } from './snapshot.model';
 import { IResponseTemplate } from '../../api-connector/response-template';
 import { FacilityService } from '../../api-connector/facility.service';
-import { WIKI_SNAPSHOTS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL, WIKI_SNAPSHOTS } from '../../../links/links';
 import { SnapshotPage } from './snapshotPage.model';
 
 // eslint-disable-next-line no-shadow
 enum Snapshot_Delete_Statuses {
 	WAITING = 0,
 	SUCCESS = 1,
-	ERROR = 2
+	ERROR = 2,
 }
 
 /**
@@ -23,13 +23,11 @@ enum Snapshot_Delete_Statuses {
 	templateUrl: 'snapshotOverview.component.html',
 	providers: [FacilityService, ImageService],
 })
-
 export class SnapshotOverviewComponent implements OnInit {
-
 	snapshot_page: SnapshotPage = new SnapshotPage();
 	WIKI_SNAPSHOTS: string = WIKI_SNAPSHOTS;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
-	checked_snapshots: SnapshotModel [] = [];
+	checked_snapshots: SnapshotModel[] = [];
 
 	title: string = 'Snapshot Overview';
 
@@ -62,7 +60,7 @@ export class SnapshotOverviewComponent implements OnInit {
 	 */
 	isLoaded: boolean = false;
 	filterChanged: Subject<string> = new Subject<string>();
-	filter: string;
+	filter: string = '';
 	all_snapshots_checked: boolean = false;
 
 	private checkStatusTimeout: number = 5000;
@@ -79,7 +77,6 @@ export class SnapshotOverviewComponent implements OnInit {
 
 	changedFilter(text: string): void {
 		this.filterChanged.next(text);
-
 	}
 
 	/**
@@ -95,7 +92,9 @@ export class SnapshotOverviewComponent implements OnInit {
 	 * Get snapshots by user.
 	 */
 	getSnapshots(): void {
-		this.imageService.getSnapshotsByUser(this.currentPage, this.snapshot_page.items_per_page)
+		this.filter = this.filter.trim();
+		this.imageService
+			.getSnapshotsByUser(this.currentPage, this.snapshot_page.items_per_page, this.filter)
 			.subscribe((snapshot_page: SnapshotPage): void => {
 				this.snapshot_page = snapshot_page;
 				this.isLoaded = true;
@@ -110,7 +109,6 @@ export class SnapshotOverviewComponent implements OnInit {
 			this.all_snapshots_checked = false;
 
 			return;
-
 		}
 
 		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel): void => {
@@ -119,42 +117,35 @@ export class SnapshotOverviewComponent implements OnInit {
 			}
 		});
 		this.all_snapshots_checked = true;
-
 	}
 
 	checkSnapShotsStatus(): void {
 		let all_active: boolean = true;
 
-		setTimeout(
-			(): void => {
-				const observables: any = [];
-				for (const snapshot of this.snapshot_page.snapshot_list) {
-					if (snapshot.snapshot_status !== 'active') {
-
-						observables.push(this.imageService.getSnapshot(snapshot.snapshot_openstackid));
-					}
-
+		setTimeout((): void => {
+			const observables: any = [];
+			for (const snapshot of this.snapshot_page.snapshot_list) {
+				if (snapshot.snapshot_status !== 'active') {
+					observables.push(this.imageService.getSnapshot(snapshot.snapshot_openstackid));
 				}
-				forkJoin(observables).subscribe((res: any): void => {
-					for (const snap of res) {
-						this.snapshot_page.snapshot_list[res.indexOf(snap)].snapshot_status = snap['status'];
-						if (snap['status'] !== 'active') {
-							all_active = false;
-						}
-
+			}
+			forkJoin(observables).subscribe((res: any): void => {
+				for (const snap of res) {
+					this.snapshot_page.snapshot_list[res.indexOf(snap)].snapshot_status = snap['status'];
+					if (snap['status'] !== 'active') {
+						all_active = false;
 					}
-					if (!all_active) {
-						this.checkSnapShotsStatus();
-					}
-				});
-			},
-			this.checkStatusTimeout,
-		);
-
+				}
+				if (!all_active) {
+					this.checkSnapShotsStatus();
+				}
+			});
+		}, this.checkStatusTimeout);
 	}
 
 	getFacilitySnapshots(): void {
-		this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.snapshot_page.items_per_page)
+		this.facilityService
+			.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.snapshot_page.items_per_page)
 			.subscribe((snapshot_page: SnapshotPage): void => {
 				this.snapshot_page = snapshot_page;
 				this.isSearching = false;
@@ -168,7 +159,6 @@ export class SnapshotOverviewComponent implements OnInit {
 	 */
 	deleteSnapshot(snapshot: SnapshotModel): void {
 		this.imageService.deleteSnapshot(snapshot.snapshot_openstackid).subscribe((result: IResponseTemplate): void => {
-
 			this.delete_status = 0;
 
 			if (result.value as boolean) {
@@ -179,15 +169,11 @@ export class SnapshotOverviewComponent implements OnInit {
 			} else if (result.value) {
 				this.delete_status = 3;
 				this.getSnapshots();
-
 			} else {
 				this.delete_status = 2;
 				this.getSnapshots();
-
 			}
-
 		});
-
 	}
 
 	ngOnInit(): void {
@@ -202,45 +188,39 @@ export class SnapshotOverviewComponent implements OnInit {
 
 					this.filter = filterName.trim();
 					if (this.showFacilities) {
-						return this.facilityService
-							.getFacilitySnapshots(
-								this.selectedFacility['FacilityId'],
-								this.currentPage,
-								this.snapshot_page.items_per_page,
-								this.filter,
-							);
+						return this.facilityService.getFacilitySnapshots(
+							this.selectedFacility['FacilityId'],
+							this.currentPage,
+							this.snapshot_page.items_per_page,
+							this.filter,
+						);
 					} else {
-						return this.imageService.getSnapshotsByUser(this.currentPage, this.snapshot_page.items_per_page, this.filter);
+						return this.imageService.getSnapshotsByUser(
+							this.currentPage,
+							this.snapshot_page.items_per_page,
+							this.filter,
+						);
 					}
-
 				}),
 			)
 			.subscribe((snapshot_page: SnapshotPage): void => {
-
 				this.snapshot_page = snapshot_page;
 				this.isLoaded = true;
 				this.checkSnapShotsStatus();
 				this.isSearching = false;
-
 			});
 
-		this.snapshotsPerPageChange.pipe(
-			debounceTime(this.DEBOUNCE_TIME),
-			distinctUntilChanged(),
-		)
-			.subscribe((): void => {
-				this.reset();
-				if (this.showFacilities) {
-					this.getFacilitySnapshots();
-				} else {
-					this.getSnapshots();
-				}
-			});
+		this.snapshotsPerPageChange.pipe(debounceTime(this.DEBOUNCE_TIME), distinctUntilChanged()).subscribe((): void => {
+			if (this.showFacilities) {
+				this.getFacilitySnapshots();
+			} else {
+				this.getSnapshots();
+			}
+		});
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result;
 			this.selectedFacility = this.managerFacilities[0];
 		});
-
 	}
 
 	areAllSnapshotsChecked(): void {
@@ -248,23 +228,19 @@ export class SnapshotOverviewComponent implements OnInit {
 		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel): void => {
 			if (!this.isSnapChecked(snap)) {
 				all_checked = false;
-
 			}
 		});
 
 		this.all_snapshots_checked = all_checked;
-
 	}
 
 	changeCheckedSnapshot(snap: SnapshotModel): void {
 		if (!this.isSnapChecked(snap)) {
 			this.checked_snapshots.push(snap);
-
 		} else {
 			this.checked_snapshots.splice(this.checked_snapshots.indexOf(snap), 1);
 		}
 		this.areAllSnapshotsChecked();
-
 	}
 
 	isSnapChecked(snap: SnapshotModel): boolean {
@@ -274,7 +250,6 @@ export class SnapshotOverviewComponent implements OnInit {
 	deleteSelectedSnapshots(): void {
 		this.checked_snapshots.forEach((snap: SnapshotModel): void => {
 			this.deleteSnapshot(snap);
-
 		});
 		this.uncheckAll();
 	}
@@ -305,5 +280,4 @@ export class SnapshotOverviewComponent implements OnInit {
 		this.isSearching = true;
 		this.currentPage = 1;
 	}
-
 }

@@ -21,6 +21,7 @@ import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 import { CreditsService } from '../api-connector/credits.service';
 import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limits..component';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
+import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -603,6 +604,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		document.body.classList.remove('modal-open');
 	}
 
+	showConfirmationModal(application: Application, action: string): void {
+		let initialState = {};
+		if (action === 'approveApplication') {
+			const application_center = this.selectedCenter[application.project_application_id];
+			initialState = { application, action, application_center };
+		} else {
+			initialState = { application, action };
+		}
+		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' });
+		this.subscribeToBsModalRef();
+	}
+
 	showClientsLimitsModal(
 		compute_center_id: string,
 		application: Application,
@@ -642,6 +655,34 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 				if ('closed' in result) {
 					this.switchApproveLocked(false);
+				}
+				if (result['action'] === 'confirmModificationDecline') {
+					this.declineModificationRequest(result['application']);
+				}
+				if (result['action'] === 'confirmExtensionDecline') {
+					this.declineLifetimeExtension(result['application']);
+				}
+				if (result['action'] === 'confirmCreditsDecline') {
+					this.declineCreditExtension(result['application']);
+				}
+				if (result['action'] === 'confirmApplicationDecline') {
+					this.declineApplication(result['application']);
+				}
+				if (result['action'] === 'confirmModificationApproval') {
+					this.approveModificationRequest(result['application']);
+				}
+				if (result['action'] === 'confirmExtensionApproval') {
+					this.approveLifetimeExtension(result['application']);
+				}
+				if (result['action'] === 'confirmCreditsApproval') {
+					this.approveCreditExtension(result['application']);
+				}
+				if (result['action'] === 'confirmApplicationApproval') {
+					const tmp_application: Application = result['application'];
+					if (tmp_application.project_application_openstack_project) {
+						this.createOpenStackProjectGroup(result['application'], result['selectedCenter']);
+						this.switchApproveLocked(true);
+					}
 				}
 			}),
 		);

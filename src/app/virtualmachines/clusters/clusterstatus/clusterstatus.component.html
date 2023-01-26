@@ -2,6 +2,7 @@
 	<div
 		*ngSwitchCase="ClusterStates.staticRUNNING"
 		[id]="'running_badge_' + cluster?.cluster_id"
+		[attr.data-test-id]="'running_' + cluster?.cluster_id"
 		class="dot-colorless bg-success pulseAnim"
 		style="width: 15px; height: 15px"
 	></div>
@@ -45,6 +46,7 @@
 	<div
 		*ngSwitchCase="VirtualMachineStates.staticDELETED"
 		[id]="'deleted_badge_' + cluster?.cluster_id"
+		[attr.data-test-id]="'deleted_' + cluster?.cluster_id"
 		class="dot-colorless bg-danger"
 		style="width: 15px; height: 15px"
 	></div>

@@ -54,6 +54,12 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 		this.condaService = condaService;
 	}
 
+	setUserKeyUrl(url: string): void {
+		if (this.needsName()) {
+			this.user_key_url.setValue(url);
+		}
+	}
+
 	getUserKeyUrl(): string {
 		return this.user_key_url.value;
 	}
@@ -66,10 +72,13 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 		if (template === null) {
 			this.selectedTemplate = this.undefinedTemplate;
 			this.user_key_url.setValue('');
-
-			return;
+			this.create_only_backend = false;
+		} else {
+			this.selectedTemplate = template;
+			if (!this.user_key_url.value) {
+				this.generateRandomName();
+			}
 		}
-		this.selectedTemplate = template;
 	}
 
 	ngOnInit(): void {
@@ -82,6 +91,7 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 			}),
 		);
 		this.rng = new RandomNameGenerator();
+		this.generateRandomName();
 	}
 
 	ngOnDestroy() {

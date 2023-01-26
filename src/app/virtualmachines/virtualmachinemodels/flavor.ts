@@ -19,6 +19,7 @@ export class Flavor {
 	credits_costs_per_hour: number;
 	compute_center: number;
 	disabled: boolean;
+	available: boolean = true;
 
 	constructor(flavor?: Partial<Flavor>) {
 		Object.assign(this, flavor);

@@ -18,8 +18,9 @@ export class ImageCarouselSlideComponent implements OnInit {
 	@Input() selectedFlavor: Flavor;
 	@Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
 	window_size: number;
-	img_height: string = '120px';
-	img_width: string = '210px';
+	img_height: string = '120px!important';
+	img_width: string = '210px!important';
+	object_fit_scale: string = 'scale';
 	image_visible: boolean = true;
 	regexp_data_test_id: RegExp = /[ ().]/g;
 	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
@@ -32,7 +33,8 @@ export class ImageCarouselSlideComponent implements OnInit {
 	}
 
 	public setImageVisible(): void {
-		this.image_visible = !this.image_visible;
+		if (this.image.logo_url) {
+			this.image_visible = !this.image_visible;
+		}
 	}
-
 }

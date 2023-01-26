@@ -77,7 +77,7 @@ export class Application {
 	totalCreditsExtensionCredits: number = 0;
 	totalLifetimeExtensionCredits: number = 0;
 	show_member_names: boolean;
-	prevent_machines_starting: boolean;
+	allow_machines_starting: boolean = false;
 	project_application_member_applications: ProjectMemberApplication[];
 	project_application_manager_comment: string;
 
@@ -92,6 +92,9 @@ export class Application {
 			this.setDaysRunning();
 			this.setDates();
 
+			if (aj.project_application_edam_terms) {
+				this.project_application_edam_terms = aj.project_application_edam_terms;
+			}
 			if (aj.project_lifetime_request) {
 				this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
 				this.totalLifetimeExtensionCredits = this.calcLifetimeExtensionCredits();

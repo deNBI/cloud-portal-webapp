@@ -1,60 +1,91 @@
-<div class="animated fadeIn" >
-  <div class="card">
-    <div class="card-header">Project Numbers</div>
-    <div class="card-body">
-      <div id="projectsChart"></div>
-      <div class="btn-group">
-        <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('projectNumbersSVG', 'projectNumbers')">
-          Download as PNG
-        </button>
-        <!--<button class="btn btn-outline-primary"
-                (click)="downloadAsPDF('projectNumbersSVG', 'projectNumbers')">
-          Download as PDF
-        </button>-->
-        <button class="btn btn-outline-primary"
-                (click)="toggleGraph('projects');">
-          {{this.projectNumbersChart[1] ? 'show as area chart' : 'show as bar chart'}}
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header">Cloud Resources</div>
-    <div class="card-body">
-      <div id="ramChart"></div>
-      <div class="btn-group">
-        <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('ramNumbersSVG', 'resourcesRamNumbers')">
-          Download as PNG
-        </button>
-        <!--<button class="btn btn-outline-primary"
-                (click)="downloadAsPDF('ramNumbersSVG', 'resourcesRamNumbers')">
-          Download as PDF
-        </button>-->
-        <button class="btn btn-outline-primary"
-                (click)="toggleGraph('ram');">
-          {{this.ramChart[1] ? 'show as area chart' : 'show as bar chart'}}
-        </button>
+<div class="animated fadeIn">
+	<div id="chart"></div>
+	<div class="card">
+		<div class="card-header">Project Numbers</div>
+		<div class="card-body">
+			<div id="projectNumbersBarChart" [class.hidden]="!showProjectNumbersBarChart"></div>
+			<div id="projectNumbersAreaChart" [class.hidden]="!showProjectNumbersAreaChart"></div>
+			<div class="btn-group">
+				<button
+					class="btn btn-outline-primary"
+					*ngIf="showProjectNumbersBarChart"
+					(click)="downloadAsPNG('projectNumbersBarChart', 'projectNumbers')"
+				>
+					Download as PNG
+				</button>
+				<button
+					class="btn btn-outline-primary"
+					*ngIf="showProjectNumbersAreaChart"
+					(click)="downloadAsPNG('projectNumbersAreaChart', 'projectNumbers')"
+				>
+					Download as PNG
+				</button>
+				<!--<button class="btn btn-outline-primary"
+                        (click)="downloadAsPDF('projectNumbersSVG', 'projectNumbers')">
+                  Download as PDF
+                </button>-->
+				<button class="btn btn-outline-primary" (click)="toggleGraph('projects')">
+					{{ !this.showProjectNumbersAreaChart ? 'show as area chart' : 'show as bar chart' }}
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-header">Cloud Resources</div>
+		<div class="card-body">
+			<div id="ramBarChart" [class.hidden]="!showRamBarChart"></div>
+			<div id="ramAreaChart" [class.hidden]="!showRamAreChart"></div>
+			<div class="btn-group">
+				<button
+					class="btn btn-outline-primary"
+					*ngIf="showRamBarChart"
+					(click)="downloadAsPNG('ramBarChart', 'resourcesRamNumbers')"
+				>
+					Download as PNG
+				</button>
+				<button
+					class="btn btn-outline-primary"
+					*ngIf="showRamAreChart"
+					(click)="downloadAsPNG('ramAreaChart', 'resourcesRamNumbers')"
+				>
+					Download as PNG
+				</button>
+				<!--<button class="btn btn-outline-primary"
+                        (click)="downloadAsPDF('ramNumbersSVG', 'resourcesRamNumbers')">
+                  Download as PDF
+                </button>-->
+				<button class="btn btn-outline-primary" (click)="toggleGraph('ram')">
+					{{ !this.showRamAreChart ? 'show as area chart' : 'show as bar chart' }}
+				</button>
+			</div>
+		</div>
+		<div class="card-body">
+			<div id="coresBarChart" [class.hidden]="!showCoresBarChart"></div>
+			<div id="coresAreaChart" [class.hidden]="!showCoresAreChart"></div>
 
-      </div>
-    </div>
-    <div class="card-body">
-      <div id="coresChart"></div>
-      <div class="btn-group">
-        <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('coresNumbersSVG', 'resourcesCoresNumbers')">
-          Download as PNG
-        </button>
-        <!--<button class="btn btn-outline-primary"
-                (click)="downloadAsPDF('coresNumbersSVG', 'resourcesCoresNumbers')">
-          Download as PDF
-        </button>-->
-        <button class="btn btn-outline-primary"
-                (click)="toggleGraph('cores');">
-          {{this.coresChart[1] ? 'show as area chart' : 'show as bar chart'}}
-        </button>
-      </div>
-    </div>
-  </div>
+			<div class="btn-group">
+				<button
+					class="btn btn-outline-primary"
+					*ngIf="showCoresBarChart"
+					(click)="downloadAsPNG('coresBarChart', 'resourcesCoresNumbers')"
+				>
+					Download as PNG
+				</button>
+				<button
+					class="btn btn-outline-primary"
+					*ngIf="showCoresAreChart"
+					(click)="downloadAsPNG('coresAreaChart', 'resourcesCoresNumbers')"
+				>
+					Download as PNG
+				</button>
+				<!--<button class="btn btn-outline-primary"
+                        (click)="downloadAsPDF('coresNumbersSVG', 'resourcesCoresNumbers')">
+                  Download as PDF
+                </button>-->
+				<button class="btn btn-outline-primary" (click)="toggleGraph('cores')">
+					{{ !this.showCoresAreChart ? 'show as area chart' : 'show as bar chart' }}
+				</button>
+			</div>
+		</div>
+	</div>
 </div>

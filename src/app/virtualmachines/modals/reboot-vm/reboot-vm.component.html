@@ -15,7 +15,7 @@
 					type="button"
 					class="btn btn-primary"
 					*ngIf="
-						!(virtualMachine?.status | hasStatus: VirtualMachineStates.staticDELETED) &&
+						!(virtualMachine?.status | hasStatus : VirtualMachineStates.staticDELETED) &&
 						virtualMachine?.client.features['VM_REBOOT']
 					"
 					[attr.data-test-id]="'soft_reboot_vm_' + virtualMachine?.name"
@@ -32,7 +32,7 @@
 					class="btn btn-primary"
 					[id]="'hardRebootVM_' + virtualMachine?.name"
 					*ngIf="
-						!(virtualMachine?.status | hasStatus: VirtualMachineStates.staticDELETED) &&
+						!(virtualMachine?.status | hasStatus : VirtualMachineStates.staticDELETED) &&
 						virtualMachine?.client.features['VM_REBOOT']
 					"
 					(click)="hardRebootShow()"
@@ -62,7 +62,9 @@
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-warning" role="alert">
-			Restarted instances will lose any data not saved in persistent storage. Are you sure to
+			Restarted instances will lose any data not saved in persistent storage.<br />
+			Any mounted volumes will need to be remounted after the reboot.<br />
+			Are you sure to
 			<strong>{{ reboot_type }}</strong> reboot {{ virtualMachine?.name }}?
 		</div>
 	</div>

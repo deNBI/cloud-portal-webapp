@@ -103,6 +103,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		Clusterstates.CREATING,
 		Clusterstates.CONFIGURING,
 		Clusterstates.ERROR,
+		VirtualMachineStates.SHUTOFF,
 	];
 
 	constructor(

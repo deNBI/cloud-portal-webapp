@@ -6,8 +6,8 @@
 	<div class="row">
 		<div
 			*ngIf="
-				(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
-				(project_application | hasstatusinlist: Application_States.DECLINED)
+				(project_application | hasstatusinlist : Application_States.SUBMITTED) ||
+				(project_application | hasstatusinlist : Application_States.DECLINED)
 			"
 			class="col-12"
 		>
@@ -49,9 +49,9 @@
 
 				<div
 					*ngIf="
-						!(project_application | hasstatusinlist: Application_States.APPROVED) &&
-						!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
-						!(project_application | hasstatusinlist: Application_States.DECLINED)
+						!(project_application | hasstatusinlist : Application_States.APPROVED) &&
+						!(project_application | hasstatusinlist : Application_States.TERMINATED) &&
+						!(project_application | hasstatusinlist : Application_States.DECLINED)
 					"
 					class="card-body"
 					id="project_application_status_overview"
@@ -72,8 +72,8 @@
 							<button
 								(click)="deleteModal.show()"
 								*ngIf="
-									(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
-									(project_application | hasstatusinlist: Application_States.DECLINED)
+									(project_application | hasstatusinlist : Application_States.SUBMITTED) ||
+									(project_application | hasstatusinlist : Application_States.DECLINED)
 								"
 								class="btn btn-outline-danger col-6"
 								id="remove_application_button"
@@ -162,9 +162,9 @@
 		<div
 			*ngIf="
 				project_application &&
-				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
-				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
-				!(project_application | hasstatusinlist: Application_States.SUBMITTED)
+				!(project_application | hasstatusinlist : Application_States.TERMINATED) &&
+				!(project_application | hasstatusinlist : Application_States.DECLINED) &&
+				!(project_application | hasstatusinlist : Application_States.SUBMITTED)
 			"
 			class="col-12"
 		>
@@ -207,9 +207,9 @@
 						</div>
 						<div
 							*ngIf="
-								(project_application | hasstatusinlist: Application_States.APPROVED) ||
-								(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-								(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)
+								(project_application | hasstatusinlist : Application_States.APPROVED) ||
+								(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+								(project_application | hasstatusinlist : Application_States.MODIFICATION_DECLINED)
 							"
 							class="col"
 						>
@@ -232,7 +232,7 @@
 				</div>
 
 				<div
-					*ngIf="project_application | hasstatusinlist: Application_States.APPROVED"
+					*ngIf="project_application | hasstatusinlist : Application_States.APPROVED"
 					class="card-body"
 					id="projectMainInformationDiv"
 				>
@@ -250,8 +250,8 @@
 									>{{ project_application?.project_application_date_approved }} - {{ project_application?.date_end }}
 									<span
 										*ngIf="
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+											(project_application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
 										"
 									>
 										- Extension by {{ project_application?.project_lifetime_request?.extra_lifetime }}
@@ -280,8 +280,8 @@
 									*ngIf="
 										!project_application.user_is_admin &&
 										!(
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+											(project_application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
 											lifetimeExtensionDisabled
 										)
 									"
@@ -300,8 +300,8 @@
 									*ngIf="
 										project_application.user_is_admin &&
 										!(
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+											(project_application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
 											lifetimeExtensionDisabled
 										)
 									"
@@ -313,8 +313,8 @@
 								</button>
 								<button
 									*ngIf="
-										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+										(project_application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
 										lifetimeExtensionDisabled
 									"
 									class="btn btn-outline-secondary"
@@ -327,9 +327,9 @@
 								<ng-container
 									*ngIf="
 										!project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
-										!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
-										!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+										(project_application | hasstatusinlist : Application_States.APPROVED) &&
+										!(project_application | hasstatusinlist : Application_States.TERMINATION_REQUESTED) &&
+										!(project_application | hasstatusinlist : Application_States.WAIT_FOR_TERMINATION_FM)
 									"
 								>
 									<span
@@ -345,9 +345,9 @@
 									(click)="terminateModal.show()"
 									*ngIf="
 										project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
-										!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
-										!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+										(project_application | hasstatusinlist : Application_States.APPROVED) &&
+										!(project_application | hasstatusinlist : Application_States.TERMINATION_REQUESTED) &&
+										!(project_application | hasstatusinlist : Application_States.WAIT_FOR_TERMINATION_FM)
 									"
 									class="btn btn-outline-danger"
 									id="show_termination_modal_button"
@@ -358,8 +358,8 @@
 								<button
 									(click)="terminateModal.show()"
 									*ngIf="
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+										(project_application | hasstatusinlist : Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_TERMINATION_FM)
 									"
 									class="btn btn-outline-secondary"
 									disabled
@@ -384,8 +384,8 @@
 									and {{ project_application?.project_application_total_ram }} GBs of RAM
 									<span
 										*ngIf="
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+											(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
 										"
 									>
 										- Resource modification requested on
@@ -399,8 +399,8 @@
 									{{ project_application?.project_application_total_ram }} GBs RAM in use
 									<span
 										*ngIf="
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+											(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
 										"
 									>
 										- Resource modification requested on
@@ -427,10 +427,10 @@
 								<ng-container
 									*ngIf="
 										!project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
+										(project_application | hasstatusinlist : Application_States.APPROVED) &&
 										!(
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+											(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
 											modificationRequestDisabled
 										)
 									"
@@ -449,8 +449,8 @@
 									*ngIf="
 										project_application.user_is_admin &&
 										!(
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+											(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
 											modificationRequestDisabled
 										)
 									"
@@ -462,8 +462,8 @@
 								</button>
 								<button
 									*ngIf="
-										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+										(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
 										modificationRequestDisabled
 									"
 									class="btn btn-outline-secondary"
@@ -502,6 +502,19 @@
 						<div class="col-6">
 							<div class="btn-group">
 								<a
+									*ngIf="
+										!project_application.project_application_openstack_project &&
+										project_application.project_application_workshop &&
+										!project_application?.user_is_admin
+									"
+									class="btn btn-outline-primary"
+									href="mailto:test@test.test"
+									rel="noopener noreferrer"
+									style="margin-top: 15px"
+									target="_blank"
+									>Contact Workshop Admin</a
+								>
+								<a
 									*ngIf="!project_application.project_application_openstack_project"
 									class="btn btn-outline-primary"
 									href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}"
@@ -510,6 +523,7 @@
 									target="_blank"
 									>Contact Support</a
 								>
+
 								<a
 									*ngIf="supportMails?.length === 1 && project_application.project_application_openstack_project"
 									class="btn btn-outline-primary"
@@ -559,6 +573,19 @@
 							</div>
 						</div>
 					</div>
+					<div
+						class="row"
+						*ngIf="
+							!project_application.project_application_openstack_project &&
+							project_application.project_application_workshop &&
+							!project_application?.user_is_admin
+						"
+					>
+						<div class="alert alert-info">
+							If you experience any problems during a workshop, please contact your workshop administrator first before
+							contacting support.
+						</div>
+					</div>
 					<div *ngIf="project_application?.credits_allowed" class="row">
 						<div class="col-6">
 							<div
@@ -594,8 +621,8 @@
 									>
 									<span
 										*ngIf="
-											(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+											(project_application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
 										"
 									>
 										- {{ project_application?.project_credit_request?.extra_credits }} additional credits requested on
@@ -635,8 +662,8 @@
 								*ngIf="
 									!project_application.user_is_admin &&
 									!(
-										(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+										(project_application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
 										creditsExtensionDisabled
 									)
 								"
@@ -655,8 +682,8 @@
 								*ngIf="
 									project_application.user_is_admin &&
 									!(
-										(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+										(project_application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
 										creditsExtensionDisabled
 									)
 								"
@@ -668,8 +695,8 @@
 							</button>
 							<button
 								*ngIf="
-									(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-									(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+									(project_application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
+									(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
 									creditsExtensionDisabled
 								"
 								class="btn btn-outline-secondary"
@@ -788,9 +815,9 @@
 				id="projectSettingsCard"
 				*ngIf="
 					project_application &&
-					((project_application | hasstatusinlist: Application_States.APPROVED) ||
-						(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-						(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED))
+					((project_application | hasstatusinlist : Application_States.APPROVED) ||
+						(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+						(project_application | hasstatusinlist : Application_States.MODIFICATION_DECLINED))
 				"
 			>
 				<div class="card-header"><i class="fas fa-cogs"></i> Project Settings</div>
@@ -808,9 +835,10 @@
 										type="checkbox"
 										id="toggle_member_name_visibility"
 										[(ngModel)]="project_application.show_member_names"
-										*ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
 										(click)="toggleMemberNameVisibility()"
-										[disabled]="toggleLocked"
+										[disabled]="
+											toggleLocked || !(project_application?.user_is_pi || project_application?.user_is_admin)
+										"
 									/>
 									<label class="help-block" style="vertical-align: middle" for="toggle_member_name_visibility"
 										>Project member names visible for non-administrators</label
@@ -823,13 +851,12 @@
 										class="form-check-input"
 										type="checkbox"
 										id="toggle_starting_of_machines"
-										[(ngModel)]="project_application.prevent_machines_starting"
-										*ngIf="
-											!project_application.project_application_openstack_project &&
-											(project_application?.user_is_pi || project_application?.user_is_admin)
-										"
+										[(ngModel)]="project_application.allow_machines_starting"
+										*ngIf="!project_application.project_application_openstack_project"
 										(click)="toggleStartingOfMachines()"
-										[disabled]="toggleLocked"
+										[disabled]="
+											toggleLocked || !(project_application?.user_is_pi || project_application?.user_is_admin)
+										"
 									/>
 									<label class="help-block" style="vertical-align: middle" for="toggle_starting_of_machines"
 										>Non-administrators are allowed to start machines</label
@@ -846,9 +873,9 @@
 		<div
 			*ngIf="
 				project_application &&
-				((project_application | hasstatusinlist: Application_States.APPROVED) ||
-					(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-					(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)) &&
+				((project_application | hasstatusinlist : Application_States.APPROVED) ||
+					(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+					(project_application | hasstatusinlist : Application_States.MODIFICATION_DECLINED)) &&
 				(project_application.show_member_names || project_application.user_is_admin || is_vo_admin)
 			"
 			class="col"
@@ -947,6 +974,20 @@
 										<span *ngIf="member.isPi" class="badge badge-pill bg-danger">PI</span>
 										<span *ngIf="!member.isPi && !member.isAdmin" class="badge badge-pill bg-warning">MEMBER</span>
 									</td>
+									<td *ngIf="!(project_application.user_is_pi || project_application.user_is_admin || is_vo_admin)">
+										<div class="btn-group" role="group">
+											<button
+												[disabled]="!member?.publicKey"
+												class="btn btn-outline-secondary"
+												style="margin: 2px"
+												type="button"
+												(click)="showPublicKeyModal(member)"
+											>
+												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>
+												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>Public Key
+											</button>
+										</div>
+									</td>
 									<td *ngIf="project_application.user_is_pi || project_application.user_is_admin || is_vo_admin">
 										<div class="btn-group" role="group">
 											<button
@@ -958,6 +999,7 @@
 											>
 												<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
 											</button>
+
 											<button
 												(click)="removeAdmin(member.userId, member.userName); notificationModal.show()"
 												*ngIf="
@@ -979,6 +1021,16 @@
 											>
 												<i class="fa fa-trash"></i>&nbsp; Remove member
 											</button>
+											<button
+												[disabled]="!member?.publicKey"
+												class="btn btn-outline-secondary"
+												style="margin: 2px"
+												type="button"
+												(click)="showPublicKeyModal(member)"
+											>
+												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>
+												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>Public Key
+											</button>
 										</div>
 									</td>
 								</tr>
@@ -994,10 +1046,10 @@
 			*ngIf="
 				project_application &&
 				(project_application?.user_is_pi || project_application?.user_is_admin) &&
-				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
-				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
-				!(project_application | hasstatusinlist: Application_States.SUBMITTED) &&
-				!(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION)
+				!(project_application | hasstatusinlist : Application_States.TERMINATED) &&
+				!(project_application | hasstatusinlist : Application_States.DECLINED) &&
+				!(project_application | hasstatusinlist : Application_States.SUBMITTED) &&
+				!(project_application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION)
 			"
 			class="col"
 		>
@@ -1075,9 +1127,9 @@
 			*ngIf="
 				project_application &&
 				project_application.credits_allowed &&
-				((project_application | hasstatusinlist: Application_States.APPROVED) ||
-					(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-					(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED))
+				((project_application | hasstatusinlist : Application_States.APPROVED) ||
+					(project_application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
+					(project_application | hasstatusinlist : Application_States.MODIFICATION_DECLINED))
 			"
 			class="col"
 		>
@@ -1165,7 +1217,15 @@
 											<span [hidden]="showLink">Hide</span>
 											link
 										</button>
-										<button (click)="copyToClipboard(invitation_link)" class="btn btn-success">Copy link</button>
+										<button
+											(click)="copyToClipboard(invitation_link)"
+											class="btn btn-success"
+											[closeDelay]="3000"
+											ngbTooltip="Copied!"
+											triggers="click:blur"
+										>
+											Copy link
+										</button>
 									</div>
 								</li>
 							</ul>
@@ -1531,6 +1591,57 @@
 					Yes
 				</button>
 				<button (click)="leaveProjectModal.hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+	#publicKeyModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="Label"
+	bsModal
+	class="modal fade"
+	role="dialog"
+	tabindex="-1"
+>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="public_key_modal" data-test-id="public_key_modal">
+					Public Key - {{ publicKeyMemberName }}
+				</h4>
+				<button (click)="publicKeyModal.hide()" aria-label="Close" class="close" style="cursor: pointer" type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" style="word-break: break-word">
+				<div class="alert alert-info" role="alert" data-test-id="public_key_modal_id">
+					{{ publicKeyToShow }}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button
+					(click)="copyToClipboard(publicKeyToShow)"
+					class="btn btn-secondary"
+					data-test-id="copy_key"
+					id="copy_key"
+					[closeDelay]="3000"
+					ngbTooltip="Copied!"
+					triggers="click:blur"
+				>
+					Copy Key
+				</button>
+				<button
+					(click)="publicKeyModal.hide()"
+					class="btn btn-secondary"
+					data-test-id="close_notification"
+					id="close_notification"
+				>
+					Close
+				</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->

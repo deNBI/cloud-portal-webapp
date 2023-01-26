@@ -5,11 +5,11 @@
  * @license MIT
  */
 // Import styles
-@import "~@coreui/coreui/scss/coreui";
-@import "~bootstrap/dist/css/bootstrap.css";
+@import "@coreui/coreui/scss/coreui";
+@import "bootstrap/dist/css/bootstrap.css";
 // If you want to override variables do it here
 @import "custom-variables";
 
 // Custom styles
 @import "custom";
-@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "@ng-select/ng-select/themes/default.theme.css";

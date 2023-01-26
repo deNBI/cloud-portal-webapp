@@ -5,7 +5,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PublicKeyComponent } from './public-key.component';
+import { PipeModuleModule } from '../../../pipe-module/pipe-module.module';
 
 /**
  * Public key module.
@@ -14,14 +16,14 @@ import { PublicKeyComponent } from './public-key.component';
 	imports: [
 		TabsModule,
 		CommonModule,
-		FormsModule, ModalModule.forRoot(),
+		FormsModule,
+		ModalModule.forRoot(),
 		AlertModule.forRoot(),
+		NgbModule,
+		PipeModuleModule,
 	],
 
-	declarations: [
-		PublicKeyComponent,
-	],
+	declarations: [PublicKeyComponent],
 	exports: [PublicKeyComponent, AlertModule, FormsModule, ModalModule, CommonModule, TabsModule],
 })
-export class PublicKeyModule {
-}
+export class PublicKeyModule {}

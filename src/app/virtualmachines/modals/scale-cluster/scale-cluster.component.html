@@ -374,7 +374,14 @@
 					</div>
 
 					<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
-						<button class="btn btn-outline-secondary" style="float: right" (click)="copyToClipboard(mode.copy_field)">
+						<button
+							class="btn btn-outline-secondary"
+							style="float: right"
+							(click)="copyToClipboard(mode.copy_field)"
+							[closeDelay]="3000"
+							ngbTooltip="Copied!"
+							triggers="click:blur"
+						>
 							Copy command
 						</button>
 					</div>
@@ -386,6 +393,9 @@
 					class="btn btn-outline-primary"
 					style="float: right"
 					(click)="copyToClipboard('wget -O ' + SCALING_SCRIPT_NAME + ' ' + SCALING_SCRIPT_LINK)"
+					[closeDelay]="3000"
+					ngbTooltip="Copied!"
+					triggers="click:blur"
 				>
 					Copy Command
 				</button>
@@ -397,6 +407,9 @@
 					class="btn btn-outline-primary"
 					style="float: right"
 					(click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)"
+					[closeDelay]="3000"
+					ngbTooltip="Copied!"
+					triggers="click:blur"
 				>
 					Copy Command
 				</button>
@@ -407,7 +420,14 @@
 					The following password is requested by the script:
 					<div class="alert alert-light" role="alert">
 						{{ cluster?.password }}
-						<button class="btn btn-outline-primary" style="float: right" (click)="copyToClipboard(cluster?.password)">
+						<button
+							class="btn btn-outline-primary"
+							style="float: right"
+							(click)="copyToClipboard(cluster?.password)"
+							[closeDelay]="3000"
+							ngbTooltip="Copied!"
+							triggers="click:blur"
+						>
 							Copy
 						</button>
 					</div>

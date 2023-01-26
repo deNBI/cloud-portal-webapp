@@ -9,6 +9,7 @@ import { WorkshopService } from '../../../api-connector/workshop.service';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
 import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import { WorkshopTimeFrame } from '../workshopTimeFrame.model';
 
 interface MemberVm {
 	projectMember: ProjectMember
@@ -24,16 +25,21 @@ interface MemberVm {
 export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	title: string = 'Workshop management';
 
+	@ViewChild('confirmInterferingSlotModal') confirmInterfereModal: any;
+
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
-
 	subscription: Subscription = new Subscription();
 	resend_info: boolean = false;
 	sending_mails = false;
 	sending_done = false;
+	newWorkShopTimeFrame: WorkshopTimeFrame = null;
 	workshops: Workshop[] = [];
 	selectedWorkshop: Workshop;
 	memberVms: MemberVm[] = [];
+	workshopTimeFramesLoaded: boolean = false;
+	errorLoadingTimeFrames: boolean = false;
+	workshopTimeFrames: WorkshopTimeFrame[] = [];
 	loadedVmsForWorkshop: number[] = [];
 	projects: [string, number][] = [];
 	selectedProject: [string, number];
@@ -43,12 +49,16 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	projectWorkshopsLoaded: boolean = false;
 	projectMembersLoading: boolean = false;
 	projectMembersLoaded: boolean = false;
+	informationTitle: string = '';
+	informationType: string = '';
+	informationMessage: string = '';
 	deleting: boolean = false;
 	deleteSuccess: boolean = false;
 	invalidShortname: boolean = true;
 	invalidLongname: boolean = true;
 	newWorkshop: boolean = false;
 	workshopCreationMessage: { message: string; success: boolean } = { message: '', success: false };
+	listOfOverlaps: WorkshopTimeFrame[] = [];
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
@@ -57,6 +67,14 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.newWorkShopTimeFrame = new WorkshopTimeFrame({
+			id: null,
+			end_time: new Date(),
+			start_time: new Date(),
+			workshop: new Workshop(),
+			project: null,
+			description: '',
+		});
 		this.getProjects();
 	}
 
@@ -80,6 +98,102 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.resetsOnProjectChange();
 		this.getWorkshopsForProject();
 		this.getMembersOfTheProject();
+		this.loadCalenderForSelectedProject();
+	}
+
+	dayChanged(date: { year: number; month: number; day: number }): void {
+		this.newWorkShopTimeFrame.start_time.setDate(date.day);
+		this.newWorkShopTimeFrame.start_time.setMonth(date.month - 1);
+		this.newWorkShopTimeFrame.start_time.setFullYear(date.year);
+
+		this.newWorkShopTimeFrame.end_time.setDate(date.day);
+		this.newWorkShopTimeFrame.end_time.setMonth(date.month - 1);
+		this.newWorkShopTimeFrame.end_time.setFullYear(date.year);
+	}
+
+	startTimeChanged(time: { hour: number; minute: number }): void {
+		this.newWorkShopTimeFrame.start_time.setHours(time.hour);
+		this.newWorkShopTimeFrame.start_time.setMinutes(time.minute);
+	}
+
+	endTimeChanged(time: { hour: number; minute: number }): void {
+		this.newWorkShopTimeFrame.end_time.setHours(time.hour);
+		this.newWorkShopTimeFrame.end_time.setMinutes(time.minute);
+	}
+
+	createNewTimeFrame(): void {
+		if (this.checkTimeFrameOverlap()) {
+			this.confirmInterfereModal.show();
+		} else {
+			this.processAddAfterConfirm();
+		}
+	}
+
+	datesOverlap(
+		first_start: number | Date,
+		first_end: number | Date,
+		second_start: number,
+		second_end: number,
+	): boolean {
+		return (
+			(first_start >= second_start && first_start <= second_end)
+			|| (first_end >= second_start && first_end <= second_end)
+			|| (second_start >= first_start && second_start <= first_end)
+			|| (second_end >= first_start && second_end <= first_end)
+		);
+	}
+
+	checkTimeFrameOverlap(): boolean {
+		// eslint-disable-next-line prefer-const
+		let interferingTimeframes: WorkshopTimeFrame[] = [];
+		const critical_start: Date = this.newWorkShopTimeFrame.start_time;
+		critical_start.setHours(critical_start.getHours() - 2);
+		const critical_start_time: number = critical_start.getTime();
+		const critical_end: Date = this.newWorkShopTimeFrame.end_time;
+		critical_end.setHours(critical_end.getHours() + 2);
+		const critical_end_time: number = critical_end.getTime();
+		this.workshopTimeFrames.forEach((wstf: WorkshopTimeFrame) => {
+			const start_time: number = new Date(wstf.start_time).getTime();
+			const end_time: number = new Date(wstf.end_time).getTime();
+			if (this.datesOverlap(start_time, end_time, critical_start_time, critical_end_time)) {
+				interferingTimeframes.push(wstf);
+			}
+		});
+		this.listOfOverlaps = interferingTimeframes;
+
+		return interferingTimeframes.length > 0;
+	}
+
+	processAddAfterConfirm(): void {
+		this.workshopService.addWorkshopTimeFrame(this.selectedProject[1], this.newWorkShopTimeFrame).subscribe({
+			next: () => {
+				this.loadCalenderForSelectedProject();
+				this.informationTitle = 'Success';
+				this.informationType = 'info';
+				this.informationMessage = 'The new timeframe got successfully added to the calender!';
+			},
+			error: () => {
+				this.informationTitle = 'Error';
+				this.informationType = 'danger';
+				this.informationMessage = 'An error occured while adding the timeframe to the calender!';
+			},
+		});
+	}
+
+	deleteWorkshopTimeFrame(timeframe: WorkshopTimeFrame): void {
+		this.workshopService.removeWorkshopTimeFrame(this.selectedProject[1], timeframe).subscribe({
+			next: () => {
+				this.loadCalenderForSelectedProject();
+				this.informationTitle = 'Success';
+				this.informationType = 'info';
+				this.informationMessage = 'The selected timeframe got successfully removed from the calender!';
+			},
+			error: () => {
+				this.informationTitle = 'Error';
+				this.informationType = 'danger';
+				this.informationMessage = 'An error occured while removing the timeframe from the calender!';
+			},
+		});
 	}
 
 	getWorkshopsForProject(): void {
@@ -114,10 +228,36 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	workshopChange(workshop: Workshop): void {
 		this.selectedWorkshop = workshop;
+		this.newWorkShopTimeFrame = new WorkshopTimeFrame({ workshop: this.selectedWorkshop, start_time: new Date() });
 		this.newWorkshop = false;
 		this.invalidShortname = true;
 		this.invalidLongname = true;
 		this.loadVmsForSelectedProject();
+	}
+
+	loadCalenderForSelectedProject(): void {
+		this.workshopTimeFramesLoaded = false;
+		this.subscription.add(
+			this.workshopService.loadWorkshopCalender(this.selectedProject[1]).subscribe({
+				next: (wsTimeFrames: WorkshopTimeFrame[]) => {
+					this.workshopTimeFrames = wsTimeFrames.sort((a, b) => {
+						if (a.start_time < b.start_time) {
+							return -1;
+						} else if (a.start_time > b.start_time) {
+							return 1;
+						} else {
+							return 0;
+						}
+					});
+					this.workshopTimeFramesLoaded = true;
+					this.errorLoadingTimeFrames = false;
+				},
+				error: () => {
+					this.workshopTimeFramesLoaded = true;
+					this.errorLoadingTimeFrames = true;
+				},
+			}),
+		);
 	}
 
 	loadVmsForSelectedProject(): void {

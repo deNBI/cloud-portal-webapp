@@ -2,12 +2,20 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ClipboardService } from 'ngx-clipboard';
 import { Clusterinfo } from '../clusterinfo';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
 import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
-import { STATUS_LINK } from '../../../../links/links';
+import {
+	STATUS_LINK,
+	WIKI_GUACAMOLE_LINK,
+	WIKI_RSTUDIO_LINK,
+	WIKI_VOLUME_OVERVIEW,
+	WIKI_PERSISTENT_TERMINAL_LINK,
+} from '../../../../links/links';
 import { DeleteVmComponent } from '../../modals/delete-vm/delete-vm.component';
+import { TemplateNames } from '../../conda/template-names';
 
 /**
  * Clusterdetail component.
@@ -19,6 +27,13 @@ import { DeleteVmComponent } from '../../modals/delete-vm/delete-vm.component';
 	providers: [VirtualmachineService],
 })
 export class ClusterdetailComponent implements OnInit, OnDestroy {
+	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
+	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
+	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
+
+	WIKI_PERSISTENT_TERMINAL_LINK: string = WIKI_PERSISTENT_TERMINAL_LINK;
+	virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+
 	cluster_id: string;
 	cluster: Clusterinfo;
 	isLoaded: boolean = false;
@@ -34,6 +49,7 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 		private activatedRoute: ActivatedRoute,
 		private virtualmachineService: VirtualmachineService,
 		private modalService: BsModalService,
+		private clipboardService: ClipboardService,
 	) {
 		this.activatedRoute = activatedRoute;
 		this.virtualmachineService = virtualmachineService;
@@ -46,6 +62,16 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	resenv_by_play(vm: VirtualMachine): boolean {
+		for (const mode of vm.modes) {
+			if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	deleteCluster(): void {
 		this.virtualmachineService.deleteCluster(this.cluster_id).subscribe((): void => {
 			this.cluster.status = 'Deleted';
@@ -54,6 +80,12 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 				vm.status = VirtualMachineStates.DELETED;
 			});
 		});
+	}
+
+	copyToClipboard(text: string): void {
+		if (this.clipboardService.isSupported) {
+			this.clipboardService.copy(text);
+		}
 	}
 
 	setClusterById(): void {

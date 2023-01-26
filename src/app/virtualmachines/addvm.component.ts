@@ -25,16 +25,17 @@ import { is_vo } from '../shared/globalvar';
 import { RandomNameGenerator } from '../shared/randomNameGenerator';
 import { Volume } from './volumes/volume';
 import { UserService } from '../api-connector/user.service';
-import { ImageService } from '../api-connector/image.service';
 import { GroupService } from '../api-connector/group.service';
 import { KeyService } from '../api-connector/key.service';
 import { FlavorService } from '../api-connector/flavor.service';
+import { BiocondaService } from '../api-connector/bioconda.service';
 import { VirtualmachineService } from '../api-connector/virtualmachine.service';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { BlockedImageTagResenv } from '../facility_manager/image-tag';
 import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { ApplicationsService } from '../api-connector/applications.service';
+import { ImageService } from '../api-connector/image.service';
 
 /**
  * Start virtualmachine component.
@@ -44,13 +45,14 @@ import { ApplicationsService } from '../api-connector/applications.service';
 	templateUrl: 'addvm.component.html',
 	providers: [
 		GroupService,
-		ImageService,
 		KeyService,
 		FlavorService,
 		VirtualmachineService,
 		ApiSettings,
 		UserService,
 		ApplicationsService,
+		BiocondaService,
+		ImageService,
 	],
 })
 export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
@@ -90,6 +92,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	WIKI_MOSH_LINK: string = WIKI_MOSH_LINK;
 	WIKI_PERSISTENT_TERMINAL_LINK = WIKI_PERSISTENT_TERMINAL_LINK;
 	blockedImageTagsResenv: BlockedImageTagResenv[];
+	initial_loaded: boolean = false;
 
 	forc_url: string = '';
 	client_id: string;
@@ -99,7 +102,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	resEnvNeedsName: boolean = false;
 	resEnvNeedsTemplate: boolean = false;
 	resEnvOkayNeeded: boolean = false;
-	data_loaded: boolean = false;
 	volumesToMount: Volume[] = [];
 	volumesToAttach: Volume[] = [];
 
@@ -114,12 +116,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	singleProject: boolean = false;
 
 	showAddVol: boolean = false;
-
-	/**
-	 * All image of a project.
-	 */
-	images: Image[];
-	image_loaded: boolean = false;
 
 	flavors_loaded: boolean = false;
 	error_starting_machine: boolean = false;
@@ -193,11 +189,17 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	volumeStorage: number = 0;
 
 	/**
-	 * If the data for the site is initialized.
-	 *
+	 * Indicates whether the projects of the user are loaded or not.
 	 * @type {boolean}
 	 */
-	isLoaded: boolean = false;
+	projects_loaded: boolean;
+
+	/**
+	 * Indicates whether the information about the user are loaded or not.
+	 * @type {boolean}
+	 */
+
+	userinfo_loaded: boolean;
 
 	/**
 	 * All projects of the user.
@@ -248,23 +250,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		private keyservice: KeyService,
 		private userService: UserService,
 		private router: Router,
+		private condaService: BiocondaService,
 	) {
 		// eslint-disable-next-line no-empty-function
-	}
-
-	/**
-	 * Get images for the project.
-	 *
-	 * @param project_id
-	 */
-	getImages(project_id: number): void {
-		this.subscription.add(
-			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
-				this.images = images;
-				this.image_loaded = true;
-				this.checkProjectDataLoaded();
-			}),
-		);
 	}
 
 	/**
@@ -279,17 +267,23 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 					this.flavors = flavors;
 					this.flavor_types = this.flavorService.sortFlavors(this.flavors);
 					this.flavors_loaded = true;
-					this.checkProjectDataLoaded();
+					this.initial_loaded = true;
 				},
 				(error: any) => {
 					console.log(error);
 					this.flavors = [];
 					this.flavor_types = {};
 					this.flavors_loaded = true;
-					this.checkProjectDataLoaded();
+					this.initial_loaded = true;
 				},
 			),
 		);
+	}
+
+	reloadFlavors(): void {
+		this.flavors_loaded = false;
+		this.selectedFlavor = undefined;
+		this.getFlavors(this.selectedProject[1]);
 	}
 
 	getDetachedVolumesByProject(): void {
@@ -589,7 +583,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	/**
 	 * Get the client from the selected project.
-	 * If connected geht vm,volumes etc.
+	 * If connected get vm,volumes etc.
 	 */
 	getSelectedProjectClient(): void {
 		this.subscription.unsubscribe();
@@ -665,12 +659,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				this.userService.getUserInfo(),
 			]).subscribe((result: any): void => {
 				this.userinfo = result[2];
+				this.userinfo_loaded = true;
 				this.validatePublicKey();
 				const allowedMemberGroups: any = result[0];
 				const memberGroups: any = result[1];
 				for (const project of memberGroups) {
 					this.projects.push(project);
 				}
+				this.projects_loaded = true;
 				for (const project of allowedMemberGroups) {
 					this.allowedProjects.push(project);
 				}
@@ -680,26 +676,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 					this.getSelectedProjectClient();
 					this.singleProject = true;
 				}
-				this.isLoaded = true;
 			}),
 		);
-	}
-
-	checkProjectDataLoaded(): void {
-		if (this.image_loaded && this.flavors_loaded && this.data_loaded) {
-			this.generateRandomName();
-			this.projectDataLoaded = true;
-			this.isLoaded = true;
-		}
 	}
 
 	loadProjectData(): void {
 		this.projectDataLoaded = false;
 		this.flavors = [];
-		this.image_loaded = false;
-		this.data_loaded = false;
 		this.flavors_loaded = false;
-		this.images = [];
 		this.selectedImage = undefined;
 		this.selectedFlavor = undefined;
 		this.getDetachedVolumesByProject();
@@ -708,12 +692,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				.getGroupResources(this.selectedProject[1].toString())
 				.subscribe((res: ApplicationRessourceUsage): void => {
 					this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-					this.data_loaded = true;
-					this.checkProjectDataLoaded();
+					this.projectDataLoaded = true;
+					this.generateRandomName();
 				}),
 		);
-
-		this.getImages(this.selectedProject[1]);
 		this.getFlavors(this.selectedProject[1]);
 	}
 
@@ -751,6 +733,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	hasImageResenv(): void {
 		if (!this.resEnvComponent) {
+			this.resEnvComponent.unsetOnlyNamespace();
+
 			return;
 		}
 		for (const mode of this.selectedImage.modes) {
@@ -758,6 +742,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				if (template.template_name === mode.name) {
 					this.resenvSelected = true;
 					this.resEnvComponent.setOnlyNamespace(template);
+					if (!this.resEnvComponent.getUserKeyUrl()) {
+						this.resEnvComponent.setUserKeyUrl(this.vm_name);
+					}
 
 					return;
 				}
@@ -766,6 +753,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.resenvSelected = false;
 		if (this.resEnvComponent) {
 			this.resEnvComponent.unsetOnlyNamespace();
+			if (!this.resEnvComponent.getUserKeyUrl()) {
+				this.resEnvComponent.setUserKeyUrl(this.vm_name);
+			}
 		}
 	}
 
@@ -804,6 +794,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 	resetChecks(): void {
+		this.initial_loaded = false;
 		this.gaveOkay = false;
 		this.hasTools = false;
 		this.newVm = null;
@@ -823,13 +814,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.resEnvNeedsName = false;
 		this.resEnvNeedsTemplate = false;
 		this.resEnvOkayNeeded = false;
-		this.data_loaded = false;
 		this.volumesToMount = [];
 		this.volumesToAttach = [];
 		this.started_machine = false;
 		this.showAddVol = false;
-		this.images = [];
-		this.image_loaded = false;
 		this.flavors_loaded = false;
 		this.flavors = [];
 		this.selected_flavor_types = [];

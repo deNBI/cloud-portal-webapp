@@ -26,3 +26,15 @@
 .card .card-img {
 	visibility: visible;
 }
+
+.card-title i {
+	margin: 5px;
+	font-size: 10pt;
+}
+
+.custom-thumbtack {
+	position:absolute;
+	z-index: 3;
+	left: 95%;
+	transform: rotate(45deg);
+}

@@ -11,6 +11,7 @@ export class Backend {
 	location_url: string;
 	playbook_successful: boolean;
 	playbook_done: boolean;
+	no_playbook: boolean;
 
 	constructor(backend?: Partial<Backend>) {
 		Object.assign(this, backend);

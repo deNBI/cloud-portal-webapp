@@ -12,7 +12,7 @@ export class ApplicationModification {
 	volume_limit: number;
 	volume_counter: number;
 	object_storage: number;
-	comment: string;
+	comment: string = '';
 	date_submitted: string;
 	total_cores: number;
 	total_ram: number;
@@ -49,7 +49,6 @@ export class ApplicationModification {
 			this.object_storage = app.project_application_object_storage;
 			this.cloud_service_develop = app.project_application_cloud_service_develop;
 		}
-		this.comment = app.project_application_comment;
 		this.flavors = [];
 		for (const flavor of app.flavors) {
 			this.flavors.push(new Flavor(flavor));

@@ -23,6 +23,7 @@ import { ApplicationRessourceUsage } from '../../../applications/application-res
 import { WorkerBatch } from '../clusterinfo';
 import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links';
 import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
+import { BiocondaService } from '../../../api-connector/bioconda.service';
 
 /**
  * Cluster Component
@@ -42,6 +43,7 @@ import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
 		ClientService,
 		UserService,
 		VoService,
+		BiocondaService,
 	],
 })
 export class AddClusterComponent implements OnInit, OnDestroy {
@@ -53,16 +55,14 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	timeout: number = 0;
 	title: string = 'New Cluster';
 
-	CLUSTER_IMAGES_BLOCKLIST: string[] = ['16.04'];
-
-	/**
-	 * All image of a project.
-	 */
-	images: Image[];
-
 	flavors_loaded: boolean = false;
 
+	projects_loaded: boolean;
+
+	userinfo_loaded: boolean;
+
 	create_error: IResponseTemplate;
+	initial_loaded: boolean = false;
 
 	/**
 	 * All flavors of a project.
@@ -81,6 +81,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	cluster_error: string;
 	cluster_started: boolean = false;
 	cluster_responsibility: boolean = false;
+	resenv_names: string[] = [];
 
 	/**
 	 * Selected Image.
@@ -131,7 +132,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 *
 	 * @type {boolean}
 	 */
-	isLoaded: boolean = false;
 
 	/**
 	 * All projects of the user.
@@ -171,6 +171,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private voService: VoService,
 		private router: Router,
+		private condaService: BiocondaService,
 		private cdRef: ChangeDetectorRef,
 	) {
 		// eslint-disable-next-line no-empty-function
@@ -207,6 +208,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.flavor_types = this.flavorService.sortFlavors(this.flavors_usable);
 
 		this.flavors_loaded = true;
+		this.initial_loaded = true;
 	}
 
 	calcMaxWorkerInstancesByFlavor(): void {
@@ -258,29 +260,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 * Get images for the project.
-	 *
-	 * @param project_id
-	 */
-	getImages(project_id: number): void {
-		this.subscription.add(
-			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
-				this.images = images.filter((image: Image): boolean => {
-					let not_blocked: boolean = true;
-					this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
-						if (image.name.includes(str)) {
-							not_blocked = false;
-						}
-					});
-
-					return not_blocked;
-				});
-				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
-			}),
-		);
-	}
-
-	/**
 	 * Get flavors for the project.
 	 *
 	 * @param project_id
@@ -297,9 +276,17 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.flavors = [];
 					this.flavors_usable = [];
 					this.flavors_loaded = true;
+					this.initial_loaded = true;
 				},
 			),
 		);
+	}
+
+	reloadFlavors(): void {
+		this.flavors_loaded = false;
+		this.selectedMasterFlavor = undefined;
+		this.selectedFlavor = undefined;
+		this.getFlavors(this.selectedProject[1]);
 	}
 
 	/**
@@ -463,6 +450,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				this.userService.getUserInfo(),
 			]).subscribe((result: any): void => {
 				this.userinfo = result[2];
+				this.userinfo_loaded = true;
 				this.validatePublicKey();
 				const allowedMemberGroups: any = result[0];
 				const membergroups: any = result[1];
@@ -472,25 +460,23 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				for (const project of allowedMemberGroups) {
 					this.allowedProjects.push(project);
 				}
-
+				this.projects_loaded = true;
 				if (this.projects.length === 1) {
 					this.selectedProject = this.projects[0];
 					this.singleProject = true;
 					this.getSelectedProjectClient();
 				}
-				this.isLoaded = true;
 			}),
 		);
 	}
 
 	loadProjectData(): void {
+		this.initial_loaded = false;
 		this.projectDataLoaded = false;
 		this.flavors = [];
 		this.flavors_loaded = false;
-		this.images = [];
 		this.selectedImage = undefined;
 		this.selectedFlavor = undefined;
-		this.getImages(this.selectedProject[1]);
 		this.subscription.add(
 			this.groupService
 				.getGroupResources(this.selectedProject[1].toString())

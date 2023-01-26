@@ -63,6 +63,9 @@
 				<div class="card-body">
 					<div class="d-flex justify-content-between p-2">
 						<ngb-pagination
+							[maxSize]="10"
+							[rotate]="true"
+							[boundaryLinks]="true"
 							[collectionSize]="(total$ | async)!"
 							[(page)]="sortProjectService.page"
 							[pageSize]="sortProjectService.pageSize"
@@ -81,6 +84,7 @@
 							<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
 							<div class="col-xs-3 col-sm-auto">
 								<input
+									[attr.data-test-id]="'filter_project_name'"
 									id="table-complete-search"
 									type="text"
 									class="form-control"
@@ -120,7 +124,7 @@
 									<input
 										type="checkbox"
 										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.ACTIVE)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.ACTIVE"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.ACTIVE"
 									/>
 									<span style="margin-left: 5px" class="badge bg-success"
 										>{{ project_states[project_states.ACTIVE] }}
@@ -133,7 +137,7 @@
 									<input
 										type="checkbox"
 										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRED)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRED"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.EXPIRED"
 									/>
 
 									<span style="margin-left: 5px" class="badge bg-danger">{{
@@ -146,7 +150,7 @@
 									<input
 										type="checkbox"
 										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRES_SOON)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRES_SOON"
+										[checked]="sortProjectService.filterStatusList | inList : application_states.EXPIRES_SOON"
 									/>
 									<span style="margin-left: 5px" class="badge bg-warning">{{
 										lifetime_states[lifetime_states.EXPIRES_SOON]
@@ -161,7 +165,9 @@
 										(change)="
 											sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_TERMINATION_FM)
 										"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_TERMINATION_FM"
+										[checked]="
+											sortProjectService.filterStatusList | inList : application_states.WAIT_FOR_TERMINATION_FM
+										"
 									/>
 									<span style="margin-left: 5px" class="badge bg-dark">{{
 										application_states[application_states.WAIT_FOR_TERMINATION_FM]
@@ -238,36 +244,36 @@
 									</td>
 									<td>
 										<span
-											*ngIf="project | hasstatusinlist: project_states.ACTIVE"
+											*ngIf="project | hasstatusinlist : project_states.ACTIVE"
 											style="margin-left: 5px"
 											class="badge bg-success"
 											>{{ project_states[project_states.ACTIVE] }}
 										</span>
 										<span
 											*ngIf="
-												(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
-												!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
+												(project?.lifetime_reached | hasStatus : lifetime_states.EXPIRED) &&
+												!(project | hasstatusinlist : application_states.WAIT_FOR_CONFIRMATION)
 											"
 											style="margin-left: 5px"
 											class="badge bg-danger"
 											>{{ lifetime_states[lifetime_states.EXPIRED] }}
 										</span>
 										<span
-											*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
+											*ngIf="project?.lifetime_reached | hasStatus : lifetime_states.EXPIRES_SOON"
 											style="margin-left: 5px"
 											class="badge bg-warning"
 											>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
 										>
 
 										<span
-											*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
+											*ngIf="project | hasstatusinlist : application_states.WAIT_FOR_CONFIRMATION"
 											style="margin-left: 5px"
 											class="badge bg-info"
 											>WAIT FOR CONFIRMATION
 										</span>
 
 										<span
-											*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+											*ngIf="project | hasstatusinlist : application_states.WAIT_FOR_TERMINATION_FM"
 											style="margin-left: 5px"
 											class="badge bg-dark"
 											>WAIT FOR TERMINATION BY FM
@@ -341,7 +347,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Members of the Project {{ usersModalProjectID }} ({{ usersModalProjectName }})</h4>
+				<h4 class="modal-title">Members of the Project {{ usersModalProjectID }} ({{ usersModalProjectName }} )</h4>
 				<button type="button" class="close" style="cursor: pointer" (click)="usersModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -663,7 +669,7 @@
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
 					Are you sure you want to send this email to
-					<span *ngIf="selectedProjectType === 'ALL'">all members of {{ selectedFacility['Facility'] }}?</span>
+					<span *ngIf="selectedProjectType === 'ALL'">all members of {{ selectedFacility['Facility'] }} ?</span>
 					<span *ngIf="selectedProjectType === 'USER' && selectedMember"
 						><br />
 						<span *ngFor="let member of selectedMember">
