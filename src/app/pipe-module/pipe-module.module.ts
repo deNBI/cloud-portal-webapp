@@ -9,6 +9,7 @@ import { FloorIntegerPipe } from './pipes/floor-integer.pipe';
 import { InAllowedPipe } from './pipes/in-allowed.pipe';
 import { NoCoresPipe, NoRamPipe, NoVMsPipe } from './pipes/ressources';
 import { HasUnavailableFlavorsPipe } from './pipes/has-unavailable-flavors.pipe';
+import { ValidTimeFramePipe } from './pipes/validTimeFrame.pipe';
 import { PublicKeyPipe } from './pipes/publicKey.pipe';
 
 /**
@@ -28,6 +29,7 @@ import { PublicKeyPipe } from './pipes/publicKey.pipe';
 		NoVMsPipe,
 		NoCoresPipe,
 		NoRamPipe,
+		ValidTimeFramePipe,
 		PublicKeyPipe,
 	],
 	exports: [
@@ -43,6 +45,7 @@ import { PublicKeyPipe } from './pipes/publicKey.pipe';
 		NoVMsPipe,
 		NoCoresPipe,
 		NoRamPipe,
+		ValidTimeFramePipe,
 		PublicKeyPipe,
 	],
 	imports: [CommonModule],
