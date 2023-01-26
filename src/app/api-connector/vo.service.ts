@@ -164,13 +164,15 @@ export class VoService {
 	}
 
 	loadMaintenanceTimeFrames(): Observable<MaintenanceTimeFrame[]> {
-		return this.http.get<MaintenanceTimeFrame[]>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, {
-			withCredentials: true,
-		}).pipe(
-			map((maintenanceTimeFrames: MaintenanceTimeFrame[]): MaintenanceTimeFrame[] => maintenanceTimeFrames.map(
-				(maintenanceTimeFrame: MaintenanceTimeFrame): MaintenanceTimeFrame => new MaintenanceTimeFrame(maintenanceTimeFrame),
-			)),
-		);
+		return this.http
+			.get<MaintenanceTimeFrame[]>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, {
+				withCredentials: true,
+			})
+			.pipe(
+				map((maintenanceTimeFrames: MaintenanceTimeFrame[]): MaintenanceTimeFrame[] => maintenanceTimeFrames.map(
+					(maintenanceTimeFrame: MaintenanceTimeFrame): MaintenanceTimeFrame => new MaintenanceTimeFrame(maintenanceTimeFrame),
+				)),
+			);
 	}
 
 	addMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<MaintenanceTimeFrame> {
@@ -180,23 +182,14 @@ export class VoService {
 			.set('name', timeframe.name)
 			.set('message', timeframe.message);
 
-		return this.http.post<MaintenanceTimeFrame>(
-			`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`,
-			params,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, params, {
+			withCredentials: true,
+		});
 	}
 
 	deleteMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<any> {
-
-		return this.http.delete<any>(
-			`${ApiSettings.getApiBaseURL()}voManagers/maintenance/delete/${timeframe.id}/`,
-			{
-				withCredentials: true,
-			},
-		);
+		return this.http.delete<any>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/${timeframe.id}/`, {
+			withCredentials: true,
+		});
 	}
-
 }

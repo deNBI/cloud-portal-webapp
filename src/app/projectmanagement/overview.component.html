@@ -502,14 +502,17 @@
 						<div class="col-6">
 							<div class="btn-group">
 								<a
-									*ngIf="!project_application.project_application_openstack_project
-									&& project_application.project_application_workshop && !project_application?.user_is_admin"
+									*ngIf="
+										!project_application.project_application_openstack_project &&
+										project_application.project_application_workshop &&
+										!project_application?.user_is_admin
+									"
 									class="btn btn-outline-primary"
 									href="mailto:test@test.test"
 									rel="noopener noreferrer"
 									style="margin-top: 15px"
 									target="_blank"
-								>Contact Workshop Admin</a
+									>Contact Workshop Admin</a
 								>
 								<a
 									*ngIf="!project_application.project_application_openstack_project"
@@ -518,7 +521,8 @@
 									rel="noopener noreferrer"
 									style="margin-top: 15px"
 									target="_blank"
-									>Contact Support</a>
+									>Contact Support</a
+								>
 
 								<a
 									*ngIf="supportMails?.length === 1 && project_application.project_application_openstack_project"
@@ -569,11 +573,17 @@
 							</div>
 						</div>
 					</div>
-					<div class="row" *ngIf="!project_application.project_application_openstack_project
-									&& project_application.project_application_workshop
-									&& !project_application?.user_is_admin">
+					<div
+						class="row"
+						*ngIf="
+							!project_application.project_application_openstack_project &&
+							project_application.project_application_workshop &&
+							!project_application?.user_is_admin
+						"
+					>
 						<div class="alert alert-info">
-							If you experience any problems during a workshop, please contact your workshop administrator first before contacting support.
+							If you experience any problems during a workshop, please contact your workshop administrator first before
+							contacting support.
 						</div>
 					</div>
 					<div *ngIf="project_application?.credits_allowed" class="row">
@@ -841,7 +851,7 @@
 										class="form-check-input"
 										type="checkbox"
 										id="toggle_starting_of_machines"
-										[(ngModel)]="project_application.prevent_machines_starting"
+										[(ngModel)]="project_application.allow_machines_starting"
 										*ngIf="!project_application.project_application_openstack_project"
 										(click)="toggleStartingOfMachines()"
 										[disabled]="
