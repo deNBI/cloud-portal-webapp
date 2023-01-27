@@ -64,7 +64,7 @@
 				</div>
 			</div>
 
-			<div *ngIf="projectWorkshopsLoaded && projectMembersLoaded" class="card" id="workshioCard">
+			<div *ngIf="projectWorkshopsLoaded && projectMembersLoaded" class="card" id="workshopCard">
 				<div class="card-header">
 					<i class="fa fa-align-justify"></i>
 					Workshops
@@ -181,6 +181,7 @@
 						</div>
 						<div class="w-100"></div>
 					</div>
+
 					<div class="table-responsive" *ngIf="projectMembersLoaded">
 						<table class="table table-hover">
 							<thead>
@@ -292,231 +293,479 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div *ngIf="projects.length === 0" class="alert alert-warning" role="alert">
-			You are not a member of a project with workshop functionality.
-		</div>
-	</div>
-</div>
+			<div class="card" *ngIf="selectedProject && workshopTimeFramesLoaded">
+				<div class="card-header">
+					<i class="fas fa-calendar-alt"></i>
+					Calender
+				</div>
 
-<div
-	bsModal
-	#verifyDeleteModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
-	id="verify_delete_modal"
-	data-test-id="verify_delete_modal"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Cleanup workshop</h4>
-				<button
-					type="button"
-					class="close"
-					style="cursor: pointer"
-					(click)="verifyDeleteModal.hide()"
-					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-warning" role="alert">
-					Are you sure you want to delete the following workshop:<br />
-					<strong>Longname: </strong>{{ selectedWorkshop?.longname }}<br />
-					<strong>Shortname: </strong>{{ selectedWorkshop?.shortname }}
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button
-					class="btn btn-success col-md-4"
-					(click)="cleanupWorkshop(); verifyDeleteModal.hide(); deletionStatusModal.show()"
-					id="confirm_delete_workshop_button"
-					data-test-id="confirm_delete_workshop_button"
-				>
-					Yes
-				</button>
-				<button class="btn btn-danger col-md-4" type="reset" (click)="verifyDeleteModal.hide()">Cancel</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<div
-	bsModal
-	#infoMailModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
-	id="send_info_mail_modal"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Send Info Mail for VMs</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="infoMailModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-info" *ngIf="!sending_mails && !sending_done">
-					<strong>Also send a mail to those who have already received a mail?</strong>
-					<label style="margin-top: 7px; margin-bottom: 0px !important">
-						<input type="checkbox" [(ngModel)]="resend_info" />
-					</label>
-				</div>
-				<div class="alert alert-info" *ngIf="sending_mails">
-					<strong>Sending mails...</strong>
-				</div>
-				<div class="alert alert-success" *ngIf="!sending_mails && sending_done">
-					<strong>Successfully sent mails</strong>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button
-					class="btn btn-info col-md-4"
-					type="reset"
-					*ngIf="!sending_done && !sending_mails"
-					(click)="sendWorkshopVMsEmailInfo()"
-				>
-					Send
-				</button>
-				<button class="btn btn-danger col-md-4" type="reset" (click)="infoMailModal.hide()">Close</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<div
-	bsModal
-	#deletionStatusModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
-	id="delete_status_modal"
-	data-test-id="delete_status_modal"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Cleanup workshop status</h4>
-				<button
-					type="button"
-					class="close"
-					style="cursor: pointer"
-					(click)="verifyDeleteModal.hide()"
-					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div *ngIf="deleting">
-					<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
-				</div>
-				<div *ngIf="!deleting">
-					<div *ngIf="deleteSuccess" id="delete_success_id" data-test-id="delete_success_id">Cleanup successful.</div>
-					<div *ngIf="!deleteSuccess" id="delete_fail_id">Cleanup failed.</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button
-					class="btn btn-danger col-md-4"
-					type="reset"
-					id="close_deletion_status"
-					data-test-id="close_deletion_status"
-					(click)="deletionStatusModal.hide()"
-				>
-					Close
-				</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<div
-	bsModal
-	#creationStatusModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
-	data-test-id="creation_status_modal"
-	id="creation_status_modal"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Cleanup workshop status</h4>
-				<button
-					type="button"
-					class="close"
-					style="cursor: pointer"
-					(click)="creationStatusModal.hide()"
-					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div *ngIf="workshopCreationMessage.message === ''">
-					<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
-				</div>
-				<div
-					*ngIf="workshopCreationMessage.message !== ''"
-					id="creation_status_message"
-					data-test-id="creation_status_message"
-				>
-					<div
-						class="alert alert-success"
-						*ngIf="workshopCreationMessage.success"
-						id="creation_success"
-						data-test-id="creation_success"
-					>
-						{{ workshopCreationMessage.message }}
+				<div class="card-body" *ngIf="workshopTimeFramesLoaded && !errorLoadingTimeFrames">
+					<div class="alert alert-info">
+						You can enter time slots for the workshop in which work is actively carried out in the portal or on the
+						machines. This enables the de.NBI Cloud Team to improve the planning of portal updates, for example, so as
+						not to hinder or restrict the work of the participants at peak times. Please consider, that the existing
+						timeframes are displayed using the "Central European Time". Please enter your dates using this timezone.
+						Please enter the time slots day by day, to be more precise!
 					</div>
-					<div
-						class="alert alert-danger"
-						*ngIf="!workshopCreationMessage.success"
-						id="creation_failure"
-						data-test-id="creation_failure"
-					>
-						{{ workshopCreationMessage.message }}
+					<h6 class="card-title">Existing timeframes</h6>
+					<table class="table" *ngIf="workshopTimeFrames.length > 0">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Start time</th>
+								<th scope="col">End time</th>
+								<th scope="col">Workshop</th>
+								<th scope="col">Description</th>
+								<th scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index">
+								<th scope="row">{{ i + 1 }}</th>
+								<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ wstimeframe.workshop?.longname }}</td>
+								<td>{{ wstimeframe.description }}</td>
+								<td>
+									<button class="btn btn-outline-danger" (click)="deleteWorkshopTimeFrame(wstimeframe)">Remove</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="alert alert-info" *ngIf="workshopTimeFrames.length === 0">
+						There are no entered timeframes yet
+					</div>
+					<hr />
+				</div>
+				<div class="card-body">
+					<h6 class="card-title">Add new timeframes</h6>
+					<!-- toast -->
+					<app-information-toast
+						[title]="informationTitle"
+						[message]="informationMessage"
+						[type]="informationType"
+					></app-information-toast>
+					<!-- toast -->
+					<form id="new_timeframe_form" #newTimeFrameForm="ngForm" class="form-horizontal">
+						<div class="form-row align-content-start">
+							<div class="mb-3 mx-auto">
+								<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
+							</div>
+
+							<div class="mb-3 mx-auto">
+								<label class="form-label">Start Time</label>
+								<app-timepicker (timeChange)="startTimeChanged($event)"></app-timepicker>
+							</div>
+
+							<div class="mb-3 mx-auto">
+								<label class="form-label">End Time</label>
+								<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="mb-3">
+								<label for="description_input_field" class="form-label">Short Description</label>
+								<input
+									type="text"
+									class="form-control"
+									id="description_input_field"
+									aria-describedby="descriptionHelp"
+									[(ngModel)]="newWorkShopTimeFrame.description"
+									[ngModelOptions]="{ standalone: true }"
+								/>
+								<div id="emailHelp" class="form-text">
+									You are free to enter a short description of the planned event
+								</div>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="mb-3">
+								<label for="description_input_field" class="form-label">Connected Workshop</label>
+								<select
+									id="workshop_input_field"
+									class="form-select"
+									aria-describedby="workshopHelp"
+									[(ngModel)]="newWorkShopTimeFrame.workshop"
+									[ngModelOptions]="{ standalone: true }"
+								>
+									<option [ngValue]="null" [defaultSelected]="true">No specific workshop</option>
+									<option *ngFor="let ws of workshops" [ngValue]="ws">{{ ws.shortname }}</option>
+								</select>
+								<div id="workshopHelp" class="form-text">
+									You are free to select a specific workshop this timeframe gets connected with. Otherwise it will be
+									just linked with your project.
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="mb-3">
+								<button
+									class="btn btn-outline-primary"
+									(click)="createNewTimeFrame()"
+									[disabled]="
+										!(this.newWorkShopTimeFrame | isValidTimeFrame) ||
+										!workshopTimeFramesLoaded || errorLoadingTimeFrames
+									"
+								>
+									Add new timeframe
+								</button>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col-md-auto mx-auto" *ngIf="!(this.newWorkShopTimeFrame | isValidTimeFrame)">
+								<div class="alert alert-info">
+									Please select a timeframe, where the start time is before the end time and in the future!
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="card-body" *ngIf="this.workshopTimeFramesLoaded && this.errorLoadingTimeFrames">
+					<div class="alert alert-danger">
+						An error occurred while loading the timeframes of this calender - please try again later!
 					</div>
 				</div>
+				<div class="card-body" *ngIf="!this.workshopTimeFramesLoaded">
+					<span class="spinner-border-sm"></span>
+				</div>
 			</div>
-			<div class="modal-footer">
-				<button
-					class="btn btn-danger col-md-4"
-					type="reset"
-					data-test-id="close_creation_status_modal"
-					id="close_creation_status_modal"
-					(click)="creationStatusModal.hide()"
-				>
-					Close
-				</button>
+			<div *ngIf="projects.length === 0" class="alert alert-warning" role="alert">
+				You are not a member of a project with workshop functionality.
 			</div>
 		</div>
-		<!-- /.modal-content -->
 	</div>
-	<!-- /.modal-dialog -->
+
+	<div
+		bsModal
+		#verifyDeleteModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="Label"
+		aria-hidden="true"
+		id="verify_delete_modal"
+		data-test-id="verify_delete_modal"
+	>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Cleanup workshop</h4>
+					<button
+						type="button"
+						class="close"
+						style="cursor: pointer"
+						(click)="verifyDeleteModal.hide()"
+						aria-label="Close"
+					>
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-warning" role="alert">
+						Are you sure you want to delete the following workshop:<br />
+						<strong>Longname: </strong>{{ selectedWorkshop?.longname }}<br />
+						<strong>Shortname: </strong>{{ selectedWorkshop?.shortname }}
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-success col-md-4"
+						(click)="cleanupWorkshop(); verifyDeleteModal.hide(); deletionStatusModal.show()"
+						id="confirm_delete_workshop_button"
+						data-test-id="confirm_delete_workshop_button"
+					>
+						Yes
+					</button>
+					<button class="btn btn-danger col-md-4" type="reset" (click)="verifyDeleteModal.hide()">Cancel</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div
+		bsModal
+		#infoMailModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="Label"
+		aria-hidden="true"
+		id="send_info_mail_modal"
+	>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Send Info Mail for VMs</h4>
+					<button type="button" class="close" style="cursor: pointer" (click)="infoMailModal.hide()" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-info" *ngIf="!sending_mails && !sending_done">
+						<strong>Also send a mail to those who have already received a mail?</strong>
+						<label style="margin-top: 7px; margin-bottom: 0px !important">
+							<input type="checkbox" [(ngModel)]="resend_info" />
+						</label>
+					</div>
+					<div class="alert alert-info" *ngIf="sending_mails">
+						<strong>Sending mails...</strong>
+					</div>
+					<div class="alert alert-success" *ngIf="!sending_mails && sending_done">
+						<strong>Successfully sent mails</strong>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-info col-md-4"
+						type="reset"
+						*ngIf="!sending_done && !sending_mails"
+						(click)="sendWorkshopVMsEmailInfo()"
+					>
+						Send
+					</button>
+					<button class="btn btn-danger col-md-4" type="reset" (click)="infoMailModal.hide()">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div
+		bsModal
+		#deletionStatusModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="Label"
+		aria-hidden="true"
+		id="delete_status_modal"
+		data-test-id="delete_status_modal"
+	>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Cleanup workshop status</h4>
+					<button
+						type="button"
+						class="close"
+						style="cursor: pointer"
+						(click)="verifyDeleteModal.hide()"
+						aria-label="Close"
+					>
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div *ngIf="deleting">
+						<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
+					</div>
+					<div *ngIf="!deleting">
+						<div *ngIf="deleteSuccess" id="delete_success_id" data-test-id="delete_success_id">Cleanup successful.</div>
+						<div *ngIf="!deleteSuccess" id="delete_fail_id">Cleanup failed.</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-danger col-md-4"
+						type="reset"
+						id="close_deletion_status"
+						data-test-id="close_deletion_status"
+						(click)="deletionStatusModal.hide()"
+					>
+						Close
+					</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div
+		bsModal
+		#creationStatusModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="Label"
+		aria-hidden="true"
+		data-test-id="creation_status_modal"
+		id="creation_status_modal"
+	>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Cleanup workshop status</h4>
+					<button
+						type="button"
+						class="close"
+						style="cursor: pointer"
+						(click)="creationStatusModal.hide()"
+						aria-label="Close"
+					>
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div *ngIf="workshopCreationMessage.message === ''">
+						<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
+					</div>
+					<div
+						*ngIf="workshopCreationMessage.message !== ''"
+						id="creation_status_message"
+						data-test-id="creation_status_message"
+					>
+						<div
+							class="alert alert-success"
+							*ngIf="workshopCreationMessage.success"
+							id="creation_success"
+							data-test-id="creation_success"
+						>
+							{{ workshopCreationMessage.message }}
+						</div>
+						<div
+							class="alert alert-danger"
+							*ngIf="!workshopCreationMessage.success"
+							id="creation_failure"
+							data-test-id="creation_failure"
+						>
+							{{ workshopCreationMessage.message }}
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-danger col-md-4"
+						type="reset"
+						data-test-id="close_creation_status_modal"
+						id="close_creation_status_modal"
+						(click)="creationStatusModal.hide()"
+					>
+						Close
+					</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div
+		bsModal
+		#confirmInterferingSlotModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="Label"
+		aria-hidden="true"
+		id="confirm_interfering_slot_modal"
+		data-test-id="confirm_interfering_slot_modal"
+	>
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Confirm interfering timeslot</h4>
+					<button
+						type="button"
+						class="close"
+						style="cursor: pointer"
+						(click)="confirmInterferingSlotModal.hide()"
+						aria-label="Close"
+					>
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-info">
+						You are about to enter a timeslot that overlaps with other timeslots already entered. Are you sure that the
+						entered information is correct?
+					</div>
+
+					<table class="table" *ngIf="listOfOverlaps.length > 0">
+						<thead>
+							<tr>
+								<th scope="col">Your entered slot</th>
+								<th scope="col">Start time</th>
+								<th scope="col">End time</th>
+								<th scope="col">Workshop</th>
+								<th scope="col">Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row"></th>
+								<td>{{ newWorkShopTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ newWorkShopTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ newWorkShopTimeFrame.workshop?.longname }}</td>
+								<td>
+									{{
+										newWorkShopTimeFrame.description.length > 12
+											? (newWorkShopTimeFrame.description | slice : 0 : 12) + '...'
+											: newWorkShopTimeFrame.description
+									}}
+								</td>
+							</tr>
+						</tbody>
+
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Start time</th>
+								<th scope="col">End time</th>
+								<th scope="col">Workshop</th>
+								<th scope="col">Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index">
+								<th scope="row">{{ i + 1 }}</th>
+								<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ wstimeframe.workshop?.longname }}</td>
+								<td>
+									{{
+										wstimeframe.description.length > 12
+											? (wstimeframe.description | slice : 0 : 12) + '...'
+											: wstimeframe.description
+									}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-warning col-md-4"
+						type="reset"
+						id="cancel_confirm_interfere"
+						data-test-id="cancel_confirm_interfere"
+						(click)="confirmInterferingSlotModal.hide()"
+					>
+						Cancel
+					</button>
+					<button
+						class="btn btn-success col-md-4"
+						type="reset"
+						id="confirm_interfere"
+						data-test-id="confirm_interfere"
+						(click)="confirmInterferingSlotModal.hide(); processAddAfterConfirm()"
+					>
+						Confirm
+					</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 </div>
-<!-- /.modal -->

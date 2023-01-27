@@ -4,6 +4,7 @@ const VO_NAME: string = window['env']['VO_NAME'] || 'denbi';
 export const environment: any = {
 	WIKI_PRE: `https://${API_HOST}/wiki/`,
 	vo: window['env']['VO'] || 3335,
+	voName: VO_NAME,
 	production: window['env']['PRODUCTION'] === 'true' || false,
 	freemium_project_id: 10392,
 	domain: API_HOST,

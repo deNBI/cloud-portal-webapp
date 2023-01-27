@@ -5,6 +5,7 @@ import { VoGuardService } from './vo-guard.service';
 import { ResourcesComponent } from './resources/resources.component';
 import { ClientOverviewComponent } from './clients/clientOverview.component';
 import { NumberChartsComponent } from './number-charts/number-charts.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 const routes: Routes = [
 	{
@@ -22,7 +23,6 @@ const routes: Routes = [
 		data: {
 			title: 'Vo Resources',
 		},
-
 	},
 	{
 		path: 'clientsOverview',
@@ -31,7 +31,6 @@ const routes: Routes = [
 		data: {
 			title: 'Clients',
 		},
-
 	},
 
 	{
@@ -43,6 +42,14 @@ const routes: Routes = [
 		},
 	},
 
+	{
+		path: 'maintenance',
+		component: MaintenanceComponent,
+		canActivate: [VoGuardService],
+		data: {
+			title: 'Maintenance',
+		},
+	},
 ];
 
 /**
@@ -52,5 +59,4 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class VoManagerRoutingModule {
-}
+export class VoManagerRoutingModule {}
