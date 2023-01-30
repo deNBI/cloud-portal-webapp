@@ -26,7 +26,7 @@ export class Util {
 		private static _VOLUME_NAME: string = 'ProtractorVolume';
 		private static _VOLUME_SPACE: string = '1';
 		private static _DEFAULT_FLAVOR_TITLE: string = 'de_NBI_default';
-		private static _UBUNTU_18_TITLE: string = 'Ubuntu_18_04_LTS_de_NBI__2022-06-17_';
+		private static _UBUNTU_18_TITLE: string = 'Ubuntu_18_04_LTS_de_NBI__2022-10-28_';
 		private static _CWLAB: string = 'cwlab';
 		private static _VOLUME_MOUNT_PATH_STRING: string = 'path';
 		private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
@@ -148,7 +148,6 @@ export class Util {
 		static async clickByDataTestIdStr(page: Page, id_str: string): Promise<void> {
 				console.log('Clicking by data-test-id: ' + id_str)
 				await page.click(Util.by_data_test_id_str(id_str))
-
 		}
 
 		static async consoleLogCurrentUrl(page: Page): Promise<void> {
