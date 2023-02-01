@@ -602,6 +602,15 @@
 							</div>
 						</div>
 					</div>
+					<div *ngIf="expiredTemplated && selectedProjectType === 'EXP'" class="form-group row">
+						<label class="col-md-12 control-label"><strong>Set a removal date</strong></label>
+						<div class="mb-3 mx-auto">
+							<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
+						</div>
+						<div class="alert alert-danger" *ngIf="!(removalDate | isFutureTime)">
+							Please select a removal date that is in the future.
+						</div>
+					</div>
 					<div
 						*ngIf="!(expiredTemplated && selectedProjectType === 'EXP')"
 						class="form-group row"
@@ -674,7 +683,9 @@
 			<div class="modal-footer">
 				<button
 					type="button"
-					[disabled]="f.invalid"
+					[disabled]="
+						f.invalid || (this.expiredTemplated && this.selectedProjectType === 'EXP' && !(removalDate | isFutureTime))
+					"
 					class="btn btn-primary"
 					(click)="emailModal.hide(); verifyModal.show()"
 				>

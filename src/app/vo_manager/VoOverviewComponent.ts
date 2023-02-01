@@ -38,6 +38,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public emailType: number;
 	public emailAdminsOnly: boolean = false;
 	public expiredTemplated: boolean = false;
+
+	public removalDate: Date = new Date();
 	public selectedProject: Application;
 	computecenters: ComputecenterComponent[] = [];
 
@@ -126,6 +128,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 					this.selectedProjectType,
 					this.emailAdminsOnly,
 					this.expiredTemplated,
+					this.removalDate,
 					reply,
 				);
 				break;
@@ -173,6 +176,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		type: string,
 		adminsOnly: boolean,
 		expiredTemplate: boolean,
+		removalDate: Date,
 		reply?: string,
 	): void {
 		this.voService
@@ -183,6 +187,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				type,
 				adminsOnly,
 				expiredTemplate,
+				removalDate,
 				encodeURIComponent(reply),
 			)
 			.subscribe((result: IResponseTemplate): void => {
@@ -194,6 +199,13 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				this.selectedProjectType = 'ALL';
 				this.selectedFacility = 'ALL';
 			});
+	}
+
+	dayChanged(date: { year: number; month: number; day: number }): void {
+		this.removalDate.setDate(date.day);
+		this.removalDate.setMonth(date.month - 1);
+		this.removalDate.setFullYear(date.year);
+		console.log(this.removalDate);
 	}
 
 	setEmailType(type: number): void {

@@ -127,7 +127,8 @@ export class VoService {
 		facility: string,
 		type: string,
 		adminsOnly: boolean,
-		expiredTemplate,
+		expiredTemplate: boolean,
+		removalDate: Date,
 		reply?: string,
 	): Observable<any> {
 		const params: HttpParams = new HttpParams()
@@ -137,6 +138,7 @@ export class VoService {
 			.set('reply', reply)
 			.set('facility', facility)
 			.set('expired_template', expiredTemplate)
+			.set('removal_date', removalDate.toUTCString())
 			.set('type', type);
 
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
