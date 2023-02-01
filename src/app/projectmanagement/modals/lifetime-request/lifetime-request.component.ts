@@ -142,7 +142,6 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 
 	calculateNewEndDate() {
 		this.new_end_date = new Date(this.end_date);
-		console.log(this.new_end_date);
 		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
 	}
 }
