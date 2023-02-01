@@ -44,7 +44,7 @@
 				<div class="input-group">
 					<input
 						class="form-control"
-						(change)="calculateNewEndDate(); calculateCreditsLifetime()"
+						(ngModelChange)="calculateNewEndDate(); calculateCreditsLifetime()"
 						id="temp_project_extension_application_renewal_lifetime"
 						data-test-id="project_extension_months_input"
 						name="temp_project_extension_application_renewal_lifetime"

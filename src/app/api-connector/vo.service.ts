@@ -127,6 +127,8 @@ export class VoService {
 		facility: string,
 		type: string,
 		adminsOnly: boolean,
+		expiredTemplate: boolean,
+		removalDate: Date,
 		reply?: string,
 	): Observable<any> {
 		const params: HttpParams = new HttpParams()
@@ -135,6 +137,8 @@ export class VoService {
 			.set('admins_only', adminsOnly)
 			.set('reply', reply)
 			.set('facility', facility)
+			.set('expired_template', expiredTemplate)
+			.set('removal_date', removalDate.toUTCString())
 			.set('type', type);
 
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
@@ -145,7 +149,7 @@ export class VoService {
 	/**
 	 * Get members of a project with emails.
 	 *
-	 * @param groupid id of the the group
+	 * @param groupid id of the group
 	 * @returns
 	 */
 	getVoGroupRichMembers(groupid: number | string): Observable<ProjectMember[]> {

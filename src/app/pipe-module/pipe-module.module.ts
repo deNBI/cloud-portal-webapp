@@ -11,6 +11,7 @@ import { NoCoresPipe, NoRamPipe, NoVMsPipe } from './pipes/ressources';
 import { HasUnavailableFlavorsPipe } from './pipes/has-unavailable-flavors.pipe';
 import { ValidTimeFramePipe } from './pipes/validTimeFrame.pipe';
 import { PublicKeyPipe } from './pipes/publicKey.pipe';
+import { IsFutureTimePipe } from './pipes/futureTime.pipe';
 
 /**
  * Pipemodule
@@ -30,6 +31,7 @@ import { PublicKeyPipe } from './pipes/publicKey.pipe';
 		NoCoresPipe,
 		NoRamPipe,
 		ValidTimeFramePipe,
+		IsFutureTimePipe,
 		PublicKeyPipe,
 	],
 	exports: [
@@ -46,6 +48,7 @@ import { PublicKeyPipe } from './pipes/publicKey.pipe';
 		NoCoresPipe,
 		NoRamPipe,
 		ValidTimeFramePipe,
+		IsFutureTimePipe,
 		PublicKeyPipe,
 	],
 	imports: [CommonModule],
