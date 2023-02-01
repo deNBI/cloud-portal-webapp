@@ -26,7 +26,6 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	end_date: Date;
 	new_end_date: Date;
 	max_lifetime: number = 6;
-
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
 	ontology_search_keyword: string = 'term';
@@ -143,6 +142,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 
 	calculateNewEndDate() {
 		this.new_end_date = new Date(this.end_date);
+		console.log(this.new_end_date);
 		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
 	}
 }
