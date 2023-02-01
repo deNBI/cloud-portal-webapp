@@ -37,6 +37,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public emailVerify: string;
 	public emailType: number;
 	public emailAdminsOnly: boolean = false;
+	public expiredTemplated: boolean = false;
+
+	public removalDate: Date = new Date();
 	public selectedProject: Application;
 	computecenters: ComputecenterComponent[] = [];
 
@@ -116,7 +119,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		if (reply) {
 			reply = reply.trim();
 		}
-		console.log(this.emailAdminsOnly);
 		switch (this.emailType) {
 			case 0: {
 				this.sendMailToVo(
@@ -125,6 +127,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 					this.selectedFacility.toString(),
 					this.selectedProjectType,
 					this.emailAdminsOnly,
+					this.expiredTemplated,
+					this.removalDate,
 					reply,
 				);
 				break;
@@ -171,6 +175,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		facility: string,
 		type: string,
 		adminsOnly: boolean,
+		expiredTemplate: boolean,
+		removalDate: Date,
 		reply?: string,
 	): void {
 		this.voService
@@ -180,6 +186,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				facility,
 				type,
 				adminsOnly,
+				expiredTemplate,
+				removalDate,
 				encodeURIComponent(reply),
 			)
 			.subscribe((result: IResponseTemplate): void => {
@@ -191,6 +199,13 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				this.selectedProjectType = 'ALL';
 				this.selectedFacility = 'ALL';
 			});
+	}
+
+	dayChanged(date: { year: number; month: number; day: number }): void {
+		this.removalDate.setDate(date.day);
+		this.removalDate.setMonth(date.month - 1);
+		this.removalDate.setFullYear(date.year);
+		console.log(this.removalDate);
 	}
 
 	setEmailType(type: number): void {
@@ -253,6 +268,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 			}
 			default:
 				this.emailVerify = 'Are you sure you want to send this?';
+		}
+		if (this.selectedProjectType !== 'EXP') {
+			this.expiredTemplated = false;
 		}
 	}
 
