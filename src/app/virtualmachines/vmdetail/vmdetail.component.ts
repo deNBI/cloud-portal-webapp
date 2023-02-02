@@ -38,6 +38,7 @@ import { Backend } from '../conda/backend/backend';
 import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component';
 import { TemplateNames } from '../conda/template-names';
 import { RebootVmComponent } from '../modals/reboot-vm/reboot-vm.component';
+import { NotificationModalComponent } from '../../shared/modal/notification-modal';
 
 /**
  * VM Detail page component
@@ -550,14 +551,34 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 					if (updated_vm.status === VirtualMachineStates.ACTIVE) {
 						this.reboot_done = true;
 						this.virtualMachine = updated_vm;
+						this.showNotificationModal(
+							'Success',
+							'The resources of the application were adjusted successfully!',
+							'success',
+						);
 					} else {
 						if (this.virtualMachine['error']) {
 							this.status_check_error = true;
+							this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
 						}
 						this.check_status_loop_when_reboot();
 					}
 				});
 		}, this.checkStatusTimeout);
+	}
+
+	showNotificationModal(
+		notificationModalTitle: string,
+		notificationModalMessage: string,
+		notificationModalType: string,
+	) {
+		const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
+		if (this.bsModalRef) {
+			this.bsModalRef.hide();
+		}
+
+		this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
 	}
 
 	stopCheckStatusTimer(): void {
