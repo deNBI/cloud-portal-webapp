@@ -2,13 +2,13 @@ import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
+import { WIKI_MOUNT_VOLUME } from '../../../../links/links';
 
 @Component({
 	selector: 'app-reboot-vm',
 	templateUrl: './reboot-vm.component.html',
 })
 export class RebootVmComponent implements OnDestroy {
-
 	virtualMachine: VirtualMachine;
 	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 	public event: EventEmitter<any> = new EventEmitter();
@@ -16,6 +16,8 @@ export class RebootVmComponent implements OnDestroy {
 	choosingType: boolean = true;
 	confirm: boolean = false;
 	reboot_type: string = '';
+
+	WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
 
 	constructor(public bsModalRef: BsModalRef) {
 		// eslint-disable-next-line no-empty-function
@@ -44,5 +46,4 @@ export class RebootVmComponent implements OnDestroy {
 			this.event.emit({ resume: true });
 		}
 	}
-
 }

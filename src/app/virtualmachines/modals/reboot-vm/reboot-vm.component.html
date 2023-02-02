@@ -15,7 +15,7 @@
 					type="button"
 					class="btn btn-primary"
 					*ngIf="
-						!(virtualMachine?.status | hasStatus: VirtualMachineStates.staticDELETED) &&
+						!(virtualMachine?.status | hasStatus : VirtualMachineStates.staticDELETED) &&
 						virtualMachine?.client.features['VM_REBOOT']
 					"
 					[attr.data-test-id]="'soft_reboot_vm_' + virtualMachine?.name"
@@ -32,7 +32,7 @@
 					class="btn btn-primary"
 					[id]="'hardRebootVM_' + virtualMachine?.name"
 					*ngIf="
-						!(virtualMachine?.status | hasStatus: VirtualMachineStates.staticDELETED) &&
+						!(virtualMachine?.status | hasStatus : VirtualMachineStates.staticDELETED) &&
 						virtualMachine?.client.features['VM_REBOOT']
 					"
 					(click)="hardRebootShow()"
@@ -62,10 +62,39 @@
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-warning" role="alert">
-			Restarted instances will lose any data not saved in persistent storage.<br>
-			Any mounted volumes will need to be remounted after the reboot.<br>
+			Restarted instances will lose any data not saved in persistent storage.<br />
+			Any mounted volumes will need to be remounted after the reboot.<br />
 			Are you sure to
 			<strong>{{ reboot_type }}</strong> reboot {{ virtualMachine?.name }}?
+		</div>
+		<div *ngIf="virtualMachine.volumes?.length > 0">
+			<h6>List of volumes</h6>
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Volume Name</th>
+							<th scope="col">Storage Size</th>
+							<th scope="col">Physical device</th>
+							<th scope="col">Mountpath</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let volume of virtualMachine.volumes">
+							<th scope="row">{{ volume.volume_name }}</th>
+							<td>{{ volume.volume_storage }} GB(s)</td>
+							<td>{{ volume.volume_device }}</td>
+							<td>/vol/{{ volume.volume_path }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="alert alert-warning">
+				<strong>Please consider: </strong>The volume's mount path may have already changed, for example, if you manually
+				mounted or unmounted the volume. Read more on mounting of volumes
+				<a class="alert-link" [href]="WIKI_MOUNT_VOLUME" rel="noopener noreferrer" target="_blank">here</a>.
+			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
