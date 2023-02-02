@@ -37,6 +37,7 @@ import { Condalog } from '../conda/condalog';
 import { Backend } from '../conda/backend/backend';
 import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component';
 import { TemplateNames } from '../conda/template-names';
+import { RebootVmComponent } from '../modals/reboot-vm/reboot-vm.component';
 
 /**
  * VM Detail page component
@@ -92,6 +93,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	WIKI_PERSISTENT_TERMINAL_LINK: string = WIKI_PERSISTENT_TERMINAL_LINK;
 	SNAPSHOT_MAX_RAM: number = SnapshotModel.MAX_RAM;
 
+	REBOOT_ERROR_MSG: string = 'Reboot of machine failed. If the error persists, please contact the support.';
+
 	DEBOUNCE_TIME: number = 300;
 
 	volume_to_attach: Volume;
@@ -112,6 +115,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 * @type {number}
 	 */
 	private checkStatusTimeout: number = 1500;
+
+	checkStatusTimer: ReturnType<typeof setTimeout>;
 	/**
 	 * Type of reboot HARD|SOFT.
 	 */
@@ -354,20 +359,20 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 			this.bsModalRef.content.event.subscribe((result: any) => {
 				if ('deleteVM' in result) {
 					this.deleteVm();
-					// } else if ('stopVM' in result) {
-					// 	this.stopVM();
-					// } else if ('resumeVM' in result) {
-					// 	this.resumeVM();
-					// } else if ('resume' in result) {
-					// 	this.resumeCheckStatusTimer();
-					// 	} else if ('snapshotVM' in result) {
-					// 	this.createSnapshot(result['snapshotName'], result['description']);
-					// } else if ('attachVolume' in result) {
-					// 	this.attachVolume(result['volume']);
-					// } else if ('detachVolume' in result) {
-					// 	this.detachVolume(result['volume']);
-					// } else if ('reboot_type' in result) {
-					// 	this.rebootVM(result['reboot_type']);
+					/** } else if ('stopVM' in result) {
+					 	this.stopVM();
+					 } else if ('resumeVM' in result) {
+					 	this.resumeVM();
+					 } else if ('resume' in result) {
+					 	this.resumeCheckStatusTimer();
+					 	} else if ('snapshotVM' in result) {
+					 	this.createSnapshot(result['snapshotName'], result['description']);
+					 } else if ('attachVolume' in result) {
+					 	this.attachVolume(result['volume']);
+					 } else if ('detachVolume' in result) {
+					 	this.detachVolume(result['volume']); */
+				} else if ('reboot_type' in result) {
+					this.rebootVM(result['reboot_type']);
 				}
 			}),
 		);
@@ -380,6 +385,17 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		const initialState = { virtualMachine: this.virtualMachine };
 
 		this.bsModalRef = this.modalService.show(DeleteVmComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeToBsModalRef();
+	}
+
+	/**
+	 * Show reboot modal
+	 */
+	showRebootModal(): void {
+		const initialState = { virtualMachine: this.virtualMachine };
+
+		this.bsModalRef = this.modalService.show(RebootVmComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeToBsModalRef();
 	}
@@ -451,26 +467,28 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 * @param vm which will be rebooted
 	 * @param reboot_type HARD|SOFT
 	 */
-	public rebootVm(reboot_type: string): void {
-		this.virtualmachineService.rebootVM(this.virtualMachine.openstackid, reboot_type).subscribe(
-			(result: IResponseTemplate): void => {
-				this.status_changed = 0;
-				this.virtualMachine.cardState = 0;
+	rebootVM(reboot_type: string): void {
+		this.stopCheckStatusTimer();
+		this.virtualMachine.status = VirtualMachineStates.GETTING_STATUS;
+		this.subscription.add(
+			this.virtualmachineService.rebootVM(this.virtualMachine.openstackid, reboot_type).subscribe(
+				(result: IResponseTemplate): void => {
+					this.virtualMachine.cardState = 0;
+					if (result.value as boolean) {
+						this.virtualMachine.setMsgWithTimeout('Reboot initiated', 5000);
+						this.check_status_loop_when_reboot();
+					} else {
+						this.check_status_loop(VirtualMachineStates.ACTIVE);
+					}
+				},
+				(error1: any): void => {
+					this.error_msg = this.REBOOT_ERROR_MSG;
 
-				if (result.value as boolean) {
-					this.status_changed = 1;
-					this.check_status_loop_when_reboot();
-				} else {
-					this.status_changed = 2;
-				}
-			},
-			(error1: any): void => {
-				this.status_changed = 2;
-				this.status_check_error = true;
-				if (error1['error']['error'] === '409') {
-					this.error_msg =						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-				}
-			},
+					if (error1['error']['error'] === '409') {
+						this.virtualMachine.setErrorMsgWithTimeout(this.REBOOT_ERROR_MSG, this.ERROR_TIMER);
+					}
+				},
+			),
 		);
 	}
 
@@ -482,7 +500,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 * @param is_selected_vm If the vm should be the selected vm
 	 */
 	check_status_loop(final_state: string, is_selected_vm?: boolean, timeout: number = this.checkStatusTimeout): void {
-		setTimeout((): void => {
+		this.checkStatusTimer = setTimeout((): void => {
 			if (this.virtualMachine.openstackid) {
 				this.virtualmachineService
 					.checkVmStatus(this.virtualMachine.openstackid)
@@ -525,7 +543,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 * @param vm
 	 */
 	check_status_loop_when_reboot(): void {
-		setTimeout((): void => {
+		this.checkStatusTimer = setTimeout((): void => {
 			this.virtualmachineService
 				.checkVmStatusWhenReboot(this.virtualMachine.openstackid)
 				.subscribe((updated_vm: VirtualMachine): void => {
@@ -540,6 +558,12 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 					}
 				});
 		}, this.checkStatusTimeout);
+	}
+
+	stopCheckStatusTimer(): void {
+		if (this.checkStatusTimer) {
+			clearTimeout(this.checkStatusTimer);
+		}
 	}
 
 	/**

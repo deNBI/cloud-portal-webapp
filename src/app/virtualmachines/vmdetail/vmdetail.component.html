@@ -151,7 +151,7 @@
 									class="btn btn-secondary"
 									style="width: 100%"
 									id="RebootVMButton"
-									(click)="chooseRebootOptionModal.show()"
+									(click)="showRebootModal()"
 								>
 									<strong>Reboot VM</strong>
 								</button>
@@ -175,7 +175,7 @@
 							</div>
 							<div
 								class="col-3"
-								*ngIf="virtualMachine?.status | statusInList: virtualMachineStates.staticDELETABLE_STATES"
+								*ngIf="virtualMachine?.status | statusInList : virtualMachineStates.staticDELETABLE_STATES"
 							>
 								<button
 									type="button"
@@ -643,101 +643,6 @@
 
 		<div
 			bsModal
-			#rebootModal="bs-modal"
-			class="modal fade"
-			tabindex="-1"
-			role="dialog"
-			aria-labelledby="Label"
-			aria-hidden="true"
-		>
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">
-							<strong>{{ reboot_type }}</strong> reboot {{ this.virtualMachine?.name }}
-						</h4>
-
-						<button type="button" class="close" style="cursor: pointer" (click)="rebootModal.hide()" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="alert alert-warning" role="alert">
-							Restarted instances will lose any data not saved in persistent storage. Are you sure to
-							<strong>{{ reboot_type }}</strong> reboot {{ this.virtualMachine.name }}?
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button
-							class="btn btn-success col-md-4"
-							(click)="rebootVm(reboot_type); rebootModal.hide(); rebootResultModal.show()"
-							data-test-id="verifyRebootButton"
-						>
-							Yes
-						</button>
-						<button class="btn btn-danger col-md-4" type="reset" (click)="rebootModal.hide()">Cancel</button>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
-		<!-- /.modal -->
-
-		<div
-			bsModal
-			#rebootResultModal="bs-modal"
-			class="modal fade"
-			tabindex="-1"
-			role="dialog"
-			aria-labelledby="Label"
-			aria-hidden="true"
-		>
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">
-							<strong>{{ reboot_type }}</strong> reboot {{ virtualMachine?.name }}
-						</h4>
-
-						<button
-							type="button"
-							class="close"
-							style="cursor: pointer"
-							(click)="rebootResultModal.hide()"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div *ngIf="!reboot_done">
-							<div class="alert alert-primary" role="alert">Waiting until rebooted..</div>
-						</div>
-						<div *ngIf="reboot_done">
-							<div class="alert alert-success" role="alert">
-								Successfully {{ reboot_type }} rebooted {{ virtualMachine?.name }}.
-							</div>
-						</div>
-						<div *ngIf="status_check_error">
-							<div class="alert alert-warning" role="alert">
-								An error occurred when checking the status of {{ virtualMachine?.name }}:<br />
-								{{ error_msg }}
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-success col-md-4" (click)="rebootResultModal.hide()">Close</button>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
-		<!-- /.modal -->
-
-		<div
-			bsModal
 			#resumeModal="bs-modal"
 			class="modal fade"
 			tabindex="-1"
@@ -1001,94 +906,6 @@
 
 		<div
 			bsModal
-			#chooseRebootOptionModal="bs-modal"
-			class="modal fade"
-			tabindex="1"
-			role="dialog"
-			[id]="chooseRebootOptionModal"
-			aria-labeledby="cromlabel"
-			aria-hidden="true"
-		>
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">Choose Reboot Type for: {{ virtualMachine?.name }}</h4>
-						<button
-							type="button"
-							class="close"
-							style="cursor: pointer"
-							(click)="chooseRebootOptionModal.hide()"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-
-					<div class="modal-body">
-						<div class="row" style="margin: auto; text-align: left; padding: 5px">
-							The following Reboot types are available for machine {{ virtualMachine?.name }}:
-						</div>
-						<div class="row" style="margin: 5px; text-align: center; padding: 10px">
-							<div class="col-md-6">
-								<button
-									type="button"
-									class="btn btn-primary"
-									*ngIf="
-										virtualMachine?.status !== virtualMachineStates.staticDELETED &&
-										virtualMachine?.status !== virtualMachineStates.staticSHUTOFF &&
-										virtualMachine?.client.features['VM_REBOOT']
-									"
-									id="softRebootVM"
-									(click)="
-										status_check_error = false;
-										reboot_done = false;
-										reboot_type = 'SOFT';
-										chooseRebootOptionModal.hide();
-										rebootModal.show()
-									"
-								>
-									Soft Reboot
-								</button>
-							</div>
-							<div class="col-md-6">
-								<button
-									type="button"
-									class="btn btn-primary"
-									id="hardRebootVM"
-									*ngIf="
-										virtualMachine?.status !== virtualMachineStates.staticDELETED &&
-										virtualMachine.client.features['VM_REBOOT']
-									"
-									(click)="
-										status_check_error = false;
-										reboot_done = false;
-										reboot_type = 'HARD';
-										chooseRebootOptionModal.hide();
-										rebootModal.show()
-									"
-								>
-									Hard Reboot
-								</button>
-							</div>
-						</div>
-					</div>
-
-					<div class="modal-footer">
-						<button
-							type="button"
-							class="btn btn-secondary"
-							(click)="chooseRebootOptionModal.hide()"
-							[id]="'closeRebootOptionModalButton'"
-						>
-							Close
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div
-			bsModal
 			#submitStopVmModal="bs-modal"
 			class="modal fade"
 			tabindex="1"
@@ -1129,58 +946,6 @@
 							type="reset"
 							[id]="'verifyStopCancelButton'"
 							(click)="submitStopVmModal.hide()"
-						>
-							Cancel
-						</button>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
-
-		<div
-			bsModal
-			#submitRestartModal="bs-modal"
-			class="modal fade"
-			tabindex="1"
-			role="dialog"
-			id="submitRestartModal"
-			aria-labeledby="cromlabel"
-			aria-hidden="true"
-		>
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">Restart VM</h4>
-						<button
-							type="button"
-							class="close"
-							style="cursor: pointer"
-							(click)="submitRestartModal.hide()"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="alert alert-warning" role="alert">
-							Are you sure you want to restart {{ virtualMachine?.name }}?
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button
-							class="btn btn-success col-md-4"
-							(click)="resumeVM(); submitRestartModal.hide(); resumeModal.show()"
-							[id]="'verifyRestartButton'"
-						>
-							Yes
-						</button>
-						<button
-							class="btn btn-danger col-md-4"
-							type="reset"
-							[id]="'verifyRestartCancelButton'"
-							(click)="submitRestartModal.hide()"
 						>
 							Cancel
 						</button>
