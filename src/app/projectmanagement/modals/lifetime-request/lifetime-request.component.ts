@@ -139,9 +139,12 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			},
 		);
 	}
-
+	// TODO: Fix - end date still not showing correctly when entry is done with keys.
 	calculateNewEndDate() {
 		this.new_end_date = new Date(this.end_date);
+		console.log(this.end_date);
+		console.log(this.end_date.getMonth())
 		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
+		console.log(this.new_end_date);
 	}
 }
