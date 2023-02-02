@@ -551,15 +551,11 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 					if (updated_vm.status === VirtualMachineStates.ACTIVE) {
 						this.reboot_done = true;
 						this.virtualMachine = updated_vm;
-						this.showNotificationModal(
-							'Success',
-							'The resources of the application were adjusted successfully!',
-							'success',
-						);
+						this.showNotificationModal('Success', 'The virtual machine was rebooted successfully!', 'success');
 					} else {
 						if (this.virtualMachine['error']) {
 							this.status_check_error = true;
-							this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
+							this.showNotificationModal('Failed', 'The reboot of the virtual machine failed!', 'danger');
 						}
 						this.check_status_loop_when_reboot();
 					}
