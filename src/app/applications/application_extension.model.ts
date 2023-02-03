@@ -9,6 +9,10 @@ export class ApplicationLifetimeExtension {
 	Id: number;
 	project_application_id: number | string;
 	extra_lifetime: number;
+
+	old_end_date: any;
+
+	new_end_date: any;
 	comment: string;
 	date_submitted: string;
 	extra_credits: number = 0;
