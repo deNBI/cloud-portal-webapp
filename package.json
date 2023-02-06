@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.594.0",
+  "version": "4.595.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -16,14 +16,10 @@
     "preinstall": "npx npm-force-resolutions",
     "prepare": "husky install"
   },
-  "resolutions": {
-
-  },
+  "resolutions": {},
   "private": true,
   "dependencies": {
-    "@angular-eslint/eslint-plugin": "15.2.0",
-
-    "@coreui/angular": "^4.3.4",
+    "@angular-eslint/eslint-plugin": "^15.2.0",
     "@angular/animations": "15.1.3",
     "@angular/cdk": "15.1.2",
     "@angular/common": "15.1.3",
@@ -36,6 +32,7 @@
     "@angular/router": "15.1.3",
     "@angular/service-worker": "15.1.3",
     "@angular/upgrade": "15.1.3",
+    "@coreui/angular": "^4.3.4",
     "@coreui/coreui": "4.2.6",
     "@coreui/icons-angular": "^4.3.0",
     "@ng-bootstrap/ng-bootstrap": "14.0.1",
@@ -46,7 +43,7 @@
     "acorn": "8.8.2",
     "ajv-formats": "2.1.1",
     "angulartics2": "12.2.0",
-    "billboard.js": "3.7.3",
+    "billboard.js": "3.7.4",
     "bootstrap": "4.6.2",
     "chart.js": "4.2.0",
     "cli-color": "2.0.3",
