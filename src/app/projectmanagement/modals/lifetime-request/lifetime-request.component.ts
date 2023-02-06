@@ -40,6 +40,35 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		private applicationsService: ApplicationsService, // eslint-disable-next-line no-empty-function
 	) {}
 
+	ngOnInit(): void {
+		this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
+			this.edam_ontology_terms = terms;
+			this.searchTermsInEdamTerms();
+		});
+
+		if (this.project.project_lifetime_request) {
+			this.temp_project_extension = new ApplicationLifetimeExtension(this.project.project_lifetime_request);
+		} else {
+			this.temp_project_extension = new ApplicationLifetimeExtension();
+			this.temp_project_extension.setByApp(this.project);
+		}
+		const endDateInfo = this.life_time_string ? this.life_time_string.split(' - ')[1]?.split('.') : [];
+		if (endDateInfo.length === 3) {
+			const [day, month, year] = endDateInfo.map(item => Number(item));
+			if (!Number.isNaN(day) && !Number.isNaN(month) && !Number.isNaN(year)) {
+				this.end_date = new Date(year, month - 1, day);
+			}
+		}
+		this.initial_number_of_edam_terms = this.project.project_application_edam_terms.length;
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+		if (!this.submitted) {
+			this.event.emit({ reload: false });
+		}
+	}
+
 	searchTermsInEdamTerms(): void {
 		const tmp: EdamOntologyTerm[] = [];
 		this.selected_ontology_terms.forEach((ele: any) => {
