@@ -17,15 +17,11 @@
     "prepare": "husky install"
   },
   "resolutions": {
-    "mime": "3.0.0",
-    "jake": "v10.8.5",
-    "d3-color": "v3.1.0",
-    "loader-utils": "3.2.1"
+
   },
   "private": true,
   "dependencies": {
     "@angular-eslint/eslint-plugin": "15.2.0",
-    "@coreui/angular": "^4.3.4",
     "@angular/animations": "15.1.2",
     "@angular/cdk": "15.1.2",
     "@angular/common": "15.1.2",
@@ -38,6 +34,7 @@
     "@angular/router": "15.1.2",
     "@angular/service-worker": "15.1.2",
     "@angular/upgrade": "15.1.2",
+    "@coreui/angular": "^4.3.4",
     "@coreui/coreui": "4.2.6",
     "@coreui/icons-angular": "^4.3.0",
     "@ng-bootstrap/ng-bootstrap": "14.0.1",
@@ -84,6 +81,7 @@
     "postcss-url": "10.1.3",
     "rxjs": "7.8.0",
     "save-svg-as-png": "1.4.17",
+    "slash": "^5.0.0",
     "svg2pdf.js": "2.2.1",
     "ts-helpers": "1.1.2",
     "tslib": "2.4.1",
