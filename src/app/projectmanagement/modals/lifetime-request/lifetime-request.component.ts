@@ -17,7 +17,6 @@ import { ApplicationsService } from '../../../api-connector/applications.service
 	providers: [CreditsService, ApplicationsService],
 })
 export class LifetimeRequestComponent implements OnInit, OnDestroy {
-
 	project: Application;
 	temp_project_extension: ApplicationLifetimeExtension;
 	initial_number_of_edam_terms: number = 0;
@@ -38,59 +37,8 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		public bsModalRef: BsModalRef,
 		private modalService: BsModalService,
 		private creditsService: CreditsService,
-		private applicationsService: ApplicationsService,
-		// eslint-disable-next-line no-empty-function
-	) {
-	}
-
-	ngOnInit(): void {
-		this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
-			this.edam_ontology_terms = terms;
-			this.searchTermsInEdamTerms();
-		});
-
-		if (this.project.project_lifetime_request) {
-			this.temp_project_extension = new ApplicationLifetimeExtension(this.project.project_lifetime_request);
-		} else {
-			this.temp_project_extension = new ApplicationLifetimeExtension();
-			this.temp_project_extension.setByApp(this.project);
-		}
-		// eslint-disable-next-line no-unsafe-optional-chaining
-		const end_date_info = (this.life_time_string?.split(' - ')[1]).split('.') ?? [];
-		if (end_date_info.length === 3) {
-			this.end_date = new Date(Number(end_date_info[2]), Number(end_date_info[1]) - 1, Number(end_date_info[0]));
-		}
-		this.initial_number_of_edam_terms = this.project.project_application_edam_terms.length;
-	}
-
-	ngOnDestroy() {
-		this.subscription.unsubscribe();
-		if (!this.submitted) {
-			this.event.emit({ reload: false });
-		}
-	}
-
-	calculateCreditsLifetime(): void {
-		if (!this.project.credits_allowed) {
-			return;
-		}
-		if (this.temp_project_extension.extra_lifetime <= 0
-			|| !Number.isInteger(this.temp_project_extension.extra_lifetime)) {
-			this.temp_project_extension.extra_credits = 0;
-
-			return;
-		}
-		this.subscription.add(
-			this.creditsService.getExtraCreditsForLifetimeExtension(
-				this.temp_project_extension.extra_lifetime,
-				this.project.project_application_id.toString(),
-			).subscribe(
-				(credits: number): void => {
-					this.temp_project_extension.extra_credits = credits;
-				},
-			),
-		);
-	}
+		private applicationsService: ApplicationsService, // eslint-disable-next-line no-empty-function
+	) {}
 
 	searchTermsInEdamTerms(): void {
 		const tmp: EdamOntologyTerm[] = [];
@@ -112,38 +60,35 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			project: this.project,
 			extension: this.temp_project_extension,
 			lifetimeExtension: true,
-			expectedTotalCredits: (this.project.project_application_initial_credits + this.temp_project_extension.extra_credits),
+			expectedTotalCredits:
+				this.project.project_application_initial_credits + this.temp_project_extension.extra_credits,
 			selected_ontology_terms: this.selected_ontology_terms,
 		};
 		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
-		this.bsModalRef.content.event.subscribe(
-			(result: any) => {
-				if ('reload' in result && result['reload']) {
-					if (this.selected_ontology_terms.length > 0) {
-						this.applicationsService
-							.addEdamOntologyTerms(
-								this.project.project_application_id,
-								this.selected_ontology_terms,
-							)
-							.subscribe((): void => {
-								this.event.emit({ reload: true });
-							});
-					} else {
-						this.event.emit({ reload: true });
-					}
+		this.bsModalRef.content.event.subscribe((result: any) => {
+			if ('reload' in result && result['reload']) {
+				if (this.selected_ontology_terms.length > 0) {
+					this.applicationsService
+						.addEdamOntologyTerms(this.project.project_application_id, this.selected_ontology_terms)
+						.subscribe((): void => {
+							this.event.emit({ reload: true });
+						});
 				} else {
-					this.event.emit({ reload: false });
+					this.event.emit({ reload: true });
 				}
-			},
-		);
+			} else {
+				this.event.emit({ reload: false });
+			}
+		});
 	}
+
 	// TODO: Fix - end date still not showing correctly when entry is done with keys.
 	calculateNewEndDate() {
 		this.new_end_date = new Date(this.end_date);
 		console.log(this.end_date);
-		console.log(this.end_date.getMonth())
+		console.log(this.end_date.getMonth());
 		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
 		console.log(this.new_end_date);
 	}
