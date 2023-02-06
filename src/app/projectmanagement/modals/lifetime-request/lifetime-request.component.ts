@@ -42,7 +42,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 
 	searchTermsInEdamTerms(): void {
 		const tmp: EdamOntologyTerm[] = [];
-		this.selected_ontology_terms.forEach(ele => {
+		this.selected_ontology_terms.forEach((ele: any) => {
 			// @ts-ignore
 			const td = this.edam_ontology_terms.find(term => term.term === ele);
 			tmp.push(td);
