@@ -121,4 +121,27 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
 		console.log(this.new_end_date);
 	}
+	calculateCreditsLifetime(): void {
+		if (!this.project.credits_allowed) {
+			return;
+		}
+		if (
+			this.temp_project_extension.extra_lifetime <= 0
+			|| !Number.isInteger(this.temp_project_extension.extra_lifetime)
+		) {
+			this.temp_project_extension.extra_credits = 0;
+
+			return;
+		}
+		this.subscription.add(
+			this.creditsService
+				.getExtraCreditsForLifetimeExtension(
+					this.temp_project_extension.extra_lifetime,
+					this.project.project_application_id.toString(),
+				)
+				.subscribe((credits: number): void => {
+					this.temp_project_extension.extra_credits = credits;
+				}),
+		);
+	}
 }
