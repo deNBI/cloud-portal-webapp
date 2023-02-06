@@ -56,10 +56,13 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			this.temp_project_extension.setByApp(this.project);
 		}
 		// eslint-disable-next-line no-unsafe-optional-chaining
-		const end_date_info = (this.life_time_string?.split(' - ')[1]).split('.') ?? [];
-		if (end_date_info.length === 3) {
-			this.end_date = new Date(Number(end_date_info[2]), Number(end_date_info[1]) - 1, Number(end_date_info[0]));
-		}
+const endDateInfo = this.life_time_string ? this.life_time_string.split(' - ')[1]?.split('.') : [];
+if (endDateInfo.length === 3) {
+  const [day, month, year] = endDateInfo.map(item => Number(item));
+  if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+    this.end_date = new Date(year, month - 1, day);
+  }
+}
 		this.initial_number_of_edam_terms = this.project.project_application_edam_terms.length;
 	}
 
