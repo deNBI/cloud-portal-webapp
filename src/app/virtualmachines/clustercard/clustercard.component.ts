@@ -263,7 +263,6 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	}
 
 	check_status_loop(): void {
-		console.log('yep i am doing the loop');
 		this.all_worker_loaded = this.get_all_batches_loaded();
 		this.stopAllCheckStatusTimer();
 		this.statusSubscription = new Subscription();
