@@ -10,9 +10,7 @@ import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeF
  */
 @Injectable()
 export class MaintenanceService {
-	constructor(private http: HttpClient) {
-		this.http = http;
-	}
+	constructor(private http: HttpClient) {}
 
 	/**
 	 * returns the upcoming maintenance timeframes
