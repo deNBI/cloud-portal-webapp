@@ -2,7 +2,7 @@
   "root": true,
   "ignorePatterns": [
     "projects/**/*",
-		"package-lock.json"
+    "package-lock.json"
   ],
   "overrides": [
     {
@@ -44,7 +44,7 @@
           }
         ],
         "@angular-eslint/no-forward-ref": "error",
-				"no-return-await": "off",
+        "no-return-await": "off",
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/ban-types": "off",
         "camelcase": "off",
@@ -98,7 +98,9 @@
           }
         ],
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": ["error"],
+        "@typescript-eslint/no-unused-vars": [
+          "error"
+        ],
         "@typescript-eslint/member-ordering": "off",
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/no-for-in-array": "off",
@@ -132,8 +134,14 @@
         "import/no-unresolved": "off",
         "import/no-mutable-exports": "off",
         "import/extensions": "off",
-				"import/no-extraneous-dependencies": "off",
-        "indent": ["error", "tab", {"SwitchCase": 1}],
+        "import/no-extraneous-dependencies": "off",
+        "indent": [
+          "error",
+          "tab",
+          {
+            "SwitchCase": 1
+          }
+        ],
         "linebreak-style": "error",
         "max-lines": "off",
         "no-continue": "off",
@@ -144,12 +152,17 @@
         "no-invalid-this": "off",
         "no-irregular-whitespace": "error",
         "no-multiple-empty-lines": "error",
+        "@angular-eslint/no-empty-lifecycle-method": "off",
+        "no-empty-function": "off",
         "no-null/no-null": "off",
         "no-nested-ternary": "off",
         "no-param-reassign": "off",
         "no-redeclare": "error",
         "no-regex-spaces": "error",
-        "no-restricted-syntax": ["off", "ForInStatement"],
+        "no-restricted-syntax": [
+          "off",
+          "ForInStatement"
+        ],
         "no-sparse-arrays": "error",
         "no-tabs": "off",
         "no-template-curly-in-string": "error",
@@ -157,8 +170,13 @@
         "no-use-before-define": "off",
         "no-useless-constructor": "off",
         "no-void": "off",
-        "@typescript-eslint/no-useless-constructor": ["error"],
-        "no-mixed-spaces-and-tabs": [2,"smart-tabs"],
+        "@typescript-eslint/no-useless-constructor": [
+          "error"
+        ],
+        "no-mixed-spaces-and-tabs": [
+          2,
+          "smart-tabs"
+        ],
         "padding-line-between-statements": [
           "error",
           {

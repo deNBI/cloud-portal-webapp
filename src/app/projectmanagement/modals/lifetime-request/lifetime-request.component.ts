@@ -17,7 +17,6 @@ import { ApplicationsService } from '../../../api-connector/applications.service
 	providers: [CreditsService, ApplicationsService],
 })
 export class LifetimeRequestComponent implements OnInit, OnDestroy {
-
 	project: Application;
 	temp_project_extension: ApplicationLifetimeExtension;
 	initial_number_of_edam_terms: number = 0;
@@ -38,10 +37,8 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		public bsModalRef: BsModalRef,
 		private modalService: BsModalService,
 		private creditsService: CreditsService,
-		private applicationsService: ApplicationsService,
-		// eslint-disable-next-line no-empty-function
-	) {
-	}
+		private applicationsService: ApplicationsService, // eslint-disable-next-line no-empty-function
+	) {}
 
 	ngOnInit(): void {
 		this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
@@ -55,10 +52,12 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			this.temp_project_extension = new ApplicationLifetimeExtension();
 			this.temp_project_extension.setByApp(this.project);
 		}
-		// eslint-disable-next-line no-unsafe-optional-chaining
-		const end_date_info = (this.life_time_string?.split(' - ')[1]).split('.') ?? [];
-		if (end_date_info.length === 3) {
-			this.end_date = new Date(Number(end_date_info[2]), Number(end_date_info[1]) - 1, Number(end_date_info[0]));
+		const endDateInfo = this.life_time_string ? this.life_time_string.split(' - ')[1]?.split('.') : [];
+		if (endDateInfo.length === 3) {
+			const [day, month, year] = endDateInfo.map(item => Number(item));
+			if (!Number.isNaN(day) && !Number.isNaN(month) && !Number.isNaN(year)) {
+				this.end_date = new Date(year, month - 1, day);
+			}
 		}
 		this.initial_number_of_edam_terms = this.project.project_application_edam_terms.length;
 	}
@@ -70,31 +69,9 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	calculateCreditsLifetime(): void {
-		if (!this.project.credits_allowed) {
-			return;
-		}
-		if (this.temp_project_extension.extra_lifetime <= 0
-			|| !Number.isInteger(this.temp_project_extension.extra_lifetime)) {
-			this.temp_project_extension.extra_credits = 0;
-
-			return;
-		}
-		this.subscription.add(
-			this.creditsService.getExtraCreditsForLifetimeExtension(
-				this.temp_project_extension.extra_lifetime,
-				this.project.project_application_id.toString(),
-			).subscribe(
-				(credits: number): void => {
-					this.temp_project_extension.extra_credits = credits;
-				},
-			),
-		);
-	}
-
 	searchTermsInEdamTerms(): void {
 		const tmp: EdamOntologyTerm[] = [];
-		this.selected_ontology_terms.forEach(ele => {
+		this.selected_ontology_terms.forEach((ele: any) => {
 			// @ts-ignore
 			const td = this.edam_ontology_terms.find(term => term.term === ele);
 			tmp.push(td);
@@ -112,39 +89,59 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			project: this.project,
 			extension: this.temp_project_extension,
 			lifetimeExtension: true,
-			expectedTotalCredits: (this.project.project_application_initial_credits + this.temp_project_extension.extra_credits),
+			expectedTotalCredits:
+				this.project.project_application_initial_credits + this.temp_project_extension.extra_credits,
 			selected_ontology_terms: this.selected_ontology_terms,
 		};
 		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
-		this.bsModalRef.content.event.subscribe(
-			(result: any) => {
-				if ('reload' in result && result['reload']) {
-					if (this.selected_ontology_terms.length > 0) {
-						this.applicationsService
-							.addEdamOntologyTerms(
-								this.project.project_application_id,
-								this.selected_ontology_terms,
-							)
-							.subscribe((): void => {
-								this.event.emit({ reload: true });
-							});
-					} else {
-						this.event.emit({ reload: true });
-					}
+		this.bsModalRef.content.event.subscribe((result: any) => {
+			if ('reload' in result && result['reload']) {
+				if (this.selected_ontology_terms.length > 0) {
+					this.applicationsService
+						.addEdamOntologyTerms(this.project.project_application_id, this.selected_ontology_terms)
+						.subscribe((): void => {
+							this.event.emit({ reload: true });
+						});
 				} else {
-					this.event.emit({ reload: false });
+					this.event.emit({ reload: true });
 				}
-			},
-		);
+			} else {
+				this.event.emit({ reload: false });
+			}
+		});
 	}
+
 	// TODO: Fix - end date still not showing correctly when entry is done with keys.
 	calculateNewEndDate() {
 		this.new_end_date = new Date(this.end_date);
 		console.log(this.end_date);
-		console.log(this.end_date.getMonth())
+		console.log(this.end_date.getMonth());
 		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
 		console.log(this.new_end_date);
+	}
+	calculateCreditsLifetime(): void {
+		if (!this.project.credits_allowed) {
+			return;
+		}
+		if (
+			this.temp_project_extension.extra_lifetime <= 0
+			|| !Number.isInteger(this.temp_project_extension.extra_lifetime)
+		) {
+			this.temp_project_extension.extra_credits = 0;
+
+			return;
+		}
+		this.subscription.add(
+			this.creditsService
+				.getExtraCreditsForLifetimeExtension(
+					this.temp_project_extension.extra_lifetime,
+					this.project.project_application_id.toString(),
+				)
+				.subscribe((credits: number): void => {
+					this.temp_project_extension.extra_credits = credits;
+				}),
+		);
 	}
 }

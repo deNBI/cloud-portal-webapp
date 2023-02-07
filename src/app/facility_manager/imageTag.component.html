@@ -204,7 +204,7 @@
 								<td><input type="text" placeholder="Tag" [(ngModel)]="imageTag" /></td>
 								<td><input type="url" placeholder="Url" [(ngModel)]="imageUrl" /></td>
 								<td>
-									<img *ngIf="imageUrl" alt="Not found" src="{{ imageUrl }}" style="width: 200px; height: 100px" />
+									<img *ngIf="imageUrl" alt="Not found" [src]="imageUrl" style="width: 200px; height: 100px" />
 								</td>
 								<td>
 									<button
@@ -275,7 +275,7 @@
 							<tr *ngFor="let blockedImageResenvTag of blockedImageTagsResenv">
 								<td>{{ blockedImageResenvTag['tag'] }}</td>
 								<td>
-									<span *ngFor="let resenv of blockedImageResenvTag['resenvs']"> {{ resenv }}<br /></span>
+									<span *ngFor="let resenv of blockedImageResenvTag['resenvs']"> {{ resenv }} <br /></span>
 								</td>
 								<td>
 									<button

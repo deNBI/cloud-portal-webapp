@@ -274,13 +274,8 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 						const password: string = this.cluster.password;
 						this.cluster = new Clusterinfo(updated_cluster);
 						this.cluster.password = password;
-						if (
-							this.cluster.status !== 'Running'
-							&& this.cluster.status !== VirtualMachineStates.DELETING
-							&& this.cluster.status !== VirtualMachineStates.DELETED
-						) {
+						if (this.cluster.status !== VirtualMachineStates.DELETED) {
 							this.check_status_loop();
-						} else {
 							this.check_worker_count_loop();
 						}
 					}),

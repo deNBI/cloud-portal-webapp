@@ -72,6 +72,7 @@ export class ProjectSortService {
 	}
 
 	set searchTerm(searchTerm: string) {
+		searchTerm = searchTerm.trim();
 		this._set({ searchTerm });
 	}
 
