@@ -41,10 +41,7 @@ export class MaintenanceComponent implements OnInit {
 		private voService: VoService,
 		private fb: UntypedFormBuilder,
 		private modalService: BsModalService,
-	) {
-		this.workshopService = workshopService;
-		this.voService = voService;
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.newMaintenanceTimeFrame = new MaintenanceTimeFrame({
