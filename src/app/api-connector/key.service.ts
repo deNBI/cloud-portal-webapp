@@ -9,9 +9,7 @@ import { IResponseTemplate } from './response-template';
  */
 @Injectable()
 export class KeyService {
-	constructor(private http: HttpClient) {
-		this.http = http;
-	}
+	constructor(private http: HttpClient) {}
 
 	getKey(): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, {
