@@ -22,6 +22,7 @@ export class Application {
 	project_application_institute: string;
 	project_application_workgroup: string;
 	project_application_lifetime: number;
+	project_application_end_date: any;
 	project_application_vms_requested: number;
 	project_application_volume_limit: number;
 	project_application_volume_counter: number;
@@ -91,6 +92,10 @@ export class Application {
 			}
 			this.setDaysRunning();
 			this.setDates();
+
+			if (aj.project_application_end_date) {
+				this.project_application_end_date = aj.project_application_end_date;
+			}
 
 			if (aj.project_application_edam_terms) {
 				this.project_application_edam_terms = aj.project_application_edam_terms;

@@ -108,7 +108,9 @@
     <td>Lifetime</td>
     <td>{{
       application?.project_application_lifetime
-      }} months
+      }} month(s) <span *ngIf="application.project_application_end_date">
+			(Ending: {{application.project_application_end_date}})
+		</span>
     </td>
 
   </tr>
