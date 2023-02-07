@@ -221,7 +221,7 @@
 									<td>
 										<a href="{{ logo?.url }}">{{ logo?.url }}</a>
 									</td>
-									<td><img alt="Not found" src="{{ logo?.url }}" style="width: 200px; height: 100px" /></td>
+									<td><img alt="Not found" [src]="logo?.url" style="width: 200px; height: 100px" /></td>
 									<td>
 										<button (click)="removeLogoTag(logo)" type="button" class="btn btn-secondary">Remove</button>
 									</td>
