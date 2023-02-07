@@ -341,6 +341,7 @@
 				(vm?.status | hasStatus : VirtualMachineStates.staticCHECKING_CONNECTION) ||
 				(vm?.status | hasStatus : VirtualMachineStates.staticPORT_CLOSED) ||
 				(vm?.status | hasStatus : VirtualMachineStates.staticERROR) ||
+				(vm?.status | hasStatus : VirtualMachineStates.staticCREATION_FAILED) ||
 				(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF)) &&
 			vm?.cardState !== 0
 		"
