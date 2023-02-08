@@ -56,6 +56,12 @@ export class ApplicationsService {
 			.pipe(map((app: Application) => new Application(app)));
 	}
 
+	getApplicationMigratedByGroupId(group_id: string): Observable<boolean> {
+		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}project_applications/migrated/${group_id}/`, {
+			withCredentials: true,
+			});
+	}
+
 	getFullApplicationByUserPermissions(app_id: string): Observable<Application> {
 		return this.http
 			.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/byPermission/`, {

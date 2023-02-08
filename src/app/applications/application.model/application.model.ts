@@ -82,6 +82,8 @@ export class Application {
 	project_application_member_applications: ProjectMemberApplication[];
 	project_application_manager_comment: string;
 
+	migrated_simple_vm_resources: boolean = false;
+
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);
 		Object.assign(this, aj);
@@ -129,6 +131,10 @@ export class Application {
 					aj.project_application_compute_center['compute_center_login'],
 					aj.project_application_compute_center['compute_center_support_mail'],
 				);
+			}
+
+			if (aj.migrated_simple_vm_resources) {
+				this.migrated_simple_vm_resources = aj.migrated_simple_vm_resources;
 			}
 
 			this.project_application_initial_credits = Number(aj.project_application_initial_credits);
