@@ -631,7 +631,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			this.applicationsService.getApplicationMigratedByGroupId(this.selectedProject[1].toString())
 				.subscribe((migrated: boolean): void => {
 					this.selectedProjectIsMigrated = migrated;
-				})
+				}),
 		);
 	}
 

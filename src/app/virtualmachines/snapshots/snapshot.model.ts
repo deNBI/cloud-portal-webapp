@@ -12,6 +12,8 @@ export class SnapshotModel {
 	snapshot_name: string;
 	snapshot_created: boolean;
 
+	snapshot_projectid: string;
+
 	snapshot_project: string;
 	snapshot_status: string;
 

@@ -32,8 +32,11 @@
 	</div>
 	<div *ngIf="isLoaded" class="card" style="">
 		<div class="card-header">
-			<strong>Snapshots</strong>
-			–Overview
+			<strong>Snapshots</strong> – Overview
+		</div>
+		<div class="card-body" *ngIf="migratedProjectIds.length > 0">
+			<app-migration-information [type]="'snapshots'" [isCreationPage]="false" [affectedProjects]="migratedProjectNames">
+			</app-migration-information>
 		</div>
 		<div class="card-body">
 			<div class="row justify-content-end">
@@ -141,7 +144,7 @@
 						<div class="rTableRow" *ngFor="let snapshot of snapshot_page.snapshot_list">
 							<div class="rTableCell" id="{{ snapshot?.snapshot_name }}">{{ snapshot?.snapshot_name }}</div>
 							<div class="rTableCell">{{ snapshot?.snapshot_project }}</div>
-							<div class="rTableCell">
+							<div class="rTableCell" *ngIf="!(snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds)">
 								<button
 									*ngIf="snapshot.snapshot_created || showFacilities"
 									(click)="setSelectedSnapshot(snapshot); verifyModal.show()"
@@ -150,6 +153,11 @@
 								>
 									Delete Snapshot
 								</button>
+							</div>
+							<div class="rTableCell" *ngIf="(snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds)">
+								<div class="alert alert-info">
+									This snapshot is part of a migrated project!
+								</div>
 							</div>
 							<div class="rTableCell">
 								<span
@@ -169,7 +177,8 @@
 							<div class="rTableCell">
 								<input
 									type="checkbox"
-									[checked]="isSnapChecked(snapshot)"
+									[disabled]="(snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds)"
+									[checked]="isSnapChecked(snapshot) && !(snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds)"
 									(change)="changeCheckedSnapshot(snapshot)"
 									*ngIf="snapshot.snapshot_created || showFacilities"
 								/>

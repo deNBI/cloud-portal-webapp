@@ -21,5 +21,6 @@ export const environment: any = {
 		'https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=denbi-dev',
 	login: 'http://localhost:8000/api/v0/loggedUser/',
 	webapp: 'http://localhost:8001/',
+	new_svm_webapp: '',
 	matomoServer: '',
 };

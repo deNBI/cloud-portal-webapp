@@ -20,6 +20,8 @@ import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
 import { ClusterPage } from '../clusterPage.model';
 import { Clusterstates } from '../clusterstatus/clusterstates';
+import {ApplicationsService} from "../../../api-connector/applications.service";
+import {VirtualMachine} from "../../virtualmachinemodels/virtualmachine";
 
 export const SCALING_SCRIPT_NAME: string = 'scaling.py';
 
@@ -106,6 +108,9 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		VirtualMachineStates.SHUTOFF,
 	];
 
+	migratedProjectIds: string[] = [];
+	migratedProjectNames: string[] = [];
+
 	constructor(
 		private facilityService: FacilityService,
 		private groupService: GroupService,
@@ -115,6 +120,8 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		private fb: UntypedFormBuilder,
 		private clipboardService: ClipboardService,
 		private flavorService: FlavorService,
+
+		private applicationsService: ApplicationsService,
 	) {
 		super();
 	}
@@ -191,6 +198,15 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		}
 	}
 
+	generateMigratedProjectNamesList(): void {
+		this.migratedProjectNames = this.cluster_page.cluster_list.filter((cluster: Clusterinfo): boolean => {
+			return this.migratedProjectIds.includes(cluster.project_id.toString());
+		}).map((clusterInfo: Clusterinfo): string => clusterInfo.project);
+	}
+	getPossiblyMigratedProjectIds(): string[] {
+		return this.cluster_page.cluster_list.map((cluster: Clusterinfo): string => cluster.project_id.toString());
+	}
+
 	/**
 	 * Get all vms of user.
 	 */
@@ -199,6 +215,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 			this.virtualmachineservice
 				.getClusters(this.currentPage, this.cluster_per_site, this.filter, this.filter_status_list)
 				.subscribe((cluster_page: ClusterPage): void => {
+
 					this.prepareClusters(cluster_page);
 				}),
 		);
@@ -228,6 +245,15 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		// this.total_pages = cluster_page_infos['num_pages'];
 
 		this.isSearching = false;
+		this.applicationsService
+			.getApplicationsMigratedByProjectIds(this.getPossiblyMigratedProjectIds())
+			.subscribe((result: string): void => {
+				this.migratedProjectIds = result.split(',');
+				if (this.migratedProjectIds.includes('')) {
+					this.migratedProjectIds = [];
+				}
+				this.generateMigratedProjectNamesList();
+			});
 	}
 
 	changeFilterStatus(status: string): void {

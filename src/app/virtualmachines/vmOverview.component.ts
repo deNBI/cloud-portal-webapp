@@ -16,6 +16,7 @@ import { VirtualMachineStates } from './virtualmachinemodels/virtualmachinestate
 import { GroupService } from '../api-connector/group.service';
 import { ClientService } from '../api-connector/client.service';
 import { VmCardComponent } from './vmcard/vmcard.component';
+import { ApplicationsService } from '../api-connector/applications.service';
 
 /**
  * Vm overview component.
@@ -163,13 +164,18 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	 */
 	user_perun_id: string;
 
+	migratedProjectIds: string[] = [];
+	migratedProjectNames: string[] = [];
+
 	constructor(
 private facilityService: FacilityService,
 							private clipboardService: ClipboardService,
 							private imageService: ImageService,
-private userService: UserService,
+							private userService: UserService,
 							private virtualmachineservice: VirtualmachineService,
 							private groupService: GroupService,
+
+							private applicationsService: ApplicationsService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -313,9 +319,29 @@ private userService: UserService,
 			)
 				.subscribe((vm_page: VirtualMachinePage): void => {
 					this.vm_page = vm_page;
+					this.applicationsService
+						.getApplicationsMigratedByProjectIds(this.getPossiblyMigratedProjectIds())
+							.subscribe((result: string): void => {
+								this.migratedProjectIds = result.split(',');
+								if (this.migratedProjectIds.includes('')) {
+									this.migratedProjectIds = [];
+								}
+								this.generateMigratedProjectNamesList();
+							});
 					this.prepareVMS();
+					console.log(this.vm_page);
 				}),
 		);
+	}
+
+	generateMigratedProjectNamesList(): void {
+		console.log(this.migratedProjectIds);
+		this.migratedProjectNames = this.vm_page.vm_list.filter((vm: VirtualMachine): boolean => {
+			return (this.migratedProjectIds.includes(vm.projectid.toString()));
+		}).map((vm: VirtualMachine): string => vm.project);
+	}
+	getPossiblyMigratedProjectIds(): string[] {
+		return this.vm_page.vm_list.map((vm: VirtualMachine): string => vm.projectid.toString());
 	}
 
 	/**

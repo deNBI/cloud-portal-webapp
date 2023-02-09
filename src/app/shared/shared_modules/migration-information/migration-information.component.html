@@ -1,1 +1,31 @@
-<div>Hello world</div>
+<div class="row">
+	<div class="col-auto">
+		<div class="alert alert-info" role="alert">
+			<h5 class="alert-heading">Project migrated to new SimpleVM platform</h5>
+			<p *ngIf="isCreationPage && type !== 'machine'">The project you selected has already been migrated to the new SimpleVM platform.
+				For this project you are only able to start the machines on the new platform.
+				</p>
+			<div *ngIf="!isCreationPage && type !== 'machine'">
+				<p>The following projects of {{type}} on this page have been migrated to the new platform:</p>
+				<ul>
+					<li *ngFor="let affectedProject of affectedProjects">
+						{{affectedProject}}
+					</li>
+				</ul>
+				<p>You are not able to control the affected {{type}} using the current platform.</p>
+			</div>
+			<p *ngIf="!isCreationPage && type === 'machine'">
+				This machine is part of a project migrated to the new SimpleVM platform. You are not able to control this machine using the current platform.
+			</p>
+				<p>
+
+				Information about the new SimpleVM platform is available <a class="alert-link"
+						href="{{WIKI_SVM_MIGRATION_LINK}}" target="_blank" rel="noopener noreferrer">here</a>.
+				Machines and other cloud components that have already been started or created are not affected by this migration and can still be accessed and managed via the new platform.
+					Project applications, extension and change requests are still processed via the platform you are already familiar with.</p>
+			<hr>
+			<p class="mb-0">You can get to the new platform <a class="alert-link"
+						href="{{NEW_SVM_PORTAL_LINK}}" target="_blank" rel="noopener noreferrer">here</a>.</p>
+		</div>
+	</div>
+</div>

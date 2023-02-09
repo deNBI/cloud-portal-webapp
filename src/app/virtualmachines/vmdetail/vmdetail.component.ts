@@ -141,6 +141,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 */
 	snapshotName: string = '';
 
+	isMigrated: boolean = false;
+
 	/**
 	 * Modal reference to be changed/showed/hidden depending on chosen modal.
 	 */
@@ -671,6 +673,10 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 			this.checkAndGetForcDetails(vm);
 			this.title = vm['name'];
 			this.virtualMachine = vm;
+			this.applicationService.getApplicationMigratedByGroupId(this.virtualMachine.projectid.toString())
+				.subscribe((migrated: boolean): void => {
+					this.isMigrated = migrated;
+				})
 			this.checkVMAdminState();
 			this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
 				if (backend != null) {
