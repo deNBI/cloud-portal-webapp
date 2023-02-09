@@ -492,7 +492,10 @@
 				</div>
 				<div
 					class="col-md-auto"
-					*ngIf="vm.client.features['VM_REBOOT'] && !(vm?.status | hasStatus : VirtualMachineStates.staticDELETED)"
+					*ngIf="
+						vm.client.features['VM_REBOOT'] &&
+						!(vm?.status | statusInList : [VirtualMachineStates.staticDELETED, VirtualMachineStates.staticERROR])
+					"
 				>
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
