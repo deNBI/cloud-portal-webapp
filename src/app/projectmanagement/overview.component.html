@@ -475,7 +475,9 @@
 								<a
 									*ngIf="!project_application?.project_application_openstack_project && isAbleToStart()"
 									class="btn btn-outline-success"
-									href="#/virtualmachines/newVM"
+									[href]="
+										project_application?.migrated_simple_vm_resources ? NEW_SVM_PORTAL_LINK : '#/virtualmachines/newVM'
+									"
 									>Start a VM</a
 								>
 								<a
