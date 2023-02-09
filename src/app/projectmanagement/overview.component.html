@@ -137,6 +137,15 @@
 												<span class="path4"></span>
 												<span class="path5"></span>
 											</span>
+											<span
+												style="margin-left: 12px"
+												class="badge badge-warning"
+												data-toggle="tooltip"
+												data-placement="auto"
+												title="This application uses sensitive data"
+												*ngIf="project_application?.project_application_sensitive_data"
+												><span style="font-size: 15px"> <i class="fas fa-fingerprint"></i></span>
+											</span>
 										</td>
 										<td>{{ project_application?.project_application_name }}</td>
 										<td>{{ project_application?.project_application_shortname }}</td>
