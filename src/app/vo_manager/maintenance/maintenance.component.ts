@@ -64,23 +64,41 @@ export class MaintenanceComponent implements OnInit {
 	}
 
 	dayChanged(date: { year: number; month: number; day: number }): void {
-		this.newMaintenanceTimeFrame.start_time.setDate(date.day);
-		this.newMaintenanceTimeFrame.start_time.setMonth(date.month - 1);
-		this.newMaintenanceTimeFrame.start_time.setFullYear(date.year);
+		this.newMaintenanceTimeFrame.start_time = new Date(
+			date.year,
+			date.month - 1,
+			date.day,
+			this.newMaintenanceTimeFrame.start_time.getHours(),
+			this.newMaintenanceTimeFrame.start_time.getMinutes(),
+		);
 
-		this.newMaintenanceTimeFrame.end_time.setDate(date.day);
-		this.newMaintenanceTimeFrame.end_time.setMonth(date.month - 1);
-		this.newMaintenanceTimeFrame.end_time.setFullYear(date.year);
+		this.newMaintenanceTimeFrame.end_time = new Date(
+			date.year,
+			date.month - 1,
+			date.day,
+			this.newMaintenanceTimeFrame.end_time.getHours(),
+			this.newMaintenanceTimeFrame.end_time.getMinutes(),
+		);
 	}
 
 	startTimeChanged(time: { hour: number; minute: number }): void {
-		this.newMaintenanceTimeFrame.start_time.setHours(time.hour);
-		this.newMaintenanceTimeFrame.start_time.setMinutes(time.minute);
+		this.newMaintenanceTimeFrame.start_time = new Date(
+			this.newMaintenanceTimeFrame.start_time.getFullYear(),
+			this.newMaintenanceTimeFrame.start_time.getMonth(),
+			this.newMaintenanceTimeFrame.start_time.getDate(),
+			time.hour,
+			time.minute,
+		);
 	}
 
 	endTimeChanged(time: { hour: number; minute: number }): void {
-		this.newMaintenanceTimeFrame.end_time.setHours(time.hour);
-		this.newMaintenanceTimeFrame.end_time.setMinutes(time.minute);
+		this.newMaintenanceTimeFrame.end_time = new Date(
+			this.newMaintenanceTimeFrame.end_time.getFullYear(),
+			this.newMaintenanceTimeFrame.end_time.getMonth(),
+			this.newMaintenanceTimeFrame.end_time.getDate(),
+			time.hour,
+			time.minute,
+		);
 	}
 
 	reloadTimeFrames(): void {
@@ -125,6 +143,7 @@ export class MaintenanceComponent implements OnInit {
 	}
 
 	checkData(): void {
+		console.log(this.newMaintenanceTimeFrame);
 		this.timeSpotCritical = false;
 		this.timeSpotsChecked = false;
 		this.criticalTimeSpots = [];
@@ -143,6 +162,8 @@ export class MaintenanceComponent implements OnInit {
 			}
 		});
 		this.timeSpotsChecked = true;
+		this.newMaintenanceTimeFrame.start_time = new Date(this.newMaintenanceTimeFrame.start_time);
+		this.newMaintenanceTimeFrame.end_time = new Date(this.newMaintenanceTimeFrame.end_time);
 	}
 
 	datesOverlap(

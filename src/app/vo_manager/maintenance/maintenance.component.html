@@ -75,6 +75,10 @@
 	</div>
 	<div class="card-body">
 		<h5 class="card-title">Add new maintenance timeframe</h5>
+		<div class="alert alert-info">
+			<strong>Please consider</strong>: The time entered is in <strong>UTC</strong>. Please check for
+			<strong>GMT+1</strong> below.
+		</div>
 		<form id="new_timeframe_form" [formGroup]="addTimeFrameForm" class="form-horizontal">
 			<div class="form-row align-content-start">
 				<div class="mb-3 mx-auto">
@@ -89,6 +93,20 @@
 				<div class="mb-3 mx-auto">
 					<label class="form-label">End Time</label>
 					<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="card">
+					<div class="card-body">
+						<p>
+							This is the corresponding GMT+1 time:
+							<strong
+								>{{ newMaintenanceTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
+								{{ newMaintenanceTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
+							>
+						</p>
+					</div>
 				</div>
 			</div>
 
