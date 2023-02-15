@@ -408,23 +408,16 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 	exportCSV(): void {
 		const data = [];
-		this.applictions$.subscribe({
-			next(result) {
-				result.forEach(application => {
-					const entry = {};
-					for (const key in application) {
-						if (typeof application[key] === 'object') {
-							entry[key] = JSON.stringify(application[key]);
-						} else {
-							entry[key] = application[key];
-						}
-					}
-					data.push(entry);
-				});
-			},
-			error(msg) {
-				console.log(msg);
-			},
+		this.sortProjectService.sorted_applications.forEach(application => {
+			const entry = {};
+			for (const key in application) {
+				if (typeof application[key] === 'object') {
+					entry[key] = JSON.stringify(application[key]);
+				} else {
+					entry[key] = application[key];
+				}
+			}
+			data.push(entry);
 		});
 		if (data.length > 0) {
 			// eslint-disable-next-line
