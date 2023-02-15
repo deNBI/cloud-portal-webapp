@@ -9,7 +9,6 @@ import { GroupService } from '../api-connector/group.service';
 import { UserService } from '../api-connector/user.service';
 import { FacilityService } from '../api-connector/facility.service';
 import { NewsService } from '../api-connector/news.service';
-import { WordPressTag } from './newsmanagement/wp-tags';
 import { Application } from '../applications/application.model/application.model';
 import {
 	NgbdSortableHeaderDirective,
@@ -68,16 +67,15 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	public emailReply: string = '';
 	public sendNews: boolean;
 	public alternative_emailText: string = '';
-	public news_tags: string = '';
+	public news_tags: string[] = [];
 	FILTER_DEBOUNCE_TIME: number = 500;
 
 	public managerFacilities: [string, number][] = [];
 	public selectedFacility: [string, number];
-	private availableNewsTags: WordPressTag[] = [];
-	private selectedTags: string[] = [];
 	projects_filtered: Application[] = [];
 	facilitySupportMails: string = '';
 	supportMailEditing: boolean = false;
+	PREDEFINED_TAGS: string[] = ['downtime', 'openstack', 'simplevm', 'maintenance', 'update'];
 
 	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
 
@@ -262,14 +260,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	 *
 	 * @param tag the tag which gets added/deleted.
 	 */
-	manageTags(tag: WordPressTag): void {
-		const index: number = this.selectedTags.indexOf(tag.id.toString());
-		if (index > -1) {
-			this.selectedTags.splice(index, 1);
-		} else {
-			this.selectedTags.push(tag.id.toString());
-		}
-	}
 
 	/**
 	 * Sends an email to users and also posts it as a news in WordPress via newsManager if selected.
@@ -302,7 +292,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		if (reply) {
 			reply = reply.trim();
 		}
-		const chosenTags: string = this.selectedTags.toString();
+
 		this.facilityService
 			.sendMailToFacility(
 				facility,
@@ -312,7 +302,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 				encodeURIComponent(reply),
 				send,
 				encodeURIComponent(alternative_news_text),
-				chosenTags,
+				this.news_tags.join(),
 			)
 			.subscribe(
 				(result: any): void => {
@@ -376,7 +366,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		this.emailStatus = 0;
 		this.sendNews = true;
 		this.alternative_emailText = '';
-		this.news_tags = '';
+		this.news_tags = [];
 		this.selectedMember = [];
 	}
 

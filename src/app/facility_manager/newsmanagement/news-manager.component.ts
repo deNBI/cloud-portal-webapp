@@ -160,8 +160,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.motd = this.selectedNewsForm.controls['motd'].value;
 		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
-		news.tags = [];
-		news.tags.push(this.facilityToPost.toString(), 'Facility News');
+		news.tags = this.selectedFacilityNews.tags;
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
 			news.is_current_motd = true;
@@ -268,7 +267,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		if (news) {
 			this.selectedFacilityNews = news;
 			this.facilityToPost = news.facility;
-			console.log(this.selectedFacilityNews.tags);
 		} else {
 			this.selectedFacilityNews = new FacilityNews();
 			this.selectedFacilityNews.id = null;
