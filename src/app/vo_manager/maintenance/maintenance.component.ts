@@ -143,27 +143,25 @@ export class MaintenanceComponent implements OnInit {
 	}
 
 	checkData(): void {
-		console.log(this.newMaintenanceTimeFrame);
 		this.timeSpotCritical = false;
 		this.timeSpotsChecked = false;
 		this.criticalTimeSpots = [];
-		const critical_start: Date = this.newMaintenanceTimeFrame.start_time;
-		critical_start.setHours(critical_start.getHours() - 2);
-		const critical_start_time: number = critical_start.getTime();
-		const critical_end: Date = this.newMaintenanceTimeFrame.end_time;
-		critical_end.setHours(critical_end.getHours() + 2);
-		const critical_end_time: number = critical_end.getTime();
 		this.workshopTimeFrames.forEach((wstf: WorkshopTimeFrame) => {
 			const start_time: number = new Date(wstf.start_time).getTime();
 			const end_time: number = new Date(wstf.end_time).getTime();
-			if (this.datesOverlap(start_time, end_time, critical_start_time, critical_end_time)) {
+			if (
+				this.datesOverlap(
+					start_time,
+					end_time,
+					this.newMaintenanceTimeFrame.start_time.getTime(),
+					this.newMaintenanceTimeFrame.end_time.getTime(),
+				)
+			) {
 				this.timeSpotCritical = true;
 				this.criticalTimeSpots.push(wstf);
 			}
 		});
 		this.timeSpotsChecked = true;
-		this.newMaintenanceTimeFrame.start_time = new Date(this.newMaintenanceTimeFrame.start_time);
-		this.newMaintenanceTimeFrame.end_time = new Date(this.newMaintenanceTimeFrame.end_time);
 	}
 
 	datesOverlap(
