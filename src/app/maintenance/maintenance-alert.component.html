@@ -3,7 +3,7 @@
 </div>
 <div
 	class="callout"
-	*ngIf="frames_loaded"
+	*ngIf="frames_loaded && (maintenanceTimeFrames.length > 0 || error_on_loading)"
 	[ngClass]="{
 		'callout-warning': error_on_loading,
 		'callout-info': maintenanceTimeFrames.length === 0,
@@ -22,7 +22,8 @@
 			>
 				<div class="ms-2 me-auto">
 					<div class="fw-bold">{{ tf.name }}</div>
-					{{ tf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} - {{ tf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}
+					{{ tf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}
+					- {{ tf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}
 					<br />
 					{{ tf.message.length > 0 ? tf.message : '' }}
 				</div>

@@ -94,7 +94,8 @@
 				<div
 					*ngIf="
 						(vm?.res_env_url &&
-							(vm?.backend?.playbook_successful || vm?.conda_packages.length > 0) && vm?.backend?.playbook_done) ||
+							(vm?.backend?.playbook_successful || vm?.conda_packages.length > 0) &&
+							vm?.backend?.playbook_done) ||
 						vm?.backend?.no_playbook
 					"
 					class="col-md-1"
@@ -340,6 +341,7 @@
 				(vm?.status | hasStatus : VirtualMachineStates.staticCHECKING_CONNECTION) ||
 				(vm?.status | hasStatus : VirtualMachineStates.staticPORT_CLOSED) ||
 				(vm?.status | hasStatus : VirtualMachineStates.staticERROR) ||
+				(vm?.status | hasStatus : VirtualMachineStates.staticCREATION_FAILED) ||
 				(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF)) &&
 			vm?.cardState !== 0
 		"
@@ -490,7 +492,10 @@
 				</div>
 				<div
 					class="col-md-auto"
-					*ngIf="vm.client.features['VM_REBOOT'] && !(vm?.status | hasStatus : VirtualMachineStates.staticDELETED)"
+					*ngIf="
+						vm.client.features['VM_REBOOT'] &&
+						!(vm?.status | statusInList : [VirtualMachineStates.staticDELETED, VirtualMachineStates.staticERROR])
+					"
 				>
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
