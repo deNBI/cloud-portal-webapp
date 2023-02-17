@@ -494,7 +494,15 @@
 					class="col-md-auto"
 					*ngIf="
 						vm.client.features['VM_REBOOT'] &&
-						!(vm?.status | statusInList : [VirtualMachineStates.staticDELETED, VirtualMachineStates.staticERROR])
+						!(
+							vm?.status
+							| statusInList
+								: [
+										VirtualMachineStates.staticDELETED,
+										VirtualMachineStates.staticERROR,
+										VirtualMachineStates.staticCREATION_FAILED
+								  ]
+						)
 					"
 				>
 					<div
