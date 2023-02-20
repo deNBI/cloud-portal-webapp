@@ -79,6 +79,14 @@
 								/>
 							</div>
 							<span class="col col-form-label" *ngIf="sortProjectService.loading$ | async">Loading...</span>
+							<div class="col">
+								<div class="float-right"><button
+									type="button "
+									(click)="exportCSV()"
+									class="btn btn-outline-primary"
+									style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
+								>Export as CSV</button></div>
+							</div>
 						</div>
 
 						<div class="row">

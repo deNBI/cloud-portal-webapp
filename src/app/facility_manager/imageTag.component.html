@@ -219,7 +219,7 @@
 								<tr *ngFor="let logo of imageLogos">
 									<td>{{ logo?.tag }}</td>
 									<td>
-										<a href="{{ logo?.url }}">{{ logo?.url }}</a>
+										<a [href]="logo?.url">{{ logo?.url }}</a>
 									</td>
 									<td><img alt="Not found" [src]="logo?.url" style="width: 200px; height: 100px" /></td>
 									<td>

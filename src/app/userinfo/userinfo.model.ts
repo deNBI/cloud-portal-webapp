@@ -2,7 +2,6 @@
  * Userinfo class.
  */
 export class Userinfo {
-
 	Id: number;
 	project_application_id: number;
 	FirstName: string;
@@ -14,7 +13,19 @@ export class Userinfo {
 	Email: string;
 	PendingEmails: string[];
 
+	Affiliations: string[];
+
 	constructor(userInfo?: Partial<Userinfo>) {
 		Object.assign(this, userInfo);
+	}
+
+	validateAffiliations(): boolean {
+		for (const affiliation of this.Affiliations) {
+			if (!affiliation.includes('unknown')) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
