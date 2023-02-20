@@ -304,8 +304,9 @@
 						You can enter time slots for the workshop in which work is actively carried out in the portal or on the
 						machines. This enables the de.NBI Cloud Team to improve the planning of portal updates, for example, so as
 						not to hinder or restrict the work of the participants at peak times. Please consider, that the existing
-						timeframes are displayed using the "Central European Time". Please enter your dates using this timezone.
-						Please enter the time slots day by day, to be more precise!
+						timeframes are displayed using the "Central European Time". The date you enter is
+						<strong> dependent on the timezone of your browser </strong>. Please enter the time slots day by day, to be
+						more precise!
 					</div>
 					<h6 class="card-title">Existing timeframes</h6>
 					<table class="table" *ngIf="workshopTimeFrames.length > 0">
@@ -406,7 +407,8 @@
 									(click)="createNewTimeFrame()"
 									[disabled]="
 										!(this.newWorkShopTimeFrame | isValidTimeFrame) ||
-										!workshopTimeFramesLoaded || errorLoadingTimeFrames
+										!workshopTimeFramesLoaded ||
+										errorLoadingTimeFrames
 									"
 								>
 									Add new timeframe

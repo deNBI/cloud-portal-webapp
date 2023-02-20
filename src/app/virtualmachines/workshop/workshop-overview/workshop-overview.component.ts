@@ -146,16 +146,18 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	checkTimeFrameOverlap(): boolean {
 		// eslint-disable-next-line prefer-const
 		let interferingTimeframes: WorkshopTimeFrame[] = [];
-		const critical_start: Date = this.newWorkShopTimeFrame.start_time;
-		critical_start.setHours(critical_start.getHours() - 2);
-		const critical_start_time: number = critical_start.getTime();
-		const critical_end: Date = this.newWorkShopTimeFrame.end_time;
-		critical_end.setHours(critical_end.getHours() + 2);
-		const critical_end_time: number = critical_end.getTime();
+
 		this.workshopTimeFrames.forEach((wstf: WorkshopTimeFrame) => {
 			const start_time: number = new Date(wstf.start_time).getTime();
 			const end_time: number = new Date(wstf.end_time).getTime();
-			if (this.datesOverlap(start_time, end_time, critical_start_time, critical_end_time)) {
+			if (
+				this.datesOverlap(
+					start_time,
+					end_time,
+					this.newWorkShopTimeFrame.start_time.getTime(),
+					this.newWorkShopTimeFrame.end_time.getTime(),
+				)
+			) {
 				interferingTimeframes.push(wstf);
 			}
 		});
