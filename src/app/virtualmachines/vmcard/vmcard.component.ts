@@ -115,6 +115,11 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 */
 	SNAPSHOT_CREATING_ERROR_MSG: string =		'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
 
+	/** Error message to when reboot failed
+	 *
+	 */
+	REBOOT_ERROR_MSG: string = 'Reboot of machine failed. If the error persists, please contact the support.';
+
 	/**
 	 * Timeout object to control check status loop (i.e. stopping and starting check status loop).
 	 */
@@ -373,7 +378,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 				},
 				(error1: any): void => {
 					if (error1['error']['error'] === '409') {
-						this.vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
+						this.vm.setErrorMsgWithTimeout(this.REBOOT_ERROR_MSG, this.ERROR_TIMER);
 					}
 				},
 			),
@@ -565,8 +570,10 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 * Function called by parent if 'Select all' was clicked.
 	 */
 	toggleAllChecked(all_checked: boolean): void {
-		if ((this.vm.status === VirtualMachineStates.ACTIVE || this.vm.status === VirtualMachineStates.SHUTOFF)
-			&& !this.isMigrated) {
+		if (
+			(this.vm.status === VirtualMachineStates.ACTIVE || this.vm.status === VirtualMachineStates.SHUTOFF)
+			&& !this.isMigrated
+		) {
 			this.is_checked = all_checked;
 		} else {
 			this.is_checked = false;

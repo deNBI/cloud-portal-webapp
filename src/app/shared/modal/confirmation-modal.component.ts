@@ -87,6 +87,19 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 		});
 	}
 
+	buttonText(): string {
+		switch (this.type) {
+			case 'Approve':
+				return 'Approval';
+			case 'Decline':
+				return 'Declination';
+			default:
+				break;
+		}
+
+		return '';
+	}
+
 	ngOnInit() {
 		this.request_failed = false;
 		switch (this.action) {

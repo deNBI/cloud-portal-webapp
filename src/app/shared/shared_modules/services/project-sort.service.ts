@@ -26,6 +26,7 @@ export class ProjectSortService {
 	private _applications$ = new BehaviorSubject<Application[]>([]);
 	private _total$ = new BehaviorSubject<number>(0);
 	private _applications: Application[] = [];
+	public sorted_applications: Application[] = [];
 
 	_initiateFilterStatusList(): void {
 		this.filterStatusList = [
@@ -190,6 +191,7 @@ export class ProjectSortService {
 
 		// 2. filter
 		sortedApplications = sortedApplications.filter(app => this.matches(searchTerm, app));
+		this.sorted_applications = sortedApplications;
 
 		const total = sortedApplications.length;
 
