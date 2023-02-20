@@ -64,23 +64,41 @@ export class MaintenanceComponent implements OnInit {
 	}
 
 	dayChanged(date: { year: number; month: number; day: number }): void {
-		this.newMaintenanceTimeFrame.start_time.setDate(date.day);
-		this.newMaintenanceTimeFrame.start_time.setMonth(date.month - 1);
-		this.newMaintenanceTimeFrame.start_time.setFullYear(date.year);
+		this.newMaintenanceTimeFrame.start_time = new Date(
+			date.year,
+			date.month - 1,
+			date.day,
+			this.newMaintenanceTimeFrame.start_time.getHours(),
+			this.newMaintenanceTimeFrame.start_time.getMinutes(),
+		);
 
-		this.newMaintenanceTimeFrame.end_time.setDate(date.day);
-		this.newMaintenanceTimeFrame.end_time.setMonth(date.month - 1);
-		this.newMaintenanceTimeFrame.end_time.setFullYear(date.year);
+		this.newMaintenanceTimeFrame.end_time = new Date(
+			date.year,
+			date.month - 1,
+			date.day,
+			this.newMaintenanceTimeFrame.end_time.getHours(),
+			this.newMaintenanceTimeFrame.end_time.getMinutes(),
+		);
 	}
 
 	startTimeChanged(time: { hour: number; minute: number }): void {
-		this.newMaintenanceTimeFrame.start_time.setHours(time.hour);
-		this.newMaintenanceTimeFrame.start_time.setMinutes(time.minute);
+		this.newMaintenanceTimeFrame.start_time = new Date(
+			this.newMaintenanceTimeFrame.start_time.getFullYear(),
+			this.newMaintenanceTimeFrame.start_time.getMonth(),
+			this.newMaintenanceTimeFrame.start_time.getDate(),
+			time.hour,
+			time.minute,
+		);
 	}
 
 	endTimeChanged(time: { hour: number; minute: number }): void {
-		this.newMaintenanceTimeFrame.end_time.setHours(time.hour);
-		this.newMaintenanceTimeFrame.end_time.setMinutes(time.minute);
+		this.newMaintenanceTimeFrame.end_time = new Date(
+			this.newMaintenanceTimeFrame.end_time.getFullYear(),
+			this.newMaintenanceTimeFrame.end_time.getMonth(),
+			this.newMaintenanceTimeFrame.end_time.getDate(),
+			time.hour,
+			time.minute,
+		);
 	}
 
 	reloadTimeFrames(): void {
@@ -128,16 +146,17 @@ export class MaintenanceComponent implements OnInit {
 		this.timeSpotCritical = false;
 		this.timeSpotsChecked = false;
 		this.criticalTimeSpots = [];
-		const critical_start: Date = this.newMaintenanceTimeFrame.start_time;
-		critical_start.setHours(critical_start.getHours() - 2);
-		const critical_start_time: number = critical_start.getTime();
-		const critical_end: Date = this.newMaintenanceTimeFrame.end_time;
-		critical_end.setHours(critical_end.getHours() + 2);
-		const critical_end_time: number = critical_end.getTime();
 		this.workshopTimeFrames.forEach((wstf: WorkshopTimeFrame) => {
 			const start_time: number = new Date(wstf.start_time).getTime();
 			const end_time: number = new Date(wstf.end_time).getTime();
-			if (this.datesOverlap(start_time, end_time, critical_start_time, critical_end_time)) {
+			if (
+				this.datesOverlap(
+					start_time,
+					end_time,
+					this.newMaintenanceTimeFrame.start_time.getTime(),
+					this.newMaintenanceTimeFrame.end_time.getTime(),
+				)
+			) {
 				this.timeSpotCritical = true;
 				this.criticalTimeSpots.push(wstf);
 			}

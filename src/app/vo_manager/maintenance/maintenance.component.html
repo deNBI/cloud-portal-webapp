@@ -75,6 +75,9 @@
 	</div>
 	<div class="card-body">
 		<h5 class="card-title">Add new maintenance timeframe</h5>
+		<div class="alert alert-info">
+			<strong>Please consider</strong>: The time entered is <strong>depending on the timezone of your browser.</strong>.
+		</div>
 		<form id="new_timeframe_form" [formGroup]="addTimeFrameForm" class="form-horizontal">
 			<div class="form-row align-content-start">
 				<div class="mb-3 mx-auto">
@@ -187,8 +190,8 @@
 						<ul class="list-group">
 							<li class="list-group-item text-center">
 								<strong
-									>{{ newMaintenanceTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
-									{{ newMaintenanceTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</strong
+									>{{ newMaintenanceTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : '+0100' }} -
+									{{ newMaintenanceTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : '+0100' }}</strong
 								>
 							</li>
 						</ul>
@@ -207,8 +210,8 @@
 								<th scope="row">{{ i + 1 }}</th>
 								<td>{{ critTimeFrame.workshop.longname }}</td>
 								<td>
-									{{ critTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : 'de' }} -
-									{{ critTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}
+									{{ critTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : '+0100' }} -
+									{{ critTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : '+0100' }}
 								</td>
 								<td>{{ critTimeFrame.description }}</td>
 							</tr>
