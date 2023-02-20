@@ -1355,14 +1355,46 @@
 									data-test-id="project_application_responsibility_checkbox"
 									type="checkbox"
 									id="project_application_responsibility"
-									ngModel
-									#respCheck
+									[(ngModel)]="pi_responsibility_checked"
 									required
 								/>
 								<label class="form-check-label" for="project_application_responsibility">
 									I hereby confirm that I am responsible for the project and any action of the project members in the
 									de.NBI Cloud.
 								</label>
+							</div>
+							<div *ngIf="pi_responsibility_checked && !valid_pi_affiliations" class="row justify-content-center">
+								<div
+									class="col-md-8 alert"
+									[ngClass]="{
+										'alert-warning': !unknownPiAffiliationsConfirmation,
+										'alert-success': unknownPiAffiliationsConfirmation
+									}"
+								>
+									<p>
+										We were unable to verify your current affiliation with a university. Your current affiliations are:
+									</p>
+									<ul>
+										<li *ngFor="let affiliation of userinfo?.Affiliations">{{ affiliation }}</li>
+									</ul>
+									<p>
+										Please link your account with a university account and log in with this account to perform the
+										approval process. <br />If you do not link your account, the approval process may take longer
+										because we will need to manually validate your PI status.
+									</p>
+									<div class="form-check my-3">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											id="id-unknown-pi-affiliations-checkbox"
+											name="unknown-pi-affiliations-checkbox"
+											[(ngModel)]="unknownPiAffiliationsConfirmation"
+										/>
+										<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
+											>I have read and understood the information in the box above.</label
+										>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div
@@ -1376,6 +1408,7 @@
 								email, containing your name and email address and a link informing them about the requested resources,
 								where they will be able to approve this application.
 							</div>
+							<div class="col-md-4"></div>
 						</div>
 						<div *ngIf="!application?.project_application_pi_approved && !is_validation" class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_pi_email"
@@ -1457,7 +1490,7 @@
 									class="form-check-input"
 									id="project_application_responsibility"
 									name="project_application_responsibility"
-									ngModel
+									[(ngModel)]="pi_responsibility_checked"
 									required
 									type="checkbox"
 								/>
@@ -1467,11 +1500,46 @@
 								</label>
 							</div>
 						</div>
+						<div *ngIf="pi_responsibility_checked && !valid_pi_affiliations" class="row justify-content-center">
+							<div
+								class="col-md-8 alert"
+								[ngClass]="{
+									'alert-warning': !unknownPiAffiliationsConfirmation,
+									'alert-success': unknownPiAffiliationsConfirmation
+								}"
+							>
+								<p>
+									We were unable to verify your current affiliation with a university. Your current affiliations are:
+								</p>
+								<ul>
+									<li *ngFor="let affiliation of userinfo?.Affiliations">{{ affiliation }}</li>
+								</ul>
+								<p>
+									Please link your account with a university account and log in with this account to perform the
+									approval process. <br />If you do not link your account, the approval process may take longer because
+									we will need to manually validate your PI status.
+								</p>
+								<div class="form-check my-3">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										id="id-unknown-pi-affiliations-checkbox"
+										name="unknown-pi-affiliations-checkbox"
+										[(ngModel)]="unknownPiAffiliationsConfirmation"
+									/>
+									<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
+										>I have read and understood the information in the box above.</label
+									>
+								</div>
+							</div>
+						</div>
+
 						<label class="col-md-4 form-control-label">
 							<button
 								(click)="notificationModal.show(); approveApplication(form)"
 								[disabled]="
-									!respCheck.checked ||
+									!pi_responsibility_checked ||
+									(!unknownPiAffiliationsConfirmation && !valid_pi_affiliations) ||
 									form.invalid ||
 									application?.project_application_edam_terms.length === 0 ||
 									application?.project_application_edam_terms.length > 10 ||
@@ -1495,6 +1563,10 @@
 							[disabled]="
 								submitting ||
 								form.invalid ||
+								(!unknownPiAffiliationsConfirmation &&
+									!valid_pi_affiliations &&
+									application?.project_application_pi_approved &&
+									!is_validation) ||
 								application?.project_application_edam_terms.length === 0 ||
 								application?.project_application_edam_terms.length > 10 ||
 								(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||

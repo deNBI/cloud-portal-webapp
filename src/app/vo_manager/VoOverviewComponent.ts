@@ -1,3 +1,4 @@
+import { ngxCsv } from 'ngx-csv/ngx-csv';
 import {
 	Component, OnInit, QueryList, ViewChildren,
 } from '@angular/core';
@@ -421,5 +422,24 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 	showMembersOfTheProject(projectid: number, projectname: string): void {
 		this.getMembersOfTheProject(projectid, projectname);
+	}
+
+	exportCSV(): void {
+		const data = [];
+		this.sortProjectService.sorted_applications.forEach(application => {
+			const entry = {};
+			for (const key in application) {
+				if (typeof application[key] === 'object') {
+					entry[key] = JSON.stringify(application[key]);
+				} else {
+					entry[key] = application[key];
+				}
+			}
+			data.push(entry);
+		});
+		if (data.length > 0) {
+			// eslint-disable-next-line
+			const csv = new ngxCsv(data, 'projects', { showLabels: true, headers: Object.keys(data[0]) })
+		}
 	}
 }
