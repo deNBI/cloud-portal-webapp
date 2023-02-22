@@ -36,7 +36,6 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 * The virtual machine this card is for.
 	 */
 	@Input() cluster: Clusterinfo;
-	@Input() isMigrated: boolean = false;
 
 	/**
 	 * Possible virtual machine states.

@@ -82,6 +82,10 @@ export class Clusterinfo {
 	password: string;
 	master_instance_openstack_id: string;
 
+	migrate_project_to_simple_vm: boolean = false;
+
+	project_is_migrated_to_simple_vm: boolean = false;
+
 	constructor(cl?: Partial<Clusterinfo>) {
 		Object.assign(this, cl);
 		if (cl) {

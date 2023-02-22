@@ -71,8 +71,6 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 */
 	@Input() is_vm_admin: boolean = false;
 
-	@Input() isMigrated: boolean = false;
-
 	/**
 	 * Link to rstudio wiki
 	 */
@@ -572,7 +570,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	toggleAllChecked(all_checked: boolean): void {
 		if (
 			(this.vm.status === VirtualMachineStates.ACTIVE || this.vm.status === VirtualMachineStates.SHUTOFF)
-			&& !this.isMigrated
+			&& !(this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm)
 		) {
 			this.is_checked = all_checked;
 		} else {

@@ -25,12 +25,9 @@ import { ApplicationsService } from '../api-connector/applications.service';
 	selector: 'app-vm-overview',
 	templateUrl: 'vmOverview.component.html',
 	styleUrls: ['./vmOverview.component.scss'],
-	providers: [FacilityService, ImageService, UserService,
-		FullLayoutComponent, GroupService, ClientService],
+	providers: [FacilityService, ImageService, UserService, FullLayoutComponent, GroupService, ClientService],
 })
-
 export class VmOverviewComponent implements OnInit, OnDestroy {
-
 	/**
 	 * Title of page
 	 */
@@ -168,14 +165,14 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	migratedProjectNames: string[] = [];
 
 	constructor(
-private facilityService: FacilityService,
-							private clipboardService: ClipboardService,
-							private imageService: ImageService,
-							private userService: UserService,
-							private virtualmachineservice: VirtualmachineService,
-							private groupService: GroupService,
+		private facilityService: FacilityService,
+		private clipboardService: ClipboardService,
+		private imageService: ImageService,
+		private userService: UserService,
+		private virtualmachineservice: VirtualmachineService,
+		private groupService: GroupService,
 
-							private applicationsService: ApplicationsService,
+		private applicationsService: ApplicationsService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -193,13 +190,9 @@ private facilityService: FacilityService,
 			}),
 		);
 		this.subscription.add(
-			this.vmPerPageChange.pipe(
-				debounceTime(this.LONG_DEBOUNCE_TIME),
-				distinctUntilChanged(),
-			)
-				.subscribe((): void => {
-					this.applyFilter();
-				}),
+			this.vmPerPageChange.pipe(debounceTime(this.LONG_DEBOUNCE_TIME), distinctUntilChanged()).subscribe((): void => {
+				this.applyFilter();
+			}),
 		);
 	}
 
@@ -215,7 +208,7 @@ private facilityService: FacilityService,
 			this.filter = this.filter.trim();
 		}
 		this.isSearching = true;
-		if (typeof (this.vm_page.items_per_page) !== 'number' || this.vm_page.items_per_page <= 0) {
+		if (typeof this.vm_page.items_per_page !== 'number' || this.vm_page.items_per_page <= 0) {
 			this.vm_page.items_per_page = 7;
 		}
 
@@ -226,7 +219,6 @@ private facilityService: FacilityService,
 		} else if (this.tab === 'facility') {
 			this.getAllVmsFacilities();
 		}
-
 	}
 
 	/**
@@ -257,7 +249,6 @@ private facilityService: FacilityService,
 		this.currentPage = 1;
 		const indexOf: number = this.filter_status_list.indexOf(status);
 		if (indexOf === -1) {
-
 			this.filter_status_list.push(status);
 		} else {
 			this.filter_status_list.splice(indexOf, 1);
@@ -309,39 +300,39 @@ private facilityService: FacilityService,
 	 */
 	getVms(): void {
 		this.subscription.add(
-			this.virtualmachineservice.getVmsFromLoggedInUser(
-				this.currentPage,
-				this.vm_page.items_per_page,
-				this.filter,
-				this.filter_status_list,
-				this.filter_cluster,
-				this.filter_set_for_termination,
-			)
+			this.virtualmachineservice
+				.getVmsFromLoggedInUser(
+					this.currentPage,
+					this.vm_page.items_per_page,
+					this.filter,
+					this.filter_status_list,
+					this.filter_cluster,
+					this.filter_set_for_termination,
+				)
 				.subscribe((vm_page: VirtualMachinePage): void => {
 					this.vm_page = vm_page;
-					this.applicationsService
-						.getApplicationsMigratedByProjectIds(this.getPossiblyMigratedProjectIds())
-							.subscribe((result: string): void => {
-								this.migratedProjectIds = result.split(',');
-								if (this.migratedProjectIds.includes('')) {
-									this.migratedProjectIds = [];
-								}
-								this.generateMigratedProjectNamesList();
-							});
+					this.generateMigratedProjectIdList();
+					this.generateMigratedProjectNamesList();
 					this.prepareVMS();
-					console.log(this.vm_page);
 				}),
 		);
 	}
 
-	generateMigratedProjectNamesList(): void {
-		console.log(this.migratedProjectIds);
-		this.migratedProjectNames = this.vm_page.vm_list.filter((vm: VirtualMachine): boolean => {
-			return (this.migratedProjectIds.includes(vm.projectid.toString()));
-		}).map((vm: VirtualMachine): string => vm.project);
+	generateMigratedProjectIdList(): void {
+		this.migratedProjectIds = [];
+		this.vm_page.vm_list.forEach((vm: VirtualMachine) => {
+			if (vm.migrate_project_to_simple_vm || vm.project_is_migrated_to_simple_vm) {
+				this.migratedProjectIds.push(vm.projectid.toString());
+			}
+		});
 	}
-	getPossiblyMigratedProjectIds(): string[] {
-		return this.vm_page.vm_list.map((vm: VirtualMachine): string => vm.projectid.toString());
+	generateMigratedProjectNamesList(): void {
+		this.migratedProjectNames = [];
+		this.vm_page.vm_list.forEach((vm: VirtualMachine) => {
+			if (vm.migrate_project_to_simple_vm || vm.project_is_migrated_to_simple_vm) {
+				this.migratedProjectNames.push(vm.project);
+			}
+		});
 	}
 
 	/**
@@ -349,15 +340,16 @@ private facilityService: FacilityService,
 	 */
 	getAllVmsFacilities(): void {
 		this.subscription.add(
-			this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
-				this.selectedFacility['FacilityId'],
-				this.currentPage,
-				this.vm_page.items_per_page,
-				this.filter,
-				this.filter_status_list,
-				this.filter_cluster,
-				this.filter_set_for_termination,
-			)
+			this.virtualmachineservice
+				.getVmsFromFacilitiesOfLoggedUser(
+					this.selectedFacility['FacilityId'],
+					this.currentPage,
+					this.vm_page.items_per_page,
+					this.filter,
+					this.filter_status_list,
+					this.filter_cluster,
+					this.filter_set_for_termination,
+				)
 				.subscribe((vm_page: VirtualMachinePage): void => {
 					this.vm_page = vm_page;
 					this.prepareVMS();
@@ -370,20 +362,18 @@ private facilityService: FacilityService,
 	 */
 	checkVMAdminState(): void {
 		this.subscription.add(
-			this.userService.getMemberByUser().subscribe(
-				(res: any): void => {
-					this.user_perun_id = res['userId'];
-					this.vm_page.vm_list.forEach((vm: VirtualMachine): void => {
-						this.subscription.add(
-							this.groupService.isLoggedUserGroupAdmin(vm.projectid).subscribe((result): any => {
-								if (result['admin']) {
-									this.vms_admin.push(vm.openstackid);
-								}
-							}),
-						);
-					});
-				},
-			),
+			this.userService.getMemberByUser().subscribe((res: any): void => {
+				this.user_perun_id = res['userId'];
+				this.vm_page.vm_list.forEach((vm: VirtualMachine): void => {
+					this.subscription.add(
+						this.groupService.isLoggedUserGroupAdmin(vm.projectid).subscribe((result): any => {
+							if (result['admin']) {
+								this.vms_admin.push(vm.openstackid);
+							}
+						}),
+					);
+				});
+			}),
 		);
 	}
 
@@ -392,11 +382,9 @@ private facilityService: FacilityService,
 	 */
 	prepareVMS(): void {
 		this.checkVMAdminState();
-		this.children.forEach(
-			(child: VmCardComponent) => {
-				child.restartAndResumeCheckStatusTimer();
-			},
-		);
+		this.children.forEach((child: VmCardComponent) => {
+			child.restartAndResumeCheckStatusTimer();
+		});
 		this.isSearching = false;
 	}
 
@@ -405,20 +393,20 @@ private facilityService: FacilityService,
 	 */
 	getAllVms(): void {
 		this.subscription.add(
-			this.virtualmachineservice.getAllVM(
-				this.currentPage,
-				this.vm_page.items_per_page,
-				this.filter,
-				this.filter_status_list,
-				this.filter_cluster,
-				this.filter_set_for_termination,
-			)
+			this.virtualmachineservice
+				.getAllVM(
+					this.currentPage,
+					this.vm_page.items_per_page,
+					this.filter,
+					this.filter_status_list,
+					this.filter_cluster,
+					this.filter_set_for_termination,
+				)
 				.subscribe((vm_page: VirtualMachinePage): void => {
 					this.vm_page = vm_page;
 					this.prepareVMS();
 				}),
 		);
-
 	}
 
 	/**
@@ -426,11 +414,9 @@ private facilityService: FacilityService,
 	 */
 	toggleAllChecked(): void {
 		this.all_checked = !this.all_checked;
-		this.children.forEach(
-			(child: VmCardComponent) => {
-				child.toggleAllChecked(this.all_checked);
-			},
-		);
+		this.children.forEach((child: VmCardComponent) => {
+			child.toggleAllChecked(this.all_checked);
+		});
 	}
 
 	/**
@@ -440,12 +426,10 @@ private facilityService: FacilityService,
 	childChecked(): void {
 		let total: number = 0;
 		let total_child_checked: number = 0;
-		this.children.forEach(
-			(child: VmCardComponent) => {
-				total += child.is_checkable();
-				total_child_checked += child.vm_is_checked();
-			},
-		);
+		this.children.forEach((child: VmCardComponent) => {
+			total += child.is_checkable();
+			total_child_checked += child.vm_is_checked();
+		});
 		this.all_checked = total_child_checked === total;
 	}
 
@@ -453,11 +437,9 @@ private facilityService: FacilityService,
 	 * Delete all vms which are in selectedMachines list.
 	 */
 	deleteAllCheckedVms(): void {
-		this.selectedMachines.forEach(
-			(child: VmCardComponent) => {
-				child.deleteVM();
-			},
-		);
+		this.selectedMachines.forEach((child: VmCardComponent) => {
+			child.deleteVM();
+		});
 	}
 
 	/**
@@ -466,16 +448,13 @@ private facilityService: FacilityService,
 	gatherAllSelectedVMs(): void {
 		this.selectedMachines = [];
 		this.otherSelectedMachines = [];
-		this.children.forEach(
-			(child: VmCardComponent) => {
-				if (child.is_checked) {
-					if (this.user_elixir_id !== child.vm.elixir_id) {
-						this.otherSelectedMachines.push(child);
-					}
-					this.selectedMachines.push(child);
+		this.children.forEach((child: VmCardComponent) => {
+			if (child.is_checked) {
+				if (this.user_elixir_id !== child.vm.elixir_id) {
+					this.otherSelectedMachines.push(child);
 				}
-			},
-		);
+				this.selectedMachines.push(child);
+			}
+		});
 	}
-
 }
