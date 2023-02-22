@@ -968,14 +968,14 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Terminate Project - {{ selectedProject.project_application_shortname }}</h4>
+				<h4 class="modal-title">Terminate Project - {{ selectedProject?.project_application_shortname }}</h4>
 				<button type="button" class="close" style="cursor: pointer" (click)="terminateModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
-					Are you sure you want to terminate the project - {{ selectedProject.project_application_shortname }}?
+					Are you sure you want to terminate the project - {{ selectedProject?.project_application_shortname }}?
 				</div>
 				<app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
 			</div>
