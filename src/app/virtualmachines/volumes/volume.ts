@@ -18,6 +18,9 @@ export class Volume {
 	volume_device: string;
 	error_msg: string;
 
+	migrate_project_to_simple_vm: boolean = false;
+	project_is_migrated_to_simple_vm: boolean = false;
+
 	constructor(volume?: Partial<Volume>) {
 		Object.assign(this, volume);
 

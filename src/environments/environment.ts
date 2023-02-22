@@ -7,6 +7,7 @@ const VO_NAME: string = window['env']['VO_NAME'] || 'denbi-dev';
 
 export const environment: any = {
 	WIKI_PRE: 'https://portal-dev.denbi.de/wiki/',
+	NEW_SVM_PORTAL_LINK: 'https://simplevm-dev.bi.denbi.de/portal/accounts/login/',
 	production: false,
 	vo: 3334,
 	voName: VO_NAME,

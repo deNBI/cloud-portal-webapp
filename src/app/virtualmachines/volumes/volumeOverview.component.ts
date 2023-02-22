@@ -19,8 +19,8 @@ import { WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } f
 import { VolumeStates } from './volume_states';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
 import { VolumePage } from './volumePage.model';
-import {ApplicationsService} from "../../api-connector/applications.service";
-import {IsMigratedProjectIdPipe} from "../../pipe-module/pipes/migratedList";
+import { ApplicationsService } from '../../api-connector/applications.service';
+import { IsMigratedProjectIdPipe } from '../../pipe-module/pipes/migratedList';
 
 /**
  * Volume overview component.
@@ -597,13 +597,21 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 			});
 	}
 
-	generateMigratedProjectNamesList(): void {
-		this.migratedProjectNames = this.volume_page.volume_list.filter((vol: Volume): boolean => {
-			return (this.migratedProjectIds.includes(vol.volume_projectid.toString()));
-		}).map((volume: Volume): string => volume.volume_project);
+	generateMigratedProjectIdList(): void {
+		this.migratedProjectIds = [];
+		this.volume_page.volume_list.forEach((vol: Volume) => {
+			if (vol.migrate_project_to_simple_vm || vol.project_is_migrated_to_simple_vm) {
+				this.migratedProjectIds.push(vol.volume_projectid.toString());
+			}
+		});
 	}
-	getPossiblyMigratedProjectIds(): string[] {
-		return this.volume_page.volume_list.map((vol: Volume): string => vol.volume_projectid.toString());
+	generateMigratedProjectNamesList(): void {
+		this.migratedProjectNames = [];
+		this.volume_page.volume_list.forEach((vol: Volume) => {
+			if (vol.migrate_project_to_simple_vm || vol.project_is_migrated_to_simple_vm) {
+				this.migratedProjectNames.push(vol.volume_projectid);
+			}
+		});
 	}
 
 	/**
@@ -620,15 +628,8 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 				.getVolumesByUser(this.volume_page.items_per_page, this.currentPage)
 				.subscribe((volume_page: VolumePage): void => {
 					this.volume_page = volume_page;
-					this.applicationsService
-						.getApplicationsMigratedByProjectIds(this.getPossiblyMigratedProjectIds())
-						.subscribe((result: string): void => {
-							this.migratedProjectIds = result.split(',');
-							if (this.migratedProjectIds.includes('')) {
-								this.migratedProjectIds = [];
-							}
-							this.generateMigratedProjectNamesList();
-						});
+					this.generateMigratedProjectIdList();
+					this.generateMigratedProjectNamesList();
 
 					for (const volume of this.volume_page.volume_list) {
 						this.setCollapseStatus(volume.volume_openstackid, false);
