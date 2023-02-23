@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+	Component, OnInit, OnDestroy, Input,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NEW_SVM_PORTAL_LINK, WIKI_SVM_MIGRATION_LINK } from '../../../../links/links';
-import {Input} from "@angular/core";
-
 
 @Component({
 	selector: 'app-migration-information',
@@ -20,6 +20,7 @@ export class MigrationInformationComponent implements OnInit, OnDestroy {
 	@Input() affectedProjects: any = {};
 
 	@Input() type: string = '';
+	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor() {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -31,5 +32,4 @@ export class MigrationInformationComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
 	}
-
 }
