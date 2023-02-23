@@ -122,6 +122,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	create_error: IResponseTemplate;
 
+	selectedProjectIsMigrated: boolean = false;
+
 	/**
 	 * All flavors of a project.
 	 */
@@ -251,6 +253,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		private userService: UserService,
 		private router: Router,
 		private condaService: BiocondaService,
+
+		private applicationsService: ApplicationsService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -622,6 +626,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 						}),
 				);
 			}),
+		);
+		this.subscription.add(
+			this.applicationsService.getApplicationMigratedByGroupId(this.selectedProject[1].toString())
+				.subscribe((migrated: boolean): void => {
+					this.selectedProjectIsMigrated = migrated;
+				}),
 		);
 	}
 

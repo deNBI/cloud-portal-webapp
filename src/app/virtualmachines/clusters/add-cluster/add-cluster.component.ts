@@ -24,6 +24,7 @@ import { WorkerBatch } from '../clusterinfo';
 import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links';
 import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
 import { BiocondaService } from '../../../api-connector/bioconda.service';
+import {ApplicationsService} from "../../../api-connector/applications.service";
 
 /**
  * Cluster Component
@@ -154,6 +155,8 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 */
 	projectDataLoaded: boolean = false;
 
+	selectedProjectIsMigrated: boolean = false;
+
 	newCores: number = 0;
 	newRam: number = 0;
 	newVms: number = 2;
@@ -171,6 +174,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private voService: VoService,
 		private router: Router,
+		private applicationsService: ApplicationsService,
 		private condaService: BiocondaService,
 		private cdRef: ChangeDetectorRef,
 	) {
@@ -421,6 +425,12 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 		this.subscription.unsubscribe();
 		this.subscription = new Subscription();
+		this.subscription.add(
+			this.applicationsService.getApplicationMigratedByGroupId(this.selectedProject[1].toString())
+				.subscribe((migrated: boolean): void => {
+					this.selectedProjectIsMigrated = migrated;
+				}),
+		);
 		this.subscription.add(
 			this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client): void => {
 				if (client.status && client.status === 'Connected') {

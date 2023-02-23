@@ -47,6 +47,10 @@ export const ZAMMAD_HELPDESK_LINK = 'https://helpdesk.cloud.denbi.de';
 export const GDPR_LINK = 'https://gdpr.eu/article-9-processing-special-categories-of-personal-data-prohibited/';
 export const WIKI_PERSISTENT_TERMINAL_LINK = `${environment.WIKI_PRE}Tutorials/Persistent_SSH_Sessions/`;
 
+export const WIKI_SVM_MIGRATION_LINK = `${environment.WIKI_PRE}`;
+
+export const NEW_SVM_PORTAL_LINK = `${environment.new_svm_webapp}`;
+
 export const WIKI_LINKS: string[] = [
 	WIKI_SNAPSHOTS,
 	WIKI,
@@ -72,6 +76,7 @@ export const WIKI_LINKS: string[] = [
 	WIKI_EPHEMERAL_LINK,
 	WIKI_MOSH_LINK,
 	WIKI_PERSONAL_DATA,
+	WIKI_SVM_MIGRATION_LINK,
 ];
 
 export const LANDING_PAGE_LINKS: string[] = [
