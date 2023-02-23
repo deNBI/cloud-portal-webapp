@@ -120,6 +120,8 @@ export class SnapshotOverviewComponent implements OnInit {
 			if (snap.migrate_project_to_simple_vm || snap.project_is_migrated_to_simple_vm) {
 				this.migratedProjectIds.push(snap.snapshot_projectid.toString());
 			}
+			const unique = (arr: string[]): string[] => [...new Set(arr)];
+			this.migratedProjectIds = unique(this.migratedProjectIds);
 		});
 	}
 	generateMigratedProjectNamesList(): void {

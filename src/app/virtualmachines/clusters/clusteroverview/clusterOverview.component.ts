@@ -203,6 +203,8 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 			if (cluster.migrate_project_to_simple_vm || cluster.project_is_migrated_to_simple_vm) {
 				this.migratedProjectIds.push(cluster.project_id.toString());
 			}
+			const unique = (arr: string[]): string[] => [...new Set(arr)];
+			this.migratedProjectIds = unique(this.migratedProjectIds);
 		});
 	}
 	generateMigratedProjectNamesList(): void {

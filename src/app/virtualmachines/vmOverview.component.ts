@@ -324,6 +324,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 			if (vm.migrate_project_to_simple_vm || vm.project_is_migrated_to_simple_vm) {
 				this.migratedProjectIds.push(vm.projectid.toString());
 			}
+			const unique = (arr: string[]): string[] => [...new Set(arr)];
+			this.migratedProjectIds = unique(this.migratedProjectIds);
 		});
 	}
 	generateMigratedProjectNamesList(): void {

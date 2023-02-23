@@ -603,13 +603,15 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 			if (vol.migrate_project_to_simple_vm || vol.project_is_migrated_to_simple_vm) {
 				this.migratedProjectIds.push(vol.volume_projectid.toString());
 			}
+			const unique = (arr: string[]): string[] => [...new Set(arr)];
+			this.migratedProjectIds = unique(this.migratedProjectIds);
 		});
 	}
 	generateMigratedProjectNamesList(): void {
 		this.migratedProjectNames = [];
 		this.volume_page.volume_list.forEach((vol: Volume) => {
 			if (vol.migrate_project_to_simple_vm || vol.project_is_migrated_to_simple_vm) {
-				this.migratedProjectNames.push(vol.volume_projectid);
+				this.migratedProjectNames.push(vol.volume_project);
 			}
 		});
 	}
