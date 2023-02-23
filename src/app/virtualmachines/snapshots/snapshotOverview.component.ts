@@ -7,6 +7,8 @@ import { IResponseTemplate } from '../../api-connector/response-template';
 import { FacilityService } from '../../api-connector/facility.service';
 import { CLOUD_PORTAL_SUPPORT_MAIL, WIKI_SNAPSHOTS } from '../../../links/links';
 import { SnapshotPage } from './snapshotPage.model';
+import { ApplicationsService } from '../../api-connector/applications.service';
+import { IsMigratedProjectIdPipe } from '../../pipe-module/pipes/migratedList';
 
 // eslint-disable-next-line no-shadow
 enum Snapshot_Delete_Statuses {
@@ -69,8 +71,15 @@ export class SnapshotOverviewComponent implements OnInit {
 	snapshotsPerPageChange: Subject<number> = new Subject<number>();
 	isSearching: boolean = true;
 	DEBOUNCE_TIME: number = 300;
+	migratedProjectIds: string[] = [];
+	migratedProjectNames: string[] = [];
 
-	constructor(private facilityService: FacilityService, private imageService: ImageService) {
+	constructor(
+		private facilityService: FacilityService,
+		private imageService: ImageService,
+		private applicationsService: ApplicationsService,
+		private isMigratedPipe: IsMigratedProjectIdPipe,
+	) {
 		this.facilityService = facilityService;
 		this.imageService = imageService;
 	}
@@ -97,10 +106,31 @@ export class SnapshotOverviewComponent implements OnInit {
 			.getSnapshotsByUser(this.currentPage, this.snapshot_page.items_per_page, this.filter)
 			.subscribe((snapshot_page: SnapshotPage): void => {
 				this.snapshot_page = snapshot_page;
+				this.generateMigratedProjectIdList();
+				this.generateMigratedProjectNamesList();
 				this.isLoaded = true;
 				this.checkSnapShotsStatus();
 				this.isSearching = false;
 			});
+	}
+
+	generateMigratedProjectIdList(): void {
+		this.migratedProjectIds = [];
+		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel) => {
+			if (snap.migrate_project_to_simple_vm || snap.project_is_migrated_to_simple_vm) {
+				this.migratedProjectIds.push(snap.snapshot_projectid.toString());
+			}
+			const unique = (arr: string[]): string[] => [...new Set(arr)];
+			this.migratedProjectIds = unique(this.migratedProjectIds);
+		});
+	}
+	generateMigratedProjectNamesList(): void {
+		this.migratedProjectNames = [];
+		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel) => {
+			if (snap.migrate_project_to_simple_vm || snap.project_is_migrated_to_simple_vm) {
+				this.migratedProjectNames.push(snap.snapshot_project);
+			}
+		});
 	}
 
 	changeCheckAllSnapshots(): void {
@@ -112,7 +142,10 @@ export class SnapshotOverviewComponent implements OnInit {
 		}
 
 		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel): void => {
-			if (!this.isSnapChecked(snap)) {
+			if (
+				!this.isSnapChecked(snap)
+				&& !this.isMigratedPipe.transform(snap.snapshot_projectid, this.migratedProjectIds)
+			) {
 				this.checked_snapshots.push(snap);
 			}
 		});

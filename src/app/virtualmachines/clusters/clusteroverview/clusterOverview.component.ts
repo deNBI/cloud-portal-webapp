@@ -20,6 +20,7 @@ import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
 import { ClusterPage } from '../clusterPage.model';
 import { Clusterstates } from '../clusterstatus/clusterstates';
+import { ApplicationsService } from '../../../api-connector/applications.service';
 
 export const SCALING_SCRIPT_NAME: string = 'scaling.py';
 
@@ -106,6 +107,9 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		VirtualMachineStates.SHUTOFF,
 	];
 
+	migratedProjectIds: string[] = [];
+	migratedProjectNames: string[] = [];
+
 	constructor(
 		private facilityService: FacilityService,
 		private groupService: GroupService,
@@ -115,6 +119,8 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		private fb: UntypedFormBuilder,
 		private clipboardService: ClipboardService,
 		private flavorService: FlavorService,
+
+		private applicationsService: ApplicationsService,
 	) {
 		super();
 	}
@@ -191,6 +197,25 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		}
 	}
 
+	generateMigratedProjectIdList(): void {
+		this.migratedProjectIds = [];
+		this.cluster_page.cluster_list.forEach((cluster: Clusterinfo) => {
+			if (cluster.migrate_project_to_simple_vm || cluster.project_is_migrated_to_simple_vm) {
+				this.migratedProjectIds.push(cluster.project_id.toString());
+			}
+			const unique = (arr: string[]): string[] => [...new Set(arr)];
+			this.migratedProjectIds = unique(this.migratedProjectIds);
+		});
+	}
+	generateMigratedProjectNamesList(): void {
+		this.migratedProjectNames = [];
+		this.cluster_page.cluster_list.forEach((cluster: Clusterinfo) => {
+			if (cluster.migrate_project_to_simple_vm || cluster.project_is_migrated_to_simple_vm) {
+				this.migratedProjectNames.push(cluster.project);
+			}
+		});
+	}
+
 	/**
 	 * Get all vms of user.
 	 */
@@ -228,6 +253,8 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		// this.total_pages = cluster_page_infos['num_pages'];
 
 		this.isSearching = false;
+		this.generateMigratedProjectIdList();
+		this.generateMigratedProjectNamesList();
 	}
 
 	changeFilterStatus(status: string): void {

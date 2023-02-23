@@ -77,6 +77,7 @@
 								>
 							</div>
 						</div>
+						<div *ngIf="!selectedProjectIsMigrated">
 						<div class="row justify-content-center">
 							<span *ngIf="client_available && !projectDataLoaded" class="spinner-border text-info"></span>
 						</div>
@@ -911,6 +912,11 @@
 								<p *ngIf="singleProject">This is the only SimpleVm project you are a member of.</p>
 							</div>
 						</div>
+						</div>
+						<app-migration-information
+							*ngIf="selectedProjectIsMigrated"
+							[isCreationPage]="true">
+						</app-migration-information>
 					</form>
 				</div>
 
@@ -920,12 +926,16 @@
 					<a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site
 					of your project is reachable.
 				</div>
+
+
 			</div>
 
 			<!--/.col-->
 		</div>
 	</div>
 	<div class="col-md-6"></div>
+
+
 </div>
 
 <div
