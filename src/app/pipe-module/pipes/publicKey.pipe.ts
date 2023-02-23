@@ -8,6 +8,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PublicKeyPipe implements PipeTransform {
 	transform(key: string): boolean {
+		if (key === undefined || key === null) {
+			return false;
+		}
 		key = key.trim();
 		const valid_rsa: boolean = /^ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(key);
 		const valid_ecdsa_521: boolean = /^ecdsa-sha2-nistp521 AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(key);

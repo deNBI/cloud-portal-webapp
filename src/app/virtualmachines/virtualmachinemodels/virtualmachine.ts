@@ -46,6 +46,9 @@ export class VirtualMachine {
 	backend: Backend;
 	conda_packages: CondaPackage[] = [];
 
+	migrate_project_to_simple_vm: boolean = false;
+	project_is_migrated_to_simple_vm: boolean = false;
+
 	constructor(vm?: Partial<VirtualMachine>) {
 		Object.assign(this, vm);
 		this.cardState = 0;

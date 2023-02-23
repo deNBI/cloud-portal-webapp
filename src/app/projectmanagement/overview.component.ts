@@ -31,6 +31,7 @@ import {
 	STATUS_LINK,
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
+	NEW_SVM_PORTAL_LINK,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -72,6 +73,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
 	OPENSTACK_LINK: string = OPENSTACK_LINK;
 	STATUS_LINK: string = STATUS_LINK;
+	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK;
 	@ViewChild('creditsChart') creditsCanvas: ElementRef;
 	@ViewChild('publicKeyModal') publicKeyModal: any;
 	publicKeyToShow: string = '';

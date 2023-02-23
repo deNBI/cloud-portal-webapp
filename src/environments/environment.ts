@@ -7,6 +7,7 @@ const VO_NAME: string = window['env']['VO_NAME'] || 'denbi-dev';
 
 export const environment: any = {
 	WIKI_PRE: 'https://portal-dev.denbi.de/wiki/',
+	NEW_SVM_PORTAL_LINK: 'https://simplevm-dev.bi.denbi.de/portal/accounts/login/',
 	production: false,
 	vo: 3334,
 	voName: VO_NAME,
@@ -21,5 +22,6 @@ export const environment: any = {
 		'https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=denbi-dev',
 	login: 'http://localhost:8000/api/v0/loggedUser/',
 	webapp: 'http://localhost:8001/',
+	new_svm_webapp: '',
 	matomoServer: '',
 };

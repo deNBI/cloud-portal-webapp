@@ -56,7 +56,10 @@
 			</div>
 		</div>
 		<div class="card-body p-x-1 py-h">
-			<div class="row">
+			<div
+				class="row"
+				*ngIf="!(this.cluster.project_is_migrated_to_simple_vm || this.cluster.migrate_project_to_simple_vm)"
+			>
 				<div class="col-md-auto" *ngIf="cluster?.status === 'Running'">
 					<a
 						*ngIf="!show_connection_info"
@@ -187,6 +190,16 @@
 				</div>
 				<div *ngIf="cluster?.status === VirtualMachineStates.staticNOT_FOUND" class="alert alert-warning" role="alert">
 					Please contact <a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a>
+				</div>
+			</div>
+			<div
+				class="row"
+				*ngIf="this.cluster.project_is_migrated_to_simple_vm || this.cluster.migrate_project_to_simple_vm"
+			>
+				<div class="col-md-auto">
+					<div class="alert alert-info">
+						You are not able to control this instance via this platform as it is part of a migrated project!
+					</div>
 				</div>
 			</div>
 		</div>
