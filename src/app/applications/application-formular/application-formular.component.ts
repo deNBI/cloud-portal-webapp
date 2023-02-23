@@ -24,6 +24,9 @@ import {
 	WIKI_PERSONAL_DATA,
 	GDPR_LINK,
 	CLOUD_PORTAL_SUPPORT_MAIL,
+	LIFESCIENCE_LINKING_ACCOUNTS,
+	WIKI_LINKING_ACCOUNTS,
+	WIKI_PRINCIPAL_INVESTIGATOR,
 } from '../../../links/links';
 import { UserService } from '../../api-connector/user.service';
 import { Userinfo } from '../../userinfo/userinfo.model';
@@ -66,6 +69,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	error: string[];
 	CREDITS_WIKI: string = CREDITS_WIKI;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	LIFESCIENCE_LINKING_ACCOUNTS: string = LIFESCIENCE_LINKING_ACCOUNTS;
+	WIKI_LINKING_ACCOUNTS: string = WIKI_LINKING_ACCOUNTS;
+	WIKI_PRINCIPAL_INVESTIGATOR: string = WIKI_PRINCIPAL_INVESTIGATOR;
 	SURVEY_LINK: string = SURVEY_LINK;
 	POLICY_LINK: string = POLICY_LINK;
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
