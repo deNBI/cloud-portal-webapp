@@ -1336,7 +1336,13 @@
 										[(ngModel)]="application.project_application_pi_approved"
 										name="project_application_pi_approved"
 									/>
-									<span class="help-block"> Are you a principal investigator?</span>
+									<span class="help-block"> Are you a principal investigator?</span><br />
+									<a
+										href="{{ WIKI_PRINCIPAL_INVESTIGATOR }}"
+										target="_blank"
+										style="text-decoration: none; font-weight: bold"
+										>What is a principal investigator?</a
+									>
 								</div>
 							</div>
 						</div>
@@ -1372,15 +1378,26 @@
 									}"
 								>
 									<p>
-										We were unable to verify your current affiliation with a university. Your current affiliations are:
+										According to the current session information of your LifeScience<span
+											title="Authentication and Authorization Infrastructure"
+											style="text-decoration: underline dotted; cursor: help"
+											>AAI</span
+										>
+										account, we were unable to confirm your association with a university or research institute.<br />
+										Your affiliations are:
 									</p>
 									<ul>
 										<li *ngFor="let affiliation of userinfo?.Affiliations">{{ affiliation }}</li>
 									</ul>
 									<p>
-										Please link your account with a university account and log in with this account to perform the
-										approval process. <br />If you do not link your account, the approval process may take longer
-										because we will need to manually validate your PI status.
+										We kindly ask you to verify whether your account is already linked with a university or research
+										institute via the LifeScienceAAI <a href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}">profile page</a> to
+										speed up the approval process for both the current and future applications. If your account is
+										already listed as being associated with a university or research institution on your profile page,
+										no further action is necessary. If this is not the case, we recommend that you try to link your
+										account via your LifeScienceAAI profile page. This can also be done after the confirmation of your
+										project application. If you can not link your account, we will need to verify your principal
+										investigator status manually, which can prolong the approval process.
 									</p>
 									<div class="form-check my-3">
 										<input
@@ -1394,6 +1411,14 @@
 											>I have read and understood the information in the box above.</label
 										>
 									</div>
+									<p>
+										<a
+											href="{{ WIKI_LINKING_ACCOUNTS }}"
+											target="_blank"
+											style="text-decoration: none; font-weight: bold"
+											>How to link your account with other identities?</a
+										>
+									</p>
 								</div>
 							</div>
 						</div>
@@ -1509,15 +1534,25 @@
 								}"
 							>
 								<p>
-									We were unable to verify your current affiliation with a university. Your current affiliations are:
+									According to the current session information of your LifeScience<span
+										title="Authentication and Authorization Infrastructure"
+										>AAI</span
+									>
+									account, we were unable to confirm your association with a university or research institute.<br />
+									Your affiliations are:
 								</p>
 								<ul>
 									<li *ngFor="let affiliation of userinfo?.Affiliations">{{ affiliation }}</li>
 								</ul>
 								<p>
-									Please link your account with a university account and log in with this account to perform the
-									approval process. <br />If you do not link your account, the approval process may take longer because
-									we will need to manually validate your PI status.
+									We kindly ask you to verify whether your account is already linked with a university or research
+									institute via the LifeScienceAAI <a href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}">profile page</a> to
+									speed up the approval process for both the current and future applications. If your account is already
+									listed as being associated with a university or research institution on your profile page, no further
+									action is necessary. If this is not the case, we recommend that you try to link your account via your
+									LifeScienceAAI profile page. This can also be done after the confirmation of your project application.
+									If you can not link your account, we will need to verify your principal investigator status manually,
+									which can prolong the approval process.
 								</p>
 								<div class="form-check my-3">
 									<input
@@ -1531,6 +1566,11 @@
 										>I have read and understood the information in the box above.</label
 									>
 								</div>
+								<p>
+									<a href="{{ WIKI_LINKING_ACCOUNTS }}" target="_blank" style="text-decoration: none; font-weight: bold"
+										>How to link your account with other identities?</a
+									>
+								</p>
 							</div>
 						</div>
 
