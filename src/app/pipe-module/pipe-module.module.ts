@@ -12,7 +12,7 @@ import { HasUnavailableFlavorsPipe } from './pipes/has-unavailable-flavors.pipe'
 import { ValidTimeFramePipe } from './pipes/validTimeFrame.pipe';
 import { PublicKeyPipe } from './pipes/publicKey.pipe';
 import { IsFutureTimePipe } from './pipes/futureTime.pipe';
-import { IsMigratedProjectIdPipe } from "./pipes/migratedList";
+import { IsMigratedProjectIdPipe } from './pipes/migratedList';
 
 /**
  * Pipemodule
