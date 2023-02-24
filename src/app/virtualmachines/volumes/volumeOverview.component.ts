@@ -19,6 +19,8 @@ import { WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } f
 import { VolumeStates } from './volume_states';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
 import { VolumePage } from './volumePage.model';
+import { ApplicationsService } from '../../api-connector/applications.service';
+import { IsMigratedProjectIdPipe } from '../../pipe-module/pipes/migratedList';
 
 /**
  * Volume overview component.
@@ -135,6 +137,9 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 	extendVolumeStorage: number;
 
+	migratedProjectIds: string[] = [];
+	migratedProjectNames: string[] = [];
+
 	/**
 	 * Type of request.
 	 */
@@ -164,6 +169,9 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 		private facilityService: FacilityService,
 		private groupService: GroupService,
 		private vmService: VirtualmachineService,
+		private applicationsService: ApplicationsService,
+
+		private isMigratedPipe: IsMigratedProjectIdPipe,
 	) {
 		super();
 	}
@@ -262,7 +270,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 		}
 
 		this.volume_page.volume_list.forEach((vol: Volume): void => {
-			if (!this.isVolChecked(vol)) {
+			if (!this.isVolChecked(vol) && !this.isMigratedPipe.transform(vol.volume_projectid, this.migratedProjectIds)) {
 				this.checked_volumes.push(vol);
 			}
 		});
@@ -589,6 +597,25 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 			});
 	}
 
+	generateMigratedProjectIdList(): void {
+		this.migratedProjectIds = [];
+		this.volume_page.volume_list.forEach((vol: Volume) => {
+			if (vol.migrate_project_to_simple_vm || vol.project_is_migrated_to_simple_vm) {
+				this.migratedProjectIds.push(vol.volume_projectid.toString());
+			}
+			const unique = (arr: string[]): string[] => [...new Set(arr)];
+			this.migratedProjectIds = unique(this.migratedProjectIds);
+		});
+	}
+	generateMigratedProjectNamesList(): void {
+		this.migratedProjectNames = [];
+		this.volume_page.volume_list.forEach((vol: Volume) => {
+			if (vol.migrate_project_to_simple_vm || vol.project_is_migrated_to_simple_vm) {
+				this.migratedProjectNames.push(vol.volume_project);
+			}
+		});
+	}
+
 	/**
 	 * Get all volumes from user.
 	 *
@@ -603,6 +630,9 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 				.getVolumesByUser(this.volume_page.items_per_page, this.currentPage)
 				.subscribe((volume_page: VolumePage): void => {
 					this.volume_page = volume_page;
+					this.generateMigratedProjectIdList();
+					this.generateMigratedProjectNamesList();
+
 					for (const volume of this.volume_page.volume_list) {
 						this.setCollapseStatus(volume.volume_openstackid, false);
 					}

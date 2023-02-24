@@ -568,7 +568,10 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 * Function called by parent if 'Select all' was clicked.
 	 */
 	toggleAllChecked(all_checked: boolean): void {
-		if (this.vm.status === VirtualMachineStates.ACTIVE || this.vm.status === VirtualMachineStates.SHUTOFF) {
+		if (
+			(this.vm.status === VirtualMachineStates.ACTIVE || this.vm.status === VirtualMachineStates.SHUTOFF)
+			&& !(this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm)
+		) {
 			this.is_checked = all_checked;
 		} else {
 			this.is_checked = false;

@@ -1,127 +1,194 @@
 <div class="animated fadeIn">
-	<div class="card" style=" ">
-
+	<div class="card" style="">
 		<div class="card-header">
 			<div class="row">
 				<div *ngIf="is_vo_admin || is_facility_manager" class="col-6">
-
-
-					<button style="margin: 5px"
-									[ngClass]="(tab === 'own') ? 'btn-primary': 'btn-outline-primary'"
-									class="btn"
-									(click)="toggleTab('own');applyFilter();">Own Machines
+					<button
+						style="margin: 5px"
+						[ngClass]="tab === 'own' ? 'btn-primary' : 'btn-outline-primary'"
+						class="btn"
+						(click)="toggleTab('own'); applyFilter()"
+					>
+						Own Machines
 					</button>
 
-					<button *ngIf="is_vo_admin" style="margin: 5px"
-									[ngClass]="(tab === 'all') ? 'btn-primary': 'btn-outline-primary'"
-									class="btn"
-									(click)="toggleTab('all');applyFilter();">All Machines
+					<button
+						*ngIf="is_vo_admin"
+						style="margin: 5px"
+						[ngClass]="tab === 'all' ? 'btn-primary' : 'btn-outline-primary'"
+						class="btn"
+						(click)="toggleTab('all'); applyFilter()"
+					>
+						All Machines
 					</button>
-					<button style="margin: 5px"
-									[ngClass]="(tab === 'facility') ? 'btn-primary': 'btn-outline-primary'"
-									class="btn"
-									(click)="toggleTab('facility');applyFilter();">Machines of your facilities
+					<button
+						style="margin: 5px"
+						[ngClass]="tab === 'facility' ? 'btn-primary' : 'btn-outline-primary'"
+						class="btn"
+						(click)="toggleTab('facility'); applyFilter()"
+					>
+						Machines of your facilities
 					</button>
-
-
 				</div>
-				<div *ngIf="tab==='facility'" class="col-4">
+				<div *ngIf="tab === 'facility'" class="col-4">
 					<select [(ngModel)]="selectedFacility" class="form-control form-select" name="selectedFacility">
-					<option *ngFor="  let facility of managerFacilities"
-									[ngValue]="facility">
-						{{facility['Facility']}}
-					</option>
-
-				</select></div>
+						<option *ngFor="let facility of managerFacilities" [ngValue]="facility">
+							{{ facility['Facility'] }}
+						</option>
+					</select>
+				</div>
 			</div>
-
 		</div>
-		<div class="row justify-content-end" style="margin-bottom: 5px !important;padding-right: 15px;padding-left: 15px;">
-			<div class="col container-fluid" style="margin: 10px 0 0 0;" *ngIf="vm_page.num_pages > 1">
+		<div class="card-body">
+			<app-migration-information
+				*ngIf="migratedProjectIds.length > 0"
+				[isCreationPage]="false"
+				[type]="'instances'"
+				[affectedProjects]="migratedProjectNames"
+			>
+			</app-migration-information>
+		</div>
+		<div class="row justify-content-end" style="margin-bottom: 5px !important; padding-right: 15px; padding-left: 15px">
+			<div class="col container-fluid" style="margin: 10px 0 0 0" *ngIf="vm_page.num_pages > 1">
 				<pagination
-					[totalItems]="vm_page.total_items" [itemsPerPage]="vm_page.items_per_page"
-					(pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-					[boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
+					[totalItems]="vm_page.total_items"
+					[itemsPerPage]="vm_page.items_per_page"
+					(pageChanged)="pageChanged($event)"
+					[(ngModel)]="currentPage"
+					[boundaryLinks]="true"
+					[maxSize]="5"
+					[rotate]="false"
+					#pagination
+				>
 				</pagination>
 			</div>
 			<div class="input-group col-3">
-				<input id="items_per_page" class="form-control" style="margin: 10px 0 0 0;"
-							 name="vm_page.items_per_page" placeholder="e.g 3"
-							 type="number" min="1" max="25" step="1"
-							 appMinAmount="1" appMaxAmount="25" appInteger
-							 pattern="^([1-9]|1[012])$" [(ngModel)]="vm_page.items_per_page" (ngModelChange)="vmPerPageChange.next($event)">
-				<div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
-                                    </span></div>
-
+				<input
+					id="items_per_page"
+					class="form-control"
+					style="margin: 10px 0 0 0"
+					name="vm_page.items_per_page"
+					placeholder="e.g 3"
+					type="number"
+					min="1"
+					max="25"
+					step="1"
+					appMinAmount="1"
+					appMaxAmount="25"
+					appInteger
+					pattern="^([1-9]|1[012])$"
+					[(ngModel)]="vm_page.items_per_page"
+					(ngModelChange)="vmPerPageChange.next($event)"
+				/>
+				<div class="input-group-append mb-3" style="margin: 10px 0 0 0">
+					<span class="input-group-text"> VMs per page </span>
+				</div>
 			</div>
 		</div>
 
 		<div class="container-fluid">
-
 			<div class="row">
-
 				<div class="col input-group">
 					<div class="input-group-prepend">
 						<div class="input-group-text" *ngIf="is_vo_admin || cluster_allowed">
-							<input type="checkbox" [checked]="filter_cluster" style="margin:2px;"
-										 (change)="filter_cluster=!filter_cluster">
+							<input
+								type="checkbox"
+								[checked]="filter_cluster"
+								style="margin: 2px"
+								(change)="filter_cluster = !filter_cluster"
+							/>
 							<span class="badge badge-info">Cluster</span>
 						</div>
 						<div class="input-group-text">
-							<input type="checkbox" [checked]="filter_set_for_termination" style="margin:2px;"
-										 (change)="filter_set_for_termination=!filter_set_for_termination">
+							<input
+								type="checkbox"
+								[checked]="filter_set_for_termination"
+								style="margin: 2px"
+								(change)="filter_set_for_termination = !filter_set_for_termination"
+							/>
 							<span class="badge badge-secondary">Set for termination</span>
 						</div>
 						<div class="input-group-text">
-							<input type="checkbox" checked style="margin:2px;"
-										 (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)">
-							<span class="badge badge-success">{{VirtualMachineStates.staticACTIVE}}</span>
+							<input
+								type="checkbox"
+								checked
+								style="margin: 2px"
+								(change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)"
+							/>
+							<span class="badge badge-success">{{ VirtualMachineStates.staticACTIVE }}</span>
 						</div>
 						<div class="input-group-text">
-							<input type="checkbox" checked style="margin:2px;"
-										 (change)="changeFilterStatus(VirtualMachineStates.staticSHUTOFF)">
-							<span class="badge badge-warning">{{VirtualMachineStates.staticSHUTOFF}}</span>
+							<input
+								type="checkbox"
+								checked
+								style="margin: 2px"
+								(change)="changeFilterStatus(VirtualMachineStates.staticSHUTOFF)"
+							/>
+							<span class="badge badge-warning">{{ VirtualMachineStates.staticSHUTOFF }}</span>
 						</div>
 						<div class="input-group-text">
-							<input type="checkbox" style="margin:2px;"
-										 data-test-id="deleteFilterCheckbox"
-										 (change)="changeFilterStatus(VirtualMachineStates.staticDELETED)">
-							<span class="badge badge-danger">{{VirtualMachineStates.staticDELETED}}</span>
+							<input
+								type="checkbox"
+								style="margin: 2px"
+								data-test-id="deleteFilterCheckbox"
+								(change)="changeFilterStatus(VirtualMachineStates.staticDELETED)"
+							/>
+							<span class="badge badge-danger">{{ VirtualMachineStates.staticDELETED }}</span>
 						</div>
 					</div>
 					<div class="input-group-text col-5">
-						<input type="text" checked style="margin:2px; width:100%" placeholder="user,project,elixir_id,openstackid,name,flavor"
-									 [(ngModel)]="filter">
+						<input
+							type="text"
+							checked
+							style="margin: 2px; width: 100%"
+							placeholder="user,project,elixir_id,openstackid,name,flavor"
+							[(ngModel)]="filter"
+						/>
 					</div>
 					<div class="input-group-append">
-						<button class="btn btn-outline-primary"
-										(click)="applyFilter()"
-										data-test-id="applyVMFilterButton"
-						>Filter</button>
+						<button class="btn btn-outline-primary" (click)="applyFilter()" data-test-id="applyVMFilterButton">
+							Filter
+						</button>
 					</div>
-
 				</div>
 
 				<div class="col-2" *ngIf="vm_page.vm_list.length > 0">
-						<div class="dropdown" dropdown>
-							<button class="btn btn-secondary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
-											type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-split"
-											dropdownToggle id="vmActionsDropdown" style="width:100%">
-								Actions
+					<div class="dropdown" dropdown>
+						<button
+							class="btn btn-secondary dropdown-toggle"
+							id="actionDropdownMenu"
+							data-toggle="dropdown"
+							type="button"
+							aria-haspopup="true"
+							aria-expanded="false"
+							aria-controls="dropdown-split"
+							dropdownToggle
+							id="vmActionsDropdown"
+							style="width: 100%"
+						>
+							Actions
+						</button>
+						<div
+							class="dropdown-menu dropdown-menu-right"
+							aria-labelledby="dropdownMenu"
+							role="menu"
+							*dropdownMenu
+							id="dropdownMenu"
+						>
+							<button
+								class="dropdown-item btn btn-secondary"
+								id="deleteAllSelectedVMsButton"
+								(click)="verifyAllModal.show(); gatherAllSelectedVMs()"
+							>
+								Delete selected VMs
 							</button>
-							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
-									 *dropdownMenu id="dropdownMenu">
-								<button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton" (click)="verifyAllModal.show(); gatherAllSelectedVMs();">
-									Delete selected VMs
-								</button>
-							</div>
 						</div>
+					</div>
 				</div>
-
 			</div>
 
-			<div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
-				<div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+			<div *ngIf="isSearching" id="search_spinner" style="margin: 10px; padding: 10px">
+				<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
 			</div>
 
 			<div class="row">
@@ -138,9 +205,15 @@
 								<div class="col-2" style="text-align: center">
 									<strong>Created (by/at)</strong>
 								</div>
-								<div class="col-1" style="left:50px;">
-									<input class="form-check-input" type="checkbox" style="bottom: 3px;" [checked]="all_checked" (click)="toggleAllChecked()">
-									<strong class="hideMe" style="margin-left: 2px;">Select all</strong>
+								<div class="col-1" style="left: 50px">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										style="bottom: 3px"
+										[checked]="all_checked"
+										(click)="toggleAllChecked()"
+									/>
+									<strong class="hideMe" style="margin-left: 2px">Select all</strong>
 									<i class="fas fa-check-double showMe" title="Select All"></i>
 								</div>
 							</div>
@@ -149,36 +222,44 @@
 				</div>
 			</div>
 
-			<div class="row" *ngFor="let vm of vm_page.vm_list; trackBy:trackByVm"
-					 id="vm_overview_table">
+			<div class="row" *ngFor="let vm of vm_page.vm_list; trackBy: trackByVm" id="vm_overview_table">
 				<div class="col-md-12">
 					<app-vm-card
 						[vm]="vm"
 						[user_elixir_id]="user_elixir_id"
-						[is_vm_admin]="(vms_admin.indexOf(vm.openstackid) > -1)"
+						[is_vm_admin]="vms_admin.indexOf(vm.openstackid) > -1"
 						[is_vo_admin]="is_vo_admin"
-						(check_change_event)="childChecked()">
+						(check_change_event)="childChecked()"
+					>
 					</app-vm-card>
 				</div>
 			</div>
-			<div *ngIf="vm_page.vm_list?.length === 0 && !isSearching" class="row col-md-10 alert alert-info" style="margin:10px;">There are no machines to show.
+			<div
+				*ngIf="vm_page.vm_list?.length === 0 && !isSearching"
+				class="row col-md-10 alert alert-info"
+				style="margin: 10px"
+			>
+				There are no machines to show.
 			</div>
 		</div>
 	</div>
-
 </div>
 
-<div bsModal #verifyAllModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-		 aria-labelledby="Label"
-		 aria-hidden="true"
-		 id="verify_all_modal">
+<div
+	bsModal
+	#verifyAllModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+	id="verify_all_modal"
+>
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Delete the following VM</h4>
-				<button type="button" class="close" style="cursor: pointer"
-								(click)="verifyAllModal.hide()"
-								aria-label="Close">
+				<button type="button" class="close" style="cursor: pointer" (click)="verifyAllModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -186,51 +267,60 @@
 				<div class="alert alert-warning" role="alert">
 					Are you sure you want to delete:
 					<div *ngFor="let vm of selectedMachines">
-						{{vm.vm.name}}
+						{{ vm.vm.name }}
 					</div>
 				</div>
-				<div class="alert  form-check"
-						 [ngClass]="{'alert-danger':!deleteOtherMachines_confirmation,'alert-success':deleteOtherMachines_confirmation}"
-						 *ngIf="otherSelectedMachines.length > 0" role="alert">
+				<div
+					class="alert form-check"
+					[ngClass]="{
+						'alert-danger': !deleteOtherMachines_confirmation,
+						'alert-success': deleteOtherMachines_confirmation
+					}"
+					*ngIf="otherSelectedMachines.length > 0"
+					role="alert"
+				>
 					You are about to delete machines owned by someone else!
-					<br>
-					<div class="form-check"><input class="form-check-input"
-								 name="deleteOtherMachines_confirmation"
-								 type="checkbox"
-								 id="deleteOtherMachines_confirmation"
-								 [(ngModel)]="deleteOtherMachines_confirmation"
-								 required
-					>
-					<label class="form-check-label" for="deleteOtherMachines_confirmation">
-						I hereby confirm that I want to delete following virtual machines not owned by me:
-						<div *ngFor="let ovm of otherSelectedMachines">
-							{{ovm.vm.name}} owned by {{ovm.vm.userlogin}}
-						</div>
-					</label>
+					<br />
+					<div class="form-check">
+						<input
+							class="form-check-input"
+							name="deleteOtherMachines_confirmation"
+							type="checkbox"
+							id="deleteOtherMachines_confirmation"
+							[(ngModel)]="deleteOtherMachines_confirmation"
+							required
+						/>
+						<label class="form-check-label" for="deleteOtherMachines_confirmation">
+							I hereby confirm that I want to delete following virtual machines not owned by me:
+							<div *ngFor="let ovm of otherSelectedMachines">{{ ovm.vm.name }} owned by {{ ovm.vm.userlogin }}</div>
+						</label>
+					</div>
 				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn  btn-success col-md-4"
-								*ngIf="otherSelectedMachines.length === 0; else notVMowner"
-								(click)="deleteAllCheckedVms();verifyAllModal.hide();"
-								id="confirm_delete_all_button">
-					Yes
-				</button>
-				<ng-template #notVMowner>
-					<button class="btn  btn-success col-md-4"
-									(click)="deleteAllCheckedVms();verifyAllModal.hide();"
-									[disabled]="!deleteOtherMachines_confirmation"
-									id="confirm_delete_foreign_vms_button">
+				<div class="modal-footer">
+					<button
+						class="btn btn-success col-md-4"
+						*ngIf="otherSelectedMachines.length === 0; else notVMowner"
+						(click)="deleteAllCheckedVms(); verifyAllModal.hide()"
+						id="confirm_delete_all_button"
+					>
 						Yes
 					</button>
-				</ng-template>
-				<button class="btn  btn-danger col-md-4" type="reset"
-								(click)="verifyAllModal.hide();">
-					Cancel
-				</button>
+					<ng-template #notVMowner>
+						<button
+							class="btn btn-success col-md-4"
+							(click)="deleteAllCheckedVms(); verifyAllModal.hide()"
+							[disabled]="!deleteOtherMachines_confirmation"
+							id="confirm_delete_foreign_vms_button"
+						>
+							Yes
+						</button>
+					</ng-template>
+					<button class="btn btn-danger col-md-4" type="reset" (click)="verifyAllModal.hide()">Cancel</button>
+				</div>
 			</div>
-
-
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+</div>

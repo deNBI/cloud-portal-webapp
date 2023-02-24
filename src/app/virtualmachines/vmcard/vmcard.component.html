@@ -54,8 +54,11 @@
 							(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE) ||
 							(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF)
 						"
-						[checked]="is_checked"
+						[checked]="
+							is_checked && !(this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm)
+						"
 						(click)="toggleChecked()"
+						[disabled]="this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm"
 					/>
 				</div>
 			</div>
@@ -270,7 +273,7 @@
 	</div>
 
 	<div class="card-body p-x-1 py-h">
-		<div class="row">
+		<div class="row" *ngIf="!(this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm)">
 			<div class="col-md-auto">
 				<button
 					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
@@ -314,7 +317,8 @@
 							!(vm?.status | hasStatus : VirtualMachineStates.staticCHECKING_CONNECTION) &&
 							!(vm?.status | hasStatus : VirtualMachineStates.staticPORT_CLOSED)) ||
 						(vm?.status | hasStatus : VirtualMachineStates.staticNOT_FOUND) ||
-						(vm?.status | hasStatus : VirtualMachineStates.staticDELETED)
+						(vm?.status | hasStatus : VirtualMachineStates.staticDELETED) ||
+						this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm
 					"
 					[id]="'showActionsButton_' + vm?.name"
 					[attr.data-test-id]="'show_actions_button_' + vm?.name"
@@ -326,10 +330,18 @@
 					class="font-weight-bold font-xs btn-block btn btn-secondary"
 					*ngIf="vm.cardState === 2"
 					[id]="'hideActionsButton_' + vm?.name"
+					[disabled]="this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm"
 					(click)="vm.cardState = 0"
 				>
 					... Hide actions
 				</button>
+			</div>
+		</div>
+		<div class="row" *ngIf="this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm">
+			<div class="col-md-auto">
+				<div class="alert alert-info">
+					You are not able to control this instance via this platform as it is part of a migrated project!
+				</div>
 			</div>
 		</div>
 	</div>

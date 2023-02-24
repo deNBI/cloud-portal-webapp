@@ -51,6 +51,9 @@
 						</button>
 					</div>
 				</div>
+				<div class="card-body" *ngIf="isMigrated">
+					<app-migration-information [isCreationPage]="false" [type]="'machine'"> </app-migration-information>
+				</div>
 				<div class="card-body">
 					<app-virtualmachineinfo [virtualMachine]="virtualMachine"></app-virtualmachineinfo>
 				</div>
@@ -127,7 +130,7 @@
 					<hr *ngIf="virtualMachine?.elixir_id === user_elixir_id" />
 					<div class="card-body" *ngIf="virtualMachine?.elixir_id === user_elixir_id || is_project_admin">
 						<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Actions</span>
-						<div class="row" style="margin-top: 15px">
+						<div class="row" style="margin-top: 15px" *ngIf="!isMigrated">
 							<div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
 								<button
 									type="button"
@@ -198,6 +201,9 @@
 									<strong>Start VM</strong>
 								</button>
 							</div>
+						</div>
+						<div class="row" *ngIf="isMigrated">
+							<div class="alert alert-info">You are not able to control this machine using the current platform.</div>
 						</div>
 					</div>
 				</div>
@@ -383,7 +389,7 @@
 									<strong class="text-muted">Actions</strong>
 								</div>
 							</div>
-							<div class="col-4" *ngIf="vol.volume_status === VolumeStates.staticIN_USE">
+							<div class="col-4" *ngIf="vol.volume_status === VolumeStates.staticIN_USE && !isMigrated">
 								<button
 									type="button"
 									class="btn btn-secondary"
@@ -393,6 +399,9 @@
 								>
 									Detach Volume
 								</button>
+							</div>
+							<div class="col-md-auto" *ngIf="isMigrated">
+								<div class="alert alert-info">You are not able to detach this volume using the current platform.</div>
 							</div>
 						</div>
 						<hr />
