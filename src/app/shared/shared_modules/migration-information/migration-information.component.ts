@@ -17,9 +17,10 @@ export class MigrationInformationComponent implements OnInit, OnDestroy {
 	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK;
 
 	@Input() isCreationPage: boolean = false;
-	@Input() affectedProjects: any = {};
+	@Input() affectedProjects: string[] = [];
 
 	@Input() type: string = '';
+
 	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor() {
 		// eslint-disable-next-line no-empty-function
@@ -27,6 +28,13 @@ export class MigrationInformationComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.subscription = new Subscription();
+		const uniqueProjects = [];
+		this.affectedProjects.forEach(project => {
+			if (!uniqueProjects.includes(project)) {
+				uniqueProjects.push(project);
+			}
+		});
+		this.affectedProjects = uniqueProjects;
 	}
 
 	ngOnDestroy(): void {
