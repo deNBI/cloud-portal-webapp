@@ -55,6 +55,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._CLIENT_OFFLINE,
 		VirtualMachineStates._DELETING_FAILED,
 		VirtualMachineStates._CREATION_FAILED,
+		VirtualMachineStates._MIGRATED,
 	];
 
 	private static readonly _DELETABLE_STATES: string[] = [

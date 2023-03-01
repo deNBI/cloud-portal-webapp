@@ -12,6 +12,13 @@
 		class="dot-colorless bg-warning"
 		style="width: 15px; height: 15px"
 	></div>
+
+	<div
+		*ngSwitchCase="ClusterStates.staticMIGRATED"
+		[id]="'migrated_badge_' + cluster?.cluster_id"
+		class="dot-colorless pulseAnimMigrated"
+		style="width: 15px; height: 15px"
+	></div>
 	<div
 		*ngSwitchCase="VirtualMachineStates.staticPOWERING_ON"
 		[id]="'powering_on_badge_' + cluster?.cluster_id"

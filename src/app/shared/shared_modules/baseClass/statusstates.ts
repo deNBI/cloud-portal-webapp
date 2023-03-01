@@ -2,7 +2,6 @@
  * GerneralStatus class.
  */
 export class GeneralStatusStates {
-
 	protected static readonly _CREATING: string = 'CREATING';
 	protected static readonly _NOT_FOUND: string = 'NOT_FOUND';
 	protected static readonly _DELETED: string = 'DELETED';
@@ -12,6 +11,11 @@ export class GeneralStatusStates {
 	protected static readonly _DELETING_FAILED: string = 'DELETING_FAILED';
 	protected static readonly _GETTING_STATUS: string = 'CHECKING_STATUS';
 
+	protected static readonly _MIGRATED: string = 'MIGRATED';
+
+	static get MIGRATED(): string {
+		return this._MIGRATED;
+	}
 	static get CLIENT_OFFLINE(): string {
 		return this._CLIENT_OFFLINE;
 	}
@@ -76,4 +80,7 @@ export class GeneralStatusStates {
 		return GeneralStatusStates.CREATING;
 	}
 
+	public get staticMIGRATED(): string {
+		return GeneralStatusStates.MIGRATED;
+	}
 }

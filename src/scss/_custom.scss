@@ -502,6 +502,7 @@ $simplevmcolour: #00ADEF;
   display: inline-block;
 }
 
+
 .pulseAnim {
   border-radius: 50%;
   cursor: pointer;
@@ -511,6 +512,16 @@ $simplevmcolour: #00ADEF;
   -webkit-animation: pulse 2s infinite !important;
   animation: pulse 2s infinite !important;
 
+}
+
+.pulseAnimMigrated {
+	border-radius: 50%;
+	cursor: pointer;
+	background: rgba(43, 153, 255, 0.78) !important;
+	box-shadow: 0 0 0 rgba(9, 38, 147, 0.4);
+	-moz-animation: pulse 2s infinite !important;
+	-webkit-animation: pulse 2s infinite !important;
+	animation: pulse 2s infinite !important;
 }
 
 .pulseAnimProcess {

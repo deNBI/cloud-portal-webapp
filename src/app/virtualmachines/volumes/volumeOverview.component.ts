@@ -640,7 +640,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 					this.isLoaded = true;
 					this.isSearching = false;
 					this.volume_page.volume_list.forEach((vol: Volume): void => {
-						if (vol.volume_status !== VolumeStates.NOT_FOUND) {
+						if (vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.MIGRATED) {
 							this.check_status_loop(vol);
 						}
 					});
