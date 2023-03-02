@@ -146,7 +146,7 @@ export class Util {
 
 
 		static async clickByDataTestIdStr(page: Page, id_str: string): Promise<void> {
-				console.log('Clicking by data-test-id: ' + id_str)
+				console.log('Clicking by data-test-id: ' + id_str);
 				await page.click(Util.by_data_test_id_str(id_str))
 
 		}
@@ -158,7 +158,7 @@ export class Util {
 
 		static async skipElixirTestWarning(page: Page): Promise<void> {
 				try {
-						await page.waitForNavigation({url: `**/oidc/${Util.TEST_RP_WARNING}**`});
+						await page.waitForURL(`**/oidc/${Util.TEST_RP_WARNING}**`);
 						await page.locator(`text=${this.TEST_RP_CONTINUE}`).click();
 				} catch (error) {
 						console.log(`Didn't Load Test Warning: ${error}`);
