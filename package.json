@@ -13,7 +13,6 @@
     "e2e": "npm-run-all -p -r webdriver-start  protractor",
     "pree2e": "webdriver-manager update --standalone false --gecko false --quiet",
     "compodoc": "./node_modules/.bin/compodoc -p src/tsconfig.app.json",
-    "preinstall": "npx npm-force-resolutions",
     "prepare": "husky install"
   },
   "resolutions": {},
