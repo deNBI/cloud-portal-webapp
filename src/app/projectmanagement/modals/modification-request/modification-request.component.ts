@@ -157,8 +157,11 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			expectedTotalCredits: this.expected_total_credits,
 		};
 		this.submitted = true;
-		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });
-		this.bsModalRef.setClass('modal-lg');
+		this.bsModalRef = this.modalService.show(ResultComponent, {
+			initialState,
+			class: 'modal-lg modal-dialog-scrollable ',
+		});
+
 		this.bsModalRef.content.event.subscribe((result: any) => {
 			if ('reload' in result && result['reload']) {
 				this.event.emit({ reload: true });
