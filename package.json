@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.624.0",
+  "version": "4.625.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@angular-eslint/eslint-plugin": "^15.2.0",
     "@angular/animations": "15.2.1",
-    "@angular/cdk": "15.2.0",
+    "@angular/cdk": "15.2.1",
     "@angular/common": "15.2.1",
     "@angular/compiler": "15.2.1",
     "@angular/core": "15.2.1",
