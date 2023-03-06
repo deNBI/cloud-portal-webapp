@@ -39,6 +39,9 @@ export class Application {
 	project_application_openstack_project: boolean;
 	project_application_total_gpu: number = 0;
 
+	pi_approval_notification_send: boolean;
+	pi_approval_notification_expired: boolean;
+
 	DaysRunning: number;
 	date_end: string;
 	lifetime_days: number;
