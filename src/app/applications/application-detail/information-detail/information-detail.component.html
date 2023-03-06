@@ -1,193 +1,171 @@
 <table class="table table-striped" style="table-layout: fixed">
+	<td>Research Topics</td>
+	<td>
+		<h5>
+			<span
+				*ngFor="let term of application?.project_application_edam_terms"
+				style="margin-left: 5px"
+				class="badge bg-info"
+				><span id="topic_{{ term }}">{{ term }}</span>
+			</span>
+		</h5>
+	</td>
 
-  <td>Research Topics</td>
-  <td><h5><span *ngFor="let term of application?.project_application_edam_terms"
-                style="margin-left: 5px; "
-                class="badge bg-info"><span id="topic_{{term}}">{{term}}</span>
- </span>
+	<tr>
+		<td>Workshop</td>
+		<td>
+			<span *ngIf="application?.project_application_workshop" class="badge bg-success">Yes</span>
+			<span *ngIf="!application?.project_application_workshop" class="badge bg-danger">No</span>
+		</td>
+	</tr>
+	<tr *ngIf="application?.project_application_openstack_project">
+		<td>Service</td>
+		<td>
+			<span *ngIf="application?.project_application_cloud_service" class="badge bg-success">Yes</span>
+			<span *ngIf="!application?.project_application_cloud_service" class="badge bg-danger">No</span>
+		</td>
+	</tr>
+	<tr *ngIf="application?.project_application_openstack_project && application?.project_application_cloud_service">
+		<td>Service status</td>
+		<td>
+			<span *ngIf="application?.project_application_cloud_service_develop" class="badge bg-success"
+				>In development</span
+			>
+			<span *ngIf="!application?.project_application_cloud_service_develop" class="badge bg-danger">Existing</span>
+		</td>
+	</tr>
+	<tr *ngIf="!application?.project_application_cloud_service_develop && application?.project_application_cloud_service">
+		<td>Number of unique users per month</td>
+		<td>{{ application?.project_application_cloud_service_user_number }}</td>
+	</tr>
 
-  </h5></td>
+	<tr>
+		<td>Description</td>
+		<td>{{ application?.project_application_description }}</td>
+	</tr>
+	<tr *ngIf="application?.project_application_horizon2020">
+		<td>Horizon 2020</td>
+		<td>
+			{{ application?.project_application_horizon2020 }}
+		</td>
+	</tr>
+	<tr *ngIf="application?.project_application_elixir_project">
+		<td>Elixir Project</td>
+		<td>
+			{{ application?.project_application_elixir_project }}
+		</td>
+	</tr>
+	<tr *ngIf="application?.project_application_bmbf_project">
+		<td>BMBF Project</td>
+		<td>
+			{{ application?.project_application_bmbf_project }}
+		</td>
+	</tr>
+	<tr *ngIf="application?.project_application_nfdi">
+		<td>NFDI Project</td>
+		<td>
+			{{ application?.project_application_nfdi }}
+		</td>
+	</tr>
 
-  <tr>
-    <td>Workshop</td>
-    <td>
-      <span *ngIf="application?.project_application_workshop" class="badge bg-success">Yes</span>
-      <span *ngIf="!application?.project_application_workshop" class="badge bg-danger">No</span>
-    </td>
-
-  </tr>
-  <tr *ngIf="application?.project_application_openstack_project">
-    <td>Service</td>
-    <td>
-      <span *ngIf="application?.project_application_cloud_service" class="badge bg-success">Yes</span>
-      <span *ngIf="!application?.project_application_cloud_service" class="badge bg-danger">No</span>
-    </td>
-
-  </tr>
-  <tr *ngIf="application?.project_application_openstack_project && application?.project_application_cloud_service">
-    <td>Service status</td>
-    <td>
-      <span *ngIf="application?.project_application_cloud_service_develop"
-            class="badge bg-success">In development</span>
-      <span *ngIf="!application?.project_application_cloud_service_develop"
-            class="badge bg-danger">Existing</span>
-    </td>
-  </tr>
-  <tr *ngIf="!application?.project_application_cloud_service_develop && application?.project_application_cloud_service">
-    <td>Number of unique users per month</td>
-    <td>{{application?.project_application_cloud_service_user_number}}</td>
-  </tr>
-
-  <tr>
-    <td>Description
-    </td>
-    <td>{{
-      application?.project_application_description
-      }}
-    </td>
-
-  </tr>
-  <tr *ngIf="application?.project_application_horizon2020">
-    <td>Horizon 2020</td>
-    <td>
-      {{application?.project_application_horizon2020}}
-    </td>
-  </tr>
-  <tr *ngIf="application?.project_application_elixir_project">
-
-    <td>Elixir Project</td>
-    <td>
-      {{application?.project_application_elixir_project}}
-    </td>
-
-  </tr>
-  <tr *ngIf="application?.project_application_bmbf_project">
-    <td>BMBF Project</td>
-    <td>
-      {{application?.project_application_bmbf_project}}
-    </td>
-
-  </tr>
-  <tr *ngIf="application?.project_application_nfdi">
-    <td>NFDI Project</td>
-    <td>
-      {{application?.project_application_nfdi}}
-    </td>
-
-  </tr>
-
-
-  <tr>
-    <td>Workgroup</td>
-    <td>{{
-      application?.project_application_workgroup
-      }}
-    </td>
-
-  </tr>
+	<tr>
+		<td>Workgroup</td>
+		<td>{{ application?.project_application_workgroup }}</td>
+	</tr>
 
 	<tr>
 		<td>Project Member Names Visibility</td>
 		<td>
 			<span *ngIf="application?.show_member_names" class="badge bg-light">Visible</span>
-<!--			<span *ngIf="!application?.show_member_names" class="badge bg-info">Hidden</span>-->
+			<!--			<span *ngIf="!application?.show_member_names" class="badge bg-info">Hidden</span>-->
 			<span *ngIf="!application?.show_member_names" class="badge bg-primary">Hidden</span>
 		</td>
-
 	</tr>
 
-  <tr>
-    <td>Comment</td>
-    <td>{{
-      application?.project_application_comment
-      }}
-    </td>
-
-  </tr>
-  <tr>
-    <td>Lifetime</td>
-    <td>{{
-      application?.project_application_lifetime
-      }} month(s) <span *ngIf="application.project_application_end_date">
-			(Ending: {{application.project_application_end_date}})
-		</span>
-    </td>
-
-  </tr>
-  <tr>
-    <td>Person Related Data</td>
-    <td><p *ngIf="application?.project_application_person_related_data"> Yes</p>
-      <p *ngIf="!application?.project_application_person_related_data"> No</p>
-    </td>
-  </tr>
+	<tr>
+		<td>Comment</td>
+		<td>{{ application?.project_application_comment }}</td>
+	</tr>
+	<tr>
+		<td>Lifetime</td>
+		<td>
+			{{ application?.project_application_lifetime }} month(s)
+			<span *ngIf="application.project_application_end_date">
+				(Ending: {{ application.project_application_end_date }})
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td>Person Related Data</td>
+		<td>
+			<p *ngIf="application?.project_application_person_related_data">Yes</p>
+			<p *ngIf="!application?.project_application_person_related_data">No</p>
+		</td>
+	</tr>
 	<tr *ngIf="application?.project_application_person_related_data">
 		<td>No Personal Data (Anonymous)</td>
-		<td><p *ngIf="application?.project_application_no_personal_data"> Yes</p>
-			<p *ngIf="!application?.project_application_no_personal_data"> No</p>
+		<td>
+			<p *ngIf="application?.project_application_no_personal_data">Yes</p>
+			<p *ngIf="!application?.project_application_no_personal_data">No</p>
 		</td>
 	</tr>
 	<tr *ngIf="application?.project_application_person_related_data">
 		<td>Nonsensitive Data</td>
-		<td><p *ngIf="application?.project_application_nonsensitive_data"> Yes</p>
-			<p *ngIf="!application?.project_application_nonsensitive_data"> No</p>
+		<td>
+			<p *ngIf="application?.project_application_nonsensitive_data">Yes</p>
+			<p *ngIf="!application?.project_application_nonsensitive_data">No</p>
 		</td>
 	</tr>
 	<tr *ngIf="application?.project_application_person_related_data">
 		<td>Sensitive Data</td>
-		<td><p *ngIf="application?.project_application_sensitive_data"> Yes</p>
-			<p *ngIf="!application?.project_application_sensitive_data"> No</p>
+		<td>
+			<p *ngIf="application?.project_application_sensitive_data">Yes</p>
+			<p *ngIf="!application?.project_application_sensitive_data">No</p>
 		</td>
 	</tr>
-  <tr *ngIf="application?.project_application_openstack_project">
-    <td>Training</td>
-    <td><p *ngIf="application?.project_application_openstack_basic_introduction"> Yes</p>
-      <p *ngIf="!application?.project_application_openstack_basic_introduction"> No</p>
-    </td>
+	<tr *ngIf="application?.project_application_openstack_project">
+		<td>Training</td>
+		<td>
+			<p *ngIf="application?.project_application_openstack_basic_introduction">Yes</p>
+			<p *ngIf="!application?.project_application_openstack_basic_introduction">No</p>
+		</td>
+	</tr>
+	<tr *ngIf="application?.project_application_hash">
+		<td>Validation Link</td>
+		<td>
+			<a
+				id="validation_hash"
+				href="{{ environment.webapp }}#/applications/validation/{{ application?.project_application_hash }}"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{{ environment.webapp + '#/applications/validation/' + application?.project_application_hash }}</a
+			>
+		</td>
+	</tr>
 
-  </tr>
-  <tr
-    *ngIf="application?.project_application_hash ">
-    <td>Validation Hash</td>
-    <td><a id="validation_hash"
-           href="#/applications/validation/{{application?.project_application_hash}}"> {{application?.project_application_hash}}</a>
-
-    </td>
-
-  </tr>
-
-  <tr>
-    <td>Last status
-      changed
-    </td>
-    <td>{{
-      application?.project_application_date_status_changed
-      }}
-    </td>
-
-  </tr>
-
-
+	<tr>
+		<td>Last status changed</td>
+		<td>{{ application?.project_application_date_status_changed }}</td>
+	</tr>
 </table>
 
 <table *ngIf="application?.project_application_report_allowed" class="table table-striped" style="table-layout: fixed">
-  <thead>
-  <tr>
-    <th colspan="2" style="text-align:center"><strong>Dissemination</strong></th>
-
-  </tr>
-  </thead>
-  <tr>
-    <td>Platforms</td>
-    <td id="dissemination_platforms">
-      {{application?.dissemination?.allowed_platforms.join(", ")}}
-    </td>
-
-  </tr>
-  <tr>
-    <td>Information</td>
-    <td id="dissemination_information">
-      {{application?.dissemination?.allowed_informations.join(", ")}}
-    </td>
-
-  </tr>
+	<thead>
+		<tr>
+			<th colspan="2" style="text-align: center"><strong>Dissemination</strong></th>
+		</tr>
+	</thead>
+	<tr>
+		<td>Platforms</td>
+		<td id="dissemination_platforms">
+			{{ application?.dissemination?.allowed_platforms.join(', ') }}
+		</td>
+	</tr>
+	<tr>
+		<td>Information</td>
+		<td id="dissemination_information">
+			{{ application?.dissemination?.allowed_informations.join(', ') }}
+		</td>
+	</tr>
 </table>

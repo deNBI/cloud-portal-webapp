@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Application } from '../../application.model/application.model';
 import { is_vo, elixir_id } from '../../../shared/globalvar';
+import { environment } from '../../../../environments/environment';
 
 /**
  * Application informations.
@@ -14,7 +15,7 @@ export class InformationDetailComponent implements OnInit {
 	is_vo: boolean = is_vo;
 	elixir_id: string = elixir_id;
 
-	ngOnInit() {
+	environment: any = environment;
 
-	}
+	ngOnInit() {}
 }
