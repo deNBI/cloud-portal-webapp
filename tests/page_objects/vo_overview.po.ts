@@ -12,7 +12,7 @@ export class VoOverviewPage {
 	private NOTIFICATION_MESSAGE: string = 'notification_message';
 	private CLOSE_NOTIFICATION_BTN: string = 'close_notification_modal_btn';
 	private PROJECT_TERMINATED_MESSAGE: string = 'The project was terminated.';
-	private PROJECT_TERMINATION_FORWARDED_TO_FACILITY: string =		'The request to terminate the project was forwarded to the facility manager.';
+	private PROJECT_TERMINATION_FORWARDED_TO_FACILITY: string =	'The request to terminate the project was forwarded to the facility manager.';
 
 	private TERMINATE_BUTTON_TEXT: string = 'Terminate Project';
 	private NOTIFICATION_MODAL_TITLE: string = 'notification_modal_title';
@@ -45,7 +45,7 @@ export class VoOverviewPage {
 		console.log(`Terminate all openstack projects with name ${project_name}`);
 		await this.goto();
 		await this.filterForProjects(project_name);
-
+		await this.page.waitForTimeout(3000);
 		const project_count: number = await this.page.locator('button >> text=Terminate Project').count();
 		console.log(`Terminating ${project_count} openstack projects with name ${project_name}`);
 		// eslint-disable-next-line no-plusplus
@@ -56,9 +56,7 @@ export class VoOverviewPage {
 			await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).first().click();
 
 			// eslint-disable-next-line no-await-in-loop
-			await this.page.waitForSelector(
-				`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.PROJECT_TERMINATION_FORWARDED_TO_FACILITY}`,
-			);
+			await expect(this.page.locator(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE))).toHaveClass(/alert-success/);
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_BTN)).click();
 		}

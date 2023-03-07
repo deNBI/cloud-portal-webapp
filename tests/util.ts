@@ -4,6 +4,7 @@
 
 import {Page} from '@playwright/test';
 
+
 /**
  * Util test class.
  */
@@ -42,7 +43,7 @@ export class Util {
 		private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
 		private static _30_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 30;
 		private static _FACILITY_MANAGER_STORAGE: string = 'facilityManagerStorageState.json';
-		private static _MEMBER_STORAGE: string = 'memberStorageState';
+		private static _MEMBER_STORAGE: string = 'memberStorageState.json';
 		private static _VO_MANAGER_STORAGE: string = 'voManagerState.json';
 
 		static get FACILITY_MANAGER_STORAGE(): string {

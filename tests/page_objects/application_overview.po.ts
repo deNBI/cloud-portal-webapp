@@ -32,6 +32,8 @@ export class ApplicationOverviewPage {
 	private SUBMITTED_APPLICATIONS_TAB: string = 'submitted_applications_tab';
 	private LOADING_APPLICATIONS: string = 'loading_applications';
 	private APPLICATIONS_CONTAINER: string = 'applications_container';
+
+	private CONFIRM_CONFIRMATION_MODAL_BUTTON: string = 'confirm_confirmation_modal_btn';
 	private SITE_LOADER: string = 'site-loader';
 
 	readonly page: Page;
@@ -93,6 +95,7 @@ export class ApplicationOverviewPage {
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(`data-test-id=${this.DECLINE_OPEN_APPLICATION_PRE}${projectName}`).first().click();
 			// eslint-disable-next-line no-await-in-loop
+			await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 			await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.SUCCESSFULL_DECLINED}`);
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_MODAL)).click();
@@ -102,6 +105,7 @@ export class ApplicationOverviewPage {
 	async approveOpenStackModificationRequest(application_name: string): Promise<any> {
 		await this.goToModificationRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(
 			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.MODIFICATION_REQUEST_RESULT_TEXT}`,
 		);
@@ -123,6 +127,7 @@ export class ApplicationOverviewPage {
 	async approveSimpleVMExtensionRequest(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(
 			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_SIMPLEVM_TEXT}`,
 		);
@@ -131,6 +136,7 @@ export class ApplicationOverviewPage {
 	async approveOpenStackExtensionRequest(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(
 			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_OPENSTACK_TEXT}`,
 		);
@@ -162,6 +168,7 @@ export class ApplicationOverviewPage {
 		await this.page.waitForTimeout(10000);
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).isEnabled();
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE), { state: 'visible' });
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
