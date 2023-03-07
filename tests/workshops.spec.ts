@@ -1,7 +1,6 @@
 import { test } from '@playwright/test';
 // @ts-ignore
 import environment from './environment.json';
-import { MEMBER_STORAGE, VO_MANAGER_STORAGE } from './global-setup';
 import { Util } from './util';
 import { ApplicationOverviewPage } from './page_objects/application_overview.po';
 import { VoOverviewPage } from './page_objects/vo_overview.po';
@@ -13,7 +12,7 @@ import { FormularPage } from './page_objects/formular.po';
 
 test.describe.serial('@workshops', () => {
 	test.describe('Should delete old workshop applications', () => {
-		test.use({ storageState: VO_MANAGER_STORAGE });
+		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @workshops', async ({ page, baseURL }) => {
 			test.setTimeout(60 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
@@ -24,7 +23,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should request a workshop application', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
 			const formularPage = new FormularPage(page, baseURL);
 			await formularPage.goToNewSimpleVMProject();
@@ -34,7 +33,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should approve a workshop application', () => {
-		test.use({ storageState: VO_MANAGER_STORAGE });
+		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @workshops', async ({ page, baseURL }) => {
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.approveSimpleVm(Util.WORKSHOP_PROJECT_NAME);
@@ -42,7 +41,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should add a member to workshop application', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
 			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
 			await projectOverviewPage.goToProjectOverview(Util.WORKSHOP_PROJECT_NAME);
@@ -51,7 +50,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should create a workshop', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
 			const workshopOverviewPage = new WorkshopOverviewPage(page, baseURL);
 			await workshopOverviewPage.goToWorkshopOverview();
@@ -62,7 +61,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should have users', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
 			const workshopOverviewPage = new WorkshopOverviewPage(page, baseURL);
 			await workshopOverviewPage.goToWorkshopOverview();
@@ -74,7 +73,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should start workshop vms', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
 			const workshopInstancesPage = new WorkshopInstancesPage(page, baseURL);
 			await workshopInstancesPage.goToWorkshopInstances();
@@ -85,7 +84,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should have vms active', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
@@ -102,7 +101,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should have instances on workshop overview', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
 			const workshopOverviewPage = new WorkshopOverviewPage(page, baseURL);
 			await workshopOverviewPage.goToWorkshopOverview();
@@ -113,7 +112,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should login to resenv', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member and Admin @workshops', async ({ page, baseURL }) => {
 			const workshopOverviewPage = new WorkshopOverviewPage(page, baseURL);
 			await page.waitForTimeout(2000);
@@ -126,7 +125,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Should cleanup a workshop', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
 			const workshopOverviewPage = new WorkshopOverviewPage(page, baseURL);
 			await workshopOverviewPage.goToWorkshopOverview();
@@ -137,7 +136,7 @@ test.describe.serial('@workshops', () => {
 	});
 
 	test.describe('Aftercare - Should delete old workshop applications', () => {
-		test.use({ storageState: VO_MANAGER_STORAGE });
+		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1);
 		test('VO @workshops', async ({ page, baseURL }) => {
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
