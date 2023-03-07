@@ -41,6 +41,21 @@ export class Util {
 		private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 2;
 		private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
 		private static _30_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 30;
+		private static _FACILITY_MANAGER_STORAGE: string = 'facilityManagerStorageState.json';
+		private static _MEMBER_STORAGE: string = 'memberStorageState';
+		private static _VO_MANAGER_STORAGE: string = 'voManagerState.json';
+
+		static get FACILITY_MANAGER_STORAGE(): string {
+				return this._FACILITY_MANAGER_STORAGE
+		}
+
+		static get VO_MANAGER_STORAGE(): string {
+				return this._VO_MANAGER_STORAGE
+		}
+
+		static get MEMBER_STORAGE(): string {
+				return this._MEMBER_STORAGE
+		}
 
 		//  VARIABLE GETTERS
 		static get PI_EMAIL(): string {
