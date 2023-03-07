@@ -1,82 +1,91 @@
-import { devices, PlaywrightTestConfig } from '@playwright/test';
-// @ts-ignore
+import {defineConfig, devices} from '@playwright/test';
 import environment from './tests/environment.json';
+
+export const MEMBER_STORAGE: string = 'memberStorageState.json';
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// require('dotenv').config();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const config: PlaywrightTestConfig = {
-	testDir: './tests',
+export default defineConfig({
+		testDir: './tests',
+		/* Maximum time one test can run for. */
+		timeout: 60000 * 10,
+		expect: {
+				/**
+				 * Maximum time expect() should wait for the condition to be met.
+				 * For example in `await expect(locator).toHaveText();`
+				 */
+				timeout: 30000,
+		},
+		/* Run tests in files in parallel */
+		fullyParallel: true,
+		/* Fail the build on CI if you accidentally left test.only in the source code. */
+		forbidOnly: !!process.env.CI,
+		/* Retry on CI only */
+		retries: process.env.CI ? 2 : 0,
+		/* Opt out of parallel tests on CI. */
+		workers: process.env.CI ? 1 : undefined,
+		/* Reporter to use. See https://playwright.dev/docs/test-reporters */
+		reporter: process.env.CI
+				? [
+						['github'],
+						[
+								'html',
+								{
+										open: 'never',
+										outputFolder: 'playwright-html-report',
+								},
+						],
+				]
+				: [['html', {open: 'never', outputFolder: 'playwright-html-report'}]],		/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+		use: {
+				/* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
+				actionTimeout: 0,
+				/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+				// trace: 'on-first-retry',
+				baseURL: environment.portal,
+				screenshot: 'on',
+				video: 'on',
+				trace: 'on',
+				// headless: false,
+		},
 
-	/* Maximum time one test can run for. Set to 30 min as longest timeout in Util is 30 min. */
-	timeout: 60000 * 10,
-
-	expect: {
-		/**
-		 * Maximum time expect() should wait for the condition to be met.
-		 * For example in `await expect(locator).toHaveText();`
-		 */
-		timeout: 30000,
-	},
-
-	/* Fail the build on CI if you accidentally left test.only in the source code. */
-	forbidOnly: !!process.env.CI,
-
-	/* Retry on CI only */
-	retries: process.env.CI ? 2 : 0,
-	// default 'list' when running locally
-	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
-
-	reporter: process.env.CI
-		? [
-			['github'],
-			[
-				'html',
+		/* Configure projects for major browsers */
+		projects: [
+				{name: 'setup', testMatch: /.*\.setup\.ts/},
 				{
-					open: 'never',
-					outputFolder: 'playwright-html-report',
+						name: 'chromium',
+						use: {
+								...devices['Desktop Chrome'],
+
+								// Use prepared auth state.
+						},
+						dependencies: ['setup'],
 				},
-			],
-		  ]
-		: [['html', { open: 'never', outputFolder: 'playwright-html-report' }]],
 
-	/* Opt out of parallel tests on CI. */
-	workers: process.env.CI ? 1 : undefined,
+				{
+						name: 'firefox',
+						use: {...devices['Desktop Firefox']},
+						dependencies: ['setup'],
 
-	/* order of tests */
-	// testMatch: 'workshops.spec.ts',
+				},
 
-	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-	use: {
-		/* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-		actionTimeout: 0,
-		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-		// trace: 'on-first-retry',
-		baseURL: environment.portal,
-		screenshot: 'on',
-		video: 'on',
-		trace: 'on',
-		// headless: false,
-	},
+				{
+						name: 'webkit',
+						use: {...devices['Desktop Safari']},
+						dependencies: ['setup'],
 
-	/* Configure projects for major browsers */
-	globalSetup: require.resolve('./tests/global-setup'),
+				},
 
-	projects: [
-		{
-			name: 'chromium',
-			use: {
-				...devices['Desktop Chrome'],
-			},
-		},
-		{
-			name: 'firefox',
-			use: { ...devices['Desktop Firefox'] },
-		},
-		{
-			name: 'safari',
-			use: { ...devices['Desktop Safari'] },
-		},
-	],
-};
-export default config;
+		],
+
+		/* Folder for test artifacts such as screenshots, videos, traces, etc. */
+		outputDir: 'test-results/',
+
+
+});
