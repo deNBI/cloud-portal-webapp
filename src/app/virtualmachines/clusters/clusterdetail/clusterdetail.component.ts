@@ -115,6 +115,8 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 								this.cluster.worker_instances[this.cluster.worker_instances.indexOf(vm)] = updated_vm;
 								if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
 									this.check_status_loop_vm(updated_vm, final_state);
+								} else if (updated_vm.status === VirtualMachineStates.MIGRATED) {
+									// do nothing
 								} else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
 									if (final_state && updated_vm.status !== final_state) {
 										this.check_status_loop_vm(updated_vm, final_state);

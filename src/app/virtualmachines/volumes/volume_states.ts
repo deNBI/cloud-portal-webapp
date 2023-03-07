@@ -4,7 +4,6 @@ import { GeneralStatusStates } from '../../shared/shared_modules/baseClass/statu
  * VolumeStates class.
  */
 export class VolumeStates extends GeneralStatusStates {
-
 	private static readonly _IN_USE: string = 'IN-USE';
 	private static readonly _RESERVED: string = 'RESERVED';
 	private static readonly _AVAILABLE: string = 'AVAILABLE';
@@ -15,10 +14,19 @@ export class VolumeStates extends GeneralStatusStates {
 	private static readonly _EXTENDING: string = 'EXTENDING';
 
 	private static readonly _IN_PROCESS_STATES: string[] = [
-		VolumeStates._RESERVED, VolumeStates._DELETING, VolumeStates._DETACHING, VolumeStates._EXTENDING];
+		VolumeStates._RESERVED,
+		VolumeStates._DELETING,
+		VolumeStates._DETACHING,
+		VolumeStates._EXTENDING,
+	];
 
 	private static readonly _NOT_IN_PROCESS_STATES: string[] = [
-		VolumeStates._IN_USE, VolumeStates._AVAILABLE, VolumeStates._NOT_FOUND, VolumeStates._ERROR, VolumeStates._DELETED,
+		VolumeStates._IN_USE,
+		VolumeStates._AVAILABLE,
+		VolumeStates._NOT_FOUND,
+		VolumeStates._ERROR,
+		VolumeStates._DELETED,
+		VolumeStates._MIGRATED,
 	];
 
 	private static readonly _NO_ACTIONS: string[] = [
@@ -67,7 +75,6 @@ export class VolumeStates extends GeneralStatusStates {
 	}
 
 	static get ATTACHING(): string {
-
 		return this._ATTACHING;
 	}
 
@@ -118,5 +125,4 @@ export class VolumeStates extends GeneralStatusStates {
 	public get staticEXTENDING(): string {
 		return VolumeStates.EXTENDING;
 	}
-
 }
