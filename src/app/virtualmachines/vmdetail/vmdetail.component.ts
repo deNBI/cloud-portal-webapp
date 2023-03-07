@@ -253,6 +253,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 				vol.volume_status !== VolumeStates.AVAILABLE
 				&& vol.volume_status !== VolumeStates.NOT_FOUND
 				&& vol.volume_status !== VolumeStates.IN_USE
+				&& vol.volume_status !== VolumeStates.MIGRATED
 			) {
 				this.check_status_loop_vol(vol);
 			}
@@ -313,6 +314,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 							vol.volume_status !== VolumeStates.AVAILABLE
 							&& vol.volume_status !== VolumeStates.NOT_FOUND
 							&& vol.volume_status !== VolumeStates.IN_USE
+							&& vol.volume_status !== VolumeStates.MIGRATED
 							&& vol.volume_status !== final_state
 						) {
 							this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state);
@@ -511,7 +513,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 						this.virtualMachine = updated_vm;
 						this.virtualMachine.cardState = 0;
 
-						if (updated_vm.status === final_state) {
+						if (updated_vm.status === final_state || updated_vm.status === VirtualMachineStates.MIGRATED) {
 							this.virtualMachine = updated_vm;
 						} else {
 							if (this.virtualMachine['error']) {
