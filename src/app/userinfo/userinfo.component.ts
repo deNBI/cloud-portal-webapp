@@ -52,7 +52,7 @@ export class UserInfoComponent implements OnInit {
 	isLoaded: boolean = false;
 
 	/**
-	 * If the data used for summary of leave-vo-modal is collected
+	 * If the data used for a summary of leave-vo-modal is collected
 	 *
 	 * @type {boolean}
 	 */

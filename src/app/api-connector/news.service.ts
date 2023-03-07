@@ -30,21 +30,18 @@ export class NewsService {
 	getFacilityNews(facility_ids: string): Observable<FacilityNews[]> {
 		const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
 
-		return this.http.get<FacilityNews[]>(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(facilityNewsArray: FacilityNews[]): FacilityNews[] => facilityNewsArray.map(
-					(facilityNew: FacilityNews): FacilityNews => new FacilityNews(facilityNew),
-				),
-			),
-		);
+		return this.http
+			.get<FacilityNews[]>(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(
+				map((facilityNewsArray: FacilityNews[]): FacilityNews[] => facilityNewsArray.map((facilityNew: FacilityNews): FacilityNews => new FacilityNews(facilityNew))),
+			);
 	}
 
 	deleteNewsFromAPI(news_id: string): Observable<any> {
-		const params: HttpParams = new HttpParams()
-			.set('news_id', news_id);
+		const params: HttpParams = new HttpParams().set('news_id', news_id);
 
 		return this.http.delete(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
 			withCredentials: true,
@@ -59,47 +56,41 @@ export class NewsService {
 	}
 
 	updateFacilityMOTD(news: number, facility: number): Observable<any> {
-		const request_object: { news_id: number, facility_id: number} = { news_id: news, facility_id: facility };
+		const request_object: { news_id: number; facility_id: number } = { news_id: news, facility_id: facility };
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}facility-management/`, request_object, {
 			withCredentials: true,
 		});
 	}
 
-	getNewsByTags(numberOfNews: number, tags: string[], facility_id: number = null): Observable<News[]> {
+	getNewsByTags(numberOfNews: number, tags: string[], facility_ids: number[] = []): Observable<News[]> {
 		const params: HttpParams = new HttpParams()
 			.set('number_of_news', numberOfNews)
 			.set('tags', tags.toString())
-			.set('facility_id', facility_id);
+			.set('facility_ids', facility_ids.toString());
 		let skip_header: HttpHeaders = new HttpHeaders();
 		skip_header = skip_header
 			.append('skip', 'true')
 			.append('Accept', 'application/json')
 			.append('Content-Type', 'application/json');
 
-		return this.http.get<News[]>(`${ApiSettings.getWagtailBase()}get_news/`, {
-			params,
-			headers: skip_header,
-		}).pipe(
-			map(
-				(news: News[]): News[] => news.map(
-					(one_news: News): News => new News(one_news),
-				),
-			),
-			catchError(
-				this.handleError<News[]>([]),
-			),
-		);
+		return this.http
+			.get<News[]>(`${ApiSettings.getWagtailBase()}get_news/`, {
+				params,
+				headers: skip_header,
+			})
+			.pipe(
+				map((news: News[]): News[] => news.map((one_news: News): News => new News(one_news))),
+				catchError(this.handleError<News[]>([])),
+			);
 	}
 
 	private handleError<T>(result?: T) {
 		return (error: any): Observable<T> => {
-
 			console.error(error); // log to console instead
 
 			// Let the app keep running by returning an empty result.
 			return of(result as T);
 		};
 	}
-
 }
