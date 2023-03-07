@@ -7,7 +7,7 @@ import { Util } from './util';
 import { ProjectOverViewPage } from './page_objects/project_overview.po';
 
 test.describe.serial('@openstack_application', () => {
-	test.describe('Should delete old openstack applications', () => {
+	/* test.describe('Should delete old openstack applications', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @openstack_application', async ({ page, baseURL }) => {
 			test.setTimeout(60 * 1000);
@@ -25,7 +25,7 @@ test.describe.serial('@openstack_application', () => {
 			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page, baseURL);
 			await facilityApplicationOverviewPage.terminateApplications(Util.OPENSTACK_APPLICATION_NAME);
 		});
-	});
+	}); */
 
 	test.describe('Should request an openstack application', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });

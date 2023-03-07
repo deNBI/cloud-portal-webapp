@@ -17,13 +17,14 @@ export class FormularPage {
 	private NUMBER_FLAVORS: string = '5';
 	private PI_RESPONSIBILITY: string = 'project_application_responsibility';
 	private PI_APPROVAL_BUTTON: string = 'approveApplicationButtonPI';
+
+	private UNKNOWN_PI_INFORMATION_APPROVAL: string = 'project_application_responsibility_checkbox';
 	readonly page: Page;
 	readonly baseURL: string;
 
 	constructor(page: Page, baseURL) {
 		this.page = page;
 		this.baseURL = baseURL;
-
 	}
 
 	async goto() {
@@ -32,14 +33,12 @@ export class FormularPage {
 		console.log(this.page.url());
 
 		expect(this.page.url()).toContain('/#/applications/type-overview');
-
 	}
 
 	async goToNewSimpleVMProject() {
 		await this.goto();
 		await this.page.locator(Util.by_data_test_id_str(this.NEW_SVM_BTN)).click();
 		await this.page.waitForURL('**/applications/newSimpleVmApplication');
-
 	}
 
 	async goToNewOpenStackApplication() {
@@ -59,12 +58,15 @@ export class FormularPage {
 	}
 
 	async fillApplicationFormular(name: string, is_pi?: boolean, openstack?: boolean): Promise<any> {
-
 		// fill  Formular
 		console.log('Fill form');
+		console.log(`Is PI: ${is_pi}`);
 		await this.page.fill(Util.by_data_test_id_str('project_application_name_input'), name);
 		await this.page.fill(Util.by_data_test_id_str('project_application_shortname_input'), name);
-		await this.page.fill(Util.by_data_test_id_str('project_application_description_input'), 'ProtractorTest Description');
+		await this.page.fill(
+			Util.by_data_test_id_str('project_application_description_input'),
+			'ProtractorTest Description',
+		);
 		await this.page.fill(Util.by_data_test_id_str('project_application_lifetime_input'), '4');
 		if (!openstack) {
 			await this.page.locator(Util.by_data_test_id_str('project_application_workshop_input')).click();
@@ -100,7 +102,11 @@ export class FormularPage {
 
 		if (is_pi) {
 			await this.page.locator(Util.by_data_test_id_str('project_application_pi_approved_checkbox')).click();
+			await this.page.waitForTimeout(100);
 			await this.page.locator(Util.by_data_test_id_str('project_application_responsibility_checkbox')).click();
+			if (await this.page.locator(Util.by_data_test_id_str(this.UNKNOWN_PI_INFORMATION_APPROVAL)).isVisible()) {
+				await this.page.locator(Util.by_data_test_id_str(this.UNKNOWN_PI_INFORMATION_APPROVAL)).click();
+			}
 		} else {
 			await this.page.fill(Util.by_data_test_id_str('project_application_pi_email_input'), Util.PI_EMAIL);
 		}
