@@ -58,6 +58,8 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	TITLE: string = '';
 
 	project_enumeration: ProjectEnumeration[] = [];
+
+	facilityIds: number[] = [];
 	Application_States: typeof Application_States = Application_States;
 
 	WIKI: string = WIKI;
@@ -75,8 +77,8 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		super(userService, applicationsService, facilityService);
 	}
 
-	componentAdded(event: any): void {
-		this.TITLE = event.title;
+	componentAdded(component: any): void {
+		this.TITLE = component.title;
 	}
 
 	public get_is_vo_admin(): boolean {
