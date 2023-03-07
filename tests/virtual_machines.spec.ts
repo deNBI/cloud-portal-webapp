@@ -1,5 +1,4 @@
 import { test } from '@playwright/test';
-import { MEMBER_STORAGE, VO_MANAGER_STORAGE } from './global-setup';
 import { NewInstancePage } from './page_objects/new_instance.po';
 import { Util } from './util';
 import { InstanceOverviewPage } from './page_objects/instance_overview.po';
@@ -9,7 +8,7 @@ import { FormularPage } from './page_objects/formular.po';
 
 test.describe.serial('@instances', () => {
 	test.describe('Should delete old simple_vm_instances applications', () => {
-		test.use({ storageState: VO_MANAGER_STORAGE });
+		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @instances', async ({ page, baseURL }) => {
 			test.setTimeout(60 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
@@ -20,7 +19,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should request a simple_vm_instances application', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @instances', async ({ page, baseURL }) => {
 			const formularPage = new FormularPage(page, baseURL);
 			await formularPage.goToNewSimpleVMProject();
@@ -30,7 +29,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should approve a simple_vm_instances application', () => {
-		test.use({ storageState: VO_MANAGER_STORAGE });
+		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @instances', async ({ page, baseURL }) => {
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.approveSimpleVm(Util.INSTANCES_PROJECT_NAME);
@@ -38,7 +37,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should start a VM without volume', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @instances', async ({ page, baseURL }) => {
 			const addVMPage = new NewInstancePage(page, baseURL);
 			await addVMPage.goto();
@@ -48,7 +47,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should start a VM with volume', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @instances', async ({ page, baseURL }) => {
 			const addVMPage = new NewInstancePage(page, baseURL);
 			await addVMPage.goto();
@@ -58,7 +57,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should start a VM with resenv', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @instances', async ({ page, baseURL }) => {
 			const addVMPage = new NewInstancePage(page, baseURL);
 			await addVMPage.goto();
@@ -68,7 +67,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should see basic VM as active in instance overview', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -79,7 +78,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should see volume VM as active with volume attached in instance overview', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -91,7 +90,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should detach volume from volume VM in instance overview', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -103,7 +102,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should attach volume to volume VM in instance overview', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -116,7 +115,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should see resenv VM as active with resenv in instance overview', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_30);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -128,7 +127,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should stop basic active VM', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -140,7 +139,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should resume basic active VM', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -152,7 +151,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should soft reboot basic active VM', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -164,7 +163,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Should delete basic active VM', () => {
-		test.use({ storageState: MEMBER_STORAGE });
+		test.use({ storageState: Util.MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
@@ -176,7 +175,7 @@ test.describe.serial('@instances', () => {
 	});
 
 	test.describe('Aftercare - Should delete old simple_vm_instances applications', () => {
-		test.use({ storageState: VO_MANAGER_STORAGE });
+		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1);
 		test('VO @instances', async ({ page, baseURL }) => {
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
