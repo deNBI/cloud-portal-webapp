@@ -16,6 +16,8 @@ export const WIKI_INSTANCE_OVERVIEW_LINK: string = `${environment.WIKI_PRE}simpl
 export const WIKI_INSTANCE_DETAIL_LINK: string = `${environment.WIKI_PRE}simple_vm/instance_detail/`;
 export const WIKI_LINK_ACCOUNTS: string = `${environment.WIKI_PRE}portal/user_information/#link-accounts-to-elixir`;
 export const LIFESCIENCE_LINKING_ACCOUNTS: string = 'https://profile.aai.lifescience-ri.eu/profile/identities';
+export const WIKI_PRINCIPAL_INVESTIGATOR: string =	'https://cloud.denbi.de/wiki/portal/allocation/#principal-investigator';
+export const WIKI_LINKING_ACCOUNTS: string =	'https://cloud.denbi.de/wiki/portal/user_information/#link-accounts-to-lifescience-formerly-elixir';
 export const WIKI_PUBLICATIONS: string = `${environment.WIKI_PRE}citation_and_publication/#publications`;
 export const WIKI_MEMBER_MANAGEMENT: string = `${environment.WIKI_PRE}portal/project_overview/#member-management`;
 export const WIKI_FAQ: string = `${environment.WIKI_PRE}FAQ/`;
@@ -45,6 +47,10 @@ export const ZAMMAD_HELPDESK_LINK = 'https://helpdesk.cloud.denbi.de';
 export const GDPR_LINK = 'https://gdpr.eu/article-9-processing-special-categories-of-personal-data-prohibited/';
 export const WIKI_PERSISTENT_TERMINAL_LINK = `${environment.WIKI_PRE}Tutorials/Persistent_SSH_Sessions/`;
 
+export const WIKI_SVM_MIGRATION_LINK = `${environment.WIKI_PRE}`;
+
+export const NEW_SVM_PORTAL_LINK = `${environment.new_svm_webapp}`;
+
 export const WIKI_LINKS: string[] = [
 	WIKI_SNAPSHOTS,
 	WIKI,
@@ -70,6 +76,7 @@ export const WIKI_LINKS: string[] = [
 	WIKI_EPHEMERAL_LINK,
 	WIKI_MOSH_LINK,
 	WIKI_PERSONAL_DATA,
+	WIKI_SVM_MIGRATION_LINK,
 ];
 
 export const LANDING_PAGE_LINKS: string[] = [

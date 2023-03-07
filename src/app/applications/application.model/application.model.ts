@@ -39,6 +39,9 @@ export class Application {
 	project_application_openstack_project: boolean;
 	project_application_total_gpu: number = 0;
 
+	pi_approval_notification_send: boolean;
+	pi_approval_notification_expired: boolean;
+
 	DaysRunning: number;
 	date_end: string;
 	lifetime_days: number;
@@ -81,6 +84,10 @@ export class Application {
 	allow_machines_starting: boolean = false;
 	project_application_member_applications: ProjectMemberApplication[];
 	project_application_manager_comment: string;
+
+	migrated_simple_vm_resources: boolean = false;
+
+	migrate_to_simple_vm: boolean = false;
 
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);
@@ -129,6 +136,14 @@ export class Application {
 					aj.project_application_compute_center['compute_center_login'],
 					aj.project_application_compute_center['compute_center_support_mail'],
 				);
+			}
+
+			if (aj.migrated_simple_vm_resources) {
+				this.migrated_simple_vm_resources = aj.migrated_simple_vm_resources;
+			}
+
+			if (aj.migrate_to_simple_vm) {
+				this.migrate_to_simple_vm = aj.migrate_to_simple_vm;
 			}
 
 			this.project_application_initial_credits = Number(aj.project_application_initial_credits);

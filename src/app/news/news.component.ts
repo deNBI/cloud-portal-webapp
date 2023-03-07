@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { NewsService } from '../api-connector/news.service';
 import { News } from './news.model';
+import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
+import { GroupService } from '../api-connector/group.service';
 
 @Component({
 	selector: 'app-news',
@@ -13,9 +15,8 @@ import { News } from './news.model';
 	providers: [NewsService],
 })
 export class NewsComponent implements OnInit, OnDestroy {
-
 	@Input() tags: string[] = [];
-	@Input() facility: number = -1;
+	facilities: number[] = [];
 	@Input() cards_per_page: number = 3;
 	@Input() max_news_amount: number = 6;
 	subscription: Subscription = new Subscription();
@@ -36,15 +37,13 @@ export class NewsComponent implements OnInit, OnDestroy {
 		pullDrag: false,
 		dots: true,
 		navSpeed: 700,
-		navText: ['<i class=\'fa fa-chevron-left\'></i>',
-			'<i class=\'fa fa-chevron-right\'></i>'],
+		navText: ['<i class=\'fa fa-chevron-left\'></i>', '<i class=\'fa fa-chevron-right\'></i>'],
 		responsive: {
 			0: {
 				items: 1,
 			},
 			550: {
 				items: 2,
-
 			},
 			800: {
 				items: 3,
@@ -56,7 +55,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 		nav: true,
 	};
 
-	constructor(private news_service: NewsService) {
+	constructor(private news_service: NewsService, private groupService: GroupService) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -70,18 +69,27 @@ export class NewsComponent implements OnInit, OnDestroy {
 	}
 
 	get_news(): void {
+		this.facilities = [];
 		this.subscription.add(
-			this.news_service.getNewsByTags(this.max_news_amount, this.tags).subscribe(
-				(news: News[]) => {
-					this.news = news;
-					this.news_loaded = true;
-				},
-				() => {
-					this.news_loaded = true;
-					this.error_on_loading = true;
-				},
-			),
+			this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]): void => {
+				for (const projectEnumeration of res) {
+					if (!this.facilities.includes(projectEnumeration.facility_id)) {
+						if (projectEnumeration.facility_id !== undefined) {
+							this.facilities.push(projectEnumeration.facility_id);
+						}
+					}
+				}
+				this.news_service.getNewsByTags(this.max_news_amount, this.tags, this.facilities).subscribe(
+					(news: News[]) => {
+						this.news = news;
+						this.news_loaded = true;
+					},
+					() => {
+						this.news_loaded = true;
+						this.error_on_loading = true;
+					},
+				);
+			}),
 		);
 	}
-
 }

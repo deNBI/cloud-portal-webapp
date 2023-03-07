@@ -30,11 +30,13 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	facilityToPost: number;
 	returnState: number = -1;
 	@ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
-	selectedTags: string[] = [];
+
 	computeCenters: any[] = [];
 	facilityNews: FacilityNews[] = [];
 	newFacilityNews: FacilityNews = new FacilityNews();
 	selectedFacilityNews: FacilityNews = new FacilityNews();
+
+	PREDEFINED_TAGS: string[] = ['downtime', 'openstack', 'simplevm', 'maintenance', 'update'];
 	today: Date = new Date();
 
 	newsSetAsMOTD: string[] = [];
@@ -43,6 +45,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		text: new UntypedFormControl({ value: this.newFacilityNews.text, disabled: false }, Validators.required),
 		motd: new UntypedFormControl({ value: this.newFacilityNews.motd, disabled: false }),
 		valid_till: new UntypedFormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
+		entered_tags: new UntypedFormControl({ value: this.newFacilityNews.tags, disabled: false }),
 	});
 	allChecked: boolean = true;
 	deletionStatus: number = 0;
@@ -105,8 +108,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.motd = this.selectedNewsForm.controls['motd'].value;
 		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
-		news.tags = [];
-		news.tags.push(this.facilityToPost.toString(), 'Facility News');
+		news.tags = this.selectedFacilityNews.tags;
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
 		} else {
@@ -158,8 +160,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.motd = this.selectedNewsForm.controls['motd'].value;
 		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
-		news.tags = [];
-		news.tags.push(this.facilityToPost.toString(), 'Facility News');
+		news.tags = this.selectedFacilityNews.tags;
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
 			news.is_current_motd = true;
@@ -263,7 +264,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	setCurrentNews(news?: FacilityNews): void {
 		this.facilityToPost = null;
 		this.facilityToSetMOTD = null;
-		this.selectedTags = [];
 		if (news) {
 			this.selectedFacilityNews = news;
 			this.facilityToPost = news.facility;
@@ -325,6 +325,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 			motd: new UntypedFormControl({ value: this.selectedFacilityNews.motd, disabled: false }),
 			tag: new UntypedFormControl({ value: this.selectedFacilityNews.tags, disabled: false }),
 			valid_till: new UntypedFormControl({ value: this.selectedFacilityNews.valid_till, disabled: false }),
+			entered_tags: new UntypedFormControl({ value: this.selectedFacilityNews.tags, disabled: false }),
 		});
 		this.subscription.add(
 			this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {

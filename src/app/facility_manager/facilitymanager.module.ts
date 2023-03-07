@@ -5,6 +5,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FacilityProjectsOverviewComponent } from '../facility_manager/facilityprojectsoverview.component';
 import { ImageTagComponent } from '../facility_manager/imagetags.component';
 import { FacilitymanagerRoutingModule } from './facilitymanager-routing.module';
@@ -40,6 +41,7 @@ import { ProjectManagementModule } from '../projectmanagement/projectmanagement.
 		ProjectManagementModule,
 		NgbTypeaheadModule,
 		NgbPaginationModule,
+		NgSelectModule,
 	],
 	declarations: [
 		FacilityProjectsOverviewComponent,

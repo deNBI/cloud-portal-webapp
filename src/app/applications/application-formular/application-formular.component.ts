@@ -24,7 +24,12 @@ import {
 	WIKI_PERSONAL_DATA,
 	GDPR_LINK,
 	CLOUD_PORTAL_SUPPORT_MAIL,
+	LIFESCIENCE_LINKING_ACCOUNTS,
+	WIKI_LINKING_ACCOUNTS,
+	WIKI_PRINCIPAL_INVESTIGATOR,
 } from '../../../links/links';
+import { UserService } from '../../api-connector/user.service';
+import { Userinfo } from '../../userinfo/userinfo.model';
 
 /**
  * Application formular component.
@@ -43,6 +48,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	@Input() is_validation: boolean = false;
 	@Input() hash: string;
 
+	userinfo: Userinfo;
+	valid_pi_affiliations;
+	unknownPiAffiliationsConfirmation: boolean = false;
+	pi_responsibility_checked: boolean = false;
 	edam_ontology_terms: EdamOntologyTerm[] = [];
 	isLoaded: boolean = false;
 	submitting: boolean = false;
@@ -60,6 +69,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	error: string[];
 	CREDITS_WIKI: string = CREDITS_WIKI;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	LIFESCIENCE_LINKING_ACCOUNTS: string = LIFESCIENCE_LINKING_ACCOUNTS;
+	WIKI_LINKING_ACCOUNTS: string = WIKI_LINKING_ACCOUNTS;
+	WIKI_PRINCIPAL_INVESTIGATOR: string = WIKI_PRINCIPAL_INVESTIGATOR;
 	SURVEY_LINK: string = SURVEY_LINK;
 	POLICY_LINK: string = POLICY_LINK;
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
@@ -86,12 +98,14 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		private creditsService: CreditsService,
 		private flavorService: FlavorService,
 		private fullLayout: FullLayoutComponent,
+		userService: UserService,
 		applicationsService: ApplicationsService,
 	) {
-		super(null, applicationsService, null);
+		super(userService, applicationsService, null);
 	}
 
 	ngOnInit(): void {
+		this.getUserinfo();
 		this.getListOfFlavors();
 		this.getListOfTypes();
 		this.is_vo_admin = is_vo;
@@ -112,6 +126,13 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		} else {
 			this.application.dissemination.setAllInformationFalse();
 		}
+	}
+
+	getUserinfo(): void {
+		this.userService.getUserInfo().subscribe((userinfo: Userinfo) => {
+			this.userinfo = userinfo;
+			this.valid_pi_affiliations = this.userinfo.validateAffiliations();
+		});
 	}
 
 	clearApplication(): void {
