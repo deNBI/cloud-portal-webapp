@@ -18,7 +18,10 @@ export class FormularPage {
 	private PI_RESPONSIBILITY: string = 'project_application_responsibility';
 	private PI_APPROVAL_BUTTON: string = 'approveApplicationButtonPI';
 
-	private UNKNOWN_PI_INFORMATION_APPROVAL: string = 'project_application_responsibility_checkbox';
+	private UNKNOWN_PI_RESPONSIBILITY_APPROVAL_VALIDATION: string = 'project_application_responsibility_checkbox';
+	private UNKNOWN_PI_RESPONSIBILITY_APPROVAL_NO_VALIDATION: string =		'project_application_responsibility_checkbox_no_validation';
+
+	private UNKNOWN_PI_AFFILIATION_CHECKBOX: string = 'unknown-pi-affiliations-checkbox';
 	readonly page: Page;
 	readonly baseURL: string;
 
@@ -102,10 +105,10 @@ export class FormularPage {
 
 		if (is_pi) {
 			await this.page.locator(Util.by_data_test_id_str('project_application_pi_approved_checkbox')).click();
-			await this.page.waitForTimeout(100);
-			await this.page.locator(Util.by_data_test_id_str('project_application_responsibility_checkbox')).click();
-			if (await this.page.locator(Util.by_data_test_id_str(this.UNKNOWN_PI_INFORMATION_APPROVAL)).isVisible()) {
-				await this.page.locator(Util.by_data_test_id_str(this.UNKNOWN_PI_INFORMATION_APPROVAL)).click();
+			await this.page.waitForTimeout(200);
+			await this.page.locator(Util.by_data_test_id_str(this.UNKNOWN_PI_RESPONSIBILITY_APPROVAL_NO_VALIDATION)).click();
+			if (await this.page.locator(Util.by_data_test_id_str(this.UNKNOWN_PI_AFFILIATION_CHECKBOX)).isVisible()) {
+				await this.page.locator(Util.by_data_test_id_str(this.UNKNOWN_PI_AFFILIATION_CHECKBOX)).click();
 			}
 		} else {
 			await this.page.fill(Util.by_data_test_id_str('project_application_pi_email_input'), Util.PI_EMAIL);
