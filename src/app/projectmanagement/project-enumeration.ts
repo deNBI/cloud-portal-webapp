@@ -12,6 +12,8 @@ export class ProjectEnumeration {
 	compute_center_id: number;
 	compute_center_name: string;
 
+	facility_id: number;
+
 	public gotStatus(status: number): boolean {
 		return this.project_application_statuses.includes(status);
 	}
