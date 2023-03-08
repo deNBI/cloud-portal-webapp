@@ -74,13 +74,14 @@ export class ProjectOverViewPage {
 			await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST_TOGGLER)).click();
 			await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST_FOLDED)).isVisible();
 		}
-		console.log(`Project ${project_name}should be visible!`);
+		console.log(`Project ${project_name} should be visible!`);
 
-		await Promise.all([
-			this.page.waitForNavigation(),
-			this.page.locator(Util.by_data_test_id_str(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`)).click(),
-		]);
+		await this.page
+			.locator(Util.by_data_test_id_str_prefix(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`))
+			.click();
+
 		console.log(this.page.url());
+		await this.page.waitForTimeout(5000);
 		expect(this.page.url()).toContain('/project-management');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
 	}
