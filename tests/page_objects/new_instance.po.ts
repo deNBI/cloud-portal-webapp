@@ -12,7 +12,7 @@ export class NewInstancePage {
 	private IMAGE_SELECTION_PREFIX: string = 'image_';
 	private FLAVOR_IMAGE_SELECTED_SUFFIX: string = '_selected';
 	private NORMAL_FLAVOR_TO_SELECT: string = 'de_NBI_tiny';
-	private NORMAL_IMAGE_TO_SELECT: string = 'Ubuntu_18_04_LTS_de_NBI__2022-06-17_';
+	private NORMAL_IMAGE_PREFIX_TO_SELECT: string = 'Ubuntu_20_04_LTS_de_NBI__';
 	private ADD_NEW_VOLUME_TAB: string = 'add_new_volume_tab';
 	private NEW_VOLUME_NAME_INPUT: string = 'new_volume_name_input';
 	private NEW_VOLUME_MOUNT_PATH_INPUT: string = 'new_volume_mount_path_input';
@@ -63,6 +63,7 @@ export class NewInstancePage {
 		vm_name: string,
 		with_volume: boolean = false,
 		with_resenv: boolean = false,
+		prebuild: boolean = false,
 	): Promise<any> {
 		console.log('Fill name');
 		await this.page.fill(Util.by_data_test_id_str(this.INSTANCE_NAME_INPUT_FIELD), vm_name);
@@ -78,16 +79,33 @@ export class NewInstancePage {
 			.isVisible();
 		console.log('Flavor chosen');
 		console.log('Choose image');
-		await Util.clickByDataTestIdStr(this.page, this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_TO_SELECT);
-		// eslint-disable-next-line @typescript-eslint/await-thenable
-		await this.page
-			.locator(
-				Util.by_data_test_id_str(
-					this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_TO_SELECT + this.FLAVOR_IMAGE_SELECTED_SUFFIX,
-				),
-			)
-			.isVisible();
-		console.log('Image chosen');
+		if (prebuild) {
+			// TODO: adjust to prebuild image for resenv
+			await Util.clickByDataTestIdStrPrefix(this.page, this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_PREFIX_TO_SELECT);
+			// eslint-disable-next-line @typescript-eslint/await-thenable
+			await this.page
+				.locator(
+					`${Util.by_data_test_id_str_prefix(
+						this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_PREFIX_TO_SELECT,
+					)}, ${Util.by_data_test_id_str_suffix(this.FLAVOR_IMAGE_SELECTED_SUFFIX)}`,
+				)
+
+				.isVisible();
+			console.log('Image chosen');
+		} else {
+			await Util.clickByDataTestIdStrPrefix(this.page, this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_PREFIX_TO_SELECT);
+			// eslint-disable-next-line @typescript-eslint/await-thenable
+			await this.page
+				.locator(
+					`${Util.by_data_test_id_str_prefix(
+						this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_PREFIX_TO_SELECT,
+					)}, ${Util.by_data_test_id_str_suffix(this.FLAVOR_IMAGE_SELECTED_SUFFIX)}`,
+				)
+
+				.isVisible();
+			console.log('Image chosen');
+		}
+
 		if (with_volume) {
 			console.log('Adding volume');
 			await Util.clickByDataTestIdStr(this.page, this.ADD_NEW_VOLUME_TAB);
@@ -98,12 +116,17 @@ export class NewInstancePage {
 			console.log('Volume added');
 		}
 		if (with_resenv) {
-			console.log('Adding resenv');
-			await Util.clickByDataTestIdStr(this.page, this.RESENV_ACCORDION_HEADING);
-			await Util.clickByDataTestIdStr(this.page, `${this.RESENV_TEMPLATE_PREFIX}${Util.CWLAB}`);
-			await this.page.fill(Util.by_data_test_id_str(this.RESENV_URL_INPUT), Util.RESENV_URL);
-			await Util.clickByDataTestIdStr(this.page, this.ANSIBLE_NEED_OKAY);
-			console.log('Resenv added');
+			if (prebuild) {
+				// TODO: adjust resenv selction to prebuild image
+				console.log('Adding resenv (prebuild)');
+			} else {
+				console.log('Adding resenv');
+				await Util.clickByDataTestIdStr(this.page, this.RESENV_ACCORDION_HEADING);
+				await Util.clickByDataTestIdStr(this.page, `${this.RESENV_TEMPLATE_PREFIX}${Util.RSTUDIO}`);
+				await this.page.fill(Util.by_data_test_id_str(this.RESENV_URL_INPUT), Util.RESENV_URL);
+				await Util.clickByDataTestIdStr(this.page, this.ANSIBLE_NEED_OKAY);
+				console.log('Resenv added');
+			}
 		}
 		await Util.clickByDataTestIdStr(this.page, this.VM_RESPONSIBILITY_CHECKBOX);
 		await Util.clickByDataTestIdStr(this.page, this.START_VM_BUTTON);
