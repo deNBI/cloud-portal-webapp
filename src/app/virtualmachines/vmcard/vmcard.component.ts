@@ -553,6 +553,8 @@ export class VmCardComponent implements OnInit, OnDestroy {
 							}
 						} else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(this.vm.status) !== -1) {
 							this.check_status_loop();
+						} else if (this.vm.status === VirtualMachineStates.MIGRATED) {
+							this.stopCheckStatusTimer();
 						} else if (this.vm.status !== VirtualMachineStates.DELETED) {
 							// so not all requests are at the same time for the vms
 							const min: number = 20000;

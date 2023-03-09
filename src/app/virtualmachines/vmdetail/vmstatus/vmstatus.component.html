@@ -8,6 +8,7 @@
 			style="width: 10px; height: 10px"
 			title="{{ VirtualMachineStates.staticACTIVE }}"
 		></div>
+		{{ VirtualMachineStates.staticACTIVE }}
 	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF">
 		<div
@@ -17,6 +18,16 @@
 			style="width: 10px; height: 10px"
 		></div>
 		{{ VirtualMachineStates.staticSHUTOFF }}
+	</ng-container>
+
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticMIGRATED">
+		<div
+			[id]="'shutoff_badge_' + vm?.name"
+			[attr.data-test-id]="'shutoff_' + vm?.name"
+			class="dot-colorless bg-migrated pulseAnimMigrated"
+			style="width: 10px; height: 10px"
+		></div>
+		{{ VirtualMachineStates.staticMIGRATED }}
 	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
 		<div
