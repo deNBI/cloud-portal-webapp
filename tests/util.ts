@@ -189,6 +189,14 @@ export class Util {
 		await page.click(Util.by_data_test_id_str_prefix(id_str));
 	}
 
+	static async clickFirstByDataTestIdStrPrefix(page: Page, id_str: string): Promise<void> {
+		console.log(`Clicking first by data-test-id-prefix: ${id_str}`);
+		// eslint-disable-next-line @typescript-eslint/await-thenable
+		console.log(await page.locator(Util.by_data_test_id_str_prefix(id_str)));
+		await page.locator(Util.by_data_test_id_str_prefix(id_str)).first().click();
+		await page.click();
+	}
+
 	static async consoleLogCurrentUrl(page: Page): Promise<void> {
 		// eslint-disable-next-line @typescript-eslint/await-thenable
 		const url = await page.url(); // get the url of the current page

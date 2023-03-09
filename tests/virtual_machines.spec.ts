@@ -66,15 +66,17 @@ test.describe.serial('@instances', () => {
 		});
 	});
 
-	test.describe('Should start a VM with resenv', () => {
-		test.use({ storageState: Util.MEMBER_STORAGE });
-		test('Member @instances', async ({ page, baseURL }) => {
-			const addVMPage = new NewInstancePage(page, baseURL);
-			await addVMPage.goto();
-			await addVMPage.selectProject(Util.INSTANCES_PROJECT_NAME);
-			await addVMPage.startNormalVM(Util.INSTANCES_PROJECT_NAME, Util.RESENV_VM_NAME, false, true, false);
-		});
-	});
+	/**
+	 * unused as the prebuild version is used
+	 * test.describe('Should start a VM with resenv', () => {
+	 * test.use({ storageState: Util.MEMBER_STORAGE });
+	 * test('Member @instances', async ({ page, baseURL }) => {
+	 * const addVMPage = new NewInstancePage(page, baseURL);
+	 * await addVMPage.goto();
+	 * await addVMPage.selectProject(Util.INSTANCES_PROJECT_NAME);
+	 * await addVMPage.startNormalVM(Util.INSTANCES_PROJECT_NAME, Util.RESENV_VM_NAME, false, true, false);
+	 * });
+	}); * */
 
 	test.describe('Should see basic VM as active in instance overview', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
@@ -179,7 +181,6 @@ test.describe.serial('@instances', () => {
 			await page.waitForTimeout(5000);
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
-			// TODO: check why normal machine does not get deleted, also check if all machines get deleted, also the resenv ones!
 			await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
 			await vmOverviewPage.deleteVirtualMachine(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
 		});

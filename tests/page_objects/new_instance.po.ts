@@ -25,7 +25,9 @@ export class NewInstancePage {
 	private ANSIBLE_NEED_OKAY: string = 'ansible_need_okay';
 	private RESENV_ACCORDION_HEADING: string = 'resenv_accordion_heading';
 	private SITE_LOADER: string = 'site-loader';
-	private REDIRECTING_INSTANCE_OVERVIEW = 'redirecting_instance_overview';
+	private REDIRECTING_INSTANCE_OVERVIEW: string = 'redirecting_instance_overview';
+	private RESENV_IMAGE_TYPE_TAB: string = 'resenv-image-tab';
+	private PREBUILD_RESENV_IMAGE_PREFIX: string = 'TheiaIDE-ubuntu20_04_de_NBI__';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -80,16 +82,19 @@ export class NewInstancePage {
 		console.log('Flavor chosen');
 		console.log('Choose image');
 		if (prebuild) {
-			// TODO: adjust to prebuild image for resenv
-			await Util.clickByDataTestIdStrPrefix(this.page, this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_PREFIX_TO_SELECT);
+			await this.page.locator(Util.by_data_test_id_str(this.RESENV_IMAGE_TYPE_TAB)).click();
+			console.log('clicked resenv tab');
+			await this.page
+				.locator(Util.by_data_test_id_str_prefix(this.IMAGE_SELECTION_PREFIX + this.PREBUILD_RESENV_IMAGE_PREFIX))
+				.first()
+				.click();
 			// eslint-disable-next-line @typescript-eslint/await-thenable
 			await this.page
 				.locator(
 					`${Util.by_data_test_id_str_prefix(
-						this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_PREFIX_TO_SELECT,
-					)}, ${Util.by_data_test_id_str_suffix(this.FLAVOR_IMAGE_SELECTED_SUFFIX)}`,
+						this.IMAGE_SELECTION_PREFIX + this.PREBUILD_RESENV_IMAGE_PREFIX,
+					)} and ${Util.by_data_test_id_str_suffix(this.FLAVOR_IMAGE_SELECTED_SUFFIX)}`,
 				)
-
 				.isVisible();
 			console.log('Image chosen');
 		} else {
@@ -99,9 +104,8 @@ export class NewInstancePage {
 				.locator(
 					`${Util.by_data_test_id_str_prefix(
 						this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_PREFIX_TO_SELECT,
-					)}, ${Util.by_data_test_id_str_suffix(this.FLAVOR_IMAGE_SELECTED_SUFFIX)}`,
+					)} and ${Util.by_data_test_id_str_suffix(this.FLAVOR_IMAGE_SELECTED_SUFFIX)}`,
 				)
-
 				.isVisible();
 			console.log('Image chosen');
 		}
@@ -117,8 +121,10 @@ export class NewInstancePage {
 		}
 		if (with_resenv) {
 			if (prebuild) {
-				// TODO: adjust resenv selction to prebuild image
 				console.log('Adding resenv (prebuild)');
+				await this.page.fill(Util.by_data_test_id_str(this.RESENV_URL_INPUT), Util.RESENV_URL);
+				await Util.clickByDataTestIdStr(this.page, this.ANSIBLE_NEED_OKAY);
+				console.log('Resenv added (prebuild)');
 			} else {
 				console.log('Adding resenv');
 				await Util.clickByDataTestIdStr(this.page, this.RESENV_ACCORDION_HEADING);
