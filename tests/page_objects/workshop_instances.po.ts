@@ -16,6 +16,8 @@ export class WorkshopInstancesPage {
 	private RESPONSIBILITY_CHECKBOX: string = 'vm_responsibility';
 	private START_VMS_BUTTON: string = 'startVMButton';
 	private REDIRECT_MODAL: string = 'redirect_modal';
+	private RESENV_IMAGE_TYPE_TAB: string = 'resenv-image-tab';
+	private PREBUILD_RESENV_IMAGE_PREFIX: string = 'TheiaIDE-ubuntu20_04_de_NBI__';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -44,13 +46,27 @@ export class WorkshopInstancesPage {
 	}
 
 	async startVMsForUsers(elixir_id_list: string[]) {
-		await this.fillForm(Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE, Util.CWLAB, elixir_id_list);
+		await this.fillForm(Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE, Util.CWLAB, elixir_id_list, false);
 	}
 
-	async fillForm(flavor: string, image: string, resenv: string, user_elixir_ids: string[]) {
+	async startVMsForUsersPrebuild(elixir_id_list: string[]) {
+		await this.fillForm(Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE, Util.CWLAB, elixir_id_list, true);
+	}
+
+	async fillForm(flavor: string, image: string, resenv: string, user_elixir_ids: string[], prebuild: boolean = false) {
 		await this.page.locator(Util.by_data_test_id_str(`${this.FLAVOR_PREFIX}${flavor}`)).click();
-		await this.page.locator(Util.by_data_test_id_str(`${this.IMAGE_PREFIX}${image}`)).click();
-		await this.page.locator(Util.by_data_test_id_str(`${this.RESENV_PREFIX}${resenv}`)).click();
+		if (prebuild) {
+			await this.page.locator(Util.by_data_test_id_str(this.RESENV_IMAGE_TYPE_TAB)).click();
+			await this.page
+				.locator(Util.by_data_test_id_str_prefix(this.IMAGE_PREFIX + this.PREBUILD_RESENV_IMAGE_PREFIX))
+				.first()
+				.click();
+			// eslint-disable-next-line @typescript-eslint/await-thenable
+		} else {
+			await this.page.locator(Util.by_data_test_id_str(`${this.IMAGE_PREFIX}${image}`)).click();
+			await this.page.locator(Util.by_data_test_id_str(`${this.RESENV_PREFIX}${resenv}`)).click();
+		}
+
 		for (const user_elixir_id of user_elixir_ids) {
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(`${this.ADD_USER_PREFIX}${user_elixir_id}`)).click();

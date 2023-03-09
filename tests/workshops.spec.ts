@@ -40,6 +40,8 @@ test.describe.serial('@workshops', () => {
 		});
 	});
 
+	// todo: check again from here
+
 	test.describe('Should add a member to workshop application', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {

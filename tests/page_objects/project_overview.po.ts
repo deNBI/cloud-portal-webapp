@@ -45,7 +45,7 @@ export class ProjectOverViewPage {
 	private ADD_MEMBER_BTN: string = 'add_member_btn';
 	private SEARCH_MEMBER_BTN: string = 'search_member_btn';
 	private SUCCESS: string = 'Success';
-	private NOTIFICATION_TITLE: string = 'notification_title';
+	private NOTIFICATION_DIV: string = 'request_result_div';
 	private NOTIFICATION_CLOSE: string = 'close_notification';
 	private CLOSE_ADD_MEMBER_MODAL_BTN: string = 'close_add_user_modal_btn';
 
@@ -138,7 +138,7 @@ export class ProjectOverViewPage {
 		await this.page.fill(Util.by_data_test_id_str(this.SEARCH_MEMBER), member);
 		await this.page.locator(Util.by_data_test_id_str(this.SEARCH_MEMBER_BTN)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.ADD_MEMBER_BTN)).click();
-		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_TITLE} >> text=${this.SUCCESS}`);
+		await expect(this.page.locator(Util.by_data_test_id_str(this.NOTIFICATION_DIV))).toHaveClass(/alert-success/);
 		await this.page.locator(Util.by_data_test_id_str(this.NOTIFICATION_CLOSE)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CLOSE_ADD_MEMBER_MODAL_BTN)).click();
 	}
