@@ -229,10 +229,16 @@
 											<i class="fa fa-envelope" style="width: 1.5em"></i><span>{{ member.projectMember.email }}</span
 											><br />
 											<i class="fa fa-user-cog" style="width: 1.5em"></i
-											><span [attr.data-test-id]="'user_role_' + member.projectMember.elixirId">
-												<ng-container *ngIf="member.projectMember.isAdmin">Admin</ng-container>
-												<ng-container *ngIf="!member.projectMember.isAdmin">Participant</ng-container>
-											</span>
+											><span
+												*ngIf="member.projectMember.isAdmin"
+												[attr.data-test-id]="'user_role_' + member.projectMember.elixirId + '_admin'"
+												>Admin</span
+											>
+											<span
+												*ngIf="!member.projectMember.isAdmin"
+												[attr.data-test-id]="'user_role_' + member.projectMember.elixirId + '_participant'"
+												>Participant</span
+											>
 										</div>
 									</td>
 									<ng-container *ngIf="!selectedWorkshop.id">

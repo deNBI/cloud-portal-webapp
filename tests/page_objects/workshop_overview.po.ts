@@ -34,8 +34,8 @@ export class WorkshopOverviewPage {
 	// WORKSHOP MEMBERS
 	private USER_ROW_PREFIX: string = 'user_';
 	private USER_ROLE_PREFIX: string = 'user_role_';
-	private PARTICIPANT: string = 'Participant';
-	private ADMIN: string = 'Admin';
+	private USER_SUFFIX: string = 'Participant';
+	private ADMIN_SUFFIX: string = 'Admin';
 	private VM_NAME_PREFIX: string = 'vm_name_';
 	private RESENV_URL_PREFIX: string = 'resenv_url_';
 
@@ -106,14 +106,16 @@ export class WorkshopOverviewPage {
 
 	async userIsParticipant(user_elixir_id: string) {
 		await this.hasUser(user_elixir_id);
-		await this.page.waitForSelector(
-			`data-test-id=${this.USER_ROLE_PREFIX}${user_elixir_id} >> text=${this.PARTICIPANT}`,
-		);
+		console.log(`Checking if user is participant for ${user_elixir_id}`);
+		const test_id_str: string = `${this.USER_ROLE_PREFIX}${user_elixir_id}${this.USER_SUFFIX}`;
+		await this.page.locator(Util.by_data_test_id_str(test_id_str)).isVisible();
 	}
 
 	async userIsAdmin(user_elixir_id: string) {
 		await this.hasUser(user_elixir_id);
-		await this.page.waitForSelector(`data-test-id=${this.USER_ROLE_PREFIX}${user_elixir_id} >> text=${this.ADMIN}`);
+		console.log(`Checking if user is admin for ${user_elixir_id}`);
+		const test_id_str: string = `${this.USER_ROLE_PREFIX}${user_elixir_id}${this.ADMIN_SUFFIX}`;
+		await this.page.locator(Util.by_data_test_id_str(test_id_str)).isVisible();
 	}
 
 	async deleteWorkshop() {
@@ -127,6 +129,7 @@ export class WorkshopOverviewPage {
 
 	async workshopHasVms(elixir_ids: string[]) {
 		for (const elixir_id of elixir_ids) {
+			console.log(`Checking workshop vm for ${elixir_id}`);
 			// eslint-disable-next-line no-await-in-loop
 			await this.getVmOfUser(elixir_id);
 		}
