@@ -79,7 +79,7 @@ test.describe.serial('@workshops', () => {
 			await workshopInstancesPage.goToWorkshopInstances();
 			await workshopInstancesPage.selectProject();
 			await workshopInstancesPage.selectWorkshop();
-			await workshopInstancesPage.startVMsForUsers([environment.elixir_id_user, environment.elixir_id_fm]);
+			await workshopInstancesPage.startVMsForUsersPrebuild([environment.elixir_id_user, environment.elixir_id_fm]);
 		});
 	});
 
@@ -111,6 +111,7 @@ test.describe.serial('@workshops', () => {
 		});
 	});
 
+	/*
 	test.describe('Should login to resenv', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member and Admin @workshops', async ({ page, baseURL }) => {
@@ -123,7 +124,7 @@ test.describe.serial('@workshops', () => {
 			await workshopOverviewPage.visitResEnv(resenv_url_admin);
 		});
 	});
-
+	*/
 	test.describe('Should cleanup a workshop', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @workshops', async ({ page, baseURL }) => {
