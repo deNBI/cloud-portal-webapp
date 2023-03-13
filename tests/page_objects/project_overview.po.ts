@@ -6,7 +6,9 @@ import { Util } from '../util';
  */
 export class ProjectOverViewPage {
 	// GENERAL
-	private PROJECT_LIST: string = 'project_list_folded';
+
+	private PROJECT_LIST: string = 'project_list';
+	private PROJECT_LIST_FOLDED: string = 'project_list_folded';
 	private PROJECT_LIST_TOGGLER: string = 'project_list_folded_toggler';
 	private PROJECT_OVERVIEW_BUTTON_PREFIX: string = 'project_overview_';
 	private SITE_LOADER: string = 'site-loader';
@@ -43,7 +45,7 @@ export class ProjectOverViewPage {
 	private ADD_MEMBER_BTN: string = 'add_member_btn';
 	private SEARCH_MEMBER_BTN: string = 'search_member_btn';
 	private SUCCESS: string = 'Success';
-	private NOTIFICATION_TITLE: string = 'notification_title';
+	private NOTIFICATION_DIV: string = 'request_result_div';
 	private NOTIFICATION_CLOSE: string = 'close_notification';
 	private CLOSE_ADD_MEMBER_MODAL_BTN: string = 'close_add_user_modal_btn';
 
@@ -65,17 +67,21 @@ export class ProjectOverViewPage {
 	async goToProjectOverview(project_name: string) {
 		await this.gotoProfilePage();
 		console.log(`Goto Project overview Page for Project ${project_name}`);
-		await this.page.waitForTimeout(3000);
+		await this.page.waitForTimeout(10000);
 		const project_list = await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST)).isVisible();
-		if (project_list) {
+		if (!project_list.valueOf()) {
 			console.log('got no project_list, clicking on toggler!');
 			await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST_TOGGLER)).click();
+			await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST_FOLDED)).isVisible();
 		}
-		await Promise.all([
-			this.page.waitForNavigation(),
-			this.page.locator(Util.by_data_test_id_str(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`)).click(),
-		]);
+		console.log(`Project ${project_name} should be visible!`);
+
+		await this.page
+			.locator(Util.by_data_test_id_str_prefix(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`))
+			.click();
+
 		console.log(this.page.url());
+		await this.page.waitForTimeout(5000);
 		expect(this.page.url()).toContain('/project-management');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
 	}
@@ -132,7 +138,7 @@ export class ProjectOverViewPage {
 		await this.page.fill(Util.by_data_test_id_str(this.SEARCH_MEMBER), member);
 		await this.page.locator(Util.by_data_test_id_str(this.SEARCH_MEMBER_BTN)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.ADD_MEMBER_BTN)).click();
-		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_TITLE} >> text=${this.SUCCESS}`);
+		await expect(this.page.locator(Util.by_data_test_id_str(this.NOTIFICATION_DIV))).toHaveClass(/alert-success/);
 		await this.page.locator(Util.by_data_test_id_str(this.NOTIFICATION_CLOSE)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CLOSE_ADD_MEMBER_MODAL_BTN)).click();
 	}

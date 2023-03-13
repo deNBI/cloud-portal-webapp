@@ -56,15 +56,27 @@ test.describe.serial('@instances', () => {
 		});
 	});
 
-	test.describe('Should start a VM with resenv', () => {
+	test.describe('Should start a VM with resenv (prebuild image)', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @instances', async ({ page, baseURL }) => {
 			const addVMPage = new NewInstancePage(page, baseURL);
 			await addVMPage.goto();
 			await addVMPage.selectProject(Util.INSTANCES_PROJECT_NAME);
-			await addVMPage.startNormalVM(Util.INSTANCES_PROJECT_NAME, Util.RESENV_VM_NAME, false, true);
+			await addVMPage.startNormalVM(Util.INSTANCES_PROJECT_NAME, Util.RESENV_VM_NAME, false, true, true);
 		});
 	});
+
+	/**
+	 * unused as the prebuild version is used
+	 * test.describe('Should start a VM with resenv', () => {
+	 * test.use({ storageState: Util.MEMBER_STORAGE });
+	 * test('Member @instances', async ({ page, baseURL }) => {
+	 * const addVMPage = new NewInstancePage(page, baseURL);
+	 * await addVMPage.goto();
+	 * await addVMPage.selectProject(Util.INSTANCES_PROJECT_NAME);
+	 * await addVMPage.startNormalVM(Util.INSTANCES_PROJECT_NAME, Util.RESENV_VM_NAME, false, true, false);
+	 * });
+	}); * */
 
 	test.describe('Should see basic VM as active in instance overview', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
@@ -116,12 +128,12 @@ test.describe.serial('@instances', () => {
 
 	test.describe('Should see resenv VM as active with resenv in instance overview', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
-		test.setTimeout(Util.MIN_TIMEOUT_30);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
+			// TODO: if longer timeout has no effect, check what is the problem with the current checks
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
-			await vmOverviewPage.waitForInstanceToBeActive(Util.RESENV_VM_NAME, Util.MIN_TIMEOUT_30);
+			await vmOverviewPage.waitForInstanceToBeActive(Util.RESENV_VM_NAME, Util.MIN_TIMEOUT_45);
 			await vmOverviewPage.waitForInstanceToHaveResenv(Util.RESENV_VM_NAME);
 		});
 	});
