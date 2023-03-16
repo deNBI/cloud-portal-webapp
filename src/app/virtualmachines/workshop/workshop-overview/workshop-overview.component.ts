@@ -8,7 +8,7 @@ import { UrlData } from '../workshop-urlinfo.model';
 import { WorkshopService } from '../../../api-connector/workshop.service';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
-import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL, LIFESCIENCE_HOSTEL_SIGNUP } from '../../../../links/links';
 import { WorkshopTimeFrame } from '../workshopTimeFrame.model';
 
 interface MemberVm {
@@ -28,6 +28,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	@ViewChild('confirmInterferingSlotModal') confirmInterfereModal: any;
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
+	LIFESCIENCE_HOSTEL_SIGNUP: string = LIFESCIENCE_HOSTEL_SIGNUP;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	subscription: Subscription = new Subscription();
 	resend_info: boolean = false;
