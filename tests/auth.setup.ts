@@ -26,8 +26,8 @@ setup('authenticate as FM', async ({page,baseURL}) => {
 
 });
 
-setup('authenticate as USer', async ({page, baseURL}) => {
-		console.log(baseURL)
+setup('authenticate as User', async ({page, baseURL}) => {
+		console.log(baseURL);
 		console.log('Create Member Session');
 		const login = new LoginPagePlaywright(page, baseURL);
 

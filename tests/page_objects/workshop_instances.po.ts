@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,import/no-extraneous-dependencies
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { Util } from '../util';
 
 /**
@@ -16,7 +16,8 @@ export class WorkshopInstancesPage {
 	private RESPONSIBILITY_CHECKBOX: string = 'vm_responsibility';
 	private START_VMS_BUTTON: string = 'startVMButton';
 	private REDIRECT_MODAL: string = 'redirect_modal';
-
+	private RESENV_IMAGE_TYPE_TAB: string = 'resenv-image-tab';
+	private PREBUILD_RESENV_IMAGE_PREFIX: string = 'TheiaIDE-ubuntu20_04_de_NBI__';
 	readonly page: Page;
 	readonly baseURL: string;
 
@@ -44,17 +45,33 @@ export class WorkshopInstancesPage {
 	}
 
 	async startVMsForUsers(elixir_id_list: string[]) {
-		await this.fillForm(Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE, Util.CWLAB, elixir_id_list);
+		await this.fillForm(Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE, Util.CWLAB, elixir_id_list, false);
 	}
 
-	async fillForm(flavor: string, image: string, resenv: string, user_elixir_ids: string[]) {
+	async startVMsForUsersPrebuild(elixir_id_list: string[]) {
+		await this.fillForm(Util.DEFAULT_FLAVOR_NAME, this.PREBUILD_RESENV_IMAGE_PREFIX, '', elixir_id_list, true);
+	}
+
+	async fillForm(flavor: string, image: string, resenv: string, user_elixir_ids: string[], prebuild: boolean = false) {
 		await this.page.locator(Util.by_data_test_id_str(`${this.FLAVOR_PREFIX}${flavor}`)).click();
-		await this.page.locator(Util.by_data_test_id_str(`${this.IMAGE_PREFIX}${image}`)).click();
-		await this.page.locator(Util.by_data_test_id_str(`${this.RESENV_PREFIX}${resenv}`)).click();
-		for (const user_elixir_id of user_elixir_ids) {
-			// eslint-disable-next-line no-await-in-loop
-			await this.page.locator(Util.by_data_test_id_str(`${this.ADD_USER_PREFIX}${user_elixir_id}`)).click();
+		if (prebuild) {
+			await this.page.locator(Util.by_data_test_id_str(this.RESENV_IMAGE_TYPE_TAB)).click();
+			const selectorString: string = `${this.IMAGE_PREFIX}${this.PREBUILD_RESENV_IMAGE_PREFIX}`;
+			await this.page.locator(Util.by_data_test_id_str_prefix(selectorString)).first().click();
+			// eslint-disable-next-line @typescript-eslint/await-thenable
+		} else {
+			await this.page.locator(Util.by_data_test_id_str(`${this.IMAGE_PREFIX}${image}`)).click();
+			await this.page.locator(Util.by_data_test_id_str(`${this.RESENV_PREFIX}${resenv}`)).click();
 		}
+
+		let add_buttons: Locator[] = await this.page.locator(Util.by_data_test_id_str_prefix(this.ADD_USER_PREFIX)).all();
+		while (add_buttons.length !== 0) {
+			// eslint-disable-next-line no-await-in-loop
+			await add_buttons[0].click();
+			// eslint-disable-next-line no-await-in-loop
+			add_buttons = await this.page.locator(Util.by_data_test_id_str_prefix(this.ADD_USER_PREFIX)).all();
+		}
+		console.log('Users got added');
 		await this.page.locator(Util.by_data_test_id_str(this.ANSIBLE_OKAY_CHECKBOX)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.RESPONSIBILITY_CHECKBOX)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.START_VMS_BUTTON)).click();
