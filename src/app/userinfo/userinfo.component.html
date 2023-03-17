@@ -57,10 +57,13 @@
 								<div class="row" style="margin-bottom: 5px">
 									<strong class="col">Preferred Email</strong>
 								</div>
+								<div class="col-auto alert alert-info">
+									<strong>Note: </strong>please keep this mail up to date. You will receive all relevant notifications
+									and information about working in the de.NBI Cloud sent to this address.
+								</div>
 							</td>
 							<td class="col-6">
 								{{ userInfo?.Email }}
-
 								<div style="color: red" *ngFor="let pendingEmail of userInfo?.PendingEmails">
 									You have pending change request. Please check inbox of: {{ pendingEmail }} for validation email.
 								</div>
@@ -368,6 +371,12 @@
 									'is-valid': emailChang.valid && (emailChang.dirty || emailChang.touched)
 								}"
 							/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-auto alert alert-info mx-auto">
+							<strong>Note: </strong>please keep this mail up to date. You will receive all relevant notifications and
+							information about working in the de.NBI Cloud sent to this address.
 						</div>
 					</div>
 				</form>
