@@ -117,16 +117,20 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		return typeof dateToCheck === 'object';
 	}
 	calculateNewEndDate() {
-		this.new_end_date = new Date(this.end_date);
-		const current_date: Date = new Date();
-
-		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
-		if (this.new_end_date < current_date) {
+		if (this.end_date < new Date()) {
 			this.new_end_date = `${this.temp_project_extension.extra_lifetime} month${
 				this.temp_project_extension.extra_lifetime > 1 ? 's' : ''
 			} after the approval of the extension`;
+		} else {
+			this.new_end_date = new Date(this.end_date);
+			const month_number: number = this.end_date.getMonth() + this.temp_project_extension.extra_lifetime;
+			this.new_end_date.setMonth(month_number % 12);
+			if (month_number > 11) {
+				this.new_end_date.setFullYear(this.new_end_date.getFullYear() + 1);
+			}
 		}
 	}
+
 	calculateCreditsLifetime(): void {
 		if (!this.project.credits_allowed) {
 			return;
