@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { ClientService } from '../api-connector/client.service';
@@ -73,12 +73,14 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		facilityService: FacilityService,
 		applicationsService: ApplicationsService,
 		private virtualMachineService: VirtualmachineService,
+		private cd: ChangeDetectorRef,
 	) {
 		super(userService, applicationsService, facilityService);
 	}
 
 	componentAdded(component: any): void {
 		this.TITLE = component.title;
+		this.cd.detectChanges();
 	}
 
 	public get_is_vo_admin(): boolean {

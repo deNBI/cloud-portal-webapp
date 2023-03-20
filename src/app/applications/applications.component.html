@@ -188,11 +188,7 @@
 												<!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED) || (!application?.project_application_compute_center?.FacilityId ))? 'inherit' :'none'"-->
 												<select
 													[ngClass]="
-														!application.project_application_openstack_project ||
-														(application.project_application_openstack_project &&
-															selectedCenter[application.project_application_id] !== undefined)
-															? 'is-valid'
-															: 'is-invalid'
+														selectedCenter[application.project_application_id] !== undefined ? 'is-valid' : 'is-invalid'
 													"
 													*ngIf="
 														(application | hasstatusinlist : Application_States.SUBMITTED) ||
@@ -207,14 +203,16 @@
 													#selectedComputeCenter
 												>
 													<option [ngValue]="undefined" selected>no center selected</option>
-													<option
-														*ngFor="let computeCenter of computeCenters"
-														label="{{ computeCenter.Name }}"
-														[ngValue]="computeCenter.FacilityId"
-														[id]="computeCenter.Name"
+													<ng-container *ngFor="let computeCenter of computeCenters">
+														<option
+															*ngIf="computeCenter.hasClient || application?.project_application_openstack_project"
+															label="{{ computeCenter.Name }}"
+															[ngValue]="computeCenter.FacilityId"
+															[id]="computeCenter.Name"
+														>
+															{{ computeCenter.Name }}
+														</option></ng-container
 													>
-														{{ computeCenter.Name }}
-													</option>
 												</select>
 												<span *ngIf="application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION">{{
 													application?.project_application_compute_center?.Name
@@ -288,7 +286,7 @@
 															showClientsLimitsModal(selectedCenter[application.project_application_id], application);
 															switchApproveLocked(true)
 														"
-														[disabled]="approveLocked"
+														[disabled]="!selectedCenter[application.project_application_id] || approveLocked"
 														type="button"
 														class="btn btn-success"
 													>
