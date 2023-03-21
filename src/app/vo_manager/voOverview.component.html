@@ -83,11 +83,11 @@
 								<div class="float-right">
 									<button
 										type="button "
-										(click)="exportCSV()"
+										(click)="exportTSV()"
 										class="btn btn-outline-primary"
 										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
 									>
-										Export as CSV
+										Export as TSV
 									</button>
 								</div>
 							</div>
@@ -1040,7 +1040,8 @@
 					id="notification_message"
 					role="alert"
 					data-test-id="notification_message"
-				>{{ notificationModalMessage }}
+				>
+					{{ notificationModalMessage }}
 				</div>
 			</div>
 			<div class="modal-footer">
