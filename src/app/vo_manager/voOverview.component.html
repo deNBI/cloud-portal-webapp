@@ -428,6 +428,17 @@
 											<button
 												style="margin-left: 5px"
 												type="button"
+												class="btn btn-danger"
+												[id]="'show_decline_terminate_' + project?.project_application_id"
+												[attr.data-test-id]="'show_decline_terminate_' + project?.perun_name"
+												(click)="selectedProject = project"
+												*ngIf="!(project | hasstatusinlist : application_states.TERMINATION_REQUESTED)"
+											>
+												<i class="fa fa-trash"></i>&nbsp;Decline Termination Project
+											</button>
+											<button
+												style="margin-left: 5px"
+												type="button"
 												disabled
 												class="btn btn-warning"
 												[id]="'show_terminate_' + project?.project_application_id"
@@ -1040,7 +1051,8 @@
 					id="notification_message"
 					role="alert"
 					data-test-id="notification_message"
-				>{{ notificationModalMessage }}
+				>
+					{{ notificationModalMessage }}
 				</div>
 			</div>
 			<div class="modal-footer">

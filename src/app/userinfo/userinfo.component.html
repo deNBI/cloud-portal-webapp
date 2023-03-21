@@ -1,6 +1,6 @@
 <div *ngIf="isLoaded === false" class="loader"></div>
 <div *ngIf="isLoaded" class="animated fadeIn">
-	<app-news [facilities]="this.userFacilities"> </app-news>
+	<app-news [facilities]="this.userFacilities"></app-news>
 	<app-maintenance-alert></app-maintenance-alert>
 	<div class="card" style="">
 		<div class="card-header"><i class="fa fa-align-justify"></i> Profile Information</div>
@@ -8,6 +8,24 @@
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<tbody>
+						<tr *ngIf="userInfo.MissingConsents">
+							<td class="col-12">
+								<div class="alert alert-danger">
+									<p>You have pending consent approvals for the following locations:</p>
+									<ul>
+										<li *ngFor="let consent of userInfo?.MissingConsents">{{ consent }}</li>
+									</ul>
+									<p>
+										Without these approvals, you may not be able to access certain services, such as OpenStack
+										dashboards. Please review and approve any pending consents as necessary.
+									</p>
+									<p>
+										To approve your consents, please visit the following link:
+										<a href="{{ LIFESCIENCE_PROFILE_CONSENT }}" target="_blank">LifeScience Consents</a>
+									</p>
+								</div>
+							</td>
+						</tr>
 						<tr style="border-top-style: none">
 							<td class="col-3" style="border-top-style: none">
 								<strong>LifeScience Login</strong>

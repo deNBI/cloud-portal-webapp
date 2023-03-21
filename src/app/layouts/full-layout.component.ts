@@ -54,6 +54,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	cluster_allowed: boolean = false;
 	has_workshops: boolean = false;
+	missing_consents: string[] = [];
 
 	TITLE: string = '';
 
@@ -149,6 +150,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		this.is_workshop_admin();
 		this.get_is_facility_manager();
 		this.getLoginName();
+		this.getMissingConsents();
 
 		this.is_vo_admin = is_vo;
 	}
@@ -159,9 +161,16 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		});
 	}
 
+	getMissingConsents(): void {
+		this.userService.getMissingConsents().subscribe((missingConsents: string[]) => {
+			this.missing_consents = missingConsents;
+		});
+	}
+
 	toggleOverviews(): void {
 		this.show_overviews = !this.show_overviews;
 	}
+
 	toggleProjectsNav(): void {
 		this.show_projects = !this.show_projects;
 	}

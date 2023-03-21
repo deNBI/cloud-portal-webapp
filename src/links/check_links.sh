@@ -26,6 +26,7 @@ WIKI_PERSONAL_DATA=https://portal-dev.denbi.de/wiki/portal/personal_data/
 WIKI_EPHEMERAL_LINK=https://portal-dev.denbi.de/wiki/simple_vm/new_instance/#information-for-ephemeral-flavors
 SURVEY_LINK=https://www.surveymonkey.de/r/HQW9V7C
 
+
 # WAGTAIL LINKS
 
 FACILITY_NEWS=https://portal-dev.denbi.de/news/facility-news/
