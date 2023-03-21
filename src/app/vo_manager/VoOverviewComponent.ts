@@ -439,7 +439,11 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		});
 		if (data.length > 0) {
 			// eslint-disable-next-line
-			const csv = new ngxCsv(data, 'projects', { showLabels: true, headers: Object.keys(data[0]) })
+			const csv = new ngxCsv(data, 'projects', {
+				showLabels: true,
+				headers: Object.keys(data[0]),
+				fieldSeparator: '\t',
+			});
 		}
 	}
 }
