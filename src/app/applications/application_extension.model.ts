@@ -5,7 +5,6 @@ import { Application } from './application.model/application.model';
  * Application Extension class.
  */
 export class ApplicationLifetimeExtension {
-
 	Id: number;
 	project_application_id: number | string;
 	extra_lifetime: number;
@@ -21,7 +20,12 @@ export class ApplicationLifetimeExtension {
 	constructor(extension?: Partial<ApplicationLifetimeExtension>) {
 		Object.assign(this, extension);
 		if (extension) {
-			this.extra_credits = (Math.round(extension.extra_credits * 10) / 10);
+			this.extra_credits = Math.round(extension.extra_credits * 10) / 10;
+		}
+		if (new Date(this.new_end_date) < new Date()) {
+			this.new_end_date = `${this.extra_lifetime} month${
+				this.extra_lifetime > 1 ? 's' : ''
+			} after the approval of the extension`;
 		}
 	}
 
@@ -30,5 +34,4 @@ export class ApplicationLifetimeExtension {
 		this.comment = app.project_application_comment;
 		this.extra_lifetime = 0;
 	}
-
 }
