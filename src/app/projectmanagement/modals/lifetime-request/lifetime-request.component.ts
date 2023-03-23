@@ -23,7 +23,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 
 	life_time_string: string;
 	end_date: Date;
-	new_end_date: Date;
+	new_end_date: Date | string;
 	max_lifetime: number = 6;
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
@@ -113,14 +113,24 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	// TODO: Fix - end date still not showing correctly when entry is done with keys.
-	calculateNewEndDate() {
-		this.new_end_date = new Date(this.end_date);
-		console.log(this.end_date);
-		console.log(this.end_date.getMonth());
-		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
-		console.log(this.new_end_date);
+	isDate(dateToCheck: Date | string) {
+		return typeof dateToCheck === 'object';
 	}
+	calculateNewEndDate() {
+		if (this.end_date < new Date()) {
+			this.new_end_date = `${this.temp_project_extension.extra_lifetime} month${
+				this.temp_project_extension.extra_lifetime > 1 ? 's' : ''
+			} after the approval of the extension`;
+		} else {
+			this.new_end_date = new Date(this.end_date);
+			const month_number: number = this.end_date.getMonth() + this.temp_project_extension.extra_lifetime;
+			this.new_end_date.setMonth(month_number % 12);
+			if (month_number > 11) {
+				this.new_end_date.setFullYear(this.new_end_date.getFullYear() + 1);
+			}
+		}
+	}
+
 	calculateCreditsLifetime(): void {
 		if (!this.project.credits_allowed) {
 			return;
