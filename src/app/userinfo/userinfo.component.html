@@ -8,7 +8,7 @@
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<tbody>
-						<tr *ngIf="userInfo.MissingConsents">
+						<tr *ngIf="userInfo.MissingConsents.length > 0">
 							<td class="col-12">
 								<div class="alert alert-danger">
 									<p>You have pending consent approvals for the following locations:</p>
