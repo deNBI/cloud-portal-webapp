@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import { ProfilePage } from './page_objects/profile.po';
-import * as Util from 'util';
+import { Util } from './util';
 
 test.describe('@pub_key', () => {
 	test.use({ storageState: Util.MEMBER_STORAGE });

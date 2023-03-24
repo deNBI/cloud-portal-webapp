@@ -153,23 +153,23 @@ export class SnapshotOverviewComponent implements OnInit {
 	}
 
 	checkSnapShotsStatus(): void {
-		let all_active: boolean = true;
+		let all_active_or_migrated: boolean = true;
 
 		setTimeout((): void => {
 			const observables: any = [];
 			for (const snapshot of this.snapshot_page.snapshot_list) {
-				if (snapshot.snapshot_status !== 'active') {
+				if (snapshot.snapshot_status !== 'active' && snapshot.snapshot_status !== 'MIGRATED') {
 					observables.push(this.imageService.getSnapshot(snapshot.snapshot_openstackid));
 				}
 			}
 			forkJoin(observables).subscribe((res: any): void => {
 				for (const snap of res) {
 					this.snapshot_page.snapshot_list[res.indexOf(snap)].snapshot_status = snap['status'];
-					if (snap['status'] !== 'active') {
-						all_active = false;
+					if (snap['status'] !== 'active' && snap['status'] !== 'MIGRATED') {
+						all_active_or_migrated = false;
 					}
 				}
-				if (!all_active) {
+				if (!all_active_or_migrated) {
 					this.checkSnapShotsStatus();
 				}
 			});

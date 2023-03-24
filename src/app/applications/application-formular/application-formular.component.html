@@ -1360,7 +1360,8 @@
 									name="project_application_responsibility"
 									data-test-id="project_application_responsibility_checkbox"
 									type="checkbox"
-									id="project_application_responsibility"
+									id="project_application_responsibility_no_validation"
+									data-test-id="project_application_responsibility_checkbox_no_validation"
 									[(ngModel)]="pi_responsibility_checked"
 									required
 								/>
@@ -1405,6 +1406,7 @@
 											type="checkbox"
 											id="id-unknown-pi-affiliations-checkbox"
 											name="unknown-pi-affiliations-checkbox"
+											data-test-id="unknown-pi-affiliations-checkbox"
 											[(ngModel)]="unknownPiAffiliationsConfirmation"
 										/>
 										<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
@@ -1416,6 +1418,7 @@
 											href="{{ WIKI_LINKING_ACCOUNTS }}"
 											target="_blank"
 											style="text-decoration: none; font-weight: bold"
+											rel="noopener noreferrer"
 											>How to link your account with other identities?</a
 										>
 									</p>
@@ -1558,8 +1561,9 @@
 									<input
 										class="form-check-input"
 										type="checkbox"
-										id="id-unknown-pi-affiliations-checkbox"
+										id="unknown-pi-affiliations-checkbox"
 										name="unknown-pi-affiliations-checkbox"
+										data-test-id="project_application_responsibility_checkbox"
 										[(ngModel)]="unknownPiAffiliationsConfirmation"
 									/>
 									<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
@@ -1567,7 +1571,11 @@
 									>
 								</div>
 								<p>
-									<a href="{{ WIKI_LINKING_ACCOUNTS }}" target="_blank" style="text-decoration: none; font-weight: bold"
+									<a
+										href="{{ WIKI_LINKING_ACCOUNTS }}"
+										target="_blank"
+										rel="noopener noreferrer"
+										style="text-decoration: none; font-weight: bold"
 										>How to link your account with other identities?</a
 									>
 								</p>
