@@ -167,6 +167,12 @@ export class VoService {
 		});
 	}
 
+	declineTermination(groupid: number | string): Observable<any> {
+		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/termination/decline/`, {
+			withCredentials: true,
+		});
+	}
+
 	loadMaintenanceTimeFrames(): Observable<MaintenanceTimeFrame[]> {
 		return this.http
 			.get<MaintenanceTimeFrame[]>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, {
