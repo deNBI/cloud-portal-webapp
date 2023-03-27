@@ -23,7 +23,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.13.0'
+          node-version: '16.14.0'
       - run: git status
       - run: npm install -g yarn
       - name: Prepare
