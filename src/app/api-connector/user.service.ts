@@ -31,6 +31,12 @@ export class UserService {
 		});
 	}
 
+	getMissingConsents(): Observable<string[]> {
+		return this.http.get<string[]>(`${ApiSettings.getApiBaseURL()}users/current/consents/`, {
+			withCredentials: true,
+		});
+	}
+
 	getPreferredMailUser(): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, {
 			withCredentials: true,
