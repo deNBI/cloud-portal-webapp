@@ -390,26 +390,18 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		});
 	}
 
-		declineTermination(project: Application): void {
+	declineTermination(project: Application): void {
 		this.voService.declineTermination(project.project_application_perun_id).subscribe(
-			(result: any): void => {
-				this.updateNotificationModal(
-					'Success',
-					"The termination was successfully declined",
-					true,
-					'success',
-				);
+			(): void => {
+				this.updateNotificationModal('Success', 'The termination was successfully declined', true, 'success');
 				const indexAll: number = this.projects.indexOf(project, 0);
 				this.getProjectStatus(this.projects[indexAll]);
 			},
-			(error: any): void => {
-					this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
-
+			(): void => {
+				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
 			},
 		);
 	}
-
-
 
 	setProtected(project: Application, set: boolean): void {
 		this.voService.setProtected(project.project_application_perun_id, set).subscribe(
