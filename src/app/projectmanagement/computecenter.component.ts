@@ -2,12 +2,22 @@
  * ComputeCenter component.
  */
 export class ComputecenterComponent {
-
-	constructor(FacilityId: string, Name: string, Login: string, Support: string) {
+	constructor(FacilityId: string, Name: string, Login: string, Support: string, Client?: any) {
 		this._FacilityId = FacilityId;
 		this._Name = Name;
 		this._Login = Login;
 		this._Support = Support;
+		this._hasClient = Client !== undefined && Client !== null;
+	}
+
+	private _hasClient: boolean;
+
+	get hasClient(): boolean {
+		return this._hasClient;
+	}
+
+	set hasClient(value: boolean) {
+		this._hasClient = value;
 	}
 
 	private _FacilityId: string;
