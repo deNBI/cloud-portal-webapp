@@ -21,9 +21,18 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: Set tag
+        run: sed 's/\//-/g'  <<< "::set-output name=TAG::${{ steps.extract_branch.outputs.branch }}"
+        id: tag
+      - name: Get tag
+        run: echo "The selected tag is ${{ steps.tag.outputs.TAG }}"
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.13.0'
+          node-version: '16.14.0'
       - run: git status
       - run: npm install -g yarn
       - name: Prepare
@@ -49,7 +58,7 @@ jobs:
                         [1]: https://github.com/peter-evans/create-pull-request
            labels: automated,linting
            reviewers: ${{github.actor}}
-           branch: fix(linting)_${{github.ref}}
+           branch: fix(linting)_${{ steps.tag.outputs.TAG }}
       - name: Check outputs
         run: |
                       echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
