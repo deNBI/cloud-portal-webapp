@@ -15,6 +15,8 @@ export class Userinfo {
 
 	Affiliations: string[];
 
+	MissingConsents: string[];
+
 	constructor(userInfo?: Partial<Userinfo>) {
 		Object.assign(this, userInfo);
 	}

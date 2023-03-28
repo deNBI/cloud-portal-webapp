@@ -7,7 +7,12 @@ import { KeyService } from '../api-connector/key.service';
 import { UserService } from '../api-connector/user.service';
 import { GroupService } from '../api-connector/group.service';
 import { IResponseTemplate } from '../api-connector/response-template';
-import { LIFESCIENCE_LINKING_ACCOUNTS, WIKI_LINK_ACCOUNTS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../links/links';
+import {
+	LIFESCIENCE_LINKING_ACCOUNTS,
+	WIKI_LINK_ACCOUNTS,
+	CLOUD_PORTAL_SUPPORT_MAIL,
+	LIFESCIENCE_PROFILE_CONSENT,
+} from '../../links/links';
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
 import { ApplicationsService } from '../api-connector/applications.service';
 import { VirtualmachineService } from '../api-connector/virtualmachine.service';
@@ -111,6 +116,7 @@ export class UserInfoComponent implements OnInit {
 		+ 'You will receive the newsletter until you deactivate the option in the settings again.';
 	WIKI_LINK_ACCOUNTS: string = WIKI_LINK_ACCOUNTS;
 	LIFESCIENCE_LINKING_ACCOUNTS: string = LIFESCIENCE_LINKING_ACCOUNTS;
+	LIFESCIENCE_PROFILE_CONSENT: string = LIFESCIENCE_PROFILE_CONSENT;
 
 	constructor(
 		private groupService: GroupService,
