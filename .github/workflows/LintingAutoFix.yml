@@ -21,7 +21,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: Set tag
         run: sed 's/\//-/g'  <<< "::set-output name=TAG::${{ steps.extract_branch.outputs.branch }}"
         id: tag
