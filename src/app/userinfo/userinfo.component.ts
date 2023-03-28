@@ -273,39 +273,11 @@ export class UserInfoComponent implements OnInit {
 		this.userIsProjectPi = this.isUserPi();
 		this.userIsLoneAdmin = this.isUserLoneAdmin(this.userInfo.Id, userProjectMembers);
 		this.userIsOpenStackUser = this.isOpenStackUser();
-		
-		
-		
+
 		this.summaryError = false;
-		
-		
-		
-		
-		
-		
+
 		this.summaryLoaded = true;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * Collects data to show for user, when opening Leave Virtual Organisation Modal.
