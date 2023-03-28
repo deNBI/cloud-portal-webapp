@@ -167,9 +167,7 @@ export class VoService {
 		});
 	}
 
-
-		declineTermination(groupid: number | string): Observable<any> {
-
+	declineTermination(groupid: number | string): Observable<any> {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/termination/decline/`, {
 			withCredentials: true,
 		});
