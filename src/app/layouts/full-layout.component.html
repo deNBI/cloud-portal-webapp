@@ -13,8 +13,19 @@
 					routerLinkActive="active"
 					[routerLink]="['/userinfo']"
 					href="#"
-					><i class="nav-icon fas fa-user"></i>Profile</a
 				>
+					<i class="nav-icon fas fa-user"></i>
+					<span>Profile</span>
+					<span
+						*ngIf="missing_consents.length > 0"
+						class="badge bg-danger status-badge col-2"
+						data-toggle="tooltip"
+						data-placement="right"
+						title="You have pending consent approvals!"
+					>
+						<i class="fas fa-exclamation-triangle"></i>
+					</span>
+				</a>
 			</li>
 
 			<li class="nav-item">
@@ -346,7 +357,7 @@
 					title="New Instance"
 					[routerLink]="['/virtualmachines/newVM']"
 				>
-					<i class="nav-icon fas fa-desktop"></i> New Instance</a
+					<i class="nav-icon fa-solid fa-desktop"></i> New Instance</a
 				>
 			</li>
 			<li class="nav-item" *ngIf="(is_vo_admin || cluster_allowed) && vm_project_member">

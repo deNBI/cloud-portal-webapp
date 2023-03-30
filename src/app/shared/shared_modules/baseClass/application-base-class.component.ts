@@ -127,6 +127,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 					cc['compute_center_name'],
 					cc['compute_center_login'],
 					cc['compute_center_support_mail'],
+					cc['compute_center_client'],
 				);
 				this.computeCenters.push(compute_center);
 			}
