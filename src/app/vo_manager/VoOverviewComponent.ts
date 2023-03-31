@@ -437,7 +437,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.getMembersOfTheProject(projectid, projectname);
 	}
 
-	exportCSV(): void {
+	exportTSV(): void {
 		const data = [];
 		this.sortProjectService.sorted_applications.forEach(application => {
 			const entry = {};
@@ -451,12 +451,20 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 			data.push(entry);
 		});
 		if (data.length > 0) {
+			// create CSV file first for convenience
+			const currentDate = new Date().toISOString().split('T')[0];
 			// eslint-disable-next-line
-			const csv = new ngxCsv(data, 'projects', {
+			const csv = new ngxCsv(data, 'cloud_projects_' + currentDate, {
 				showLabels: true,
 				headers: Object.keys(data[0]),
 				fieldSeparator: '\t',
+				noDownload: true,
 			});
+			// create TSV file and download it
+			const link = document.createElement('a');
+			link.href = `data:text/tab-separated-values,${encodeURIComponent(csv.getCsv())}`;
+			link.download = `cloud_projects_${currentDate}.tsv`;
+			link.click();
 		}
 	}
 }
