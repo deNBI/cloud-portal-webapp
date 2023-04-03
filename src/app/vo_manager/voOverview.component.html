@@ -418,8 +418,8 @@
 												style="margin-left: 5px; margin-bottom: 5px"
 												type="button"
 												class="btn btn-danger"
-												[id]="'show_terminate_' + project?.project_application_id"
-												[attr.data-test-id]="'show_terminate_' + project?.perun_name"
+												[id]="'show_terminate_' + project?.project_application_shortname"
+												[attr.data-test-id]="'show_terminate_' + project?.project_application_shortname"
 												(click)="selectedProject = project; terminateModal.show()"
 												*ngIf="!(project | hasstatusinlist : application_states.WAIT_FOR_TERMINATION_FM)"
 											>
@@ -441,8 +441,8 @@
 												type="button"
 												disabled
 												class="btn btn-warning"
-												[id]="'show_terminate_' + project?.project_application_id"
-												[attr.data-test-id]="'show_terminate_' + project?.project_application_id"
+												[id]="'show_terminate_' + project?.project_application_shortname"
+												[attr.data-test-id]="'show_terminate_' + project?.project_application_shortname"
 												(click)="selectedProject = project; terminateModal.show()"
 												*ngIf="project | hasstatusinlist : application_states.WAIT_FOR_TERMINATION_FM"
 											>
@@ -452,7 +452,7 @@
 												style="margin-left: 5px"
 												type="button"
 												class="btn btn-info"
-												[id]="'set_protected_' + project?.project_application_perun_id"
+												[id]="'set_protected_' + project?.project_application_shortname"
 												(click)="setProtected(project, true); notificationModal.show()"
 												*ngIf="!(project | hasstatusinlist : application_states.PROTECTED)"
 											>
@@ -462,7 +462,7 @@
 												style="margin-left: 5px"
 												type="button"
 												class="btn btn-info"
-												[id]="'set_unprotected_' + project?.project_application_perun_id"
+												[id]="'set_unprotected_' + project?.project_application_shortname"
 												(click)="setProtected(project, false); notificationModal.show()"
 												*ngIf="project | hasstatusinlist : application_states.PROTECTED"
 											>
