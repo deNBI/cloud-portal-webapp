@@ -826,4 +826,39 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	switchApproveLocked(check: boolean): void {
 		this.approveLocked = check;
 	}
+
+	togglePersonalDataType(checked: boolean, data_type: string) {
+		switch (data_type) {
+			case 'person_related': {
+				if (!checked) {
+					this.adjustedApplication.project_application_no_personal_data = false;
+					this.adjustedApplication.project_application_nonsensitive_data = false;
+					this.adjustedApplication.project_application_sensitive_data = false;
+				}
+				break;
+			}
+			case 'no_personal_data': {
+				if (checked) {
+					this.adjustedApplication.project_application_nonsensitive_data = false;
+					this.adjustedApplication.project_application_sensitive_data = false;
+				}
+				break;
+			}
+			case 'nonsensitive': {
+				if (checked) {
+					this.adjustedApplication.project_application_no_personal_data = false;
+				}
+				break;
+			}
+			case 'sensitive': {
+				if (checked) {
+					this.adjustedApplication.project_application_no_personal_data = false;
+				}
+				break;
+			}
+			default:
+				break;
+		}
+		console.log(this.adjustedApplication);
+	}
 }
