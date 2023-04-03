@@ -59,7 +59,8 @@ export class WorkshopOverviewPage {
 		console.log('Selecting project');
 		await this.page.waitForTimeout(2000);
 		await this.page.locator(Util.by_data_test_id_str(this.PROJECT_SELECT)).isVisible();
-		await this.page.selectOption(Util.by_data_test_id_str(this.PROJECT_SELECT), { label: project_name });
+		console.log(`should select ${project_name}`);
+		await this.page.locator(Util.by_data_test_id_str(this.PROJECT_SELECT)).selectOption({ index: 0 });
 		await this.page.locator(Util.by_data_test_id_str(this.NEW_WORKSHOP_BUTTON)).isVisible();
 		console.log('Project selected');
 	}
