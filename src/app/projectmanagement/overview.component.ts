@@ -188,7 +188,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.getUserinfo();
 			this.getListOfFlavors();
 			this.getListOfTypes();
-			this.getDois();
 		});
 	}
 
@@ -235,7 +234,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							this.startUpdateCreditUsageLoop();
 						}
 					}
-
+					this.getDois();
 					this.isLoaded = true;
 				},
 				(error: any): void => {
