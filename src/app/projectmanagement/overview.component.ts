@@ -110,6 +110,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	maximumVMs: number;
 	coresInUse: number;
 	ramInUse: number;
+	memberApplicationsLoaded: boolean = false;
 	title: string = 'Project Overview';
 
 	checked_member_list: number[] = [];
@@ -235,6 +236,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						}
 					}
 					this.getDois();
+					this.getUserProjectApplications();
+
 					this.isLoaded = true;
 				},
 				(error: any): void => {
@@ -673,7 +676,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * Get all user applications for a project.
 	 */
 	getUserProjectApplications(): void {
-		this.loaded = false;
+		this.memberApplicationsLoaded = false;
 		this.subscription.add(
 			this.groupService
 				.getGroupApplications(this.project_application.project_application_perun_id)
@@ -682,7 +685,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					if (applications.length === 0) {
 						this.project_application.project_application_member_applications = [];
 
-						this.loaded = true;
+						this.memberApplicationsLoaded = true;
 					}
 					for (const application of applications) {
 						const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
@@ -695,7 +698,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						);
 						newProjectApplications.push(newMemberApplication);
 						this.project_application.project_application_member_applications = newProjectApplications;
-						this.loaded = true;
+						this.memberApplicationsLoaded = true;
 					}
 				}),
 		);
