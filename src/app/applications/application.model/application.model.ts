@@ -42,6 +42,8 @@ export class Application {
 	pi_approval_notification_send: boolean;
 	pi_approval_notification_expired: boolean;
 
+	project_application_pi_link: string = '';
+
 	DaysRunning: number;
 	date_end: string;
 	lifetime_days: number;
@@ -120,6 +122,10 @@ export class Application {
 			if (aj.project_credit_request) {
 				this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
 				this.totalCreditsExtensionCredits = this.calcCreditsExtensionCredits();
+			}
+
+			if (aj.project_application_pi_link) {
+				this.project_application_pi_link = aj.project_application_pi_link;
 			}
 
 			if (aj.flavors) {
