@@ -439,6 +439,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 						application[key].forEach(status => {
 							statuses_strings.push(Application_States[status]);
 						});
+						entry[key] = JSON.stringify(statuses_strings);
 					} else if (key === 'project_credit_request') {
 						if (application[key] == null) {
 							entry['project_credit_requested'] = 'FALSE';
