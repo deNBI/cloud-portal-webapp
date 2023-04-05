@@ -211,8 +211,8 @@
 															[id]="computeCenter.Name"
 														>
 															{{ computeCenter.Name }}
-														</option></ng-container
-													>
+														</option>
+													</ng-container>
 												</select>
 												<span *ngIf="application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION">{{
 													application?.project_application_compute_center?.Name
@@ -397,7 +397,7 @@
 									<th></th>
 									<th>Project Name</th>
 									<th>Short Name</th>
-									<th>Date submitted</th>
+									<th>Modification submitted</th>
 									<th>User</th>
 									<th>Institute</th>
 									<th>Compute Center</th>
@@ -461,7 +461,7 @@
 											</td>
 											<td>{{ application?.project_application_name }}</td>
 											<td>{{ application?.project_application_shortname }}</td>
-											<td>{{ application?.project_application_date_submitted }}</td>
+											<td>{{ application?.project_modification_request?.date_submitted }}</td>
 											<td style="word-wrap: break-word; min-width: 110px; max-width: 130px; white-space: normal">
 												{{ application?.project_application_user?.username }}
 											</td>
@@ -592,7 +592,7 @@
 									<th></th>
 									<th>Project Name</th>
 									<th>Short Name</th>
-									<th>Date submitted</th>
+									<th>Lifetime extension submitted</th>
 									<th>User</th>
 									<th>Institute</th>
 									<th>Compute Center</th>
@@ -656,7 +656,7 @@
 											</td>
 											<td>{{ application?.project_application_name }}</td>
 											<td>{{ application?.project_application_shortname }}</td>
-											<td>{{ application?.project_application_date_submitted }}</td>
+											<td>{{ application?.project_lifetime_request?.date_submitted }}</td>
 											<td style="word-wrap: break-word; min-width: 110px; max-width: 130px; white-space: normal">
 												{{ application?.project_application_user?.username }}
 											</td>
@@ -762,7 +762,7 @@
 									<th></th>
 									<th>Project Name</th>
 									<th>Short Name</th>
-									<th>Date submitted</th>
+									<th>Credits request submitted</th>
 									<th>User</th>
 									<th>Institute</th>
 									<th>Compute Center</th>
@@ -826,7 +826,7 @@
 											</td>
 											<td>{{ application?.project_application_name }}</td>
 											<td>{{ application?.project_application_shortname }}</td>
-											<td>{{ application?.project_application_date_submitted }}</td>
+											<td>{{ application?.project_credit_request?.date_submitted }}</td>
 											<td style="word-wrap: break-word; min-width: 110px; max-width: 130px; white-space: normal">
 												{{ application?.project_application_user?.username }}
 											</td>
@@ -992,10 +992,10 @@
 											Information
 										</button>
 										<!--button (click)="deleteModal.show();setDeleteId(application?.application_status_id)"
-                                                type="button"
-                                                class="btn btn-secondary">
-                                        Remove Application
-                                </button-->
+                                            type="button"
+                                            class="btn btn-secondary">
+                                    Remove Application
+                            </button-->
 									</td>
 								</tr>
 								<td colspan="12">
@@ -1390,7 +1390,7 @@
 						(click)="adjustModal.hide(); adjustApplication()"
 						[disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM"
 					>
-						<i class="fa fa-dot-circle-o"></i>
+						<i class="far fa-dot-circle"></i>
 						Adjust
 					</button>
 					<button type="button" class="btn btn-danger" (click)="adjustModal.hide()">Discard</button>

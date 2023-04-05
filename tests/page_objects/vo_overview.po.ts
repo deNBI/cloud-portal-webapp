@@ -46,12 +46,17 @@ export class VoOverviewPage {
 		await this.goto();
 		await this.filterForProjects(project_name);
 
-		const project_count: number = await this.page.locator('button >> text=Terminate Project').count();
+		const project_count: number = await this.page
+			.locator(Util.by_data_test_id_str_prefix(this.SHOW_TERMINATE_PREFIX + Util.OPENSTACK_APPLICATION_NAME))
+			.count();
 		console.log(`Terminating ${project_count} openstack projects with name ${project_name}`);
 		// eslint-disable-next-line no-plusplus
 		for (let i = 0; i < project_count; i++) {
 			// eslint-disable-next-line no-await-in-loop
-			await this.page.locator('button >> text=Terminate Project').first().click();
+			await this.page
+				.locator(Util.by_data_test_id_str_prefix(this.SHOW_TERMINATE_PREFIX + Util.OPENSTACK_APPLICATION_NAME))
+				.first()
+				.click();
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).first().click();
 
@@ -67,12 +72,17 @@ export class VoOverviewPage {
 		await this.goto();
 		await this.filterForProjects(project_name);
 		await this.page.waitForTimeout(7500);
-		const project_count: number = await this.page.locator('button >> text=Terminate Project').count();
+		const project_count: number = await this.page
+			.locator(Util.by_data_test_id_str_prefix(this.SHOW_TERMINATE_PREFIX + Util.SIMPLE_VM_APPLICATION_NAME))
+			.count();
 		console.log(`Terminating ${project_count} simplevm projects with name ${project_name}`);
 		// eslint-disable-next-line no-plusplus
 		for (let i = 0; i < project_count; i++) {
 			// eslint-disable-next-line no-await-in-loop
-			await this.page.locator('button >> text=Terminate Project').first().click();
+			await this.page
+				.locator(Util.by_data_test_id_str_prefix(this.SHOW_TERMINATE_PREFIX + Util.SIMPLE_VM_APPLICATION_NAME))
+				.first()
+				.click();
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).first().click();
 
