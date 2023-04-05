@@ -407,7 +407,7 @@
 
 											<button
 												*ngIf="project | hasstatusinlist : project_states.SUSPENDED"
-												style="margin-left: 5px"
+												style="margin-left: 5px; margin-bottom: 5px"
 												type="button"
 												class="btn btn-success"
 												(click)="selectedProject = project; resumeModal.show()"
@@ -415,23 +415,34 @@
 												<i class="fa fa-play"></i>&nbsp;Resume Project
 											</button>
 											<button
-												style="margin-left: 5px"
+												style="margin-left: 5px; margin-bottom: 5px"
 												type="button"
 												class="btn btn-danger"
-												[id]="'show_terminate_' + project?.project_application_id"
-												[attr.data-test-id]="'show_terminate_' + project?.perun_name"
+												[id]="'show_terminate_' + project?.project_application_shortname"
+												[attr.data-test-id]="'show_terminate_' + project?.project_application_shortname"
 												(click)="selectedProject = project; terminateModal.show()"
 												*ngIf="!(project | hasstatusinlist : application_states.WAIT_FOR_TERMINATION_FM)"
 											>
-												<i class="fa fa-trash"></i>&nbsp;Terminate Project
+												<i class="fas fa-trash-alt"></i>&nbsp;Terminate Project
 											</button>
 											<button
-												style="margin-left: 5px"
+												style="margin-left: 5px; margin-bottom: 5px"
+												type="button"
+												class="btn btn-warning"
+												[id]="'show_decline_terminate_' + project?.project_application_id"
+												[attr.data-test-id]="'show_decline_terminate_' + project?.perun_name"
+												(click)="selectedProject = project; declineTerminationModal.show()"
+												*ngIf="project | hasstatusinlist : application_states.TERMINATION_REQUESTED"
+											>
+												<i class="fa fa-location-arrow"></i> Decline Termination Project
+											</button>
+											<button
+												style="margin-left: 5px; margin-bottom: 5px"
 												type="button"
 												disabled
 												class="btn btn-warning"
-												[id]="'show_terminate_' + project?.project_application_id"
-												[attr.data-test-id]="'show_terminate_' + project?.project_application_id"
+												[id]="'show_terminate_' + project?.project_application_shortname"
+												[attr.data-test-id]="'show_terminate_' + project?.project_application_shortname"
 												(click)="selectedProject = project; terminateModal.show()"
 												*ngIf="project | hasstatusinlist : application_states.WAIT_FOR_TERMINATION_FM"
 											>
@@ -441,7 +452,7 @@
 												style="margin-left: 5px"
 												type="button"
 												class="btn btn-info"
-												[id]="'set_protected_' + project?.project_application_perun_id"
+												[id]="'set_protected_' + project?.project_application_shortname"
 												(click)="setProtected(project, true); notificationModal.show()"
 												*ngIf="!(project | hasstatusinlist : application_states.PROTECTED)"
 											>
@@ -451,7 +462,7 @@
 												style="margin-left: 5px"
 												type="button"
 												class="btn btn-info"
-												[id]="'set_unprotected_' + project?.project_application_perun_id"
+												[id]="'set_unprotected_' + project?.project_application_shortname"
 												(click)="setProtected(project, false); notificationModal.show()"
 												*ngIf="project | hasstatusinlist : application_states.PROTECTED"
 											>
@@ -961,6 +972,52 @@
 				<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; infoModal.hide()">
 					Close
 				</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+<div
+	bsModal
+	#declineTerminationModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Decline Termination</h4>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="declineTerminationModal.hide()"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning" role="alert">
+					Are you sure you want to decline the termination of the project -
+					<strong>{{ selectedProject?.project_application_shortname }}</strong
+					>?
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button
+					class="btn btn-success col-md-4"
+					id="decline_termination_project_btn"
+					(click)="declineTermination(selectedProject); declineTerminationModal.hide(); notificationModal.show()"
+				>
+					Yes
+				</button>
+				<button class="btn btn-danger col-md-4" type="reset" (click)="declineTerminationModal.hide()">Cancel</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->

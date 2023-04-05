@@ -34,9 +34,11 @@
 				</div>
 				<div class="help-block">Current lifetime</div>
 				<div class="help-block" style="color: green" *ngIf="temp_project_extension.extra_lifetime > 0">
-					New end date: {{ new_end_date?.getDate() }}.{{ new_end_date?.getMonth() + 1 }} .{{
-						new_end_date?.getFullYear()
-					}}
+					New end date:
+					<span *ngIf="isDate(new_end_date)"
+						>{{ new_end_date?.getDate() }}.{{ new_end_date?.getMonth() + 1 }} .{{ new_end_date?.getFullYear() }}</span
+					>
+					<span *ngIf="!isDate(new_end_date)">{{ new_end_date }}</span>
 				</div>
 			</div>
 
@@ -168,7 +170,7 @@
 					selected_ontology_terms.length < 1)
 			"
 		>
-			<i class="fa fa-dot-circle-o"></i>
+			<i class="far fa-dot-circle"></i>
 			Submit
 		</button>
 		<button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Close</button>

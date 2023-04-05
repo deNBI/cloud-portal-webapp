@@ -37,7 +37,8 @@ export class WorkshopInstancesPage {
 		console.log('Selecting project');
 		await this.page.waitForTimeout(2000);
 		await this.page.locator(Util.by_data_test_id_str(this.PROJECT_SELECT)).isVisible();
-		await this.page.selectOption(Util.by_data_test_id_str(this.PROJECT_SELECT), { label: project_name });
+		console.log(`Should select ${project_name}`);
+		await this.page.selectOption(Util.by_data_test_id_str(this.PROJECT_SELECT), { index: 0 });
 		console.log('Project selected');
 	}
 	async selectWorkshop(workshop_name: string = Util.WORKSHOP_NAME) {

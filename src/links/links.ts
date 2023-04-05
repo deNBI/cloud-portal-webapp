@@ -16,6 +16,7 @@ export const WIKI_INSTANCE_OVERVIEW_LINK: string = `${environment.WIKI_PRE}simpl
 export const WIKI_INSTANCE_DETAIL_LINK: string = `${environment.WIKI_PRE}simple_vm/instance_detail/`;
 export const WIKI_LINK_ACCOUNTS: string = `${environment.WIKI_PRE}portal/user_information/#link-accounts-to-elixir`;
 export const LIFESCIENCE_LINKING_ACCOUNTS: string = 'https://profile.aai.lifescience-ri.eu/profile/identities';
+export const LIFESCIENCE_PROFILE_CONSENT: string = 'https://profile.aai.lifescience-ri.eu/profile/consents';
 export const WIKI_PRINCIPAL_INVESTIGATOR: string =	'https://cloud.denbi.de/wiki/portal/allocation/#principal-investigator';
 export const WIKI_LINKING_ACCOUNTS: string =	'https://cloud.denbi.de/wiki/portal/user_information/#link-accounts-to-lifescience-formerly-elixir';
 export const WIKI_PUBLICATIONS: string = `${environment.WIKI_PRE}citation_and_publication/#publications`;
