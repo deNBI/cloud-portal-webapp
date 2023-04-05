@@ -217,6 +217,38 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		);
 	}
 
+	adjustLifetimeExtension(): void {
+		this.applicationsService.adjustLifetimeExtension(this.adjustedApplication.project_lifetime_request).subscribe(
+			(adjustmentResult: Application): void => {
+				const index: number = this.all_applications.indexOf(this.selectedApplication);
+				this.all_applications[index] = new Application(adjustmentResult);
+				this.showNotificationModal(
+					'Success',
+					'The lifetime of the extension request has been adjusted successfully!',
+					'success',
+				);
+			},
+			(): void => {
+				this.showNotificationModal('Failed', 'The adjustment of the lifetime extension has failed!', 'danger');
+			},
+		);
+	}
+
+	// TODO: check response types - how to reload the lists correctly --> also add ability to open adjustment modals in UI
+
+	adjustModification(): void {
+		this.applicationsService.adjustModification(this.adjustedApplication.project_modification_request).subscribe(
+			(adjustmentResult: Application): void => {
+				const index: number = this.all_applications.indexOf(this.selectedApplication);
+				this.all_applications[index] = new Application(adjustmentResult);
+				this.showNotificationModal('Success', 'The modification request has been adjusted successfully!', 'success');
+			},
+			(): void => {
+				this.showNotificationModal('Failed', 'The adjustment of the modification request has failed!', 'danger');
+			},
+		);
+	}
+
 	/**
 	 * Checks if the flavor is available for SimpleVM
 	 * @param type
@@ -436,31 +468,31 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	sortApplicationsByTabState(): void {
 		switch (this.tab_state) {
 			case TabStates.SUBMITTED:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_application_date_submitted).getTime()
-						- new Date(b.project_application_date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_application_date_submitted).getTime()
+						- new Date(b.project_application_date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.LIFETIME_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_lifetime_request.date_submitted).getTime()
-						- new Date(b.project_lifetime_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_lifetime_request.date_submitted).getTime()
+						- new Date(b.project_lifetime_request.date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.MODIFICATION_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_modification_request.date_submitted).getTime()
-						- new Date(b.project_modification_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_modification_request.date_submitted).getTime()
+						- new Date(b.project_modification_request.date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.CREDITS_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_credit_request.date_submitted).getTime()
-						- new Date(b.project_credit_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_credit_request.date_submitted).getTime()
+						- new Date(b.project_credit_request.date_submitted).getTime(),
+				);
 				break;
 
 			default:

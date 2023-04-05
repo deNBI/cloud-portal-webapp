@@ -16,6 +16,7 @@ export class ApplicationLifetimeExtension {
 	date_submitted: string;
 	extra_credits: number = 0;
 	user: User;
+	manager_comment: string;
 
 	constructor(extension?: Partial<ApplicationLifetimeExtension>) {
 		Object.assign(this, extension);
