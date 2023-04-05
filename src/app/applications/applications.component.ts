@@ -433,6 +433,41 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	/**
 	 * Loading Applications dependent from the current tab selected (submitted, credits, lifetime, modification)
 	 */
+	sortApplicationsByTabState(): void {
+		switch (this.tab_state) {
+			case TabStates.SUBMITTED:
+				this.all_applications.sort((a, b) => (
+					new Date(a.project_application_date_submitted).getTime()
+						- new Date(b.project_application_date_submitted).getTime()
+				));
+				break;
+
+			case TabStates.LIFETIME_EXTENSION:
+				this.all_applications.sort((a, b) => (
+					new Date(a.project_lifetime_request.date_submitted).getTime()
+						- new Date(b.project_lifetime_request.date_submitted).getTime()
+				));
+				break;
+
+			case TabStates.MODIFICATION_EXTENSION:
+				this.all_applications.sort((a, b) => (
+					new Date(a.project_modification_request.date_submitted).getTime()
+						- new Date(b.project_modification_request.date_submitted).getTime()
+				));
+				break;
+
+			case TabStates.CREDITS_EXTENSION:
+				this.all_applications.sort((a, b) => (
+					new Date(a.project_credit_request.date_submitted).getTime()
+						- new Date(b.project_credit_request.date_submitted).getTime()
+				));
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	getApplicationsByTabState(): void {
 		this.loading_applications = true;
 		if (this.is_vo_admin) {
@@ -448,6 +483,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					for (const app of this.all_applications) {
 						this.getFacilityProject(app);
 					}
+					this.sortApplicationsByTabState();
+
 					this.isLoaded = true;
 					this.loading_applications = false;
 				});
@@ -462,6 +499,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					for (const app of this.all_applications) {
 						this.getFacilityProject(app);
 					}
+					this.sortApplicationsByTabState();
+
 					this.isLoaded = true;
 					this.loading_applications = false;
 				});
@@ -478,6 +517,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 						for (const app of this.all_applications) {
 							this.getFacilityProject(app);
 						}
+						this.sortApplicationsByTabState();
+
 						this.isLoaded = true;
 						this.loading_applications = false;
 					});
@@ -494,6 +535,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 						for (const app of this.all_applications) {
 							this.getFacilityProject(app);
 						}
+						this.sortApplicationsByTabState();
+
 						this.isLoaded = true;
 						this.loading_applications = false;
 					});
