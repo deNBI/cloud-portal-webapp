@@ -127,7 +127,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	ngOnInit(): void {
 		this.is_vo_admin = is_vo;
 		if (this.is_vo_admin) {
-			this.getSubmittedApplications();
+			this.getSubmittedApplicationsAdmin();
 			this.getApplicationHistory();
 			this.getComputeCenters();
 			this.flavorService.getListOfFlavorsAvailable().subscribe((flavList: Flavor[]): void => {
@@ -227,6 +227,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					'The lifetime of the extension request has been adjusted successfully!',
 					'success',
 				);
+				this.getApplicationsByTabState();
 			},
 			(): void => {
 				this.showNotificationModal('Failed', 'The adjustment of the lifetime extension has failed!', 'danger');
@@ -428,7 +429,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	/**
 	 * Get all Applications if user is admin.
 	 */
-	getSubmittedApplications(): void {
+	getSubmittedApplicationsAdmin(): void {
 		if (this.is_vo_admin) {
 			this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
 				if (applications.length === 0) {
@@ -500,78 +501,93 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		}
 	}
 
+	getSubmittedApplications(): void {
+		this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
+			if (applications.length === 0) {
+				this.isLoaded_userApplication = true;
+			}
+			for (const application of applications) {
+				this.all_applications.push(new Application(application));
+			}
+			for (const app of this.all_applications) {
+				this.getFacilityProject(app);
+			}
+			this.sortApplicationsByTabState();
+
+			this.isLoaded = true;
+			this.loading_applications = false;
+		});
+	}
+
+	getCreditsExtensionRequests(): void {
+		this.applicationsService.getCreditsExtensionRequest().subscribe((credit_applications: Application[]): void => {
+			if (credit_applications.length === 0) {
+				// bool here?
+			}
+			for (const credit_application of credit_applications) {
+				this.all_applications.push(new Application(credit_application));
+			}
+			for (const app of this.all_applications) {
+				this.getFacilityProject(app);
+			}
+			this.sortApplicationsByTabState();
+
+			this.isLoaded = true;
+			this.loading_applications = false;
+		});
+	}
+
+	getLifetimeExtensionRequests(): void {
+		this.applicationsService
+			.getLifetimeRequestedApplications()
+			.subscribe((lifetime_applications: Application[]): void => {
+				if (lifetime_applications.length === 0) {
+					// bool here?
+				}
+				for (const lifetime_application of lifetime_applications) {
+					this.all_applications.push(new Application(lifetime_application));
+				}
+				for (const app of this.all_applications) {
+					this.getFacilityProject(app);
+				}
+				this.sortApplicationsByTabState();
+
+				this.isLoaded = true;
+				this.loading_applications = false;
+			});
+	}
+	getModificationRequests(): void {
+		this.applicationsService
+			.getModificationRequestedApplications()
+			.subscribe((modification_applications: Application[]): void => {
+				if (modification_applications.length === 0) {
+					// bool here?
+				}
+				for (const modification_application of modification_applications) {
+					this.all_applications.push(new Application(modification_application));
+				}
+				for (const app of this.all_applications) {
+					this.getFacilityProject(app);
+				}
+				this.sortApplicationsByTabState();
+
+				this.isLoaded = true;
+				this.loading_applications = false;
+			});
+	}
+
 	getApplicationsByTabState(): void {
 		this.loading_applications = true;
 		if (this.is_vo_admin) {
 			this.clearApplicationLists();
 			if (this.tab_state === TabStates.SUBMITTED) {
-				this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
-					if (applications.length === 0) {
-						this.isLoaded_userApplication = true;
-					}
-					for (const application of applications) {
-						this.all_applications.push(new Application(application));
-					}
-					for (const app of this.all_applications) {
-						this.getFacilityProject(app);
-					}
-					this.sortApplicationsByTabState();
-
-					this.isLoaded = true;
-					this.loading_applications = false;
-				});
+				this.getSubmittedApplications();
 			} else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
-				this.applicationsService.getCreditsExtensionRequest().subscribe((credit_applications: Application[]): void => {
-					if (credit_applications.length === 0) {
-						// bool here?
-					}
-					for (const credit_application of credit_applications) {
-						this.all_applications.push(new Application(credit_application));
-					}
-					for (const app of this.all_applications) {
-						this.getFacilityProject(app);
-					}
-					this.sortApplicationsByTabState();
-
-					this.isLoaded = true;
-					this.loading_applications = false;
-				});
+				this.getCreditsExtensionRequests();
 			} else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
-				this.applicationsService
-					.getLifetimeRequestedApplications()
-					.subscribe((lifetime_applications: Application[]): void => {
-						if (lifetime_applications.length === 0) {
-							// bool here?
-						}
-						for (const lifetime_application of lifetime_applications) {
-							this.all_applications.push(new Application(lifetime_application));
-						}
-						for (const app of this.all_applications) {
-							this.getFacilityProject(app);
-						}
-						this.sortApplicationsByTabState();
-
-						this.isLoaded = true;
-						this.loading_applications = false;
-					});
+				this.getLifetimeExtensionRequests();
 			} else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
-				this.applicationsService
-					.getModificationRequestedApplications()
-					.subscribe((modification_applications: Application[]): void => {
-						if (modification_applications.length === 0) {
-							// bool here?
-						}
-						for (const modification_application of modification_applications) {
-							this.all_applications.push(new Application(modification_application));
-						}
-						for (const app of this.all_applications) {
-							this.getFacilityProject(app);
-						}
-						this.sortApplicationsByTabState();
-
-						this.isLoaded = true;
-						this.loading_applications = false;
-					});
+				this.getModificationRequests();
 			}
 		}
 	}
@@ -817,7 +833,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				} else {
 					this.showNotificationModal('Success', `The project was created in ${res['client']} !`, 'success');
 					this.all_applications = [];
-					this.getSubmittedApplications();
+					this.getSubmittedApplicationsAdmin();
 					this.applicationsService.getExtensionRequestsCounter().subscribe((result: any): void => {
 						this.numberOfProjectApplications = result['applications_submitted_vo'];
 					});
