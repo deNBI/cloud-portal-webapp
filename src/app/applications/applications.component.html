@@ -490,10 +490,26 @@
 														<span class="d-none">Approve Modification</span>
 													</button>
 													<button
+														[id]="'modification_adjustment_' + application?.project_application_shortname"
+														[attr.data-test-id]="
+															'modification_adjustment_' + application?.project_application_shortname
+														"
+														*ngIf="
+															(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) &&
+															application?.project_modification_request
+														"
+														style="margin: 2px"
+														type="button"
+														(click)="setApplicationToAdjust(application); showModificationAdjustmentModal()"
+														class="btn btn-primary"
+													>
+														<i class="fa fa-pen"></i>&nbsp;
+														<span class="d-none"> Adjust Modification</span>
+													</button>
+													<button
 														[id]="'modification_approval_' + application?.project_application_shortname"
 														*ngIf="
 															(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) &&
-															!application?.project_application_openstack_project &&
 															application?.project_modification_request
 														"
 														style="margin: 2px"

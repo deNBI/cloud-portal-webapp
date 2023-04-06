@@ -22,6 +22,7 @@ import { CreditsService } from '../api-connector/credits.service';
 import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limits..component';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
+import { ModificationRequestComponent } from '../projectmanagement/modals/modification-request/modification-request.component';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -219,9 +220,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	adjustLifetimeExtension(): void {
 		this.applicationsService.adjustLifetimeExtension(this.adjustedApplication.project_lifetime_request).subscribe(
-			(adjustmentResult: Application): void => {
-				const index: number = this.all_applications.indexOf(this.selectedApplication);
-				this.all_applications[index] = new Application(adjustmentResult);
+			(): void => {
 				this.showNotificationModal(
 					'Success',
 					'The lifetime of the extension request has been adjusted successfully!',
@@ -235,13 +234,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		);
 	}
 
-	// TODO: check response types - how to reload the lists correctly --> also add ability to open adjustment modals in UI
-
 	adjustModification(): void {
 		this.applicationsService.adjustModification(this.adjustedApplication.project_modification_request).subscribe(
-			(adjustmentResult: Application): void => {
-				const index: number = this.all_applications.indexOf(this.selectedApplication);
-				this.all_applications[index] = new Application(adjustmentResult);
+			(): void => {
 				this.showNotificationModal('Success', 'The modification request has been adjusted successfully!', 'success');
 			},
 			(): void => {
@@ -730,6 +725,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 		this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
+	}
+
+	showModificationAdjustmentModal() {
+		this.adjustedApplication = this.selectedApplication;
+		const initialState = {
+			project: this.adjustedApplication,
+			adjust: true,
+		};
+		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
+		this.bsModalRef.setClass('modal-xl');
+		// TODO: adjust to handling of component
+		// this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
 	}
 
 	/**

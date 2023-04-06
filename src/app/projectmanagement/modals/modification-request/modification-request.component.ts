@@ -24,10 +24,14 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	project: Application;
 	temp_project_modification: ApplicationModification;
 
+	adjusted_project_modification: ApplicationModification;
+
 	expected_total_credits: number = 0;
 	flavorTypes: FlavorType[] = [];
 	shown_flavors: { [name: string]: Flavor[] } = {};
 	min_vm: boolean = true;
+
+	adjustment: boolean = false;
 
 	private subscription: Subscription = new Subscription();
 	public event: EventEmitter<any> = new EventEmitter();
@@ -55,6 +59,9 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		} else {
 			this.temp_project_modification = new ApplicationModification();
 			this.temp_project_modification.setByApp(this.project);
+		}
+		if (this.adjustment) {
+			this.adjusted_project_modification = this.temp_project_modification;
 		}
 		this.subscription.add(
 			this.flavorService.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
