@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.666.0",
+  "version": "4.670.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@angular-eslint/eslint-plugin": "^15.2.0",
     "@angular/animations": "15.2.5",
-    "@angular/cdk": "15.2.5",
+    "@angular/cdk": "15.2.6",
     "@angular/common": "15.2.5",
     "@angular/compiler": "15.2.5",
     "@angular/core": "15.2.5",
@@ -34,7 +34,7 @@
     "@coreui/angular": "^4.3.4",
     "@coreui/coreui": "4.2.6",
     "@coreui/icons-angular": "^4.3.0",
-    "@ng-bootstrap/ng-bootstrap": "14.0.1",
+    "@ng-bootstrap/ng-bootstrap": "14.1.0",
     "@ng-select/ng-select": "10.0.4",
     "@sindresorhus/transliterate": "1.6.0",
     "@types/d3": "7.4.0",
@@ -87,15 +87,15 @@
     "zone.js": "0.13.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "15.2.4",
+    "@angular-devkit/build-angular": "15.2.5",
     "@angular-eslint/builder": "15.2.1",
     "@angular-eslint/eslint-plugin-template": "15.2.1",
     "@angular-eslint/schematics": "15.2.1",
     "@angular-eslint/template-parser": "15.2.1",
-    "@angular/cli": "15.2.4",
+    "@angular/cli": "15.2.5",
     "@angular/compiler-cli": "15.2.5",
     "@compodoc/compodoc": "1.1.19",
-    "@playwright/test": "1.32.1",
+    "@playwright/test": "1.32.2",
     "@types/jasmine": "4.3.1",
     "@types/node": "18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
