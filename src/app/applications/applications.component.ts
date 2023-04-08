@@ -436,31 +436,31 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	sortApplicationsByTabState(): void {
 		switch (this.tab_state) {
 			case TabStates.SUBMITTED:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_application_date_submitted).getTime()
-						- new Date(b.project_application_date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_application_date_submitted).getTime()
+						- new Date(b.project_application_date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.LIFETIME_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_lifetime_request.date_submitted).getTime()
-						- new Date(b.project_lifetime_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_lifetime_request.date_submitted).getTime()
+						- new Date(b.project_lifetime_request.date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.MODIFICATION_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_modification_request.date_submitted).getTime()
-						- new Date(b.project_modification_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_modification_request.date_submitted).getTime()
+						- new Date(b.project_modification_request.date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.CREDITS_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_credit_request.date_submitted).getTime()
-						- new Date(b.project_credit_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_credit_request.date_submitted).getTime()
+						- new Date(b.project_credit_request.date_submitted).getTime(),
+				);
 				break;
 
 			default:
@@ -622,10 +622,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			},
 			(error: any): void => {
-                const errorMessage = error?.error?.error === 'locked' ?
-                    'Project is locked and could not be created!' : 'Project could not be created!';
-                this.showNotificationModal('Failed', errorMessage, 'danger');
-                console.log(error);
+				const errorMessage =					error?.error?.error === 'locked'
+					? 'Project is locked and could not be created!'
+					: 'Project could not be created!';
+				this.showNotificationModal('Failed', errorMessage, 'danger');
+				console.log(error);
 			},
 		);
 	}
