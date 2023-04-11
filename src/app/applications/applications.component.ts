@@ -622,9 +622,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			},
 			(error: any): void => {
-				const errorMessage =					error?.error?.error === 'locked'
+				const errorMessage =					error && error.error === 'locked'
 					? 'Project is locked and could not be created!'
 					: 'Project could not be created!';
+
 				this.showNotificationModal('Failed', errorMessage, 'danger');
 				console.log(error);
 			},
@@ -751,11 +752,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 						// this.reloadApplicationList(application_id)
 					}
 				},
-				(error: object): void => {
+				(error: any): void => {
 					console.log(error);
-					const errorMessage =						error?.error?.error === 'locked'
+					const errorMessage =						error && error.error === 'locked'
 						? 'Project is locked and could not be created!'
 						: 'Project could not be created!';
+
 					this.showNotificationModal('Failed', errorMessage, 'danger');
 					console.log(error);
 				},
@@ -791,10 +793,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					this.switchApproveLocked(false);
 				}
 			},
-			(error: object): void => {
-				const errorMessage =					error?.error?.error === 'locked'
+			(error: any): void => {
+				const errorMessage =					error && error.error === 'locked'
 					? 'Project is locked and could not be created!'
 					: 'Project could not be created!';
+
 				this.showNotificationModal('Failed', errorMessage, 'danger');
 				console.log(error);
 			},
