@@ -857,6 +857,22 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		);
 	}
 
+	setCurrentUserProcessingVoManager(application: Application): void {
+		if (this.is_vo_admin) {
+			this.voService.setCurrentUserProcessingVoManager(application.project_application_id).subscribe((res: any) => {
+				application.processing_vo_initials = res['processing_vo_initials'];
+			});
+		}
+	}
+
+	unsetProcessingVoManager(application: Application): void {
+		if (this.is_vo_admin) {
+			this.voService.unsetProcessingVoManager(application.project_application_id).subscribe(() => {
+				application.processing_vo_initials = null;
+			});
+		}
+	}
+
 	switchReassignLocked(check: boolean): void {
 		this.reassignLocked = check;
 	}
