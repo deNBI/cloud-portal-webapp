@@ -753,11 +753,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				},
 				(error: object): void => {
 					console.log(error);
-const errorMessage =					error?.error?.error === 'locked'
-					? 'Project is locked and could not be created!'
-					: 'Project could not be created!';
-				this.showNotificationModal('Failed', errorMessage, 'danger');
-				console.log(error);
+					const errorMessage =						error?.error?.error === 'locked'
+						? 'Project is locked and could not be created!'
+						: 'Project could not be created!';
+					this.showNotificationModal('Failed', errorMessage, 'danger');
+					console.log(error);
 				},
 			);
 		} else {
@@ -792,7 +792,7 @@ const errorMessage =					error?.error?.error === 'locked'
 				}
 			},
 			(error: object): void => {
-const errorMessage =					error?.error?.error === 'locked'
+				const errorMessage =					error?.error?.error === 'locked'
 					? 'Project is locked and could not be created!'
 					: 'Project could not be created!';
 				this.showNotificationModal('Failed', errorMessage, 'danger');
