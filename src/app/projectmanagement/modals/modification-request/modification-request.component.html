@@ -394,9 +394,23 @@
 			<label class="col-md-4"></label>
 			<div class="col-md-8">
 				<div class="alert alert-warning" role="alert">
-					Since you have opted for GPU/Highmemory Flavors, which are limited resources, it would be helpful if you could
-					provide further explanation about your specific requirements and the tools that necessitate the use of these
-					resources.
+					<p>
+						Since you have opted for GPU and/or high memory flavors which are limited resources, please explain why you
+						need these specific resources and try to answer the following questions:
+					</p>
+					<ul>
+						<li>Which of your tools require these resources?</li>
+						<li>
+							Why did you request the number of VMs that you specified on the form? Would it be sufficient for you to
+							start with less GPU/high memory VMs?
+						</li>
+						<li>
+							If you have chosen one of the following flavors: de.NBI highmem large/de.NBI highmem xlarge/de.NBI 2 GPU
+							large, please explain why it would not be possible for you to use a flavor of the same category with less
+							RAM (e.g. de.NBI highmem medium).
+						</li>
+						<li>Did you test your tools on machines with less RAM?</li>
+					</ul>
 				</div>
 			</div>
 		</div>
