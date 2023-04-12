@@ -31,6 +31,8 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	shown_flavors: { [name: string]: Flavor[] } = {};
 	min_vm: boolean = true;
 
+	min_vm_adjusted: boolean = true;
+
 	adjustment: boolean = false;
 
 	private subscription: Subscription = new Subscription();
@@ -61,7 +63,11 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			this.temp_project_modification.setByApp(this.project);
 		}
 		if (this.adjustment) {
-			this.adjusted_project_modification = this.temp_project_modification;
+			this.adjusted_project_modification = new ApplicationModification(this.temp_project_modification);
+			this.adjusted_project_modification.flavors = [];
+			this.adjusted_project_modification.flavors = this.temp_project_modification.flavors.map(
+				(flavor: Flavor): Flavor => new Flavor(flavor),
+			);
 		}
 		this.subscription.add(
 			this.flavorService.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
@@ -156,13 +162,24 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	showSubmitModal(): void {
-		const initialState = {
-			project: this.project,
-			extension: this.temp_project_modification,
-			modificationExtension: true,
-			expectedTotalCredits: this.expected_total_credits,
-		};
+	showSubmitModal(adjustment: boolean): void {
+		let initialState: {};
+		if (adjustment) {
+			initialState = {
+				project: this.project,
+				extension: this.temp_project_modification,
+				adjustedModification: this.adjusted_project_modification,
+				modificationExtension: true,
+				expectedTotalCredits: this.expected_total_credits,
+			};
+		} else {
+			initialState = {
+				project: this.project,
+				extension: this.temp_project_modification,
+				modificationExtension: true,
+				expectedTotalCredits: this.expected_total_credits,
+			};
+		}
 		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, {
 			initialState,

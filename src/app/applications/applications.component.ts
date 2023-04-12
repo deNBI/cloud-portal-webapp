@@ -731,7 +731,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.adjustedApplication = this.selectedApplication;
 		const initialState = {
 			project: this.adjustedApplication,
-			adjust: true,
+			adjustment: true,
 		};
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-xl');
