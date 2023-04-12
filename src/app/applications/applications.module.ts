@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClickOutsideModule } from 'ng4-click-outside';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { BadgeModule } from '@coreui/angular';
+import { AlertModule, BadgeModule } from '@coreui/angular';
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
 import { AddsimplevmComponent } from './addsimplevm.component';
@@ -44,6 +44,7 @@ import { NewsModule } from '../news/news.module';
 		NewsModule,
 		NgSelectModule,
 		BadgeModule,
+		AlertModule,
 	],
 	declarations: [
 		ApplicationsComponent,
