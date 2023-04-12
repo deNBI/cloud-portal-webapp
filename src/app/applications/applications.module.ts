@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClickOutsideModule } from 'ng4-click-outside';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AlertModule, BadgeModule } from '@coreui/angular';
+import { BadgeModule } from '@coreui/angular';
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
 import { AddsimplevmComponent } from './addsimplevm.component';
@@ -26,6 +26,7 @@ import { ModificationDetailComponent } from './application-detail/modification-d
 import { CreditsExtensionDetailComponent } from './application-detail/credits-extension-detail/credits-extension-detail.component';
 import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
 import { NewsModule } from '../news/news.module';
+import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 
 /**
  * Applications Module.
@@ -44,7 +45,7 @@ import { NewsModule } from '../news/news.module';
 		NewsModule,
 		NgSelectModule,
 		BadgeModule,
-		AlertModule,
+		SharedModuleModule,
 	],
 	declarations: [
 		ApplicationsComponent,

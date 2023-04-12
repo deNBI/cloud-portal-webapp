@@ -41,6 +41,7 @@ export class Application {
 
 	pi_approval_notification_send: boolean;
 	pi_approval_notification_expired: boolean;
+	processing_vo_initials: string;
 
 	DaysRunning: number;
 	date_end: string;
