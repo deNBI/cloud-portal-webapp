@@ -169,7 +169,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	onChangeFlavor(flavor: Flavor, value: number): void {
-		console.log(flavor);
 		this.adjustedApplication.setFlavorInFlavors(flavor, value);
 		this.checkIfMinimumSelected();
 		this.creditsService

@@ -187,6 +187,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
 	onChangeFlavor(flavor: Flavor, value: number): void {
 		this.application.setFlavorInFlavors(flavor, value);
+		this.valuesChanged(flavor, value);
 		if (this.simple_vm_project) {
 			this.checkIfMinVmIsSelected();
 		}

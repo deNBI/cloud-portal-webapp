@@ -141,9 +141,17 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	valuesChanged(flavor: Flavor, counter: number, lifetime?: string): void {
-		this.newFlavors[flavor.name] = { counter, flavor };
+		if (this.newFlavors[flavor.name]) {
+			if (counter === 0 || counter === null) {
+				delete this.newFlavors[flavor.name];
+			}
+		}
+		if (counter > 0) {
+			this.newFlavors[flavor.name] = { counter, flavor };
+		}
 		this.calculateRamCores();
 		this.checkExtraResourceCommentRequired();
+		console.log(this.newFlavors);
 	}
 
 	checkExtraResourceCommentRequired(): void {
