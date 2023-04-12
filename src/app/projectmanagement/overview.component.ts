@@ -1,5 +1,12 @@
 import {
-	Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewChild,
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	Inject,
+	OnDestroy,
+	OnInit,
+	Renderer2,
+	ViewChild,
 } from '@angular/core';
 import * as moment from 'moment';
 import { forkJoin, Observable, Subscription } from 'rxjs';
@@ -136,8 +143,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		private router: Router,
 		private creditsService: CreditsService,
 		@Inject(DOCUMENT) private document: Document,
+		cdrRef: ChangeDetectorRef,
 	) {
-		super(userService, applicationsService, facilityService);
+		super(userService, applicationsService, facilityService, cdrRef);
 	}
 
 	calculateProgressBar(numberToRoundUp: number): string {

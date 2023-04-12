@@ -1,5 +1,7 @@
 /* eslint-disable no-lonely-if */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+	ChangeDetectorRef, Component, OnDestroy, OnInit,
+} from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
@@ -116,8 +118,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		facilityService: FacilityService,
 		private flavorService: FlavorService,
 		private creditsService: CreditsService,
+		cdrRef: ChangeDetectorRef,
 	) {
-		super(userService, applicationsService, facilityService);
+		super(userService, applicationsService, facilityService, cdrRef);
 	}
 
 	ngOnDestroy() {
@@ -166,7 +169,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	onChangeFlavor(flavor: Flavor, value: number): void {
-		console.log(flavor);
 		this.adjustedApplication.setFlavorInFlavors(flavor, value);
 		this.checkIfMinimumSelected();
 		this.creditsService
@@ -436,31 +438,31 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	sortApplicationsByTabState(): void {
 		switch (this.tab_state) {
 			case TabStates.SUBMITTED:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_application_date_submitted).getTime()
-						- new Date(b.project_application_date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_application_date_submitted).getTime()
+						- new Date(b.project_application_date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.LIFETIME_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_lifetime_request.date_submitted).getTime()
-						- new Date(b.project_lifetime_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_lifetime_request.date_submitted).getTime()
+						- new Date(b.project_lifetime_request.date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.MODIFICATION_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_modification_request.date_submitted).getTime()
-						- new Date(b.project_modification_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_modification_request.date_submitted).getTime()
+						- new Date(b.project_modification_request.date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.CREDITS_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_credit_request.date_submitted).getTime()
-						- new Date(b.project_credit_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_credit_request.date_submitted).getTime()
+						- new Date(b.project_credit_request.date_submitted).getTime(),
+				);
 				break;
 
 			default:
@@ -622,12 +624,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			},
 			(error: any): void => {
+				const errorMessage =					error && error.error === 'locked'
+					? 'Project is locked and could not be created!'
+					: 'Project could not be created!';
+
+				this.showNotificationModal('Failed', errorMessage, 'danger');
 				console.log(error);
-				if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
-					this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
-				} else {
-					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-				}
 			},
 		);
 	}
@@ -752,13 +754,14 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 						// this.reloadApplicationList(application_id)
 					}
 				},
-				(error: object): void => {
+				(error: any): void => {
 					console.log(error);
-					if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
-						this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
-					} else {
-						this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-					}
+					const errorMessage =						error && error.error === 'locked'
+						? 'Project is locked and could not be created!'
+						: 'Project could not be created!';
+
+					this.showNotificationModal('Failed', errorMessage, 'danger');
+					console.log(error);
 				},
 			);
 		} else {
@@ -792,13 +795,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					this.switchApproveLocked(false);
 				}
 			},
-			(error: object): void => {
+			(error: any): void => {
+				const errorMessage =					error && error.error === 'locked'
+					? 'Project is locked and could not be created!'
+					: 'Project could not be created!';
+
+				this.showNotificationModal('Failed', errorMessage, 'danger');
 				console.log(error);
-				if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
-					this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
-				} else {
-					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-				}
 			},
 		);
 	}
@@ -856,6 +859,22 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				this.changeTabState(this.tab_state);
 			},
 		);
+	}
+
+	setCurrentUserProcessingVoManager(application: Application): void {
+		if (this.is_vo_admin) {
+			this.voService.setCurrentUserProcessingVoManager(application.project_application_id).subscribe((res: any) => {
+				application.processing_vo_initials = res['processing_vo_initials'];
+			});
+		}
+	}
+
+	unsetProcessingVoManager(application: Application): void {
+		if (this.is_vo_admin) {
+			this.voService.unsetProcessingVoManager(application.project_application_id).subscribe(() => {
+				application.processing_vo_initials = null;
+			});
+		}
 	}
 
 	switchReassignLocked(check: boolean): void {

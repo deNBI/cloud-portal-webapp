@@ -7,6 +7,7 @@ import { NotificationModalComponent } from '../modal/notification-modal';
 import { InformationToastComponent } from '../toaster/information-toast.component';
 import { ConfirmationModalComponent } from '../modal/confirmation-modal.component';
 import { MigrationInformationComponent } from './migration-information/migration-information.component';
+import { ApplicationBadgesComponent } from './components/applications/application-badges/application-badges.component';
 
 /**
  * Shared module.
@@ -18,6 +19,7 @@ import { MigrationInformationComponent } from './migration-information/migration
 		ConfirmationModalComponent,
 		InformationToastComponent,
 		MigrationInformationComponent,
+		ApplicationBadgesComponent,
 	],
 	imports: [CommonModule, ModalModule.forRoot(), ToastModule, ProgressModule],
 	declarations: [
@@ -26,6 +28,7 @@ import { MigrationInformationComponent } from './migration-information/migration
 		ConfirmationModalComponent,
 		InformationToastComponent,
 		MigrationInformationComponent,
+		ApplicationBadgesComponent,
 	],
 })
 export class SharedModuleModule {}
