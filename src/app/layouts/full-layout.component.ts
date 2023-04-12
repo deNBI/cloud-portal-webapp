@@ -76,11 +76,12 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		private virtualMachineService: VirtualmachineService,
 		private cd: ChangeDetectorRef,
 	) {
-		super(userService, applicationsService, facilityService);
+		super(userService, applicationsService, facilityService, cd);
 	}
 
 	componentAdded(component: any): void {
 		this.TITLE = component.title;
+
 		this.cd.detectChanges();
 	}
 

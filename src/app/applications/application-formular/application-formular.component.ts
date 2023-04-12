@@ -1,5 +1,5 @@
 import {
-	Component, Input, OnInit, ViewChild,
+	ChangeDetectorRef, Component, Input, OnInit, ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor';
@@ -100,8 +100,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		private fullLayout: FullLayoutComponent,
 		userService: UserService,
 		applicationsService: ApplicationsService,
+		cdrRef: ChangeDetectorRef,
 	) {
-		super(userService, applicationsService, null);
+		super(userService, applicationsService, null, cdrRef);
 	}
 
 	ngOnInit(): void {

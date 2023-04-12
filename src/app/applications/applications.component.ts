@@ -1,5 +1,7 @@
 /* eslint-disable no-lonely-if */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+	ChangeDetectorRef, Component, OnDestroy, OnInit,
+} from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
@@ -116,8 +118,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		facilityService: FacilityService,
 		private flavorService: FlavorService,
 		private creditsService: CreditsService,
+		cdrRef: ChangeDetectorRef,
 	) {
-		super(userService, applicationsService, facilityService);
+		super(userService, applicationsService, facilityService, cdrRef);
 	}
 
 	ngOnDestroy() {

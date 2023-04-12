@@ -390,11 +390,20 @@
 				>
 			</div>
 		</div>
-
+		<div class="form-group row" *ngIf="extraResourceCommentRequired">
+			<label class="col-md-4"></label>
+			<div class="col-md-8">
+				<div class="alert alert-warning" role="alert">
+					Since you have opted for GPU/Highmemory Flavors, which are limited resources, it would be helpful if you could
+					provide further explanation about your specific requirements and the tools that necessitate the use of these
+					resources.
+				</div>
+			</div>
+		</div>
 		<div class="form-group row">
 			<label class="col-md-4 form-control-label" for="id_project_application_renewal_comment"
-				><strong>Comment</strong></label
-			>
+				><strong>Comment<i class="fa fa-asterisk" aria-hidden="true" *ngIf="extraResourceCommentRequired"></i></strong
+			></label>
 			<div class="col-md-8">
 				<textarea
 					type="text"
@@ -403,7 +412,12 @@
 					class="form-control"
 					maxlength="8192"
 					placeholder=""
+					[required]="extraResourceCommentRequired"
 					[(ngModel)]="temp_project_modification.comment"
+					[ngClass]="{
+						'is-invalid': modificationForm.controls.project_application_renewal_comment?.invalid,
+						'is-valid': modificationForm.controls.project_application_renewal_comment?.valid
+					}"
 				></textarea>
 				<span class="help-block">Additional information you want to share?</span>
 			</div>
@@ -457,8 +471,11 @@
 
 	<div *ngIf="modificationForm.invalid || !min_vm" class="alert alert-warning" role="alert">
 		<p>
-			Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled in
-			correctly.
+			Some required fields are incorrect or not filled in yet. Please check if all required (<i
+				class="fa fa-asterisk"
+				aria-hidden="true"
+			></i
+			>) fields are filled in correctly.
 		</p>
 		<p *ngIf="modificationForm.controls.project_application_renewal_volume_counter?.invalid">
 			- Number of storage volumes missing
