@@ -21,6 +21,7 @@ import { ResourcemachineOverviewComponent } from './resources/resourcemachine-ov
 import { GPUSpecificationOverviewComponent } from './resources/gpu-specification-overview/gpu-specification-overview.component';
 import { GeneralstoragefactorOverviewComponent } from './resources/generalstoragefactor-overview/generalstoragefactor-overview.component';
 import { ProjectManagementModule } from '../projectmanagement/projectmanagement.module';
+import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 
 /**
  * Facilitymanager module.
@@ -42,6 +43,7 @@ import { ProjectManagementModule } from '../projectmanagement/projectmanagement.
 		NgbTypeaheadModule,
 		NgbPaginationModule,
 		NgSelectModule,
+		SharedModuleModule,
 	],
 	declarations: [
 		FacilityProjectsOverviewComponent,

@@ -20,6 +20,7 @@ import { SharedDirectivesModule } from '../shared/shared_modules/shared_directiv
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { DatePickerComponent } from '../shared/datepicking/datepicker.component';
 import { TimepickerComponent } from '../shared/datepicking/timepicker.component';
+import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 
 /**
  * VO Manager module.
@@ -39,6 +40,7 @@ import { TimepickerComponent } from '../shared/datepicking/timepicker.component'
 		NgbPaginationModule,
 		DatePickerComponent,
 		TimepickerComponent,
+		SharedModuleModule,
 	],
 	declarations: [
 		VoOverviewComponent,
