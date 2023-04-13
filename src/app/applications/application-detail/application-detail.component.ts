@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+	ChangeDetectorRef, Component, Input, OnInit,
+} from '@angular/core';
 import { Application } from '../application.model/application.model';
 import { ApplicationBaseClassComponent } from '../../shared/shared_modules/baseClass/application-base-class.component';
 import { ApplicationsService } from '../../api-connector/applications.service';
@@ -85,8 +87,9 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		userService: UserService,
 		facilityService: FacilityService,
 		creditsService: CreditsService,
+		cdrRef: ChangeDetectorRef,
 	) {
-		super(userService, applicationsService, facilityService);
+		super(userService, applicationsService, facilityService, cdrRef);
 		this.creditsService = creditsService;
 	}
 

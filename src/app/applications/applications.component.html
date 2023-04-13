@@ -94,87 +94,7 @@
 									<ng-container>
 										<tr>
 											<td>
-												<span
-													*ngIf="application?.project_application_openstack_project"
-													style="font-size: 20px"
-													class="project-openstack_plain_white_redbg"
-													data-toggle="tooltip"
-													title="This is an Openstack project"
-												>
-													<span class="path1"></span>
-													<span class="path2"></span>
-												</span>
-												<span
-													*ngIf="!application?.project_application_openstack_project"
-													style="font-size: 20px"
-													class="project-simpleVM_Logo_bluebg"
-													data-toggle="tooltip"
-													title="This is a Simple VM project"
-												>
-													<span class="path1"></span>
-													<span class="path2"></span>
-													<span class="path3"></span>
-													<span class="path4"></span>
-													<span class="path5"></span>
-												</span>
-
-												<span
-													*ngIf="application?.project_application_pi_approved"
-													style="margin: 2px"
-													class="badge"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application was approved by a PI"
-												>
-													<span class="icon icon-yes_pi" style="font-size: 20px">
-														<span class="path1"></span><span class="path2"></span><span class="path3"></span
-														><span class="path4"></span>
-													</span>
-												</span>
-												<span
-													*ngIf="!application?.project_application_pi_approved"
-													style="margin: 2px"
-													class="badge"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application is yet not approved by a PI"
-												>
-													<span class="icon icon-no_pi" style="font-size: 2em">
-														<span class="path1"></span>
-														<span class="path2"></span>
-														<span class="path3"></span>
-														<span class="path4"></span>
-													</span>
-												</span>
-												<span
-													style="margin-left: 12px"
-													class="badge badge-warning"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application uses sensitive data"
-													*ngIf="application?.project_application_person_related_data"
-													><span style="font-size: 17px"> <i class="fas fa-fingerprint"></i></span>
-												</span>
-												<span
-													style="margin-left: 12px"
-													class="badge badge-danger"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="The application is not approved by the PI since 4 weeks."
-													*ngIf="application?.pi_approval_notification_expired"
-													><span style="font-size: 17px"> <i class="fas fa-trash"></i></span>
-												</span>
-												<span
-													style="margin-left: 12px"
-													class="badge badge-secondary"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="The user submitting the application got informed of the missing PI approval"
-													*ngIf="
-														!application?.pi_approval_notification_expired && application?.pi_approval_notification_send
-													"
-													><span style="font-size: 17px"> <i class="fas fa-envelope"></i></span>
-												</span>
+												<app-application-badges [application]="application"></app-application-badges>
 											</td>
 											<td>{{ application?.project_application_name }}</td>
 											<td>{{ application?.project_application_shortname }}</td>
@@ -238,10 +158,30 @@
 														"
 														[disabled]="!selectedCenter[application.project_application_id] || assignLocked"
 														type="button"
-														class="btn btn-secondary"
+														class="btn btn-info"
 													>
 														<i class="fa fa-check"></i>&nbsp;
 														<span class="d-none">Assign</span>
+													</button>
+													<button
+														*ngIf="application?.processing_vo_initials"
+														style="margin: 2px"
+														(click)="unsetProcessingVoManager(application)"
+														type="button"
+														class="btn btn-danger"
+														title="Unassign Processing VO"
+													>
+														<i class="fa fa-user-slash"></i>&nbsp; <span class="d-none">Unassign Proccessing VO</span>
+													</button>
+													<button
+														*ngIf="!application?.processing_vo_initials"
+														style="margin: 2px"
+														(click)="setCurrentUserProcessingVoManager(application)"
+														type="button"
+														class="btn btn-secondary"
+													>
+														<i class="fa fa-user-pen"></i>&nbsp;
+														<span class="d-none">Assign Proccessing VO</span>
 													</button>
 													<button
 														*ngIf="
@@ -253,6 +193,7 @@
 														[disabled]="reassignLocked"
 														type="button"
 														class="btn btn-secondary"
+														title="Assign yourself as Processing VO"
 													>
 														<i class="fa fa-check"></i>&nbsp;
 														<span class="d-none">Reassign</span>
@@ -409,55 +350,7 @@
 									<ng-container>
 										<tr>
 											<td>
-												<span
-													*ngIf="application?.project_application_openstack_project"
-													style="font-size: 20px"
-													class="project-openstack_plain_white_redbg"
-													data-toggle="tooltip"
-													title="This is an Openstack project"
-												>
-													<span class="path1"></span>
-													<span class="path2"></span>
-												</span>
-												<span
-													*ngIf="!application?.project_application_openstack_project"
-													style="font-size: 20px"
-													class="project-simpleVM_Logo_bluebg"
-													data-toggle="tooltip"
-													title="This is a Simple VM project"
-												>
-													<span class="path1"></span>
-													<span class="path2"></span>
-													<span class="path3"></span>
-													<span class="path4"></span>
-													<span class="path5"></span>
-												</span>
-												<span
-													*ngIf="application?.project_application_pi_approved"
-													style="margin: 2px"
-													class="badge"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application was approved by a PI"
-												>
-													<span class="icon icon-yes_pi" style="font-size: 20px">
-														<span class="path1"></span><span class="path2"></span><span class="path3"></span
-														><span class="path4"></span>
-													</span>
-												</span>
-												<span
-													*ngIf="!application?.project_application_pi_approved"
-													style="margin: 2px"
-													class="badge"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application is yet not approved by a PI"
-												>
-													<span class="icon icon-no_pi" style="font-size: 2em">
-														<span class="path1"></span><span class="path2"></span><span class="path3"></span
-														><span class="path4"></span>
-													</span>
-												</span>
+												<app-application-badges [application]="application"></app-application-badges>
 											</td>
 											<td>{{ application?.project_application_name }}</td>
 											<td>{{ application?.project_application_shortname }}</td>
@@ -473,6 +366,26 @@
 
 											<td>
 												<div class="btn-group">
+													<button
+														*ngIf="application?.processing_vo_initials"
+														style="margin: 2px"
+														(click)="unsetProcessingVoManager(application)"
+														type="button"
+														class="btn btn-danger"
+														title="Unassign Processing VO"
+													>
+														<i class="fa fa-user-slash"></i>&nbsp; <span class="d-none">Unassign Proccessing VO</span>
+													</button>
+													<button
+														*ngIf="!application?.processing_vo_initials"
+														style="margin: 2px"
+														(click)="setCurrentUserProcessingVoManager(application)"
+														type="button"
+														class="btn btn-secondary"
+													>
+														<i class="fa fa-user-pen"></i>&nbsp;
+														<span class="d-none">Assign Proccessing VO</span>
+													</button>
 													<button
 														[id]="'modification_approval_' + application?.project_application_shortname"
 														*ngIf="
@@ -604,55 +517,7 @@
 									<ng-container>
 										<tr>
 											<td>
-												<span
-													*ngIf="application?.project_application_openstack_project"
-													style="font-size: 20px"
-													class="project-openstack_plain_white_redbg"
-													data-toggle="tooltip"
-													title="This is an Openstack project"
-												>
-													<span class="path1"></span>
-													<span class="path2"></span>
-												</span>
-												<span
-													*ngIf="!application?.project_application_openstack_project"
-													style="font-size: 20px"
-													class="project-simpleVM_Logo_bluebg"
-													data-toggle="tooltip"
-													title="This is a Simple VM project"
-												>
-													<span class="path1"></span>
-													<span class="path2"></span>
-													<span class="path3"></span>
-													<span class="path4"></span>
-													<span class="path5"></span>
-												</span>
-												<span
-													*ngIf="application?.project_application_pi_approved"
-													style="margin: 2px"
-													class="badge"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application was approved by a PI"
-												>
-													<span class="icon icon-yes_pi" style="font-size: 20px">
-														<span class="path1"></span><span class="path2"></span><span class="path3"></span
-														><span class="path4"></span>
-													</span>
-												</span>
-												<span
-													*ngIf="!application?.project_application_pi_approved"
-													style="margin: 2px"
-													class="badge"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application is yet not approved by a PI"
-												>
-													<span class="icon icon-no_pi" style="font-size: 2em">
-														<span class="path1"></span><span class="path2"></span><span class="path3"></span
-														><span class="path4"></span>
-													</span>
-												</span>
+												<app-application-badges [application]="application"></app-application-badges>
 											</td>
 											<td>{{ application?.project_application_name }}</td>
 											<td>{{ application?.project_application_shortname }}</td>
@@ -670,6 +535,26 @@
 
 											<td>
 												<div class="btn-group">
+													<button
+														*ngIf="application?.processing_vo_initials"
+														style="margin: 2px"
+														(click)="unsetProcessingVoManager(application)"
+														type="button"
+														class="btn btn-danger"
+														title="Unassign Processing VO"
+													>
+														<i class="fa fa-user-slash"></i>&nbsp; <span class="d-none">Unassign Proccessing VO</span>
+													</button>
+													<button
+														*ngIf="!application?.processing_vo_initials"
+														style="margin: 2px"
+														(click)="setCurrentUserProcessingVoManager(application)"
+														type="button"
+														class="btn btn-secondary"
+													>
+														<i class="fa fa-user-pen"></i>&nbsp;
+														<span class="d-none">Assign Proccessing VO</span>
+													</button>
 													<button
 														[id]="'extension_approval_' + application?.project_application_shortname"
 														[attr.data-test-id]="'extension_approval_' + application?.project_application_shortname"
@@ -785,6 +670,15 @@
 													<span class="path2"></span>
 												</span>
 												<span
+													style="margin-left: 12px"
+													class="badge badge-info"
+													data-toggle="tooltip"
+													data-placement="auto"
+													title="Initials of processing vo manager: {{ application?.processing_vo_initials }}"
+													*ngIf="application?.processing_vo_initials && is_vo_admin"
+													><span style="font-size: 17px"> {{ application?.processing_vo_initials }}</span>
+												</span>
+												<span
 													*ngIf="!application?.project_application_openstack_project"
 													style="font-size: 20px"
 													class="project-simpleVM_Logo_bluebg"
@@ -823,6 +717,15 @@
 														><span class="path4"></span>
 													</span>
 												</span>
+												<span
+													style="margin-left: 12px"
+													class="badge badge-info"
+													data-toggle="tooltip"
+													data-placement="auto"
+													title="Initials of processing vo manager: {{ application?.processing_vo_initials }}"
+													*ngIf="application?.processing_vo_initials && is_vo_admin"
+													><span style="font-size: 17px"> {{ application?.processing_vo_initials }}</span>
+												</span>
 											</td>
 											<td>{{ application?.project_application_name }}</td>
 											<td>{{ application?.project_application_shortname }}</td>
@@ -840,6 +743,26 @@
 
 											<td>
 												<div class="btn-group">
+													<button
+														*ngIf="application?.processing_vo_initials"
+														style="margin: 2px"
+														(click)="unsetProcessingVoManager(application)"
+														type="button"
+														class="btn btn-danger"
+														title="Unassign Processing VO"
+													>
+														<i class="fa fa-user-slash"></i>&nbsp; <span class="d-none">Unassign Proccessing VO</span>
+													</button>
+													<button
+														*ngIf="!application?.processing_vo_initials"
+														style="margin: 2px"
+														(click)="setCurrentUserProcessingVoManager(application)"
+														type="button"
+														class="btn btn-secondary"
+													>
+														<i class="fa fa-user-pen"></i>&nbsp;
+														<span class="d-none">Assign Proccessing VO</span>
+													</button>
 													<button
 														[id]="'credit_extension_approval_' + application?.project_application_shortname"
 														*ngIf="application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED"
@@ -940,31 +863,7 @@
 						<ng-container *ngFor="let application of this.applications_history">
 							<ng-container *ngIf="application?.project_application_date_submitted">
 								<tr>
-									<td>
-										<span
-											*ngIf="application?.project_application_openstack_project"
-											style="font-size: 20px"
-											class="project-openstack_plain_white_redbg"
-											data-toggle="tooltip"
-											title="This is an Openstack project"
-										>
-											<span class="path1"></span>
-											<span class="path2"></span>
-										</span>
-										<span
-											*ngIf="!application?.project_application_openstack_project"
-											style="font-size: 20px"
-											class="project-simpleVM_Logo_bluebg"
-											data-toggle="tooltip"
-											title="This is a Simple VM project"
-										>
-											<span class="path1"></span>
-											<span class="path2"></span>
-											<span class="path3"></span>
-											<span class="path4"></span>
-											<span class="path5"></span>
-										</span>
-									</td>
+									<td><app-application-badges [application]="application"></app-application-badges></td>
 									<td>{{ application?.project_application_name }}</td>
 									<td>{{ application?.project_application_shortname }}</td>
 									<td>{{ application?.project_application_date_submitted }}</td>
@@ -991,11 +890,6 @@
 											>
 											Information
 										</button>
-										<!--button (click)="deleteModal.show();setDeleteId(application?.application_status_id)"
-                                            type="button"
-                                            class="btn btn-secondary">
-                                    Remove Application
-                            </button-->
 									</td>
 								</tr>
 								<td colspan="12">
@@ -1164,7 +1058,7 @@
 											<div class="input-group">
 												<input
 													class="form-control"
-													(change)="valuesChanged(fl, name?.value); calculateRamCores()"
+													(change)="calculateRamCores()"
 													id="{{ fl.name }}_granted"
 													name="{{ fl.name }}_granted"
 													type="number"
