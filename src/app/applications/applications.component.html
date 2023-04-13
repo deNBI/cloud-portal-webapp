@@ -1534,7 +1534,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body" *ngIf="selectedApplication">
+			<div class="modal-body" *ngIf="selectedApplication && adjustedApplication.project_lifetime_request">
 				<form id="lifetime_adjustment_form" #lifetimeAdjustmentForm="ngForm" class="form-horizontal">
 					<div class="form-group row">
 						<label class="col-md-4 form-control-label" for="requested_volume_counter"
@@ -1553,7 +1553,7 @@
 									name="requested_lifetime_counter"
 									id="requested_lifetime_counter"
 									placeholder="NA"
-									value="{{ selectedApplication?.project_lifetime_request.extra_lifetime }}"
+									value="{{ selectedApplication?.project_lifetime_request?.extra_lifetime }}"
 									type="text"
 									disabled
 								/>
@@ -1561,7 +1561,7 @@
 							<span class="help-block">Requested number of months to extend</span>
 						</div>
 
-						<div class="col">
+						<div class="col" *ngIf="adjustedApplication?.project_lifetime_request">
 							<div class="input-group">
 								<input
 									required
@@ -1573,7 +1573,7 @@
 									min="1"
 									step="1"
 									max="6"
-									[(ngModel)]="adjustedApplication.project_lifetime_request.extra_lifetime"
+									[(ngModel)]="adjustedApplication?.project_lifetime_request.extra_lifetime"
 									appMinAmount="0"
 									appInteger
 									[ngClass]="{
@@ -1601,7 +1601,7 @@
 									class="form-control"
 									id="lifetime_manager_comment"
 									name="lifetime_manager_comment"
-									[(ngModel)]="adjustedApplication.project_lifetime_request.manager_comment"
+									[(ngModel)]="adjustedApplication?.project_lifetime_request.manager_comment"
 									type="text"
 								></textarea>
 							</div>
@@ -1626,6 +1626,9 @@
 					</button>
 					<button type="button" class="btn btn-danger" (click)="lifetimeAdjustModal.hide()">Discard</button>
 				</div>
+			</div>
+			<div class="modal-body" *ngIf="!(selectedApplication && adjustedApplication)">
+				<div class="alert alert-danger">Sorry, an error occurred requesting a lifetime adjustment.</div>
 			</div>
 			<!-- /.modal-content -->
 		</div>

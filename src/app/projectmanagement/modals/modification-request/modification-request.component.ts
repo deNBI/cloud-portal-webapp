@@ -58,14 +58,18 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		if (this.project.project_modification_request) {
 			this.temp_project_modification = new ApplicationModification(this.project.project_modification_request);
+			this.temp_project_modification.flavors = [];
+			this.temp_project_modification.flavors = this.project.project_modification_request.flavors.map(
+				(flavor: Flavor): Flavor => new Flavor(flavor),
+			);
 		} else {
 			this.temp_project_modification = new ApplicationModification();
 			this.temp_project_modification.setByApp(this.project);
 		}
 		if (this.adjustment) {
-			this.adjusted_project_modification = new ApplicationModification(this.temp_project_modification);
+			this.adjusted_project_modification = new ApplicationModification(this.project.project_modification_request);
 			this.adjusted_project_modification.flavors = [];
-			this.adjusted_project_modification.flavors = this.temp_project_modification.flavors.map(
+			this.adjusted_project_modification.flavors = this.project.project_modification_request.flavors.map(
 				(flavor: Flavor): Flavor => new Flavor(flavor),
 			);
 		}
@@ -78,6 +82,10 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				this.getFlavors();
 			}),
 		);
+	}
+
+	printIt(): void {
+		console.log(this.adjusted_project_modification);
 	}
 
 	getFlavors(): void {
@@ -139,6 +147,25 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		this.min_vm =			this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0;
 		this.temp_project_modification.calculateRamCores();
 		this.getExtraCredits();
+	}
+
+	checkFlavorPairsAdjustment(flavor: Flavor, event: any): void {
+		const amount: number = Number(event.target.value);
+		const idx: number = this.adjusted_project_modification.flavors.findIndex(
+			(fl: Flavor): boolean => fl.name === flavor.name,
+		);
+		if (idx >= 0) {
+			this.adjusted_project_modification.flavors.splice(idx, 1);
+			if (amount > 0) {
+				flavor.counter = amount;
+				this.adjusted_project_modification.flavors.push(flavor);
+			}
+		} else if (amount > 0) {
+			flavor.counter = amount;
+			this.adjusted_project_modification.flavors.push(flavor);
+		}
+		this.min_vm_adjusted =			this.project.project_application_openstack_project || this.adjusted_project_modification.flavors.length > 0;
+		this.adjusted_project_modification.calculateRamCores();
 	}
 
 	getExtraCredits(): void {

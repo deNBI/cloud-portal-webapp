@@ -19,6 +19,9 @@
 			<br />
 			If the entered data mismatches with your requirements cancel this confirmation and take changes.
 		</div>
+		<div class="alert alert-info" *ngIf="adjustedModification">
+			<strong> Please consider: These are the values of the modification request if you confirm the adjustment </strong>
+		</div>
 		<div class="table-responsive">
 			<table class="table table-striped">
 				<ng-container *ngIf="modificationExtension && !adjustedModification">
@@ -45,9 +48,6 @@
 							<strong>{{ flav.name + ': ' + flav.counter + ' VMs' }}</strong>
 						</td>
 					</tr>
-					<tr *ngFor="let flav of adjustedModification.flavors">
-						<td>{{ flav.name + ': ' + flav.counter + ' VMs' }}</td>
-					</tr>
 					<tr *ngIf="adjustedModification.volume_counter > 0">
 						<td>Number of storage volumes: {{ adjustedModification.volume_counter }}</td>
 					</tr>
@@ -70,22 +70,41 @@
 				<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension) && extension.comment?.length > 0">
 					<td>Comment : {{ extension.comment }}</td>
 				</tr>
+				<ng-container *ngIf="modificationExtension && !adjustedModification">
+					<tr>
+						<td>
+							<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
+						</td>
+					</tr>
+				</ng-container>
+				<ng-container *ngIf="adjustedModification">
+					<tr>
+						<td>
+							<strong>Number of cores in total: {{ adjustedModification?.total_cores }}</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Value of RAM in total: {{ adjustedModification?.total_ram }} GBs</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Number of GPUs in total: {{ adjustedModification?.total_gpu }}</strong>
+						</td>
+					</tr>
+				</ng-container>
 
-				<tr *ngIf="modificationExtension">
-					<td>
-						<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
-					</td>
-				</tr>
-				<tr *ngIf="modificationExtension">
-					<td>
-						<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
-					</td>
-				</tr>
-				<tr *ngIf="modificationExtension">
-					<td>
-						<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
-					</td>
-				</tr>
 				<tr *ngIf="lifetimeExtension">
 					<td>
 						<strong>Additional lifetime in months: {{ extension?.extra_lifetime }}</strong>
