@@ -157,8 +157,8 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	checkExtraResourceCommentRequired(): void {
 		for (const flavor of this.temp_project_modification.flavors) {
 			if (
-				(flavor.type.shortcut.toUpperCase() === this.GPU_SHORTCUT
-					|| flavor.type.shortcut.toUpperCase() === this.HMF_SHORTCUT)
+				(flavor?.type?.shortcut.toUpperCase() === this.GPU_SHORTCUT
+					|| flavor?.type?.shortcut.toUpperCase() === this.HMF_SHORTCUT)
 				&& flavor.counter > 0
 			) {
 				this.extraResourceCommentRequired = true;
