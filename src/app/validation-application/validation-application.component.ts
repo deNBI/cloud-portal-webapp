@@ -17,7 +17,6 @@ import { FlavorService } from '../api-connector/flavor.service';
 	providers: [ApplicationsService, FlavorService],
 })
 export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit, AfterViewChecked {
-
 	application: Application;
 	isLoadedApplication: boolean = false;
 	hash: string;
@@ -39,10 +38,9 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 	constructor(
 		applicationsService: ApplicationsService,
 		private activatedRoute: ActivatedRoute,
-private changeDetector: ChangeDetectorRef,
+		private changeDetector: ChangeDetectorRef,
 	) {
-		super(null, applicationsService, null);
-
+		super(null, applicationsService, null, changeDetector);
 	}
 
 	ngAfterViewChecked(): void {
@@ -62,14 +60,11 @@ private changeDetector: ChangeDetectorRef,
 						this.title = 'Simple VM Project Application Validation';
 					}
 					this.isLoadedApplication = true;
-
 				},
 				(): void => {
 					this.isLoadedApplication = true;
-
 				},
 			);
 		});
 	}
-
 }

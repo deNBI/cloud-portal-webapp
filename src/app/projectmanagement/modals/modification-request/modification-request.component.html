@@ -390,11 +390,34 @@
 				>
 			</div>
 		</div>
-
+		<div class="form-group row" *ngIf="extraResourceCommentRequired">
+			<label class="col-md-4"></label>
+			<div class="col-md-8">
+				<div class="alert alert-warning" role="alert">
+					<p>
+						Since you have opted for GPU and/or high memory flavors which are limited resources, please explain why you
+						need these specific resources and try to answer the following questions:
+					</p>
+					<ul>
+						<li>Which of your tools require these resources?</li>
+						<li>
+							Why did you request the number of VMs that you specified on the form? Would it be sufficient for you to
+							start with less GPU/high memory VMs?
+						</li>
+						<li>
+							If you have chosen one of the following flavors: de.NBI highmem large/de.NBI highmem xlarge/de.NBI 2 GPU
+							large, please explain why it would not be possible for you to use a flavor of the same category with less
+							RAM (e.g. de.NBI highmem medium).
+						</li>
+						<li>Did you test your tools on machines with less RAM?</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 		<div class="form-group row">
 			<label class="col-md-4 form-control-label" for="id_project_application_renewal_comment"
-				><strong>Comment</strong></label
-			>
+				><strong>Comment<i class="fa fa-asterisk" aria-hidden="true" *ngIf="extraResourceCommentRequired"></i></strong
+			></label>
 			<div class="col-md-8">
 				<textarea
 					type="text"
@@ -403,7 +426,12 @@
 					class="form-control"
 					maxlength="8192"
 					placeholder=""
+					[required]="extraResourceCommentRequired"
 					[(ngModel)]="temp_project_modification.comment"
+					[ngClass]="{
+						'is-invalid': modificationForm.controls.project_application_renewal_comment?.invalid,
+						'is-valid': modificationForm.controls.project_application_renewal_comment?.valid
+					}"
 				></textarea>
 				<span class="help-block">Additional information you want to share?</span>
 			</div>
@@ -457,8 +485,11 @@
 
 	<div *ngIf="modificationForm.invalid || !min_vm" class="alert alert-warning" role="alert">
 		<p>
-			Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled in
-			correctly.
+			Some required fields are incorrect or not filled in yet. Please check if all required (<i
+				class="fa fa-asterisk"
+				aria-hidden="true"
+			></i
+			>) fields are filled in correctly.
 		</p>
 		<p *ngIf="modificationForm.controls.project_application_renewal_volume_counter?.invalid">
 			- Number of storage volumes missing
