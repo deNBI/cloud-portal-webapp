@@ -1,5 +1,7 @@
 /* eslint-disable no-lonely-if */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+	ChangeDetectorRef, Component, OnDestroy, OnInit,
+} from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
@@ -117,8 +119,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		facilityService: FacilityService,
 		private flavorService: FlavorService,
 		private creditsService: CreditsService,
+		cdrRef: ChangeDetectorRef,
 	) {
-		super(userService, applicationsService, facilityService);
+		super(userService, applicationsService, facilityService, cdrRef);
 	}
 
 	ngOnDestroy() {
@@ -167,7 +170,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	onChangeFlavor(flavor: Flavor, value: number): void {
-		console.log(flavor);
 		this.adjustedApplication.setFlavorInFlavors(flavor, value);
 		this.checkIfMinimumSelected();
 		this.creditsService
@@ -902,11 +904,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		const idx: number = this.all_applications.indexOf(app);
 		this.applicationsService.declineApplication(app.project_application_id).subscribe(
 			(): void => {
-				let message: string = 'The Application was declined.';
-				if (app.project_application_openstack_project && app.project_application_perun_id) {
-					message = `The Application was declined. The perun id was ${app.project_application_perun_id},
-					please remember to delete the perun group.`;
-				}
+				const message: string = 'The Application was declined.';
+
 				this.showNotificationModal('Success', message, 'success');
 				this.all_applications.splice(idx, 1);
 				this.getApplicationNumbers();
@@ -916,6 +915,22 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				this.changeTabState(this.tab_state);
 			},
 		);
+	}
+
+	setCurrentUserProcessingVoManager(application: Application): void {
+		if (this.is_vo_admin) {
+			this.voService.setCurrentUserProcessingVoManager(application.project_application_id).subscribe((res: any) => {
+				application.processing_vo_initials = res['processing_vo_initials'];
+			});
+		}
+	}
+
+	unsetProcessingVoManager(application: Application): void {
+		if (this.is_vo_admin) {
+			this.voService.unsetProcessingVoManager(application.project_application_id).subscribe(() => {
+				application.processing_vo_initials = null;
+			});
+		}
 	}
 
 	switchReassignLocked(check: boolean): void {

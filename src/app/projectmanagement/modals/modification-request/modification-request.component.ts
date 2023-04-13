@@ -1,5 +1,5 @@
 import {
-	Component, EventEmitter, OnDestroy, OnInit,
+	ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit,
 } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
@@ -38,12 +38,16 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	private subscription: Subscription = new Subscription();
 	public event: EventEmitter<any> = new EventEmitter();
 	submitted: boolean = false;
+	extraResourceCommentRequired: boolean = false;
+	GPU_SHORTCUT = 'GPU';
+	HMF_SHORTCUT = 'HMF';
 
 	constructor(
 		public bsModalRef: BsModalRef,
 		private modalService: BsModalService,
 		private flavorService: FlavorService,
 		private creditsService: CreditsService,
+		private cdRef: ChangeDetectorRef,
 	) {
 		// do nothing.
 	}
@@ -66,6 +70,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			this.temp_project_modification = new ApplicationModification();
 			this.temp_project_modification.setByApp(this.project);
 		}
+
 		if (this.adjustment) {
 			this.adjusted_project_modification = new ApplicationModification(this.project.project_modification_request);
 			this.adjusted_project_modification.flavors = [];
@@ -73,6 +78,9 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				(flavor: Flavor): Flavor => new Flavor(flavor),
 			);
 		}
+
+		this.checkExtraResourceCommentRequired();
+
 		this.subscription.add(
 			this.flavorService.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
 				this.flavorTypes = result;
@@ -143,6 +151,25 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		this.min_vm =			this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0;
 		this.temp_project_modification.calculateRamCores();
 		this.getExtraCredits();
+		this.checkExtraResourceCommentRequired();
+	}
+
+	checkExtraResourceCommentRequired(): void {
+		for (const flavor of this.temp_project_modification.flavors) {
+			if (
+				(flavor.type.shortcut.toUpperCase() === this.GPU_SHORTCUT
+					|| flavor.type.shortcut.toUpperCase() === this.HMF_SHORTCUT)
+				&& flavor.counter > 0
+			) {
+				this.extraResourceCommentRequired = true;
+				this.cdRef.detectChanges();
+
+				return;
+			}
+		}
+
+		this.extraResourceCommentRequired = false;
+		this.cdRef.detectChanges();
 	}
 
 	checkFlavorPairsAdjustment(flavor: Flavor, event: any): void {

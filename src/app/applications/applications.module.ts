@@ -26,6 +26,7 @@ import { ModificationDetailComponent } from './application-detail/modification-d
 import { CreditsExtensionDetailComponent } from './application-detail/credits-extension-detail/credits-extension-detail.component';
 import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
 import { NewsModule } from '../news/news.module';
+import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 
 /**
  * Applications Module.
@@ -44,6 +45,7 @@ import { NewsModule } from '../news/news.module';
 		NewsModule,
 		NgSelectModule,
 		BadgeModule,
+		SharedModuleModule,
 	],
 	declarations: [
 		ApplicationsComponent,

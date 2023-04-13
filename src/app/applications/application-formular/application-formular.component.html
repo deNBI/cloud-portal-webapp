@@ -40,6 +40,10 @@
 						<input name="test_name" placeholder="TestAppName" [(ngModel)]="test_name" />
 					</div>
 
+					<div class="form-row text-muted">
+						<span><strong>*</strong> Mandatory fields</span>
+					</div>
+
 					<form id="application_form" #form="ngForm" class="form-horizontal">
 						<div class="form-group row">
 							<h5 class="col-md-6 form-control-label">General Information</h5>
@@ -85,7 +89,7 @@
 								data-test-id="project_application_name_input"
 								for="id_project_application_name"
 								><strong
-									>Project Name*
+									>Project Name<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i data-balloon="Full name of your project" data-balloon-pos="right"
 										><i class="icon-question" style="cursor: pointer"></i></i></strong
 							></label>
@@ -124,7 +128,7 @@
 								data-test-id="project_application_shortname_input"
 								for="id_project_application_shortname"
 								><strong
-									>Project Short Name*
+									>Project Short Name<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i
 										data-balloon="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"
 										data-balloon-pos="right"
@@ -172,7 +176,7 @@
 								data-test-id="project_application_description_input"
 								for="id_project_application_description"
 								><strong
-									>Project Description*
+									>Project Description<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i
 										data-balloon="Full description of your project including tools you might are going to use."
 										data-balloon-pos="right"
@@ -216,7 +220,7 @@
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_lifetime"
 								><strong
-									>Desired lifetime*
+									>Desired lifetime<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i data-balloon="Lifetime in months of your project" data-balloon-pos="right">
 										<i class="icon-question" style="cursor: pointer"></i></i></strong
 							></label>
@@ -263,7 +267,7 @@
 								class="col-md-4 form-control-label"
 								for="id_project_application_workshop"
 								><strong
-									>Workshop*
+									>Workshop
 									<i
 										data-balloon="Please indicate whether a workshop is to be held as part of this project."
 										data-balloon-pos="right"
@@ -293,9 +297,18 @@
 						<div class="form-group row">
 							<h5 class="col-md-12 form-control-label">Resources</h5>
 						</div>
+						<div class="alert alert-warning" role="alert">
+							<span class="fa-stack fa-lg">
+								<i class="fas fa-circle fa-stack-2x"></i>
+								<i class="fas fa-info fa-stack-1x fa-inverse"></i>
+							</span>
+							<strong
+								>Note: The amount of resources requested here is not definite. You are able to request more resources
+								after the approval of the project. We recommend starting with a smaller amount of resources and testing
+								the setup before requesting more.</strong
+							>
+						</div>
 						<div class="alert alert-primary" role="alert">
-							The amount of resources requested here is not definite. You are able to request more resources after the
-							approval of the project. <br />
 							Please fill in an appropriate estimation of the resources required for your project.
 							<br /><strong>Please Consider:</strong> In terms of flavors, there may be slight, location-dependent
 							differences in the number of VCPUs and the amount of RAM per VM, depending on the data centre ultimately
@@ -327,7 +340,7 @@
 												><br />
 												Number of cores: {{ f.vcpus }}<br />
 												RAM: {{ f.ram_gib }} GB<br />
-												<span *ngIf="f.type.shortcut === 'GPU'"> GPU: {{ f.gpu }} </span></label
+												<span *ngIf="f.type.shortcut === GPU_SHORTCUT"> GPU: {{ f.gpu }} </span></label
 											>
 											<div class="col-md-8">
 												<div class="input-group">
@@ -341,7 +354,6 @@
 														step="1"
 														placeholder="0"
 														[ngModel]="application?.getFlavorCounter(f)"
-														(change)="valuesChanged(f, name?.value)"
 														#name="ngModel"
 														(ngModelChange)="onChangeFlavor(f, $event)"
 														appMinAmount="0"
@@ -358,7 +370,7 @@
 											</div>
 										</div>
 									</div>
-									<div *ngIf="t.shortcut === 'GPU'" class="alert alert-light">
+									<div *ngIf="t.shortcut === GPU_SHORTCUT" class="alert alert-light">
 										You can check which CUDA drivers are currently supported here:<br />
 										<div *ngFor="let link of gpuInformationLinks">
 											<a href="{{ link[0] }}" target="_blank" rel="noopener noreferrer">{{ link[1] }}</a>
@@ -370,7 +382,7 @@
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_volume_counter"
 								><strong
-									>Number of storage volumes*
+									>Number of storage volumes<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i
 										data-balloon="The number of storage volumes allowed to create. Each vm is allowed to mount only one storage volume. The sum of the volumes size equals the value provided in the storage limit field"
 										data-balloon-pos="right"
@@ -403,7 +415,7 @@
 						<div class="form-group row" [hidden]="form.controls.project_application_volume_counter?.value === 0">
 							<label class="col-md-4 form-control-label" for="id_project_application_volume_limit"
 								><strong>
-									Volume Storage Total Limit*
+									Volume Storage Total Limit<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i
 										data-balloon="Storage limit is the sum of extra storage provided by volumes."
 										data-balloon-pos="right"
@@ -469,10 +481,36 @@
 							</div>
 						</div>
 						<br />
+						<div class="form-group row" *ngIf="extraResourceCommentRequired">
+							<label class="col-md-4"></label>
+							<div class="col-md-8">
+								<div class="alert alert-warning" role="alert">
+									<p>
+										Since you have opted for GPU and/or high memory flavors which are limited resources, please explain
+										why you need these specific resources and try to answer the following questions:
+									</p>
+									<ul>
+										<li>Which of your tools require these resources?</li>
+										<li>
+											Why did you request the number of VMs that you specified on the form? Would it be sufficient for
+											you to start with less GPU/high memory VMs?
+										</li>
+										<li>
+											If you have chosen one of the following flavors: de.NBI highmem large/de.NBI highmem xlarge/de.NBI
+											2 GPU large, please explain why it would not be possible for you to use a flavor of the same
+											category with less RAM (e.g. de.NBI highmem medium).
+										</li>
+										<li>Did you test your tools on machines with less RAM?</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_comment"
-								><strong>Comment</strong></label
-							>
+								><strong
+									>Comment<span *ngIf="extraResourceCommentRequired"
+										><i class="fa fa-asterisk" aria-hidden="true"></i></span></strong
+							></label>
 							<div class="col-md-8">
 								<textarea
 									type="text"
@@ -480,8 +518,13 @@
 									name="project_application_comment"
 									class="form-control"
 									maxlength="8192"
+									[required]="extraResourceCommentRequired"
 									placeholder=""
 									[(ngModel)]="application.project_application_comment"
+									[ngClass]="{
+										'is-invalid': form.controls.project_application_comment?.invalid,
+										'is-valid': form.controls.project_application_comment?.valid
+									}"
 								></textarea>
 								<span class="help-block">Additional information you want to share?</span>
 							</div>
@@ -506,7 +549,7 @@
 								data-test-id="project_application_institute_input"
 								for="id_project_application_institute"
 								><strong
-									>Institute Name*
+									>Institute Name<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i data-balloon="Your institute" data-balloon-pos="right"
 										><i class="icon-question" style="cursor: pointer"></i></i></strong
 							></label>
@@ -538,7 +581,7 @@
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_workgroup"
 								><strong
-									>Workgroup Name*
+									>Workgroup Name<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i data-balloon="Your Workgroup" data-balloon-pos="right"
 										><i class="icon-question" style="cursor: pointer"></i></i></strong
 							></label>
@@ -572,7 +615,9 @@
 							<h5 class="col-md-6 form-control-label">Additional Information</h5>
 						</div>
 						<div class="form-group row">
-							<label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
+							<label class="col-md-4 form-control-label"
+								><strong>Research Topics<i class="fa fa-asterisk" aria-hidden="true"></i> </strong
+							></label>
 							<div class="col-md-8" style="z-index: 999">
 								<div
 									[ngClass]="{
@@ -611,8 +656,8 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_person_related_data"
-								><strong>Person Related Data*</strong></label
-							>
+								><strong>Person Related Data<i class="fa fa-asterisk" aria-hidden="true"></i></strong
+							></label>
 							<div class="col-md-8">
 								<div class="form-check">
 									<input
@@ -1319,7 +1364,7 @@
 						<div class="form-group row" *ngIf="!is_validation">
 							<label class="col-md-4 form-control-label"
 								><strong
-									>Principal Investigator*
+									>Principal Investigator<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i
 										data-balloon="Only applications which have been approved/submitted by an principal investigator will be accepted. If you are not a principal investigator please provide their email."
 										data-balloon-pos="right"
@@ -1346,6 +1391,53 @@
 								</div>
 							</div>
 						</div>
+						<div class="form-group row">
+							<label class="col-md-4 form-control-label"
+								><strong
+									>Link to Institute site
+									<i
+										data-balloon="It is possible to provide a link to show that the PI provided is in fact a PI."
+										data-balloon-pos="right"
+										data-balloon-length="large"
+										><i class="icon-question menu_links" style="cursor: pointer"></i></i></strong
+							></label>
+							<div class="col-md-8">
+								<input
+									type="text"
+									id="project_application_pi_link_input"
+									class="form-control"
+									maxlength="256"
+									data-test-id="project_application_pi_link_input"
+									placeholder="https://www.uni-bielefeld.de/einrichtungen/cebitec/forschung/arbeitsgruppen/arbeitsgruppe-12/"
+									name="project_application_pi_link_input"
+									[(ngModel)]="application.project_application_pi_link"
+									pattern="^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$"
+									[ngClass]="{
+										'is-invalid':
+											form.controls.project_application_pi_link_input?.invalid &&
+											(form.controls.project_application_pi_link_input?.dirty ||
+												form.controls.project_application_pi_link_input?.touched) &&
+											application.project_application_pi_link !== '',
+										'is-valid':
+											(form.controls.project_application_pi_link_input?.valid ||
+												application.project_application_pi_link === '') &&
+											(form.controls.project_application_pi_link_input?.dirty ||
+												form.controls.project_application_pi_link_input?.touched)
+									}"
+								/>
+								<span class="help-block"> </span>Provide a link to the institute or workgroup website<br />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4"></div>
+							<div class="col-md-8">
+								<div class="alert alert-info">
+									Please note: Providing a link is optional, but can simplify the application process by reducing
+									potential queries from cloud governance for verification of the PI.
+								</div>
+							</div>
+						</div>
+
 						<div *ngIf="application?.project_application_pi_approved" class="form-group row">
 							<label
 								class="col-md-4 form-control-label"
@@ -1371,57 +1463,59 @@
 								</label>
 							</div>
 							<div *ngIf="pi_responsibility_checked && !valid_pi_affiliations" class="row justify-content-center">
-								<div
-									class="col-md-8 alert"
-									[ngClass]="{
-										'alert-warning': !unknownPiAffiliationsConfirmation,
-										'alert-success': unknownPiAffiliationsConfirmation
-									}"
-								>
-									<p>
-										According to the current session information of your LifeScience<span
-											title="Authentication and Authorization Infrastructure"
-											style="text-decoration: underline dotted; cursor: help"
-											>AAI</span
-										>
-										account, we were unable to confirm your association with a university or research institute.<br />
-										Your affiliations are:
-									</p>
-									<ul>
-										<li *ngFor="let affiliation of userinfo?.Affiliations">{{ affiliation }}</li>
-									</ul>
-									<p>
-										We kindly ask you to verify whether your account is already linked with a university or research
-										institute via the LifeScienceAAI <a href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}">profile page</a> to
-										speed up the approval process for both the current and future applications. If your account is
-										already listed as being associated with a university or research institution on your profile page,
-										no further action is necessary. If this is not the case, we recommend that you try to link your
-										account via your LifeScienceAAI profile page. This can also be done after the confirmation of your
-										project application. If you can not link your account, we will need to verify your principal
-										investigator status manually, which can prolong the approval process.
-									</p>
-									<div class="form-check my-3">
-										<input
-											class="form-check-input"
-											type="checkbox"
-											id="id-unknown-pi-affiliations-checkbox"
-											name="unknown-pi-affiliations-checkbox"
-											data-test-id="unknown-pi-affiliations-checkbox"
-											[(ngModel)]="unknownPiAffiliationsConfirmation"
-										/>
-										<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
-											>I have read and understood the information in the box above.</label
-										>
+								<div class="col-md-8">
+									<div
+										class="alert"
+										[ngClass]="{
+											'alert-warning': !unknownPiAffiliationsConfirmation,
+											'alert-success': unknownPiAffiliationsConfirmation
+										}"
+									>
+										<p>
+											According to the current session information of your LifeScience<span
+												title="Authentication and Authorization Infrastructure"
+												style="text-decoration: underline dotted; cursor: help"
+												>AAI</span
+											>
+											account, we were unable to confirm your association with a university or research institute.<br />
+											Your affiliations are:
+										</p>
+										<ul>
+											<li *ngFor="let affiliation of userinfo?.Affiliations">{{ affiliation }}</li>
+										</ul>
+										<p>
+											We kindly ask you to verify whether your account is already linked with a university or research
+											institute via the LifeScienceAAI <a href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}">profile page</a> to
+											speed up the approval process for both the current and future applications. If your account is
+											already listed as being associated with a university or research institution on your profile page,
+											no further action is necessary. If this is not the case, we recommend that you try to link your
+											account via your LifeScienceAAI profile page. This can also be done after the confirmation of your
+											project application. If you can not link your account, we will need to verify your principal
+											investigator status manually, which can prolong the approval process.
+										</p>
+										<div class="form-check my-3">
+											<input
+												class="form-check-input"
+												type="checkbox"
+												id="id-unknown-pi-affiliations-checkbox"
+												name="unknown-pi-affiliations-checkbox"
+												data-test-id="unknown-pi-affiliations-checkbox"
+												[(ngModel)]="unknownPiAffiliationsConfirmation"
+											/>
+											<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
+												>I have read and understood the information in the box above.</label
+											>
+										</div>
+										<p>
+											<a
+												href="{{ WIKI_LINKING_ACCOUNTS }}"
+												target="_blank"
+												style="text-decoration: none; font-weight: bold"
+												rel="noopener noreferrer"
+												>How to link your account with other identities?</a
+											>
+										</p>
 									</div>
-									<p>
-										<a
-											href="{{ WIKI_LINKING_ACCOUNTS }}"
-											target="_blank"
-											style="text-decoration: none; font-weight: bold"
-											rel="noopener noreferrer"
-											>How to link your account with other identities?</a
-										>
-									</p>
 								</div>
 							</div>
 						</div>
@@ -1440,8 +1534,8 @@
 						</div>
 						<div *ngIf="!application?.project_application_pi_approved && !is_validation" class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_pi_email"
-								><strong>Principal Investigator Email* </strong></label
-							>
+								><strong>Principal Investigator Email<i class="fa fa-asterisk" aria-hidden="true"></i> </strong
+							></label>
 							<div class="col-md-8">
 								<input
 									*ngIf="!application?.project_application_pi_approved && !is_validation"
@@ -1496,10 +1590,12 @@
 							(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
 							(!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)
 						"
-						class="form-group row alert alert-warning"
+						class="form-group row"
 					>
-						Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled
-						in correctly.
+						<div class="alert alert warning">
+							Some required fields are incorrect or not filled in yet. Please check if all required (
+							<i class="fa fa-asterisk" aria-hidden="true"></i>) fields are filled in correctly.
+						</div>
 					</div>
 					<div class="form-group row" *ngIf="!is_validation">
 						<p class="col-md-12 form-control-label">
@@ -1509,7 +1605,7 @@
 					</div>
 					<div *ngIf="is_validation" class="form-group row">
 						<label class="col-md-4 form-control-label" for="project_application_responsibility">
-							<strong>Confirmation of Responsibility* </strong>
+							<strong>Confirmation of Responsibility<i class="fa fa-asterisk" aria-hidden="true"></i> </strong>
 						</label>
 						<div class="col-md-8">
 							<div class="form-check">
@@ -1615,6 +1711,7 @@
 									!valid_pi_affiliations &&
 									application?.project_application_pi_approved &&
 									!is_validation) ||
+								(!application?.project_application_comment && extraResourceCommentRequired) ||
 								application?.project_application_edam_terms.length === 0 ||
 								application?.project_application_edam_terms.length > 10 ||
 								(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
