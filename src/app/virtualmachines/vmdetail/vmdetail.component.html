@@ -14,7 +14,10 @@
 				</div>
 				<div
 					class="card-body"
-					*ngIf="virtualMachine?.still_used_confirmation_requested && virtualMachine?.elixir_id === user_elixir_id"
+					*ngIf="
+						virtualMachine?.still_used_confirmation_requested &&
+						(virtualMachine?.elixir_id === user_elixir_id || is_project_admin)
+					"
 				>
 					<div class="alert alert-danger">
 						<strong
@@ -40,6 +43,14 @@
 							<br />
 							<strong>We are not liable for the loss of data due to faulty machines or volumes.</strong>
 						</p>
+
+						<ng-container *ngIf="is_project_admin && virtualMachine?.elixir_id !== user_elixir_id">
+							<hr />
+							<strong>Please consider</strong><br />
+							In this case, you confirm as a administrator of the project that the project member who started this
+							machine still needs it.
+						</ng-container>
+
 						<button
 							(click)="setVmNeeded()"
 							type="button"
