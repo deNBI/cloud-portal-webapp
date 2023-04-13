@@ -735,7 +735,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		};
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-xl');
-		// TODO: adjust to handling of component
+		this.subscribeToBsModalRef();
 		// this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
 	}
 
@@ -781,6 +781,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 						this.createOpenStackProjectGroup(result['application'], result['selectedCenter']);
 						this.switchApproveLocked(true);
 					}
+				}
+				if (result['action'] === 'adjustedModificationRequest') {
+					this.isLoaded = false;
+					this.changeTabState(TabStates.MODIFICATION_EXTENSION);
 				}
 			}),
 		);

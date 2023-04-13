@@ -94,19 +94,27 @@
 								<div class="input-group">
 									<input
 										class="form-control"
-										[name]="flavor.name"
+										[name]="adjustment ? flavor.name + '_requested' : flavor.name"
 										id="{{ flavor.name }}"
 										type="number"
 										min="0"
 										step="1"
 										attr.data-test-id="{{ flavor.type.shortcut + '_' + i }}"
 										placeholder="e.g 1"
-										[ngModel]="temp_project_modification | flavorCounter : flavor"
+										[ngModel]="
+											adjustment
+												? (project.project_modification_request | flavorCounter : flavor)
+												: (temp_project_modification | flavorCounter : flavor)
+										"
 										#name="ngModel"
 										(change)="checkFlavorPairs(flavor, $event)"
 										[attr.appMinAmount]="adjustment ? null : 0"
 										[attr.appInteger]="adjustment ? null : true"
-										value="{{ temp_project_modification | flavorCounter : flavor }}"
+										value="{{
+											adjustment
+												? (project.project_modification_request | flavorCounter : flavor)
+												: (temp_project_modification | flavorCounter : flavor)
+										}}"
 										[attr.readonly]="flavor.disabled || adjustment ? true : null"
 										aria-describedby="{{ flavor.name }}_help"
 										[ngClass]="{
@@ -137,7 +145,6 @@
 										attr.data-test-id="adjusted_{{ flavor.type.shortcut + '_' + i }}"
 										placeholder="e.g 1"
 										[ngModel]="adjusted_project_modification | flavorCounter : flavor"
-										(ngModelChange)="printIt()"
 										#name="ngModel"
 										(change)="checkFlavorPairsAdjustment(flavor, $event)"
 										appMinAmount="0"

@@ -84,10 +84,6 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	printIt(): void {
-		console.log(this.adjusted_project_modification);
-	}
-
 	getFlavors(): void {
 		this.subscription.add(
 			this.flavorService
@@ -215,7 +211,11 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 
 		this.bsModalRef.content.event.subscribe((result: any) => {
 			if ('reload' in result && result['reload']) {
-				this.event.emit({ reload: true });
+				if (adjustment) {
+					this.event.emit({ action: 'adjustedModificationRequest' });
+				} else {
+					this.event.emit({ reload: true });
+				}
 			} else {
 				this.event.emit({ reload: false });
 			}
