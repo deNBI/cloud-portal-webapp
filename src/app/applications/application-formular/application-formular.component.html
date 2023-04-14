@@ -40,6 +40,10 @@
 						<input name="test_name" placeholder="TestAppName" [(ngModel)]="test_name" />
 					</div>
 
+					<div class="form-row text-muted">
+						<span><strong>*</strong> Mandatory fields</span>
+					</div>
+
 					<form id="application_form" #form="ngForm" class="form-horizontal">
 						<div class="form-group row">
 							<h5 class="col-md-6 form-control-label">General Information</h5>
@@ -1387,6 +1391,53 @@
 								</div>
 							</div>
 						</div>
+						<div class="form-group row">
+							<label class="col-md-4 form-control-label"
+								><strong
+									>Link to Institute site
+									<i
+										data-balloon="It is possible to provide a link to show that the PI provided is in fact a PI."
+										data-balloon-pos="right"
+										data-balloon-length="large"
+										><i class="icon-question menu_links" style="cursor: pointer"></i></i></strong
+							></label>
+							<div class="col-md-8">
+								<input
+									type="text"
+									id="project_application_pi_link_input"
+									class="form-control"
+									maxlength="256"
+									data-test-id="project_application_pi_link_input"
+									placeholder="https://www.uni-bielefeld.de/einrichtungen/cebitec/forschung/arbeitsgruppen/arbeitsgruppe-12/"
+									name="project_application_pi_link_input"
+									[(ngModel)]="application.project_application_pi_link"
+									pattern="^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$"
+									[ngClass]="{
+										'is-invalid':
+											form.controls.project_application_pi_link_input?.invalid &&
+											(form.controls.project_application_pi_link_input?.dirty ||
+												form.controls.project_application_pi_link_input?.touched) &&
+											application.project_application_pi_link !== '',
+										'is-valid':
+											(form.controls.project_application_pi_link_input?.valid ||
+												application.project_application_pi_link === '') &&
+											(form.controls.project_application_pi_link_input?.dirty ||
+												form.controls.project_application_pi_link_input?.touched)
+									}"
+								/>
+								<span class="help-block"> </span>Provide a link to the institute or workgroup website<br />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4"></div>
+							<div class="col-md-8">
+								<div class="alert alert-info">
+									Please note: Providing a link is optional, but can simplify the application process by reducing
+									potential queries from cloud governance for verification of the PI.
+								</div>
+							</div>
+						</div>
+
 						<div *ngIf="application?.project_application_pi_approved" class="form-group row">
 							<label
 								class="col-md-4 form-control-label"
@@ -1412,57 +1463,59 @@
 								</label>
 							</div>
 							<div *ngIf="pi_responsibility_checked && !valid_pi_affiliations" class="row justify-content-center">
-								<div
-									class="col-md-8 alert"
-									[ngClass]="{
-										'alert-warning': !unknownPiAffiliationsConfirmation,
-										'alert-success': unknownPiAffiliationsConfirmation
-									}"
-								>
-									<p>
-										According to the current session information of your LifeScience<span
-											title="Authentication and Authorization Infrastructure"
-											style="text-decoration: underline dotted; cursor: help"
-											>AAI</span
-										>
-										account, we were unable to confirm your association with a university or research institute.<br />
-										Your affiliations are:
-									</p>
-									<ul>
-										<li *ngFor="let affiliation of userinfo?.Affiliations">{{ affiliation }}</li>
-									</ul>
-									<p>
-										We kindly ask you to verify whether your account is already linked with a university or research
-										institute via the LifeScienceAAI <a href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}">profile page</a> to
-										speed up the approval process for both the current and future applications. If your account is
-										already listed as being associated with a university or research institution on your profile page,
-										no further action is necessary. If this is not the case, we recommend that you try to link your
-										account via your LifeScienceAAI profile page. This can also be done after the confirmation of your
-										project application. If you can not link your account, we will need to verify your principal
-										investigator status manually, which can prolong the approval process.
-									</p>
-									<div class="form-check my-3">
-										<input
-											class="form-check-input"
-											type="checkbox"
-											id="id-unknown-pi-affiliations-checkbox"
-											name="unknown-pi-affiliations-checkbox"
-											data-test-id="unknown-pi-affiliations-checkbox"
-											[(ngModel)]="unknownPiAffiliationsConfirmation"
-										/>
-										<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
-											>I have read and understood the information in the box above.</label
-										>
+								<div class="col-md-8">
+									<div
+										class="alert"
+										[ngClass]="{
+											'alert-warning': !unknownPiAffiliationsConfirmation,
+											'alert-success': unknownPiAffiliationsConfirmation
+										}"
+									>
+										<p>
+											According to the current session information of your LifeScience<span
+												title="Authentication and Authorization Infrastructure"
+												style="text-decoration: underline dotted; cursor: help"
+												>AAI</span
+											>
+											account, we were unable to confirm your association with a university or research institute.<br />
+											Your affiliations are:
+										</p>
+										<ul>
+											<li *ngFor="let affiliation of userinfo?.Affiliations">{{ affiliation }}</li>
+										</ul>
+										<p>
+											We kindly ask you to verify whether your account is already linked with a university or research
+											institute via the LifeScienceAAI <a href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}">profile page</a> to
+											speed up the approval process for both the current and future applications. If your account is
+											already listed as being associated with a university or research institution on your profile page,
+											no further action is necessary. If this is not the case, we recommend that you try to link your
+											account via your LifeScienceAAI profile page. This can also be done after the confirmation of your
+											project application. If you can not link your account, we will need to verify your principal
+											investigator status manually, which can prolong the approval process.
+										</p>
+										<div class="form-check my-3">
+											<input
+												class="form-check-input"
+												type="checkbox"
+												id="id-unknown-pi-affiliations-checkbox"
+												name="unknown-pi-affiliations-checkbox"
+												data-test-id="unknown-pi-affiliations-checkbox"
+												[(ngModel)]="unknownPiAffiliationsConfirmation"
+											/>
+											<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
+												>I have read and understood the information in the box above.</label
+											>
+										</div>
+										<p>
+											<a
+												href="{{ WIKI_LINKING_ACCOUNTS }}"
+												target="_blank"
+												style="text-decoration: none; font-weight: bold"
+												rel="noopener noreferrer"
+												>How to link your account with other identities?</a
+											>
+										</p>
 									</div>
-									<p>
-										<a
-											href="{{ WIKI_LINKING_ACCOUNTS }}"
-											target="_blank"
-											style="text-decoration: none; font-weight: bold"
-											rel="noopener noreferrer"
-											>How to link your account with other identities?</a
-										>
-									</p>
 								</div>
 							</div>
 						</div>
