@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.679.0",
+  "version": "4.680.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -111,7 +111,7 @@
     "eslint-plugin-prefer-arrow": "1.2.3",
     "exports-loader": "4.0.0",
     "file-loader": "6.2.0",
-    "html-webpack-plugin": "5.5.0",
+    "html-webpack-plugin": "5.5.1",
     "husky": "8.0.3",
     "json-loader": "0.5.7",
     "karma": "6.4.1",
