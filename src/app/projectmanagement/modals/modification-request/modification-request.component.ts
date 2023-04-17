@@ -155,21 +155,66 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	}
 
 	checkExtraResourceCommentRequired(): void {
-		for (const flavor of this.temp_project_modification.flavors) {
-			if (
-				(flavor?.type?.shortcut.toUpperCase() === this.GPU_SHORTCUT
-					|| flavor?.type?.shortcut.toUpperCase() === this.HMF_SHORTCUT)
-				&& flavor.counter > 0
-			) {
-				this.extraResourceCommentRequired = true;
-				this.cdRef.detectChanges();
+		this.extraResourceCommentRequired = this.compareCriticalResourceValues();
+		this.cdRef.detectChanges();
+	}
 
-				return;
+	/**
+	 * Return dict with values for calculation of resource differences in the context of modification requests
+	 * @param shortcut the shortcut of the flavor type that shall be checked
+	 * @param current determines if the values returned shall be the actual application values or the modification values
+	 */
+	calculateResourcesByType(shortcut: string, current: boolean): any {
+		const dict: any = {
+			total_cores: 0,
+			total_ram: 0,
+			total_gpus: 0,
+			machines: 0,
+		};
+		let correspondingProject: Application | ApplicationModification;
+		if (current) {
+			correspondingProject = this.project;
+		} else {
+			correspondingProject = this.temp_project_modification;
+		}
+		for (const flavor of correspondingProject.flavors) {
+			if (flavor?.type.shortcut === shortcut) {
+				dict.total_cores += flavor.vcpus;
+				dict.total_ram += flavor.ram_mb;
+				dict.machines += 1;
+				if (flavor?.type?.shortcut.toUpperCase() === this.GPU_SHORTCUT) {
+					dict.total_gpus += flavor.gpu;
+				}
 			}
 		}
 
-		this.extraResourceCommentRequired = false;
-		this.cdRef.detectChanges();
+		return dict;
+	}
+
+	/**
+	 * checks whether the user tries to apply for more critical resources in the application
+	 */
+	compareCriticalResourceValues(): boolean {
+		const currentHMF: any = this.calculateResourcesByType(this.HMF_SHORTCUT, true);
+		const currentGPU: any = this.calculateResourcesByType(this.GPU_SHORTCUT, true);
+		const requestingHMF: any = this.calculateResourcesByType(this.HMF_SHORTCUT, false);
+		const requestingGPU: any = this.calculateResourcesByType(this.GPU_SHORTCUT, false);
+
+		// does not return the correct values so far, as the changes on the template dont seem to be transferred to the models correctly?
+		return (
+			this.isMoreCriticalResources(currentHMF, requestingHMF) || this.isMoreCriticalResources(currentGPU, requestingGPU)
+		);
+	}
+
+	isMoreCriticalResources(current: any, requesting: any): boolean {
+		for (const key in current) {
+			console.log(`${key} for current is ${current[key]}, while for new is ${requesting[key]}`);
+			if (requesting[key] > current[key]) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	checkFlavorPairsAdjustment(flavor: Flavor, event: any): void {
