@@ -159,8 +159,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 			const entry: { counter: number; flavor: Flavor } = this.newFlavors[extensionFlavorsKey];
 
 			if (
-				(entry.flavor.type.shortcut.toUpperCase() === this.GPU_SHORTCUT
-					|| entry.flavor.type.shortcut.toUpperCase() === this.HMF_SHORTCUT)
+				(entry?.flavor?.type?.shortcut.toUpperCase() === this.GPU_SHORTCUT
+					|| entry?.flavor?.type?.shortcut.toUpperCase() === this.HMF_SHORTCUT)
 				&& entry.counter > 0
 			) {
 				this.extraResourceCommentRequired = true;
