@@ -158,6 +158,18 @@ export class VoService {
 		});
 	}
 
+	setCurrentUserProcessingVoManager(application_id: number | string): Observable<any> {
+		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${application_id}/vo_manager/`, null, {
+			withCredentials: true,
+		});
+	}
+
+	unsetProcessingVoManager(application_id: number | string): Observable<any> {
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${application_id}/vo_manager/`, {
+			withCredentials: true,
+		});
+	}
+
 	setProtected(groupid: number | string, set: boolean): Observable<any> {
 		const parameters: HttpParams = new HttpParams().set('action', set ? 'set' : 'unset');
 

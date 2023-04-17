@@ -14,13 +14,9 @@ import { EdamOntologyTerm } from '../../../applications/edam-ontology-term';
 	selector: 'app-result',
 	templateUrl: './result.component.html',
 	styleUrls: ['./result.component.scss'],
-	providers: [
-		ApplicationsService,
-		BsModalService,
-	],
+	providers: [ApplicationsService, BsModalService],
 })
 export class ResultComponent implements OnInit, OnDestroy {
-
 	subscription: Subscription = new Subscription();
 	public event: EventEmitter<any> = new EventEmitter();
 	submit: boolean = true;
@@ -28,6 +24,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
 	project: Application;
 	extension: ApplicationModification | ApplicationLifetimeExtension | ApplicationCreditRequest;
+	adjustedModification: ApplicationModification;
 
 	lifetimeExtension: boolean = false;
 	modificationExtension: boolean = false;
@@ -62,7 +59,8 @@ export class ResultComponent implements OnInit, OnDestroy {
 		this.setToResultState();
 
 		this.subscription.add(
-			this.applicationsService.requestModification(this.extension as ApplicationModification)
+			this.applicationsService
+				.requestModification(this.extension as ApplicationModification)
 				.subscribe((result: { [key: string]: string }): void => {
 					if (result['Error']) {
 						this.extensionStatus = 2;
@@ -76,10 +74,26 @@ export class ResultComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	submitModificationAdjustment(): void {
+		this.setToResultState();
+		this.subscription.add(
+			this.applicationsService.adjustModification(this.adjustedModification as ApplicationModification).subscribe(
+				(): void => {
+					this.extensionStatus = 5;
+					this.event.emit({ reload: true });
+				},
+				(): void => {
+					this.extensionStatus = 2;
+					this.errorMessage = 'An error occurred submitting the modification adjustment.';
+				},
+			),
+		);
+	}
 	submitLifetimeExtensionRequest(): void {
 		this.setToResultState();
 
-		this.applicationsService.requestAdditionalLifetime(this.extension as ApplicationLifetimeExtension)
+		this.applicationsService
+			.requestAdditionalLifetime(this.extension as ApplicationLifetimeExtension)
 			.subscribe((result: { [key: string]: string }): void => {
 				if (result['Error']) {
 					this.extensionStatus = 2;
@@ -96,7 +110,8 @@ export class ResultComponent implements OnInit, OnDestroy {
 		this.setToResultState();
 
 		this.subscription.add(
-			this.applicationsService.requestAdditionalCredits(this.extension as ApplicationCreditRequest)
+			this.applicationsService
+				.requestAdditionalCredits(this.extension as ApplicationCreditRequest)
 				.subscribe((result: { [key: string]: string }): void => {
 					if (result['Error']) {
 						this.extensionStatus = 2;
@@ -117,5 +132,4 @@ export class ResultComponent implements OnInit, OnDestroy {
 		this.submit = true;
 		this.result = false;
 	}
-
 }
