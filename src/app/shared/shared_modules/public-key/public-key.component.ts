@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import {
+	Component, EventEmitter, Input, OnInit, Output,
+} from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 import { saveAs } from 'file-saver';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -9,6 +11,7 @@ import { IResponseTemplate } from '../../../api-connector/response-template';
 import { AbstractBaseClass } from '../baseClass/abstract-base-class';
 import { WIKI_GENERATE_KEYS } from '../../../../links/links';
 import { NotificationModalComponent } from '../../modal/notification-modal';
+import { BlacklistedResponse } from '../../../api-connector/response-interfaces';
 
 /**
  * Public Key component.
@@ -20,12 +23,15 @@ import { NotificationModalComponent } from '../../modal/notification-modal';
 	styleUrls: ['./public-key.component.scss'],
 	providers: [ApiSettings, KeyService],
 })
-export class PublicKeyComponent extends AbstractBaseClass {
+export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 	WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS;
 	public_key: string;
 	validated_key: boolean = false;
+	blocked_key: boolean = false;
+	current_key_blocked: boolean = false;
 	acknowledgement_given: boolean = false;
 	@Input() userinfo: Userinfo;
+	@Output() readonly currentKeyBlockedChanged: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(
 		private keyService: KeyService,
@@ -33,6 +39,12 @@ export class PublicKeyComponent extends AbstractBaseClass {
 		private modalService: BsModalService,
 	) {
 		super();
+	}
+
+	ngOnInit() {
+		if (this.userinfo?.PublicKey) {
+			this.isCurrentKeyBlocked();
+		}
 	}
 
 	downloadPem(data: string): void {
@@ -45,6 +57,19 @@ export class PublicKeyComponent extends AbstractBaseClass {
 		this.keyService.generateKey().subscribe((res: any): void => {
 			this.getUserPublicKey();
 			this.downloadPem(res['private_key']);
+		});
+	}
+
+	isKeyBlocked(): void {
+		this.keyService.isBlocked(this.public_key.trim()).subscribe((res: BlacklistedResponse) => {
+			this.blocked_key = res.blacklisted;
+		});
+	}
+
+	isCurrentKeyBlocked(): void {
+		this.keyService.isBlocked(this.userinfo.PublicKey).subscribe((res: BlacklistedResponse) => {
+			this.current_key_blocked = res.blacklisted;
+			this.currentKeyBlockedChanged.emit(this.current_key_blocked);
 		});
 	}
 
@@ -95,6 +120,7 @@ export class PublicKeyComponent extends AbstractBaseClass {
 	getUserPublicKey(): void {
 		this.keyService.getKey().subscribe((key: IResponseTemplate): void => {
 			this.userinfo.PublicKey = key.value as string;
+			this.isKeyBlocked();
 		});
 	}
 }

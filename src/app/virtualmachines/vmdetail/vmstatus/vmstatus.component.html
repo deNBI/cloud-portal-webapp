@@ -135,6 +135,14 @@
 		></div>
 		{{ VirtualMachineStates.staticCLIENT_OFFLINE }}
 	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticLOCKED">
+		<div
+			[id]="'client_locked_badge_' + vm?.name"
+			class="dot-colorless bg-danger"
+			style="width: 10px; height: 10px"
+		></div>
+		{{ VirtualMachineStates.staticLOCKED }}
+	</ng-container>
 	<ng-container *ngSwitchDefault>
 		<div
 			[id]="'default_badge_' + vm?.name"
