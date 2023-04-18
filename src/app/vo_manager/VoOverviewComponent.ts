@@ -206,7 +206,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.removalDate.setDate(date.day);
 		this.removalDate.setMonth(date.month - 1);
 		this.removalDate.setFullYear(date.year);
-		console.log(this.removalDate);
 	}
 
 	setEmailType(type: number): void {
