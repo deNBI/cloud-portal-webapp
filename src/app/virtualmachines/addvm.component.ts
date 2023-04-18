@@ -161,6 +161,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	newVms: number = 0;
 	newGpus: number = 0;
 	cluster_allowed: boolean = false;
+	current_key_blocked: boolean = false;
 	selectedProjectRessources: ApplicationRessourceUsage;
 
 	/**
@@ -253,7 +254,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		private userService: UserService,
 		private router: Router,
 		private condaService: BiocondaService,
-
 		private applicationsService: ApplicationsService,
 	) {
 		// eslint-disable-next-line no-empty-function
@@ -282,6 +282,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				},
 			),
 		);
+	}
+
+	setCurrentKeyBlocked(value: boolean): void {
+		this.current_key_blocked = value;
 	}
 
 	reloadFlavors(): void {
@@ -628,7 +632,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			}),
 		);
 		this.subscription.add(
-			this.applicationsService.getApplicationMigratedByGroupId(this.selectedProject[1].toString())
+			this.applicationsService
+				.getApplicationMigratedByGroupId(this.selectedProject[1].toString())
 				.subscribe((migrated: boolean): void => {
 					this.selectedProjectIsMigrated = migrated;
 				}),

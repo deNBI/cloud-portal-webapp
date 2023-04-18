@@ -19,9 +19,12 @@
 			<br />
 			If the entered data mismatches with your requirements cancel this confirmation and take changes.
 		</div>
+		<div class="alert alert-info" *ngIf="adjustedModification">
+			<strong> Please consider: These are the values of the modification request if you confirm the adjustment </strong>
+		</div>
 		<div class="table-responsive">
 			<table class="table table-striped">
-				<ng-container *ngIf="modificationExtension">
+				<ng-container *ngIf="modificationExtension && !adjustedModification">
 					<tr *ngFor="let flav of extension.flavors">
 						<td>{{ flav.name + ': ' + flav.counter + ' VMs' }}</td>
 					</tr>
@@ -36,6 +39,26 @@
 						<td>Amount of object storage: {{ extension.object_storage }} GB</td>
 					</tr>
 				</ng-container>
+				<ng-container *ngIf="adjustedModification">
+					<tr *ngIf="adjustedModification.manager_comment">
+						<td>VO Comment: {{ adjustedModification.manager_comment }}</td>
+					</tr>
+					<tr *ngFor="let flav of adjustedModification.flavors">
+						<td>
+							<strong>{{ flav.name + ': ' + flav.counter + ' VMs' }}</strong>
+						</td>
+					</tr>
+					<tr *ngIf="adjustedModification.volume_counter > 0">
+						<td>Number of storage volumes: {{ adjustedModification.volume_counter }}</td>
+					</tr>
+					<tr *ngIf="adjustedModification.volume_counter > 0 && adjustedModification.volume_limit > 0">
+						<td>Amount of storage space: {{ adjustedModification.volume_limit }} GBs</td>
+					</tr>
+
+					<tr *ngIf="project.project_application_openstack_project && adjustedModification.object_storage > 0">
+						<td>Amount of object storage: {{ adjustedModification.object_storage }} GB</td>
+					</tr>
+				</ng-container>
 
 				<tr *ngIf="selected_ontology_terms?.length > 0">
 					<td>
@@ -47,22 +70,41 @@
 				<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension) && extension.comment?.length > 0">
 					<td>Comment : {{ extension.comment }}</td>
 				</tr>
+				<ng-container *ngIf="modificationExtension && !adjustedModification">
+					<tr>
+						<td>
+							<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
+						</td>
+					</tr>
+				</ng-container>
+				<ng-container *ngIf="adjustedModification">
+					<tr>
+						<td>
+							<strong>Number of cores in total: {{ adjustedModification?.total_cores }}</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Value of RAM in total: {{ adjustedModification?.total_ram }} GBs</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Number of GPUs in total: {{ adjustedModification?.total_gpu }}</strong>
+						</td>
+					</tr>
+				</ng-container>
 
-				<tr *ngIf="modificationExtension">
-					<td>
-						<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
-					</td>
-				</tr>
-				<tr *ngIf="modificationExtension">
-					<td>
-						<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
-					</td>
-				</tr>
-				<tr *ngIf="modificationExtension">
-					<td>
-						<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
-					</td>
-				</tr>
 				<tr *ngIf="lifetimeExtension">
 					<td>
 						<strong>Additional lifetime in months: {{ extension?.extra_lifetime }}</strong>
@@ -99,7 +141,7 @@
 			class="btn btn-success col-md-4"
 			type="button"
 			data-test-id="confirm_extension_request_button"
-			*ngIf="lifetimeExtension"
+			*ngIf="lifetimeExtension && !adjustedModification"
 			(click)="submitLifetimeExtensionRequest()"
 		>
 			Confirm
@@ -109,7 +151,7 @@
 			class="btn btn-success col-md-4"
 			type="button"
 			data-test-id="confirm_modification_request_button"
-			*ngIf="modificationExtension"
+			*ngIf="modificationExtension && !adjustedModification"
 			(click)="submitModificationRequest()"
 		>
 			Confirm
@@ -119,11 +161,22 @@
 			class="btn btn-success col-md-4"
 			type="button"
 			data-test-id="confirm_credits_request_button"
-			*ngIf="creditsExtension"
+			*ngIf="creditsExtension && !adjustedModification"
 			(click)="submitCreditsModification()"
 		>
 			Confirm
 		</button>
+		<button
+			id="confirm_adjustment_btn"
+			class="btn btn-success col-md-4"
+			type="button"
+			data-test-id="confirm_adjustment_request_button"
+			*ngIf="adjustedModification"
+			(click)="submitModificationAdjustment()"
+		>
+			Confirm
+		</button>
+
 		<button class="btn btn-primary col-md-4" type="reset" (click)="bsModalRef.hide()">Cancel</button>
 	</div>
 </ng-container>
@@ -154,10 +207,16 @@
 				Credits extension request successfully submitted!
 			</div>
 		</div>
+		<div id="adjustment_result_submitted" class="alert alert-success" role="alert" *ngIf="extensionStatus === 5">
+			<div data-test-id="modification_adjustment_request_result_div">
+				Modification adjustment successfully submitted!
+			</div>
+		</div>
 		<div id="extension_result_error" class="alert alert-warning" role="alert" *ngIf="extensionStatus === 2">
 			An error occured:<br />
 			{{ errorMessage }}
 		</div>
+
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
 		</div>

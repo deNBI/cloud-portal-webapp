@@ -12,7 +12,7 @@ import { IResponseTemplate } from '../api-connector/response-template';
 import { FacilityService } from '../api-connector/facility.service';
 import { FullLayoutComponent } from '../layouts/full-layout.component';
 import { Application } from '../applications/application.model/application.model';
-import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { AbstractBaseClass, Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
 import {
 	NgbdSortableHeaderDirective,
 	SortEvent,
@@ -206,7 +206,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.removalDate.setDate(date.day);
 		this.removalDate.setMonth(date.month - 1);
 		this.removalDate.setFullYear(date.year);
-		console.log(this.removalDate);
 	}
 
 	setEmailType(type: number): void {
@@ -443,7 +442,53 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 			const entry = {};
 			for (const key in application) {
 				if (typeof application[key] === 'object') {
-					entry[key] = JSON.stringify(application[key]);
+					if (key === 'project_application_pi') {
+						entry['project_application_pi_name'] = application[key].username;
+						entry['project_application_pi_email'] = application[key].email;
+						entry['project_application_pi_affiliations'] = JSON.stringify(application[key].user_affiliations);
+					} else if (key === 'project_application_statuses') {
+						const statuses_strings = [];
+						application[key].forEach(status => {
+							statuses_strings.push(Application_States[status]);
+						});
+						entry[key] = JSON.stringify(statuses_strings);
+					} else if (key === 'project_credit_request') {
+						if (application[key] == null) {
+							entry['project_credit_requested'] = 'FALSE';
+							entry['project_credit_request_id'] = 'NONE';
+							entry['project_credit_request_comment'] = 'NONE';
+							entry['project_credit_request_date_submitted'] = 'NONE';
+							entry['project_credit_request_extra_credits'] = 'NONE';
+							entry['project_credit_request_user_name'] = 'NONE';
+							entry['project_credit_request_user_email'] = 'NONE';
+						} else {
+							entry['project_credit_requested'] = 'TRUE';
+							entry['project_credit_request_id'] = JSON.stringify(application[key].Id);
+							entry['project_credit_request_comment'] = application[key].comment;
+							entry['project_credit_request_date_submitted'] = JSON.stringify(application[key].date_submitted);
+							entry['project_credit_request_extra_credits'] = JSON.stringify(application[key].extra_credits);
+							entry['project_credit_request_user_name'] = JSON.stringify(application[key].user.username);
+							entry['project_credit_request_user_email'] = JSON.stringify(application[key].user.email);
+						}
+					} else if (key === 'project_application_edam_terms') {
+						const edam_names = [];
+						application[key].forEach(edam => {
+							edam_names.push(edam.name);
+						});
+						entry['project_application_edam_terms'] = JSON.stringify(edam_names);
+					} else if (key === 'flavors') {
+						const flavor_names = [];
+						application[key].forEach(flavor => {
+							flavor_names.push(flavor.name);
+						});
+					} else if (key === 'dissemination') {
+						/* empty */
+					} else if (key === 'project_application_compute_center') {
+						entry[key] = application[key].Name;
+						entry['project_application_compute_center_id'] = application[key].FacilityId;
+					} else {
+						entry[key] = JSON.stringify(application[key]);
+					}
 				} else {
 					entry[key] = application[key];
 				}

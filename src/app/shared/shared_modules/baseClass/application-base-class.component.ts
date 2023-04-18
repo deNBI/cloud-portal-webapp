@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { AbstractBaseClass, Application_States, Application_States_Strings } from './abstract-base-class';
 import { Application } from '../../../applications/application.model/application.model';
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor';
@@ -67,6 +67,9 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		}
 	} = {};
 
+	GPU_SHORTCUT = 'GPU';
+	HMF_SHORTCUT = 'HMF';
+
 	extension_request: boolean = false;
 
 	/**
@@ -84,6 +87,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 * List of flavors.
 	 */
 	flavorList: Flavor[] = [];
+	extraResourceCommentRequired: boolean = false;
 
 	/**
 	 * If all userApplications are loaded, important for the loader.
@@ -112,6 +116,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		protected userService: UserService,
 		protected applicationsService: ApplicationsService,
 		protected facilityService: FacilityService,
+		private cdRef: ChangeDetectorRef,
 	) {
 		super();
 	}
@@ -136,8 +141,35 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	valuesChanged(flavor: Flavor, counter: number, lifetime?: string): void {
-		this.newFlavors[flavor.name] = { counter, flavor };
+		if (this.newFlavors[flavor.name]) {
+			if (counter === 0 || counter === null) {
+				delete this.newFlavors[flavor.name];
+			}
+		}
+		if (counter > 0) {
+			this.newFlavors[flavor.name] = { counter, flavor };
+		}
 		this.calculateRamCores();
+		this.checkExtraResourceCommentRequired();
+	}
+
+	checkExtraResourceCommentRequired(): void {
+		for (const extensionFlavorsKey in this.newFlavors) {
+			const entry: { counter: number; flavor: Flavor } = this.newFlavors[extensionFlavorsKey];
+
+			if (
+				(entry?.flavor?.type?.shortcut.toUpperCase() === this.GPU_SHORTCUT
+					|| entry?.flavor?.type?.shortcut.toUpperCase() === this.HMF_SHORTCUT)
+				&& entry.counter > 0
+			) {
+				this.extraResourceCommentRequired = true;
+				this.cdRef.detectChanges();
+
+				return;
+			}
+		}
+		this.extraResourceCommentRequired = false;
+		this.cdRef.detectChanges();
 	}
 
 	calculateRamCores(): void {

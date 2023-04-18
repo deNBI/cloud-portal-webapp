@@ -22,6 +22,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 	private static readonly _SCHEDULING: string = 'SCHEDULING';
 	private static readonly _PLANNED: string = 'PLANNED';
 	private static readonly _CREATION_FAILED: string = 'CREATION_FAILED';
+	private static readonly _LOCKED: string = 'LOCKED';
 
 	private static readonly _IN_PROCESS_STATES: string[] = [
 		VirtualMachineStates._REBOOTING_STARTED,
@@ -56,6 +57,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._DELETING_FAILED,
 		VirtualMachineStates._CREATION_FAILED,
 		VirtualMachineStates._MIGRATED,
+		VirtualMachineStates._LOCKED,
 	];
 
 	private static readonly _DELETABLE_STATES: string[] = [
@@ -66,6 +68,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._PLANNED,
 		VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
 		VirtualMachineStates._CREATION_FAILED,
+		VirtualMachineStates._LOCKED,
 	];
 
 	static get DELETABLE_STATES(): string[] {
@@ -74,6 +77,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	static get CLIENT_OFFLINE(): string {
 		return this._CLIENT_OFFLINE;
+	}
+
+	static get LOCKED(): string {
+		return this._LOCKED;
 	}
 
 	static get REBOOTING(): string {
@@ -238,5 +245,9 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	public get staticCREATION_FAILED(): string {
 		return VirtualMachineStates.CREATION_FAILED;
+	}
+
+	public get staticLOCKED(): string {
+		return VirtualMachineStates.LOCKED;
 	}
 }

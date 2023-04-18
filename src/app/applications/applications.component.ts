@@ -1,5 +1,7 @@
 /* eslint-disable no-lonely-if */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+	ChangeDetectorRef, Component, OnDestroy, OnInit,
+} from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
@@ -22,6 +24,7 @@ import { CreditsService } from '../api-connector/credits.service';
 import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limits..component';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
+import { ModificationRequestComponent } from '../projectmanagement/modals/modification-request/modification-request.component';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -116,8 +119,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		facilityService: FacilityService,
 		private flavorService: FlavorService,
 		private creditsService: CreditsService,
+		cdrRef: ChangeDetectorRef,
 	) {
-		super(userService, applicationsService, facilityService);
+		super(userService, applicationsService, facilityService, cdrRef);
 	}
 
 	ngOnDestroy() {
@@ -127,7 +131,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	ngOnInit(): void {
 		this.is_vo_admin = is_vo;
 		if (this.is_vo_admin) {
-			this.getSubmittedApplications();
+			this.getSubmittedApplicationsAdmin();
 			this.getApplicationHistory();
 			this.getComputeCenters();
 			this.flavorService.getListOfFlavorsAvailable().subscribe((flavList: Flavor[]): void => {
@@ -166,7 +170,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	onChangeFlavor(flavor: Flavor, value: number): void {
-		console.log(flavor);
 		this.adjustedApplication.setFlavorInFlavors(flavor, value);
 		this.checkIfMinimumSelected();
 		this.creditsService
@@ -213,6 +216,33 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			},
 			(): void => {
 				this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
+			},
+		);
+	}
+
+	adjustLifetimeExtension(): void {
+		this.applicationsService.adjustLifetimeExtension(this.adjustedApplication.project_lifetime_request).subscribe(
+			(): void => {
+				this.showNotificationModal(
+					'Success',
+					'The lifetime of the extension request has been adjusted successfully!',
+					'success',
+				);
+				this.getApplicationsByTabState();
+			},
+			(): void => {
+				this.showNotificationModal('Failed', 'The adjustment of the lifetime extension has failed!', 'danger');
+			},
+		);
+	}
+
+	adjustModification(): void {
+		this.applicationsService.adjustModification(this.adjustedApplication.project_modification_request).subscribe(
+			(): void => {
+				this.showNotificationModal('Success', 'The modification request has been adjusted successfully!', 'success');
+			},
+			(): void => {
+				this.showNotificationModal('Failed', 'The adjustment of the modification request has failed!', 'danger');
 			},
 		);
 	}
@@ -396,7 +426,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	/**
 	 * Get all Applications if user is admin.
 	 */
-	getSubmittedApplications(): void {
+	getSubmittedApplicationsAdmin(): void {
 		if (this.is_vo_admin) {
 			this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
 				if (applications.length === 0) {
@@ -436,31 +466,31 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	sortApplicationsByTabState(): void {
 		switch (this.tab_state) {
 			case TabStates.SUBMITTED:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_application_date_submitted).getTime()
-						- new Date(b.project_application_date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_application_date_submitted).getTime()
+						- new Date(b.project_application_date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.LIFETIME_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_lifetime_request.date_submitted).getTime()
-						- new Date(b.project_lifetime_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_lifetime_request.date_submitted).getTime()
+						- new Date(b.project_lifetime_request.date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.MODIFICATION_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_modification_request.date_submitted).getTime()
-						- new Date(b.project_modification_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_modification_request.date_submitted).getTime()
+						- new Date(b.project_modification_request.date_submitted).getTime(),
+				);
 				break;
 
 			case TabStates.CREDITS_EXTENSION:
-				this.all_applications.sort((a, b) => (
-					new Date(a.project_credit_request.date_submitted).getTime()
-						- new Date(b.project_credit_request.date_submitted).getTime()
-				));
+				this.all_applications.sort(
+					(a, b) => new Date(a.project_credit_request.date_submitted).getTime()
+						- new Date(b.project_credit_request.date_submitted).getTime(),
+				);
 				break;
 
 			default:
@@ -468,78 +498,93 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		}
 	}
 
+	getSubmittedApplications(): void {
+		this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
+			if (applications.length === 0) {
+				this.isLoaded_userApplication = true;
+			}
+			for (const application of applications) {
+				this.all_applications.push(new Application(application));
+			}
+			for (const app of this.all_applications) {
+				this.getFacilityProject(app);
+			}
+			this.sortApplicationsByTabState();
+
+			this.isLoaded = true;
+			this.loading_applications = false;
+		});
+	}
+
+	getCreditsExtensionRequests(): void {
+		this.applicationsService.getCreditsExtensionRequest().subscribe((credit_applications: Application[]): void => {
+			if (credit_applications.length === 0) {
+				// bool here?
+			}
+			for (const credit_application of credit_applications) {
+				this.all_applications.push(new Application(credit_application));
+			}
+			for (const app of this.all_applications) {
+				this.getFacilityProject(app);
+			}
+			this.sortApplicationsByTabState();
+
+			this.isLoaded = true;
+			this.loading_applications = false;
+		});
+	}
+
+	getLifetimeExtensionRequests(): void {
+		this.applicationsService
+			.getLifetimeRequestedApplications()
+			.subscribe((lifetime_applications: Application[]): void => {
+				if (lifetime_applications.length === 0) {
+					// bool here?
+				}
+				for (const lifetime_application of lifetime_applications) {
+					this.all_applications.push(new Application(lifetime_application));
+				}
+				for (const app of this.all_applications) {
+					this.getFacilityProject(app);
+				}
+				this.sortApplicationsByTabState();
+
+				this.isLoaded = true;
+				this.loading_applications = false;
+			});
+	}
+	getModificationRequests(): void {
+		this.applicationsService
+			.getModificationRequestedApplications()
+			.subscribe((modification_applications: Application[]): void => {
+				if (modification_applications.length === 0) {
+					// bool here?
+				}
+				for (const modification_application of modification_applications) {
+					this.all_applications.push(new Application(modification_application));
+				}
+				for (const app of this.all_applications) {
+					this.getFacilityProject(app);
+				}
+				this.sortApplicationsByTabState();
+
+				this.isLoaded = true;
+				this.loading_applications = false;
+			});
+	}
+
 	getApplicationsByTabState(): void {
 		this.loading_applications = true;
 		if (this.is_vo_admin) {
 			this.clearApplicationLists();
 			if (this.tab_state === TabStates.SUBMITTED) {
-				this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
-					if (applications.length === 0) {
-						this.isLoaded_userApplication = true;
-					}
-					for (const application of applications) {
-						this.all_applications.push(new Application(application));
-					}
-					for (const app of this.all_applications) {
-						this.getFacilityProject(app);
-					}
-					this.sortApplicationsByTabState();
-
-					this.isLoaded = true;
-					this.loading_applications = false;
-				});
+				this.getSubmittedApplications();
 			} else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
-				this.applicationsService.getCreditsExtensionRequest().subscribe((credit_applications: Application[]): void => {
-					if (credit_applications.length === 0) {
-						// bool here?
-					}
-					for (const credit_application of credit_applications) {
-						this.all_applications.push(new Application(credit_application));
-					}
-					for (const app of this.all_applications) {
-						this.getFacilityProject(app);
-					}
-					this.sortApplicationsByTabState();
-
-					this.isLoaded = true;
-					this.loading_applications = false;
-				});
+				this.getCreditsExtensionRequests();
 			} else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
-				this.applicationsService
-					.getLifetimeRequestedApplications()
-					.subscribe((lifetime_applications: Application[]): void => {
-						if (lifetime_applications.length === 0) {
-							// bool here?
-						}
-						for (const lifetime_application of lifetime_applications) {
-							this.all_applications.push(new Application(lifetime_application));
-						}
-						for (const app of this.all_applications) {
-							this.getFacilityProject(app);
-						}
-						this.sortApplicationsByTabState();
-
-						this.isLoaded = true;
-						this.loading_applications = false;
-					});
+				this.getLifetimeExtensionRequests();
 			} else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
-				this.applicationsService
-					.getModificationRequestedApplications()
-					.subscribe((modification_applications: Application[]): void => {
-						if (modification_applications.length === 0) {
-							// bool here?
-						}
-						for (const modification_application of modification_applications) {
-							this.all_applications.push(new Application(modification_application));
-						}
-						for (const app of this.all_applications) {
-							this.getFacilityProject(app);
-						}
-						this.sortApplicationsByTabState();
-
-						this.isLoaded = true;
-						this.loading_applications = false;
-					});
+				this.getModificationRequests();
 			}
 		}
 	}
@@ -622,12 +667,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			},
 			(error: any): void => {
+				const errorMessage =					error && error.error === 'locked'
+					? 'Project is locked and could not be created!'
+					: 'Project could not be created!';
+
+				this.showNotificationModal('Failed', errorMessage, 'danger');
 				console.log(error);
-				if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
-					this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
-				} else {
-					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-				}
 			},
 		);
 	}
@@ -684,6 +729,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.bsModalRef.setClass('modal-lg');
 	}
 
+	showModificationAdjustmentModal() {
+		this.adjustedApplication = this.selectedApplication;
+		const initialState = {
+			project: this.adjustedApplication,
+			adjustment: true,
+		};
+		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
+		this.bsModalRef.setClass('modal-xl');
+		this.subscribeToBsModalRef();
+		// this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
+	}
+
 	/**
 	 * Function to listen to modal results.
 	 */
@@ -727,6 +784,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 						this.switchApproveLocked(true);
 					}
 				}
+				if (result['action'] === 'adjustedModificationRequest') {
+					this.isLoaded = false;
+					this.changeTabState(TabStates.MODIFICATION_EXTENSION);
+				}
 			}),
 		);
 	}
@@ -752,13 +813,14 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 						// this.reloadApplicationList(application_id)
 					}
 				},
-				(error: object): void => {
+				(error: any): void => {
 					console.log(error);
-					if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
-						this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
-					} else {
-						this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-					}
+					const errorMessage =						error && error.error === 'locked'
+						? 'Project is locked and could not be created!'
+						: 'Project could not be created!';
+
+					this.showNotificationModal('Failed', errorMessage, 'danger');
+					console.log(error);
 				},
 			);
 		} else {
@@ -785,20 +847,20 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				} else {
 					this.showNotificationModal('Success', `The project was created in ${res['client']} !`, 'success');
 					this.all_applications = [];
-					this.getSubmittedApplications();
+					this.getSubmittedApplicationsAdmin();
 					this.applicationsService.getExtensionRequestsCounter().subscribe((result: any): void => {
 						this.numberOfProjectApplications = result['applications_submitted_vo'];
 					});
 					this.switchApproveLocked(false);
 				}
 			},
-			(error: object): void => {
+			(error: any): void => {
+				const errorMessage =					error && error.error === 'locked'
+					? 'Project is locked and could not be created!'
+					: 'Project could not be created!';
+
+				this.showNotificationModal('Failed', errorMessage, 'danger');
 				console.log(error);
-				if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
-					this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
-				} else {
-					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-				}
 			},
 		);
 	}
@@ -842,11 +904,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		const idx: number = this.all_applications.indexOf(app);
 		this.applicationsService.declineApplication(app.project_application_id).subscribe(
 			(): void => {
-				let message: string = 'The Application was declined.';
-				if (app.project_application_openstack_project && app.project_application_perun_id) {
-					message = `The Application was declined. The perun id was ${app.project_application_perun_id},
-					please remember to delete the perun group.`;
-				}
+				const message: string = 'The Application was declined.';
+
 				this.showNotificationModal('Success', message, 'success');
 				this.all_applications.splice(idx, 1);
 				this.getApplicationNumbers();
@@ -856,6 +915,22 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				this.changeTabState(this.tab_state);
 			},
 		);
+	}
+
+	setCurrentUserProcessingVoManager(application: Application): void {
+		if (this.is_vo_admin) {
+			this.voService.setCurrentUserProcessingVoManager(application.project_application_id).subscribe((res: any) => {
+				application.processing_vo_initials = res['processing_vo_initials'];
+			});
+		}
+	}
+
+	unsetProcessingVoManager(application: Application): void {
+		if (this.is_vo_admin) {
+			this.voService.unsetProcessingVoManager(application.project_application_id).subscribe(() => {
+				application.processing_vo_initials = null;
+			});
+		}
 	}
 
 	switchReassignLocked(check: boolean): void {
@@ -868,5 +943,40 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	switchApproveLocked(check: boolean): void {
 		this.approveLocked = check;
+	}
+
+	togglePersonalDataType(checked: boolean, data_type: string) {
+		switch (data_type) {
+			case 'person_related': {
+				if (!checked) {
+					this.adjustedApplication.project_application_no_personal_data = false;
+					this.adjustedApplication.project_application_nonsensitive_data = false;
+					this.adjustedApplication.project_application_sensitive_data = false;
+				}
+				break;
+			}
+			case 'no_personal_data': {
+				if (checked) {
+					this.adjustedApplication.project_application_nonsensitive_data = false;
+					this.adjustedApplication.project_application_sensitive_data = false;
+				}
+				break;
+			}
+			case 'nonsensitive': {
+				if (checked) {
+					this.adjustedApplication.project_application_no_personal_data = false;
+				}
+				break;
+			}
+			case 'sensitive': {
+				if (checked) {
+					this.adjustedApplication.project_application_no_personal_data = false;
+				}
+				break;
+			}
+			default:
+				break;
+		}
+		console.log(this.adjustedApplication);
 	}
 }
