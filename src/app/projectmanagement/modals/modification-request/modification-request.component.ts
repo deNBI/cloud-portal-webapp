@@ -148,6 +148,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			flavor.counter = amount;
 			this.temp_project_modification.flavors.push(flavor);
 		}
+		console.log(this.temp_project_modification.flavors);
 		this.min_vm =			this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0;
 		this.temp_project_modification.calculateRamCores();
 		this.getExtraCredits();
@@ -165,7 +166,8 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	 * @param current determines if the values returned shall be the actual application values or the modification values
 	 */
 	calculateResourcesByType(shortcut: string, current: boolean): any {
-		const dict: any = {
+		// eslint-disable-next-line prefer-const
+		let dict: any = {
 			total_cores: 0,
 			total_ram: 0,
 			total_gpus: 0,
@@ -178,12 +180,12 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			correspondingProject = this.temp_project_modification;
 		}
 		for (const flavor of correspondingProject.flavors) {
-			if (flavor?.type.shortcut === shortcut) {
-				dict.total_cores += flavor.vcpus;
-				dict.total_ram += flavor.ram_mb;
-				dict.machines += 1;
+			if (flavor?.type.shortcut.toUpperCase() === shortcut) {
+				dict.total_cores += flavor.counter * flavor.vcpus;
+				dict.total_ram += flavor.counter * flavor.ram_mb;
+				dict.machines += flavor.counter;
 				if (flavor?.type?.shortcut.toUpperCase() === this.GPU_SHORTCUT) {
-					dict.total_gpus += flavor.gpu;
+					dict.total_gpus += flavor.counter * flavor.gpu;
 				}
 			}
 		}
@@ -200,7 +202,6 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		const requestingHMF: any = this.calculateResourcesByType(this.HMF_SHORTCUT, false);
 		const requestingGPU: any = this.calculateResourcesByType(this.GPU_SHORTCUT, false);
 
-		// does not return the correct values so far, as the changes on the template dont seem to be transferred to the models correctly?
 		return (
 			this.isMoreCriticalResources(currentHMF, requestingHMF) || this.isMoreCriticalResources(currentGPU, requestingGPU)
 		);
@@ -208,7 +209,6 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 
 	isMoreCriticalResources(current: any, requesting: any): boolean {
 		for (const key in current) {
-			console.log(`${key} for current is ${current[key]}, while for new is ${requesting[key]}`);
 			if (requesting[key] > current[key]) {
 				return true;
 			}
