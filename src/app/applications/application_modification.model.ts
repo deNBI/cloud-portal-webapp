@@ -22,6 +22,7 @@ export class ApplicationModification {
 	flavors: Flavor[] = [];
 	cloud_service_develop: boolean = false;
 	cloud_service_user_number: number;
+	manager_comment: string;
 
 	constructor(extension?: Partial<ApplicationModification>) {
 		Object.assign(this, extension);

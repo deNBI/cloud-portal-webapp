@@ -24,6 +24,26 @@ export class ApplicationsService {
 		});
 	}
 
+	adjustLifetimeExtension(application: ApplicationLifetimeExtension): Observable<Application> {
+		return this.http.post<Application>(
+			`${ApiSettings.getApiBaseURL()}project_applications/adjust/lifetime/`,
+			application,
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
+	adjustModification(application: ApplicationModification): Observable<Application> {
+		return this.http.post<Application>(
+			`${ApiSettings.getApiBaseURL()}project_applications/adjust/modification/`,
+			application,
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
 	getApplicationValidationByHash(hash: string): Observable<Application> {
 		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
 			withCredentials: true,
