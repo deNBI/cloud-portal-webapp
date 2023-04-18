@@ -58,9 +58,12 @@
 		</div>
 		<div *ngIf="current_key_blocked">
 			<alert type="danger">
-				<strong>Warning</strong> Due to the security concerns, your key has been blocked permanently, and you won't be
+				<strong>Warning</strong> Due to security concerns, your key has been blocked permanently, and you won't be
 				able to use it anymore. It's highly recommended that you change your key immediately to prevent any further
-				security breaches.
+				security breaches.<br>
+						If you have questions or need help, please E-Mail us at
+				<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+				>.
 			</alert>
 		</div></span
 	>
@@ -184,9 +187,13 @@
 					<strong>Warning</strong> This is not a valid public key!
 				</alert>
 				<alert type="danger" *ngIf="(!(this.public_key | isValidKeyPipe) || blocked_key) && validated_key">
-					<strong>Warning</strong>Due to the security concerns, your key has been blocked permanently, and you won't be
+					<strong>Warning</strong>Due to security concerns, your key has been blocked permanently, and you won't be
 					able to use it anymore. It's highly recommended that you change your key immediately to prevent any further
-					security breaches.
+					security breaches.<br>
+						If you have questions or need help, please E-Mail us at
+				<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+				>.
+
 				</alert>
 				<alert type="info">
 					Currently supported public key formats are RSA and ECDSA (SHA2, NIST P256, P384 or P521).
