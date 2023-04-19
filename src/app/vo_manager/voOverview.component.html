@@ -23,6 +23,14 @@
 				<i class="icon-envelope-letter"></i> Send newsletter ({{ newsletterSubscriptionCounter }})
 			</button>
 
+						<button
+				(click)="openProjectMailsModal(); "
+				type="button "
+				class="btn btn-outline-primary"
+				style="margin-bottom: auto; margin-left: auto; margin-top: auto"
+			>	<i class="icon-envelope-letter"></i>
+				Send Project Maisl
+			</button>
 			<button
 				(click)="setEmailType(0); emailModal.show()"
 				type="button "
