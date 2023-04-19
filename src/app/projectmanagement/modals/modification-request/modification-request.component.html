@@ -598,8 +598,9 @@
 					[required]="extraResourceCommentRequired"
 					[(ngModel)]="temp_project_modification.comment"
 					[ngClass]="{
-						'is-invalid': modificationForm.controls.project_application_renewal_comment?.invalid,
-						'is-valid': modificationForm.controls.project_application_renewal_comment?.valid
+						'is-invalid':
+							modificationForm.controls.project_application_renewal_comment?.invalid || !checkValidityComment(),
+						'is-valid': modificationForm.controls.project_application_renewal_comment?.valid && checkValidityComment()
 					}"
 				></textarea>
 				<span class="help-block">Additional information you want to share?</span>
@@ -698,7 +699,7 @@
 			id="submit_modification_btn"
 			data-test-id="submit_modification_request_button"
 			(click)="bsModalRef.hide(); showSubmitModal(false)"
-			[disabled]="modificationForm.invalid || !min_vm"
+			[disabled]="modificationForm.invalid || !min_vm || !checkValidityComment()"
 		>
 			<i class="far fa-dot-circle"></i>
 			Submit
