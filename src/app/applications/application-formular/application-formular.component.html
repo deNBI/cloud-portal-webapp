@@ -534,6 +534,9 @@
 										'is-valid': form.controls.project_application_comment?.valid && checkValidityComment()
 									}"
 								></textarea>
+								<div id="project_application_comment_feedback" class="invalid-feedback" *ngIf="!checkValidityComment()">
+									Please provide a more detailed description. At least 50 characters must be entered.
+								</div>
 								<span class="help-block">Additional information you want to share?</span>
 							</div>
 						</div>
