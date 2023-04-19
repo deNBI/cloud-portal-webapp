@@ -92,6 +92,20 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	checkValidityComment(): boolean {
+		if (this.extraResourceCommentRequired) {
+			if (this.temp_project_modification.comment.length < 50) {
+				return false;
+			} else {
+				const regExp = /[a-zA-Z]/g;
+
+				return regExp.test(this.temp_project_modification.comment);
+			}
+		} else {
+			return true;
+		}
+	}
+
 	getFlavors(): void {
 		this.subscription.add(
 			this.flavorService
@@ -148,7 +162,6 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			flavor.counter = amount;
 			this.temp_project_modification.flavors.push(flavor);
 		}
-		console.log(this.temp_project_modification.flavors);
 		this.min_vm =			this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0;
 		this.temp_project_modification.calculateRamCores();
 		this.getExtraCredits();
