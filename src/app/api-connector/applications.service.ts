@@ -61,8 +61,6 @@ export class ApplicationsService {
 	}
 
 	validateApplicationAsPIByHash(hash: string, application: Application): Observable<any> {
-		console.log(application.project_application_edam_terms);
-
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, application, {
 			withCredentials: true,
 		});

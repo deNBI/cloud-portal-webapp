@@ -51,10 +51,21 @@
 	</div>
 </th>
 <td class="col-9" style="width: 75%">
-	<span *ngIf="userinfo.PublicKey === 'None'"> No public key is set</span>
-	<span *ngIf="userinfo.PublicKey !== 'None'" style="word-wrap: break-word; max-width: 80px; white-space: normal">
+	<span *ngIf="userinfo?.PublicKey === 'None'"> No public key is set</span>
+	<span *ngIf="userinfo?.PublicKey !== 'None'" style="word-wrap: break-word; max-width: 80px; white-space: normal">
 		<div style="word-break: break-all" data-test-id="user_public_key" id="user_public_key">
 			{{ userinfo?.PublicKey }}
+		</div>
+		<div *ngIf="current_key_blocked">
+			<alert type="danger">
+				<strong>Warning: </strong> Due to security concerns, your key has been blocked permanently, and you won't be
+				able to use it anymore. It's highly recommended that you change your key immediately to prevent any further
+				security breaches.
+				<p>
+					If you have questions or need help, please E-Mail us at
+					<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a>
+				</p>
+			</alert>
 		</div></span
 	>
 </td>
@@ -176,6 +187,16 @@
 				<alert type="danger" *ngIf="(!(this.public_key | isValidKeyPipe) || !validated_key) && public_key?.length > 0">
 					<strong>Warning</strong> This is not a valid public key!
 				</alert>
+				<alert type="danger" *ngIf="(!(this.public_key | isValidKeyPipe) || blocked_key) && validated_key">
+					<strong>Warning: </strong>Due to security concerns, your key has been blocked permanently, and you won't be
+					able to use it anymore. It's highly recommended that you change your key immediately to prevent any further
+					security breaches.
+					<p>
+						If you have questions or need help, please E-Mail us at
+						<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+						>.
+					</p>
+				</alert>
 				<alert type="info">
 					Currently supported public key formats are RSA and ECDSA (SHA2, NIST P256, P384 or P521).
 				</alert>
@@ -188,7 +209,7 @@
 					placeholder="Please enter a new valid public key."
 					name="public_key"
 					[(ngModel)]="public_key"
-					(ngModelChange)="public_key = $event.trim(); validateKey()"
+					(ngModelChange)="public_key = $event.trim(); isKeyBlocked(); validateKey()"
 					[ngClass]="(public_key | isValidKeyPipe) && validated_key ? 'is-valid' : 'is-invalid'"
 					#publickey
 				></textarea>
@@ -197,7 +218,7 @@
 
 				<div
 					class="alert"
-					*ngIf="(this.public_key | isValidKeyPipe) && validated_key"
+					*ngIf="(this.public_key | isValidKeyPipe) && validated_key && !blocked_key"
 					[ngClass]="acknowledgement_given ? 'alert-info' : 'alert-danger'"
 				>
 					<strong>Warning!</strong> Replacing your current public key with a different one will render all your
@@ -221,7 +242,7 @@
 
 			<div class="modal-footer">
 				<button
-					[disabled]="!(this.public_key | isValidKeyPipe) || !validated_key || !acknowledgement_given"
+					[disabled]="!(this.public_key | isValidKeyPipe) || !validated_key || !acknowledgement_given || blocked_key"
 					class="btn btn-success col-md4"
 					type="button"
 					id="set_new_public_key_button"

@@ -1,5 +1,5 @@
-<div *ngIf="userinfo_loaded && userinfo?.PublicKey === 'None'">
-	<div>
+<div *ngIf="userinfo_loaded">
+	<div [hidden]="userinfo?.PublicKey !== 'None' && !current_key_blocked">
 		<div class="card">
 			<div class="card-header"><i class="fa fa-align-justify"></i> Public Key</div>
 
@@ -10,7 +10,7 @@
 				</div>
 				<div style="width: 100%" class="table-responsive">
 					<table class="table table-striped">
-						<tr app-public-key [userinfo]="userinfo"></tr>
+						<tr app-public-key [userinfo]="userinfo" (currentKeyBlockedChanged)="setCurrentKeyBlocked($event)"></tr>
 					</table>
 				</div>
 			</div>
@@ -28,7 +28,10 @@
 </div>
 <div
 	*ngIf="
-		userinfo?.PublicKey !== 'None' && projects.length > 0 && (!singleProject || (singleProject && projectDataLoaded))
+		!current_key_blocked &&
+		userinfo?.PublicKey !== 'None' &&
+		projects.length > 0 &&
+		(!singleProject || (singleProject && projectDataLoaded))
 	"
 	class="animated fadeIn"
 >
@@ -83,7 +86,7 @@
 							</div>
 							<div *ngIf="selectedProject && (allowedProjects | inAllowed : selectedProject)">
 								<div *ngIf="client_available && projectDataLoaded">
-									<app-resource-overview [ressourceUsage]="selectedProjectRessources"> </app-resource-overview>
+									<app-resource-overview [ressourceUsage]="selectedProjectRessources"></app-resource-overview>
 									<div
 										class="alert alert-warning"
 										*ngIf="
@@ -399,7 +402,8 @@
 																			id="id_option_{{ vol.volume_name }}"
 																			(click)="selected_detached_vol = vol"
 																		>
-																			{{ vol.volume_name }} ({{ vol.volume_storage }} GB)
+																			{{ vol.volume_name }}
+																			({{ vol.volume_storage }} GB)
 																		</option>
 																	</select>
 																	<div
@@ -431,7 +435,8 @@
 																			</div>
 																		</div>
 																		<div class="rTableCellNoBorder col-2">
-																			{{ selected_detached_vol.volume_storage }} GB
+																			{{ selected_detached_vol.volume_storage }}
+																			GB
 																		</div>
 																		<div class="rTableCellNoBorder col-2">
 																			<button
@@ -495,9 +500,15 @@
 																</div>
 																<ng-container *ngFor="let vol of volumesToMount">
 																	<div class="rTableRow">
-																		<div class="rTableCellNoBorder">{{ vol.volume_name }} (New)</div>
+																		<div class="rTableCellNoBorder">
+																			{{ vol.volume_name }}
+																			(New)
+																		</div>
 																		<div class="rTableCellNoBorder">/vol/{{ vol.volume_path }}</div>
-																		<div class="rTableCellNoBorder">{{ vol.volume_storage }} GB</div>
+																		<div class="rTableCellNoBorder">
+																			{{ vol.volume_storage }}
+																			GB
+																		</div>
 																		<div class="rTableCellNoBorder">
 																			<button class="btn btn-danger" (click)="removeVolFromList(vol)">
 																				Remove
@@ -508,9 +519,15 @@
 																</ng-container>
 																<ng-container *ngFor="let vol of volumesToAttach">
 																	<div class="rTableRow">
-																		<div class="rTableCellNoBorder">{{ vol.volume_name }} (Existing)</div>
+																		<div class="rTableCellNoBorder">
+																			{{ vol.volume_name }}
+																			(Existing)
+																		</div>
 																		<div class="rTableCellNoBorder">/vol/{{ vol.volume_path }}</div>
-																		<div class="rTableCellNoBorder">{{ vol.volume_storage }} GB</div>
+																		<div class="rTableCellNoBorder">
+																			{{ vol.volume_storage }}
+																			GB
+																		</div>
 																		<div class="rTableCellNoBorder">
 																			<button class="btn btn-danger" (click)="removeAttachVolume(vol)">
 																				Remove
@@ -911,8 +928,8 @@
 													Start VM
 												</button>
 											</div>
-										</div></ng-container
-									>
+										</div>
+									</ng-container>
 								</div>
 							</div>
 							<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed : selectedProject)">

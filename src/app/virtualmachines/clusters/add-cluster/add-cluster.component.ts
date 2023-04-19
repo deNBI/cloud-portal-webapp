@@ -110,6 +110,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 * Userinfo from the user.
 	 */
 	userinfo: Userinfo;
+	current_key_blocked: boolean = false;
 
 	/**
 	 * Selected Project vms client.
@@ -189,6 +190,10 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		});
 		this.workerInstancesCount = count;
 		this.newVms = this.workerInstancesCount + 1;
+	}
+
+	setCurrentKeyBlocked(value: boolean): void {
+		this.current_key_blocked = value;
 	}
 
 	changeCount(): void {

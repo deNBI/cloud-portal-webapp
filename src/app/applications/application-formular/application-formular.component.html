@@ -297,23 +297,31 @@
 						<div class="form-group row">
 							<h5 class="col-md-12 form-control-label">Resources</h5>
 						</div>
-						<div class="alert alert-warning" role="alert">
-							<span class="fa-stack fa-lg">
-								<i class="fas fa-circle fa-stack-2x"></i>
-								<i class="fas fa-info fa-stack-1x fa-inverse"></i>
-							</span>
-							<strong
-								>Note: The amount of resources requested here is not definite. You are able to request more resources
-								after the approval of the project. We recommend starting with a smaller amount of resources and testing
-								the setup before requesting more.</strong
-							>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="alert alert-warning" role="alert">
+									<span class="fa-stack fa-lg">
+										<i class="fas fa-circle fa-stack-2x"></i>
+										<i class="fas fa-info fa-stack-1x fa-inverse"></i>
+									</span>
+									<strong
+										>Note: The amount of resources requested here is not definite. You are able to request more
+										resources after the approval of the project.</strong
+									>
+								</div>
+							</div>
 						</div>
-						<div class="alert alert-primary" role="alert">
-							Please fill in an appropriate estimation of the resources required for your project.
-							<br /><strong>Please Consider:</strong> In terms of flavors, there may be slight, location-dependent
-							differences in the number of VCPUs and the amount of RAM per VM, depending on the data centre ultimately
-							assigned.
+						<div class="row">
+							<div class="col-md-12">
+								<div class="alert alert-primary" role="alert">
+									Please fill in an appropriate estimation of the resources required for your project.
+									<br /><strong>Please Consider:</strong> In terms of flavors, there may be slight, location-dependent
+									differences in the number of VCPUs and the amount of RAM per VM, depending on the data centre
+									ultimately assigned.
+								</div>
+							</div>
 						</div>
+
 						<accordion>
 							<ng-container *ngFor="let t of typeList; first as isFirst">
 								<accordion-group *ngIf="checkIfTypeGotSimpleVmFlavor(t)" [isOpen]="isFirst" #groupval>
@@ -1394,9 +1402,9 @@
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label"
 								><strong
-									>Link to Institute site
+									>Link to PI verification
 									<i
-										data-balloon="It is possible to provide a link to show that the PI provided is in fact a PI."
+										data-balloon="It is possible to provide a link to verifies the PI status of the stated PI"
 										data-balloon-pos="right"
 										data-balloon-length="large"
 										><i class="icon-question menu_links" style="cursor: pointer"></i></i></strong
@@ -1425,15 +1433,18 @@
 												form.controls.project_application_pi_link_input?.touched)
 									}"
 								/>
-								<span class="help-block"> </span>Provide a link to the institute or workgroup website<br />
+								<span class="help-block"> </span>Provide a link to the institute or workgroup website of the PI<br />
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-4"></div>
 							<div class="col-md-8">
 								<div class="alert alert-info">
-									Please note: Providing a link is optional, but can simplify the application process by reducing
-									potential queries from cloud governance for verification of the PI.
+									<strong
+										>Please provide a link here to a page showing that the PI you have specified is the head of the
+										specified institute or working group.</strong
+									>
+									This speeds up the application process tremendously.
 								</div>
 							</div>
 						</div>
@@ -1524,11 +1535,13 @@
 							class="form-group row justify-content-center"
 						>
 							<div class="col-md-4"></div>
-							<div class="col-md-8 alert alert-primary">
-								Only applications approved by a principal investigator of a german university or research facility will
-								be accepted. You are able to enter an email address of your principal investigator whom we will send an
-								email, containing your name and email address and a link informing them about the requested resources,
-								where they will be able to approve this application.
+							<div class="col-md-8">
+								<div class="alert alert-primary">
+									Only applications approved by a principal investigator of a german university or research facility
+									will be accepted. You are able to enter an email address of your principal investigator whom we will
+									send an email, containing your name and email address and a link informing them about the requested
+									resources, where they will be able to approve this application.
+								</div>
 							</div>
 							<div class="col-md-4"></div>
 						</div>

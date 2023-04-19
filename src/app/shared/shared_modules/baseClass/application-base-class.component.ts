@@ -151,7 +151,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		}
 		this.calculateRamCores();
 		this.checkExtraResourceCommentRequired();
-		console.log(this.newFlavors);
 	}
 
 	checkExtraResourceCommentRequired(): void {
