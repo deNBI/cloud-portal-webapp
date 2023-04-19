@@ -3,7 +3,7 @@ import {
 		Component, OnInit, QueryList, ViewChildren,
 } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Observable} from 'rxjs';
+import {map, Observable, take} from 'rxjs';
 import {VoService} from '../api-connector/vo.service';
 import {ProjectMember} from '../projectmanagement/project_member.model';
 import {GroupService} from '../api-connector/group.service';
@@ -21,6 +21,7 @@ import {ProjectSortService} from '../shared/shared_modules/services/project-sort
 import {StopVmComponent} from '../virtualmachines/modals/stop-vm/stop-vm.component';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {ProjectEmailModalComponent} from '../shared/modal/email/project-email-modal/project-email-modal.component';
+import {application} from 'express';
 
 /**
  * Vo Overview component.
@@ -45,6 +46,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 		public removalDate: Date = new Date();
 		public selectedProject: Application;
+		selectedEmailProjects: Application[] = [];
 		computecenters: ComputecenterComponent[] = [];
 		bsModalRef: BsModalRef;
 
@@ -91,27 +93,70 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 		ngOnInit(): void {
 				this.getVoProjects();
-				this.getMailTemplates()
 				this.getComputeCenters();
 				this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
 						this.newsletterSubscriptionCounter = result.value as number;
 				});
 		}
 
+		selectAllFilteredProjects(): void {
+				this.selectedEmailProjects = [];
+
+				// get all the applications
+				this.applictions$.pipe(take(1)).subscribe(applications => {
+						// set the selected state of all projects to true
+						applications.forEach(application => {
+								application.is_project_selected = true;
+								this.toggleSelectedEmailApplication(application, application.is_project_selected)
+						});
+				});
+		}
+
+		unselectAll(): void {
+				this.sortProjectService.applications.forEach((pr: Application) => {
+						pr.is_project_selected = false;
+						this.toggleSelectedEmailApplication(pr, pr.is_project_selected);
+				});
+				//		this.selectedEmailProjects = []; // clear the selectedEmailProjects list
+		}
+
+		unselectAllFilteredProjects(): void {
+				// get all the applications
+				this.applictions$.pipe(take(1)).subscribe(applications => {
+						// set the selected state of all projects to false
+						applications.forEach(application => {
+								application.is_project_selected = false;
+								this.toggleSelectedEmailApplication(application, application.is_project_selected)
+
+						});
+				});
+		}
+
+		toggleSelectedEmailApplication(application: Application, isChecked: boolean): void {
+				const index = this.selectedEmailProjects.indexOf(application);
+
+				if (isChecked) {
+						// checkbox was checked
+						if (index === -1) {
+								// application is not in the list, so add it
+								this.selectedEmailProjects.push(application);
+						}
+				} else {
+						// checkbox was unchecked
+						if (index !== -1) {
+								// application is in the list, so remove it
+								this.selectedEmailProjects.splice(index, 1);
+						}
+				}
+		}
+
 
 		openProjectMailsModal(): void {
-				const initialState = {selectedProjects: this.projects};
+				const initialState = {selectedProjects: this.selectedEmailProjects};
 
-				this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, {initialState});
-				this.bsModalRef.setClass('modal-lg');
+				this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, {initialState, class: 'modal-lg'});
 		}
 
-		getMailTemplates(): void {
-				this.voService.getMailTemplates().subscribe((res: string[]) => {
-						this.projectMailTemplates = res
-						console.log(this.projectMailTemplates)
-				})
-		}
 
 		onSort({column, direction}: SortEvent) {
 				// resetting other headers
@@ -125,13 +170,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				this.sortProjectService.sortDirection = direction;
 		}
 
-		switchShowSimpleVmProjects(): void {
-				this.show_simple_vm_projects = !this.show_simple_vm_projects;
-		}
-
-		switchOpenStackVmProjects(): void {
-				this.show_openstack_projects = !this.show_openstack_projects;
-		}
 
 		getApplicationInfos(): void {
 				this.voService.getVoProjectResourcesTimeframes().subscribe();

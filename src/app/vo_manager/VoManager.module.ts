@@ -21,27 +21,29 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { DatePickerComponent } from '../shared/datepicking/datepicker.component';
 import { TimepickerComponent } from '../shared/datepicking/timepicker.component';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
+import {BadgeComponent} from '@coreui/angular';
 
 /**
  * VO Manager module.
  */
 @NgModule({
-	imports: [
-		VoManagerRoutingModule,
-		TabsModule,
-		FormsModule,
-		CommonModule,
-		ModalModule.forRoot(),
-		ProjectManagementModule,
-		PipeModuleModule,
-		NgbTypeaheadModule,
-		ReactiveFormsModule,
-		SharedDirectivesModule,
-		NgbPaginationModule,
-		DatePickerComponent,
-		TimepickerComponent,
-		SharedModuleModule,
-	],
+		imports: [
+				VoManagerRoutingModule,
+				TabsModule,
+				FormsModule,
+				CommonModule,
+				ModalModule.forRoot(),
+				ProjectManagementModule,
+				PipeModuleModule,
+				NgbTypeaheadModule,
+				ReactiveFormsModule,
+				SharedDirectivesModule,
+				NgbPaginationModule,
+				DatePickerComponent,
+				TimepickerComponent,
+				SharedModuleModule,
+				BadgeComponent,
+		],
 	declarations: [
 		VoOverviewComponent,
 		ResourcesComponent,
