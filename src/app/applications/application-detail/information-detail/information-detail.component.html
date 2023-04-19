@@ -6,7 +6,7 @@
 				*ngFor="let term of application?.project_application_edam_terms"
 				style="margin-left: 5px"
 				class="badge bg-info"
-				><span id="topic_{{ term }}">{{ term }}</span>
+				><span id="topic_{{ term.name }}">{{ term.name }}</span>
 			</span>
 		</h5>
 	</td>
@@ -117,7 +117,7 @@
 		</td>
 	</tr>
 	<tr *ngIf="application?.project_application_person_related_data">
-		<td>Sensitive Personal data [Articles 4 (13,14,15), 9 GDPR and Recital 51] </td>
+		<td>Sensitive Personal data [Articles 4 (13,14,15), 9 GDPR and Recital 51]</td>
 		<td>
 			<p *ngIf="application?.project_application_sensitive_data">Yes</p>
 			<p *ngIf="!application?.project_application_sensitive_data">No</p>

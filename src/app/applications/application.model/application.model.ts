@@ -108,7 +108,9 @@ export class Application {
 			}
 
 			if (aj.project_application_edam_terms) {
-				this.project_application_edam_terms = aj.project_application_edam_terms;
+				this.project_application_edam_terms = aj.project_application_edam_terms.map(
+					(term: any): EdamOntologyTerm => new EdamOntologyTerm(null, term, null, null),
+				);
 			}
 			if (aj.project_lifetime_request) {
 				this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
