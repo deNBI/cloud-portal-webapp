@@ -530,10 +530,13 @@
 									placeholder=""
 									[(ngModel)]="application.project_application_comment"
 									[ngClass]="{
-										'is-invalid': form.controls.project_application_comment?.invalid,
-										'is-valid': form.controls.project_application_comment?.valid
+										'is-invalid': form.controls.project_application_comment?.invalid || !checkValidityComment(),
+										'is-valid': form.controls.project_application_comment?.valid && checkValidityComment()
 									}"
 								></textarea>
+								<div id="project_application_comment_feedback" class="invalid-feedback" *ngIf="!checkValidityComment()">
+									Please provide a more detailed description. At least 50 characters must be entered.
+								</div>
 								<span class="help-block">Additional information you want to share?</span>
 							</div>
 						</div>
@@ -1728,7 +1731,9 @@
 								application?.project_application_edam_terms.length === 0 ||
 								application?.project_application_edam_terms.length > 10 ||
 								(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
-								(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed)
+								(!application?.dissemination?.isPlatformSelected() &&
+									application?.project_application_report_allowed) ||
+								!checkValidityComment()
 							"
 							class="btn btn-sm btn-success"
 							type="button"
