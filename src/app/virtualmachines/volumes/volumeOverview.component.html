@@ -39,11 +39,14 @@
 </div>
 
 <div *ngIf="isLoaded" class="card" style="">
-	<div class="card-header">
-		<strong>Volumes</strong> – Overview
-	</div>
+	<div class="card-header"><strong>Volumes</strong> – Overview</div>
 	<div *ngIf="showFacilities" style="margin-bottom: 10px">
-		<select [(ngModel)]="selectedFacility" class="form-control form-select" name="selectedFacility">
+		<select
+			[(ngModel)]="selectedFacility"
+			class="form-control form-select"
+			name="selectedFacility"
+			(ngModelChange)="getFacilityVolumes()"
+		>
 			<option *ngFor="let facility of managerFacilities" [ngValue]="facility">
 				{{ facility['Facility'] }}
 			</option>
@@ -158,7 +161,8 @@
 					<div class="rTableHead col-1">
 						<input type="checkbox" [checked]="all_volumes_checked" (change)="changeCheckAllVolumes()" /><strong
 							style="margin-left: 2px"
-							> Select all</strong
+						>
+							Select all</strong
 						>
 					</div>
 				</div>
@@ -191,82 +195,82 @@
 
 					<div class="rTableCell">{{ volume?.volume_storage }} GB</div>
 					<div class="rTableCell">
-						<div *ngIf="!(volume.volume_projectid | isMigratedProjectId: migratedProjectIds)">
+						<div *ngIf="!(volume.volume_projectid | isMigratedProjectId : migratedProjectIds)">
 							<div
-							*ngIf="
-								(volume?.volume_created_by_user || showFacilities) &&
-								VolumeStates.staticNO_ACTIONS.indexOf(volume?.volume_status) === -1
-							"
-							class="btn-group"
-							dropdown
-						>
-							<button
-								class="btn btn-secondary"
-								(click)="setRequestStatus(0); setSelectedVolume(volume); verifyModal.show()"
-								type="button"
-								id="delete_button_{{ volume.volume_name }}"
+								*ngIf="
+									(volume?.volume_created_by_user || showFacilities) &&
+									VolumeStates.staticNO_ACTIONS.indexOf(volume?.volume_status) === -1
+								"
+								class="btn-group"
+								dropdown
 							>
-								Delete Volume
-							</button>
-							<button
-								class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-								type="button"
-								aria-haspopup="true"
-								aria-expanded="false"
-								dropdownToggle
-								aria-controls="dropdown-split"
-							></button>
-							<ul class="dropdown-menu" style="cursor: pointer" role="menu" *dropdownMenu>
-								<li
-									*ngIf="volume?.volume_virtualmachine && volume?.volume_status !== VolumeStates.staticERROR"
-									role="menuitem"
+								<button
+									class="btn btn-secondary"
+									(click)="setRequestStatus(0); setSelectedVolume(volume); verifyModal.show()"
+									type="button"
+									id="delete_button_{{ volume.volume_name }}"
 								>
-									<a class="dropdown-item" (click)="setRequestStatus(1); setSelectedVolume(volume); verifyModal.show()"
-										>Detach Volume</a
+									Delete Volume
+								</button>
+								<button
+									class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+									type="button"
+									aria-haspopup="true"
+									aria-expanded="false"
+									dropdownToggle
+									aria-controls="dropdown-split"
+								></button>
+								<ul class="dropdown-menu" style="cursor: pointer" role="menu" *dropdownMenu>
+									<li
+										*ngIf="volume?.volume_virtualmachine && volume?.volume_status !== VolumeStates.staticERROR"
+										role="menuitem"
 									>
-								</li>
+										<a
+											class="dropdown-item"
+											(click)="setRequestStatus(1); setSelectedVolume(volume); verifyModal.show()"
+											>Detach Volume</a
+										>
+									</li>
 
-								<li
-									*ngIf="!volume?.volume_virtualmachine && volume?.volume_status !== VolumeStates.staticERROR"
-									role="menuitem"
-								>
-									<a
-										class="dropdown-item"
-										(click)="
-											getActiveVmsByProject(volume?.volume_projectid); setSelectedVolume(volume); attachModal.show()
-										"
-										>Attach Volume</a
+									<li
+										*ngIf="!volume?.volume_virtualmachine && volume?.volume_status !== VolumeStates.staticERROR"
+										role="menuitem"
 									>
-								</li>
-								<li *ngIf="volume?.volume_status !== VolumeStates.staticERROR" role="menuitem">
-									<a
-										class="dropdown-item"
-										(click)="
-											extendVolumeStorage = volume?.volume_storage + 1;
-											selected_volume = volume;
-											getSelectedVolumeStorage();
-											extendModal.show()
-										"
-										>Extend Volume</a
-									>
-								</li>
-								<li role="menuitem">
-									<a class="dropdown-item" (click)="setSelectedVolume(volume); renameModal.show()">Rename Volume</a>
-								</li>
-							</ul>
-						</div>
-						</div>
-						<div *ngIf="(volume.volume_projectid | isMigratedProjectId: migratedProjectIds)">
-							<div class="alert alert-info">
-								This volume is part of a migrated project!
+										<a
+											class="dropdown-item"
+											(click)="
+												getActiveVmsByProject(volume?.volume_projectid); setSelectedVolume(volume); attachModal.show()
+											"
+											>Attach Volume</a
+										>
+									</li>
+									<li *ngIf="volume?.volume_status !== VolumeStates.staticERROR" role="menuitem">
+										<a
+											class="dropdown-item"
+											(click)="
+												extendVolumeStorage = volume?.volume_storage + 1;
+												selected_volume = volume;
+												getSelectedVolumeStorage();
+												extendModal.show()
+											"
+											>Extend Volume</a
+										>
+									</li>
+									<li role="menuitem">
+										<a class="dropdown-item" (click)="setSelectedVolume(volume); renameModal.show()">Rename Volume</a>
+									</li>
+								</ul>
 							</div>
+						</div>
+						<div *ngIf="volume.volume_projectid | isMigratedProjectId : migratedProjectIds">
+							<div class="alert alert-info">This volume is part of a migrated project!</div>
 						</div>
 					</div>
 					<div class="rTableCell">
 						<input
 							type="checkbox"
-							[disabled]="(volume.volume_projectid | isMigratedProjectId: migratedProjectIds)"
-							[checked]="isVolChecked(volume) && !(volume.volume_projectid | isMigratedProjectId: migratedProjectIds)"
+							[disabled]="volume.volume_projectid | isMigratedProjectId : migratedProjectIds"
+							[checked]="isVolChecked(volume) && !(volume.volume_projectid | isMigratedProjectId : migratedProjectIds)"
 							(change)="changeCheckedVolume(volume)"
 							*ngIf="
 								(volume?.volume_created_by_user || showFacilities) &&
@@ -926,9 +930,12 @@
 							"
 						>
 							<option value="undefined" disabled selected hidden>Please Select</option>
-							<option *ngFor="let project of projects"
-											[disabled]="(project[1] | isMigratedProjectId: migratedProjectIds)"
-											[ngValue]="project" id="project_option_{{ project[0] }}">
+							<option
+								*ngFor="let project of projects"
+								[disabled]="project[1] | isMigratedProjectId : migratedProjectIds"
+								[ngValue]="project"
+								id="project_option_{{ project[0] }}"
+							>
 								{{ project[0] }}
 							</option>
 						</select>
