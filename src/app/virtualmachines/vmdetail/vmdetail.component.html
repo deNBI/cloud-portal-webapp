@@ -68,76 +68,102 @@
 				<div class="card-body">
 					<app-virtualmachineinfo [virtualMachine]="virtualMachine"></app-virtualmachineinfo>
 				</div>
-				<hr *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE" />
-				<div class="card-body" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
-					<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Connect Information</span>
-					<div class="p-x-1 py-h">
-						<div *ngFor="let mode of virtualMachine?.modes">
-							<div class="row">
-								<div class="col-4">
-									<div class="callout">
-										<small class="text-muted">via</small><br />
-										<strong class="text-muted">{{ mode.name }}</strong>
+				<hr
+					*ngIf="
+						virtualMachine?.status
+							| statusInList : [virtualMachineStates.staticACTIVE, virtualMachineStates.staticERROR]
+					"
+				/>
+				<div
+					class="card-body"
+					*ngIf="
+						virtualMachine?.status
+							| statusInList : [virtualMachineStates.staticACTIVE, virtualMachineStates.staticERROR]
+					"
+				>
+					<ng-container *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+						<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Connect Information</span>
+						<div class="p-x-1 py-h">
+							<div *ngFor="let mode of virtualMachine?.modes">
+								<div class="row">
+									<div class="col-4">
+										<div class="callout">
+											<small class="text-muted">via</small><br />
+											<strong class="text-muted">{{ mode.name }}</strong>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="callout">
+											<small class="text-muted">with</small><br />
+											<strong class="text-muted" [innerHTML]="mode?.description"></strong>
+										</div>
+									</div>
+									<div class="col-4">
+										<div
+											class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
+											id="copyCommandButton"
+											style="margin-top: 20px"
+											(click)="copyToClipboard(mode.copy_field)"
+											[closeDelay]="3000"
+											ngbTooltip="Copied!"
+											triggers="click:blur"
+										>
+											Copy Command
+										</div>
 									</div>
 								</div>
-								<div class="col-4">
-									<div class="callout">
-										<small class="text-muted">with</small><br />
-										<strong class="text-muted" [innerHTML]="mode?.description"></strong>
+								<div class="row" *ngIf="mode.name === 'SSH' || mode.name === 'ssh'">
+									<div class="col-auto">
+										<p class="font-weight-bold font-xs text-muted">
+											Learn more about persistent terminal sessions when using ssh:
+											<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer"
+												>Tutorial</a
+											>
+										</p>
 									</div>
 								</div>
-								<div class="col-4">
-									<div
-										class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
-										id="copyCommandButton"
-										style="margin-top: 20px"
-										(click)="copyToClipboard(mode.copy_field)"
-										[closeDelay]="3000"
-										ngbTooltip="Copied!"
-										triggers="click:blur"
-									>
-										Copy Command
+								<div
+									class="row"
+									*ngIf="
+										virtualMachine?.res_env_url !== '' &&
+										virtualMachine?.res_env_url !== null &&
+										virtualMachine?.res_env_url !== undefined &&
+										resenv_by_play(virtualMachine)
+									"
+								>
+									<div class="col-md-1">
+										<span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
 									</div>
-								</div>
-							</div>
-							<div class="row" *ngIf="mode.name === 'SSH' || mode.name === 'ssh'">
-								<div class="col-auto">
-									<p class="font-weight-bold font-xs text-muted">
-										Learn more about persistent terminal sessions when using ssh:
-										<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Tutorial</a>
-									</p>
-								</div>
-							</div>
-							<div
-								class="row"
-								*ngIf="
-									virtualMachine?.res_env_url !== '' &&
-									virtualMachine?.res_env_url !== null &&
-									virtualMachine?.res_env_url !== undefined &&
-									resenv_by_play(virtualMachine)
-								"
-							>
-								<div class="col-md-1">
-									<span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
-								</div>
-								<div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
-									<a href="{{ virtualMachine?.res_env_url }}" rel="noopener noreferrer" target="_blank">{{
-										virtualMachine?.res_env_url
-									}}</a>
-									<br />
-									For RStudio credentials please visit:
-									<a href="{{ WIKI_RSTUDIO_LINK }}" rel="noopener noreferrer" target="_blank">{{
-										WIKI_RSTUDIO_LINK
-									}}</a>
-									<br />
-									For Apache Guacamole credentials please visit:
-									<a href="{{ WIKI_GUACAMOLE_LINK }}" rel="noopener noreferrer" target="_blank">{{
-										WIKI_GUACAMOLE_LINK
-									}}</a>
+									<div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+										<a href="{{ virtualMachine?.res_env_url }}" rel="noopener noreferrer" target="_blank">{{
+											virtualMachine?.res_env_url
+										}}</a>
+										<br />
+										For RStudio credentials please visit:
+										<a href="{{ WIKI_RSTUDIO_LINK }}" rel="noopener noreferrer" target="_blank">{{
+											WIKI_RSTUDIO_LINK
+										}}</a>
+										<br />
+										For Apache Guacamole credentials please visit:
+										<a href="{{ WIKI_GUACAMOLE_LINK }}" rel="noopener noreferrer" target="_blank">{{
+											WIKI_GUACAMOLE_LINK
+										}}</a>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</ng-container>
+					<ng-container *ngIf="virtualMachine?.status === virtualMachineStates.staticERROR">
+						<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Connect Information</span>
+						<div class="row">
+							<div class="col-auto">
+								<div class="alert alert-info">
+									There currently is no connect information available, as the machine is in error-state.
+								</div>
+							</div>
+						</div>
+					</ng-container>
+
 					<hr *ngIf="virtualMachine?.elixir_id === user_elixir_id" />
 					<div class="card-body" *ngIf="virtualMachine?.elixir_id === user_elixir_id || is_project_admin">
 						<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Actions</span>
@@ -156,8 +182,13 @@
 							<div
 								class="col-3"
 								*ngIf="
-									virtualMachine?.status === virtualMachineStates.staticACTIVE ||
-									virtualMachine?.status === virtualMachineStates.staticSHUTOFF
+									virtualMachine?.status
+										| statusInList
+											: [
+													virtualMachineStates.staticACTIVE,
+													virtualMachineStates.staticERROR,
+													virtualMachineStates.staticSHUTOFF
+											  ]
 								"
 							>
 								<button
@@ -173,8 +204,8 @@
 							<div
 								class="col-3"
 								*ngIf="
-									virtualMachine?.status === virtualMachineStates.staticACTIVE ||
-									virtualMachine?.status === virtualMachineStates.staticSHUTOFF
+									virtualMachine?.status
+										| statusInList : [virtualMachineStates.staticACTIVE, virtualMachineStates.staticSHUTOFF]
 								"
 							>
 								<button
