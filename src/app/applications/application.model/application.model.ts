@@ -92,7 +92,7 @@ export class Application {
 
 	migrate_to_simple_vm: boolean = false;
 
-	is_project_selected:boolean=false;
+	is_project_selected: boolean = false;
 
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);
@@ -190,6 +190,10 @@ export class Application {
 
 			return 0;
 		} else return 0;
+	}
+
+	public isApproved(): boolean {
+		return this.project_application_statuses.includes(Application_States.APPROVED);
 	}
 
 	public setFlavorInFlavors(flavor_param: Flavor, counter: number): void {
