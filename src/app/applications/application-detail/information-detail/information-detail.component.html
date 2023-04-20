@@ -110,14 +110,14 @@
 		</td>
 	</tr>
 	<tr *ngIf="application?.project_application_person_related_data">
-		<td>Nonsensitive Data</td>
+		<td>Personal data [Article 4 (1) GDPR] (e.g. name, e-mail)</td>
 		<td>
 			<p *ngIf="application?.project_application_nonsensitive_data">Yes</p>
 			<p *ngIf="!application?.project_application_nonsensitive_data">No</p>
 		</td>
 	</tr>
 	<tr *ngIf="application?.project_application_person_related_data">
-		<td>Sensitive Data</td>
+		<td>Sensitive Personal data [Articles 4 (13,14,15), 9 GDPR and Recital 51] </td>
 		<td>
 			<p *ngIf="application?.project_application_sensitive_data">Yes</p>
 			<p *ngIf="!application?.project_application_sensitive_data">No</p>

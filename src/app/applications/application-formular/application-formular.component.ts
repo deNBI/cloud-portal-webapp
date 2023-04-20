@@ -129,6 +129,20 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		}
 	}
 
+	checkValidityComment(): boolean {
+		if (this.extraResourceCommentRequired) {
+			if (this.application.project_application_comment?.length < 50) {
+				return false;
+			} else {
+				const regExp = /[a-zA-Z]/g;
+
+				return regExp.test(this.application.project_application_comment);
+			}
+		} else {
+			return true;
+		}
+	}
+
 	getUserinfo(): void {
 		this.userService.getUserInfo().subscribe((userinfo: Userinfo) => {
 			this.userinfo = userinfo;
