@@ -29,6 +29,7 @@ export const SCALE_SCRIPT_LINK: string =	'https://raw.githubusercontent.com/deNB
 export const WIKI_MOUNT_VOLUME: string = `${environment.WIKI_PRE}simple_vm/volumes/#mount-a-volume`;
 export const WIKI_VOLUMES_LINK: string = `${environment.WIKI_PRE}simple_vm/volumes/`;
 export const WIKI_MOSH_LINK: string = `${environment.WIKI_PRE}Tutorials/Mosh/`;
+export const WIKI_WORKSHOP_TIMEFRAMES: string = `${environment.WIKI_PRE}simple_vm/workshop/#workshop-timeframes`;
 export const WIKI_EPHEMERAL_LINK: string = `${environment.WIKI_PRE}simple_vm/new_instance/#information-for-ephemeral-flavors`;
 export const WIKI_GROUP_INVITATIONS: string = `${environment.WIKI_PRE}simple_vm/project_overview/#inviting-members`;
 export const SCALING_UP_WIKI: string = `${environment.WIKI_PRE}simple_vm/Cluster/cluster_overview/#3-scale-up`;
@@ -79,6 +80,7 @@ export const WIKI_LINKS: string[] = [
 	WIKI_MOSH_LINK,
 	WIKI_PERSONAL_DATA,
 	WIKI_SVM_MIGRATION_LINK,
+	WIKI_WORKSHOP_TIMEFRAMES,
 ];
 
 export const LANDING_PAGE_LINKS: string[] = [
