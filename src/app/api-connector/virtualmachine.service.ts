@@ -49,17 +49,22 @@ export class VirtualmachineService {
 		workerBatches: WorkerBatch[],
 		project_id: string | number,
 		name: string,
+		additional_elixir_ids: string[],
 	): Observable<any> {
-		const params: HttpParams = new HttpParams()
-			.set('master_flavor', masterFlavor)
-			.set('master_image', JSON.stringify(masterImage))
-			.set('worker_batches', encodeURIComponent(JSON.stringify(workerBatches)))
-			.set('project_id', project_id.toString())
-			.set('name', name);
-
-		return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/`, params, {
-			withCredentials: true,
-		});
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}clusters/`,
+			{
+				master_flavor: masterFlavor,
+				master_image: masterImage,
+				worker_batches: workerBatches,
+				project_id,
+				name,
+				additional_elixir_ids,
+			},
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getClusterInfo(cluster_id: string): Observable<Clusterinfo> {
@@ -293,18 +298,16 @@ export class VirtualmachineService {
 			params = params.append('not_paginated', JSON.stringify(not_paginated));
 		}
 
-		const temp_resp: any = this.http
-			.get<VirtualMachinePage | VirtualMachine[]>(this.baseVmUrl, {
-				withCredentials: true,
-				params,
-			});
+		const temp_resp: any = this.http.get<VirtualMachinePage | VirtualMachine[]>(this.baseVmUrl, {
+			withCredentials: true,
+			params,
+		});
 
 		if (not_paginated) {
 			return temp_resp;
 		} else {
 			return temp_resp.pipe(map((vm_page: VirtualMachinePage) => new VirtualMachinePage(vm_page)));
 		}
-
 	}
 
 	getCondaLogs(openstack_id: string): Observable<Condalog> {
