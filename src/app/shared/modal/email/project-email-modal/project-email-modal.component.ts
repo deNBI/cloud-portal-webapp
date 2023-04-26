@@ -11,7 +11,7 @@ import { IResponseTemplate } from '../../../../api-connector/response-template';
 	templateUrl: './project-email-modal.component.html',
 	styleUrls: ['./projext-email-modal.component.scss'],
 })
-export class ProjectEmailModalComponent implements OnDestroy, OnInit {
+export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 	// currently only for vo
 	@Input() selectedProjects: Application[];
 	emailAdminsOnly: boolean;
@@ -19,6 +19,7 @@ export class ProjectEmailModalComponent implements OnDestroy, OnInit {
 	emailReply: string;
 	emailText: string;
 	templates: string[];
+
 
 	public event: EventEmitter<boolean> = new EventEmitter();
 
@@ -43,6 +44,7 @@ export class ProjectEmailModalComponent implements OnDestroy, OnInit {
 			.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
 			.subscribe(
 				(res: IResponseTemplate) => {
+
 					this.event.emit(res.value as boolean);
 				},
 				() => {

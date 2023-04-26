@@ -192,6 +192,10 @@ export class Application {
 		} else return 0;
 	}
 
+	public isApproved(): boolean {
+		return this.project_application_statuses.includes(Application_States.APPROVED);
+	}
+
 	public setFlavorInFlavors(flavor_param: Flavor, counter: number): void {
 		const idx: number = this.flavors.findIndex((fl: Flavor): boolean => fl.name === flavor_param.name);
 		if (idx !== -1) {
