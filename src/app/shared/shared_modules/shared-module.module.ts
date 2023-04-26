@@ -1,39 +1,38 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ModalModule} from 'ngx-bootstrap/modal';
-import {ProgressModule, ToastModule} from '@coreui/angular';
-import {ApplicationBaseClassComponent} from './baseClass/application-base-class.component';
-import {NotificationModalComponent} from '../modal/notification-modal';
-import {InformationToastComponent} from '../toaster/information-toast.component';
-import {ConfirmationModalComponent} from '../modal/confirmation-modal.component';
-import {MigrationInformationComponent} from './migration-information/migration-information.component';
-import {ApplicationBadgesComponent} from './components/applications/application-badges/application-badges.component';
-import {ProjectEmailModalComponent} from '../modal/email/project-email-modal/project-email-modal.component';
-import {FormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ProgressModule, ToastModule } from '@coreui/angular';
+import { FormsModule } from '@angular/forms';
+import { ApplicationBaseClassComponent } from './baseClass/application-base-class.component';
+import { NotificationModalComponent } from '../modal/notification-modal';
+import { InformationToastComponent } from '../toaster/information-toast.component';
+import { ConfirmationModalComponent } from '../modal/confirmation-modal.component';
+import { MigrationInformationComponent } from './migration-information/migration-information.component';
+import { ApplicationBadgesComponent } from './components/applications/application-badges/application-badges.component';
+import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/project-email-modal.component';
 
 /**
  * Shared module.
  */
 @NgModule({
-		exports: [
-				ApplicationBaseClassComponent,
-				NotificationModalComponent,
-				ConfirmationModalComponent,
-				InformationToastComponent,
-				MigrationInformationComponent,
-				ApplicationBadgesComponent,
-				ProjectEmailModalComponent
-		],
-		imports: [CommonModule, ModalModule.forRoot(), ToastModule, ProgressModule, FormsModule],
-		declarations: [
-				ApplicationBaseClassComponent,
-				NotificationModalComponent,
-				ConfirmationModalComponent,
-				InformationToastComponent,
-				MigrationInformationComponent,
-				ApplicationBadgesComponent,
-				ProjectEmailModalComponent
-		],
+	exports: [
+		ApplicationBaseClassComponent,
+		NotificationModalComponent,
+		ConfirmationModalComponent,
+		InformationToastComponent,
+		MigrationInformationComponent,
+		ApplicationBadgesComponent,
+		ProjectEmailModalComponent,
+	],
+	imports: [CommonModule, ModalModule.forRoot(), ToastModule, ProgressModule, FormsModule],
+	declarations: [
+		ApplicationBaseClassComponent,
+		NotificationModalComponent,
+		ConfirmationModalComponent,
+		InformationToastComponent,
+		MigrationInformationComponent,
+		ApplicationBadgesComponent,
+		ProjectEmailModalComponent,
+	],
 })
-export class SharedModuleModule {
-}
+export class SharedModuleModule {}
