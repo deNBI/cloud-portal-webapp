@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { BadgeComponent } from '@coreui/angular';
 import { VoManagerRoutingModule } from './VoManager-routing.module';
 import { VoOverviewComponent } from './VoOverviewComponent';
 import { VoGuardService } from './vo-guard.service';
@@ -21,29 +22,28 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { DatePickerComponent } from '../shared/datepicking/datepicker.component';
 import { TimepickerComponent } from '../shared/datepicking/timepicker.component';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
-import {BadgeComponent} from '@coreui/angular';
 
 /**
  * VO Manager module.
  */
 @NgModule({
-		imports: [
-				VoManagerRoutingModule,
-				TabsModule,
-				FormsModule,
-				CommonModule,
-				ModalModule.forRoot(),
-				ProjectManagementModule,
-				PipeModuleModule,
-				NgbTypeaheadModule,
-				ReactiveFormsModule,
-				SharedDirectivesModule,
-				NgbPaginationModule,
-				DatePickerComponent,
-				TimepickerComponent,
-				SharedModuleModule,
-				BadgeComponent,
-		],
+	imports: [
+		VoManagerRoutingModule,
+		TabsModule,
+		FormsModule,
+		CommonModule,
+		ModalModule.forRoot(),
+		ProjectManagementModule,
+		PipeModuleModule,
+		NgbTypeaheadModule,
+		ReactiveFormsModule,
+		SharedDirectivesModule,
+		NgbPaginationModule,
+		DatePickerComponent,
+		TimepickerComponent,
+		SharedModuleModule,
+		BadgeComponent,
+	],
 	declarations: [
 		VoOverviewComponent,
 		ResourcesComponent,

@@ -1,127 +1,120 @@
 <div class="modal-header">
-    <h4 class="modal-title" data-test-id="confirmation_modal_title">Sent Mail to specific projects</h4>
-    <button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
+	<h4 class="modal-title" data-test-id="confirmation_modal_title">Sent Mail to specific projects</h4>
+	<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
 </div>
 <div class="modal-body">
-    <div>
-        Send Mail to:
-        <ul>
-            <li *ngFor="let pr of selectedProjects">{{pr.project_application_shortname}}</li>
-        </ul>
-    </div>
-    <form class="form-horizontal" id="email_form" #f="ngForm">
+	<div>
+		Send Mail to:
+		<ul>
+			<li *ngFor="let pr of selectedProjects">{{ pr.project_application_shortname }}</li>
+		</ul>
+	</div>
+	<form class="form-horizontal" id="email_form" #f="ngForm">
+		<div class="form-group row">
+			<div class="col-md-auto">
+				<div class="form-check">
+					<input
+						class="form-check-input"
+						type="checkbox"
+						[(ngModel)]="emailAdminsOnly"
+						name="emailAdminsOnly"
+						id="adminOnlyCheckbox"
+					/>
+					<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
+				</div>
+			</div>
+		</div>
+		<div
+			class="form-group row"
+			[ngClass]="{
+				'has-danger': emailSub.invalid && (emailSub.dirty || emailSub.touched),
+				'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched)
+			}"
+		>
+			<label class="col-md-12 control-label"><strong>Email subject*</strong></label>
+			<div class="col-md-12">
+				<input
+					required
+					id="emailSubject"
+					name="emailSubject"
+					placeholder="Subject"
+					class="form-control"
+					type="text"
+					[(ngModel)]="emailSubject"
+					minlength="1"
+					#emailSub="ngModel"
+					[ngClass]="{
+						'is-invalid': emailSub.invalid && (emailSub.dirty || emailSub.touched),
+						'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched)
+					}"
+				/>
+			</div>
+		</div>
 
-
-        <div class="form-group row">
-            <div class="col-md-auto">
-                <div class="form-check">
-                    <input
-                            class="form-check-input"
-                            type="checkbox"
-                            [(ngModel)]="emailAdminsOnly"
-                            id="adminOnlyCheckbox"
-                    />
-                    <label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
-                </div>
-            </div>
-        </div>
-        <div
-
-                class="form-group row"
-                [ngClass]="{
-							'has-danger': emailSub.invalid && (emailSub.dirty || emailSub.touched),
-							'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched)
-						}"
-        >
-            <label class="col-md-12 control-label"><strong>Email subject*</strong></label>
-            <div class="col-md-12">
-                <input
-                        required
-                        id="emailSubject"
-                        name="emailSub"
-                        placeholder="Subject"
-                        class="form-control"
-                        type="text"
-                        [(ngModel)]="emailSubject"
-                        minlength="1"
-                        #emailSub="ngModel"
-                        [ngClass]="{
-									'is-invalid': emailSub.invalid && (emailSub.dirty || emailSub.touched),
-									'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched)
-								}"
-                />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
-            <div class="col-md-12">
-                <input
-                        id="reply_to"
-                        name="emailReply"
-                        placeholder=""
-                        class="form-control"
-                        type="text"
-                        [(ngModel)]="emailReply"
-                        #emailRep="ngModel"
-                        pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
-                        [ngClass]="{
-									'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
-									'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched)
-								}"
-                />
-            </div>
-        </div>
-        <!-- Textarea -->
-        <div class="form-group row">
-            <label class="col-md-12 control-label"><strong>Email text*</strong></label>
-            <div class="col-md-12">
-							<textarea
-                                    minlength="1"
-                                    required
-                                    class="form-control"
-                                    id="emailText"
-                                    name="emailText"
-                                    [(ngModel)]="emailText"
-                                    type="text"
-                                    #emailT="ngModel"
-                                    [ngClass]="{
-									'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
-									'is-valid': emailT.valid && (emailT.dirty || emailT.touched)
-								}"
-                            ></textarea>
-            </div>
-        </div>
-    </form>
-<div class="templates-container">
-  <p>The following keys can be used as variables:</p>
-  <div class="templates-list">
-    <span *ngFor="let template of templates">{{ '{' + template + '}' }}, </span>
-  </div>
-</div>
-
-
-
+		<div class="form-group row">
+			<label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
+			<div class="col-md-12">
+				<input
+					id="reply_to"
+					name="emailReply"
+					placeholder=""
+					class="form-control"
+					type="text"
+					[(ngModel)]="emailReply"
+					#emailRep="ngModel"
+					pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
+					[ngClass]="{
+						'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
+						'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched)
+					}"
+				/>
+			</div>
+		</div>
+		<!-- Textarea -->
+		<div class="form-group row">
+			<label class="col-md-12 control-label"><strong>Email text*</strong></label>
+			<div class="col-md-12">
+				<textarea
+					minlength="1"
+					required
+					class="form-control"
+					id="emailText"
+					name="emailText"
+					[(ngModel)]="emailText"
+					type="text"
+					#emailT="ngModel"
+					[ngClass]="{
+						'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
+						'is-valid': emailT.valid && (emailT.dirty || emailT.touched)
+					}"
+				></textarea>
+			</div>
+		</div>
+	</form>
+	<div class="templates-container">
+		<p>The following keys can be used as variables:</p>
+		<div class="templates-list">
+			<span *ngFor="let template of templates">{{ '{' + template + '}' }}, </span>
+		</div>
+	</div>
 </div>
 <div class="modal-footer">
-    <button
-            class="btn btn-secondary col-md-4"
-            type="reset"
-            data-test-id="close_confirmation_modal_btn"
-            (click)=" bsModalRef.hide()"
-    >
-        Abort & Close
-    </button>
-    <button
-            class="btn btn-success col-md-4"
-            [disabled]="
-						f.invalid
-					"
-            data-test-id="confirm_confirmation_modal_btn"
-            (click)="sentProjectsMail(); bsModalRef.hide()"
-    >
-        Sent Mail
-    </button>
+	<button
+		class="btn btn-secondary col-md-4"
+		type="reset"
+		data-test-id="close_confirmation_modal_btn"
+		(click)="bsModalRef.hide()"
+	>
+		Abort & Close
+	</button>
+	<button
+		class="btn btn-success col-md-4"
+		[disabled]="f.invalid"
+		data-test-id="confirm_confirmation_modal_btn"
+		(click)="sentProjectsMail(); bsModalRef.hide()"
+	>
+		Sent Mail
+	</button>
 </div>
