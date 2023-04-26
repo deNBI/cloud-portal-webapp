@@ -90,6 +90,10 @@ export class ProjectSortService {
 		this._search$.next();
 	}
 
+	get applications() {
+		return this._applications;
+	}
+
 	initiateSearch(): void {
 		this._search$.next();
 	}

@@ -146,6 +146,30 @@ export class VoService {
 		});
 	}
 
+	sendMailToProjects(
+		projectIds: (string | number)[],
+		subject: string,
+		message: string,
+		adminsOnly: boolean,
+		reply?: string,
+	): Observable<any> {
+		return this.http.post<IResponseTemplate>(
+			`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/projects/`,
+			{
+				project_ids: projectIds, subject, message, adminsOnly, reply,
+			},
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
+	getMailTemplates(): Observable<string[]> {
+		return this.http.get<string[]>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/projects/templates/`, {
+			withCredentials: true,
+		});
+	}
+
 	/**
 	 * Get members of a project with emails.
 	 *

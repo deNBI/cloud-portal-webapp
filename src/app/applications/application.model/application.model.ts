@@ -92,6 +92,8 @@ export class Application {
 
 	migrate_to_simple_vm: boolean = false;
 
+	is_project_selected: boolean = false;
+
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);
 		Object.assign(this, aj);

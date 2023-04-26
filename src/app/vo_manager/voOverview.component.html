@@ -24,6 +24,19 @@
 			</button>
 
 			<button
+				(click)="openProjectMailsModal()"
+				type="button "
+				class="btn btn-outline-primary"
+				[disabled]="selectedEmailProjects?.length === 0"
+				style="margin-bottom: auto; margin-left: auto; margin-top: auto"
+			>
+				<i class="icon-envelope-letter"></i>
+				Send Project Mail
+				<c-badge color="success">
+					{{ selectedEmailProjects?.length }}
+				</c-badge>
+			</button>
+			<button
 				(click)="setEmailType(0); emailModal.show()"
 				type="button "
 				class="btn btn-outline-primary"
@@ -55,8 +68,19 @@
 							[collectionSize]="(total$ | async)!"
 							[(page)]="sortProjectService.page"
 							[pageSize]="sortProjectService.pageSize"
-						>
-						</ngb-pagination>
+						></ngb-pagination>
+
+						<div>
+							<button type="button" class="btn btn-primary me-2" (click)="selectAllFilteredProjects()">
+								Select All Filtered
+							</button>
+
+							<button type="button" class="btn btn-primary me-2" (click)="unselectAllFilteredProjects()">
+								Unselect Filtered
+							</button>
+
+							<button type="button" class="btn btn-primary" (click)="unselectAll()">Unselect All</button>
+						</div>
 
 						<select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="sortProjectService.pageSize">
 							<option [ngValue]="10">10 items per page</option>
@@ -235,6 +259,13 @@
 							</thead>
 							<tbody>
 								<tr *ngFor="let project of applictions$ | async; index as i">
+									<td>
+										<input
+											type="checkbox"
+											[(ngModel)]="project.is_project_selected"
+											(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
+										/>
+									</td>
 									<td>
 										<app-application-badges [application]="project"></app-application-badges>
 									</td>

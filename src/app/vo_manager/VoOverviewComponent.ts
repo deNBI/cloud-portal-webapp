@@ -3,7 +3,8 @@ import {
 	Component, OnInit, QueryList, ViewChildren,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { VoService } from '../api-connector/vo.service';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { GroupService } from '../api-connector/group.service';
@@ -18,6 +19,7 @@ import {
 	SortEvent,
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
+import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
 
 /**
  * Vo Overview component.
@@ -42,7 +44,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 	public removalDate: Date = new Date();
 	public selectedProject: Application;
+	selectedEmailProjects: Application[] = [];
 	computecenters: ComputecenterComponent[] = [];
+	bsModalRef: BsModalRef;
 
 	show_openstack_projects: boolean = true;
 	show_simple_vm_projects: boolean = true;
@@ -63,6 +67,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public usersModalProjectID: number;
 	public usersModalProjectName: string;
 	public managerFacilities: [string, number][];
+
+	projectMailTemplates: string[] = [];
 	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
 
 	applictions$: Observable<Application[]>;
@@ -77,6 +83,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		private groupservice: GroupService,
 		private facilityService: FacilityService,
 		public sortProjectService: ProjectSortService,
+		private modalService: BsModalService,
 	) {
 		super();
 	}
@@ -89,6 +96,60 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		});
 	}
 
+	selectAllFilteredProjects(): void {
+		this.selectedEmailProjects = [];
+
+		// get all the applications
+		this.applictions$.pipe(take(1)).subscribe(applications => {
+			// set the selected state of all projects to true
+			applications.forEach(application => {
+				application.is_project_selected = true;
+				this.toggleSelectedEmailApplication(application, application.is_project_selected);
+			});
+		});
+	}
+
+	unselectAll(): void {
+		this.sortProjectService.applications.forEach((pr: Application) => {
+			pr.is_project_selected = false;
+			this.toggleSelectedEmailApplication(pr, pr.is_project_selected);
+		});
+		//		this.selectedEmailProjects = []; // clear the selectedEmailProjects list
+	}
+
+	unselectAllFilteredProjects(): void {
+		// get all the applications
+		this.applictions$.pipe(take(1)).subscribe(applications => {
+			// set the selected state of all projects to false
+			applications.forEach(application => {
+				application.is_project_selected = false;
+				this.toggleSelectedEmailApplication(application, application.is_project_selected);
+			});
+		});
+	}
+
+	toggleSelectedEmailApplication(application: Application, isChecked: boolean): void {
+		const index = this.selectedEmailProjects.indexOf(application);
+
+		if (isChecked) {
+			// checkbox was checked
+			if (index === -1) {
+				// application is not in the list, so add it
+				this.selectedEmailProjects.push(application);
+			}
+		} else {
+			// checkbox was unchecked
+			// application is in the list, so remove it
+			this.selectedEmailProjects.splice(index, 1);
+		}
+	}
+
+	openProjectMailsModal(): void {
+		const initialState = { selectedProjects: this.selectedEmailProjects };
+
+		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
+	}
+
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers.forEach(header => {
@@ -99,14 +160,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 		this.sortProjectService.sortColumn = column;
 		this.sortProjectService.sortDirection = direction;
-	}
-
-	switchShowSimpleVmProjects(): void {
-		this.show_simple_vm_projects = !this.show_simple_vm_projects;
-	}
-
-	switchOpenStackVmProjects(): void {
-		this.show_openstack_projects = !this.show_openstack_projects;
 	}
 
 	getApplicationInfos(): void {
