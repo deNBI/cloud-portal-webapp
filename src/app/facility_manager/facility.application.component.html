@@ -125,43 +125,7 @@
 									<ng-container>
 										<tr>
 											<td>
-												<span
-													*ngIf="application?.project_application_openstack_project"
-													style="font-size: 20px"
-													class="project-openstack_plain_white_redbg"
-													data-toggle="tooltip"
-													title="This is an Openstack project"
-												>
-													<span class="path1"></span>
-													<span class="path2"></span>
-												</span>
-
-												<span
-													*ngIf="application?.project_application_pi_approved"
-													style="margin: 2px"
-													class="badge"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application was approved by a PI"
-												>
-													<span class="icon icon-yes_pi" style="font-size: 20px">
-														<span class="path1"></span><span class="path2"></span><span class="path3"></span
-														><span class="path4"></span>
-													</span>
-												</span>
-												<span
-													*ngIf="!application?.project_application_pi_approved"
-													style="margin: 2px"
-													class="badge"
-													data-toggle="tooltip"
-													data-placement="auto"
-													title="This application is yet not approved by a PI"
-												>
-													<span class="icon icon-no_pi" style="font-size: 2em">
-														<span class="path1"></span><span class="path2"></span><span class="path3"></span
-														><span class="path4"></span>
-													</span>
-												</span>
+												<app-application-badges [application]="application"></app-application-badges>
 											</td>
 											<td>{{ application?.project_application_name }}</td>
 											<td>{{ application?.project_application_shortname }}</td>
@@ -986,10 +950,10 @@
 											Information
 										</button>
 										<!--button (click)="deleteModal.show();setDeleteId(application?.application_status_id)"
-													type="button"
-													class="btn btn-secondary">
-											Remove Application
-									</button-->
+                                                type="button"
+                                                class="btn btn-secondary">
+                                        Remove Application
+                                </button-->
 									</td>
 								</tr>
 								<td colspan="12">
