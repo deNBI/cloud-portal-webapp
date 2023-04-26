@@ -111,7 +111,7 @@
 										class="btn btn-outline-primary"
 										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
 									>
-										Export as TSV
+										Export all Projects as TSV
 									</button>
 								</div>
 							</div>
@@ -405,7 +405,10 @@
 												<i class="fa fa-users"></i>&nbsp;Show Members
 											</button>
 											<button
-												*ngIf="project | hasstatusinlist : project_states.ACTIVE"
+												*ngIf="
+													(project | hasstatusinlist : project_states.ACTIVE) &&
+													!(project | hasstatusinlist : project_states.SUSPENDED)
+												"
 												style="margin-left: 5px; margin-bottom: 5px"
 												type="button"
 												class="btn btn-warning"

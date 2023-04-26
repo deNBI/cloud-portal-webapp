@@ -438,7 +438,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 	resumeProject(project: Application): void {
 		this.voService.resumeProject(project.project_application_perun_id).subscribe((): void => {
-			this.getVoProjects();
+			this.getProjectStatus(project);
 		});
 	}
 
