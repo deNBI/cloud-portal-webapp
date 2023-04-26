@@ -198,6 +198,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	 * Gets projects and sets email subject prefix when selected facility changes.
 	 */
 	onChangeSelectedFacility(): void {
+		this.isLoaded = false;
 		this.getFacilityProjects(this.selectedFacility['FacilityId']);
 		this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 	}
