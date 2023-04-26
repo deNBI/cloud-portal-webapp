@@ -20,6 +20,7 @@ import {
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
+import {application} from "express";
 
 /**
  * Vo Overview component.
@@ -431,15 +432,34 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 	suspendProject(project: Application): void {
 		this.voService.removeResourceFromGroup(project.project_application_perun_id).subscribe((): void => {
+				this.updateNotificationModal(
+					'Success',
+					'The project got suspended successfully',
+					true,
+					'success',
+				);
 			this.getProjectStatus(project);
 			project.project_application_compute_center = null;
-		});
+		},
+			(): void => {
+					this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
+			},
+		);
 	}
 
 	resumeProject(project: Application): void {
 		this.voService.resumeProject(project.project_application_perun_id).subscribe((): void => {
+				this.updateNotificationModal(
+					'Success',
+					'The project got resumed successfully',
+					true,
+					'success',
+				);
 			this.getProjectStatus(project);
-		});
+		},
+			(): void => {
+				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
+			});
 	}
 
 	declineTermination(project: Application): void {
@@ -491,78 +511,80 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 	exportTSV(): void {
 		const data = [];
-		this.sortProjectService.sorted_applications.forEach(application => {
-			const entry = {};
-			for (const key in application) {
-				if (typeof application[key] === 'object') {
-					if (key === 'project_application_pi') {
-						entry['project_application_pi_name'] = application[key].username;
-						entry['project_application_pi_email'] = application[key].email;
-						entry['project_application_pi_affiliations'] = JSON.stringify(application[key].user_affiliations);
-					} else if (key === 'project_application_statuses') {
-						const statuses_strings = [];
-						application[key].forEach(status => {
-							statuses_strings.push(Application_States[status]);
-						});
-						entry[key] = JSON.stringify(statuses_strings);
-					} else if (key === 'project_credit_request') {
-						if (application[key] == null) {
-							entry['project_credit_requested'] = 'FALSE';
-							entry['project_credit_request_id'] = 'NONE';
-							entry['project_credit_request_comment'] = 'NONE';
-							entry['project_credit_request_date_submitted'] = 'NONE';
-							entry['project_credit_request_extra_credits'] = 'NONE';
-							entry['project_credit_request_user_name'] = 'NONE';
-							entry['project_credit_request_user_email'] = 'NONE';
+		this.voService.getAllProjectsForTsvExport().subscribe((applications: Application[]): void => {
+			applications.forEach(single_application => {
+				const entry = {};
+				for (const key in single_application) {
+					if (typeof single_application[key] === 'object') {
+						if (key === 'project_application_pi') {
+							entry['project_application_pi_name'] = single_application[key].username;
+							entry['project_application_pi_email'] = single_application[key].email;
+							entry['project_application_pi_affiliations'] = JSON.stringify(single_application[key].user_affiliations);
+						} else if (key === 'project_application_statuses') {
+							const statuses_strings = [];
+							single_application[key].forEach(status => {
+								statuses_strings.push(Application_States[status]);
+							});
+							entry[key] = JSON.stringify(statuses_strings);
+						} else if (key === 'project_credit_request') {
+							if (single_application[key] == null) {
+								entry['project_credit_requested'] = 'FALSE';
+								entry['project_credit_request_id'] = 'NONE';
+								entry['project_credit_request_comment'] = 'NONE';
+								entry['project_credit_request_date_submitted'] = 'NONE';
+								entry['project_credit_request_extra_credits'] = 'NONE';
+								entry['project_credit_request_user_name'] = 'NONE';
+								entry['project_credit_request_user_email'] = 'NONE';
+							} else {
+								entry['project_credit_requested'] = 'TRUE';
+								entry['project_credit_request_id'] = JSON.stringify(single_application[key].Id);
+								entry['project_credit_request_comment'] = single_application[key].comment;
+								entry['project_credit_request_date_submitted'] = JSON.stringify(single_application[key].date_submitted);
+								entry['project_credit_request_extra_credits'] = JSON.stringify(single_application[key].extra_credits);
+								entry['project_credit_request_user_name'] = JSON.stringify(single_application[key].user.username);
+								entry['project_credit_request_user_email'] = JSON.stringify(single_application[key].user.email);
+							}
+						} else if (key === 'project_application_edam_terms') {
+							const edam_names = [];
+							single_application[key].forEach(edam => {
+								edam_names.push(edam.term);
+							});
+							entry['project_application_edam_terms'] = JSON.stringify(edam_names);
+						} else if (key === 'flavors') {
+							const flavor_names = [];
+							single_application[key].forEach(flavor => {
+								flavor_names.push(flavor.name);
+							});
+						} else if (key === 'dissemination') {
+							/* empty */
+						} else if (key === 'project_application_compute_center') {
+							entry[key] = single_application[key].Name;
+							entry['project_application_compute_center_id'] = single_application[key].FacilityId;
 						} else {
-							entry['project_credit_requested'] = 'TRUE';
-							entry['project_credit_request_id'] = JSON.stringify(application[key].Id);
-							entry['project_credit_request_comment'] = application[key].comment;
-							entry['project_credit_request_date_submitted'] = JSON.stringify(application[key].date_submitted);
-							entry['project_credit_request_extra_credits'] = JSON.stringify(application[key].extra_credits);
-							entry['project_credit_request_user_name'] = JSON.stringify(application[key].user.username);
-							entry['project_credit_request_user_email'] = JSON.stringify(application[key].user.email);
+							entry[key] = JSON.stringify(single_application[key]);
 						}
-					} else if (key === 'project_application_edam_terms') {
-						const edam_names = [];
-						application[key].forEach(edam => {
-							edam_names.push(edam.name);
-						});
-						entry['project_application_edam_terms'] = JSON.stringify(edam_names);
-					} else if (key === 'flavors') {
-						const flavor_names = [];
-						application[key].forEach(flavor => {
-							flavor_names.push(flavor.name);
-						});
-					} else if (key === 'dissemination') {
-						/* empty */
-					} else if (key === 'project_application_compute_center') {
-						entry[key] = application[key].Name;
-						entry['project_application_compute_center_id'] = application[key].FacilityId;
 					} else {
-						entry[key] = JSON.stringify(application[key]);
+						entry[key] = single_application[key];
 					}
-				} else {
-					entry[key] = application[key];
 				}
-			}
-			data.push(entry);
-		});
-		if (data.length > 0) {
-			// create CSV file first for convenience
-			const currentDate = new Date().toISOString().split('T')[0];
-			// eslint-disable-next-line
-			const csv = new ngxCsv(data, 'cloud_projects_' + currentDate, {
-				showLabels: true,
-				headers: Object.keys(data[0]),
-				fieldSeparator: '\t',
-				noDownload: true,
+				data.push(entry);
 			});
-			// create TSV file and download it
-			const link = document.createElement('a');
-			link.href = `data:text/tab-separated-values,${encodeURIComponent(csv.getCsv())}`;
-			link.download = `cloud_projects_${currentDate}.tsv`;
-			link.click();
-		}
+			if (data.length > 0) {
+				// create CSV file first for convenience
+				const currentDate = new Date().toISOString().split('T')[0];
+				// eslint-disable-next-line
+				const csv = new ngxCsv(data, 'cloud_projects_' + currentDate, {
+					showLabels: true,
+					headers: Object.keys(data[0]),
+					fieldSeparator: '\t',
+					noDownload: true,
+				});
+				// create TSV file and download it
+				const link = document.createElement('a');
+				link.href = `data:text/tab-separated-values,${encodeURIComponent(csv.getCsv())}`;
+				link.download = `cloud_projects_${currentDate}.tsv`;
+				link.click();
+			}
+		});
 	}
 }

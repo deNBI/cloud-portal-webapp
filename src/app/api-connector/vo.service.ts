@@ -18,6 +18,11 @@ export class VoService {
 		this.http = http;
 	}
 
+	getAllProjectsForTsvExport(): Observable<Application[]> {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}voManagers/all_projects	/`, {
+			withCredentials: true,
+		});
+	}
 	sendTestError(): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/test_bug/`, {
 			withCredentials: true,

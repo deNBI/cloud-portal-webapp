@@ -242,7 +242,9 @@
 						<table class="table table-striped">
 							<thead>
 								<tr>
-									<th scope="col"></th>
+									<th scope="col">Select</th>
+									<th scope="col">Type</th>
+
 									<th scope="col">Facility</th>
 
 									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Project ID</th>
@@ -800,7 +802,7 @@
 			</div>
 			<div class="modal-body">Are you sure you want to suspend {{ selectedProject?.perun_name }} ?</div>
 			<div class="modal-footer">
-				<button class="btn btn-success col-md-4" (click)="suspendProject(selectedProject); suspendModal.hide()">
+				<button class="btn btn-success col-md-4" (click)="suspendProject(selectedProject); suspendModal.hide(); notificationModal.show();">
 					Yes
 				</button>
 				<button class="btn btn-danger col-md-4" type="reset" (click)="suspendModal.hide()">Cancel</button>
@@ -831,7 +833,7 @@
 			</div>
 			<div class="modal-body">Are you sure you want to resume {{ selectedProject?.perun_name }} ?</div>
 			<div class="modal-footer">
-				<button class="btn btn-success col-md-4" (click)="resumeProject(selectedProject); resumeModal.hide()">
+				<button class="btn btn-success col-md-4" (click)="resumeProject(selectedProject); resumeModal.hide(); notificationModal.show();">
 					Yes
 				</button>
 				<button class="btn btn-danger col-md-4" type="reset" (click)="resumeModal.hide()">Cancel</button>
