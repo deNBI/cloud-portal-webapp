@@ -43,7 +43,6 @@ export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 			.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
 			.subscribe(
 				(res: IResponseTemplate) => {
-
 					this.event.emit(res.value as boolean);
 				},
 				() => {
