@@ -1,10 +1,10 @@
-import { ngxCsv } from 'ngx-csv/ngx-csv';
 import {
 	Component, OnInit, QueryList, ViewChildren,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import * as FileSaver from 'file-saver';
 import { VoService } from '../api-connector/vo.service';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { GroupService } from '../api-connector/group.service';
@@ -13,14 +13,13 @@ import { IResponseTemplate } from '../api-connector/response-template';
 import { FacilityService } from '../api-connector/facility.service';
 import { FullLayoutComponent } from '../layouts/full-layout.component';
 import { Application } from '../applications/application.model/application.model';
-import { AbstractBaseClass, Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
 import {
 	NgbdSortableHeaderDirective,
 	SortEvent,
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
-import {application} from "express";
 
 /**
  * Vo Overview component.
@@ -431,35 +430,28 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	}
 
 	suspendProject(project: Application): void {
-		this.voService.removeResourceFromGroup(project.project_application_perun_id).subscribe((): void => {
-				this.updateNotificationModal(
-					'Success',
-					'The project got suspended successfully',
-					true,
-					'success',
-				);
-			this.getProjectStatus(project);
-			project.project_application_compute_center = null;
-		},
+		this.voService.removeResourceFromGroup(project.project_application_perun_id).subscribe(
 			(): void => {
-					this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
+				this.updateNotificationModal('Success', 'The project got suspended successfully', true, 'success');
+				this.getProjectStatus(project);
+				project.project_application_compute_center = null;
+			},
+			(): void => {
+				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
 			},
 		);
 	}
 
 	resumeProject(project: Application): void {
-		this.voService.resumeProject(project.project_application_perun_id).subscribe((): void => {
-				this.updateNotificationModal(
-					'Success',
-					'The project got resumed successfully',
-					true,
-					'success',
-				);
-			this.getProjectStatus(project);
-		},
+		this.voService.resumeProject(project.project_application_perun_id).subscribe(
+			(): void => {
+				this.updateNotificationModal('Success', 'The project got resumed successfully', true, 'success');
+				this.getProjectStatus(project);
+			},
 			(): void => {
 				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
-			});
+			},
+		);
 	}
 
 	declineTermination(project: Application): void {
@@ -509,82 +501,21 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.getMembersOfTheProject(projectid, projectname);
 	}
 
-	exportTSV(): void {
-		const data = [];
-		this.voService.getAllProjectsForTsvExport().subscribe((applications: Application[]): void => {
-			applications.forEach(single_application => {
-				const entry = {};
-				for (const key in single_application) {
-					if (typeof single_application[key] === 'object') {
-						if (key === 'project_application_pi') {
-							entry['project_application_pi_name'] = single_application[key].username;
-							entry['project_application_pi_email'] = single_application[key].email;
-							entry['project_application_pi_affiliations'] = JSON.stringify(single_application[key].user_affiliations);
-						} else if (key === 'project_application_statuses') {
-							const statuses_strings = [];
-							single_application[key].forEach(status => {
-								statuses_strings.push(Application_States[status]);
-							});
-							entry[key] = JSON.stringify(statuses_strings);
-						} else if (key === 'project_credit_request') {
-							if (single_application[key] == null) {
-								entry['project_credit_requested'] = 'FALSE';
-								entry['project_credit_request_id'] = 'NONE';
-								entry['project_credit_request_comment'] = 'NONE';
-								entry['project_credit_request_date_submitted'] = 'NONE';
-								entry['project_credit_request_extra_credits'] = 'NONE';
-								entry['project_credit_request_user_name'] = 'NONE';
-								entry['project_credit_request_user_email'] = 'NONE';
-							} else {
-								entry['project_credit_requested'] = 'TRUE';
-								entry['project_credit_request_id'] = JSON.stringify(single_application[key].Id);
-								entry['project_credit_request_comment'] = single_application[key].comment;
-								entry['project_credit_request_date_submitted'] = JSON.stringify(single_application[key].date_submitted);
-								entry['project_credit_request_extra_credits'] = JSON.stringify(single_application[key].extra_credits);
-								entry['project_credit_request_user_name'] = JSON.stringify(single_application[key].user.username);
-								entry['project_credit_request_user_email'] = JSON.stringify(single_application[key].user.email);
-							}
-						} else if (key === 'project_application_edam_terms') {
-							const edam_names = [];
-							single_application[key].forEach(edam => {
-								edam_names.push(edam.term);
-							});
-							entry['project_application_edam_terms'] = JSON.stringify(edam_names);
-						} else if (key === 'flavors') {
-							const flavor_names = [];
-							single_application[key].forEach(flavor => {
-								flavor_names.push(flavor.name);
-							});
-						} else if (key === 'dissemination') {
-							/* empty */
-						} else if (key === 'project_application_compute_center') {
-							entry[key] = single_application[key].Name;
-							entry['project_application_compute_center_id'] = single_application[key].FacilityId;
-						} else {
-							entry[key] = JSON.stringify(single_application[key]);
-						}
-					} else {
-						entry[key] = single_application[key];
-					}
-				}
-				data.push(entry);
-			});
-			if (data.length > 0) {
-				// create CSV file first for convenience
-				const currentDate = new Date().toISOString().split('T')[0];
-				// eslint-disable-next-line
-				const csv = new ngxCsv(data, 'cloud_projects_' + currentDate, {
-					showLabels: true,
-					headers: Object.keys(data[0]),
-					fieldSeparator: '\t',
-					noDownload: true,
+	initiateTsvExport(): void {
+		this.voService.getAllProjectsForTsvExport().subscribe((): void => {});
+	}
+
+	downloadCurrentTSV(): void {
+		this.voService.downloadProjectsTsv().subscribe(
+			(result): void => {
+				const blobn = new Blob([result], {
+					type: 'text/tsv',
 				});
-				// create TSV file and download it
-				const link = document.createElement('a');
-				link.href = `data:text/tab-separated-values,${encodeURIComponent(csv.getCsv())}`;
-				link.download = `cloud_projects_${currentDate}.tsv`;
-				link.click();
-			}
-		});
+				FileSaver.saveAs(blobn, 'projects.tsv');
+			},
+			(error: any) => {
+				console.log(`No such file found! - ${error.toString()}`);
+			},
+		);
 	}
 }

@@ -18,11 +18,18 @@ export class VoService {
 		this.http = http;
 	}
 
-	getAllProjectsForTsvExport(): Observable<Application[]> {
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}voManagers/all_projects	/`, {
+	getAllProjectsForTsvExport(): Observable<boolean> {
+		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/all_projects/`, {
 			withCredentials: true,
 		});
 	}
+
+	downloadProjectsTsv(): Observable<Blob> {
+		return this.http.get<Blob>(`${ApiSettings.getApiBaseURL()}voManagers/get_current_tsv/`, {
+			withCredentials: true,
+		});
+	}
+
 	sendTestError(): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/test_bug/`, {
 			withCredentials: true,
@@ -161,7 +168,11 @@ export class VoService {
 		return this.http.post<IResponseTemplate>(
 			`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/projects/`,
 			{
-				project_ids: projectIds, subject, message, adminsOnly, reply,
+				project_ids: projectIds,
+				subject,
+				message,
+				adminsOnly,
+				reply,
 			},
 			{
 				withCredentials: true,

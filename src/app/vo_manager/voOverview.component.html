@@ -107,11 +107,23 @@
 								<div class="float-right">
 									<button
 										type="button "
-										(click)="exportTSV()"
+										(click)="initiateTsvExport()"
 										class="btn btn-outline-primary"
 										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
 									>
-										Export all Projects as TSV
+										Trigger export of Projects TSV
+									</button>
+								</div>
+							</div>
+							<div class="col">
+								<div class="float-right">
+									<button
+										type="button "
+										(click)="downloadCurrentTSV()"
+										class="btn btn-outline-primary"
+										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
+									>
+										Download latest TSV
 									</button>
 								</div>
 							</div>
@@ -802,7 +814,10 @@
 			</div>
 			<div class="modal-body">Are you sure you want to suspend {{ selectedProject?.perun_name }} ?</div>
 			<div class="modal-footer">
-				<button class="btn btn-success col-md-4" (click)="suspendProject(selectedProject); suspendModal.hide(); notificationModal.show();">
+				<button
+					class="btn btn-success col-md-4"
+					(click)="suspendProject(selectedProject); suspendModal.hide(); notificationModal.show()"
+				>
 					Yes
 				</button>
 				<button class="btn btn-danger col-md-4" type="reset" (click)="suspendModal.hide()">Cancel</button>
@@ -833,7 +848,10 @@
 			</div>
 			<div class="modal-body">Are you sure you want to resume {{ selectedProject?.perun_name }} ?</div>
 			<div class="modal-footer">
-				<button class="btn btn-success col-md-4" (click)="resumeProject(selectedProject); resumeModal.hide(); notificationModal.show();">
+				<button
+					class="btn btn-success col-md-4"
+					(click)="resumeProject(selectedProject); resumeModal.hide(); notificationModal.show()"
+				>
 					Yes
 				</button>
 				<button class="btn btn-danger col-md-4" type="reset" (click)="resumeModal.hide()">Cancel</button>
