@@ -20,7 +20,6 @@ export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 	emailText: string;
 	templates: string[];
 
-
 	public event: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(public bsModalRef: BsModalRef, private voService: VoService) {
