@@ -25,6 +25,7 @@ import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links'
 import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
 import { BiocondaService } from '../../../api-connector/bioconda.service';
 import { ApplicationsService } from '../../../api-connector/applications.service';
+import { ProjectMember } from '../../../projectmanagement/project_member.model';
 
 /**
  * Cluster Component
@@ -123,6 +124,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 * The selected project ['name',id].
 	 */
 	selectedProject: [string, number];
+	members_to_add: ProjectMember[] = [];
 
 	/**
 	 * If the client for a project is viable.
@@ -380,6 +382,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.cluster_id = null;
 
 		const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
+		const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
 
 		this.subscription.add(
 			this.virtualmachineservice
@@ -389,6 +392,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.selectedWorkerBatches,
 					this.selectedProject[1],
 					this.cluster_name,
+					additional_elixir_ids,
 				)
 				.subscribe(
 					(res: any): void => {
