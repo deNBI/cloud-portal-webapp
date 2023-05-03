@@ -18,7 +18,6 @@ export class Application {
 	project_application_report_allowed: boolean = false;
 	project_application_name: string;
 	project_application_shortname: string;
-	perun_name: string;
 	project_application_institute: string;
 	project_application_workgroup: string;
 	project_application_lifetime: number;

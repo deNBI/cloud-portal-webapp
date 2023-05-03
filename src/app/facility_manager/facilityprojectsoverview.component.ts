@@ -119,7 +119,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 					(project: Application): boolean => project.project_application_perun_id.toString() === this.selectedProjectType.toString(),
 				);
 				if (pro) {
-					this.emailSubject = `[${this.selectedFacility['Facility']}: ${pro.perun_name}]`;
+					this.emailSubject = `[${this.selectedFacility['Facility']}: ${pro.project_application_shortname}]`;
 				} else {
 					this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 				}
@@ -219,7 +219,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			(element: Application): boolean => element.project_application_perun_id.toString() === id.toString(),
 		);
 		if (project) {
-			return project.perun_name;
+			return project.project_application_shortname;
 		}
 
 		return 'NOT_FOUND';
