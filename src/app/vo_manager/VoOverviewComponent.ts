@@ -148,8 +148,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
 		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
-			console.log('event recieved');
-			console.log(sent_successfully);
 			if (sent_successfully) {
 				this.updateNotificationModal('Success', 'Mails were successfully sent', true, 'success');
 			} else {

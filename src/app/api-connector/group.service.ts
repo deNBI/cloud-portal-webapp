@@ -195,8 +195,6 @@ export class GroupService {
 	}
 
 	getGroupApplications(group: number | string): Observable<any> {
-		console.log(group);
-
 		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${group}/applications/`, {
 			withCredentials: true,
 		});
