@@ -18,7 +18,6 @@ export class Application {
 	project_application_report_allowed: boolean = false;
 	project_application_name: string;
 	project_application_shortname: string;
-	perun_name: string;
 	project_application_institute: string;
 	project_application_workgroup: string;
 	project_application_lifetime: number;
@@ -192,6 +191,10 @@ export class Application {
 
 			return 0;
 		} else return 0;
+	}
+
+	public isApproved(): boolean {
+		return this.project_application_statuses.includes(Application_States.APPROVED);
 	}
 
 	public setFlavorInFlavors(flavor_param: Flavor, counter: number): void {

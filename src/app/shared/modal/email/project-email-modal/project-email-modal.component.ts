@@ -20,7 +20,7 @@ export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 	emailText: string;
 	templates: string[];
 
-	public mailSuccesfullySent: EventEmitter<boolean> = new EventEmitter();
+	public event: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(public bsModalRef: BsModalRef, private voService: VoService) {
 		// eslint-disable-next-line no-empty-function
@@ -43,10 +43,10 @@ export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 			.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
 			.subscribe(
 				(res: IResponseTemplate) => {
-					this.mailSuccesfullySent.emit(res.value as boolean);
+					this.event.emit(res.value as boolean);
 				},
 				() => {
-					this.mailSuccesfullySent.emit(false);
+					this.event.emit(false);
 				},
 			);
 	}

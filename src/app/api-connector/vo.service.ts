@@ -25,9 +25,7 @@ export class VoService {
 	}
 
 	downloadProjectsTsv(): Observable<Blob> {
-		return this.http.get<Blob>(`${ApiSettings.getApiBaseURL()}voManagers/get_current_tsv/`, {
-			withCredentials: true,
-		});
+		return this.http.get<Blob>(`${ApiSettings.getApiBaseURL()}voManagers/get_current_tsv/`, {});
 	}
 
 	sendTestError(): Observable<IResponseTemplate> {
@@ -105,7 +103,6 @@ export class VoService {
 			withCredentials: true,
 		});
 	}
-
 	setProjectStatus(groupid: number | string, status: number): Observable<any> {
 		const params: HttpParams = new HttpParams().set('status', status.toString());
 

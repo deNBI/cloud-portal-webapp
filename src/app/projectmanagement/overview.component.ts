@@ -684,32 +684,36 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * Get all user applications for a project.
 	 */
 	getUserProjectApplications(): void {
-		this.memberApplicationsLoaded = false;
-		this.subscription.add(
-			this.groupService
-				.getGroupApplications(this.project_application.project_application_perun_id)
-				.subscribe((applications: any): void => {
-					const newProjectApplications: ProjectMemberApplication[] = [];
-					if (applications.length === 0) {
-						this.project_application.project_application_member_applications = [];
+		if (this.project_application.isApproved() && this.project_application.project_application_perun_id) {
+			this.memberApplicationsLoaded = false;
+			this.subscription.add(
+				this.groupService
+					.getGroupApplications(this.project_application.project_application_perun_id)
+					.subscribe((applications: any): void => {
+						const newProjectApplications: ProjectMemberApplication[] = [];
+						if (applications.length === 0) {
+							this.project_application.project_application_member_applications = [];
 
-						this.memberApplicationsLoaded = true;
-					}
-					for (const application of applications) {
-						const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
-						const membername: string = application['displayName'];
+							this.memberApplicationsLoaded = true;
+						}
+						for (const application of applications) {
+							const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+							const membername: string = application['displayName'];
 
-						const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
-							application['id'],
-							membername,
-							`${dateApplicationCreated.date()}.${dateApplicationCreated.month() + 1}.${dateApplicationCreated.year()}`,
-						);
-						newProjectApplications.push(newMemberApplication);
-						this.project_application.project_application_member_applications = newProjectApplications;
-						this.memberApplicationsLoaded = true;
-					}
-				}),
-		);
+							const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
+								application['id'],
+								membername,
+								`${dateApplicationCreated.date()}.${
+									dateApplicationCreated.month() + 1
+								}.${dateApplicationCreated.year()}`,
+							);
+							newProjectApplications.push(newMemberApplication);
+							this.project_application.project_application_member_applications = newProjectApplications;
+							this.memberApplicationsLoaded = true;
+						}
+					}),
+			);
+		}
 	}
 
 	setSupportMails(project: Application): void {
@@ -822,7 +826,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	setAddUserInvitationLink(): void {
-		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.perun_name}`;
+		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.project_application_shortname}`;
 		const elixir_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=${encodeURIComponent(
 			project_reg,
 		)}&targetexisting=${encodeURIComponent(project_reg)}&targetextended=${encodeURIComponent(project_reg)}`;

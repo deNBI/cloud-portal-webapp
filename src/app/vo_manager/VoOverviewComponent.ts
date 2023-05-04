@@ -1,9 +1,9 @@
 import {
-	Component, OnInit, QueryList, ViewChildren,
+	Component, OnInit, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, take } from 'rxjs';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import * as FileSaver from 'file-saver';
 import { VoService } from '../api-connector/vo.service';
 import { ProjectMember } from '../projectmanagement/project_member.model';
@@ -36,6 +36,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	public emailText: string;
 	public emailStatus: number = 0;
 
+	@ViewChild('notificationModal') notificationModal: ModalDirective;
 	public emailHeader: string;
 	public emailVerify: string;
 	public emailType: number;
@@ -148,6 +149,14 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		const initialState = { selectedProjects: this.selectedEmailProjects };
 
 		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
+		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
+			if (sent_successfully) {
+				this.updateNotificationModal('Success', 'Mails were successfully sent', true, 'success');
+			} else {
+				this.updateNotificationModal('Failed', 'Failed to send mails!', true, 'danger');
+			}
+			this.notificationModal.show();
+		});
 	}
 
 	onSort({ column, direction }: SortEvent) {
