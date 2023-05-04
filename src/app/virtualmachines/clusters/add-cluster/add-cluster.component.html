@@ -60,7 +60,7 @@
 									(ngModelChange)="getSelectedProjectClient()"
 								>
 									<option value="undefined" disabled selected hidden>Please Select</option>
-									<option *ngFor="let project of projects" [ngValue]="project" id="id_option_{{ project[0] }}">
+									<option *ngFor="let project of allowedProjects" [ngValue]="project" id="id_option_{{ project[0] }}">
 										{{ project[0] }}
 									</option>
 								</select>
