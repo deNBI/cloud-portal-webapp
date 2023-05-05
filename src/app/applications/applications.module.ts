@@ -5,7 +5,6 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { ClickOutsideModule } from 'ng4-click-outside';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BadgeModule } from '@coreui/angular';
 import { ApplicationsComponent } from './applications.component';
@@ -35,7 +34,6 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 	imports: [
 		AccordionModule.forRoot(),
 		ApplicationsRoutingModule,
-		ClickOutsideModule,
 		TabsModule,
 		CommonModule,
 		FormsModule,

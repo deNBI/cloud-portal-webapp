@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { ClickOutsideModule } from 'ng4-click-outside';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -58,7 +57,6 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 @NgModule({
 	imports: [
 		PipeModuleModule,
-		ClickOutsideModule,
 		PublicKeyModule,
 		VmRoutingModule,
 		TabsModule,
