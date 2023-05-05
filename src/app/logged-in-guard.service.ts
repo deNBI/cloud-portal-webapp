@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-	ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClient } from '@angular/common/http';
@@ -13,7 +11,7 @@ import { environment } from '../environments/environment';
  * Guard which checks if the user is member of the vo.
  */
 @Injectable()
-export class LoggedInGuard implements CanActivate {
+export class LoggedInGuard  {
 	constructor(
 		private http: HttpClient,
 		private cookieService: CookieService,

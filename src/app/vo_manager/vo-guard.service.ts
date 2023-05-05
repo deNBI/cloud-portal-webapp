@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-	ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { is_vo } from '../shared/globalvar';
 
@@ -9,7 +7,7 @@ import { is_vo } from '../shared/globalvar';
  * VoGuard.
  */
 @Injectable()
-export class VoGuardService implements CanActivate {
+export class VoGuardService  {
 
 	constructor(private router: Router) {
 		this.router = router;
