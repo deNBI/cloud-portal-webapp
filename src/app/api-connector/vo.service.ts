@@ -18,6 +18,11 @@ export class VoService {
 		this.http = http;
 	}
 
+	getTsvInformation(): Observable<any> {
+		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/tsv_information/`, {
+			withCredentials: true,
+		});
+	}
 	getAllProjectsForTsvExport(): Observable<boolean> {
 		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/all_projects/`, {
 			withCredentials: true,

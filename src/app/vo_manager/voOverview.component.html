@@ -106,12 +106,17 @@
 							<div class="col">
 								<div class="float-right">
 									<button
+										*ngIf="!tsvTaskRunning"
 										type="button "
 										(click)="initiateTsvExport()"
 										class="btn btn-outline-primary"
 										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
 									>
 										Trigger export of Projects TSV
+									</button>
+									<button *ngIf="tsvTaskRunning" class="btn btn-outline-primary" type="button" disabled>
+										<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+										Export in progress...
 									</button>
 								</div>
 							</div>
@@ -122,6 +127,7 @@
 										(click)="downloadCurrentTSV()"
 										class="btn btn-outline-primary"
 										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
+										[disabled]="numberOfTsvs <= 0"
 									>
 										Download latest TSV
 									</button>

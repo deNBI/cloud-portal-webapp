@@ -54,6 +54,11 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	show_simple_vm: boolean = true;
 	show_openstack: boolean = true;
 
+	tsvTaskRunning: boolean = true;
+	numberOfTsvs: number = 0;
+	checkTSVTimer: ReturnType<typeof setTimeout>;
+	checkTSVTimeout: number = 10000;
+
 	selectedProjectType: string = 'ALL';
 	selectedFacility: string | number = 'ALL';
 
@@ -95,6 +100,36 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
 			this.newsletterSubscriptionCounter = result.value as number;
 		});
+		this.getTSVInformation();
+		this.tsvInformationLoop();
+	}
+
+	getTSVInformation(): void {
+		this.voService.getTsvInformation().subscribe(
+			(result: any): void => {
+				console.log(result);
+				this.tsvTaskRunning = result[0];
+				this.numberOfTsvs = result[1];
+			},
+			() => {
+				this.tsvTaskRunning = true;
+				this.numberOfTsvs = 0;
+			},
+		);
+	}
+
+	stopCheckTSVTimer(): void {
+		if (this.checkTSVTimer) {
+			clearTimeout(this.checkTSVTimer);
+		}
+	}
+
+	tsvInformationLoop(timeout: number = this.checkTSVTimeout): void {
+		this.stopCheckTSVTimer();
+		this.getTSVInformation();
+		this.checkTSVTimer = setTimeout((): void => {
+			this.tsvInformationLoop();
+		}, timeout);
 	}
 
 	selectAllFilteredProjects(): void {
@@ -511,7 +546,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	}
 
 	initiateTsvExport(): void {
-		this.voService.getAllProjectsForTsvExport().subscribe((): void => {});
+		this.voService.getAllProjectsForTsvExport().subscribe((): void => {
+			this.getTSVInformation();
+		});
 	}
 
 	downloadCurrentTSV(): void {
@@ -520,10 +557,12 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				const blobn = new Blob([result], {
 					type: 'text/tsv',
 				});
-				FileSaver.saveAs(blobn, 'projects.tsv');
+
+				const dateTime = new Date();
+				FileSaver.saveAs(blobn, `projects-${dateTime.getDate()}-${dateTime.getMonth()}-${dateTime.getFullYear()}.tsv`);
 			},
-			(error: any) => {
-				console.log(`No such file found! - ${error.toString()}`);
+			(err: any) => {
+				console.log(`No such file found! - ${err.toString()}`);
 			},
 		);
 	}
