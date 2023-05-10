@@ -198,6 +198,30 @@ export class VoService {
 		});
 	}
 
+	setDisabledProject(groupid: number | string): Observable<any> {
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/disabled/`,
+			{
+				action: 'set',
+			},
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
+	unsetDisabledProject(groupid: number | string): Observable<any> {
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/disabled/`,
+			{
+				action: 'unset',
+			},
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
 	setProtected(groupid: number | string, set: boolean): Observable<any> {
 		const parameters: HttpParams = new HttpParams().set('action', set ? 'set' : 'unset');
 

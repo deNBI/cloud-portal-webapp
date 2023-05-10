@@ -37,6 +37,7 @@ export class ProjectSortService {
 			Application_States.WAIT_FOR_CONFIRMATION,
 			Application_States.TERMINATION_REQUESTED,
 			Application_States.EXPIRES_SOON,
+			Application_States.DISABLED,
 		];
 	}
 

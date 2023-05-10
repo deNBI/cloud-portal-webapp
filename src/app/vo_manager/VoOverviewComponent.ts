@@ -157,6 +157,10 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		});
 	}
 
+	disableProject(project: Application): void {
+		this.voService.setDisabledProject(project.project_application_perun_id).subscribe();
+	}
+
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers.forEach(header => {

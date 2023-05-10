@@ -1,75 +1,81 @@
 <div class="row">
-  <div class="col-3">
+	<div class="col-3">
 		<ng-container [ngSwitch]="virtualMachine?.status">
 			<ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
 				<div class="callout callout-success">
-					<small class="text-muted">Created at (d-m-y)</small><br>
-					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+					<small class="text-muted">Created at (d-m-y)</small><br />
+					<strong class="text-muted">{{ virtualMachine.created_at_date }}</strong>
 				</div>
 			</ng-container>
 			<ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF">
 				<div class="callout callout-warning">
-					<small class="text-muted">Created at (d-m-y)</small><br>
-					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+					<small class="text-muted">Created at (d-m-y)</small><br />
+					<strong class="text-muted">{{ virtualMachine.created_at_date }}</strong>
 				</div>
 			</ng-container>
 			<ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
 				<div class="callout callout-warning">
-					<small class="text-muted">Created at (d-m-y)</small><br>
-					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+					<small class="text-muted">Created at (d-m-y)</small><br />
+					<strong class="text-muted">{{ virtualMachine.created_at_date }}</strong>
 				</div>
 			</ng-container>
 			<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
 				<div class="callout callout-danger">
-					<small class="text-muted">Created at (d-m-y)</small><br>
-					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+					<small class="text-muted">Created at (d-m-y)</small><br />
+					<strong class="text-muted">{{ virtualMachine.created_at_date }}</strong>
 				</div>
 			</ng-container>
 			<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
 				<div class="callout callout-danger">
-					<small class="text-muted">Deleted at (d-m-y)</small><br>
-					<strong class="text-muted">{{virtualMachine.deleted_at_date | date: 'dd-MM-yyyy'}}</strong>
+					<small class="text-muted">Deleted at (d-m-y)</small><br />
+					<strong class="text-muted">{{ virtualMachine.deleted_at_date | date : 'dd-MM-yyyy' }}</strong>
 				</div>
 			</ng-container>
 			<ng-container *ngSwitchDefault>
 				<div class="callout callout-info">
-					<small class="text-muted">Created at (d-m-y)</small><br>
-					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+					<small class="text-muted">Created at (d-m-y)</small><br />
+					<strong class="text-muted">{{ virtualMachine.created_at_date }}</strong>
 				</div>
 			</ng-container>
 		</ng-container>
-  </div>
-  <div class="col-3">
-    <div class="callout">
-      <small class="text-muted">Created by</small><br>
-      <strong class="text-muted">{{virtualMachine.userlogin}}</strong>
-    </div>
-  </div>
-  <div class="col-6">
-    <div class="callout">
-      <small class="text-muted">Elixir-ID of {{virtualMachine.userlogin}}</small><br>
-      <strong class="text-muted">{{virtualMachine.elixir_id}}</strong>
-    </div>
-  </div>
+	</div>
+	<div class="col-3">
+		<div class="callout">
+			<small class="text-muted">Created by</small><br />
+			<strong class="text-muted">{{ virtualMachine.userlogin }}</strong>
+		</div>
+	</div>
+	<div class="col-6">
+		<div class="callout">
+			<small class="text-muted">Elixir-ID of {{ virtualMachine.userlogin }}</small
+			><br />
+			<strong class="text-muted">{{ virtualMachine.elixir_id }}</strong>
+		</div>
+	</div>
 </div>
 <div class="row">
-  <div class="col-3">
-    <div class="callout">
-      <small class="text-muted">Part of</small><br>
-      <a [routerLink]="['/project-management/' + virtualMachine.application_id]" rel="noopener noreferrer" target="_blank">
-        <strong class="text-muted">{{virtualMachine.project}}</strong></a>
-    </div>
-  </div>
-  <div class="col-6">
-    <div class="callout">
-      <small class="text-muted">Openstack-ID</small><br>
-      <strong class="text-muted">{{virtualMachine.openstackid}}</strong>
-    </div>
-  </div>
-  <div class="col-3" *ngIf="cluster_machine">
-    <div class="callout">
-      <small class="text-muted">Private IP</small><br>
-      <strong class="text-muted">{{virtualMachine.fixed_ip}}</strong>
-    </div>
-  </div>
+	<div class="col-3">
+		<div class="callout">
+			<small class="text-muted">Part of</small><br />
+			<a
+				[routerLink]="['/project-management/' + virtualMachine.application_id]"
+				rel="noopener noreferrer"
+				target="_blank"
+			>
+				<strong class="text-muted">{{ virtualMachine.project }}</strong></a
+			>
+		</div>
+	</div>
+	<div class="col-6">
+		<div class="callout">
+			<small class="text-muted">Openstack-ID</small><br />
+			<strong class="text-muted">{{ virtualMachine.openstackid }}</strong>
+		</div>
+	</div>
+	<div class="col-3" *ngIf="cluster_machine">
+		<div class="callout">
+			<small class="text-muted">Private IP</small><br />
+			<strong class="text-muted">{{ virtualMachine.fixed_ip }}</strong>
+		</div>
+	</div>
 </div>
