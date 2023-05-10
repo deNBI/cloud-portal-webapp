@@ -106,12 +106,30 @@
 							<div class="col">
 								<div class="float-right">
 									<button
+										*ngIf="!tsvTaskRunning"
 										type="button "
-										(click)="exportTSV()"
+										(click)="initiateTsvExport()"
 										class="btn btn-outline-primary"
 										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
 									>
-										Export as TSV
+										Trigger export of Projects TSV
+									</button>
+									<button *ngIf="tsvTaskRunning" class="btn btn-outline-primary" type="button" disabled>
+										<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+										Export in progress...
+									</button>
+								</div>
+							</div>
+							<div class="col">
+								<div class="float-right">
+									<button
+										type="button "
+										(click)="downloadCurrentTSV()"
+										class="btn btn-outline-primary"
+										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
+										[disabled]="numberOfTsvs <= 0"
+									>
+										Download latest TSV
 									</button>
 								</div>
 							</div>
@@ -242,7 +260,9 @@
 						<table class="table table-striped">
 							<thead>
 								<tr>
-									<th scope="col"></th>
+									<th scope="col">Select</th>
+									<th scope="col">Type</th>
+
 									<th scope="col">Facility</th>
 
 									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Project ID</th>
@@ -278,7 +298,7 @@
 									</td>
 									<td>
 										<ngb-highlight
-											[result]="project.project_application_perun_id"
+											[result]="project?.project_application_perun_id"
 											highlightClass="highlight-filter"
 											[term]="sortProjectService.searchTerm"
 											>>
@@ -400,7 +420,7 @@
 												(click)="
 													showMembersOfTheProject(
 														project.project_application_perun_id,
-														project.project_application_shortnameg
+														project.project_application_shortname
 													);
 													usersModal.show()
 												"
@@ -408,7 +428,10 @@
 												<i class="fa fa-users"></i>&nbsp;Show Members
 											</button>
 											<button
-												*ngIf="project | hasstatusinlist : project_states.ACTIVE"
+												*ngIf="
+													(project | hasstatusinlist : project_states.ACTIVE) &&
+													!(project | hasstatusinlist : project_states.SUSPENDED)
+												"
 												style="margin-left: 5px; margin-bottom: 5px"
 												type="button"
 												class="btn btn-warning"

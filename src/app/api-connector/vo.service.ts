@@ -18,6 +18,21 @@ export class VoService {
 		this.http = http;
 	}
 
+	getTsvInformation(): Observable<any> {
+		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/tsv_information/`, {
+			withCredentials: true,
+		});
+	}
+	getAllProjectsForTsvExport(): Observable<boolean> {
+		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/all_projects/`, {
+			withCredentials: true,
+		});
+	}
+
+	downloadProjectsTsv(): Observable<Blob> {
+		return this.http.get<Blob>(`${ApiSettings.getApiBaseURL()}voManagers/get_current_tsv/`, {});
+	}
+
 	sendTestError(): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/test_bug/`, {
 			withCredentials: true,
@@ -93,7 +108,6 @@ export class VoService {
 			withCredentials: true,
 		});
 	}
-
 	setProjectStatus(groupid: number | string, status: number): Observable<any> {
 		const params: HttpParams = new HttpParams().set('status', status.toString());
 
