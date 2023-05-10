@@ -826,7 +826,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	setAddUserInvitationLink(): void {
-		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.perun_name}`;
+		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.project_application_shortname}`;
 		const elixir_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=${encodeURIComponent(
 			project_reg,
 		)}&targetexisting=${encodeURIComponent(project_reg)}&targetextended=${encodeURIComponent(project_reg)}`;
