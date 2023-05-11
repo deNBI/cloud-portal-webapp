@@ -20,6 +20,7 @@ import {
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import {ProjectSortService} from '../shared/shared_modules/services/project-sort.service';
 import {ProjectEmailModalComponent} from '../shared/modal/email/project-email-modal/project-email-modal.component';
+import {ConfirmationActions, ConfirmationModalComponent} from '../shared/modal/confirmation-modal.component';
 
 /**
  * Vo Overview component.
@@ -50,6 +51,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		computecenters: ComputecenterComponent[] = [];
 		bsModalRef: BsModalRef;
 		subscription: Subscription = new Subscription();
+		protected readonly ConfirmationActions = ConfirmationActions;
 
 
 		show_openstack_projects: boolean = true;
@@ -150,6 +152,33 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 								this.toggleSelectedEmailApplication(application, application.is_project_selected);
 						});
 				});
+		}
+
+		showConfirmationModal(application: Application, action: ConfirmationActions): void {
+
+
+				const initialState = {application, action};
+				console.log(initialState)
+
+				this.bsModalRef = this.modalService.show(ConfirmationModalComponent, {initialState, class: 'modal-lg'});
+				this.subscribeToBsModalRef();
+		}
+
+		subscribeToBsModalRef(): void {
+				this.subscription.add(
+						this.bsModalRef.content.event.subscribe((result: any) => {
+								let action = null
+								if ('action' in result) {
+										action = result['action'];
+								}
+
+								if (ConfirmationActions.ENABLE_APPLICATION == action) {
+										this.enableProject(result['application']);
+								}
+								if (ConfirmationActions.DISABLE_APPLICATION == action) {
+										this.disableProject(result['application']);
+								}
+						}))
 		}
 
 		unselectAll(): void {
@@ -592,4 +621,5 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 						},
 				);
 		}
+
 }
