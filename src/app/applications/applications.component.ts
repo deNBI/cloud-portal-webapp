@@ -977,6 +977,5 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			default:
 				break;
 		}
-		console.log(this.adjustedApplication);
 	}
 }

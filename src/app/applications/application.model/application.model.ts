@@ -18,7 +18,6 @@ export class Application {
 	project_application_report_allowed: boolean = false;
 	project_application_name: string;
 	project_application_shortname: string;
-	perun_name: string;
 	project_application_institute: string;
 	project_application_workgroup: string;
 	project_application_lifetime: number;
@@ -110,7 +109,9 @@ export class Application {
 			}
 
 			if (aj.project_application_edam_terms) {
-				this.project_application_edam_terms = aj.project_application_edam_terms;
+				this.project_application_edam_terms = aj.project_application_edam_terms.map(
+					(term: any): EdamOntologyTerm => new EdamOntologyTerm(null, term, null, null),
+				);
 			}
 			if (aj.project_lifetime_request) {
 				this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);

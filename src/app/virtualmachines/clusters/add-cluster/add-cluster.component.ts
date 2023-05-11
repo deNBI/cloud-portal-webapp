@@ -481,8 +481,8 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.allowedProjects.push(project);
 				}
 				this.projects_loaded = true;
-				if (this.projects.length === 1) {
-					this.selectedProject = this.projects[0];
+				if (this.allowedProjects.length === 1) {
+					this.selectedProject = this.allowedProjects[0];
 					this.singleProject = true;
 					this.getSelectedProjectClient();
 				}
