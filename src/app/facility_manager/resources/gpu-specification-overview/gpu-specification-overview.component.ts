@@ -33,7 +33,6 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.getGPUSpecifications();
-		console.log(this.facility_id);
 		this.newGPUSpecification = new GPUSpecification(null);
 		this.newGPUFormGroup = this.formBuilder.group({
 			new_gpu_type: [null, Validators.compose([Validators.required, Validators.pattern(/^(([a-zA-Z0-9])+\s?)*$/)])],

@@ -179,8 +179,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			if (this.openstack_project) {
 				this.application.project_application_object_storage = 0;
 			}
-			this.application.project_application_volume_counter = 3;
-			this.application.project_application_volume_limit = 20;
+			this.application.project_application_volume_counter = 0;
+			this.application.project_application_volume_limit = 0;
 		}
 		this.isLoaded = true;
 	}

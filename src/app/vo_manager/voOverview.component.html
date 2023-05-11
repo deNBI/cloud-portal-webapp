@@ -106,12 +106,31 @@
 							<div class="col">
 								<div class="float-right">
 									<button
+
+										*ngIf="!tsvTaskRunning"
 										type="button "
-										(click)="exportTSV()"
+										(click)="initiateTsvExport()"
 										class="btn btn-outline-primary"
 										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
 									>
-										Export as TSV
+										Trigger export of Projects TSV
+									</button>
+									<button *ngIf="tsvTaskRunning" class="btn btn-outline-primary" type="button" disabled>
+										<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+										Export in progress...
+									</button>
+								</div>
+							</div>
+							<div class="col">
+								<div class="float-right">
+									<button
+										type="button "
+										(click)="downloadCurrentTSV()"
+										class="btn btn-outline-primary"
+										style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
+										[disabled]="numberOfTsvs <= 0"
+									>
+										Download latest TSV
 									</button>
 								</div>
 							</div>
@@ -254,7 +273,10 @@
 						<table class="table table-striped">
 							<thead>
 								<tr>
-									<th scope="col"></th>
+
+									<th scope="col">Select</th>
+									<th scope="col">Type</th>
+
 									<th scope="col">Facility</th>
 
 									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Project ID</th>
@@ -290,7 +312,7 @@
 									</td>
 									<td>
 										<ngb-highlight
-											[result]="project.project_application_perun_id"
+											[result]="project?.project_application_perun_id"
 											highlightClass="highlight-filter"
 											[term]="sortProjectService.searchTerm"
 											>>
@@ -321,6 +343,7 @@
 											style="margin-left: 5px"
 											class="badge bg-warning"
 											>{{ application_states[application_states.DISABLED] }}
+
 										</span>
 										<span
 											*ngIf="
@@ -418,7 +441,7 @@
 												(click)="
 													showMembersOfTheProject(
 														project.project_application_perun_id,
-														project.project_application_shortnameg
+														project.project_application_shortname
 													);
 													usersModal.show()
 												"
@@ -453,6 +476,7 @@
                                         >
                                             <i class="fa fa-play"></i>&nbsp;Resume Project
                                         </button-->
+
 											<button
 												style="margin-left: 5px; margin-bottom: 5px"
 												type="button"
@@ -859,8 +883,8 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				Are you sure you want to resume {{ selectedProject?.project_application_shortname }}
-				?
+
+				Are you sure you want to resume {{ selectedProject?.project_application_shortname }} ?
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-success col-md-4" (click)="resumeProject(selectedProject); resumeModal.hide()">

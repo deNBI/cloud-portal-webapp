@@ -6,7 +6,7 @@
 				*ngFor="let term of application?.project_application_edam_terms"
 				style="margin-left: 5px"
 				class="badge bg-info"
-				><span id="topic_{{ term }}">{{ term }}</span>
+				><span id="topic_{{ term.name }}">{{ term.name }}</span>
 			</span>
 		</h5>
 	</td>
