@@ -158,6 +158,19 @@
 						>
 							<i class="fas fa-trash"></i>
 						</div>
+								<div
+							class="badge bg-warning status-badge col-2"
+							data-toggle="tooltip"
+							data-placement="right"
+							title="This project is disabled!"
+								*ngIf="
+								(application | hasstatusinlist : Application_States.DISABLED)
+							"
+
+
+						>
+							<i class="fa fa-lock"></i>
+						</div>
 						<div
 							class="badge bg-secondary status-badge col-2"
 							data-toggle="tooltip"
@@ -298,6 +311,19 @@
 							>
 								<i class="fas fa-trash"></i>
 							</div>
+										<div
+							class="badge bg-warning status-badge col-3"
+							data-toggle="tooltip"
+							data-placement="right"
+							title="This project is disabled!"
+								*ngIf="
+								(application | hasstatusinlist : Application_States.DISABLED)
+							"
+
+
+						>
+							<i class="fa fa-lock"></i>
+						</div>
 							<div
 								class="badge bg-secondary status-badge col-3"
 								data-toggle="tooltip"

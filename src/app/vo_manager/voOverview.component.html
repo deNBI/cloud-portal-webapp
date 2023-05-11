@@ -448,6 +448,25 @@
 											>
 												<i class="fa fa-users"></i>&nbsp;Show Members
 											</button>
+
+				<button
+												*ngIf="project | hasstatusnotinlist : application_states.DISABLED"
+												style="margin-left: 5px; margin-bottom: 5px"
+												type="button"
+												class="btn btn-warning"
+												(click)="disableProject(project)"
+											>
+												<i class="fa fa-pause"></i>&nbsp;Disable Project
+											</button>
+														<button
+												*ngIf="project | hasstatusinlist : application_states.DISABLED"
+												style="margin-left: 5px; margin-bottom: 5px"
+												type="button"
+												class="btn btn-warning"
+												(click)="enableProject(project)"
+											>
+												<i class="fa fa-play"></i>&nbsp;Enable Project
+											</button>
 											<!--button
                                                 *ngIf="project | hasstatusinlist : project_states.ACTIVE"
                                                 style="margin-left: 5px; margin-bottom: 5px"
@@ -457,15 +476,6 @@
                                         >
                                             <i class="fa fa-pause"></i>&nbsp;Suspend Project
                                         </button-->
-											<button
-												*ngIf="project | hasstatusnotinlist : application_states.DISABLED"
-												style="margin-left: 5px; margin-bottom: 5px"
-												type="button"
-												class="btn btn-warning"
-												(click)="disableProject(project)"
-											>
-												<i class="fa fa-pause"></i>&nbsp;Disable Project
-											</button>
 
 											<!--button
                                                 *ngIf="project | hasstatusinlist : project_states.SUSPENDED"
