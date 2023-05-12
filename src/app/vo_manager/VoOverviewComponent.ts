@@ -172,10 +172,10 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 										action = result['action'];
 								}
 
-								if (ConfirmationActions.ENABLE_APPLICATION == action) {
+								if (ConfirmationActions.ENABLE_APPLICATION === action) {
 										this.enableProject(result['application']);
 								}
-								if (ConfirmationActions.DISABLE_APPLICATION == action) {
+								if (ConfirmationActions.DISABLE_APPLICATION === action) {
 										this.disableProject(result['application']);
 								}
 						}))
