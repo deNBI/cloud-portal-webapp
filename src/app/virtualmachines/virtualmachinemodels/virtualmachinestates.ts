@@ -24,6 +24,8 @@ export class VirtualMachineStates extends GeneralStatusStates {
 	private static readonly _CREATION_FAILED: string = 'CREATION_FAILED';
 	private static readonly _LOCKED: string = 'LOCKED';
 
+	private static readonly _DISABLED: string = 'DISABLED';
+
 	private static readonly _IN_PROCESS_STATES: string[] = [
 		VirtualMachineStates._REBOOTING_STARTED,
 		VirtualMachineStates._REBOOTING_HARD,
@@ -44,6 +46,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._CHECKING_CONNECTION,
 		VirtualMachineStates._GETTING_STATUS,
 		VirtualMachineStates._PLANNED,
+
 		null,
 	];
 
@@ -58,6 +61,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._CREATION_FAILED,
 		VirtualMachineStates._MIGRATED,
 		VirtualMachineStates._LOCKED,
+		VirtualMachineStates._DISABLED,
 	];
 
 	private static readonly _DELETABLE_STATES: string[] = [
@@ -77,6 +81,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	static get CLIENT_OFFLINE(): string {
 		return this._CLIENT_OFFLINE;
+	}
+
+	static get DISABLED(): string {
+		return this._DISABLED;
 	}
 
 	static get LOCKED(): string {
@@ -169,6 +177,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
 	public get staticIMAGE_UPLOADING(): string {
 		return VirtualMachineStates.IMAGE_UPLOADING;
+	}
+
+	public get staticDISABLED(): string {
+		return VirtualMachineStates.DISABLED;
 	}
 
 	public get staticIMAGE_PENDING_UPLOAD(): string {

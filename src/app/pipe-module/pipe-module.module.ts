@@ -13,6 +13,7 @@ import { ValidTimeFramePipe } from './pipes/validTimeFrame.pipe';
 import { PublicKeyPipe } from './pipes/publicKey.pipe';
 import { IsFutureTimePipe } from './pipes/futureTime.pipe';
 import { IsMigratedProjectIdPipe } from './pipes/migratedList';
+import { HasStatusNotInListPipe } from './pipes/has-status-not-in-list.pipe';
 
 /**
  * Pipemodule
@@ -35,6 +36,7 @@ import { IsMigratedProjectIdPipe } from './pipes/migratedList';
 		IsFutureTimePipe,
 		PublicKeyPipe,
 		IsMigratedProjectIdPipe,
+		HasStatusNotInListPipe,
 	],
 	exports: [
 		FlavorCounterPipe,
@@ -53,6 +55,7 @@ import { IsMigratedProjectIdPipe } from './pipes/migratedList';
 		IsFutureTimePipe,
 		PublicKeyPipe,
 		IsMigratedProjectIdPipe,
+		HasStatusNotInListPipe,
 	],
 	imports: [CommonModule],
 	providers: [IsMigratedProjectIdPipe],

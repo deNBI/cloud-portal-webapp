@@ -1,8 +1,8 @@
 import {
-	Component, OnInit, QueryList, ViewChild, ViewChildren,
+	Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import * as FileSaver from 'file-saver';
 import { VoService } from '../api-connector/vo.service';
@@ -20,6 +20,8 @@ import {
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
+import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
+import { ConfirmationActions } from '../shared/modal/confirmation_actions';
 
 /**
  * Vo Overview component.
@@ -29,7 +31,7 @@ import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-
 	templateUrl: 'voOverview.component.html',
 	providers: [VoService, GroupService, FacilityService, ProjectSortService],
 })
-export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
+export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
 	title: string = 'VO Overview';
 	public emailSubject: string;
 	public emailReply: string = '';
@@ -48,6 +50,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	selectedEmailProjects: Application[] = [];
 	computecenters: ComputecenterComponent[] = [];
 	bsModalRef: BsModalRef;
+	subscription: Subscription = new Subscription();
+	protected readonly ConfirmationActions = ConfirmationActions;
 
 	show_openstack_projects: boolean = true;
 	show_simple_vm_projects: boolean = true;
@@ -104,17 +108,23 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.tsvInformationLoop();
 	}
 
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+	}
+
 	getTSVInformation(): void {
-		this.voService.getTsvInformation().subscribe(
-			(result: any): void => {
-				console.log(result);
-				this.tsvTaskRunning = result[0];
-				this.numberOfTsvs = result[1];
-			},
-			() => {
-				this.tsvTaskRunning = true;
-				this.numberOfTsvs = 0;
-			},
+		this.subscription.add(
+			this.voService.getTsvInformation().subscribe(
+				(result: any): void => {
+					console.log(result);
+					this.tsvTaskRunning = result[0];
+					this.numberOfTsvs = result[1];
+				},
+				() => {
+					this.tsvTaskRunning = true;
+					this.numberOfTsvs = 0;
+				},
+			),
 		);
 	}
 
@@ -143,6 +153,32 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				this.toggleSelectedEmailApplication(application, application.is_project_selected);
 			});
 		});
+	}
+
+	showConfirmationModal(application: Application, action: ConfirmationActions): void {
+		const initialState = { application, action };
+		console.log(initialState);
+
+		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' });
+		this.subscribeToBsModalRef();
+	}
+
+	subscribeToBsModalRef(): void {
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe((result: any) => {
+				let action = null;
+				if ('action' in result) {
+					action = result['action'];
+				}
+
+				if (ConfirmationActions.ENABLE_APPLICATION === action) {
+					this.enableProject(result['application']);
+				}
+				if (ConfirmationActions.DISABLE_APPLICATION === action) {
+					this.disableProject(result['application']);
+				}
+			}),
+		);
 	}
 
 	unselectAll(): void {
@@ -191,6 +227,22 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				this.updateNotificationModal('Failed', 'Failed to send mails!', true, 'danger');
 			}
 			this.notificationModal.show();
+		});
+	}
+
+	disableProject(project: Application): void {
+		this.voService.setDisabledProject(project.project_application_perun_id).subscribe((upd_app: Application) => {
+			const idx = this.projects.indexOf(project);
+			this.projects[idx] = upd_app;
+			this.sortProjectService.applications = this.projects;
+		});
+	}
+
+	enableProject(project: Application): void {
+		this.voService.unsetDisabledProject(project.project_application_perun_id).subscribe((upd_app: Application) => {
+			const idx = this.projects.indexOf(project);
+			this.projects[idx] = upd_app;
+			this.sortProjectService.applications = this.projects;
 		});
 	}
 
