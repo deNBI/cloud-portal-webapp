@@ -45,6 +45,8 @@ export enum Application_States {
 	EXPIRED = 23,
 	ACTIVE = 24,
 	DELETED = 25,
+
+	DISABLED = 26,
 }
 
 export enum Application_States_Strings {
