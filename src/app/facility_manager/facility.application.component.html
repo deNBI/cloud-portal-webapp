@@ -7,10 +7,9 @@
 			(ngModelChange)="onChangeSelectedFacility($event)"
 			class="form-control form-select"
 			name="selectedFacility"
+			id="selectFacilitySelect"
 		>
-			<option *ngFor="let facility of managerFacilities" [ngValue]="facility">
-				{{ facility['Facility'] }}
-			</option>
+			<option *ngFor="let facility of managerFacilities" [ngValue]="facility">{{ facility['Facility'] }}</option>
 		</select>
 	</div>
 

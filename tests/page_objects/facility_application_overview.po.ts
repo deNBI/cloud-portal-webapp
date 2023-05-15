@@ -25,6 +25,8 @@ export class FacilityApplicationOverviewPage {
 	private readonly TERMINATION_TABLE: string = 'termination_table';
 	private readonly TERMINATION_COUNTER: string = 'termination_counter';
 	private readonly CLOSE_NOTIFICATION_BTN: string = 'close_notification_modal_btn';
+	private DEFAULT_DENBI_COMPUTE_CENTER: string = 'de.NBI Cloud Portal - Development';
+	private readonly SELECT_FACILITY_SELECT: string = 'selectFacilitySelect';
 
 	private readonly TERMINATE_REQUESTS_APPLICATIONS_TAB = 'terminate_requests_applications_tab';
 
@@ -64,6 +66,7 @@ export class FacilityApplicationOverviewPage {
 
 	async goToLifetimeRequests() {
 		await this.goto();
+		await this.selectComputeCenter();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_REQUESTS_APPLICATIONS_TAB)).click();
@@ -73,8 +76,16 @@ export class FacilityApplicationOverviewPage {
 		});
 	}
 
+	async selectComputeCenter() {
+		console.log(`Selecting compute center: ${this.DEFAULT_DENBI_COMPUTE_CENTER}`);
+		await this.page.selectOption(Util.by_data_test_id_str(this.SELECT_FACILITY_SELECT), {
+			label: this.DEFAULT_DENBI_COMPUTE_CENTER,
+		});
+	}
+
 	async goToModificationRequests() {
 		await this.goto();
+		await this.selectComputeCenter();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_REQUESTS_APPLICATIONS_TAB)).click();
@@ -86,6 +97,7 @@ export class FacilityApplicationOverviewPage {
 
 	async goToTerminationRequests() {
 		await this.goto();
+		await this.selectComputeCenter();
 		console.log('Click Termination Request Tab');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForTimeout(5000);
