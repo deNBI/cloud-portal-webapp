@@ -54,6 +54,8 @@ export const WIKI_SVM_MIGRATION_LINK = `${environment.WIKI_PRE}`;
 
 export const NEW_SVM_PORTAL_LINK = `${environment.new_svm_webapp}`;
 
+export const TESTIMONIAL_PAGE_LINK: string = `${environment.wagtailBase}about/testimonials/`;
+
 export const WIKI_LINKS: string[] = [
 	WIKI_SNAPSHOTS,
 	WIKI,
@@ -92,4 +94,5 @@ export const LANDING_PAGE_LINKS: string[] = [
 	FACILITY_NEWS_LINK,
 	STATUS_LINK,
 	SUPPORT_LINK,
+	TESTIMONIAL_PAGE_LINK,
 ];

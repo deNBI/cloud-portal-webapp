@@ -1,0 +1,182 @@
+<div class="card">
+	<div class="card-header">Testimonial or better name</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-auto mx-auto">
+				<div class="alert alert-info">
+					An overview of the testimonials already published can be found
+					<a href="{{ TESTIMONIAL_PAGE_LINK }}" target="_blank" rel="noopener norefferer">here</a>. Both the text and
+					the excerpt can be based on the testimonials there.
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		<form id="extension_application_form" #testimonialForm="ngForm" class="form-horizontal">
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Title*
+							<i class="icon-question" data-toggle="tooltip" title="The title of your testimonial"> </i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial-title"
+							placeholder="NA"
+							type="text"
+							[(ngModel)]="this.title"
+						/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Text*
+							<i class="icon-question" data-toggle="tooltip" title="The text of your testimonial"> </i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<textarea class="form-control" name="testimonial-text" [(ngModel)]="this.text"></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Excerpt*
+							<i class="icon-question" data-toggle="tooltip" title="The excerpt of your testimonial"> </i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<textarea class="form-control" name="testimonial-excerpt" [(ngModel)]="this.excerpt"></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Contributor*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="The responsible person in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial-contributor"
+							placeholder="NA"
+							type="text"
+							[(ngModel)]="this.contributor"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Institute*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="The institute at which the working group is active in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial-institution"
+							placeholder="NA"
+							type="text"
+							[(ngModel)]="this.institution"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Institute*
+							<i class="icon-question" data-toggle="tooltip" title="The working group behind the project."> </i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial-workgroup"
+							placeholder="NA"
+							type="text"
+							[(ngModel)]="this.workgroup"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Photography*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="A picture of the working group, the PI or the person in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input class="form-control" name="testimonial-photography" type="file" [(ngModel)]="this.photography" />
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="card-footer">
+		<div class="row">
+			<div class="btn-group">
+				<button class="btn btn-success">Send</button>
+				<button class="btn btn-warning">Reset</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1089,8 +1089,8 @@
 			<div class="card" id="doiCard">
 				<div class="card-header">
 					<i class="fa fa-align-justify"></i>
-					<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank"
-						>Digital object identifier (DOI)</a
+					<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank">
+						Digital object identifier (DOI)</a
 					>
 				</div>
 
@@ -1154,6 +1154,15 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="row" *ngIf="project_application && isLoaded">
+		<app-testimonial-form
+			[title]="project_application?.project_application_name"
+			[contributor]="project_application?.project_application_pi?.username"
+			[institution]="project_application?.project_application_institute"
+			[workgroup]="project_application?.project_application_workgroup"
+			[simple_vm]="!project_application?.project_application_openstack_project"
+		></app-testimonial-form>
 	</div>
 	<div class="row">
 		<div

@@ -85,6 +85,48 @@ export class NewsService {
 			);
 	}
 
+	sendTestimonialDraft(
+		title: string,
+		text: string,
+		excerpt: string,
+		contributor: string,
+		institution: string,
+		workgroup: string,
+		simple_vm: boolean,
+		photography: File, // check
+	): Observable<any> {
+		/*
+		we need title + draft_prefix
+		the actual text
+		an excerpt - if not given, let's generate it automatically?
+		contributor - automatically or just from the user information?
+		institution
+		workgroup
+		project-type
+		photography
+		 */
+		const testimonialData: any = {
+			title,
+			text,
+			excerpt,
+			contributor,
+			institution,
+			workgroup,
+			simple_vm,
+			photography,
+		};
+
+		let skip_header: HttpHeaders = new HttpHeaders();
+		skip_header = skip_header
+			.append('skip', 'true')
+			.append('Accept', 'application/json')
+			.append('Content-Type', 'application/json');
+
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/`, testimonialData, {
+			headers: skip_header,
+		});
+	}
+
 	private handleError<T>(result?: T) {
 		return (error: any): Observable<T> => {
 			console.error(error); // log to console instead
