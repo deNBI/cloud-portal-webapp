@@ -35,6 +35,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	}
 
 	sendTestimonial(): void {
+		this.send_testimonial_test();
 		this.subscription.add(
 			this.newsService
 				.sendTestimonialDraft(
@@ -51,6 +52,19 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 					console.log('yep');
 				}),
 		);
+	}
+
+	send_testimonial_test(): void {
+		const dct: any = {
+			txt: this.text,
+			exc: this.excerpt,
+			con: this.contributor,
+			inst: this.institution,
+			wkg: this.workgroup,
+			svm: this.simple_vm,
+			phot: this.photography,
+		};
+		console.log(dct);
 	}
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();

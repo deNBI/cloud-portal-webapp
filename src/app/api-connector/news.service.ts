@@ -116,14 +116,8 @@ export class NewsService {
 			photography,
 		};
 
-		let skip_header: HttpHeaders = new HttpHeaders();
-		skip_header = skip_header
-			.append('skip', 'true')
-			.append('Accept', 'application/json')
-			.append('Content-Type', 'application/json');
-
 		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/`, testimonialData, {
-			headers: skip_header,
+			withCredentials: true,
 		});
 	}
 
