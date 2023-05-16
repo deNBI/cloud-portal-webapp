@@ -1,10 +1,10 @@
-import { ngxCsv } from 'ngx-csv/ngx-csv';
 import {
-	Component, OnInit, QueryList, ViewChild, ViewChildren,
+	Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
+import * as FileSaver from 'file-saver';
 import { VoService } from '../api-connector/vo.service';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { GroupService } from '../api-connector/group.service';
@@ -13,13 +13,15 @@ import { IResponseTemplate } from '../api-connector/response-template';
 import { FacilityService } from '../api-connector/facility.service';
 import { FullLayoutComponent } from '../layouts/full-layout.component';
 import { Application } from '../applications/application.model/application.model';
-import { AbstractBaseClass, Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
 import {
 	NgbdSortableHeaderDirective,
 	SortEvent,
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
+import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
+import { ConfirmationActions } from '../shared/modal/confirmation_actions';
 
 /**
  * Vo Overview component.
@@ -29,12 +31,13 @@ import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-
 	templateUrl: 'voOverview.component.html',
 	providers: [VoService, GroupService, FacilityService, ProjectSortService],
 })
-export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
+export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
 	title: string = 'VO Overview';
 	public emailSubject: string;
 	public emailReply: string = '';
 	public emailText: string;
 	public emailStatus: number = 0;
+
 	@ViewChild('notificationModal') notificationModal: ModalDirective;
 	public emailHeader: string;
 	public emailVerify: string;
@@ -47,11 +50,18 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	selectedEmailProjects: Application[] = [];
 	computecenters: ComputecenterComponent[] = [];
 	bsModalRef: BsModalRef;
+	subscription: Subscription = new Subscription();
+	protected readonly ConfirmationActions = ConfirmationActions;
 
 	show_openstack_projects: boolean = true;
 	show_simple_vm_projects: boolean = true;
 	show_simple_vm: boolean = true;
 	show_openstack: boolean = true;
+
+	tsvTaskRunning: boolean = true;
+	numberOfTsvs: number = 0;
+	checkTSVTimer: ReturnType<typeof setTimeout>;
+	checkTSVTimeout: number = 10000;
 
 	selectedProjectType: string = 'ALL';
 	selectedFacility: string | number = 'ALL';
@@ -94,6 +104,42 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
 			this.newsletterSubscriptionCounter = result.value as number;
 		});
+		this.getTSVInformation();
+		this.tsvInformationLoop();
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+	}
+
+	getTSVInformation(): void {
+		this.subscription.add(
+			this.voService.getTsvInformation().subscribe(
+				(result: any): void => {
+					console.log(result);
+					this.tsvTaskRunning = result[0];
+					this.numberOfTsvs = result[1];
+				},
+				() => {
+					this.tsvTaskRunning = true;
+					this.numberOfTsvs = 0;
+				},
+			),
+		);
+	}
+
+	stopCheckTSVTimer(): void {
+		if (this.checkTSVTimer) {
+			clearTimeout(this.checkTSVTimer);
+		}
+	}
+
+	tsvInformationLoop(timeout: number = this.checkTSVTimeout): void {
+		this.stopCheckTSVTimer();
+		this.getTSVInformation();
+		this.checkTSVTimer = setTimeout((): void => {
+			this.tsvInformationLoop();
+		}, timeout);
 	}
 
 	selectAllFilteredProjects(): void {
@@ -107,6 +153,32 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				this.toggleSelectedEmailApplication(application, application.is_project_selected);
 			});
 		});
+	}
+
+	showConfirmationModal(application: Application, action: ConfirmationActions): void {
+		const initialState = { application, action };
+		console.log(initialState);
+
+		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' });
+		this.subscribeToBsModalRef();
+	}
+
+	subscribeToBsModalRef(): void {
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe((result: any) => {
+				let action = null;
+				if ('action' in result) {
+					action = result['action'];
+				}
+
+				if (ConfirmationActions.ENABLE_APPLICATION === action) {
+					this.enableProject(result['application']);
+				}
+				if (ConfirmationActions.DISABLE_APPLICATION === action) {
+					this.disableProject(result['application']);
+				}
+			}),
+		);
 	}
 
 	unselectAll(): void {
@@ -137,7 +209,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 				// application is not in the list, so add it
 				this.selectedEmailProjects.push(application);
 			}
-		} else if (index !== -1) {
+		} else {
+			// checkbox was unchecked
 			// application is in the list, so remove it
 			this.selectedEmailProjects.splice(index, 1);
 		}
@@ -148,14 +221,28 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 
 		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
 		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
-			console.log('event recieved');
-			console.log(sent_successfully);
 			if (sent_successfully) {
 				this.updateNotificationModal('Success', 'Mails were successfully sent', true, 'success');
 			} else {
 				this.updateNotificationModal('Failed', 'Failed to send mails!', true, 'danger');
 			}
 			this.notificationModal.show();
+		});
+	}
+
+	disableProject(project: Application): void {
+		this.voService.setDisabledProject(project.project_application_perun_id).subscribe((upd_app: Application) => {
+			const idx = this.projects.indexOf(project);
+			this.projects[idx] = upd_app;
+			this.sortProjectService.applications = this.projects;
+		});
+	}
+
+	enableProject(project: Application): void {
+		this.voService.unsetDisabledProject(project.project_application_perun_id).subscribe((upd_app: Application) => {
+			const idx = this.projects.indexOf(project);
+			this.projects[idx] = upd_app;
+			this.sortProjectService.applications = this.projects;
 		});
 	}
 
@@ -439,16 +526,28 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 	}
 
 	suspendProject(project: Application): void {
-		this.voService.removeResourceFromGroup(project.project_application_perun_id).subscribe((): void => {
-			this.getProjectStatus(project);
-			project.project_application_compute_center = null;
-		});
+		this.voService.removeResourceFromGroup(project.project_application_perun_id).subscribe(
+			(): void => {
+				this.updateNotificationModal('Success', 'The project got suspended successfully', true, 'success');
+				this.getProjectStatus(project);
+				project.project_application_compute_center = null;
+			},
+			(): void => {
+				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
+			},
+		);
 	}
 
 	resumeProject(project: Application): void {
-		this.voService.resumeProject(project.project_application_perun_id).subscribe((): void => {
-			this.getVoProjects();
-		});
+		this.voService.resumeProject(project.project_application_perun_id).subscribe(
+			(): void => {
+				this.updateNotificationModal('Success', 'The project got resumed successfully', true, 'success');
+				this.getProjectStatus(project);
+			},
+			(): void => {
+				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
+			},
+		);
 	}
 
 	declineTermination(project: Application): void {
@@ -498,80 +597,25 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit {
 		this.getMembersOfTheProject(projectid, projectname);
 	}
 
-	exportTSV(): void {
-		const data = [];
-		this.sortProjectService.sorted_applications.forEach(application => {
-			const entry = {};
-			for (const key in application) {
-				if (typeof application[key] === 'object') {
-					if (key === 'project_application_pi') {
-						entry['project_application_pi_name'] = application[key].username;
-						entry['project_application_pi_email'] = application[key].email;
-						entry['project_application_pi_affiliations'] = JSON.stringify(application[key].user_affiliations);
-					} else if (key === 'project_application_statuses') {
-						const statuses_strings = [];
-						application[key].forEach(status => {
-							statuses_strings.push(Application_States[status]);
-						});
-						entry[key] = JSON.stringify(statuses_strings);
-					} else if (key === 'project_credit_request') {
-						if (application[key] == null) {
-							entry['project_credit_requested'] = 'FALSE';
-							entry['project_credit_request_id'] = 'NONE';
-							entry['project_credit_request_comment'] = 'NONE';
-							entry['project_credit_request_date_submitted'] = 'NONE';
-							entry['project_credit_request_extra_credits'] = 'NONE';
-							entry['project_credit_request_user_name'] = 'NONE';
-							entry['project_credit_request_user_email'] = 'NONE';
-						} else {
-							entry['project_credit_requested'] = 'TRUE';
-							entry['project_credit_request_id'] = JSON.stringify(application[key].Id);
-							entry['project_credit_request_comment'] = application[key].comment;
-							entry['project_credit_request_date_submitted'] = JSON.stringify(application[key].date_submitted);
-							entry['project_credit_request_extra_credits'] = JSON.stringify(application[key].extra_credits);
-							entry['project_credit_request_user_name'] = JSON.stringify(application[key].user.username);
-							entry['project_credit_request_user_email'] = JSON.stringify(application[key].user.email);
-						}
-					} else if (key === 'project_application_edam_terms') {
-						const edam_names = [];
-						application[key].forEach(edam => {
-							edam_names.push(edam.name);
-						});
-						entry['project_application_edam_terms'] = JSON.stringify(edam_names);
-					} else if (key === 'flavors') {
-						const flavor_names = [];
-						application[key].forEach(flavor => {
-							flavor_names.push(flavor.name);
-						});
-					} else if (key === 'dissemination') {
-						/* empty */
-					} else if (key === 'project_application_compute_center') {
-						entry[key] = application[key].Name;
-						entry['project_application_compute_center_id'] = application[key].FacilityId;
-					} else {
-						entry[key] = JSON.stringify(application[key]);
-					}
-				} else {
-					entry[key] = application[key];
-				}
-			}
-			data.push(entry);
+	initiateTsvExport(): void {
+		this.voService.getAllProjectsForTsvExport().subscribe((): void => {
+			this.getTSVInformation();
 		});
-		if (data.length > 0) {
-			// create CSV file first for convenience
-			const currentDate = new Date().toISOString().split('T')[0];
-			// eslint-disable-next-line
-			const csv = new ngxCsv(data, 'cloud_projects_' + currentDate, {
-				showLabels: true,
-				headers: Object.keys(data[0]),
-				fieldSeparator: '\t',
-				noDownload: true,
-			});
-			// create TSV file and download it
-			const link = document.createElement('a');
-			link.href = `data:text/tab-separated-values,${encodeURIComponent(csv.getCsv())}`;
-			link.download = `cloud_projects_${currentDate}.tsv`;
-			link.click();
-		}
+	}
+
+	downloadCurrentTSV(): void {
+		this.voService.downloadProjectsTsv().subscribe(
+			(result): void => {
+				const blobn = new Blob([result], {
+					type: 'text/tsv',
+				});
+
+				const dateTime = new Date();
+				FileSaver.saveAs(blobn, `projects-${dateTime.getDate()}-${dateTime.getMonth()}-${dateTime.getFullYear()}.tsv`);
+			},
+			(err: any) => {
+				console.log(`No such file found! - ${err.toString()}`);
+			},
+		);
 	}
 }

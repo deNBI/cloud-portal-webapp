@@ -29,6 +29,15 @@
 		></div>
 		{{ VirtualMachineStates.staticMIGRATED }}
 	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticDISABLED">
+		<div
+			[id]="'disabled_badge_' + vm?.name"
+			[attr.data-test-id]="'disabled_' + vm?.name"
+			class="dot-colorless bg-warning pulseAnimMigrated"
+			style="width: 10px; height: 10px"
+		></div>
+		{{ VirtualMachineStates.staticDISABLED }}
+	</ng-container>
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
 		<div
 			[id]="'deleted_badge_' + vm?.name"

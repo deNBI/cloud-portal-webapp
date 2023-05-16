@@ -706,9 +706,6 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 					&& final_state
 					&& final_state !== updated_volume.volume_status
 				) {
-					console.log(final_state);
-					console.log(volume.volume_status);
-					console.log('####');
 					this.check_status_loop(volume, this.checkStatusTimeout, final_state);
 				}
 			},

@@ -261,7 +261,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row" *ngIf="!openstack_project">
+						<div class="form-group row">
 							<label
 								data-test-id="project_application_workshop_input"
 								class="col-md-4 form-control-label"
@@ -286,8 +286,10 @@
 										/>
 										<span class="help-block">
 											Would you like to conduct a workshop with the requested resources in the context of this project?
-											Learn more about workshops
-											<a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">here</a>.
+											<span *ngIf="!openstack_project"
+												>Learn more about workshops
+												<a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">here</a>.</span
+											>
 										</span>
 									</div>
 								</div>
@@ -510,6 +512,10 @@
 										</li>
 										<li>Did you test your tools on machines with less RAM?</li>
 									</ul>
+								</div>
+								<div class="alert alert-danger" role="alert">
+									Please note that failure to answer the questions above may result in your application being processed
+									with smaller flavors.
 								</div>
 							</div>
 						</div>

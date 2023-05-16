@@ -21,7 +21,6 @@ import { Resources } from './resources';
 	providers: [VoService],
 })
 export class ResourcesComponent implements OnInit {
-
 	title: string = 'VO Overview: Resources';
 	@ViewChild('resourcesTable') pdfTable: ElementRef;
 
@@ -33,7 +32,6 @@ export class ResourcesComponent implements OnInit {
 
 	constructor(private voservice: VoService) {
 		this.getVoProjectResources();
-
 	}
 
 	public getVoProjectResources(): void {
@@ -41,11 +39,9 @@ export class ResourcesComponent implements OnInit {
 			this.voResources = res;
 			this.isLoaded = true;
 		});
-
 	}
 
 	public tableToCSV(): void {
-		console.log('to csv');
 		const options = {
 			fieldSeparator: ',',
 			quoteStrings: '"',
@@ -63,7 +59,6 @@ export class ResourcesComponent implements OnInit {
 		const csvExporter = new ExportToCsv(options);
 
 		csvExporter.generateCsv(this.voResources);
-
 	}
 
 	/* public tableToPDF(): void {
@@ -79,7 +74,5 @@ export class ResourcesComponent implements OnInit {
 
 	} */
 
-	ngOnInit(): void {
-	}
-
+	ngOnInit(): void {}
 }

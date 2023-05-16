@@ -20,7 +20,6 @@ export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 	emailText: string;
 	templates: string[];
 
-
 	public event: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(public bsModalRef: BsModalRef, private voService: VoService) {
@@ -44,7 +43,6 @@ export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 			.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
 			.subscribe(
 				(res: IResponseTemplate) => {
-
 					this.event.emit(res.value as boolean);
 				},
 				() => {
