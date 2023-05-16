@@ -165,7 +165,7 @@
 
 				<div class="col-md-8">
 					<div class="input-group">
-						<input class="form-control" name="testimonial-photography" type="file" [(ngModel)]="this.photography" />
+						<input class="form-control" name="testimonial-photography" type="file" (change)="printPhoto($event)" />
 					</div>
 				</div>
 			</div>

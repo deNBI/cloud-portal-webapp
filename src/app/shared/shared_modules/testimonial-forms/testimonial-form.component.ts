@@ -23,7 +23,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	@Input() institution: string = '';
 	@Input() workgroup: string = '';
 	@Input() simple_vm: boolean = false;
-	photography: any = null;
+	formData: FormData = new FormData();
 
 	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor(private newsService: NewsService) {
@@ -46,12 +46,42 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 					this.institution,
 					this.workgroup,
 					this.simple_vm,
-					this.photography,
 				)
 				.subscribe((): any => {
-					console.log('yep');
+					this.newsService.sendTestimonialDraftPicture(this.formData, '123').subscribe();
 				}),
 		);
+	}
+
+	printPhoto(event): void {
+		const fileList: FileList = event.target.files;
+		console.log(event);
+		if (fileList.length < 1) {
+			return;
+		}
+
+		const file: File = fileList[0];
+		console.log(file);
+
+		this.formData.append('uploadFile', file);
+		this.newsService.sendTestimonialDraftPicture(this.formData, '123').subscribe((): void => {
+			console.log('test');
+		});
+
+		/* let headers = new Headers();
+			 In Angular 5, including the header Content-Type can invalidate your request
+			headers.append('Content-Type', 'multipart/form-data');
+			headers.append('Accept', 'application/json'); */
+
+		// let options = new RequestOptions({ headers: headers });
+
+		/* this.http.post(`${this.apiEndPoint}`, formData, options)
+				.map(res => res.json())
+				.catch(error => Observable.throw(error))
+				.subscribe(
+					data => console.log('success'),
+					error => console.log(error)
+				); */
 	}
 
 	send_testimonial_test(): void {
@@ -62,7 +92,6 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 			inst: this.institution,
 			wkg: this.workgroup,
 			svm: this.simple_vm,
-			phot: this.photography,
 		};
 		console.log(dct);
 	}

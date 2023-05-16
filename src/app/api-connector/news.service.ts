@@ -93,18 +93,7 @@ export class NewsService {
 		institution: string,
 		workgroup: string,
 		simple_vm: boolean,
-		photography: File, // check
 	): Observable<any> {
-		/*
-		we need title + draft_prefix
-		the actual text
-		an excerpt - if not given, let's generate it automatically?
-		contributor - automatically or just from the user information?
-		institution
-		workgroup
-		project-type
-		photography
-		 */
 		const testimonialData: any = {
 			title,
 			text,
@@ -113,11 +102,22 @@ export class NewsService {
 			institution,
 			workgroup,
 			simple_vm,
-			photography,
 		};
 
-		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/`, testimonialData, {
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, testimonialData, {
 			withCredentials: true,
+		});
+	}
+
+	sendTestimonialDraftPicture(formDataImage: FormData, draft_id: string): Observable<any> {
+		const headers = new HttpHeaders();
+		/** In Angular 5, including the header Content-Type can invalidate your request */
+		headers.append('Content-Type', 'multipart/form-data');
+		headers.append('Accept', 'application/json');
+
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/picture/${draft_id}/`, formDataImage, {
+			withCredentials: true,
+			headers,
 		});
 	}
 
