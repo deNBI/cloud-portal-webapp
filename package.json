@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.703.0",
+  "version": "4.704.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -80,7 +80,7 @@
     "slash": "^5.0.0",
     "svg2pdf.js": "2.2.1",
     "ts-helpers": "1.1.2",
-    "tslib": "2.5.0",
+    "tslib": "2.5.1",
     "uglify-js": "3.17.4",
     "zone.js": "0.13.0"
   },
