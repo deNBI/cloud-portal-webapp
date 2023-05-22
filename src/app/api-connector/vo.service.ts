@@ -270,7 +270,8 @@ export class VoService {
 			.set('start_time', timeframe.start_time.toJSON())
 			.set('end_time', timeframe.end_time.toJSON())
 			.set('name', timeframe.name)
-			.set('message', timeframe.message);
+			.set('message', timeframe.message)
+			.set('significant', timeframe.significant);
 
 		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, params, {
 			withCredentials: true,

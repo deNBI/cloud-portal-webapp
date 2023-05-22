@@ -8,7 +8,9 @@ import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeF
 /**
  * Service which provides the newest maintenance timeframes, e.g. to show in userInformation
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class MaintenanceService {
 	constructor(private http: HttpClient) {}
 
