@@ -93,6 +93,8 @@ export class NewsService {
 		institution: string,
 		workgroup: string,
 		simple_vm: boolean,
+		image_url: string,
+		project_application_id: string,
 	): Observable<any> {
 		const testimonialData: any = {
 			title,
@@ -102,22 +104,12 @@ export class NewsService {
 			institution,
 			workgroup,
 			simple_vm,
+			image_url,
+			project_application_id,
 		};
 
 		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, testimonialData, {
 			withCredentials: true,
-		});
-	}
-
-	sendTestimonialDraftPicture(formDataImage: FormData, draft_id: string): Observable<any> {
-		const headers = new HttpHeaders();
-		/** In Angular 5, including the header Content-Type can invalidate your request */
-		headers.append('Content-Type', 'multipart/form-data');
-		headers.append('Accept', 'application/json');
-
-		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/picture/${draft_id}/`, formDataImage, {
-			withCredentials: true,
-			headers,
 		});
 	}
 

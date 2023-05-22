@@ -1162,6 +1162,8 @@
 			[institution]="project_application?.project_application_institute"
 			[workgroup]="project_application?.project_application_workgroup"
 			[simple_vm]="!project_application?.project_application_openstack_project"
+			[project_application_id]="project_application.project_application_id.toString()"
+			[testimonialSent]="project_application.project_application_testimonial_submitted"
 		></app-testimonial-form>
 	</div>
 	<div class="row">

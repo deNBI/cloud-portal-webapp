@@ -1,5 +1,5 @@
 <div class="card">
-	<div class="card-header">Testimonial or better name</div>
+	<div class="card-header">Add testimonial</div>
 	<div class="card-body">
 		<div class="row">
 			<div class="col-md-auto mx-auto">
@@ -7,11 +7,14 @@
 					An overview of the testimonials already published can be found
 					<a href="{{ TESTIMONIAL_PAGE_LINK }}" target="_blank" rel="noopener norefferer">here</a>. Both the text and
 					the excerpt can be based on the testimonials there.
+					<br />
+					Please note: All information entered here as well as the image is checked. There is no guarantee that the
+					testimonial will be published. We reserve the right to make changes to the data submitted.
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="card-body">
+	<div class="card-body" *ngIf="!testimonialSent">
 		<form id="extension_application_form" #testimonialForm="ngForm" class="form-horizontal">
 			<div class="form-group row">
 				<div class="col-md-4">
@@ -129,7 +132,7 @@
 				<div class="col-md-4">
 					<label class="col-md-4 form-control-label">
 						<strong
-							>Institute*
+							>Workgroup*
 							<i class="icon-question" data-toggle="tooltip" title="The working group behind the project."> </i>
 						</strong>
 					</label>
@@ -152,11 +155,11 @@
 				<div class="col-md-4">
 					<label class="col-md-4 form-control-label">
 						<strong
-							>Photography*
+							>Photography Link*
 							<i
 								class="icon-question"
 								data-toggle="tooltip"
-								title="A picture of the working group, the PI or the person in whose name the testimonial is to be published."
+								title="A link to a picture of the working group, the PI or the person in whose name the testimonial is to be published."
 							>
 							</i>
 						</strong>
@@ -165,17 +168,76 @@
 
 				<div class="col-md-8">
 					<div class="input-group">
-						<input class="form-control" name="testimonial-photography" type="file" (change)="printPhoto($event)" />
+						<span class="input-group-text"> URL </span>
+						<input
+							class="form-control"
+							name="testimonial-photography"
+							type="url"
+							[(ngModel)]="this.image_url"
+							pattern="^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$"
+						/>
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
+	<div class="card-body" *ngIf="testimonialSent">
+		<div class="alert alert-info">
+			As a testimonial has already been submitted for your project, we ask for your understanding that you cannot submit
+			another draft here. If you would still like to submit a testimonial, please contact the helpdesk via
+			<a class="alert-link" href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+			>.
+		</div>
+	</div>
 	<div class="card-footer">
 		<div class="row">
-			<div class="btn-group">
-				<button class="btn btn-success" (click)="sendTestimonial()">Send</button>
-				<button class="btn btn-warning">Reset</button>
+			<div class="col-md-auto">
+				<div class="btn-group">
+					<button class="btn btn-success" [disabled]="testimonialSent" (click)="sendTestimonial()">Send</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div
+	bsModal
+	#testimonialModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">
+					{{ submissionSuccessful ? 'Testimonial submitted successfully' : 'Submission of testimonial failed!' }}
+				</div>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="testimonialModal.hide()"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-{{ submissionSuccessful ? 'success' : 'danger' }}">
+					{{
+						submissionSuccessful
+							? 'Thank you for the submission! The submission of the testimonial was successful. The corresponding data will now be checked.'
+							: 'An error has occurred. Check the data you entered and try again at a different time.'
+					}}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-{{ submissionSuccessful ? 'success' : 'danger' }}" (click)="testimonialModal.hide()">
+					Close
+				</button>
 			</div>
 		</div>
 	</div>

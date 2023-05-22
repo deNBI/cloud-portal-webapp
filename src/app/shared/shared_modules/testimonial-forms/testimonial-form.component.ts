@@ -1,8 +1,9 @@
 import {
-	Component, OnInit, OnDestroy, Input,
+	Component, OnInit, OnDestroy, Input, ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { TESTIMONIAL_PAGE_LINK } from '../../../../links/links';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { NewsService } from '../../../api-connector/news.service';
 
 @Component({
@@ -15,6 +16,8 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription();
 
 	TESTIMONIAL_PAGE_LINK: string = TESTIMONIAL_PAGE_LINK;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	@ViewChild('testimonialModal') testimonialModal: ModalDirective;
 
 	@Input() title: string = '';
 	text: string = '';
@@ -23,7 +26,10 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	@Input() institution: string = '';
 	@Input() workgroup: string = '';
 	@Input() simple_vm: boolean = false;
-	formData: FormData = new FormData();
+	@Input() project_application_id: string;
+	@Input() testimonialSent: boolean;
+	image_url: string = '';
+	submissionSuccessful: boolean = false;
 
 	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor(private newsService: NewsService) {
@@ -35,7 +41,6 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	}
 
 	sendTestimonial(): void {
-		this.send_testimonial_test();
 		this.subscription.add(
 			this.newsService
 				.sendTestimonialDraft(
@@ -46,55 +51,16 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 					this.institution,
 					this.workgroup,
 					this.simple_vm,
+					this.image_url,
+					this.project_application_id,
 				)
-				.subscribe((): any => {
-					this.newsService.sendTestimonialDraftPicture(this.formData, '123').subscribe();
+				.subscribe((result: any): any => {
+					this.submissionSuccessful = result['created'];
+					this.testimonialModal.show();
 				}),
 		);
 	}
 
-	printPhoto(event): void {
-		const fileList: FileList = event.target.files;
-		console.log(event);
-		if (fileList.length < 1) {
-			return;
-		}
-
-		const file: File = fileList[0];
-		console.log(file);
-
-		this.formData.append('uploadFile', file);
-		this.newsService.sendTestimonialDraftPicture(this.formData, '123').subscribe((): void => {
-			console.log('test');
-		});
-
-		/* let headers = new Headers();
-			 In Angular 5, including the header Content-Type can invalidate your request
-			headers.append('Content-Type', 'multipart/form-data');
-			headers.append('Accept', 'application/json'); */
-
-		// let options = new RequestOptions({ headers: headers });
-
-		/* this.http.post(`${this.apiEndPoint}`, formData, options)
-				.map(res => res.json())
-				.catch(error => Observable.throw(error))
-				.subscribe(
-					data => console.log('success'),
-					error => console.log(error)
-				); */
-	}
-
-	send_testimonial_test(): void {
-		const dct: any = {
-			txt: this.text,
-			exc: this.excerpt,
-			con: this.contributor,
-			inst: this.institution,
-			wkg: this.workgroup,
-			svm: this.simple_vm,
-		};
-		console.log(dct);
-	}
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
 	}
