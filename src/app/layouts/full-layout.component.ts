@@ -59,6 +59,8 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	missing_consents: string[] = [];
 	maintenanceTimeframes: MaintenanceTimeFrame[] = [];
 	maintenanceTimeframesLoaded: boolean = false;
+	checkMaintenanceTimer: ReturnType<typeof setTimeout>;
+	checkMaintenanceTimeout: number = 300000;
 
 	TITLE: string = '';
 
@@ -92,6 +94,20 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	public get_is_vo_admin(): boolean {
 		return this.is_vo_admin;
+	}
+
+	maintenanceInformationLoop(timeout: number = this.checkMaintenanceTimeout): void {
+		this.stopCheckMaintenanceTimer();
+		this.getMaintenanceTimeFrames();
+		this.checkMaintenanceTimer = setTimeout((): void => {
+			this.maintenanceInformationLoop();
+		}, timeout);
+	}
+
+	stopCheckMaintenanceTimer(): void {
+		if (this.checkMaintenanceTimer) {
+			clearTimeout(this.checkMaintenanceTimer);
+		}
 	}
 
 	set_cluster_allowed(): void {
@@ -160,6 +176,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		this.getLoginName();
 		this.getMissingConsents();
 		this.getMaintenanceTimeFrames();
+		this.maintenanceInformationLoop();
 
 		this.is_vo_admin = is_vo;
 	}
