@@ -47,6 +47,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		valid_till: new UntypedFormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
 		entered_tags: new UntypedFormControl({ value: this.newFacilityNews.tags, disabled: false }),
 	});
+
 	allChecked: boolean = true;
 	deletionStatus: number = 0;
 	patchingStatus: number = 0;
