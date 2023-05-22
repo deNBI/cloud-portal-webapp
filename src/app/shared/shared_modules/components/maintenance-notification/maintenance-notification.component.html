@@ -1,5 +1,59 @@
-<ng-container *ngIf="urgentMaintenances.length > 0">
-	<button type="button" class="btn btn-danger">
-		Maintenance Information <span class="badge badge-light text-black-50">{{ urgentMaintenances.length }}</span>
+<ng-container *ngIf="maintenanceTimeframes.length > 0">
+	<button
+		type="button"
+		class="btn"
+		[ngClass]="(maintenanceTimeframes | significanceGiven) ? 'btn-danger' : 'btn-outline-dark'"
+		(click)="toggleModal()"
+	>
+		Maintenance Information
+		<span
+			class="badge"
+			[ngClass]="(maintenanceTimeframes | significanceGiven) ? 'badge-light text-black-50' : 'badge-dark text-white'"
+			>{{ urgentMaintenances.length }}</span
+		>
 	</button>
 </ng-container>
+
+<!-- Modal -->
+<div
+	#maintenanceModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="Label"
+	bsModal
+	class="modal fade"
+	role="dialog"
+	tabindex="-1"
+	style="z-index: 100"
+>
+	<div class="modal-dialog modal-lg modal-dialog-centered" style="z-index: 100">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="urgent-notification-modal-title">Maintenance Information</h5>
+				<button type="button" class="close" (click)="toggleModal()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row row-cols-1 row-cols-md-2">
+					<div class="col mb-4 mx-auto mt-auto" *ngFor="let maintenance of maintenanceTimeframes">
+						<div class="card" [ngClass]="maintenance.significant ? 'border-danger' : 'border-dark'">
+							<div class="card-body" [ngClass]="maintenance.significant ? 'text-danger' : 'text-dark'">
+								<h5 class="card-title">{{ maintenance.name }}</h5>
+								<p class="card-text">{{ maintenance.message }}</p>
+								<p class="card-text">
+									<small class="text-muted"
+										>{{ maintenance.start_time | date : 'dd.MM.yyyy hh:mm' }} -
+										{{ maintenance.end_time | date : 'dd.MM.yyyy hh:mm' }}</small
+									>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" (click)="toggleModal()">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

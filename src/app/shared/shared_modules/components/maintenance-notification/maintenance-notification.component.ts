@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { MaintenanceTimeFrame } from '../../../../vo_manager/maintenance/maintenanceTimeFrame.model';
 
 @Component({
@@ -7,18 +8,10 @@ import { MaintenanceTimeFrame } from '../../../../vo_manager/maintenance/mainten
 	styleUrls: ['./maintenance-notification.component.scss'],
 })
 export class MaintenanceNotificationComponent {
-	@Input() urgentMaintenances: MaintenanceTimeFrame[] = [];
+	@Input() maintenanceTimeframes: MaintenanceTimeFrame[] = [];
+	@ViewChild('maintenanceModal') maintenanceModal: ModalDirective;
 
-	constructor() {
-		this.urgentMaintenances.push(
-			new MaintenanceTimeFrame({
-				id: '123',
-				name: 'test',
-				start_time: new Date(),
-				end_time: new Date(),
-				message: 'Lets show something!',
-			}),
-		);
-		//
+	toggleModal(): void {
+		this.maintenanceModal.toggle();
 	}
 }

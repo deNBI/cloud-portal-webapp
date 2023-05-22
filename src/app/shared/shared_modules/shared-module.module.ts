@@ -11,6 +11,7 @@ import { MigrationInformationComponent } from './migration-information/migration
 import { ApplicationBadgesComponent } from './components/applications/application-badges/application-badges.component';
 import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/project-email-modal.component';
 import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component';
+import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 
 /**
  * Shared module.
@@ -26,7 +27,7 @@ import { MaintenanceNotificationComponent } from './components/maintenance-notif
 		ProjectEmailModalComponent,
 		MaintenanceNotificationComponent,
 	],
-	imports: [CommonModule, ModalModule.forRoot(), ToastModule, ProgressModule, FormsModule],
+	imports: [CommonModule, ModalModule.forRoot(), ToastModule, ProgressModule, FormsModule, PipeModuleModule],
 	declarations: [
 		ApplicationBaseClassComponent,
 		NotificationModalComponent,
