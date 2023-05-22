@@ -10,6 +10,7 @@ import { ConfirmationModalComponent } from '../modal/confirmation-modal.componen
 import { MigrationInformationComponent } from './migration-information/migration-information.component';
 import { ApplicationBadgesComponent } from './components/applications/application-badges/application-badges.component';
 import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/project-email-modal.component';
+import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component';
 
 /**
  * Shared module.
@@ -23,6 +24,7 @@ import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/p
 		MigrationInformationComponent,
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
+		MaintenanceNotificationComponent,
 	],
 	imports: [CommonModule, ModalModule.forRoot(), ToastModule, ProgressModule, FormsModule],
 	declarations: [
@@ -33,6 +35,7 @@ import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/p
 		MigrationInformationComponent,
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
+		MaintenanceNotificationComponent,
 	],
 })
 export class SharedModuleModule {}
