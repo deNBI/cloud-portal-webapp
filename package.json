@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.708.0",
+  "version": "4.709.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -34,7 +34,7 @@
     "@coreui/angular": "^4.3.4",
     "@coreui/coreui": "4.2.6",
     "@coreui/icons-angular": "^4.3.0",
-    "@ng-bootstrap/ng-bootstrap": "14.1.1",
+    "@ng-bootstrap/ng-bootstrap": "14.2.0",
     "@ng-select/ng-select": "10.0.4",
     "@sindresorhus/transliterate": "1.6.0",
     "@types/d3": "7.4.0",
@@ -120,7 +120,7 @@
     "npm-run-all": "4.1.5",
     "prettier": "2.8.8",
     "raw-loader": "4.0.2",
-    "sass-loader": "13.2.2",
+    "sass-loader": "13.3.0",
     "script-loader": "0.7.2",
     "source-map-loader": "4.0.1",
     "style-loader": "3.3.3",
