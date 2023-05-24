@@ -266,14 +266,7 @@ export class VoService {
 	}
 
 	addMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<MaintenanceTimeFrame> {
-		const params: HttpParams = new HttpParams()
-			.set('start_time', timeframe.start_time.toJSON())
-			.set('end_time', timeframe.end_time.toJSON())
-			.set('name', timeframe.name)
-			.set('message', timeframe.message)
-			.set('significant', timeframe.significant);
-
-		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, params, {
+		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, timeframe, {
 			withCredentials: true,
 		});
 	}
