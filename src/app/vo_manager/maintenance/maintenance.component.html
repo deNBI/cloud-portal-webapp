@@ -49,6 +49,7 @@
 						<th scope="col">End time</th>
 						<th scope="col">Name</th>
 						<th scope="col">Message</th>
+						<th scope="col">Significant</th>
 						<th scope="col">Action</th>
 					</tr>
 				</thead>
@@ -60,9 +61,17 @@
 						<td>{{ mtf.name }}</td>
 						<td>{{ mtf.message.length > 25 ? (mtf.message | slice : 0 : 25) + '...' : mtf.message }}</td>
 						<td>
+							<span class="badge badge-danger" *ngIf="mtf.significant"
+								><i class="fa-solid fa-circle-exclamation"></i> Yes</span
+							>
+							<span class="badge badge-info" *ngIf="!mtf.significant"><i class="fa-solid fa-square-minus"></i> No</span>
+						</td>
+						<td>
 							<div class="btn-group">
+								<button class="btn btn-info" role="button" (click)="switchSignificance(mtf)">
+									{{ mtf.significant ? 'Remove' : 'Set' }} Significance
+								</button>
 								<button class="btn btn-danger" role="button" (click)="deleteTimeFrame(mtf)">Delete</button>
-								<!-- TODO: add update timeframe (via modal) -->
 							</div>
 						</td>
 					</tr>
@@ -79,60 +88,133 @@
 			<strong>Please consider</strong>: The time entered is <strong>depending on the timezone of your browser.</strong>.
 		</div>
 		<form id="new_timeframe_form" [formGroup]="addTimeFrameForm" class="form-horizontal">
-			<div class="form-row align-content-start">
-				<div class="mb-3 mx-auto">
-					<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
+			<!--
+			<label class="col-md-4 form-control-label" for="id_project_application_lifetime"
+								><strong
+									>Desired lifetime<i class="fa fa-asterisk" aria-hidden="true"></i>
+									<i data-balloon="Lifetime in months of your project" data-balloon-pos="right">
+										<i class="icon-question" style="cursor: pointer"></i></i></strong
+							></label>
+							<div class="col-md-8">
+								<div class="input-group">
+									<input
+										class="form-control"
+										data-test-id="project_application_lifetime_input"
+										id="id_project_application_lifetime"
+										name="project_application_lifetime"
+										placeholder="e.g 3"
+										[(ngModel)]="application.project_application_lifetime"
+										max="{{ max_lifetime }}"
+										min="1"
+										required
+										step="1"
+										type="number"
+										appMinAmount="1"
+										appMaxAmount="{{ max_lifetime }}"
+										appInteger
+										pattern="^([1-9]|1[012])$"
+										[ngClass]="{
+											'is-invalid':
+												form.controls.project_application_lifetime?.invalid &&
+												(form.controls.project_application_lifetime?.dirty ||
+													form.controls.project_application_lifetime?.touched),
+											'is-valid':
+												form.controls.project_application_lifetime?.valid &&
+												(form.controls.project_application_lifetime?.dirty ||
+													form.controls.project_application_lifetime?.touched)
+										}"
+									/> -->
+
+			<div class="form-group row">
+				<label class="col-md-4 form-control-label" for="date_change"
+					><strong
+						>Timeframe<i class="fa fa-asterisk" aria-hidden="true"></i>
+						<i data-balloon="Start and end of the maintenance" data-balloon-pos="right">
+							<i class="icon-question" style="cursor: pointer"></i></i></strong
+				></label>
+				<div class="mb-3 mx-auto col-md-auto">
+					<app-datepicker id="date_change" (dayChange)="dayChanged($event)"></app-datepicker>
 				</div>
 
-				<div class="mb-3 mx-auto">
+				<div class="mb-3 mx-auto col-md-auto">
 					<label class="form-label">Start Time</label>
 					<app-timepicker (timeChange)="startTimeChanged($event)"></app-timepicker>
 				</div>
 
-				<div class="mb-3 mx-auto">
+				<div class="mb-3 mx-auto col-md-auto">
 					<label class="form-label">End Time</label>
 					<app-timepicker (timeChange)="endTimeChanged($event)"></app-timepicker>
 				</div>
+				<span class="help-block">Please enter the start and end of the maintenance</span>
 			</div>
 
-			<div class="form-row">
-				<div class="mb-3">
-					<label for="name_input_field" class="form-label">Name</label>
-					<input
-						type="text"
-						required
-						class="form-control"
-						formControlName="name_input_field"
-						id="name_input_field"
-						aria-describedby="descriptionHelp"
-						[(ngModel)]="newMaintenanceTimeFrame.name"
-						[ngClass]="{
-							'is-invalid':
-								(f['name_input_field'].dirty || f['name_input_field'].touched) && f['name_input_field'].invalid,
-							'is-valid': f['name_input_field'].valid
-						}"
-					/>
+			<div class="form-group row">
+				<label class="col-md-4 form-control-label" for="name_input_field">
+					<strong>Name</strong>
+				</label>
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							type="text"
+							required
+							class="form-control"
+							formControlName="name_input_field"
+							id="name_input_field"
+							aria-describedby="descriptionHelp"
+							[(ngModel)]="newMaintenanceTimeFrame.name"
+							[ngClass]="{
+								'is-invalid':
+									(f['name_input_field'].dirty || f['name_input_field'].touched) && f['name_input_field'].invalid,
+								'is-valid': f['name_input_field'].valid
+							}"
+						/>
+					</div>
+					<span class="help-block"> Please enter an expressive title for the maintenance. </span>
 				</div>
 			</div>
-			<div class="form-row">
-				<div class="mb-3">
+			<div class="form-group row">
+				<label class="col-md-4 form-control-label" for="message_input_field">
+					<strong>Message</strong>
+				</label>
+				<div class="col-md-8">
 					<textarea
 						rows="8"
 						type="text"
 						class="form-control input-lg"
 						id="message_input_field"
 						data-test-id="message_input_field"
-						placeholder="You are free to enter a description"
+						placeholder="Please enter a description which provides information on the future maintenance."
 						name="public_key"
 						[(ngModel)]="newMaintenanceTimeFrame.message"
 						[ngModelOptions]="{ standalone: true }"
 					></textarea>
-
-					<label for="message_input_field" class="form-label">Message</label>
+					<span class="help-block">
+						Please enter the a message which provides all relevant information on the future maintenance.
+					</span>
 				</div>
 			</div>
-			<div class="form-row">
-				<div class="mb-3">
+			<div class="form-group row">
+				<label class="col-md-4 form-control-label" for="significance_input">
+					<strong> Significant maintenance </strong>
+				</label>
+				<div class="col-md-8">
+					<input
+						class="form-check-input"
+						id="significance_input"
+						type="checkbox"
+						[(ngModel)]="newMaintenanceTimeFrame.significant"
+						[ngModelOptions]="{ standalone: true }"
+					/>
+					<label>Significant</label>
+					<br />
+					<span class="help-block text-danger">
+						Please mark this checkbox, when the this maintenance is to be particularly emphasised because there is
+						action required by the user or it is otherwise particularly important.
+					</span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-4">
 					<button
 						class="btn btn-outline-primary"
 						(click)="checkData(); this.confirmModal.show()"
@@ -141,10 +223,8 @@
 						Add new timeframe
 					</button>
 				</div>
-			</div>
-			<div class="form-row">
 				<div
-					class="col-md-auto mx-auto"
+					class="col-md-auto"
 					*ngIf="
 						!(this.newMaintenanceTimeFrame | isValidTimeFrame) ||
 						this.addTimeFrameForm.controls['name_input_field'].invalid

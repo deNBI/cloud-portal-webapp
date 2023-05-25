@@ -14,6 +14,7 @@ import { PublicKeyPipe } from './pipes/publicKey.pipe';
 import { IsFutureTimePipe } from './pipes/futureTime.pipe';
 import { IsMigratedProjectIdPipe } from './pipes/migratedList';
 import { HasStatusNotInListPipe } from './pipes/has-status-not-in-list.pipe';
+import { SignificancePipe } from '../shared/shared_modules/components/maintenance-notification/significance-pipe/significance.pipe';
 
 /**
  * Pipemodule
@@ -37,6 +38,7 @@ import { HasStatusNotInListPipe } from './pipes/has-status-not-in-list.pipe';
 		PublicKeyPipe,
 		IsMigratedProjectIdPipe,
 		HasStatusNotInListPipe,
+		SignificancePipe,
 	],
 	exports: [
 		FlavorCounterPipe,
@@ -56,6 +58,7 @@ import { HasStatusNotInListPipe } from './pipes/has-status-not-in-list.pipe';
 		PublicKeyPipe,
 		IsMigratedProjectIdPipe,
 		HasStatusNotInListPipe,
+		SignificancePipe,
 	],
 	imports: [CommonModule],
 	providers: [IsMigratedProjectIdPipe],

@@ -13,6 +13,8 @@ import { ApplicationBadgesComponent } from './components/applications/applicatio
 import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/project-email-modal.component';
 import { TestimonialFormComponent } from './testimonial-forms/testimonial-form.component';
 import { SharedDirectivesModule } from './shared_directives.module';
+import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component';
+import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 
 /**
  * Shared module.
@@ -27,6 +29,7 @@ import { SharedDirectivesModule } from './shared_directives.module';
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
 		TestimonialFormComponent,
+		MaintenanceNotificationComponent,
 	],
 	imports: [
 		CommonModule,
@@ -34,6 +37,7 @@ import { SharedDirectivesModule } from './shared_directives.module';
 		ToastModule,
 		ProgressModule,
 		FormsModule,
+		PipeModuleModule,
 		NgSelectModule,
 		SharedDirectivesModule,
 	],
@@ -46,6 +50,7 @@ import { SharedDirectivesModule } from './shared_directives.module';
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
 		TestimonialFormComponent,
+		MaintenanceNotificationComponent,
 	],
 })
 export class SharedModuleModule {}
