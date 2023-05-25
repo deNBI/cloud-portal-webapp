@@ -85,6 +85,34 @@ export class NewsService {
 			);
 	}
 
+	sendTestimonialDraft(
+		title: string,
+		text: string,
+		excerpt: string,
+		contributor: string,
+		institution: string,
+		workgroup: string,
+		simple_vm: boolean,
+		image_url: string,
+		project_application_id: string,
+	): Observable<any> {
+		const testimonialData: any = {
+			title,
+			text,
+			excerpt,
+			contributor,
+			institution,
+			workgroup,
+			simple_vm,
+			image_url,
+			project_application_id,
+		};
+
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, testimonialData, {
+			withCredentials: true,
+		});
+	}
+
 	private handleError<T>(result?: T) {
 		return (error: any): Observable<T> => {
 			console.error(error); // log to console instead
