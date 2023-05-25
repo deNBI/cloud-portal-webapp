@@ -105,24 +105,33 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 			this.newsletterSubscriptionCounter = result.value as number;
 		});
 		this.getTSVInformation();
-		this.tsvInformationLoop();
 	}
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
 	}
 
-	getTSVInformation(): void {
+	getTSVInformation(timeout: number = this.checkTSVTimeout): void {
+		this.stopCheckTSVTimer();
 		this.subscription.add(
 			this.voService.getTsvInformation().subscribe(
 				(result: any): void => {
-					console.log(result);
 					this.tsvTaskRunning = result[0];
 					this.numberOfTsvs = result[1];
+					if (result[0] !== true) {
+						this.stopCheckTSVTimer();
+					} else {
+						this.checkTSVTimer = setTimeout((): void => {
+							this.getTSVInformation();
+						}, timeout);
+					}
 				},
 				() => {
 					this.tsvTaskRunning = true;
 					this.numberOfTsvs = 0;
+					this.checkTSVTimer = setTimeout((): void => {
+						this.getTSVInformation();
+					}, timeout);
 				},
 			),
 		);
@@ -132,14 +141,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		if (this.checkTSVTimer) {
 			clearTimeout(this.checkTSVTimer);
 		}
-	}
-
-	tsvInformationLoop(timeout: number = this.checkTSVTimeout): void {
-		this.stopCheckTSVTimer();
-		this.getTSVInformation();
-		this.checkTSVTimer = setTimeout((): void => {
-			this.tsvInformationLoop();
-		}, timeout);
 	}
 
 	selectAllFilteredProjects(): void {
@@ -598,6 +599,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	initiateTsvExport(): void {
+		this.tsvTaskRunning = true;
 		this.voService.getAllProjectsForTsvExport().subscribe((): void => {
 			this.getTSVInformation();
 		});
