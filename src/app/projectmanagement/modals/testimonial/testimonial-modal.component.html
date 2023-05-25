@@ -1,0 +1,41 @@
+<div>
+	<div class="modal-header">
+		<h4 class="modal-title">Publications</h4>
+		<button
+			type="button"
+			class="close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			data-dismiss="modal"
+			aria-label="Close"
+		>
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<div>
+			<p class="text-black-50">
+				We are very pleased that the de.NBI Cloud meets with your expectations and that you would like to extend your
+				project. We would be happy if you drafted a testimonial to describe your work and your positive experiences with
+				and in the Cloud. Please use the form below on this project overview page. You can find an overview of already
+				published testimonials <a href="{{ TESTIMONIAL_PAGE_LINK }}">here. </a>
+			</p>
+		</div>
+		<div class="modal-footer">
+			<div class="row" style="margin: auto">
+				<div class="col-md-auto mx-auto">
+					<button
+						id="close_testimonial_information_button"
+						class="btn btn-primary"
+						type="reset"
+						data-test-id="close_testimonial_information_button"
+						(click)="bsModalRef.hide()"
+					>
+						Continue
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>

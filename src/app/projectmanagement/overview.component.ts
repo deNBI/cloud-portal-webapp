@@ -48,6 +48,7 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
+import { TestimonialModalComponent } from './modals/testimonial/testimonial-modal.component';
 
 /**
  * Projectoverview component.
@@ -324,6 +325,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				} else if ('reloadDoi' in result && !result['reloadDoi']) {
 					this.showLifetimeExtensionModal();
 				}
+			}),
+		);
+	}
+
+	showTestimonialModal(): void {
+		this.bsModalRef = this.modalService.show(TestimonialModalComponent, {});
+		this.bsModalRef.setClass('modal-lg');
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe((): void => {
+				this.showDoiModal();
 			}),
 		);
 	}

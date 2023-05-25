@@ -320,7 +320,7 @@
 									</span>
 								</ng-container>
 								<button
-									(click)="showDoiModal()"
+									(click)="showTestimonialModal()"
 									*ngIf="
 										project_application.user_is_admin &&
 										!(
@@ -1155,7 +1155,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row" *ngIf="project_application && isLoaded">
+	<div class="row" *ngIf="project_application && isLoaded && project_application.isApproved()">
 		<app-testimonial-form
 			[title]="project_application?.project_application_name"
 			[contributor]="project_application?.project_application_pi?.username"

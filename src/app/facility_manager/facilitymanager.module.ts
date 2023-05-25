@@ -35,7 +35,6 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		CommonModule,
 		ModalModule.forRoot(),
 		BsDatepickerModule.forRoot(),
-
 		ApplicationsModule,
 		ReactiveFormsModule,
 		PipeModuleModule,

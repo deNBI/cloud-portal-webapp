@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { NgForm } from '@angular/forms';
 import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { NewsService } from '../../../api-connector/news.service';
 
@@ -18,6 +19,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	TESTIMONIAL_PAGE_LINK: string = TESTIMONIAL_PAGE_LINK;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	@ViewChild('testimonialModal') testimonialModal: ModalDirective;
+	@ViewChild(NgForm, { static: false }) testimonialForm: NgForm;
 
 	@Input() title: string = '';
 	text: string = '';
@@ -39,8 +41,8 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.subscription = new Subscription();
 	}
-
 	sendTestimonial(): void {
+		this.testimonialSent = true;
 		this.subscription.add(
 			this.newsService
 				.sendTestimonialDraft(
