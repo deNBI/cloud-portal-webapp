@@ -37,6 +37,7 @@ export class ProjectOverViewPage {
 	private MODIFICATION_REQUEST_VOLUME_COUNTER_INPUT: string = 'modification_request_volume_counter_input';
 	private MODIFICATION_REQUEST_VOLUME_LIMIT_INPUT: string = 'modification_request_volume_limit_input';
 	private MODIFICATION_REQUEST_OBJECT_STORAGE_INPUT: string = 'modification_request_object_storage_input';
+	private CONTINUE_TESTIMONIAL_MODAL_BUTTON: string = 'close_testimonial_information_button';
 
 	// MEMBER
 	private DEFAULT_MEMBER_EMAIL: string = 'testuserdenbi@gmail.com';
@@ -92,6 +93,7 @@ export class ProjectOverViewPage {
 			? console.log('Filling extension formular and requesting extension for SimpleVM project')
 			: console.log('Filling extension formular and requesting extension for Openstack project');
 		await this.page.locator(Util.by_data_test_id_str(this.OPEN_EXTENSION_REQUEST_BUTTON)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONTINUE_TESTIMONIAL_MODAL_BUTTON)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.DECLINE_NEW_PUBLICATION_BUTTON)).click();
 		await this.page.waitForSelector(`data-test-id=${this.PROJECT_EXTENSION_MONTHS_INPUT}`);
 		await this.page.fill(Util.by_data_test_id_str(this.PROJECT_EXTENSION_MONTHS_INPUT), '3');

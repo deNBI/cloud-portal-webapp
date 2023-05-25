@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ProgressModule, ToastModule } from '@coreui/angular';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationBaseClassComponent } from './baseClass/application-base-class.component';
 import { NotificationModalComponent } from '../modal/notification-modal';
 import { InformationToastComponent } from '../toaster/information-toast.component';
@@ -10,6 +11,8 @@ import { ConfirmationModalComponent } from '../modal/confirmation-modal.componen
 import { MigrationInformationComponent } from './migration-information/migration-information.component';
 import { ApplicationBadgesComponent } from './components/applications/application-badges/application-badges.component';
 import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/project-email-modal.component';
+import { TestimonialFormComponent } from './testimonial-forms/testimonial-form.component';
+import { SharedDirectivesModule } from './shared_directives.module';
 import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component';
 import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 
@@ -25,9 +28,19 @@ import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 		MigrationInformationComponent,
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
+		TestimonialFormComponent,
 		MaintenanceNotificationComponent,
 	],
-	imports: [CommonModule, ModalModule.forRoot(), ToastModule, ProgressModule, FormsModule, PipeModuleModule],
+	imports: [
+		CommonModule,
+		ModalModule.forRoot(),
+		ToastModule,
+		ProgressModule,
+		FormsModule,
+		PipeModuleModule,
+		NgSelectModule,
+		SharedDirectivesModule,
+	],
 	declarations: [
 		ApplicationBaseClassComponent,
 		NotificationModalComponent,
@@ -36,6 +49,7 @@ import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 		MigrationInformationComponent,
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
+		TestimonialFormComponent,
 		MaintenanceNotificationComponent,
 	],
 })
