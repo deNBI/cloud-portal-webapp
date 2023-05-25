@@ -405,6 +405,9 @@ $simplevmcolour: #00ADEF;
   margin-right: 10px;
   z-index: 100;
 }
+.sidebar.sidebar-fixed {
+	z-index: 5 !important;
+}
 
 .app-footer {
   background-color: $deNBI_white;
