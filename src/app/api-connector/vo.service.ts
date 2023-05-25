@@ -276,4 +276,10 @@ export class VoService {
 			withCredentials: true,
 		});
 	}
+
+	adjustMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<any> {
+		return this.http.patch<any>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, timeframe, {
+			withCredentials: true,
+		});
+	}
 }
