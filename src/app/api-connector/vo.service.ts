@@ -14,9 +14,7 @@ import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeF
  */
 @Injectable()
 export class VoService {
-	constructor(private http: HttpClient) {
-		this.http = http;
-	}
+	constructor(private http: HttpClient) {}
 
 	getTsvInformation(): Observable<any> {
 		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/tsv_information/`, {
