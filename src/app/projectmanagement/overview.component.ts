@@ -251,9 +251,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				},
 				(error: any): void => {
 					this.isLoaded = false;
-					this.errorMessage = `Status: ${error.status.toString()},
-                   StatusText: ${error.statusText.toString()},
-                   Error Message: ${error.error.toString()}`;
+					if (error.status === 403) {
+						this.errorMessage = 'You are not allowed to view the requested project.';
+					} else {
+						const errorobj: any = error.error;
+						this.errorMessage = errorobj['error'];
+					}
 				},
 			),
 		);
