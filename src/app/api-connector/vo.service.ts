@@ -18,6 +18,22 @@ export class VoService {
 		this.http = http;
 	}
 
+	getTsvInformation(): Observable<any> {
+		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/tsv_information/`, {
+			withCredentials: true,
+		});
+	}
+
+	getAllProjectsForTsvExport(): Observable<boolean> {
+		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/all_projects/`, {
+			withCredentials: true,
+		});
+	}
+
+	downloadProjectsTsv(): Observable<Blob> {
+		return this.http.get<Blob>(`${ApiSettings.getApiBaseURL()}voManagers/get_current_tsv/`, {});
+	}
+
 	sendTestError(): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/test_bug/`, {
 			withCredentials: true,
@@ -198,6 +214,30 @@ export class VoService {
 		});
 	}
 
+	setDisabledProject(groupid: number | string): Observable<Application> {
+		return this.http.post<Application>(
+			`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/disabled/`,
+			{
+				action: 'set',
+			},
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
+	unsetDisabledProject(groupid: number | string): Observable<any> {
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/disabled/`,
+			{
+				action: 'unset',
+			},
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
 	setProtected(groupid: number | string, set: boolean): Observable<any> {
 		const parameters: HttpParams = new HttpParams().set('action', set ? 'set' : 'unset');
 
@@ -226,19 +266,19 @@ export class VoService {
 	}
 
 	addMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<MaintenanceTimeFrame> {
-		const params: HttpParams = new HttpParams()
-			.set('start_time', timeframe.start_time.toJSON())
-			.set('end_time', timeframe.end_time.toJSON())
-			.set('name', timeframe.name)
-			.set('message', timeframe.message);
-
-		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, params, {
+		return this.http.post<MaintenanceTimeFrame>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, timeframe, {
 			withCredentials: true,
 		});
 	}
 
 	deleteMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<any> {
 		return this.http.delete<any>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/${timeframe.id}/`, {
+			withCredentials: true,
+		});
+	}
+
+	adjustMaintenanceTimeFrame(timeframe: MaintenanceTimeFrame): Observable<any> {
+		return this.http.patch<any>(`${ApiSettings.getApiBaseURL()}voManagers/maintenance/`, timeframe, {
 			withCredentials: true,
 		});
 	}

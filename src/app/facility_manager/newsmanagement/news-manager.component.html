@@ -28,8 +28,20 @@
 			</div>
 			<br />
 			<div class="row">
+				<div class="col-md-auto mx-auto">
+					<c-alert [dismissible]="true" color="info" fade>
+						<strong>Please consider:</strong>
+						<br />
+						The news sent here are only going to be visible in the facility news section of the de.NBI Cloud website.
+						<br />
+						In case you also want to send the news as a mail to the users of your facility, please use the mail function
+						on the <a href="#/facility-manager/facilityProjects">Facility Overview page.</a>
+					</c-alert>
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-4">
-					<div class="card" style="height: 800px; overflow-y: auto">
+					<div class="card mx-auto" style="height: 100%; overflow-y: auto">
 						<div class="card-header">
 							<strong>News list</strong>
 						</div>
@@ -473,6 +485,8 @@ we are happy to inform..."
 							Are you sure, that you want to upload <strong>{{ this.selectedFacilityNews.title }}</strong> ?
 						</p>
 						<p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
+						<hr />
+						<p><strong>Consider: This news will not be send to your users via mail!</strong></p>
 					</div>
 				</div>
 				<!-- (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()" -->

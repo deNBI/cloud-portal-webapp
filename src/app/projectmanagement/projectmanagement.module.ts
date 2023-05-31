@@ -21,7 +21,9 @@ import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-req
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
+import { TestimonialModalComponent } from './modals/testimonial/testimonial-modal.component';
 import { ResultComponent } from './modals/result/result.component';
+import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 
 /**
  * Projectmanagment module.
@@ -43,6 +45,7 @@ import { ResultComponent } from './modals/result/result.component';
 		NgSelectModule,
 		NgbModule,
 		BadgeModule,
+		SharedModuleModule,
 	],
 	declarations: [
 		OverviewComponent,
@@ -53,7 +56,8 @@ import { ResultComponent } from './modals/result/result.component';
 		ModificationRequestComponent,
 		DoiComponent,
 		ResultComponent,
+		TestimonialModalComponent,
 	],
-	exports: [ProjectOsDetailsComponent],
+	exports: [ProjectOsDetailsComponent, TestimonialModalComponent],
 })
 export class ProjectManagementModule {}

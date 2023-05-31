@@ -245,6 +245,21 @@
 					class="card-body"
 					id="projectMainInformationDiv"
 				>
+					<div class="row" *ngIf="project_application | hasstatusinlist : Application_States.DISABLED">
+						<div class="alert alert-danger col-6" role="alert">
+							Your project has been disabled and is currently in its final stage before termination. Your application
+							has expired and multiple reminders have been sent for you to request a lifetime extension. It's crucial
+							that you create a lifetime extension request right now if you want to keep your project. Otherwise, it
+							could be deleted anytime without another notice. For further assistance, please contact our
+							<a
+								href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}"
+								rel="noopener noreferrer"
+								style="margin-top: 15px"
+								target="_blank"
+								>helpdesk</a
+							>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-6">
 							<div
@@ -305,7 +320,7 @@
 									</span>
 								</ng-container>
 								<button
-									(click)="showDoiModal()"
+									(click)="showTestimonialModal()"
 									*ngIf="
 										project_application.user_is_admin &&
 										!(
@@ -1074,8 +1089,8 @@
 			<div class="card" id="doiCard">
 				<div class="card-header">
 					<i class="fa fa-align-justify"></i>
-					<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank"
-						>Digital object identifier (DOI)</a
+					<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank">
+						Digital object identifier (DOI)</a
 					>
 				</div>
 
@@ -1139,6 +1154,17 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="row" *ngIf="project_application && isLoaded && project_application.isApproved()">
+		<app-testimonial-form
+			[title]="project_application?.project_application_name"
+			[contributor]="project_application?.project_application_pi?.username"
+			[institution]="project_application?.project_application_institute"
+			[workgroup]="project_application?.project_application_workgroup"
+			[simple_vm]="!project_application?.project_application_openstack_project"
+			[project_application_id]="project_application.project_application_id.toString()"
+			[testimonialSent]="project_application.project_application_testimonial_submitted"
+		></app-testimonial-form>
 	</div>
 	<div class="row">
 		<div

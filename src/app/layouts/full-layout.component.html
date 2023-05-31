@@ -1,4 +1,9 @@
-<app-title-headbar [navbar_minimized]="false" [page_title]="TITLE"></app-title-headbar>
+<app-title-headbar
+	[maintenanceTimeframes]="maintenanceTimeframes"
+	[maintenanceTimeframesLoaded]="maintenanceTimeframesLoaded"
+	[navbar_minimized]="false"
+	[page_title]="TITLE"
+></app-title-headbar>
 
 <div class="sidebar sidebar-fixed">
 	<ng-scrollbar class="ng-scrollbar" visibility="hover">
@@ -159,6 +164,15 @@
 							<i class="fas fa-trash"></i>
 						</div>
 						<div
+							class="badge bg-warning status-badge col-2"
+							data-toggle="tooltip"
+							data-placement="right"
+							title="This project is disabled!"
+							*ngIf="application | hasstatusinlist : Application_States.DISABLED"
+						>
+							<i class="fa fa-lock"></i>
+						</div>
+						<div
 							class="badge bg-secondary status-badge col-2"
 							data-toggle="tooltip"
 							data-placement="right"
@@ -297,6 +311,15 @@
 								*ngIf="application | hasstatusinlist : Application_States.TERMINATION_REQUESTED"
 							>
 								<i class="fas fa-trash"></i>
+							</div>
+							<div
+								class="badge bg-warning status-badge col-3"
+								data-toggle="tooltip"
+								data-placement="right"
+								title="This project is disabled!"
+								*ngIf="application | hasstatusinlist : Application_States.DISABLED"
+							>
+								<i class="fa fa-lock"></i>
 							</div>
 							<div
 								class="badge bg-secondary status-badge col-3"

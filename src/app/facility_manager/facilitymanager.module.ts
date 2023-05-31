@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AlertComponent } from '@coreui/angular';
 import { FacilityProjectsOverviewComponent } from '../facility_manager/facilityprojectsoverview.component';
 import { ImageTagComponent } from '../facility_manager/imagetags.component';
 import { FacilitymanagerRoutingModule } from './facilitymanager-routing.module';
@@ -34,7 +35,6 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		CommonModule,
 		ModalModule.forRoot(),
 		BsDatepickerModule.forRoot(),
-
 		ApplicationsModule,
 		ReactiveFormsModule,
 		PipeModuleModule,
@@ -44,6 +44,7 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		NgbPaginationModule,
 		NgSelectModule,
 		SharedModuleModule,
+		AlertComponent,
 	],
 	declarations: [
 		FacilityProjectsOverviewComponent,

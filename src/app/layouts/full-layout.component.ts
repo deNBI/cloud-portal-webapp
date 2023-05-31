@@ -15,6 +15,8 @@ import { is_vo } from '../shared/globalvar';
 import { VirtualmachineService } from '../api-connector/virtualmachine.service';
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { WIKI, WIKI_FAQ, STATUS_LINK } from '../../links/links';
+import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model';
+import { MaintenanceService } from '../api-connector/maintenance.service';
 
 /**
  * FullLayout component.
@@ -55,6 +57,10 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	cluster_allowed: boolean = false;
 	has_workshops: boolean = false;
 	missing_consents: string[] = [];
+	maintenanceTimeframes: MaintenanceTimeFrame[] = [];
+	maintenanceTimeframesLoaded: boolean = false;
+	checkMaintenanceTimer: ReturnType<typeof setTimeout>;
+	checkMaintenanceTimeout: number = 300000;
 
 	TITLE: string = '';
 
@@ -69,6 +75,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	constructor(
 		private voService: VoService,
+		private maintenanceService: MaintenanceService,
 		private groupService: GroupService,
 		userService: UserService,
 		facilityService: FacilityService,
@@ -87,6 +94,20 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	public get_is_vo_admin(): boolean {
 		return this.is_vo_admin;
+	}
+
+	maintenanceInformationLoop(timeout: number = this.checkMaintenanceTimeout): void {
+		this.stopCheckMaintenanceTimer();
+		this.getMaintenanceTimeFrames();
+		this.checkMaintenanceTimer = setTimeout((): void => {
+			this.maintenanceInformationLoop();
+		}, timeout);
+	}
+
+	stopCheckMaintenanceTimer(): void {
+		if (this.checkMaintenanceTimer) {
+			clearTimeout(this.checkMaintenanceTimer);
+		}
 	}
 
 	set_cluster_allowed(): void {
@@ -154,8 +175,30 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		this.get_is_facility_manager();
 		this.getLoginName();
 		this.getMissingConsents();
+		this.getMaintenanceTimeFrames();
+		this.maintenanceInformationLoop();
 
 		this.is_vo_admin = is_vo;
+	}
+
+	getMaintenanceTimeFrames(): void {
+		this.maintenanceService.getFutureMaintenanceTimeFrames().subscribe({
+			next: (mtf: MaintenanceTimeFrame[]) => {
+				this.maintenanceTimeframes = mtf.sort((a, b) => {
+					if (a.start_time < b.start_time) {
+						return -1;
+					} else if (a.start_time > b.start_time) {
+						return 1;
+					} else {
+						return 0;
+					}
+				});
+				this.maintenanceTimeframesLoaded = true;
+			},
+			error: () => {
+				this.maintenanceTimeframesLoaded = false;
+			},
+		});
 	}
 
 	getLoginName(): void {

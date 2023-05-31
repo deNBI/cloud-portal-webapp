@@ -24,16 +24,15 @@
             </button>
 
             <button
-                    (click)="openProjectMailsModal(); "
+                    (click)="openProjectMailsModal()"
                     type="button "
                     class="btn btn-outline-primary"
                     [disabled]="selectedEmailProjects?.length === 0"
                     style="margin-bottom: auto; margin-left: auto; margin-top: auto"
-            ><i class="icon-envelope-letter"></i>
+            >
+                <i class="icon-envelope-letter"></i>
                 Send Project Mail
-                <c-badge
-                        color="success"
-                >
+                <c-badge color="success">
                     {{ selectedEmailProjects?.length }}
                 </c-badge>
             </button>
@@ -80,9 +79,7 @@
                                 Unselect Filtered
                             </button>
 
-                            <button type="button" class="btn btn-primary" (click)="unselectAll()">
-                                Unselect All
-                            </button>
+                            <button type="button" class="btn btn-primary" (click)="unselectAll()">Unselect All</button>
                         </div>
 
                         <select class="form-select" style="width: auto" name="pageSize"
@@ -92,7 +89,6 @@
                             <option [ngValue]="50">50 items per page</option>
                         </select>
                     </div>
-
 
                     <div class="table-responsive">
                         <div class="mb-3 row">
@@ -113,12 +109,33 @@
                             <div class="col">
                                 <div class="float-right">
                                     <button
+
+                                            *ngIf="!tsvTaskRunning"
                                             type="button "
-                                            (click)="exportTSV()"
+                                            (click)="initiateTsvExport()"
                                             class="btn btn-outline-primary"
                                             style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
                                     >
-                                        Export as TSV
+                                        Trigger export of Projects TSV
+                                    </button>
+                                    <button *ngIf="tsvTaskRunning" class="btn btn-outline-primary" type="button"
+                                            disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                              aria-hidden="true"></span>
+                                        Export in progress...
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="float-right">
+                                    <button
+                                            type="button "
+                                            (click)="downloadCurrentTSV()"
+                                            class="btn btn-outline-primary"
+                                            style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
+                                            [disabled]="numberOfTsvs <= 0"
+                                    >
+                                        Download latest TSV
                                     </button>
                                 </div>
                             </div>
@@ -167,14 +184,26 @@
                                 <label>
                                     <input
                                             type="checkbox"
+                                            (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.DISABLED)"
+                                            [checked]="sortProjectService.filterStatusList | inList : application_states.DISABLED"
+                                    />
+                                    <span style="margin-left: 5px" class="badge bg-warning"
+                                    >{{ application_states[application_states.DISABLED] }}
+									</span>
+                                </label>
+                            </div>
+                            <!--div class="checkbox col">
+                                <label>
+                                    <input
+                                            type="checkbox"
                                             (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.SUSPENDED)"
                                             [checked]="sortProjectService.filterStatusList | inList : application_states.SUSPENDED"
                                     />
                                     <span style="margin-left: 5px" class="badge bg-warning"
                                     >{{ project_states[project_states.SUSPENDED] }}
-									</span>
+                                    </span>
                                 </label>
-                            </div>
+                            </div-->
 
                             <div class="checkbox col">
                                 <label>
@@ -251,7 +280,10 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th scope="col"></th>
+
+                                <th scope="col">Select</th>
+                                <th scope="col">Type</th>
+
                                 <th scope="col">Facility</th>
 
                                 <th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">
@@ -281,8 +313,11 @@
                             <tbody>
                             <tr *ngFor="let project of applictions$ | async; index as i">
                                 <td>
-                                    <input type="checkbox" [(ngModel)]="project.is_project_selected"
-                                           (change)="toggleSelectedEmailApplication(project,project.is_project_selected )">
+                                    <input
+                                            type="checkbox"
+                                            [(ngModel)]="project.is_project_selected"
+                                            (change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
+                                    />
                                 </td>
                                 <td>
                                     <app-application-badges [application]="project"></app-application-badges>
@@ -296,7 +331,7 @@
                                 </td>
                                 <td>
                                     <ngb-highlight
-                                            [result]="project.project_application_perun_id"
+                                            [result]="project?.project_application_perun_id"
                                             highlightClass="highlight-filter"
                                             [term]="sortProjectService.searchTerm"
                                     >>
@@ -322,6 +357,13 @@
                                                 style="margin-left: 5px"
                                                 class="badge bg-success"
                                         >{{ project_states[project_states.ACTIVE] }}
+										</span>
+                                    <span
+                                            *ngIf="project | hasstatusinlist : application_states.DISABLED"
+                                            style="margin-left: 5px"
+                                            class="badge bg-warning"
+                                    >{{ application_states[application_states.DISABLED] }}
+
 										</span>
                                     <span
                                             *ngIf="
@@ -409,43 +451,62 @@
                                     </ngb-highlight>
                                 </td>
 
-
-									<td>
-										<div class="btn-group-vertical btn-group-xs">
-											<button
-												type="button"
-												class="btn btn-info"
-												style="margin-left: 5px; margin-bottom: 5px"
-												data-toggle="modal"
-												(click)="
+                                <td>
+                                    <div class="btn-group-vertical btn-group-xs">
+                                        <button
+                                                type="button"
+                                                class="btn btn-info"
+                                                style="margin-left: 5px; margin-bottom: 5px"
+                                                data-toggle="modal"
+                                                (click)="
 													showMembersOfTheProject(
 														project.project_application_perun_id,
-														project.project_application_shortnameg
+														project.project_application_shortname
 													);
 													usersModal.show()
 												"
                                         >
                                             <i class="fa fa-users"></i>&nbsp;Show Members
                                         </button>
+
                                         <button
-                                                *ngIf="project | hasstatusinlist : project_states.ACTIVE"
+                                                *ngIf="project | hasstatusnotinlist : application_states.DISABLED"
                                                 style="margin-left: 5px; margin-bottom: 5px"
                                                 type="button"
                                                 class="btn btn-warning"
-                                                (click)="selectedProject = project; suspendModal.show()"
+                                                (click)="showConfirmationModal(project,ConfirmationActions.DISABLE_APPLICATION)"
                                         >
-                                            <i class="fa fa-pause"></i>&nbsp;Suspend Project
+                                            <i class="fa fa-pause"></i>&nbsp;Disable Project
                                         </button>
-
                                         <button
-                                                *ngIf="project | hasstatusinlist : project_states.SUSPENDED"
+                                                *ngIf="project | hasstatusinlist : application_states.DISABLED"
                                                 style="margin-left: 5px; margin-bottom: 5px"
                                                 type="button"
-                                                class="btn btn-success"
-                                                (click)="selectedProject = project; resumeModal.show()"
+                                                class="btn btn-warning"
+                                                (click)="showConfirmationModal(project,ConfirmationActions.ENABLE_APPLICATION)"
                                         >
-                                            <i class="fa fa-play"></i>&nbsp;Resume Project
+                                            <i class="fa fa-play"></i>&nbsp;Enable Project
                                         </button>
+                                        <!--button
+                                            *ngIf="project | hasstatusinlist : project_states.ACTIVE"
+                                            style="margin-left: 5px; margin-bottom: 5px"
+                                            type="button"
+                                            class="btn btn-warning"
+                                            (click)="selectedProject = project; suspendModal.show()"
+                                    >
+                                        <i class="fa fa-pause"></i>&nbsp;Suspend Project
+                                    </button-->
+
+                                        <!--button
+                                            *ngIf="project | hasstatusinlist : project_states.SUSPENDED"
+                                            style="margin-left: 5px; margin-bottom: 5px"
+                                            type="button"
+                                            class="btn btn-success"
+                                            (click)="selectedProject = project; resumeModal.show()"
+                                    >
+                                        <i class="fa fa-play"></i>&nbsp;Resume Project
+                                    </button-->
+
                                         <button
                                                 style="margin-left: 5px; margin-bottom: 5px"
                                                 type="button"
@@ -827,7 +888,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">Are you sure you want to suspend {{ selectedProject?.project_application_shortname }} ?</div>
+            <div class="modal-body">
+                Are you sure you want to suspend {{ selectedProject?.project_application_shortname }} ?
+            </div>
             <div class="modal-footer">
                 <button class="btn btn-success col-md-4" (click)="suspendProject(selectedProject); suspendModal.hide()">
                     Yes
@@ -859,7 +922,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">Are you sure you want to resume {{ selectedProject?.project_application_shortname }} ?</div>
+            <div class="modal-body">
+
+                Are you sure you want to resume {{ selectedProject?.project_application_shortname }} ?
+            </div>
             <div class="modal-footer">
                 <button class="btn btn-success col-md-4" (click)="resumeProject(selectedProject); resumeModal.hide()">
                     Yes

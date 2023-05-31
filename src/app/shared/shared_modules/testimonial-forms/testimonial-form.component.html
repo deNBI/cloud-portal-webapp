@@ -1,0 +1,317 @@
+<div class="card">
+	<div class="card-header">Add testimonial</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-auto mx-auto">
+				<div class="alert alert-info">
+					An overview of the testimonials already published can be found
+					<a href="{{ TESTIMONIAL_PAGE_LINK }}" target="_blank" rel="noopener norefferer">here</a>. Both the text and
+					the excerpt can be based on the testimonials there.
+					<br />
+					Please note: All information entered here as well as the image is checked. There is no guarantee that the
+					testimonial will be published. We reserve the right to make changes to the data submitted.
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-body" *ngIf="!testimonialSent">
+		<form id="testimonialForm" #testimonialForm="ngForm" class="form-horizontal">
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Title*
+							<i class="icon-question" data-toggle="tooltip" title="The title of your testimonial"> </i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial_title"
+							required
+							id="testimonial_title"
+							placeholder="NA"
+							type="text"
+							[(ngModel)]="this.title"
+							[ngClass]="{
+								'is-invalid':
+									testimonialForm.controls.testimonial_title?.invalid ||
+									(testimonialForm.controls.testimonial_title?.dirty && this.title.length < 5),
+								'is-valid': testimonialForm.controls.testimonial_title?.valid
+							}"
+						/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Text*
+							<i class="icon-question" data-toggle="tooltip" title="The text of your testimonial"> </i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<textarea
+							required
+							[ngClass]="{
+								'is-invalid':
+									testimonialForm.controls.testimonial_text?.invalid ||
+									(testimonialForm.controls.testimonial_text?.dirty && this.text.length < 250),
+								'is-valid': testimonialForm.controls.testimonial_text?.valid
+							}"
+							class="form-control"
+							name="testimonial_text"
+							id="testimonial_text"
+							[(ngModel)]="this.text"
+						></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Excerpt*
+							<i class="icon-question" data-toggle="tooltip" title="The excerpt of your testimonial"> </i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<textarea
+							class="form-control"
+							name="testimonial_excerpt"
+							id="testimonial_excerpt"
+							required
+							[(ngModel)]="this.excerpt"
+							[ngClass]="{
+								'is-invalid':
+									testimonialForm.controls.testimonial_excerpt?.invalid ||
+									(testimonialForm.controls.testimonial_excerpt?.dirty && this.excerpt.length < 50),
+								'is-valid': testimonialForm.controls.testimonial_excerpt?.valid
+							}"
+						></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Contributor*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="The responsible person in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial_contributor"
+							id="testimonial_contributor"
+							placeholder="NA"
+							type="text"
+							required
+							[(ngModel)]="this.contributor"
+							[ngClass]="{
+								'is-invalid':
+									testimonialForm.controls.testimonial_contributor?.invalid ||
+									testimonialForm.controls.testimonial_contributor?.dirty ||
+									this.contributor.length < 4,
+								'is-valid': testimonialForm.controls.testimonial_contributor?.valid
+							}"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Institute*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="The institute at which the working group is active in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial_institution"
+							id="testimonial_institution"
+							placeholder="NA"
+							type="text"
+							required
+							[(ngModel)]="this.institution"
+							[ngClass]="{
+								'is-invalid':
+									testimonialForm.controls.testimonial_institution?.invalid ||
+									(testimonialForm.controls.testimonial_institution?.dirty && this.institution.length < 4),
+								'is-valid': testimonialForm.controls.testimonial_institution?.valid
+							}"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Workgroup*
+							<i class="icon-question" data-toggle="tooltip" title="The working group behind the project."> </i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial_workgroup"
+							id="testimonial_workgroup"
+							placeholder="NA"
+							type="text"
+							required
+							[(ngModel)]="this.workgroup"
+							[ngClass]="{
+								'is-invalid':
+									testimonialForm.controls.testimonial_workgroup?.invalid ||
+									(testimonialForm.controls.testimonial_workgroup?.dirty && workgroup.length < 4),
+								'is-valid': testimonialForm.controls.testimonial_workgroup?.valid
+							}"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label class="col-md-4 form-control-label">
+						<strong
+							>Photography Link*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="A link to a picture of the working group, the PI or the person in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+
+				<div class="col-md-8">
+					<div class="input-group">
+						<span class="input-group-text"> URL </span>
+						<input
+							class="form-control"
+							name="testimonial_photography"
+							id="testimonial_photography"
+							type="url"
+							required
+							placeholder="https://institute-url.tld/path/image.png"
+							[(ngModel)]="this.image_url"
+							pattern="^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$"
+							[ngClass]="{
+								'is-invalid':
+									(testimonialForm.controls.testimonial_photography?.dirty && this.image_url.length < 10) ||
+									this.testimonialForm.controls.testimonial_photography?.invalid,
+								'is-valid': testimonialForm.controls.testimonial_photography?.valid
+							}"
+						/>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="card-body" *ngIf="testimonialSent">
+		<div class="alert alert-info">
+			As a testimonial has already been submitted for your project, we ask for your understanding that you cannot submit
+			another draft here. If you would still like to submit a testimonial, please contact the helpdesk via
+			<a class="alert-link" href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+			>.
+		</div>
+	</div>
+	<div class="card-footer">
+		<div class="row">
+			<div class="col-md-auto">
+				<div class="btn-group">
+					<button
+						class="btn btn-success"
+						[disabled]="testimonialSent || testimonialForm?.invalid"
+						(click)="sendTestimonial()"
+					>
+						Send
+					</button>
+					<!-- check why this is not working properly so far?? -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div
+	bsModal
+	#testimonialModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">
+					{{ submissionSuccessful ? 'Testimonial submitted successfully' : 'Submission of testimonial failed!' }}
+				</div>
+				<button
+					type="button"
+					class="close"
+					style="cursor: pointer"
+					(click)="testimonialModal.hide()"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-{{ submissionSuccessful ? 'success' : 'danger' }}">
+					{{
+						submissionSuccessful
+							? 'Thank you for the submission! The submission of the testimonial was successful. The corresponding data will now be checked.'
+							: 'An error has occurred. Check the data you entered and try again at a different time.'
+					}}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-{{ submissionSuccessful ? 'success' : 'danger' }}" (click)="testimonialModal.hide()">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

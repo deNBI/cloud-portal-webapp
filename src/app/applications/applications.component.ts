@@ -25,6 +25,7 @@ import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limit
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
 import { ModificationRequestComponent } from '../projectmanagement/modals/modification-request/modification-request.component';
+import { ConfirmationActions } from '../shared/modal/confirmation_actions';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -56,6 +57,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	tab_state: number = TabStates.SUBMITTED;
 	TabStates: typeof TabStates = TabStates;
 	selectedCenter: { [key: string]: string } = {};
+	ConfirmationActions = ConfirmationActions;
 
 	loading_applications: boolean = false;
 	atLeastOneVM: boolean = false;
@@ -553,6 +555,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				this.loading_applications = false;
 			});
 	}
+
 	getModificationRequests(): void {
 		this.applicationsService
 			.getModificationRequestedApplications()
@@ -692,9 +695,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		document.body.classList.remove('modal-open');
 	}
 
-	showConfirmationModal(application: Application, action: string): void {
+	showConfirmationModal(application: Application, action: ConfirmationActions): void {
 		let initialState = {};
-		if (action === 'approveApplication') {
+		if (action === ConfirmationActions.APPROVE_APPLICATION) {
 			const application_center = this.selectedCenter[application.project_application_id];
 			initialState = { application, action, application_center };
 		} else {
@@ -747,44 +750,46 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	subscribeToBsModalRef(): void {
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
+				let action = null;
+				if ('action' in result) {
+					action = result['action'];
+				}
 				if ('createSimpleVM' in result) {
 					this.createSimpleVmProjectGroup(result['application'], result['compute_center_id']);
 				}
-				if ('approveModification' in result) {
+				if (action === ConfirmationActions.APPROVE_MODIFICATION) {
 					this.approveModificationRequest(result['application']);
 				}
 				if ('closed' in result) {
 					this.switchApproveLocked(false);
 				}
-				if (result['action'] === 'confirmModificationDecline') {
+				if (action === ConfirmationActions.DECLINE_MODIFICATION) {
 					this.declineModificationRequest(result['application']);
 				}
-				if (result['action'] === 'confirmExtensionDecline') {
+				if (action === ConfirmationActions.DECLINE_EXTENSION) {
 					this.declineLifetimeExtension(result['application']);
 				}
-				if (result['action'] === 'confirmCreditsDecline') {
+				if (action === ConfirmationActions.DECLINE_CREDITS) {
 					this.declineCreditExtension(result['application']);
 				}
-				if (result['action'] === 'confirmApplicationDecline') {
+				if (action === ConfirmationActions.DECLINE_APPLICATION) {
 					this.declineApplication(result['application']);
 				}
-				if (result['action'] === 'confirmModificationApproval') {
-					this.approveModificationRequest(result['application']);
-				}
-				if (result['action'] === 'confirmExtensionApproval') {
+
+				if (action === ConfirmationActions.APPROVE_EXTENSION) {
 					this.approveLifetimeExtension(result['application']);
 				}
-				if (result['action'] === 'confirmCreditsApproval') {
+				if (action === ConfirmationActions.APPROVE_CREDITS) {
 					this.approveCreditExtension(result['application']);
 				}
-				if (result['action'] === 'confirmApplicationApproval') {
+				if (action === ConfirmationActions.APPROVE_APPLICATION) {
 					const tmp_application: Application = result['application'];
 					if (tmp_application.project_application_openstack_project) {
 						this.createOpenStackProjectGroup(result['application'], result['selectedCenter']);
 						this.switchApproveLocked(true);
 					}
 				}
-				if (result['action'] === 'adjustedModificationRequest') {
+				if (action === 'adjustedModificationRequest') {
 					this.isLoaded = false;
 					this.changeTabState(TabStates.MODIFICATION_EXTENSION);
 				}

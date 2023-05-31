@@ -221,4 +221,31 @@ export class MaintenanceComponent implements OnInit {
 			},
 		});
 	}
+
+	/**
+	 * This can also be used for further adjustments of the timeframe in the future - just needs to be implemented on the frontend.
+	 * @param timeframe
+	 */
+	switchSignificance(timeframe: MaintenanceTimeFrame): void {
+		timeframe.significant = !timeframe.significant;
+		this.voService.adjustMaintenanceTimeFrame(timeframe).subscribe({
+			next: () => {
+				this.reloadTimeFrames();
+				const initialState = {
+					notificationModalTitle: 'Success',
+					notificationModalType: 'info',
+					notificationModalMessage: 'The maintenance got successfully adjusted!',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState });
+			},
+			error: () => {
+				const initialState = {
+					notificationModalTitle: 'Error',
+					notificationModalType: 'danger',
+					notificationModalMessage: 'An error occurred while adjusting the timeframe.',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState });
+			},
+		});
+	}
 }
