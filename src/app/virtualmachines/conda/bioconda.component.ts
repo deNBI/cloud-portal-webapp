@@ -86,7 +86,7 @@ export class BiocondaComponent implements OnInit {
 				}),
 			)
 			.subscribe((res: any): void => {
-				this.setAllTools(res);
+				this.setAllTools(res, 1);
 			});
 	}
 
@@ -98,30 +98,57 @@ export class BiocondaComponent implements OnInit {
 	getAllTools(page: number): void {
 		this.isSearching = true;
 		this.condaService.getAllTools(page, this.filterToolName).subscribe((metas: any): void => {
-			this.all_tools_meta = metas['packages'];
-
-			this.toolsPerPage = metas['items_per_page'];
-			this.total_pages = metas['total_items'];
-			this.toolsStart = 0;
-			this.toolsEnd = this.toolsPerPage;
-
-			this.currentPage = page;
-			this.pagination.selectPage(this.currentPage);
-			this.cdr.detectChanges();
-
-			this.isSearching = false;
+			this.setAllTools(metas, page);
 		});
 	}
 
-	setAllTools(res: any): void {
+	compareVersions(a: string, b: string): number {
+		if (a === b) {
+			return 0;
+		}
+		const splitA = a.split('.');
+		const splitB = b.split('.');
+		const length = Math.max(splitA.length, splitB.length);
+		// eslint-disable-next-line no-plusplus
+		for (let i = 0; i < length; i++) {
+			if (
+				parseInt(splitA[i], 10) > parseInt(splitB[i], 10)
+				|| (splitA[i] === splitB[i] && Number.isNaN(splitB[i + 1]))
+			) {
+				return 1;
+			}
+			if (
+				parseInt(splitA[i], 10) < parseInt(splitB[i], 10)
+				|| (splitA[i] === splitB[i] && Number.isNaN(splitA[i + 1]))
+			) {
+				return -1;
+			}
+		}
+
+		return 0;
+	}
+
+	adjustToolVersionSort(metaToSort: CondaPackageMeta[]): CondaPackageMeta[] {
+		const sortedMeta: CondaPackageMeta[] = [];
+		metaToSort.forEach((packageMeta: CondaPackageMeta): void => {
+			packageMeta.versions = packageMeta.versions.sort(this.compareVersions).reverse();
+			sortedMeta.push(packageMeta);
+		});
+
+		return sortedMeta;
+	}
+
+	setAllTools(res: any, page: number): void {
 		this.isSearching = true;
 
 		this.all_tools_meta = res['packages'];
+		this.all_tools_meta = this.adjustToolVersionSort(this.all_tools_meta);
 		this.total_pages = res['total_items'];
 		this.toolsStart = 0;
+		this.toolsPerPage = res['items_per_page'];
 		this.toolsEnd = this.toolsPerPage;
 
-		this.currentPage = 1;
+		this.currentPage = page;
 		this.pagination.selectPage(this.currentPage);
 		this.cdr.detectChanges();
 
