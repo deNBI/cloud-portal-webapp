@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -27,5 +27,16 @@ export class MaintenanceService {
 					(maintenanceTimeFrame: MaintenanceTimeFrame): MaintenanceTimeFrame => new MaintenanceTimeFrame(maintenanceTimeFrame),
 				)),
 			);
+	}
+
+	confirmNote(elixir_id: string, timeframes: MaintenanceTimeFrame[]): Observable<any> {
+		const params: HttpParams = new HttpParams()
+			.set('elixir_id', elixir_id)
+			.set('ids', JSON.stringify(timeframes.map((tf: MaintenanceTimeFrame) => tf.id)));
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}maintenance/confirm/`, {
+			withCredentials: true,
+			params,
+		});
 	}
 }

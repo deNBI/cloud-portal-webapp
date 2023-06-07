@@ -2,6 +2,7 @@
 	<span class="spinner-border text-info"></span>
 </div>
 <div
+	id="maintenance-information"
 	class="callout"
 	*ngIf="frames_loaded && (maintenanceTimeFrames.length > 0 || error_on_loading)"
 	[ngClass]="{
@@ -30,6 +31,16 @@
 				</div>
 			</li>
 		</ul>
+		<div class="mt-3">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="alert alert-info">Please confirm that you have taken note of the above maintenance times.</div>
+				</div>
+				<div class="col-md-4">
+					<button class="btn btn-info mt-2" type="button" (click)="confirmTakenNote()">Confirm</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div *ngIf="frames_loaded && error_on_loading">An error occurred loading possible maintenance timeframes.</div>
 </div>

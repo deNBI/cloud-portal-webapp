@@ -294,6 +294,20 @@ $deNBI_lightgrey: #939496;
 $deNBI_white: #FFFFFF;
 $deNBI_black: #000000;
 $deNBI_disabled: #D9DCDE;
+$slight_danger_currant_red: #680C07;
+$slight_danger_scarlett_red: #900009;
+$slight_danger_indian_red: #CD5C5C;
+$slight_danger_persian_red: #CA3433;
+
+.sidebar .nav-item-maintenance {
+	background-color: $slight_danger_persian_red;
+	border-radius: 0;
+}
+.sidebar .nav-item-maintenance .nav-link, .sidebar .nav-item-maintenance .nav-link .nav-icon {
+	color: $deNBI_white;
+
+}
+
 
 //project-type-colors
 

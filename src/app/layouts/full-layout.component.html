@@ -1,14 +1,33 @@
-<app-title-headbar
-	[maintenanceTimeframes]="maintenanceTimeframes"
-	[maintenanceTimeframesLoaded]="maintenanceTimeframesLoaded"
-	[navbar_minimized]="false"
-	[page_title]="TITLE"
-></app-title-headbar>
+<alert
+	role="alert"
+	style="z-index: 2000; opacity: 90%; position: fixed; top: 0px"
+	class="w-100"
+	dismissible="true"
+	type="danger"
+	*ngIf="maintenanceTimeframesLoaded && maintenanceTimeframes?.length > 0"
+>
+	<div class="p-3">
+		<strong>Important: </strong>There is relevant information regarding maintenance in the near future. Please visit
+		their profile page for information on the announced maintenance and actions to be taken by their side. Confirm that
+		you have taken note of the information!
+	</div>
+</alert>
+
+<app-title-headbar [navbar_minimized]="false" [page_title]="TITLE"></app-title-headbar>
 
 <div class="sidebar sidebar-fixed">
 	<ng-scrollbar class="ng-scrollbar" visibility="hover">
 		<ul class="sidebar-nav">
 			<li class="nav-title">Profile</li>
+			<li
+				class="nav-item nav-item-maintenance"
+				*ngIf="maintenanceTimeframesLoaded && maintenanceTimeframes?.length > 0"
+			>
+				<a class="nav-link" routerLinkActive="active" id="sidebar-maintenance" (click)="routeToMaintenance()" href="">
+					<i class="nav-icon fas fa-exclamation-circle"> </i>
+					Maintenance
+				</a>
+			</li>
 			<li class="nav-item">
 				<a
 					class="nav-link"

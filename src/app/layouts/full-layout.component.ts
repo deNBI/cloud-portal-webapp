@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { ClientService } from '../api-connector/client.service';
 import { FacilityService } from '../api-connector/facility.service';
@@ -82,6 +83,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		applicationsService: ApplicationsService,
 		private virtualMachineService: VirtualmachineService,
 		private cd: ChangeDetectorRef,
+		private router: Router,
 	) {
 		super(userService, applicationsService, facilityService, cd);
 	}
@@ -138,6 +140,10 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 				this.vm_project_member = true;
 			}
 		});
+	}
+
+	routeToMaintenance(): void {
+		void this.router.navigate(['/profile#maintenance-information']);
 	}
 
 	is_workshop_admin(): void {

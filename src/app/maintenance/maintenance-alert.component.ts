@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model';
 import { MaintenanceService } from '../api-connector/maintenance.service';
+import { UserService } from '../api-connector/user.service';
 
 @Component({
 	selector: 'app-maintenance-alert',
@@ -16,7 +17,7 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 	frames_loaded: boolean = false;
 	error_on_loading: boolean = false;
 
-	constructor(private maintenanceService: MaintenanceService) {
+	constructor(private maintenanceService: MaintenanceService, private userService: UserService) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -29,6 +30,20 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 		this.subscription.unsubscribe();
 	}
 
+	confirmTakenNote(): void {
+		this.subscription.add(
+			this.userService.getUserInfo().subscribe(
+				(login: any): void => {
+					this.maintenanceService.confirmNote(login['ElixirId'], this.maintenanceTimeFrames).subscribe(nxt => {
+						console.log(nxt);
+					});
+				},
+				() => {
+					console.log('An error occurred');
+				},
+			),
+		);
+	}
 	get_timeframes(): void {
 		this.subscription.add(
 			this.maintenanceService.getFutureMaintenanceTimeFrames().subscribe({
@@ -44,6 +59,7 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 					});
 					this.error_on_loading = false;
 					this.frames_loaded = true;
+					console.log(this.maintenanceTimeFrames);
 				},
 				error: () => {
 					this.error_on_loading = true;
