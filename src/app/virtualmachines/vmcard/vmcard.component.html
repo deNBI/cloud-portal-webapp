@@ -318,6 +318,7 @@
 							!(vm?.status | hasStatus : VirtualMachineStates.staticPORT_CLOSED)) ||
 						(vm?.status | hasStatus : VirtualMachineStates.staticNOT_FOUND) ||
 						(vm?.status | hasStatus : VirtualMachineStates.staticDELETED) ||
+						(vm?.status | hasStatus : VirtualMachineStates.staticDISABLED) ||
 						this.vm.project_is_migrated_to_simple_vm ||
 						this.vm.migrate_project_to_simple_vm
 					"
@@ -331,7 +332,11 @@
 					class="font-weight-bold font-xs btn-block btn btn-secondary"
 					*ngIf="vm.cardState === 2"
 					[id]="'hideActionsButton_' + vm?.name"
-					[disabled]="this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm"
+					[disabled]="
+						this.vm.project_is_migrated_to_simple_vm ||
+						this.vm.migrate_project_to_simple_vm ||
+						(vm?.status | hasStatus : VirtualMachineStates.staticDISABLED)
+					"
 					(click)="vm.cardState = 0"
 				>
 					... Hide actions
