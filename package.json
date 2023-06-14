@@ -34,7 +34,7 @@
     "@coreui/angular": "4.5.0",
     "@coreui/coreui": "4.2.6",
     "@coreui/icons-angular": "^4.4.7",
-    "@ng-bootstrap/ng-bootstrap": "14.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^15.0.1",
     "@ng-select/ng-select": "10.0.4",
     "@sindresorhus/transliterate": "1.6.0",
     "@types/d3": "7.4.0",
