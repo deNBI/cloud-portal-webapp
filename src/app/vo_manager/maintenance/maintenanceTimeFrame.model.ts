@@ -4,6 +4,7 @@ export class MaintenanceTimeFrame {
 	start_time: Date = new Date();
 	end_time: Date = new Date();
 	message: string = '';
+	significant: boolean;
 
 	constructor(maintenanceTimeFrame?: Partial<MaintenanceTimeFrame>) {
 		Object.assign(this, maintenanceTimeFrame);
@@ -20,6 +21,9 @@ export class MaintenanceTimeFrame {
 		}
 		if (maintenanceTimeFrame.message) {
 			this.message = maintenanceTimeFrame.message;
+		}
+		if (maintenanceTimeFrame.significant) {
+			this.significant = maintenanceTimeFrame.significant;
 		}
 	}
 }
