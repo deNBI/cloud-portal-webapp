@@ -29,6 +29,15 @@ export class MaintenanceService {
 			);
 	}
 
+	getNumberOfUnconfirmedTimeFrames(elixir_id: string): Observable<any> {
+		const params: HttpParams = new HttpParams().set('elixir_id', elixir_id);
+
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}maintenance/confirmable/`, {
+			withCredentials: true,
+			params,
+		});
+	}
+
 	confirmNote(elixir_id: string, timeframes: MaintenanceTimeFrame[]): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('elixir_id', elixir_id)

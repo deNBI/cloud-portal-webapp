@@ -4,11 +4,11 @@
 	class="w-100"
 	dismissible="true"
 	type="danger"
-	*ngIf="maintenanceTimeframesLoaded && maintenanceTimeframes?.length > 0"
+	*ngIf="maintenanceTimeframesLoaded && numberOfConfirmableTimeframes > 0"
 >
 	<div class="p-3">
 		<strong>Important: </strong>There is relevant information regarding maintenance in the near future. Please visit
-		their profile page for information on the announced maintenance and actions to be taken by their side. Confirm that
+		your profile page for information on the announced maintenance and actions to be taken by their side. Confirm that
 		you have taken note of the information!
 	</div>
 </alert>

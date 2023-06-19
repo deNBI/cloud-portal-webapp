@@ -62,6 +62,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	maintenanceTimeframesLoaded: boolean = false;
 	checkMaintenanceTimer: ReturnType<typeof setTimeout>;
 	checkMaintenanceTimeout: number = 300000;
+	numberOfConfirmableTimeframes: number = 0;
 
 	TITLE: string = '';
 
@@ -205,6 +206,16 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 				this.maintenanceTimeframesLoaded = false;
 			},
 		});
+		this.userService.getUserInfo().subscribe(
+			(login: any): void => {
+				this.maintenanceService.getNumberOfUnconfirmedTimeFrames(login['ElixirId']).subscribe((nxt: any) => {
+					this.numberOfConfirmableTimeframes = nxt['confirmable'];
+				});
+			},
+			() => {
+				console.log('An error occurred');
+			},
+		);
 	}
 
 	getLoginName(): void {
