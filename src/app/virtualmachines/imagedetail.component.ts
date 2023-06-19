@@ -121,6 +121,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 		]).subscribe(async (res: any) => {
 			res[0].forEach(resenv => this.resenv_names.push(resenv.template_name));
 			this.images = res[1];
+			this.images = this.images.sort(this.sortImages);
 			this.image_types = this.imageService.sortImages(this.images, this.resenv_names);
 			if (this.isCluster) {
 				this.selected_image_type = ImageTypes.CLUSTER_IMAGE;
@@ -130,6 +131,64 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 			this.image_selection = this.image_types[this.selected_image_type];
 			this.images_loaded = true;
 		});
+	}
+
+	compareVersions(a: string, b: string): number {
+		if (a === b) {
+			return 0;
+		}
+		const splitA = a.split('.');
+		const splitB = b.split('.');
+		const length = Math.max(splitA.length, splitB.length);
+		// eslint-disable-next-line no-plusplus
+		for (let i = 0; i < length; i++) {
+			if (
+				parseInt(splitA[i], 10) > parseInt(splitB[i], 10)
+				|| (splitA[i] === splitB[i] && Number.isNaN(splitB[i + 1]))
+			) {
+				return 1;
+			}
+			if (
+				parseInt(splitA[i], 10) < parseInt(splitB[i], 10)
+				|| (splitA[i] === splitB[i] && Number.isNaN(splitA[i + 1]))
+			) {
+				return -1;
+			}
+		}
+
+		return 0;
+	}
+
+	sortImages(a: Image, b: Image): number {
+		if (a === b) {
+			return 0;
+		}
+		let tags_a: string[] = a.tags;
+		tags_a = tags_a.filter(e => e !== 'deNBI');
+		tags_a = tags_a.filter(e => e !== 'portalclient');
+		tags_a = tags_a.filter(e => e !== 'base_image');
+		const tags_a_stringified: string = JSON.stringify(tags_a);
+
+		let tags_b: string[] = a.tags;
+		tags_b = tags_b.filter(e => e !== 'deNBI');
+		tags_b = tags_b.filter(e => e !== 'portalclient');
+		tags_b = tags_b.filter(e => e !== 'base_image');
+		const tags_b_stringified: string = JSON.stringify(tags_b);
+
+		const tag_compare_value: number = tags_a_stringified.localeCompare(tags_b_stringified);
+		if (tag_compare_value === 0) {
+			let os_version_compare_value: number = 0;
+			if (a.os_version && b.os_version) {
+				os_version_compare_value = this.compareVersions(a.os_version, b.os_version);
+			}
+			if (os_version_compare_value === 0) {
+				return a.name.localeCompare(b.name);
+			} else {
+				return os_version_compare_value;
+			}
+		} else {
+			return tag_compare_value;
+		}
 	}
 
 	setSelectedImageType(key: string): void {
