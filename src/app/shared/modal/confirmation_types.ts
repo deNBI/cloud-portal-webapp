@@ -3,4 +3,5 @@ export enum ConfirmationTypes {
 	DISABLE,
 	APPROVE,
 	DECLINE,
+	DELETE,
 }
