@@ -1,4 +1,8 @@
-<div *ngIf="errorMessage !== null">An Error has occurred. {{ errorMessage }}</div>
+<div *ngIf="errorMessage !== null">
+	<div class="alert alert-info">
+		{{ errorMessage }}
+	</div>
+</div>
 
 <div *ngIf="!isLoaded && errorMessage === null" class="loader"></div>
 
