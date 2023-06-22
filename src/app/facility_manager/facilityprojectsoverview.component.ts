@@ -1,7 +1,8 @@
 import {
 	Component, Input, OnInit, QueryList, ViewChildren,
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, take } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { environment } from '../../environments/environment';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -16,6 +17,8 @@ import {
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
+import { NotificationModalComponent } from '../shared/modal/notification-modal';
 
 /**
  * Facility Project overview component.
@@ -43,6 +46,9 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	show_openstack_projects: boolean = true;
 	show_simple_vm_projects: boolean = true;
 	details_loaded: boolean = false;
+	selectedEmailProjects: Application[] = [];
+	bsModalRef: BsModalRef;
+
 	/**
 	 * Approved group status.
 	 *
@@ -87,6 +93,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		private facilityService: FacilityService,
 		private newsService: NewsService,
 		public sortProjectService: ProjectSortService,
+		private modalService: BsModalService,
 	) {
 		super();
 	}
@@ -205,6 +212,54 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	getProjectLifetime(): void {
 		this.details_loaded = true;
+	}
+
+	selectAllFilteredProjects(): void {
+		this.selectedEmailProjects = [];
+
+		// get all the applications
+		this.applictions$.pipe(take(1)).subscribe(applications => {
+			// set the selected state of all projects to true
+			applications.forEach(application => {
+				application.is_project_selected = true;
+				this.toggleSelectedEmailApplication(application, application.is_project_selected);
+			});
+		});
+	}
+
+	unselectAll(): void {
+		this.sortProjectService.applications.forEach((pr: Application) => {
+			pr.is_project_selected = false;
+			this.toggleSelectedEmailApplication(pr, pr.is_project_selected);
+		});
+		//		this.selectedEmailProjects = []; // clear the selectedEmailProjects list
+	}
+
+	unselectAllFilteredProjects(): void {
+		// get all the applications
+		this.applictions$.pipe(take(1)).subscribe(applications => {
+			// set the selected state of all projects to false
+			applications.forEach(application => {
+				application.is_project_selected = false;
+				this.toggleSelectedEmailApplication(application, application.is_project_selected);
+			});
+		});
+	}
+
+	toggleSelectedEmailApplication(application: Application, isChecked: boolean): void {
+		const index = this.selectedEmailProjects.indexOf(application);
+
+		if (isChecked) {
+			// checkbox was checked
+			if (index === -1) {
+				// application is not in the list, so add it
+				this.selectedEmailProjects.push(application);
+			}
+		} else {
+			// checkbox was unchecked
+			// application is in the list, so remove it
+			this.selectedEmailProjects.splice(index, 1);
+		}
 	}
 
 	/**
@@ -376,6 +431,30 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			this.facilitySupportMails = result['body'];
 			if (this.facilitySupportMails === '' || this.facilitySupportMails === null) {
 				this.facilitySupportMails = 'example@mail1.com, example@mail2.com';
+			}
+		});
+	}
+
+	openProjectMailsModal(): void {
+		const initialState = { selectedProjects: this.selectedEmailProjects };
+
+		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
+		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
+			if (sent_successfully) {
+				const initialStateNotification = {
+					notificationModalTitle: 'Success',
+					notificationModalType: 'success',
+					notificationModalMessage: 'Mails were successfully sent',
+				};
+
+				this.modalService.show(NotificationModalComponent, { initialState: initialStateNotification });
+			} else {
+				const initialStateNotification = {
+					notificationModalTitle: 'Failed',
+					notificationModalType: 'danger',
+					notificationModalMessage: 'Failed to send mails!',
+				};
+				this.modalService.show(NotificationModalComponent, { initialState: initialStateNotification });
 			}
 		});
 	}
