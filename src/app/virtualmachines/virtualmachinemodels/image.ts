@@ -17,6 +17,7 @@ export class Image {
 	os_distro: string;
 	min_disk: number;
 	modes: ImageMode[];
+	slurm_version: string;
 
 	constructor(image?: Partial<Image>) {
 		Object.assign(this, image);
