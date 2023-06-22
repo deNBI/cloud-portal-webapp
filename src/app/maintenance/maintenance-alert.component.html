@@ -31,14 +31,10 @@
 				</div>
 			</li>
 		</ul>
-		<div class="mt-3">
-			<div class="row" *ngIf="numberOfConfirmableTimeframes > 0">
-				<div class="col-md-8">
-					<div class="alert alert-info">Please confirm that you have taken note of the above maintenance times.</div>
-				</div>
-				<div class="col-md-4">
-					<button class="btn btn-info mt-2" type="button" (click)="confirmTakenNote()">Confirm</button>
-				</div>
+		<div class="mt-3" *ngIf="numberOfConfirmableTimeframes > 0">
+			<div class="alert alert-info align-content-between">
+				Please confirm that you have taken note of the above maintenance times.
+				<button class="btn btn-info m-1" type="button" (click)="confirmTakenNote()">Confirm</button>
 			</div>
 		</div>
 	</div>

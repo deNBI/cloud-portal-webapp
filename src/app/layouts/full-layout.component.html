@@ -20,12 +20,16 @@
 		<ul class="sidebar-nav">
 			<li class="nav-title">Profile</li>
 			<li
-				class="nav-item nav-item-maintenance"
+				class="nav-item"
+				[ngClass]="numberOfConfirmableTimeframes > 0 ? 'nav-item-maintenance' : ''"
 				*ngIf="maintenanceTimeframesLoaded && maintenanceTimeframes?.length > 0"
 			>
 				<a class="nav-link" routerLinkActive="active" id="sidebar-maintenance" (click)="routeToMaintenance()" href="">
 					<i class="nav-icon fas fa-exclamation-circle"> </i>
 					Maintenance
+					<span [ngClass]="numberOfConfirmableTimeframes > 0 ? 'badge-dark' : 'badge-info'" class="badge m-1">{{
+						maintenanceTimeframes?.length
+					}}</span>
 				</a>
 			</li>
 			<li class="nav-item">
@@ -510,8 +514,8 @@
 
 			<li class="nav-item" *ngIf="is_vo_admin">
 				<a class="nav-link" routerLinkActive="active" [routerLink]="['/vo-manager/maintenance']"
-					><i class="nav-icon fas fa-tools"></i> Maintenance</a
-				>
+					><i class="nav-icon fas fa-tools"></i> Maintenance
+				</a>
 			</li>
 
 			<li class="nav-item" *ngIf="is_vo_admin">
