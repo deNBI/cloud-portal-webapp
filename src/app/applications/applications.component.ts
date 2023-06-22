@@ -766,6 +766,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				if (action === ConfirmationActions.DECLINE_MODIFICATION) {
 					this.declineModificationRequest(result['application']);
 				}
+				if (action === ConfirmationActions.DELETE_APPLICATION) {
+					this.deleteApplication(result['application']);
+				}
 				if (action === ConfirmationActions.DECLINE_EXTENSION) {
 					this.declineLifetimeExtension(result['application']);
 				}
@@ -836,6 +839,23 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				this.approveLocked = false;
 			}
 		}
+	}
+
+	deleteApplication(application: Application): void {
+		const idx: number = this.all_applications.indexOf(application);
+
+		this.subscription.add(
+			this.applicationsService.deleteApplication(application.project_application_id).subscribe(
+				(): void => {
+					this.showNotificationModal('Success', 'The application has been successfully removed', 'success');
+					this.all_applications.splice(idx, 1);
+					this.getApplicationNumbers();
+				},
+				(): void => {
+					this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
+				},
+			),
+		);
 	}
 
 	roundRobinCreateSimpleVmProjectGroup(application: Application): void {
