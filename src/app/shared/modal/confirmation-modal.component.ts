@@ -35,6 +35,8 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 			[ConfirmationActions.DECLINE_APPLICATION]: { action: ConfirmationActions.DECLINE_APPLICATION },
 			[ConfirmationActions.APPROVE_MODIFICATION]: { action: ConfirmationActions.APPROVE_MODIFICATION },
 			[ConfirmationActions.APPROVE_EXTENSION]: { action: ConfirmationActions.APPROVE_EXTENSION },
+			[ConfirmationActions.DELETE_APPLICATION]: { action: ConfirmationActions.DELETE_APPLICATION },
+
 			[ConfirmationActions.APPROVE_CREDITS]: { action: ConfirmationActions.APPROVE_CREDITS },
 			[ConfirmationActions.APPROVE_APPLICATION]: {
 				action: ConfirmationActions.APPROVE_APPLICATION,
@@ -70,6 +72,8 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 				return 'Disabling';
 			case ConfirmationTypes.APPROVE:
 				return 'Approval';
+			case ConfirmationTypes.DELETE:
+				return 'Deletion';
 			case ConfirmationTypes.DECLINE:
 				return 'Declination';
 			default:
@@ -86,6 +90,11 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 				title: 'Confirm decline of modification request',
 				type: ConfirmationTypes.DECLINE,
 				message: 'Do you really want to decline the modification request',
+			},
+			[ConfirmationActions.DELETE_APPLICATION]: {
+				title: 'Confirm deletion of application',
+				type: ConfirmationTypes.DECLINE,
+				message: 'Do you really want to delete the application?',
 			},
 			[ConfirmationActions.DECLINE_EXTENSION]: {
 				title: 'Confirm decline of extension request',

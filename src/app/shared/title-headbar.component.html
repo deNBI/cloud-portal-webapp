@@ -14,9 +14,6 @@
 	[ngClass]="{ 'header-right-maximized': navbar_minimized }"
 >
 	<h1 id="title_headline" style="margin: auto; position: relative; top: 25%">{{ page_title }}</h1>
-	<ng-container *ngIf="maintenanceTimeframesLoaded">
-		<app-maintenance-notification [maintenanceTimeframes]="maintenanceTimeframes"></app-maintenance-notification>
-	</ng-container>
 	<button class="btn btn-outline-danger" style="margin: 5px" (click)="logout()">
 		<i class="fas fa-door-open"></i> Logout
 	</button>
