@@ -1,4 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+	Component, OnInit, OnDestroy, EventEmitter, Output,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -20,6 +22,7 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 	frames_loaded: boolean = false;
 	error_on_loading: boolean = false;
 	bsModalRef: BsModalRef;
+	@Output() confirmEventEmitter: EventEmitter<any> = new EventEmitter<any>();
 
 	constructor(
 		private maintenanceService: MaintenanceService,
@@ -70,6 +73,7 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 			this.userService.getUserInfo().subscribe(
 				(login: any): void => {
 					this.maintenanceService.confirmNote(login['ElixirId'], this.maintenanceTimeFrames).subscribe(() => {
+						this.confirmEventEmitter.emit();
 						this.getNumberOfConfirmableTimeframes();
 						this.showNotificationModal(
 							'Success',

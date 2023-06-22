@@ -4,7 +4,7 @@
 	class="w-100"
 	dismissible="true"
 	type="danger"
-	*ngIf="maintenanceTimeframesLoaded && numberOfConfirmableTimeframes > 0"
+	*ngIf="maintenanceTimeframesLoaded && numberOfConfirmableTimeframes > 0 && !confirmedInSession"
 >
 	<div class="p-3">
 		<strong>Important: </strong>There is relevant information regarding maintenance in the near future. Please visit
@@ -24,7 +24,7 @@
 				[ngClass]="numberOfConfirmableTimeframes > 0 ? 'nav-item-maintenance' : ''"
 				*ngIf="maintenanceTimeframesLoaded && maintenanceTimeframes?.length > 0"
 			>
-				<a class="nav-link" routerLinkActive="active" id="sidebar-maintenance" (click)="routeToMaintenance()" href="">
+				<a class="nav-link" routerLinkActive="active" id="sidebar-maintenance" [routerLink]="['/userinfo']" href="#">
 					<i class="nav-icon fas fa-exclamation-circle"> </i>
 					Maintenance
 					<span [ngClass]="numberOfConfirmableTimeframes > 0 ? 'badge-dark' : 'badge-info'" class="badge m-1">{{
@@ -39,7 +39,6 @@
 					data-placement="right"
 					title="Profile"
 					routerLinkActive="active"
-					[routerLink]="['/userinfo']"
 					href="#"
 				>
 					<i class="nav-icon fas fa-user"></i>

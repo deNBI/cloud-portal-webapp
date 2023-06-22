@@ -18,6 +18,7 @@ import { Application_States } from '../shared/shared_modules/baseClass/abstract-
 import { WIKI, WIKI_FAQ, STATUS_LINK } from '../../links/links';
 import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model';
 import { MaintenanceService } from '../api-connector/maintenance.service';
+import { UserInfoComponent } from '../userinfo/userinfo.component';
 
 /**
  * FullLayout component.
@@ -61,8 +62,9 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	maintenanceTimeframes: MaintenanceTimeFrame[] = [];
 	maintenanceTimeframesLoaded: boolean = false;
 	checkMaintenanceTimer: ReturnType<typeof setTimeout>;
-	checkMaintenanceTimeout: number = 300000;
+	checkMaintenanceTimeout: number = 180000;
 	numberOfConfirmableTimeframes: number = 0;
+	confirmedInSession: boolean = false;
 
 	TITLE: string = '';
 
@@ -91,7 +93,13 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	componentAdded(component: any): void {
 		this.TITLE = component.title;
-
+		if (component instanceof UserInfoComponent) {
+			const child: UserInfoComponent = component;
+			child.confirmEventEmitter.subscribe(() => {
+				this.confirmedInSession = true;
+			});
+		}
+		this.maintenanceInformationLoop();
 		this.cd.detectChanges();
 	}
 
@@ -141,10 +149,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 				this.vm_project_member = true;
 			}
 		});
-	}
-
-	routeToMaintenance(): void {
-		void this.router.navigate(['/profile#maintenance-information']);
 	}
 
 	is_workshop_admin(): void {
