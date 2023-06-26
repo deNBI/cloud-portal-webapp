@@ -6,6 +6,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NgForm } from '@angular/forms';
 import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { NewsService } from '../../../api-connector/news.service';
+import { Application } from '../../../applications/application.model/application.model';
 
 @Component({
 	selector: 'app-testimonial-form',
@@ -28,7 +29,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	@Input() institution: string = '';
 	@Input() workgroup: string = '';
 	@Input() simple_vm: boolean = false;
-	@Input() project_application_id: string;
+	@Input() project_application: Application;
 	@Input() testimonialSent: boolean;
 	image_url: string = '';
 	submissionSuccessful: boolean = false;
@@ -40,13 +41,28 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.subscription = new Subscription();
+		this.getTestimonialData();
+	}
+
+	getTestimonialData(): void {
+		this.subscription.add(
+			this.newsService
+				.getTestimonial(this.project_application.project_application_id.toString())
+				.subscribe((result: any): void => {
+					console.log(result);
+				}),
+		);
+	}
+
+	printFile(event): void {
+		console.log(event);
 	}
 	sendTestimonial(): void {
 		this.testimonialSent = true;
 		this.subscription.add(
 			this.newsService
 				.sendTestimonialDraft(
-					`${this.title} DRAFT`,
+					this.title,
 					this.text,
 					this.excerpt,
 					this.contributor,
@@ -54,11 +70,33 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 					this.workgroup,
 					this.simple_vm,
 					this.image_url,
-					this.project_application_id,
+					this.project_application.project_application_id.toString(),
 				)
 				.subscribe((result: any): any => {
 					this.submissionSuccessful = result['created'];
 					this.testimonialModal.show();
+				}),
+		);
+	}
+
+	autosaveTestimonial(): void {
+		this.testimonialSent = false;
+		this.subscription.add(
+			this.newsService
+				.autoSaveTestimonialDraft(
+					`${this.title}`,
+					this.text,
+					this.excerpt,
+					this.contributor,
+					this.institution,
+					this.workgroup,
+					this.simple_vm,
+					this.project_application.project_application_id.toString(),
+				)
+				.subscribe((result: any): void => {
+					console.log('AUTOSAVE');
+					console.log(result);
+					// adjust so toast or something like that get's shown
 				}),
 		);
 	}

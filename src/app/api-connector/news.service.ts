@@ -85,6 +85,17 @@ export class NewsService {
 			);
 	}
 
+	getTestimonial(project_application_id: string): Observable<any> {
+		const params: HttpParams = new HttpParams().set('project_application_id', project_application_id);
+
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, {
+			params,
+			withCredentials: true,
+		});
+	}
+
+	// TODO: further implementation of autosave
+
 	sendTestimonialDraft(
 		title: string,
 		text: string,
@@ -111,6 +122,36 @@ export class NewsService {
 		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, testimonialData, {
 			withCredentials: true,
 		});
+	}
+
+	autoSaveTestimonialDraft(
+		title: string,
+		text: string,
+		excerpt: string,
+		contributor: string,
+		institution: string,
+		workgroup: string,
+		simple_vm: boolean,
+		project_application_id: string,
+	): Observable<any> {
+		const testimonialData: any = {
+			title,
+			text,
+			excerpt,
+			contributor,
+			institution,
+			workgroup,
+			simple_vm,
+			project_application_id,
+		};
+
+		return this.http.post<any>(
+			`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/autoSave/`,
+			testimonialData,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	private handleError<T>(result?: T) {

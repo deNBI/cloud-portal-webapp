@@ -87,6 +87,7 @@ export class Application {
 	project_application_member_applications: ProjectMemberApplication[];
 	project_application_manager_comment: string;
 	project_application_testimonial_submitted: boolean;
+	project_application_testimonial_draft_id: number;
 
 	migrated_simple_vm_resources: boolean = false;
 

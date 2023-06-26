@@ -1090,16 +1090,41 @@
 			"
 			class="col"
 		>
-			<div class="card" id="doiCard">
-				<div class="card-header">
-					<i class="fa fa-align-justify"></i>
-					<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank">
-						Digital object identifier (DOI)</a
-					>
-				</div>
+			<div class="card" id="publicInformationCard">
+				<div class="card-header"><i class="fas fa-bullhorn"></i> Public project information</div>
 
 				<div class="card-body">
+					<h5 class="card-title">
+						<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank">
+							Digital object identifier (DOI)</a
+						>
+					</h5>
 					<div *ngIf="doiError" class="alert alert-danger">{{ doiError }}</div>
+					<div class="row">
+						<div class="col-10">
+							<input
+								#doiInput
+								[(ngModel)]="newDoi"
+								[disabled]="disabledDoiInput"
+								id="doi_input_field"
+								pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+"
+								placeholder="e.g. 10.1000/182"
+								style="width: 100%"
+								type="text"
+							/>
+						</div>
+						<div class="col-2">
+							<button
+								(click)="addDoi()"
+								[disabled]="!doiInput.validity.valid || disabledDoiInput"
+								class="btn btn-success"
+								id="add_doi_btn"
+								type="button"
+							>
+								<i class="fa fa-plus"></i>&nbsp;
+							</button>
+						</div>
+					</div>
 					<div class="table-responsive">
 						<table class="table">
 							<tbody>
@@ -1120,29 +1145,7 @@
 								</ng-container>
 
 								<tr>
-									<td>
-										<input
-											#doiInput
-											[(ngModel)]="newDoi"
-											[disabled]="disabledDoiInput"
-											id="doi_input_field"
-											pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+"
-											placeholder="e.g. 10.1000/182"
-											style="width: 100%"
-											type="text"
-										/>
-									</td>
-									<td>
-										<button
-											(click)="addDoi()"
-											[disabled]="!doiInput.validity.valid || disabledDoiInput"
-											class="btn btn-success"
-											id="add_doi_btn"
-											type="button"
-										>
-											<i class="fa fa-plus"></i>&nbsp;
-										</button>
-									</td>
+									<td></td>
 								</tr>
 							</tbody>
 						</table>
@@ -1156,20 +1159,22 @@
 						</p>
 					</div>
 				</div>
+				<hr />
+				<div id="testimonialForm" *ngIf="project_application && isLoaded && project_application.isApproved()">
+					<app-testimonial-form
+						[title]="project_application?.project_application_name"
+						[contributor]="project_application?.project_application_pi?.username"
+						[institution]="project_application?.project_application_institute"
+						[workgroup]="project_application?.project_application_workgroup"
+						[simple_vm]="!project_application?.project_application_openstack_project"
+						[project_application]="project_application"
+						[testimonialSent]="project_application.project_application_testimonial_submitted"
+					></app-testimonial-form>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="mt-2" id="testimonialForm" *ngIf="project_application && isLoaded && project_application.isApproved()">
-		<app-testimonial-form
-			[title]="project_application?.project_application_name"
-			[contributor]="project_application?.project_application_pi?.username"
-			[institution]="project_application?.project_application_institute"
-			[workgroup]="project_application?.project_application_workgroup"
-			[simple_vm]="!project_application?.project_application_openstack_project"
-			[project_application_id]="project_application.project_application_id.toString()"
-			[testimonialSent]="project_application.project_application_testimonial_submitted"
-		></app-testimonial-form>
-	</div>
+
 	<div class="row">
 		<div
 			*ngIf="
@@ -1183,7 +1188,7 @@
 		>
 			<div class="card" style="">
 				<div class="card-header">
-					<i class="fa fa-align-justify"></i> Credit Usage history of
+					<i class="fas fa-align-justify"></i> Credit Usage history of
 					{{ project_application?.project_application_shortname }}
 				</div>
 				<div class="card-body justify-content-center align-items-center">
