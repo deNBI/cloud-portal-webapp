@@ -1159,7 +1159,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row" *ngIf="project_application && isLoaded && project_application.isApproved()">
+	<div class="mt-2" id="testimonialForm" *ngIf="project_application && isLoaded && project_application.isApproved()">
 		<app-testimonial-form
 			[title]="project_application?.project_application_name"
 			[contributor]="project_application?.project_application_pi?.username"

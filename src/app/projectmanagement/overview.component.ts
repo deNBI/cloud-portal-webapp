@@ -248,6 +248,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.getUserProjectApplications();
 
 					this.isLoaded = true;
+
+					this.activatedRoute.fragment.subscribe(fragment => {
+						this.scrollTo(fragment);
+					});
 				},
 				(error: any): void => {
 					this.isLoaded = false;
@@ -260,6 +264,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				},
 			),
 		);
+	}
+
+	scrollTo(element: any): void {
+		setTimeout(() => {
+			(document.getElementById(element) as HTMLElement).scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+				inline: 'nearest',
+			});
+		}, 1500);
 	}
 
 	getUserinfo(): void {
