@@ -79,6 +79,7 @@
 						name="testimonial_text"
 						id="testimonial_text"
 						[(ngModel)]="this.text"
+						(ngModelChange)="checkAutosaveNeed()"
 					></textarea>
 				</div>
 			</div>

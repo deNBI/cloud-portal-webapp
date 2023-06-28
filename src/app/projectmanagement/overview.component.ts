@@ -250,7 +250,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.isLoaded = true;
 
 					this.activatedRoute.fragment.subscribe(fragment => {
-						this.scrollTo(fragment);
+						if (fragment !== null) {
+							this.scrollTo(fragment);
+						}
 					});
 				},
 				(error: any): void => {

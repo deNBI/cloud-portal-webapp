@@ -23,16 +23,26 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	@ViewChild(NgForm, { static: false }) testimonialForm: NgForm;
 
 	@Input() title: string = '';
+	initialTitle: string = '';
 	text: string = '';
+	initialText: string = '';
 	excerpt: string = '';
+	initialExcerpt: string = '';
 	@Input() contributor: string = '';
+	initialContributor: string = '';
 	@Input() institution: string = '';
+	initialInstitution: string = '';
 	@Input() workgroup: string = '';
+	initialWorkgroup: string = '';
 	@Input() simple_vm: boolean = false;
 	@Input() project_application: Application;
 	@Input() testimonialSent: boolean;
+	initialLoadingSuccessful: boolean = false;
 	image_url: string = '';
 	submissionSuccessful: boolean = false;
+	autosaveTimer: ReturnType<typeof setTimeout>;
+	autosaveTimeout: number = 120000;
+	userInteractedWithForm: boolean = false;
 
 	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor(private newsService: NewsService) {
@@ -40,18 +50,92 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.setInitialData();
 		this.subscription = new Subscription();
 		this.getTestimonialData();
 	}
 
+	setInitialData(): void {
+		this.initialTitle = this.title;
+		this.initialText = this.text;
+		this.initialExcerpt = this.excerpt;
+		this.initialContributor = this.contributor;
+		this.initialInstitution = this.institution;
+		this.initialWorkgroup = this.workgroup;
+	}
+
+	checkAutosaveNeed(): void {
+		const initial: string[] = [
+			this.initialTitle,
+			this.initialText,
+			this.initialExcerpt,
+			this.initialContributor,
+			this.initialInstitution,
+			this.initialWorkgroup,
+		];
+		const current: string[] = [this.title, this.text, this.excerpt, this.contributor, this.institution, this.workgroup];
+		let setInteractionValue: boolean = false;
+		for (let i: number = 0; i < initial.length; i += 1) {
+			if (initial[i] !== current[i]) {
+				setInteractionValue = true;
+				break;
+			}
+		}
+		this.userInteractedWithForm = setInteractionValue;
+	}
 	getTestimonialData(): void {
 		this.subscription.add(
 			this.newsService
 				.getTestimonial(this.project_application.project_application_id.toString())
 				.subscribe((result: any): void => {
-					console.log(result);
+					this.adjustFormWithSavedData(result);
+					this.initialLoadingSuccessful = true;
+					if (!this.project_application.project_application_testimonial_submitted) {
+						this.autosaveLoop();
+					}
 				}),
 		);
+	}
+
+	adjustFormWithSavedData(result: any): void {
+		this.title = result['title'];
+		this.text = result['testimonials_text'];
+		this.excerpt = result['excerpt'];
+		this.institution = result['institution'];
+		this.workgroup = result['workgroup'];
+		this.contributor = result['contributor'];
+	}
+
+	stopAutosaveTimer(): void {
+		if (this.autosaveTimer) {
+			clearTimeout(this.autosaveTimer);
+		}
+	}
+
+	autosaveLoop(timeout: number = this.autosaveTimeout): void {
+		this.stopAutosaveTimer();
+		this.autosaveTimer = setTimeout((): void => {
+			if (this.userInteractedWithForm) {
+				this.subscription.add(
+					this.newsService
+						.autoSaveTestimonialDraft(
+							this.title,
+							this.text,
+							this.excerpt,
+							this.contributor,
+							this.institution,
+							this.workgroup,
+							this.simple_vm,
+							this.project_application.project_application_id.toString(),
+						)
+						.subscribe((result: any): void => {
+							console.log(result);
+							// notify user on autosave?
+						}),
+				);
+			}
+			this.autosaveLoop();
+		}, timeout);
 	}
 
 	printFile(event): void {
@@ -62,7 +146,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.subscription.add(
 			this.newsService
 				.sendTestimonialDraft(
-					this.title,
+					`${this.title} FINAL`,
 					this.text,
 					this.excerpt,
 					this.contributor,
@@ -74,29 +158,9 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 				)
 				.subscribe((result: any): any => {
 					this.submissionSuccessful = result['created'];
+					this.project_application.project_application_testimonial_submitted = true;
+					this.stopAutosaveTimer();
 					this.testimonialModal.show();
-				}),
-		);
-	}
-
-	autosaveTestimonial(): void {
-		this.testimonialSent = false;
-		this.subscription.add(
-			this.newsService
-				.autoSaveTestimonialDraft(
-					`${this.title}`,
-					this.text,
-					this.excerpt,
-					this.contributor,
-					this.institution,
-					this.workgroup,
-					this.simple_vm,
-					this.project_application.project_application_id.toString(),
-				)
-				.subscribe((result: any): void => {
-					console.log('AUTOSAVE');
-					console.log(result);
-					// adjust so toast or something like that get's shown
 				}),
 		);
 	}

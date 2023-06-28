@@ -94,8 +94,6 @@ export class NewsService {
 		});
 	}
 
-	// TODO: further implementation of autosave
-
 	sendTestimonialDraft(
 		title: string,
 		text: string,
@@ -146,7 +144,7 @@ export class NewsService {
 		};
 
 		return this.http.post<any>(
-			`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/autoSave/`,
+			`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/autosave/`,
 			testimonialData,
 			{
 				withCredentials: true,
