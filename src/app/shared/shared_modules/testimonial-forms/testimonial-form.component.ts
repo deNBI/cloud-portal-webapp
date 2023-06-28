@@ -43,6 +43,9 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	autosaveTimer: ReturnType<typeof setTimeout>;
 	autosaveTimeout: number = 120000;
 	userInteractedWithForm: boolean = false;
+	autoSaveInProgress: boolean = false;
+	showAutosaveSucess: boolean = false;
+	autosaveSuccessTimer: ReturnType<typeof setTimeout>;
 
 	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor(private newsService: NewsService) {
@@ -81,7 +84,11 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 				break;
 			}
 		}
+		console.log(this.autosaveTimer);
 		this.userInteractedWithForm = setInteractionValue;
+		if (!this.autosaveTimer) {
+			this.autosaveLoop();
+		}
 	}
 	getTestimonialData(): void {
 		this.subscription.add(
@@ -112,10 +119,25 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	stopAutosaveSuccessTimer(): void {
+		if (this.autosaveSuccessTimer) {
+			clearTimeout(this.autosaveSuccessTimer);
+		}
+	}
+
+	startDisappearTimer(): void {
+		this.autosaveSuccessTimer = setTimeout((): void => {
+			this.showAutosaveSucess = false;
+		}, 5000);
+	}
+
 	autosaveLoop(timeout: number = this.autosaveTimeout): void {
 		this.stopAutosaveTimer();
 		this.autosaveTimer = setTimeout((): void => {
 			if (this.userInteractedWithForm) {
+				this.autoSaveInProgress = true;
+				this.showAutosaveSucess = false;
+				this.stopAutosaveSuccessTimer();
 				this.subscription.add(
 					this.newsService
 						.autoSaveTestimonialDraft(
@@ -128,9 +150,10 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 							this.simple_vm,
 							this.project_application.project_application_id.toString(),
 						)
-						.subscribe((result: any): void => {
-							console.log(result);
-							// notify user on autosave?
+						.subscribe((): void => {
+							this.autoSaveInProgress = false;
+							this.showAutosaveSucess = true;
+							this.startDisappearTimer();
 						}),
 				);
 			}

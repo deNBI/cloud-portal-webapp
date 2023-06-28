@@ -272,6 +272,19 @@
 				<!-- check why this is not working properly so far?? -->
 			</div>
 		</div>
+		<div class="col-md-auto align-content-end mt-2" *ngIf="autoSaveInProgress">
+			<span class="badge badge-dark">
+				<div class="spinner-border spinner-border-sm text-success" role="status">
+					<span class="sr-only">Autosaving...</span>
+				</div>
+				<span class="p-2 mb-2">Autosaving ...</span>
+			</span>
+		</div>
+		<div class="col-md-auto align-content-end mt-2" *ngIf="showAutosaveSucess">
+			<span class="badge badge-success">
+				<span class="p-2 mb-2">Autosaving successfull</span>
+			</span>
+		</div>
 	</div>
 </div>
 
