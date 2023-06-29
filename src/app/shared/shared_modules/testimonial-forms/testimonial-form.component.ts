@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { NgForm } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { NewsService } from '../../../api-connector/news.service';
 import { Application } from '../../../applications/application.model/application.model';
@@ -20,7 +20,9 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	TESTIMONIAL_PAGE_LINK: string = TESTIMONIAL_PAGE_LINK;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	@ViewChild('testimonialModal') testimonialModal: ModalDirective;
-	@ViewChild(NgForm, { static: false }) testimonialForm: NgForm;
+
+	testimonialFormGroup: UntypedFormGroup;
+	formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
 	@Input() title: string = '';
 	initialTitle: string = '';
@@ -41,11 +43,12 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	image_url: string = '';
 	submissionSuccessful: boolean = false;
 	autosaveTimer: ReturnType<typeof setTimeout>;
-	autosaveTimeout: number = 120000;
+	autosaveTimeout: number = 60000;
 	userInteractedWithForm: boolean = false;
 	autoSaveInProgress: boolean = false;
 	showAutosaveSucess: boolean = false;
 	autosaveSuccessTimer: ReturnType<typeof setTimeout>;
+	file: File = null;
 
 	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor(private newsService: NewsService) {
@@ -56,6 +59,45 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.setInitialData();
 		this.subscription = new Subscription();
 		this.getTestimonialData();
+	}
+
+	createFormGroup(): void {
+		this.testimonialFormGroup = this.formBuilder.group({
+			testimonial_title: [this.title, Validators.compose([Validators.required, Validators.minLength(5)])],
+			testimonial_text: [this.text, Validators.compose([Validators.required, Validators.minLength(200)])],
+			testimonial_excerpt: [
+				this.excerpt,
+				Validators.compose([Validators.required, Validators.minLength(50), Validators.maxLength(1000)]),
+			],
+			testimonial_contributor: [this.contributor, Validators.required],
+			testimonial_institution: [this.institution, Validators.required],
+			testimonial_workgroup: [this.workgroup, Validators.required],
+		});
+		this.listenToChanges();
+	}
+
+	listenToChanges(): void {
+		this.testimonialFormGroup.get('testimonial_title').valueChanges.subscribe((val: string): void => {
+			this.title = val;
+		});
+		this.testimonialFormGroup.get('testimonial_text').valueChanges.subscribe((val: string): void => {
+			this.text = val;
+		});
+		this.testimonialFormGroup.get('testimonial_excerpt').valueChanges.subscribe((val: string): void => {
+			this.excerpt = val;
+		});
+		this.testimonialFormGroup.get('testimonial_contributor').valueChanges.subscribe((val: string): void => {
+			this.contributor = val;
+		});
+		this.testimonialFormGroup.get('testimonial_institution').valueChanges.subscribe((val: string): void => {
+			this.institution = val;
+		});
+		this.testimonialFormGroup.get('testimonial_workgroup').valueChanges.subscribe((val: string): void => {
+			this.workgroup = val;
+		});
+		this.testimonialFormGroup.valueChanges.subscribe((): void => {
+			this.checkAutosaveNeed();
+		});
 	}
 
 	setInitialData(): void {
@@ -84,24 +126,37 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 				break;
 			}
 		}
-		console.log(this.autosaveTimer);
 		this.userInteractedWithForm = setInteractionValue;
+		if (this.userInteractedWithForm) {
+			this.setInitialData();
+		}
 		if (!this.autosaveTimer) {
 			this.autosaveLoop();
 		}
 	}
 	getTestimonialData(): void {
-		this.subscription.add(
-			this.newsService
-				.getTestimonial(this.project_application.project_application_id.toString())
-				.subscribe((result: any): void => {
-					this.adjustFormWithSavedData(result);
-					this.initialLoadingSuccessful = true;
-					if (!this.project_application.project_application_testimonial_submitted) {
-						this.autosaveLoop();
-					}
-				}),
-		);
+		if (
+			this.project_application.project_application_testimonial_draft_id
+			&& !this.project_application.project_application_testimonial_submitted
+		) {
+			this.subscription.add(
+				this.newsService.getTestimonial(this.project_application.project_application_id.toString()).subscribe(
+					(result: any): void => {
+						this.adjustFormWithSavedData(result);
+						this.createFormGroup();
+						this.initialLoadingSuccessful = true;
+						if (!this.project_application.project_application_testimonial_submitted) {
+							this.autosaveLoop();
+						}
+					},
+					(): void => {
+						this.createFormGroup();
+					},
+				),
+			);
+		} else {
+			this.createFormGroup();
+		}
 	}
 
 	adjustFormWithSavedData(result: any): void {
@@ -152,6 +207,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 						)
 						.subscribe((): void => {
 							this.autoSaveInProgress = false;
+							this.userInteractedWithForm = false;
 							this.showAutosaveSucess = true;
 							this.startDisappearTimer();
 						}),
@@ -161,15 +217,19 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		}, timeout);
 	}
 
-	printFile(event): void {
-		console.log(event);
+	adjustFile(event): void {
+		const accepted: string[] = ['image/png', 'image/jpeg'];
+		if (accepted.includes((event.target.files[0] as File).type)) {
+			this.file = event.target.files[0];
+		}
 	}
+
 	sendTestimonial(): void {
 		this.testimonialSent = true;
 		this.subscription.add(
 			this.newsService
 				.sendTestimonialDraft(
-					`${this.title} FINAL`,
+					`${this.title} FINAL DRAFT`,
 					this.text,
 					this.excerpt,
 					this.contributor,
@@ -178,6 +238,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 					this.simple_vm,
 					this.image_url,
 					this.project_application.project_application_id.toString(),
+					this.file,
 				)
 				.subscribe((result: any): any => {
 					this.submissionSuccessful = result['created'];

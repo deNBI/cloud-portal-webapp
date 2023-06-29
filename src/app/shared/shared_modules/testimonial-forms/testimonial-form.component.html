@@ -23,8 +23,8 @@
 		</div>
 	</div>
 </div>
-<div class="card-body" *ngIf="!testimonialSent">
-	<form id="testimonialForm" #testimonialForm="ngForm" class="form-horizontal">
+<div class="card-body" *ngIf="!testimonialSent && testimonialFormGroup">
+	<form id="testimonialForm" [formGroup]="testimonialFormGroup" class="form-horizontal">
 		<div class="form-group row">
 			<div class="col-md-4">
 				<label class="col-md-4 form-control-label">
@@ -42,14 +42,12 @@
 						name="testimonial_title"
 						required
 						id="testimonial_title"
+						formControlName="testimonial_title"
 						placeholder="NA"
 						type="text"
-						[(ngModel)]="this.title"
 						[ngClass]="{
-							'is-invalid':
-								testimonialForm.controls.testimonial_title?.invalid ||
-								(testimonialForm.controls.testimonial_title?.dirty && this.title.length < 5),
-							'is-valid': testimonialForm.controls.testimonial_title?.valid
+							'is-invalid': testimonialFormGroup.controls.testimonial_title?.invalid,
+							'is-valid': testimonialFormGroup.controls.testimonial_title?.valid
 						}"
 					/>
 				</div>
@@ -70,16 +68,13 @@
 					<textarea
 						required
 						[ngClass]="{
-							'is-invalid':
-								testimonialForm.controls.testimonial_text?.invalid ||
-								(testimonialForm.controls.testimonial_text?.dirty && this.text.length < 250),
-							'is-valid': testimonialForm.controls.testimonial_text?.valid
+							'is-invalid': testimonialFormGroup.controls.testimonial_text?.invalid,
+							'is-valid': testimonialFormGroup.controls.testimonial_text?.valid
 						}"
 						class="form-control"
 						name="testimonial_text"
+						formControlName="testimonial_text"
 						id="testimonial_text"
-						[(ngModel)]="this.text"
-						(ngModelChange)="checkAutosaveNeed()"
 					></textarea>
 				</div>
 			</div>
@@ -100,14 +95,12 @@
 					<textarea
 						class="form-control"
 						name="testimonial_excerpt"
+						formControlName="testimonial_excerpt"
 						id="testimonial_excerpt"
 						required
-						[(ngModel)]="this.excerpt"
 						[ngClass]="{
-							'is-invalid':
-								testimonialForm.controls.testimonial_excerpt?.invalid ||
-								(testimonialForm.controls.testimonial_excerpt?.dirty && this.excerpt.length < 50),
-							'is-valid': testimonialForm.controls.testimonial_excerpt?.valid
+							'is-invalid': testimonialFormGroup.controls.testimonial_excerpt?.invalid,
+							'is-valid': testimonialFormGroup.controls.testimonial_excerpt?.valid
 						}"
 					></textarea>
 				</div>
@@ -134,17 +127,14 @@
 					<input
 						class="form-control"
 						name="testimonial_contributor"
+						formControlName="testimonial_contributor"
 						id="testimonial_contributor"
 						placeholder="NA"
 						type="text"
 						required
-						[(ngModel)]="this.contributor"
 						[ngClass]="{
-							'is-invalid':
-								testimonialForm.controls.testimonial_contributor?.invalid ||
-								testimonialForm.controls.testimonial_contributor?.dirty ||
-								this.contributor.length < 4,
-							'is-valid': testimonialForm.controls.testimonial_contributor?.valid
+							'is-invalid': testimonialFormGroup.controls.testimonial_contributor?.invalid,
+							'is-valid': testimonialFormGroup.controls.testimonial_contributor?.valid
 						}"
 					/>
 				</div>
@@ -171,16 +161,14 @@
 					<input
 						class="form-control"
 						name="testimonial_institution"
+						formControlName="testimonial_institution"
 						id="testimonial_institution"
 						placeholder="NA"
 						type="text"
 						required
-						[(ngModel)]="this.institution"
 						[ngClass]="{
-							'is-invalid':
-								testimonialForm.controls.testimonial_institution?.invalid ||
-								(testimonialForm.controls.testimonial_institution?.dirty && this.institution.length < 4),
-							'is-valid': testimonialForm.controls.testimonial_institution?.valid
+							'is-invalid': testimonialFormGroup.controls.testimonial_instituton?.invalid,
+							'is-valid': testimonialFormGroup.controls.testimonial_institution?.valid
 						}"
 					/>
 				</div>
@@ -202,16 +190,14 @@
 					<input
 						class="form-control"
 						name="testimonial_workgroup"
+						formControlName="testimonial_workgroup"
 						id="testimonial_workgroup"
 						placeholder="NA"
 						type="text"
 						required
-						[(ngModel)]="this.workgroup"
 						[ngClass]="{
-							'is-invalid':
-								testimonialForm.controls.testimonial_workgroup?.invalid ||
-								(testimonialForm.controls.testimonial_workgroup?.dirty && workgroup.length < 4),
-							'is-valid': testimonialForm.controls.testimonial_workgroup?.valid
+							'is-invalid': testimonialFormGroup.controls.testimonial_workgroup?.invalid,
+							'is-valid': testimonialFormGroup.controls.testimonial_workgroup?.valid
 						}"
 					/>
 				</div>
@@ -239,11 +225,12 @@
 						<input
 							type="file"
 							class="custom-file-input"
-							(change)="printFile($event.target)"
+							(change)="adjustFile($event)"
+							accept="image/png, image/jpeg"
 							lang="en"
 							id="testimonialPhotoInput"
 						/>
-						<label class="custom-file-label" for="testimonialPhotoInput">Choose Image</label>
+						<label class="custom-file-label" for="testimonialPhotoInput">{{ file ? file.name : 'Choose Image' }}</label>
 					</div>
 				</div>
 			</div>
@@ -258,18 +245,41 @@
 		>.
 	</div>
 </div>
+<div class="card-body" *ngIf="(!testimonialSent && testimonialFormGroup?.invalid) || !this.file">
+	<hr />
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_title'].invalid">
+			Please provide a title.
+		</li>
+		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_text'].invalid">
+			Please provide a longer text.
+		</li>
+		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_excerpt'].invalid">
+			Please provide an excerpt, which is at least 50 characters long but does not exceed 1000 characters.
+		</li>
+		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_contributor'].invalid">
+			Please provide a contributor.
+		</li>
+		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_institution'].invalid">
+			Please provide an institution.
+		</li>
+		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_workgroup'].invalid">
+			Please provide a workgroup.
+		</li>
+		<li class="list-group-item" *ngIf="!this.file">Please provide a valid image file.</li>
+	</ul>
+</div>
 <div class="card-footer">
 	<div class="row">
 		<div class="col-md-auto">
 			<div class="btn-group">
 				<button
 					class="btn btn-success"
-					[disabled]="testimonialSent || testimonialForm?.invalid"
+					[disabled]="testimonialSent || testimonialFormGroup?.invalid || !this.file"
 					(click)="sendTestimonial()"
 				>
-					Send
+					Submit testimonial
 				</button>
-				<!-- check why this is not working properly so far?? -->
 			</div>
 		</div>
 		<div class="col-md-auto align-content-end mt-2" *ngIf="autoSaveInProgress">

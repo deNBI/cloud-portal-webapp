@@ -94,6 +94,12 @@ export class NewsService {
 		});
 	}
 
+	uploadImageTest(formData: FormData): Observable<any> {
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/imagetest/`, formData, {
+			withCredentials: true,
+		});
+	}
+
 	sendTestimonialDraft(
 		title: string,
 		text: string,
@@ -104,20 +110,21 @@ export class NewsService {
 		simple_vm: boolean,
 		image_url: string,
 		project_application_id: string,
+		file: File,
 	): Observable<any> {
-		const testimonialData: any = {
-			title,
-			text,
-			excerpt,
-			contributor,
-			institution,
-			workgroup,
-			simple_vm,
-			image_url,
-			project_application_id,
-		};
+		const formData: FormData = new FormData();
+		formData.append('file', file);
+		formData.append('title', title);
+		formData.append('text', text);
+		formData.append('excerpt', excerpt);
+		formData.append('contributor', contributor);
+		formData.append('institution', institution);
+		formData.append('workgroup', workgroup);
+		formData.append('simple_vm', JSON.stringify(simple_vm));
+		formData.append('project_application_id', project_application_id);
+		console.log(formData);
 
-		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, testimonialData, {
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, formData, {
 			withCredentials: true,
 		});
 	}
