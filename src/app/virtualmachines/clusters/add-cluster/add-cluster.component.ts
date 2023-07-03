@@ -377,17 +377,17 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	}
 
 	startCluster(): void {
-		const re: RegExp = /\+/gi;
+		// const re: RegExp = /\+/gi;
 		this.cluster_error = null;
 		this.cluster_id = null;
 
-		const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
+		// const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
 		const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
 
 		this.subscription.add(
 			this.virtualmachineservice
 				.startCluster(
-					masterFlavor,
+					this.selectedMasterFlavor.name,
 					this.selectedMasterImage,
 					this.selectedWorkerBatches,
 					this.selectedProject[1],
