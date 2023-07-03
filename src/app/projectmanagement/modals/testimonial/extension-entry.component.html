@@ -1,6 +1,6 @@
-<div *ngIf="doiQuestionModal">
+<div>
 	<div class="modal-header">
-		<h4 class="modal-title">Publications</h4>
+		<h4 class="modal-title">Experiences and publications</h4>
 		<button
 			type="button"
 			class="close"
@@ -13,49 +13,21 @@
 		</button>
 	</div>
 	<div class="modal-body">
-		<div>
-			<p>
-				<strong
-					>Do you have any new publications that were made during your work with the de.NBI Cloud or in which the de.NBI
-					Cloud is mentioned?</strong
-				>
-			</p>
+		<div class="text-black-50 p-4">
+			We are very pleased that the de.NBI Cloud meets with your expectations and that you would like to extend your
+			project. As an academic cloud that provides its resources free of charge, we depend on our users.
+			<hr />
+			In order to be able to continue to offer these services free of charge in the future, it is essential for us, for
+			example, to publish publications which resulted from the work in the de.NBI Cloud or are in any way connected to
+			it. Please enter the DOIs of those publications in the form below.
+			<hr />
+			We also want to promote the use of the cloud with positive experiences from users and the community in order to
+			make this service available to many more researchers. For this reason, we rely on testimonials from our users,
+			which we can use for this purpose. To submit a testimonial, please use the form below on this project overview
+			page. You can find an overview of already published testimonials <a href="{{ TESTIMONIAL_PAGE_LINK }}">here. </a>
+			<hr />
+			We really appreciate your help!
 		</div>
-		<div class="modal-footer">
-			<div class="row" style="margin: auto">
-				<div class="col-6">
-					<button id="new_dois_btn" class="btn btn-success" type="button" (click)="setDoiModalState()">Yes</button>
-				</div>
-				<div class="col-6">
-					<button
-						id="no_new_dois_btn"
-						class="btn btn-primary"
-						type="reset"
-						data-test-id="decline_publication_button"
-						(click)="bsModalRef.hide()"
-					>
-						No
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- /.modal-content -->
-</div>
-
-<div *ngIf="doiModal">
-	<div class="modal-header">
-		<h4 class="modal-title">Digital object identifier (DOI)</h4>
-		<button
-			type="button"
-			class="close"
-			style="cursor: pointer"
-			(click)="bsModalRef.hide()"
-			data-dismiss="modal"
-			aria-label="Close"
-		>
-			<span aria-hidden="true">&times;</span>
-		</button>
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-primary">
@@ -118,18 +90,21 @@
 				</tbody>
 			</table>
 		</div>
-
-		<div class="modal-footer" style="text-align: center">
-			<button
-				id="doi_continue_btn"
-				class="btn btn-success col-md-6"
-				type="button"
-				style="margin: auto"
-				(click)="bsModalRef.hide()"
-			>
-				Continue
-			</button>
+	</div>
+	<div class="modal-footer">
+		<div class="row" style="margin: auto">
+			<div class="col-md-auto mx-auto">
+				<button
+					id="close_testimonial_information_button"
+					class="btn btn-primary"
+					type="reset"
+					data-test-id="close_testimonial_information_button"
+					(click)="bsModalRef.hide()"
+				>
+					Continue
+				</button>
+			</div>
 		</div>
 	</div>
-	<!-- /.modal-content -->L
+	<!-- /.modal-content -->
 </div>

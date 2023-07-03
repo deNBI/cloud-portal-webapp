@@ -47,8 +47,10 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	userInteractedWithForm: boolean = false;
 	autoSaveInProgress: boolean = false;
 	showAutosaveSucess: boolean = false;
-	autosaveSuccessTimer: ReturnType<typeof setTimeout>;
+	showAutosaveFail: boolean = false;
+	autosaveStatusTimer: ReturnType<typeof setTimeout>;
 	file: File = null;
+	hideTestimonialForm: boolean = false;
 
 	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor(private newsService: NewsService) {
@@ -149,8 +151,12 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 							this.autosaveLoop();
 						}
 					},
-					(): void => {
-						this.createFormGroup();
+					(error: any): void => {
+						if (error.error['other_user']) {
+							this.hideTestimonialForm = true;
+						} else {
+							this.createFormGroup();
+						}
 					},
 				),
 			);
@@ -174,15 +180,16 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	stopAutosaveSuccessTimer(): void {
-		if (this.autosaveSuccessTimer) {
-			clearTimeout(this.autosaveSuccessTimer);
+	stopAutosaveStatusTimer(): void {
+		if (this.autosaveStatusTimer) {
+			clearTimeout(this.autosaveStatusTimer);
 		}
 	}
 
 	startDisappearTimer(): void {
-		this.autosaveSuccessTimer = setTimeout((): void => {
+		this.autosaveStatusTimer = setTimeout((): void => {
 			this.showAutosaveSucess = false;
+			this.showAutosaveFail = false;
 		}, 5000);
 	}
 
@@ -192,7 +199,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 			if (this.userInteractedWithForm) {
 				this.autoSaveInProgress = true;
 				this.showAutosaveSucess = false;
-				this.stopAutosaveSuccessTimer();
+				this.stopAutosaveStatusTimer();
 				this.subscription.add(
 					this.newsService
 						.autoSaveTestimonialDraft(
@@ -205,12 +212,25 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 							this.simple_vm,
 							this.project_application.project_application_id.toString(),
 						)
-						.subscribe((): void => {
-							this.autoSaveInProgress = false;
-							this.userInteractedWithForm = false;
-							this.showAutosaveSucess = true;
-							this.startDisappearTimer();
-						}),
+						.subscribe(
+							(): void => {
+								this.autoSaveInProgress = false;
+								this.userInteractedWithForm = false;
+								this.showAutosaveSucess = true;
+								this.startDisappearTimer();
+							},
+							(error: any): void => {
+								this.autoSaveInProgress = false;
+								this.userInteractedWithForm = false;
+								if (error.error['other_user']) {
+									this.hideTestimonialForm = true;
+								} else {
+									this.showAutosaveFail = true;
+									this.startDisappearTimer();
+									this.stopAutosaveTimer();
+								}
+							},
+						),
 				);
 			}
 			this.autosaveLoop();

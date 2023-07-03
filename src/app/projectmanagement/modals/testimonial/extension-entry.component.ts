@@ -1,19 +1,20 @@
-import {
-	Component, EventEmitter, OnDestroy,
-} from '@angular/core';
+import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
-import { WIKI_PUBLICATIONS } from '../../../../links/links';
+import { TESTIMONIAL_PAGE_LINK, WIKI_PUBLICATIONS } from '../../../../links/links';
 import { Doi } from '../../../applications/doi/doi';
 import { GroupService } from '../../../api-connector/group.service';
 
 @Component({
-	selector: 'app-doi',
-	templateUrl: './doi.component.html',
-	styleUrls: ['./doi.component.scss'],
+	selector: 'app-extension-entry',
+	templateUrl: './extension-entry.component.html',
+	styleUrls: ['./extension-entry.component.scss'],
 	providers: [GroupService],
 })
-export class DoiComponent implements OnDestroy {
+export class ExtensionEntryComponent implements OnDestroy {
+	private subscription: Subscription = new Subscription();
+	public event: EventEmitter<any> = new EventEmitter();
+	TESTIMONIAL_PAGE_LINK = TESTIMONIAL_PAGE_LINK;
 
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 
@@ -23,22 +24,13 @@ export class DoiComponent implements OnDestroy {
 	application_id: string | number;
 	disableInput: boolean = false;
 
-	doiQuestionModal: boolean = true;
-	doiModal: boolean = false;
-
-	private subscription: Subscription = new Subscription();
-	public event: EventEmitter<any> = new EventEmitter();
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private groupService: GroupService,
-	) {
+	constructor(public bsModalRef: BsModalRef, private groupService: GroupService) {
 		// eslint-disable-next-line no-empty-function
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
-		this.event.emit({ reloadDoi: false });
+		this.event.emit({ reloadDoi: false, showExtension: true });
 	}
 
 	isNewDoi(): boolean {
@@ -91,10 +83,4 @@ export class DoiComponent implements OnDestroy {
 			}),
 		);
 	}
-
-	setDoiModalState(): void {
-		this.doiQuestionModal = false;
-		this.doiModal = true;
-	}
-
 }

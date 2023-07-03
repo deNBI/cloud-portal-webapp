@@ -16,14 +16,14 @@
 				</p>
 				<hr />
 				<p>
-					The information on this form is saved in regular cycles. You can therefore return to this form at any time and
-					continue entering your information according to the last status.
+					<strong>Note</strong>: The information entered in this form will be publicly available after it was
+					successfully reviewed.
 				</p>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="card-body" *ngIf="!testimonialSent && testimonialFormGroup">
+<div class="card-body" *ngIf="!testimonialSent && testimonialFormGroup && !this.hideTestimonialForm">
 	<form id="testimonialForm" [formGroup]="testimonialFormGroup" class="form-horizontal">
 		<div class="form-group row">
 			<div class="col-md-4">
@@ -237,6 +237,14 @@
 		</div>
 	</form>
 </div>
+<div class="card-body" *ngIf="hideTestimonialForm">
+	<div class="alert alert-info">
+		Another user of your project is making changes to this form. To avoid inconsistencies, several people cannot work on
+		this form at the same time. If the user does not make any further changes to the entries, this form is released
+		again.
+		<strong>You may try again in a few minutes - reload the page for this.</strong>
+	</div>
+</div>
 <div class="card-body" *ngIf="testimonialSent">
 	<div class="alert alert-info">
 		As a testimonial has already been submitted for your project, we ask for your understanding that you cannot submit
@@ -245,7 +253,10 @@
 		>.
 	</div>
 </div>
-<div class="card-body" *ngIf="(!testimonialSent && testimonialFormGroup?.invalid) || !this.file">
+<div
+	class="card-body"
+	*ngIf="!testimonialSent && !this.hideTestimonialForm && (testimonialFormGroup?.invalid || !this.file)"
+>
 	<hr />
 	<ul class="list-group list-group-flush">
 		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_title'].invalid">
