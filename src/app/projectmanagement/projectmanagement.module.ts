@@ -20,8 +20,7 @@ import { ApplicationProgressComponent } from './application-progress/application
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
-import { DoiComponent } from './modals/doi/doi.component';
-import { TestimonialModalComponent } from './modals/testimonial/testimonial-modal.component';
+import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component';
 import { ResultComponent } from './modals/result/result.component';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 
@@ -54,10 +53,9 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		LifetimeRequestComponent,
 		CreditsRequestComponent,
 		ModificationRequestComponent,
-		DoiComponent,
 		ResultComponent,
-		TestimonialModalComponent,
+		ExtensionEntryComponent,
 	],
-	exports: [ProjectOsDetailsComponent, TestimonialModalComponent],
+	exports: [ProjectOsDetailsComponent, ExtensionEntryComponent],
 })
 export class ProjectManagementModule {}

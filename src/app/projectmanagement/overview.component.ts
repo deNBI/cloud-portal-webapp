@@ -46,9 +46,8 @@ import { Application_States, ExtensionRequestType } from '../shared/shared_modul
 import { ProjectMember } from './project_member.model';
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
-import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
-import { TestimonialModalComponent } from './modals/testimonial/testimonial-modal.component';
+import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component';
 
 /**
  * Projectoverview component.
@@ -248,6 +247,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.getUserProjectApplications();
 
 					this.isLoaded = true;
+
+					this.activatedRoute.fragment.subscribe(fragment => {
+						if (fragment !== null) {
+							this.scrollTo(fragment);
+						}
+					});
 				},
 				(error: any): void => {
 					this.isLoaded = false;
@@ -260,6 +265,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				},
 			),
 		);
+	}
+
+	scrollTo(element: any): void {
+		setTimeout(() => {
+			(document.getElementById(element) as HTMLElement).scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+				inline: 'nearest',
+			});
+		}, 1500);
 	}
 
 	getUserinfo(): void {
@@ -313,31 +328,19 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
 	}
 
-	showDoiModal(): void {
+	showExtensionInformationModal(): void {
 		const initialState = {
 			dois: this.dois,
 			application_id: this.application_id,
 		};
-
-		this.bsModalRef = this.modalService.show(DoiComponent, { initialState });
-		this.bsModalRef.setClass('modal-lg');
+		this.bsModalRef = this.modalService.show(ExtensionEntryComponent, { initialState, class: 'modal-lg' });
 		this.subscription.add(
-			this.bsModalRef.content.event.subscribe((result: any) => {
-				if ('reloadDoi' in result && result['reloadDoi']) {
+			this.bsModalRef.content.event.subscribe((event: any): void => {
+				if (event.reloadDoi) {
 					this.getDois();
-				} else if ('reloadDoi' in result && !result['reloadDoi']) {
+				} else if (event.showExtension) {
 					this.showLifetimeExtensionModal();
 				}
-			}),
-		);
-	}
-
-	showTestimonialModal(): void {
-		this.bsModalRef = this.modalService.show(TestimonialModalComponent, {});
-		this.bsModalRef.setClass('modal-lg');
-		this.subscription.add(
-			this.bsModalRef.content.event.subscribe((): void => {
-				this.showDoiModal();
 			}),
 		);
 	}
