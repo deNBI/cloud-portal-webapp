@@ -2,7 +2,7 @@ import {
 	Component, OnInit, OnDestroy, Input,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NEW_SVM_PORTAL_LINK, WIKI_SVM_MIGRATION_LINK } from '../../../../links/links';
+import { NEW_SVM_KEYCLOAK_LOGIN, WIKI_SVM_MIGRATION_LINK } from '../../../../links/links';
 
 @Component({
 	selector: 'app-migration-information',
@@ -14,7 +14,7 @@ export class MigrationInformationComponent implements OnInit, OnDestroy {
 
 	WIKI_SVM_MIGRATION_LINK: string = WIKI_SVM_MIGRATION_LINK;
 
-	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK;
+	NEW_SVM_KEYCLOAK_LOGIN: string = NEW_SVM_KEYCLOAK_LOGIN;
 
 	@Input() isCreationPage: boolean = false;
 	@Input() affectedProjects: string[] = [];

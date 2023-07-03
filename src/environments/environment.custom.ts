@@ -17,5 +17,6 @@ export const environment: any = {
 	login: `https://${API_HOST}/portal/api/v0/loggedUser/`,
 	webapp: `https://${API_HOST}/portal/webapp/`,
 	new_svm_webapp: NEW_SIMPLE_VM,
+	new_svm_keycloak_login: `${NEW_SIMPLE_VM}/accounts/keycloak/login/?process=login`,
 	matomoServer: '//cloud.denbi.de/matomo/',
 };
