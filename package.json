@@ -15,7 +15,9 @@
     "compodoc": "./node_modules/.bin/compodoc -p src/tsconfig.app.json",
     "prepare": "husky install"
   },
-  "resolutions": {},
+  "resolutions": {
+    "optionator": "^0.9.3"
+  },
   "private": true,
   "dependencies": {
     "@angular-eslint/eslint-plugin": "^15.2.0",
