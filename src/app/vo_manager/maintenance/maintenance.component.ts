@@ -188,6 +188,7 @@ export class MaintenanceComponent implements OnInit {
 					notificationModalMessage: 'The new maintenance got successfully added to the calender!',
 				};
 				this.modalService.show(NotificationModalComponent, { initialState });
+				this.resetFormValues();
 			},
 			error: () => {
 				const initialState = {
@@ -196,8 +197,19 @@ export class MaintenanceComponent implements OnInit {
 					notificationModalMessage: 'An error occurred while adding the timeframe to the calender!',
 				};
 				this.modalService.show(NotificationModalComponent, { initialState });
+				this.resetFormValues();
 			},
 		});
+	}
+
+	resetFormValues(): void {
+		this.newMaintenanceTimeFrame.start_time = new Date();
+		this.newMaintenanceTimeFrame.end_time = new Date();
+		this.newMaintenanceTimeFrame.significant = false;
+		this.newMaintenanceTimeFrame.name = '';
+		this.newMaintenanceTimeFrame.message = '';
+		this.newMaintenanceTimeFrame.id = '';
+		this.addTimeFrameForm.reset();
 	}
 
 	deleteTimeFrame(timeframe: MaintenanceTimeFrame): void {

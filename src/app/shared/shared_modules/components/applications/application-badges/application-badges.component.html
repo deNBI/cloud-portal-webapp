@@ -60,6 +60,15 @@
 </span>
 <span
 	style="margin-left: 12px"
+	class="badge badge-info"
+	data-toggle="tooltip"
+	data-placement="auto"
+	title="This application is used for a workshop"
+	*ngIf="application?.project_application_workshop"
+	><span style="font-size: 17px"> <i class="fa fa-chalkboard-teacher"></i></span>
+</span>
+<span
+	style="margin-left: 12px"
 	class="badge badge-danger"
 	data-toggle="tooltip"
 	data-placement="auto"

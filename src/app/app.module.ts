@@ -17,6 +17,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AlertModule } from 'ngx-bootstrap/alert';
 import { AppComponent } from './app.component';
 
 import { ApiSettings } from './api-connector/api-settings.service';
@@ -67,6 +68,7 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		PipeModuleModule,
 		TimepickerModule.forRoot(),
 		BsDatepickerModule.forRoot(),
+		AlertModule,
 	],
 	declarations: [
 		AppComponent,

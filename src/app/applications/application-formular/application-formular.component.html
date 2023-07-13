@@ -299,9 +299,10 @@
 						<div class="form-group row">
 							<h5 class="col-md-12 form-control-label">Resources</h5>
 						</div>
+
 						<div class="row">
 							<div class="col-md-12">
-								<div class="alert alert-warning" role="alert">
+								<div class="alert alert-primary" role="alert">
 									<span class="fa-stack fa-lg">
 										<i class="fas fa-circle fa-stack-2x"></i>
 										<i class="fas fa-info fa-stack-1x fa-inverse"></i>
@@ -310,16 +311,14 @@
 										>Note: The amount of resources requested here is not definite. You are able to request more
 										resources after the approval of the project.</strong
 									>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<div class="alert alert-primary" role="alert">
+									<hr />
 									Please fill in an appropriate estimation of the resources required for your project.
 									<br /><strong>Please Consider:</strong> In terms of flavors, there may be slight, location-dependent
 									differences in the number of VCPUs and the amount of RAM per VM, depending on the data centre
 									ultimately assigned.
+									<hr />
+									If you are not sure how to enter the resources or need help with the terms, please look
+									<a href="{{ WIKI_CLOUD_TERMS_LINK }}" rel="noopener noreferrer" target="_blank">here.</a>
 								</div>
 							</div>
 						</div>
@@ -394,7 +393,7 @@
 								><strong
 									>Number of storage volumes<i class="fa fa-asterisk" aria-hidden="true"></i>
 									<i
-										data-balloon="The number of storage volumes allowed to create. Each vm is allowed to mount only one storage volume. The sum of the volumes size equals the value provided in the storage limit field"
+										data-balloon="The number of storage volumes allowed to create. Multiple storage volumes can be attached to one VM. The sum of the volumes size equals the value provided in the storage limit field"
 										data-balloon-pos="right"
 										data-balloon-length="large"
 										><i class="icon-question" style="cursor: pointer"></i></i></strong

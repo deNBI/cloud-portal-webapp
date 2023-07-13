@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ProgressModule, ToastModule } from '@coreui/angular';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationBaseClassComponent } from './baseClass/application-base-class.component';
 import { NotificationModalComponent } from '../modal/notification-modal';
@@ -40,6 +40,7 @@ import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 		PipeModuleModule,
 		NgSelectModule,
 		SharedDirectivesModule,
+		ReactiveFormsModule,
 	],
 	declarations: [
 		ApplicationBaseClassComponent,

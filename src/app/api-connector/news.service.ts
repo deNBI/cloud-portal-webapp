@@ -85,6 +85,21 @@ export class NewsService {
 			);
 	}
 
+	getTestimonial(project_application_id: string): Observable<any> {
+		const params: HttpParams = new HttpParams().set('project_application_id', project_application_id);
+
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, {
+			params,
+			withCredentials: true,
+		});
+	}
+
+	uploadImageTest(formData: FormData): Observable<any> {
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/imagetest/`, formData, {
+			withCredentials: true,
+		});
+	}
+
 	sendTestimonialDraft(
 		title: string,
 		text: string,
@@ -95,6 +110,34 @@ export class NewsService {
 		simple_vm: boolean,
 		image_url: string,
 		project_application_id: string,
+		file: File,
+	): Observable<any> {
+		const formData: FormData = new FormData();
+		formData.append('file', file);
+		formData.append('title', title);
+		formData.append('text', text);
+		formData.append('excerpt', excerpt);
+		formData.append('contributor', contributor);
+		formData.append('institution', institution);
+		formData.append('workgroup', workgroup);
+		formData.append('simple_vm', JSON.stringify(simple_vm));
+		formData.append('project_application_id', project_application_id);
+		console.log(formData);
+
+		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, formData, {
+			withCredentials: true,
+		});
+	}
+
+	autoSaveTestimonialDraft(
+		title: string,
+		text: string,
+		excerpt: string,
+		contributor: string,
+		institution: string,
+		workgroup: string,
+		simple_vm: boolean,
+		project_application_id: string,
 	): Observable<any> {
 		const testimonialData: any = {
 			title,
@@ -104,13 +147,16 @@ export class NewsService {
 			institution,
 			workgroup,
 			simple_vm,
-			image_url,
 			project_application_id,
 		};
 
-		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, testimonialData, {
-			withCredentials: true,
-		});
+		return this.http.post<any>(
+			`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/autosave/`,
+			testimonialData,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	private handleError<T>(result?: T) {

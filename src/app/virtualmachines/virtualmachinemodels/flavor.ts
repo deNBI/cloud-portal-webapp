@@ -12,7 +12,7 @@ export class Flavor {
 	rootdisk: number;
 	gpu: number = 0;
 	ephemeral_disk: number = 0;
-	type: FlavorType;
+	type: FlavorType = null;
 	simple_vm: boolean;
 	comment: string;
 	counter: number;

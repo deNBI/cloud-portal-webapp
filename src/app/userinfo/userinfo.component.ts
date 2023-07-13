@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Userinfo } from './userinfo.model';
@@ -35,7 +35,7 @@ export class UserInfoComponent implements OnInit {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	/**
-	 * Information of the logged in User
+	 * Information of the logged-in User
 	 */
 	userInfo: Userinfo;
 
@@ -118,6 +118,8 @@ export class UserInfoComponent implements OnInit {
 	LIFESCIENCE_LINKING_ACCOUNTS: string = LIFESCIENCE_LINKING_ACCOUNTS;
 	LIFESCIENCE_PROFILE_CONSENT: string = LIFESCIENCE_PROFILE_CONSENT;
 
+	confirmEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+
 	constructor(
 		private groupService: GroupService,
 		private userService: UserService,
@@ -131,6 +133,10 @@ export class UserInfoComponent implements OnInit {
 		this.keyService = keyService;
 		this.applicationsService = applicationsService;
 		this.vmService = vmService;
+	}
+
+	emitConfirmation() {
+		this.confirmEventEmitter.emit();
 	}
 
 	requestChangePreferredMailUser(email: string): void {

@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { ClientService } from '../api-connector/client.service';
 import { FacilityService } from '../api-connector/facility.service';
@@ -17,6 +18,7 @@ import { Application_States } from '../shared/shared_modules/baseClass/abstract-
 import { WIKI, WIKI_FAQ, STATUS_LINK } from '../../links/links';
 import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model';
 import { MaintenanceService } from '../api-connector/maintenance.service';
+import { UserInfoComponent } from '../userinfo/userinfo.component';
 
 /**
  * FullLayout component.
@@ -60,7 +62,9 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	maintenanceTimeframes: MaintenanceTimeFrame[] = [];
 	maintenanceTimeframesLoaded: boolean = false;
 	checkMaintenanceTimer: ReturnType<typeof setTimeout>;
-	checkMaintenanceTimeout: number = 300000;
+	checkMaintenanceTimeout: number = 180000;
+	numberOfConfirmableTimeframes: number = 0;
+	confirmedInSession: boolean = false;
 
 	TITLE: string = '';
 
@@ -82,13 +86,20 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		applicationsService: ApplicationsService,
 		private virtualMachineService: VirtualmachineService,
 		private cd: ChangeDetectorRef,
+		private router: Router,
 	) {
 		super(userService, applicationsService, facilityService, cd);
 	}
 
 	componentAdded(component: any): void {
 		this.TITLE = component.title;
-
+		if (component instanceof UserInfoComponent) {
+			const child: UserInfoComponent = component;
+			child.confirmEventEmitter.subscribe(() => {
+				this.confirmedInSession = true;
+			});
+		}
+		this.maintenanceInformationLoop();
 		this.cd.detectChanges();
 	}
 
@@ -199,6 +210,16 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 				this.maintenanceTimeframesLoaded = false;
 			},
 		});
+		this.userService.getUserInfo().subscribe(
+			(login: any): void => {
+				this.maintenanceService.getNumberOfUnconfirmedTimeFrames(login['ElixirId']).subscribe((nxt: any) => {
+					this.numberOfConfirmableTimeframes = nxt['confirmable'];
+				});
+			},
+			() => {
+				console.log('An error occurred');
+			},
+		);
 	}
 
 	getLoginName(): void {
