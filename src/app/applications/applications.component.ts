@@ -738,8 +738,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			project: this.adjustedApplication,
 			adjustment: true,
 		};
-		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
-		this.bsModalRef.setClass('modal-xl');
+
+		this.bsModalRef = this.modalService.show(ModificationRequestComponent, {
+			initialState,
+			class: 'modal-lg',
+		});
 		this.subscribeToBsModalRef();
 		// this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
 	}

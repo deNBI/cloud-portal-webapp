@@ -27,6 +27,7 @@ import {
 	LIFESCIENCE_LINKING_ACCOUNTS,
 	WIKI_LINKING_ACCOUNTS,
 	WIKI_PRINCIPAL_INVESTIGATOR,
+	WIKI_CLOUD_TERMS_LINK,
 } from '../../../links/links';
 import { UserService } from '../../api-connector/user.service';
 import { Userinfo } from '../../userinfo/userinfo.model';
@@ -78,6 +79,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	OPENSTACK_LINK: string = OPENSTACK_LINK;
 	PROJECT_TYPES_LINK: string = PROJECT_TYPES_LINK;
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
+	WIKI_CLOUD_TERMS_LINK: string = WIKI_CLOUD_TERMS_LINK;
 	WIKI_PERSONAL_DATA: string = WIKI_PERSONAL_DATA;
 	GDPR_LINK: string = GDPR_LINK;
 	survey_link_visible: boolean = false;
