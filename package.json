@@ -133,7 +133,8 @@
     "webpack-cli": "5.1.4"
   },
 	"overrides": {
-		"optionator": "^0.9.3"
+		"optionator": "^0.9.3",
+		"vite": "^4.3.9"
 	},
   "lint-staged": {
     "*.{js,jsx,ts}": [
