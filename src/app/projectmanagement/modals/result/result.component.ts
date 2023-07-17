@@ -77,7 +77,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 	submitModificationAdjustment(): void {
 		this.setToResultState();
 		this.subscription.add(
-			this.applicationsService.adjustModification(this.adjustedModification as ApplicationModification).subscribe(
+			this.applicationsService.adjustModification(this.adjustedModification).subscribe(
 				(): void => {
 					this.extensionStatus = 5;
 					this.event.emit({ reload: true });
