@@ -269,7 +269,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	scrollTo(element: any): void {
 		setTimeout(() => {
-			(document.getElementById(element) as HTMLElement).scrollIntoView({
+			document.getElementById(element).scrollIntoView({
 				behavior: 'smooth',
 				block: 'start',
 				inline: 'nearest',
