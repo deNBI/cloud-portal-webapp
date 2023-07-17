@@ -23,5 +23,6 @@ export const environment: any = {
 	login: 'http://localhost:8000/api/v0/loggedUser/',
 	webapp: 'http://localhost:8001/',
 	new_svm_webapp: '',
+
 	matomoServer: '',
 };

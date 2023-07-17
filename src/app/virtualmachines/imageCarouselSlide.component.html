@@ -42,7 +42,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-footer text-muted" *ngIf="image?.min_disk > 0">
+		<div class="card-footer text-muted" *ngIf="image?.min_disk > 0 || image?.slurm_version">
+			<div class="row" *ngIf="image?.slurm_version">
+				<strong>Slurm Version: {{ image?.slurm_version }}</strong>
+			</div>
 			Requirements:
 			<div class="scroll-flavor">
 				<div class="row" *ngIf="image?.min_disk > 0">
