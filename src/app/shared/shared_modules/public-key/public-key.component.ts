@@ -17,7 +17,6 @@ import { BlacklistedResponse } from '../../../api-connector/response-interfaces'
  * Public Key component.
  */
 @Component({
-	// eslint-disable-next-line @angular-eslint/component-selector
 	selector: '[app-public-key]',
 	templateUrl: './public-key.component.html',
 	styleUrls: ['./public-key.component.scss'],

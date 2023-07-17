@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-	ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree,
+	ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -16,7 +16,7 @@ import { setElixirId, setVO } from './shared/globalvar';
  * Guard which checks if the user is member of the VO.
  */
 @Injectable()
-export class MemberGuardService implements CanActivate {
+export class MemberGuardService {
 	constructor(
 		private http: HttpClient,
 		private cookieService: CookieService,
