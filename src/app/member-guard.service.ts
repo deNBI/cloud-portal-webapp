@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {
+	ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree,
+} from '@angular/router';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClient } from '@angular/common/http';
@@ -14,7 +16,7 @@ import { setElixirId, setVO } from './shared/globalvar';
  * Guard which checks if the user is member of the VO.
  */
 @Injectable()
-export class MemberGuardService  {
+export class MemberGuardService {
 	constructor(
 		private http: HttpClient,
 		private cookieService: CookieService,

@@ -9,20 +9,21 @@ import { VoService } from './api-connector/vo.service';
  * App component.
  */
 @Component({
-	// eslint-disable-next-line @angular-eslint/component-selector
 	selector: 'body',
 	templateUrl: 'app.component.html',
 	providers: [VoService],
 })
 export class AppComponent implements AfterViewInit, OnInit {
-
 	notificationModalTitle: string = 'Update available';
-	notificationModalMessage: string = 'A new update is available. Please reload the site to use the new version of the portal.';
+	notificationModalMessage: string =		'A new update is available. Please reload the site to use the new version of the portal.';
 	notificationModalType: string = 'info';
 
 	@ViewChild('notificationModal', { static: true }) modal: ModalDirective;
 
-	constructor(private appRef: ApplicationRef, private angulartics2Matomo: Angulartics2Matomo) {
+	constructor(
+		private appRef: ApplicationRef,
+		private angulartics2Matomo: Angulartics2Matomo,
+	) {
 		/*   if (environment.production) {
 			 const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
 			 const intervalTime = interval(60 * 1000);
@@ -34,7 +35,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 				 })
 			 }))
 		 } */
-
 	}
 
 	reloadSite(): void {
@@ -48,6 +48,5 @@ export class AppComponent implements AfterViewInit, OnInit {
 		// })
 	}
 
-	ngAfterViewInit(): void {
-	}
+	ngAfterViewInit(): void {}
 }

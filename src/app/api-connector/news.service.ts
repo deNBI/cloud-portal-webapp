@@ -164,7 +164,7 @@ export class NewsService {
 			console.error(error); // log to console instead
 
 			// Let the app keep running by returning an empty result.
-			return of(result as T);
+			return of(result);
 		};
 	}
 }

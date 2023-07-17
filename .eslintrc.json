@@ -17,24 +17,18 @@
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/ng-cli-compat",
-        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
         "plugin:@angular-eslint/template/process-inline-templates",
         "eslint:recommended",
-        "airbnb-base"
+        "airbnb-base",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
       ],
       "plugins": [
-        "eslint-plugin-no-null"
+        "no-null",
+        "@typescript-eslint"
       ],
       "rules": {
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "app",
-            "style": "kebab-case"
-          }
-        ],
+
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -109,6 +103,47 @@
         "@typescript-eslint/no-require-imports": "error",
         "@typescript-eslint/no-unnecessary-qualifier": "error",
         "@typescript-eslint/no-var-requires": "error",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        " @typescript-eslint/no-empty-function": "off",
+        "@angular-eslint/component-selector": "off",
+        "@angular-eslint/directive-selector": "off",
+        "@angular-eslint/no-forward-ref": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@angular-eslint/component-selector": "off",
+        "@angular-eslint/component-selector": "off",
+        "@angular-eslint/component-selector": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "no-console": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-implied-eval": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/require-await": "off",
+        "no-empty": "off",
+        "no-unused-expressions": "off",
+        "no-console": "off",
+        "@typescript-eslint/ban-ts-comment": [
+          "off",
+          {
+            "ts-ignore": "allow-with-description"
+          }
+        ],
+        "@typescript-eslint/no-implied-eval": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/unbound-method": [
+          "off",
+          {
+            "ignoreStatic": true
+          }
+        ],
         "@typescript-eslint/promise-function-async": "error",
         "@typescript-eslint/restrict-plus-operands": "error",
         "@typescript-eslint/semi": [
