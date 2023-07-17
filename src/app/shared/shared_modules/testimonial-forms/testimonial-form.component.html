@@ -4,8 +4,18 @@
 		<div class="col-md-auto mx-auto">
 			<div class="alert alert-info">
 				An overview of the testimonials already published can be found
-				<a href="{{ TESTIMONIAL_PAGE_LINK }}" target="_blank" rel="noopener norefferer">here</a>. For both the text and
-				the excerpt, you can use the examples found there as a guide.
+				<a class="alert-link" href="{{ TESTIMONIAL_PAGE_LINK }}" target="_blank" rel="noopener norefferer">here</a>.
+				Good examples of how long and in what form the text for the excerpt should be is provided by the testimonials
+				given on this page.
+				<br />
+				<strong>Please consider</strong>:
+				<p>
+					<a class="alert-link" href="{{ SINGLE_TESTIMONIAL_PAGE_LINK }}" target="_blank" rel="noopener norefferer"
+						>This testimonial</a
+					>
+					serves as a good example of how long the text should be and what content it should cover. You can find more
+					information below.
+				</p>
 				<hr />
 				<strong>On the procedure:</strong>
 				<p>
@@ -26,8 +36,8 @@
 <div class="card-body" *ngIf="!testimonialSent && testimonialFormGroup && !this.hideTestimonialForm">
 	<form id="testimonialForm" [formGroup]="testimonialFormGroup" class="form-horizontal">
 		<div class="form-group row">
-			<div class="col-md-4">
-				<label class="col-md-4 form-control-label">
+			<div class="col-md-3">
+				<label class="form-control-label">
 					<strong
 						>Title*
 						<i class="icon-question" data-toggle="tooltip" title="The title of your testimonial"> </i>
@@ -35,7 +45,7 @@
 				</label>
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="input-group">
 					<input
 						class="form-control"
@@ -51,11 +61,12 @@
 						}"
 					/>
 				</div>
+				<div class="form-text">Please provide a title that specifies your project or work in the cloud.</div>
 			</div>
 		</div>
 		<div class="form-group row">
-			<div class="col-md-4">
-				<label class="col-md-4 form-control-label">
+			<div class="col-md-3">
+				<label class="form-control-label">
 					<strong
 						>Text*
 						<i class="icon-question" data-toggle="tooltip" title="The text of your testimonial"> </i>
@@ -63,10 +74,11 @@
 				</label>
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="input-group">
 					<textarea
 						required
+						rows="20"
 						[ngClass]="{
 							'is-invalid': testimonialFormGroup.controls.testimonial_text?.invalid,
 							'is-valid': testimonialFormGroup.controls.testimonial_text?.valid
@@ -77,12 +89,18 @@
 						id="testimonial_text"
 					></textarea>
 				</div>
+				<div class="form-text">
+					Please describe what you are working on in your project and what you have used the de.NBI Cloud for (for
+					example, what are the requirements of your research or what tools you use). What benefits have you gained from
+					working within our cloud? Which functions of the cloud have been particularly helpful or made your work
+					easier?
+				</div>
 			</div>
 		</div>
 
 		<div class="form-group row">
-			<div class="col-md-4">
-				<label class="col-md-4 form-control-label">
+			<div class="col-md-3">
+				<label class="form-control-label">
 					<strong
 						>Excerpt*
 						<i class="icon-question" data-toggle="tooltip" title="The excerpt of your testimonial"> </i>
@@ -90,7 +108,7 @@
 				</label>
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="input-group">
 					<textarea
 						class="form-control"
@@ -98,18 +116,23 @@
 						formControlName="testimonial_excerpt"
 						id="testimonial_excerpt"
 						required
+						rows="4"
 						[ngClass]="{
 							'is-invalid': testimonialFormGroup.controls.testimonial_excerpt?.invalid,
 							'is-valid': testimonialFormGroup.controls.testimonial_excerpt?.valid
 						}"
 					></textarea>
 				</div>
+				<div class="form-text">
+					Please summarise your positive experiences in the cloud in 3-4 sentences. If your main text contains such a
+					section, you can copy it into this field.
+				</div>
 			</div>
 		</div>
 
 		<div class="form-group row">
-			<div class="col-md-4">
-				<label class="col-md-4 form-control-label">
+			<div class="col-md-3">
+				<label class="form-control-label">
 					<strong
 						>Contributor*
 						<i
@@ -122,7 +145,7 @@
 				</label>
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="input-group">
 					<input
 						class="form-control"
@@ -138,12 +161,16 @@
 						}"
 					/>
 				</div>
+				<div class="form-text">
+					Please provide the person responsible for the testimonial or the person on whose behalf the testimonial is
+					written.
+				</div>
 			</div>
 		</div>
 
 		<div class="form-group row">
-			<div class="col-md-4">
-				<label class="col-md-4 form-control-label">
+			<div class="col-md-3">
+				<label class="form-control-label">
 					<strong
 						>Institute*
 						<i
@@ -156,7 +183,7 @@
 				</label>
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="input-group">
 					<input
 						class="form-control"
@@ -172,12 +199,13 @@
 						}"
 					/>
 				</div>
+				<div class="form-text">Please provide the institute of your working group.</div>
 			</div>
 		</div>
 
 		<div class="form-group row">
-			<div class="col-md-4">
-				<label class="col-md-4 form-control-label">
+			<div class="col-md-3">
+				<label class="form-control-label">
 					<strong
 						>Workgroup*
 						<i class="icon-question" data-toggle="tooltip" title="The working group behind the project."> </i>
@@ -185,7 +213,7 @@
 				</label>
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="input-group">
 					<input
 						class="form-control"
@@ -201,12 +229,13 @@
 						}"
 					/>
 				</div>
+				<div class="form-text">Please provide your working group.</div>
 			</div>
 		</div>
 
 		<div class="form-group row">
-			<div class="col-md-4">
-				<label class="col-md-4 form-control-label">
+			<div class="col-md-3">
+				<label class="form-control-label">
 					<strong
 						>Photography*
 						<i
@@ -219,7 +248,7 @@
 				</label>
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="input-group">
 					<div class="custom-file">
 						<input
@@ -232,6 +261,10 @@
 						/>
 						<label class="custom-file-label" for="testimonialPhotoInput">{{ file ? file.name : 'Choose Image' }}</label>
 					</div>
+				</div>
+				<div class="form-text">
+					At best, upload a picture of the responsible person or working group here. Please only upload pictures that
+					can be publicly used. By uploading the image, we assume that the image may be used publicly by us.
 				</div>
 			</div>
 		</div>
@@ -266,7 +299,7 @@
 			Please provide a longer text.
 		</li>
 		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_excerpt'].invalid">
-			Please provide an excerpt, which is at least 50 characters long but does not exceed 1000 characters.
+			Please provide an excerpt, which is at least 200 characters long but does not exceed 1000 characters.
 		</li>
 		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_contributor'].invalid">
 			Please provide a contributor.
