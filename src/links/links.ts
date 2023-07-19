@@ -53,8 +53,7 @@ export const WIKI_PERSISTENT_TERMINAL_LINK = `${environment.WIKI_PRE}Tutorials/P
 
 export const WIKI_SVM_MIGRATION_LINK = `${environment.WIKI_PRE}`;
 
-export const NEW_SVM_PORTAL_LINK = `${environment.new_svm_webapp}`;
-export const NEW_SVM_KEYCLOAK_LOGIN: string = `${environment.new_svm_keycloak_login}`;
+export const NEW_SVM_PORTAL_LINK = `${environment.NEW_SVM_PORTAL_LINK}`;
 
 export const TESTIMONIAL_PAGE_LINK: string = `${environment.wagtailBase}about/testimonials/`;
 

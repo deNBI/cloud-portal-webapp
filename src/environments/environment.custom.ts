@@ -16,7 +16,6 @@ export const environment: any = {
 	voRegistrationLink: `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${VO_NAME}`,
 	login: `https://${API_HOST}/portal/api/v0/loggedUser/`,
 	webapp: `https://${API_HOST}/portal/webapp/`,
-	new_svm_webapp: NEW_SIMPLE_VM,
-	new_svm_keycloak_login: `${NEW_SIMPLE_VM}/accounts/keycloak/login/?process=login`,
+	NEW_SVM_PORTAL_LINK: `${NEW_SIMPLE_VM}/portal/webapp/`,
 	matomoServer: '//cloud.denbi.de/matomo/',
 };
