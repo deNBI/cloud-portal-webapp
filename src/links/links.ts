@@ -58,6 +58,8 @@ export const NEW_SVM_KEYCLOAK_LOGIN: string = `${environment.new_svm_keycloak_lo
 
 export const TESTIMONIAL_PAGE_LINK: string = `${environment.wagtailBase}about/testimonials/`;
 
+export const SINGLE_TESTIMONIAL_PAGE_LINK: string =	'https://cloud.denbi.de/about/testimonials/denbi-biohackathon-spacehack-project/';
+
 export const WIKI_LINKS: string[] = [
 	WIKI_SNAPSHOTS,
 	WIKI,

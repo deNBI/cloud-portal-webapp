@@ -94,12 +94,6 @@ export class NewsService {
 		});
 	}
 
-	uploadImageTest(formData: FormData): Observable<any> {
-		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/imagetest/`, formData, {
-			withCredentials: true,
-		});
-	}
-
 	sendTestimonialDraft(
 		title: string,
 		text: string,

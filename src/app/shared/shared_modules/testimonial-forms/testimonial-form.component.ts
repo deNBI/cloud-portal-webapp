@@ -4,7 +4,7 @@ import {
 import { Subscription } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL, SINGLE_TESTIMONIAL_PAGE_LINK } from '../../../../links/links';
 import { NewsService } from '../../../api-connector/news.service';
 import { Application } from '../../../applications/application.model/application.model';
 
@@ -18,6 +18,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription();
 
 	TESTIMONIAL_PAGE_LINK: string = TESTIMONIAL_PAGE_LINK;
+	SINGLE_TESTIMONIAL_PAGE_LINK: string = SINGLE_TESTIMONIAL_PAGE_LINK;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	@ViewChild('testimonialModal') testimonialModal: ModalDirective;
 
@@ -66,10 +67,10 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	createFormGroup(): void {
 		this.testimonialFormGroup = this.formBuilder.group({
 			testimonial_title: [this.title, Validators.compose([Validators.required, Validators.minLength(5)])],
-			testimonial_text: [this.text, Validators.compose([Validators.required, Validators.minLength(200)])],
+			testimonial_text: [this.text, Validators.compose([Validators.required, Validators.minLength(1500)])],
 			testimonial_excerpt: [
 				this.excerpt,
-				Validators.compose([Validators.required, Validators.minLength(50), Validators.maxLength(1000)]),
+				Validators.compose([Validators.required, Validators.minLength(200), Validators.maxLength(1000)]),
 			],
 			testimonial_contributor: [this.contributor, Validators.required],
 			testimonial_institution: [this.institution, Validators.required],
