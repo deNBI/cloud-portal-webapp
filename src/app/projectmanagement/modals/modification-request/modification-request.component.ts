@@ -60,6 +60,15 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.subscription.add(
+			this.flavorService.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
+				this.flavorTypes = result;
+				for (const flavorType of this.flavorTypes) {
+					this.shown_flavors[flavorType.long_name] = [];
+				}
+				this.getFlavors();
+			}),
+		);
 		if (this.project.project_modification_request) {
 			this.temp_project_modification = new ApplicationModification(this.project.project_modification_request);
 			this.temp_project_modification.flavors = [];
@@ -80,16 +89,6 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		}
 
 		this.checkExtraResourceCommentRequired();
-
-		this.subscription.add(
-			this.flavorService.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
-				this.flavorTypes = result;
-				for (const flavorType of this.flavorTypes) {
-					this.shown_flavors[flavorType.long_name] = [];
-				}
-				this.getFlavors();
-			}),
-		);
 	}
 
 	checkValidityComment(): boolean {

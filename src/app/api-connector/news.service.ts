@@ -94,12 +94,6 @@ export class NewsService {
 		});
 	}
 
-	uploadImageTest(formData: FormData): Observable<any> {
-		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/imagetest/`, formData, {
-			withCredentials: true,
-		});
-	}
-
 	sendTestimonialDraft(
 		title: string,
 		text: string,
@@ -164,7 +158,7 @@ export class NewsService {
 			console.error(error); // log to console instead
 
 			// Let the app keep running by returning an empty result.
-			return of(result as T);
+			return of(result);
 		};
 	}
 }
