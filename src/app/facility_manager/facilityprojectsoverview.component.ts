@@ -19,6 +19,7 @@ import { ProjectSortService } from '../shared/shared_modules/services/project-so
 import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
+import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
 
 /**
  * Facility Project overview component.
@@ -145,7 +146,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		this.sendNews = true;
 
 		/** needs refactoring in case we introduce tags to wagtail
-		 * this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
+				 * this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
 			if (!(('code' in tags) && tags['code'] === 'wp-die')) {
 				if (tags) {
 					this.availableNewsTags = tags;
@@ -208,6 +209,16 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		this.isLoaded = false;
 		this.getFacilityProjects(this.selectedFacility['FacilityId']);
 		this.emailSubject = `[${this.selectedFacility['Facility']}]`;
+	}
+
+	showMembersModal(application: Application): void {
+		const initialState = {
+			projectId: application.project_application_perun_id,
+			projectName: application.project_application_shortname,
+			facilityId: this.selectedFacility['FacilityId'],
+		};
+
+		this.bsModalRef = this.modalService.show(MembersListModalComponent, { initialState, class: 'modal-lg' });
 	}
 
 	getProjectLifetime(): void {
@@ -410,10 +421,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			});
 	}
 
-	public showMembersOfTheProject(project_id: number, projectname: string): void {
-		this.getMembersOfTheProject(project_id, projectname);
-	}
-
 	public resetEmailModal(): void {
 		this.selectedProjectType = 'ALL';
 		this.emailSubject = `[${this.selectedFacility['Facility']}]`;
@@ -471,7 +478,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 				);
 			} else {
 				this.updateNotificationModal(
-					'Couldn\'t change facility support mails',
+					"Couldn't change facility support mails",
 					'An error occurred while trying to change the facility support mails.',
 					true,
 					'danger',
