@@ -740,7 +740,7 @@ export class FacilityService {
 	 * @param facility id of the facility
 	 * @returns
 	 */
-	getFacilityGroupRichMembers(groupid: number, facility: number): Observable<ProjectMember[]> {
+	getFacilityGroupRichMembers(groupid: number | string, facility: number | string): Observable<ProjectMember[]> {
 		return this.http.get<ProjectMember[]>(
 			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`,
 			{

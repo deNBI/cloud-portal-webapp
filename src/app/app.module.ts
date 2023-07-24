@@ -44,6 +44,7 @@ import { TitleHeadbarComponent } from './shared/title-headbar.component';
 import { VoService } from './api-connector/vo.service';
 import { TokenInterceptor } from './api-connector/token-interceptor';
 import { PipeModuleModule } from './pipe-module/pipe-module.module';
+import { FacilityService } from './api-connector/facility.service';
 
 /**
  * App module.
@@ -106,6 +107,7 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		UserService,
 		CookieService,
 		VoService,
+		FacilityService,
 	],
 	bootstrap: [AppComponent],
 })
