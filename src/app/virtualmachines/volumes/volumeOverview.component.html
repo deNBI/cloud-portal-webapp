@@ -195,7 +195,7 @@
 
 					<div class="rTableCell">{{ volume?.volume_storage }} GB</div>
 					<div class="rTableCell">
-						<div *ngIf="!(volume.volume_projectid | isMigratedProjectId : migratedProjectIds)">
+						<div *ngIf="!(volume.volume_projectid | isMigratedProjectId: migratedProjectIds)">
 							<div
 								*ngIf="
 									(volume?.volume_created_by_user || showFacilities) &&
@@ -221,10 +221,7 @@
 									aria-controls="dropdown-split"
 								></button>
 								<ul class="dropdown-menu" style="cursor: pointer" role="menu" *dropdownMenu>
-									<li
-										*ngIf="volume?.volume_virtualmachine && volume?.volume_status !== VolumeStates.staticERROR"
-										role="menuitem"
-									>
+									<li *ngIf="volume?.volume_status === VolumeStates.staticIN_USE" role="menuitem">
 										<a
 											class="dropdown-item"
 											(click)="setRequestStatus(1); setSelectedVolume(volume); verifyModal.show()"
@@ -232,10 +229,7 @@
 										>
 									</li>
 
-									<li
-										*ngIf="!volume?.volume_virtualmachine && volume?.volume_status !== VolumeStates.staticERROR"
-										role="menuitem"
-									>
+									<li *ngIf="volume?.volume_status === VolumeStates.staticAVAILABLE" role="menuitem">
 										<a
 											class="dropdown-item"
 											(click)="
@@ -244,7 +238,7 @@
 											>Attach Volume</a
 										>
 									</li>
-									<li *ngIf="volume?.volume_status !== VolumeStates.staticERROR" role="menuitem">
+									<li *ngIf="volume?.volume_status === VolumeStates.staticAVAILABLE" role="menuitem">
 										<a
 											class="dropdown-item"
 											(click)="
@@ -262,15 +256,15 @@
 								</ul>
 							</div>
 						</div>
-						<div *ngIf="volume.volume_projectid | isMigratedProjectId : migratedProjectIds">
+						<div *ngIf="volume.volume_projectid | isMigratedProjectId: migratedProjectIds">
 							<div class="alert alert-info">This volume is part of a migrated project!</div>
 						</div>
 					</div>
 					<div class="rTableCell">
 						<input
 							type="checkbox"
-							[disabled]="volume.volume_projectid | isMigratedProjectId : migratedProjectIds"
-							[checked]="isVolChecked(volume) && !(volume.volume_projectid | isMigratedProjectId : migratedProjectIds)"
+							[disabled]="volume.volume_projectid | isMigratedProjectId: migratedProjectIds"
+							[checked]="isVolChecked(volume) && !(volume.volume_projectid | isMigratedProjectId: migratedProjectIds)"
 							(change)="changeCheckedVolume(volume)"
 							*ngIf="
 								(volume?.volume_created_by_user || showFacilities) &&
@@ -506,7 +500,8 @@
 					Are you sure you want to detach:
 					<div *ngFor="let volume of checked_volumes">
 						<ng-container *ngIf="volume?.volume_virtualmachine?.openstackid">
-							<strong>{{ volume?.volume_name }}</strong> from <strong>{{ volume?.volume_virtualmachine?.name }}</strong>
+							<strong>{{ volume?.volume_name }}</strong> from
+							<strong>{{ volume?.volume_virtualmachine?.name }}</strong>
 						</ng-container>
 					</div>
 				</div>
@@ -932,7 +927,7 @@
 							<option value="undefined" disabled selected hidden>Please Select</option>
 							<option
 								*ngFor="let project of projects"
-								[disabled]="project[1] | isMigratedProjectId : migratedProjectIds"
+								[disabled]="project[1] | isMigratedProjectId: migratedProjectIds"
 								[ngValue]="project"
 								id="project_option_{{ project[0] }}"
 							>
