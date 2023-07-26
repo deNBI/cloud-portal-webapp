@@ -43,6 +43,7 @@ export const SIMPLE_VM_LINK: string = 'https://cloud.denbi.de/about/project-type
 export const OPENSTACK_LINK: string = 'https://cloud.denbi.de/about/project-types/openstack/';
 export const PROJECT_TYPES_LINK: string = 'https://cloud.denbi.de/about/project-types/';
 export const PUBLICATIONS_LINK: string = 'https://cloud.denbi.de/about/publications/';
+export const PUBLIC_DOI_ENDPOINT: string = `${environment.apiBase}public/statistic/doi/ `;
 export const FACILITY_NEWS_LINK: string = 'https://cloud.denbi.de/news/facility-news/';
 export const STATUS_LINK: string = 'https://status.cloud.denbi.de/status';
 export const SUPPORT_LINK: string = 'https://cloud.denbi.de/support/';
