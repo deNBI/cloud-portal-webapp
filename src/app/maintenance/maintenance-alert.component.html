@@ -1,4 +1,4 @@
-<div *ngIf="!frames_loaded" class="row justify-content-center">
+<div *ngIf="!frames_loaded" F>
 	<span class="spinner-border text-info"></span>
 </div>
 <div
@@ -24,8 +24,8 @@
 			>
 				<div class="ms-2 me-auto">
 					<div class="fw-bold">{{ tf.name }}</div>
-					{{ tf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}
-					- {{ tf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}
+					{{ tf.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}
+					- {{ tf.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}
 					<br />
 					{{ tf.message.length > 0 ? tf.message : '' }}
 				</div>

@@ -22,6 +22,7 @@ import { ProjectSortService } from '../shared/shared_modules/services/project-so
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
 import { ConfirmationActions } from '../shared/modal/confirmation_actions';
+import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
 
 /**
  * Vo Overview component.
@@ -162,6 +163,15 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' });
 		this.subscribeToBsModalRef();
+	}
+
+	showMembersModal(application: Application): void {
+		const initialState = {
+			projectId: application.project_application_perun_id,
+			projectName: application.project_application_shortname,
+		};
+
+		this.bsModalRef = this.modalService.show(MembersListModalComponent, { initialState, class: 'modal-lg' });
 	}
 
 	subscribeToBsModalRef(): void {

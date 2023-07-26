@@ -15,6 +15,7 @@ import { TestimonialFormComponent } from './testimonial-forms/testimonial-form.c
 import { SharedDirectivesModule } from './shared_directives.module';
 import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component';
 import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
+import { MembersListModalComponent } from '../modal/members/members-list-modal.component';
 
 /**
  * Shared module.
@@ -23,6 +24,7 @@ import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 	exports: [
 		ApplicationBaseClassComponent,
 		NotificationModalComponent,
+		MembersListModalComponent,
 		ConfirmationModalComponent,
 		InformationToastComponent,
 		MigrationInformationComponent,
@@ -44,6 +46,7 @@ import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 	],
 	declarations: [
 		ApplicationBaseClassComponent,
+		MembersListModalComponent,
 		NotificationModalComponent,
 		ConfirmationModalComponent,
 		InformationToastComponent,
