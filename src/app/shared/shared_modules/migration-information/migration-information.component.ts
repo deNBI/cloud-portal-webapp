@@ -2,7 +2,7 @@ import {
 	Component, OnInit, OnDestroy, Input,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { CLOUD_PORTAL_SUPPORT_MAIL, NEW_SVM_KEYCLOAK_LOGIN } from '../../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL, NEW_SVM_PORTAL_LINK } from '../../../../links/links';
 
 @Component({
 	selector: 'app-migration-information',
@@ -12,8 +12,8 @@ import { CLOUD_PORTAL_SUPPORT_MAIL, NEW_SVM_KEYCLOAK_LOGIN } from '../../../../l
 export class MigrationInformationComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription();
 
-	NEW_SVM_KEYCLOAK_LOGIN: string = NEW_SVM_KEYCLOAK_LOGIN;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK;
 
 	@Input() isCreationPage: boolean = false;
 	@Input() affectedProjects: string[] = [];
