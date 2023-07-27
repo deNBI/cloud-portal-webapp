@@ -50,6 +50,7 @@ import { RecreateBackendVmComponent } from './modals/recreate-backend-vm/recreat
 import { DatePickerComponent } from '../shared/datepicking/datepicker.component';
 import { TimepickerComponent } from '../shared/datepicking/timepicker.component';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
+import { ClusterActionsComponent } from './clusters/cluster-actions/cluster-actions.component';
 
 /**
  * VM module.
@@ -77,6 +78,7 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 	],
 	declarations: [
 		ImageCarouselSlideComponent,
+		ClusterActionsComponent,
 		ImageDetailComponent,
 		VirtualMachineComponent,
 		FlavorDetailComponent,
