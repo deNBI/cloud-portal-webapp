@@ -36,6 +36,22 @@
 				</div>
 				<div class="col-md-2">
 					<button
+						(click)="getFacilitySupportMails(); computeCenterSupportModal.show()"
+						type="button"
+						class="btn btn-outline-primary float-right"
+					>
+						<i class="fa fa-inbox"></i>
+						Support email(s)
+					</button>
+				</div>
+				<div class="col-md-2">
+					<input type="file" accept=".csv" style="display: none" #fileInput (change)="onCsvFileSelected($event)" />
+					<button type="button " class="btn btn-outline-primary" (click)="fileInput.click()">
+						Send CSV Templated Email
+					</button>
+				</div>
+				<div class="col-md-2">
+					<button
 						(click)="openProjectMailsModal()"
 						type="button "
 						class="btn btn-outline-primary"
@@ -49,7 +65,7 @@
 						</c-badge>
 					</button>
 				</div>
-				<div class="col-md-6" style="margin-bottom: 10px">
+				<div class="col-md-4" style="margin-bottom: 10px">
 					<select
 						[(ngModel)]="selectedFacility"
 						(ngModelChange)="onChangeSelectedFacility()"
@@ -60,16 +76,6 @@
 							{{ facility['Facility'] }}
 						</option>
 					</select>
-				</div>
-				<div class="col-md-2">
-					<button
-						(click)="getFacilitySupportMails(); computeCenterSupportModal.show()"
-						type="button"
-						class="btn btn-outline-primary float-right"
-					>
-						<i class="fa fa-inbox"></i>
-						Support email(s)
-					</button>
 				</div>
 			</div>
 			<div class="card">

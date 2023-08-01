@@ -36,6 +36,10 @@
 					{{ selectedEmailProjects?.length }}
 				</c-badge>
 			</button>
+			<input type="file" accept=".csv" style="display: none" #fileInput (change)="onCsvFileSelected($event)" />
+			<button type="button " class="btn btn-outline-primary" (click)="fileInput.click()">
+				Send CSV Templated Email
+			</button>
 			<button
 				(click)="setEmailType(0); emailModal.show()"
 				type="button "
@@ -457,24 +461,24 @@
 												<i class="fa fa-play"></i>&nbsp;Enable Project
 											</button>
 											<!--button
-                                            *ngIf="project | hasstatusinlist : project_states.ACTIVE"
-                                            style="margin-left: 5px; margin-bottom: 5px"
-                                            type="button"
-                                            class="btn btn-warning"
-                                            (click)="selectedProject = project; suspendModal.show()"
-                                    >
-                                        <i class="fa fa-pause"></i>&nbsp;Suspend Project
-                                    </button-->
+                                        *ngIf="project | hasstatusinlist : project_states.ACTIVE"
+                                        style="margin-left: 5px; margin-bottom: 5px"
+                                        type="button"
+                                        class="btn btn-warning"
+                                        (click)="selectedProject = project; suspendModal.show()"
+                                >
+                                    <i class="fa fa-pause"></i>&nbsp;Suspend Project
+                                </button-->
 
 											<!--button
-                                            *ngIf="project | hasstatusinlist : project_states.SUSPENDED"
-                                            style="margin-left: 5px; margin-bottom: 5px"
-                                            type="button"
-                                            class="btn btn-success"
-                                            (click)="selectedProject = project; resumeModal.show()"
-                                    >
-                                        <i class="fa fa-play"></i>&nbsp;Resume Project
-                                    </button-->
+                                        *ngIf="project | hasstatusinlist : project_states.SUSPENDED"
+                                        style="margin-left: 5px; margin-bottom: 5px"
+                                        type="button"
+                                        class="btn btn-success"
+                                        (click)="selectedProject = project; resumeModal.show()"
+                                >
+                                    <i class="fa fa-play"></i>&nbsp;Resume Project
+                                </button-->
 
 											<button
 												style="margin-left: 5px; margin-bottom: 5px"
