@@ -43,7 +43,11 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 	errorOnLoading = false;
 	STATUS_LINK: string = STATUS_LINK;
 	bsModalRef: BsModalRef;
+	all_worker_loaded: boolean = false;
+	checkStatusTimer: ReturnType<typeof setTimeout>;
+
 	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+	statusSubscription: Subscription = new Subscription();
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -93,6 +97,7 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 			(cluster_info: Clusterinfo): void => {
 				this.cluster = new Clusterinfo(cluster_info);
 				this.isLoaded = true;
+				this.check_status_loop();
 				this.check_status_loop_cluster_vms();
 			},
 			() => {
@@ -131,6 +136,56 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 
 			this.checkStatusTimeout,
 		);
+	}
+
+	get_all_batches_loaded(): boolean {
+		let worker_amount: number = 0;
+		for (const worker_batch of this.cluster.worker_batches) {
+			worker_amount += worker_batch.worker_count;
+		}
+
+		return this.cluster.worker_instances.length === worker_amount;
+	}
+
+	stopAllCheckStatusTimer(): void {
+		this.stopCheckStatusTimer();
+	}
+
+	stopCheckStatusTimer(): void {
+		if (this.checkStatusTimer) {
+			clearTimeout(this.checkStatusTimer);
+		}
+		if (this.statusSubscription) {
+			this.statusSubscription.unsubscribe();
+		}
+	}
+
+	/**
+	 * Stop and clear the worker check status loop.
+	 */
+
+	check_status_loop(): void {
+		this.all_worker_loaded = this.get_all_batches_loaded();
+		this.stopAllCheckStatusTimer();
+		this.statusSubscription = new Subscription();
+		this.checkStatusTimer = setTimeout((): void => {
+			this.statusSubscription.add(
+				this.virtualmachineService
+					.getClusterInfo(this.cluster.cluster_id)
+					.subscribe((updated_cluster: Clusterinfo): void => {
+						const password: string = this.cluster.password;
+						this.cluster = new Clusterinfo(updated_cluster);
+						this.cluster.password = password;
+						if (
+							this.cluster.status !== VirtualMachineStates.DELETED
+							|| this.cluster.status !== VirtualMachineStates.MIGRATED
+						) {
+							this.check_status_loop();
+							this.check_status_loop_cluster_vms();
+						}
+					}),
+			);
+		}, this.checkStatusTimeout);
 	}
 
 	check_status_loop_cluster_vms(): void {

@@ -23,6 +23,8 @@ import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
 import { ConfirmationActions } from '../shared/modal/confirmation_actions';
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
+import { EmailService } from '../api-connector/email.service';
+import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
 
 /**
  * Vo Overview component.
@@ -95,6 +97,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		private facilityService: FacilityService,
 		public sortProjectService: ProjectSortService,
 		private modalService: BsModalService,
+		private emailService: EmailService,
 	) {
 		super();
 	}
@@ -110,6 +113,21 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+	}
+
+	onCsvFileSelected(event): void {
+		const inputElement = event.target as HTMLInputElement;
+		if (inputElement.files && inputElement.files.length > 0) {
+			this.emailService.sendCsvTemplate(inputElement.files[0]).subscribe(
+				(csvTemplate: CsvMailTemplateModel) => {
+					this.openProjectMailsModal(inputElement.files[0], csvTemplate);
+				},
+				(error: CsvMailTemplateModel) => {
+					console.log(error['error']);
+					this.openProjectMailsModal(inputElement.files[0], error['error']);
+				},
+			);
+		}
 	}
 
 	getTSVInformation(timeout: number = this.checkTSVTimeout): void {
@@ -227,8 +245,18 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		}
 	}
 
-	openProjectMailsModal(): void {
-		const initialState = { selectedProjects: this.selectedEmailProjects };
+	openProjectMailsModal(csvFile: File = null, csvTemplate: CsvMailTemplateModel = null): void {
+		let initialState = {};
+
+		if (csvFile) {
+			initialState = {
+				selectedProjects: csvTemplate.valid_projects,
+				csvFile,
+				csvMailTemplate: csvTemplate,
+			};
+		} else {
+			initialState = { selectedProjects: this.selectedEmailProjects };
+		}
 
 		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
 		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
