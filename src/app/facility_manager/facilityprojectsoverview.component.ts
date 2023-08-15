@@ -20,6 +20,8 @@ import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-b
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
+import { EmailService } from '../api-connector/email.service';
+import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
 
 /**
  * Facility Project overview component.
@@ -95,6 +97,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		private newsService: NewsService,
 		public sortProjectService: ProjectSortService,
 		private modalService: BsModalService,
+		private emailService: EmailService,
 	) {
 		super();
 	}
@@ -153,6 +156,21 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 				}
 			}
 		}); * */
+	}
+
+	onCsvFileSelected(event): void {
+		const inputElement = event.target as HTMLInputElement;
+		if (inputElement.files && inputElement.files.length > 0) {
+			this.emailService.sendCsvTemplate(inputElement.files[0]).subscribe(
+				(csvTemplate: CsvMailTemplateModel) => {
+					this.openProjectMailsModal(inputElement.files[0], csvTemplate);
+				},
+				(error: CsvMailTemplateModel) => {
+					console.log(error['error']);
+					this.openProjectMailsModal(inputElement.files[0], error['error']);
+				},
+			);
+		}
 	}
 
 	onSort({ column, direction }: SortEvent) {
@@ -442,9 +460,18 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		});
 	}
 
-	openProjectMailsModal(): void {
-		const initialState = { selectedProjects: this.selectedEmailProjects };
+	openProjectMailsModal(csvFile: File = null, csvTemplate: CsvMailTemplateModel = null): void {
+		let initialState = {};
 
+		if (csvFile) {
+			initialState = {
+				selectedProjects: csvTemplate.valid_projects,
+				csvFile,
+				csvMailTemplate: csvTemplate,
+			};
+		} else {
+			initialState = { selectedProjects: this.selectedEmailProjects };
+		}
 		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
 		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
 			if (sent_successfully) {
