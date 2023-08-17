@@ -20,7 +20,7 @@
 	</div>
 	<div>
 		<input
-			[hidden]="!virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
+			[hidden]="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
 			type="text"
 			style="width: 100%"
 			placeholder="Enter Snapshot Name"
