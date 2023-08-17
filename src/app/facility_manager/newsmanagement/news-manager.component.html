@@ -67,16 +67,12 @@
 											style="color: white !important"
 											[ngStyle]="{ 'background-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef' }"
 										>
-											<strong
-												>{{ news.title }}
-												<span *ngIf="news.is_current_motd" class="badge badge-pill bg-dark">MOTD</span>
-											</strong>
+											<strong>{{ news.title }} </strong>
 											<span
+												*ngIf="news.is_current_motd"
 												class="badge badge-light"
 												style="margin-left: 5px"
 												[ngStyle]="{ color: news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef' }"
-												*ngIf="newsSetAsMOTD.includes(news.id.toString())"
-												title="{{ 'Set as MOTD in: ' + facilitiesAsString(news) }}"
 											>
 												<i style="margin-right: 2px" class="fas fa-terminal">MOTD</i></span
 											>
@@ -99,13 +95,13 @@
 											</div>
 											<div class="row">
 												<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
-													<strong>Uploaded: </strong>{{ news.posted_at | date : 'YYYY-MM-dd' }}
+													<strong>Uploaded: </strong>{{ news.posted_at | date: 'YYYY-MM-dd' }}
 												</div>
 											</div>
 											<div class="row">
 												<div class="text-truncate col" data-toggle="tooltip" *ngIf="news?.motd" data-placement="auto">
 													<strong>Valid Till: </strong>
-													<span *ngIf="news?.valid_till">{{ news.valid_till | date : 'YYYY-MM-dd' }}</span>
+													<span *ngIf="news?.valid_till">{{ news.valid_till | date: 'YYYY-MM-dd' }}</span>
 													<span *ngIf="!news?.valid_till">not set</span>
 												</div>
 											</div>
@@ -251,7 +247,7 @@ we are happy to inform..."
 												type="checkbox"
 												id="news_select_{{ facility['FacilityId'] }}_motd"
 												[disabled]="facility['FacilityId'] !== facilityToPost"
-												(click)="setFacilityToSetMotd()"
+												(change)="setFacilityToSetMotd($event)"
 												[checked]="
 													facilityMOTDPairs[facility['FacilityId']] === selectedFacilityNews.id &&
 													facility['FacilityId'] === facilityToPost
@@ -263,17 +259,11 @@ we are happy to inform..."
 											>
 										</div>
 									</div>
-									<div class="form-row">
-										<div class="col-6"></div>
-										<div
-											class="input-group col-4"
-											*ngIf="
-												(facility['FacilityId'] === facilityToSetMOTD && facility['FacilityId'] === facilityToPost) ||
-												(selectedFacilityNews?.is_current_motd && facility['FacilityId'] === facilityToPost)
-											"
-										>
+									<div class="form-row my-4" *ngIf="this.motdChecked">
+										<div class="col-6 my-2">Set Expiry date for MOTD</div>
+										<div class="input-group col-4">
 											<div class="input-group-prepend">
-												<div class="input-group-prepend"><span class="input-group-text">valid till</span></div>
+												<span class="input-group-text">valid till</span>
 											</div>
 											<input
 												type="text"
