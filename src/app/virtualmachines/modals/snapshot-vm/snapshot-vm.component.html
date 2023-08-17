@@ -6,55 +6,54 @@
 </div>
 <div class="modal-body" id="snapshot_name_modal">
 	<div class="alert alert-warning" *ngIf="!(virtualMachine?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)">
-		<strong>Please be aware:</strong><br />
-		We recommend stopping your virtual machine before creating a snapshot.<br />
-		Creating a snapshot of a running virtual machine can lead to inconsistencies, lost data and ultimately a
-		non-functioning and unrecoverable snapshot.
+		<strong>Important:</strong><br />
+		Before creating a snapshot, we recommend stopping your virtual machine. Creating a snapshot of a running virtual
+		machine may lead to inconsistencies, data loss, and an unusable snapshot.
 	</div>
 	<div>
-		<strong>Snapshot Name*</strong>
+		<label for="snapshot_name_input"><strong>Snapshot Name*</strong></label>
 	</div>
-	<div *ngIf="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM">
-		A snapshot also preserves the full state of RAM, therefore only snapshots up to a maximum of 256 GB RAM are
-		supported.
+	<div class="alert alert-danger" *ngIf="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM">
+		A Snapshot preserves the full state of RAM. Therefore you can only snapshot a vm with up to a maximum to 256 GB of
+		RAM. Your VM has {{ virtualMachine?.flavor?.ram_gib }} GB of RAM, which exceeds this limit, preventing snapshot
+		creation.
 	</div>
 	<div>
 		<input
-			[disabled]="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
+			[hidden]="!virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
 			type="text"
 			style="width: 100%"
-			placeholder="Snapshot Name"
+			placeholder="Enter Snapshot Name"
 			[(ngModel)]="snapshotName"
 			(ngModelChange)="snapshotSearchTerm.next($event)"
 			id="snapshot_name_input"
 		/>
-	</div>
-	<div>
 		<p *ngIf="!validSnapshotNameBool && snapshotName.length > 0 && snapshotNameCheckDone" style="color: red">
-			This name is already in use, please use a different one.
+			This name is already in use. Please choose a different one.
 		</p>
 	</div>
-	<br />
 	<div>
-		<strong>Description</strong>
+		<label for="snapshotDescription"><strong>Description</strong></label>
 	</div>
 	<div>
 		<textarea
-			style="width: 100%"
-			type="textfield"
-			placeholder="Description"
-			[disabled]="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
+			style="width: 100%; height: 100px"
+			type="textarea"
+			placeholder="Enter Snapshot Description"
+			id="snapshotDescription"
+			[hidden]="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
 			#snapshotDescription
 		></textarea>
 	</div>
 	<div class="alert alert-info" role="alert">
-		A snapshot is an image which preserves the disk state of a running instance.
+		A snapshot captures the disk state of a running instance for later use.
 	</div>
 </div>
 <div class="modal-footer">
 	<button
 		class="btn btn-success col-md-4"
 		id="snapshot_create_modal_button"
+		[hidden]="virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
 		[disabled]="!validSnapshotNameBool || virtualMachine?.flavor?.ram_gib > SNAPSHOT_MAX_RAM"
 		(click)="snapshotVM(snapshotDescription.value)"
 	>
