@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.749.0",
+  "version": "4.750.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -72,7 +72,7 @@
     "rxjs": "7.8.1",
     "save-svg-as-png": "1.4.17",
     "slash": "^5.0.0",
-    "svg2pdf.js": "2.2.1",
+    "svg2pdf.js": "2.2.2",
     "ts-helpers": "1.1.2",
     "tslib": "2.6.1",
     "uglify-js": "3.17.4",
@@ -113,7 +113,7 @@
     "lint-staged": "14.0.0",
     "ngx-spec": "2.1.6",
     "npm-run-all": "4.1.5",
-    "prettier": "3.0.1",
+    "prettier": "3.0.2",
     "raw-loader": "4.0.2",
     "sass-loader": "13.3.2",
     "script-loader": "0.7.2",
