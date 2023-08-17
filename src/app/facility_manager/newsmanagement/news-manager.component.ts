@@ -29,6 +29,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	public facilityMOTDPairs: { [key: number]: number } = {};
 	facilityToPost: number;
 	returnState: number = -1;
+	motdChecked: boolean = false;
 	@ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
 
 	computeCenters: any[] = [];
@@ -60,7 +61,10 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 
 	public motdLength: BehaviorSubject<number> = new BehaviorSubject(0);
 
-	constructor(private newsService: NewsService, private facilityService: FacilityService) {
+	constructor(
+		private newsService: NewsService,
+		private facilityService: FacilityService,
+	) {
 		// constructor for NewsManager
 	}
 
@@ -89,7 +93,10 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	setFacilityToSetMotd(): void {
+	setFacilityToSetMotd(event: any = null): void {
+		if (event) {
+			this.motdChecked = event?.target.checked;
+		}
 		const facilit_checkbox: HTMLElement | null = document.getElementById(`news_select_${this.facilityToPost}_motd`);
 		if (facilit_checkbox && facilit_checkbox['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
@@ -271,6 +278,11 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		} else {
 			this.selectedFacilityNews = new FacilityNews();
 			this.selectedFacilityNews.id = null;
+		}
+		if (this.selectedFacilityNews.is_current_motd) {
+			this.motdChecked = true;
+		} else {
+			this.motdChecked = false;
 		}
 		this.setFormGroup();
 		this.setFacilityToSetMotd();
