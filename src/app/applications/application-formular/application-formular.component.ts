@@ -227,7 +227,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	}
 
 	public checkLongname(longname: string): void {
-		this.invalid_longname = !this.isASCII(longname);
+		this.invalid_longname = !/^[a-zA-Z0-9-_\s]*$/.test(longname);
 	}
 
 	public checkDescription(description: string): void {
