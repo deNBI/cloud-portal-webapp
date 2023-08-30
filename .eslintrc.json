@@ -64,6 +64,7 @@
         "jsdoc/newline-after-description": "off",
         "jsdoc/no-types": "off",
         "@typescript-eslint/consistent-type-assertions": "warn",
+        "@typescript-eslint/no-unsafe-enum-comparison": "off",
         "@typescript-eslint/array-type": [
           "error",
           {
