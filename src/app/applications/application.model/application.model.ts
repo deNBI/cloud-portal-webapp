@@ -94,6 +94,8 @@ export class Application {
 	migrate_to_simple_vm: boolean = false;
 
 	is_project_selected: boolean = false;
+	approved_by_vo_manager = '';
+	approved_by_facility_manager = '';
 
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);

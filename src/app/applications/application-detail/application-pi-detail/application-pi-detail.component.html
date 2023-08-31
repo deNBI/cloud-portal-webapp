@@ -1,4 +1,16 @@
 <table class="table table-striped" style="table-layout: fixed">
+	<tr *ngIf="application?.approved_by_vo_manager" id="id_approved_vo_row">
+		<td>Approved by VO</td>
+		<td>
+			{{ application?.approved_by_vo_manager }}
+		</td>
+	</tr>
+	<tr *ngIf="application?.approved_by_facility_manager" id="id_pi_row">
+		<td>Approved by FM</td>
+		<td>
+			{{ application?.approved_by_facility_manager }}
+		</td>
+	</tr>
 	<tr *ngIf="application?.project_application_pi_approved" id="id_pi_row">
 		<td>PI Name</td>
 		<td>
