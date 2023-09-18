@@ -32,7 +32,7 @@
     "@angular/service-worker": "16.2.4",
     "@angular/upgrade": "16.2.4",
     "@coreui/angular": "4.5.16",
-    "@coreui/coreui": "4.3.0",
+    "@coreui/coreui": "4.2.6",
     "@coreui/icons-angular": "4.5.16",
     "@ng-bootstrap/ng-bootstrap": "^15.0.1",
     "@ng-select/ng-select": "^11.0.0",
