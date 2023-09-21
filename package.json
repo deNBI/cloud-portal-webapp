@@ -76,7 +76,7 @@
     "ts-helpers": "1.1.2",
     "tslib": "2.6.2",
     "uglify-js": "3.17.4",
-    "zone.js": "0.14.0"
+    "zone.js": "0.13.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.4",
