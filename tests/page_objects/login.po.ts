@@ -7,6 +7,7 @@ import { Util } from '../util';
 export class LoginPagePlaywright {
 	TEST_RP_WARNING: string = 'testRpWarning';
 	TEST_RP_CONTINUE: string = 'Continue';
+	REJECT_COOKIES_ORCID_ID: string = 'onetrust-reject-all-handler';
 	readonly page: Page;
 	readonly baseURL: string;
 
@@ -35,6 +36,7 @@ export class LoginPagePlaywright {
 		await this.page.type('input[type="password"]', psw);
 		await this.page.waitForSelector('#passwordNext', { state: 'visible' });
 		await this.page.click('#passwordNext');
+
 		await Util.consoleLogCurrentUrl(this.page);
 
 		await this.skipElixirTestWarning();
@@ -52,6 +54,7 @@ export class LoginPagePlaywright {
 		await Util.consoleLogCurrentUrl(this.page);
 
 		await this.page.waitForNavigation({ url: 'https://orcid.org/signin**' });
+		await this.rejectOrcidCookies();
 		await this.page.type('id=username', email);
 		await this.page.type('id=password', psw);
 		await this.page.locator('id=signin-button').click();
@@ -59,6 +62,17 @@ export class LoginPagePlaywright {
 
 		await this.skipElixirTestWarning();
 		await Util.consoleLogCurrentUrl(this.page);
+	}
+
+	async rejectOrcidCookies(): Promise<void> {
+		try {
+			console.log('Rejecting Orcid Cookies');
+			console.log(`id=${this.REJECT_COOKIES_ORCID_ID}`);
+			await this.page.locator(`id=${this.REJECT_COOKIES_ORCID_ID}`).click();
+		} catch (error) {
+			console.log(`Didn't load cookies window: ${error}`);
+			await Util.consoleLogCurrentUrl(this.page);
+		}
 	}
 
 	async skipElixirTestWarning(): Promise<void> {

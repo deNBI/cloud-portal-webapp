@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { is_vo } from '../../../../globalvar';
+import { Application } from '../../../../../applications/application.model/application.model';
 
 @Component({
 	selector: 'app-application-badges',
@@ -7,7 +8,7 @@ import { is_vo } from '../../../../globalvar';
 	styleUrls: ['./application-badges.component.scss'],
 })
 export class ApplicationBadgesComponent {
-	@Input() application;
+	@Input() application: Application;
 	is_vo_admin: boolean = false;
 
 	constructor() {
