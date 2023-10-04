@@ -2,7 +2,9 @@ import {
 	Component, ElementRef, OnInit, ViewChild,
 } from '@angular/core';
 
-import { ExportToCsv } from 'export-to-csv';
+import {
+	CsvOutput, download, generateCsv, mkConfig,
+} from 'export-to-csv';
 import { VoService } from '../../api-connector/vo.service';
 import { Resources } from './resources';
 
@@ -37,11 +39,10 @@ export class ResourcesComponent implements OnInit {
 	}
 
 	public tableToCSV(): void {
-		const options = {
+		const csvConfig = mkConfig({
 			fieldSeparator: ',',
-			quoteStrings: '"',
+			quoteStrings: true,
 			decimalSeparator: '.',
-			showLabels: true,
 			showTitle: false,
 			// title: `${this.selectedFacility['Facility']} Resources`,
 			filename: 'vo_resources.csv',
@@ -49,11 +50,12 @@ export class ResourcesComponent implements OnInit {
 			useBom: true,
 			useKeysAsHeaders: true,
 			// headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
-		};
+		});
 
-		const csvExporter = new ExportToCsv(options);
+		const converted: any[] = this.voResources.map((res: Resources) => Object.assign(res));
+		const csv: CsvOutput = generateCsv(csvConfig)(converted);
 
-		csvExporter.generateCsv(this.voResources);
+		download(csvConfig)(csv);
 	}
 
 	ngOnInit(): void {}
