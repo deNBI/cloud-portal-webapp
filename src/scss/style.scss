@@ -5,8 +5,9 @@
  * @license MIT
  */
 // Import styles
-@import "@coreui/coreui/scss/coreui";
 @import "bootstrap/dist/css/bootstrap.css";
+
+@import "@coreui/coreui/scss/coreui";
 // If you want to override variables do it here
 @import "custom-variables";
 
