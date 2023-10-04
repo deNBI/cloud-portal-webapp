@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.779.0",
+  "version": "4.780.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -32,7 +32,7 @@
     "@angular/service-worker": "16.2.7",
     "@angular/upgrade": "16.2.7",
     "@coreui/angular": "4.5.16",
-    "@coreui/coreui": "4.2.6",
+    "@coreui/coreui": "4.3.2",
     "@coreui/icons-angular": "4.5.16",
     "@ng-bootstrap/ng-bootstrap": "^15.0.1",
     "@ng-select/ng-select": "^11.0.0",
@@ -46,7 +46,7 @@
     "bootstrap": "4.6.2",
     "chart.js": "4.4.0",
     "cli-color": "2.0.3",
-    "core-js": "3.32.2",
+    "core-js": "3.33.0",
     "css-loader": "6.8.1",
     "cssnano": "6.0.1",
     "d3": "7.8.5",
@@ -76,7 +76,7 @@
     "ts-helpers": "1.1.2",
     "tslib": "2.6.2",
     "uglify-js": "3.17.4",
-    "zone.js": "0.13.3"
+    "zone.js": "0.14.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.4",
@@ -92,9 +92,9 @@
     "@typescript-eslint/eslint-plugin": "6.7.0",
     "@typescript-eslint/parser": "6.7.0",
     "@types/jasmine": "4.3.6",
-    "@types/node": "18.17.19",
-    "@typescript-eslint/eslint-plugin": "6.5.0",
-    "@typescript-eslint/parser": "6.5.0",
+    "@types/node": "18.18.3",
+    "@typescript-eslint/eslint-plugin": "6.7.4",
+    "@typescript-eslint/parser": "6.7.4",
     "async": "3.2.4",
     "audit-ci": "6.6.1",
     "autoprefixer": "10.4.16",
