@@ -11,6 +11,7 @@ import {
 	WIKI_RSTUDIO_LINK,
 	WIKI_PERSISTENT_TERMINAL_LINK,
 	WIKI_JUPYTERLAB_LINK,
+	NEW_SVM_PORTAL_LINK,
 } from '../../../links/links';
 import { TemplateNames } from '../conda/template-names';
 import { StopVmComponent } from '../modals/stop-vm/stop-vm.component';
@@ -650,4 +651,6 @@ export class VmCardComponent implements OnInit, OnDestroy {
 
 		return true;
 	}
+
+	protected readonly NEW_SVM_PORTAL_LINK = NEW_SVM_PORTAL_LINK;
 }

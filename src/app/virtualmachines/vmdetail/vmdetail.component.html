@@ -243,7 +243,13 @@
 							</div>
 						</div>
 						<div class="row" *ngIf="isMigrated">
-							<div class="alert alert-info">You are not able to control this machine using the current platform.</div>
+							<div class="alert alert-info">
+								You are not able to control this machine using the current platform. You can access the new platform
+								here:
+								<a class="alert-link" [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noreferrer noopener">{{
+									NEW_SVM_PORTAL_LINK
+								}}</a>
+							</div>
 						</div>
 					</div>
 				</div>
