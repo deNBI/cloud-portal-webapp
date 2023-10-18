@@ -24,6 +24,7 @@ import { BiocondaService } from '../../api-connector/bioconda.service';
 import { ResenvTemplate } from '../conda/resenvTemplate.model';
 import { elixir_id, is_vo } from '../../shared/globalvar';
 import {
+	NEW_SVM_PORTAL_LINK,
 	WIKI_CREATE_SNAPSHOT_LINK,
 	WIKI_GUACAMOLE_LINK,
 	WIKI_PERSISTENT_TERMINAL_LINK,
@@ -807,4 +808,6 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 
 		return true;
 	}
+
+	protected readonly NEW_SVM_PORTAL_LINK = NEW_SVM_PORTAL_LINK;
 }

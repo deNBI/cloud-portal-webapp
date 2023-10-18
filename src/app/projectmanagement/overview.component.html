@@ -754,8 +754,16 @@
 					"
 					class="card-body"
 				>
-					<div class="row">
-						<div class="btn-group col-12"></div>
+					<div
+						class="row"
+						*ngIf="project_application.migrate_to_simple_vm && project_application.migrated_simple_vm_resources"
+					>
+						<div class="alert alert-info col-8 mx-auto">
+							The project is migrated to the new SimpleVM platform. You can access the platform here:
+							<a class="alert-link" [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noreferrer noopener">{{
+								NEW_SVM_PORTAL_LINK
+							}}</a>
+						</div>
 					</div>
 					<div class="row">
 						<div class="btn-group col-12">

@@ -4,8 +4,8 @@
 			<div class="col-5" style="margin: auto">
 				<a
 					*ngIf="
-						(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE) ||
-							(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF);
+						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+							(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF);
 						else statusElseBlock
 					"
 					class="h5 text-primary"
@@ -14,8 +14,8 @@
 					[attr.data-test-id]="'detail' + vm.name"
 					[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
 					[ngClass]="{
-						'active-machine': (vm?.status | hasStatus : VirtualMachineStates.staticACTIVE),
-						'shutoff-machine': (vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF)
+						'active-machine': (vm?.status | hasStatus: VirtualMachineStates.staticACTIVE),
+						'shutoff-machine': (vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
 					}"
 				>
 					<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red"> </i>
@@ -51,8 +51,8 @@
 					<input
 						type="checkbox"
 						*ngIf="
-							(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE) ||
-							(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF)
+							(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+							(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
 						"
 						[checked]="
 							is_checked && !(this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm)
@@ -120,8 +120,8 @@
 							id="{{ vm.name + 'resenvSpan' }}"
 							style="font-size: 10px; position: relative; top: -12px; left: -10px"
 						>
-							<i class="fas fa-check" *ngIf="vm?.status | hasStatus : VirtualMachineStates.staticACTIVE"> </i>
-							<i class="fas fa-times" *ngIf="vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF"> </i>
+							<i class="fas fa-check" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE"> </i>
+							<i class="fas fa-times" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF"> </i>
 						</span>
 					</span>
 				</div>
@@ -131,7 +131,7 @@
 						vm?.backend?.playbook_done &&
 						!vm?.backend?.playbook_successful &&
 						vm?.conda_packages?.length === 0 &&
-						(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE)
+						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)
 					"
 					class="col-md-1"
 				>
@@ -222,7 +222,7 @@
 				*ngIf="
 					vm?.backend?.playbook_done &&
 					!vm?.backend?.playbook_successful &&
-					(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE)
+					(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)
 				"
 			>
 				Some steps in your playbook have failed!<br />You can download the playbook logs on the detailed overview of the
@@ -280,9 +280,9 @@
 					[id]="'showDetailsButton_' + vm?.name"
 					*ngIf="vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin"
 					[disabled]="
-						!(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE) &&
-						!(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF) &&
-						!(vm?.status | hasStatus : VirtualMachineStates.staticDELETED)
+						!(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) &&
+						!(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) &&
+						!(vm?.status | hasStatus: VirtualMachineStates.staticDELETED)
 					"
 					[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
 				>
@@ -293,7 +293,7 @@
 				<button
 					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					*ngIf="vm.cardState !== 1"
-					[disabled]="!(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE)"
+					[disabled]="!(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)"
 					[id]="'showHowToConnectButton_' + vm?.name"
 					(click)="vm.cardState = 1"
 				>
@@ -313,12 +313,12 @@
 					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					*ngIf="vm.cardState !== 2 && (vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin)"
 					[disabled]="
-						((vm?.status | statusInList : VirtualMachineStates.staticIN_PROCESS_STATE) &&
-							!(vm?.status | hasStatus : VirtualMachineStates.staticCHECKING_CONNECTION) &&
-							!(vm?.status | hasStatus : VirtualMachineStates.staticPORT_CLOSED)) ||
-						(vm?.status | hasStatus : VirtualMachineStates.staticNOT_FOUND) ||
-						(vm?.status | hasStatus : VirtualMachineStates.staticDELETED) ||
-						(vm?.status | hasStatus : VirtualMachineStates.staticDISABLED) ||
+						((vm?.status | statusInList: VirtualMachineStates.staticIN_PROCESS_STATE) &&
+							!(vm?.status | hasStatus: VirtualMachineStates.staticCHECKING_CONNECTION) &&
+							!(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED)) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticNOT_FOUND) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticDELETED) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticDISABLED) ||
 						this.vm.project_is_migrated_to_simple_vm ||
 						this.vm.migrate_project_to_simple_vm
 					"
@@ -335,7 +335,7 @@
 					[disabled]="
 						this.vm.project_is_migrated_to_simple_vm ||
 						this.vm.migrate_project_to_simple_vm ||
-						(vm?.status | hasStatus : VirtualMachineStates.staticDISABLED)
+						(vm?.status | hasStatus: VirtualMachineStates.staticDISABLED)
 					"
 					(click)="vm.cardState = 0"
 				>
@@ -346,7 +346,11 @@
 		<div class="row" *ngIf="this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm">
 			<div class="col-md-auto">
 				<div class="alert alert-info">
-					You are not able to control this instance via this platform as it is part of a migrated project!
+					You are not able to control this instance via this platform as it is part of a migrated project! You can
+					access the new platform here:
+					<a class="alert-link" [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noreferrer noopener">{{
+						NEW_SVM_PORTAL_LINK
+					}}</a>
 				</div>
 			</div>
 		</div>
@@ -355,12 +359,12 @@
 	<div
 		class="card-footer p-x-1 py-h"
 		*ngIf="
-			((vm?.status | hasStatus : VirtualMachineStates.staticACTIVE) ||
-				(vm?.status | hasStatus : VirtualMachineStates.staticCHECKING_CONNECTION) ||
-				(vm?.status | hasStatus : VirtualMachineStates.staticPORT_CLOSED) ||
-				(vm?.status | hasStatus : VirtualMachineStates.staticERROR) ||
-				(vm?.status | hasStatus : VirtualMachineStates.staticCREATION_FAILED) ||
-				(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF)) &&
+			((vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticCHECKING_CONNECTION) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticERROR) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticCREATION_FAILED) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)) &&
 			vm?.cardState !== 0
 		"
 	>
@@ -421,7 +425,7 @@
 
 		<div *ngIf="vm?.cardState === 2">
 			<div class="row">
-				<div class="col-md-auto" *ngIf="vm?.status | hasStatus : VirtualMachineStates.staticACTIVE">
+				<div class="col-md-auto" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'attachVolume' + vm?.name"
@@ -433,7 +437,7 @@
 				</div>
 				<div
 					class="col-md-auto"
-					*ngIf="(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF) && vm?.volumes.length > 0"
+					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) && vm?.volumes.length > 0"
 				>
 					<span
 						class="d-inline-block"
@@ -455,7 +459,7 @@
 				</div>
 				<div
 					class="col-md-auto"
-					*ngIf="(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE) && vm?.volumes.length > 0"
+					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) && vm?.volumes.length > 0"
 				>
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
@@ -468,7 +472,7 @@
 				</div>
 				<div
 					class="col-md-auto"
-					*ngIf="(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF) && vm?.volumes.length > 0"
+					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) && vm?.volumes.length > 0"
 				>
 					<span
 						class="d-inline-block"
@@ -488,7 +492,7 @@
 						</button>
 					</span>
 				</div>
-				<div class="col-md-auto" *ngIf="vm?.status | hasStatus : VirtualMachineStates.staticACTIVE">
+				<div class="col-md-auto" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'stopVMButton_' + vm?.name"
@@ -498,7 +502,7 @@
 						Stop VM
 					</div>
 				</div>
-				<div class="col-md-2" *ngIf="vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF">
+				<div class="col-md-2" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF">
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'restartVMButton_' + vm?.name"
@@ -514,7 +518,7 @@
 						vm.client.features['VM_REBOOT'] &&
 						!(
 							vm?.status
-							| statusInList : [VirtualMachineStates.staticDELETED, VirtualMachineStates.staticCREATION_FAILED]
+							| statusInList: [VirtualMachineStates.staticDELETED, VirtualMachineStates.staticCREATION_FAILED]
 						)
 					"
 				>
@@ -527,7 +531,7 @@
 						Reboot VM
 					</div>
 				</div>
-				<div class="col-md-auto" *ngIf="(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE) && vm?.backend">
+				<div class="col-md-auto" *ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) && vm?.backend">
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'recreateBackend_' + vm?.name"
@@ -540,8 +544,8 @@
 				<div
 					class="col-md-auto"
 					*ngIf="
-						(vm?.status | hasStatus : VirtualMachineStates.staticACTIVE) ||
-						(vm?.status | hasStatus : VirtualMachineStates.staticSHUTOFF)
+						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
 					"
 				>
 					<div
@@ -553,7 +557,7 @@
 						Create Snapshot
 					</div>
 				</div>
-				<div class="col-md-auto" *ngIf="vm?.status | statusInList : VirtualMachineStates.staticDELETABLE_STATES">
+				<div class="col-md-auto" *ngIf="vm?.status | statusInList: VirtualMachineStates.staticDELETABLE_STATES">
 					<div
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'deleteVMButton_' + vm?.name"

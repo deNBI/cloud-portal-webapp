@@ -17,7 +17,10 @@
 			</div>
 			<p *ngIf="!isCreationPage && type === 'machine'">
 				This machine is part of a project migrated to the new SimpleVM platform. You are not able to control this
-				machine using the current platform.
+				machine using the current platform. You can access the new platform here:
+				<a class="alert-link" [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noreferrer noopener">{{
+					NEW_SVM_PORTAL_LINK
+				}}</a>
 			</p>
 			<hr />
 			<div>
@@ -42,8 +45,11 @@
 			</div>
 			<hr />
 			<p class="mb-0">
-				You can get to the new platform
-				<a class="alert-link" href="{{ NEW_SVM_PORTAL_LINK }}" target="_blank" rel="noopener noreferrer">here</a>.
+				You can get to the new platform here:
+				<a class="alert-link" href="{{ NEW_SVM_PORTAL_LINK }}" target="_blank" rel="noopener noreferrer">{{
+					NEW_SVM_PORTAL_LINK
+				}}</a
+				>.
 			</p>
 		</div>
 	</div>

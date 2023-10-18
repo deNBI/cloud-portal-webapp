@@ -137,7 +137,11 @@
 		<div class="row" *ngIf="cluster.project_is_migrated_to_simple_vm || cluster.migrate_project_to_simple_vm">
 			<div class="col-md-auto">
 				<div class="alert alert-info">
-					You are not able to control this instance via this platform as it is part of a migrated project!
+					You are not able to control this instance via this platform as it is part of a migrated project! You can
+					access the new platform here:
+					<a class="alert-link" [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noreferrer noopener">{{
+						NEW_SVM_PORTAL_LINK
+					}}</a>
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,7 @@ import {
 import { ClipboardService } from 'ngx-clipboard';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
-import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL, NEW_SVM_PORTAL_LINK } from '../../../../links/links';
 import { Clusterinfo, WorkerBatch } from '../clusterinfo';
 import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
 import { ResumeClusterComponent } from '../../modals/resume-cluster/resume-cluster.component';
@@ -260,4 +260,6 @@ export class ClusterActionsComponent implements OnDestroy {
 			}),
 		);
 	}
+
+	protected readonly NEW_SVM_PORTAL_LINK = NEW_SVM_PORTAL_LINK;
 }
