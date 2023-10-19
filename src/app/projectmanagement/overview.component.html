@@ -1063,6 +1063,7 @@
 												*ngIf="
 													member.isAdmin && userinfo?.MemberId.toString() !== member.memberId.toString() && !member.isPi
 												"
+												[disabled]="member?.isPi"
 												class="btn btn-primary"
 												style="margin: 2px"
 												type="button"
@@ -1073,6 +1074,7 @@
 												(click)="removeMember(member.memberId, member.userName); notificationModal.show()"
 												*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
 												[id]="'remove_member_' + member.userName"
+												[disabled]="member?.isPi"
 												class="btn btn-danger"
 												style="margin: 2px"
 												type="button"
