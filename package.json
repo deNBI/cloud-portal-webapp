@@ -32,7 +32,7 @@
     "@angular/service-worker": "16.2.10",
     "@angular/upgrade": "16.2.10",
     "@coreui/angular": "4.5.25",
-    "@coreui/coreui": "4.3.2",
+    "@coreui/coreui": "4.2.6",
     "@coreui/icons-angular": "4.5.25",
     "@ng-bootstrap/ng-bootstrap": "^15.0.1",
     "@ng-select/ng-select": "^11.0.0",
@@ -75,8 +75,8 @@
     "svg2pdf.js": "2.2.2",
     "ts-helpers": "1.1.2",
     "tslib": "2.6.2",
-    "uglify-js": "3.17.4",
-    "zone.js": "0.14.0"
+    "uglify-js": "3.17.4"
+
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.4",
