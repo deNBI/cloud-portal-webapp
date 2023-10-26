@@ -30,7 +30,7 @@ jobs:
         id: tag
       - name: Get tag
         run: echo "The selected tag is ${{ steps.tag.outputs.TAG }}"
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '16.14.0'
       - run: git status
