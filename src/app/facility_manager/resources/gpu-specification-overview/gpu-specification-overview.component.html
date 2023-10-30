@@ -1,5 +1,10 @@
 <div class="card border-success" id="new_GPU_card" style="margin: 5px">
 	<div class="card-body">
+		<div class="alert alert-warning">
+			These specifications are global and can be used for all Facilities in their Machine definitions.
+			<br />However, an existing specification can only be modified by a manager of the facility that created it.
+		</div>
+
 		<h5 class="card-title">New GPU</h5>
 		<div class="row" [formGroup]="newGPUFormGroup">
 			<div class="col-2">
@@ -93,17 +98,22 @@
 	id="{{ gpu?.id + '_card' }}"
 	*ngFor="let gpu of gpuSpecifications"
 	style="margin: 5px"
-	[ngClass]="this.gpuSpecificationUpdateList[gpu.id] ? 'border-warning' : 'border-primary'"
+	[ngClass]="gpuSpecificationUpdateList[gpu.id] ? 'border-warning' : 'border-primary'"
 >
 	<div class="card-body">
 		<h5 class="card-title">{{ gpu?.type }}</h5>
 		<div class="row" [formGroup]="gpuFormGroups[gpu.id]">
 			<div class="col-2" style="margin: 5px">
 				<div class="text-muted"><small>Actions</small></div>
-				<div class="btn-group-vertical" role="group">
+				<div
+					class="btn-group-vertical"
+					role="group"
+					tooltip="Only an admin from the facility which created the specification can alter it"
+				>
 					<button
 						(click)="deleteGPUSpecification(gpu.id)"
 						class="btn btn-danger"
+						[disabled]="!gpu.is_changeable"
 						*ngIf="!this.gpuSpecificationUpdateList[gpu.id]"
 					>
 						Remove
@@ -111,20 +121,21 @@
 					<button
 						class="btn btn-warning"
 						(click)="changeGPUSpecificationToUpdate(gpu)"
-						*ngIf="!this.gpuSpecificationUpdateList[gpu.id]"
+						[disabled]="!gpu.is_changeable"
+						*ngIf="!gpuSpecificationUpdateList[gpu.id]"
 					>
 						Update
 					</button>
 					<button
 						(click)="updateGPUSpecification(gpu); changeGPUSpecificationToUpdate(gpu)"
 						class="btn btn-success"
-						*ngIf="this.gpuSpecificationUpdateList[gpu.id]"
+						*ngIf="gpuSpecificationUpdateList[gpu.id]"
 					>
 						Save
 					</button>
 					<button
 						class="btn btn-info"
-						*ngIf="this.gpuSpecificationUpdateList[gpu.id]"
+						*ngIf="gpuSpecificationUpdateList[gpu.id]"
 						(click)="reloadGPUSpecification(gpu); changeGPUSpecificationToUpdate(gpu)"
 					>
 						Cancel

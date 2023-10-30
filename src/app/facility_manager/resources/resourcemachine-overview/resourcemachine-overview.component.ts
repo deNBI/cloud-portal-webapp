@@ -124,7 +124,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 			);
 		} else {
 			const machine: ResourceMachine = this.resourceMachines.find(
-				(gpu: GPUSpecification): boolean => gpu.id === machine_id,
+				(res: ResourceMachine): boolean => res.id === machine_id,
 			);
 			const gpu_id: string = this.machinesFormGroups[machine_id].get(`${machine.id}_gpu_used_${slot}`).value;
 			machine.gpu_slots[slot] = this.gpu_types.find((gpu: GPUSpecification): boolean => gpu.id === gpu_id);
