@@ -54,10 +54,41 @@
 	class="badge badge-warning"
 	data-toggle="tooltip"
 	data-placement="auto"
+	title="This application was migrated"
+	*ngIf="application?.migrate_to_simple_vm"
+	><span style="font-size: 17px"> <i class="fas fa-file-export"></i></span
+></span>
+
+<span
+	style="margin-left: 12px"
+	class="badge badge-secondary"
+	data-toggle="tooltip"
+	data-placement="auto"
+	title="This application has an open modification request"
+	*ngIf="application?.project_modification_request"
+	><span style="font-size: 17px"> <i class="fas fa-edit"></i></span>
+</span>
+
+<span
+	style="margin-left: 12px"
+	class="badge badge-secondary"
+	data-toggle="tooltip"
+	data-placement="auto"
+	title="This application has an open lifetime extension request"
+	*ngIf="application?.project_lifetime_request"
+	><span style="font-size: 17px"> <i class="fas fa-clock-rotate-left"></i></span>
+</span>
+
+<span
+	style="margin-left: 12px"
+	class="badge badge-danger"
+	data-toggle="tooltip"
+	data-placement="auto"
 	title="This application uses sensitive data"
 	*ngIf="application?.project_application_person_related_data"
 	><span style="font-size: 17px"> <i class="fas fa-fingerprint"></i></span>
 </span>
+
 <span
 	style="margin-left: 12px"
 	class="badge badge-info"
