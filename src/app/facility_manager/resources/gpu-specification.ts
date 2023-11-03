@@ -5,6 +5,7 @@
 export class GPUSpecification {
 	id: string;
 	type: string = 'UNUSED';
+	is_changeable: boolean = false;
 	ram: number = 0;
 	cores: number = 0;
 
@@ -14,7 +15,7 @@ export class GPUSpecification {
 			this.type = gpuSpecification.type;
 			this.ram = gpuSpecification.ram;
 			this.cores = gpuSpecification.cores;
+			this.is_changeable = gpuSpecification.is_changeable;
 		}
-
 	}
 }
