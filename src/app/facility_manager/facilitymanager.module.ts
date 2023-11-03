@@ -7,6 +7,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AlertComponent, BadgeComponent } from '@coreui/angular';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FacilityProjectsOverviewComponent } from '../facility_manager/facilityprojectsoverview.component';
 import { ImageTagComponent } from '../facility_manager/imagetags.component';
 import { FacilitymanagerRoutingModule } from './facilitymanager-routing.module';
@@ -46,6 +47,7 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		SharedModuleModule,
 		AlertComponent,
 		BadgeComponent,
+		TooltipModule,
 	],
 	declarations: [
 		FacilityProjectsOverviewComponent,
