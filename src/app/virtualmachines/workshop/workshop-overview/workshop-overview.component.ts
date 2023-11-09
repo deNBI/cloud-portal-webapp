@@ -69,7 +69,10 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
-	constructor(private workshopService: WorkshopService, private groupService: GroupService) {
+	constructor(
+		private workshopService: WorkshopService,
+		private groupService: GroupService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -139,8 +142,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	datesOverlap(
 		first_start: number | Date,
 		first_end: number | Date,
-		second_start: number,
-		second_end: number,
+		second_start: number | Date,
+		second_end: number | Date,
 	): boolean {
 		return (
 			(first_start >= second_start && first_start <= second_end)
