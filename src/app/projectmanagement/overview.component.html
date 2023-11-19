@@ -224,9 +224,9 @@
 								(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
 								(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)
 							"
-							class="col"
+							class="col d-flex justify-content-end"
 						>
-							<button (click)="leaveProjectModal.show()" class="btn btn-danger float-right" type="button">
+							<button (click)="leaveProjectModal.show()" class="btn btn-danger" type="button" style="max-height: 40px">
 								<i class="fas fa-sign-out-alt"></i>
 								Leave Project
 							</button>
