@@ -62,6 +62,9 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.setInitialData();
 		this.subscription = new Subscription();
 		this.getTestimonialData();
+		this.newsService.getPossibleSocialConsents().subscribe((stuff: any) => {
+			console.log(stuff);
+		});
 	}
 
 	createFormGroup(): void {

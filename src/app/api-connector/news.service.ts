@@ -94,6 +94,15 @@ export class NewsService {
 		});
 	}
 
+	getPossibleSocialConsents(): Observable<any> {
+		const params: HttpParams = new HttpParams();
+
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/social_consents/`, {
+			params,
+			withCredentials: true,
+		});
+	}
+
 	sendTestimonialDraft(
 		title: string,
 		text: string,
