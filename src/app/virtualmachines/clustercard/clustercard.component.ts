@@ -71,7 +71,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 * Default wait time between status checks if no other value specified.
 	 * @private
 	 */
-	private checkStatusTimeout: number = 10000;
+	private checkStatusTimeout: number = 15000;
 
 	/**
 	 * Default time in ms to show an error message if no other value specified.
@@ -98,6 +98,8 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	}
 
 	ngOnInit() {
+		this.statusSubscription = new Subscription();
+
 		this.check_status_loop();
 	}
 
@@ -150,8 +152,6 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 
 	check_status_loop(): void {
 		this.all_worker_loaded = this.get_all_batches_loaded();
-		this.stopAllCheckStatusTimer();
-		this.statusSubscription = new Subscription();
 		this.checkStatusTimer = setTimeout((): void => {
 			this.statusSubscription.add(
 				this.virtualmachineservice
@@ -162,33 +162,10 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 						this.cluster.password = password;
 						if (
 							this.cluster.status !== VirtualMachineStates.DELETED
-							|| this.cluster.status !== VirtualMachineStates.MIGRATED
+							&& this.cluster.status !== VirtualMachineStates.NOT_FOUND
+							&& this.cluster.status !== VirtualMachineStates.MIGRATED
 						) {
 							this.check_status_loop();
-							this.check_worker_count_loop();
-						}
-					}),
-			);
-		}, this.checkStatusTimeout);
-	}
-
-	check_worker_count_loop(): void {
-		this.stopCheckWorkerStatusTimer();
-		this.statusSubscription = new Subscription();
-		this.checkWorkerStatusTimer = setTimeout((): void => {
-			this.statusSubscription.add(
-				this.virtualmachineservice
-					.getClusterInfo(this.cluster.cluster_id)
-					.subscribe((updated_cluster: Clusterinfo): void => {
-						const password: string = this.cluster.password;
-						this.cluster = new Clusterinfo(updated_cluster);
-						this.cluster.password = password;
-						this.all_worker_loaded = this.get_all_batches_loaded();
-						for (const batch of this.cluster.worker_batches) {
-							if (batch.running_worker < batch.worker_count) {
-								this.check_worker_count_loop();
-								break;
-							}
 						}
 					}),
 			);
