@@ -83,7 +83,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	WIKI_PERSONAL_DATA: string = WIKI_PERSONAL_DATA;
 	GDPR_LINK: string = GDPR_LINK;
 	survey_link_visible: boolean = false;
-	max_lifetime: number = 6;
+
+	MAX_LIFETIME_DEFAULT: number = 6;
+	max_lifetime: number = this.MAX_LIFETIME_DEFAULT;
 
 	acknowledgeModalTitle: string = 'Acknowledge';
 	acknowledgeModalType: string = 'info';
@@ -418,6 +420,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			case 'nfdi': {
 				if (!checked) {
 					this.application.project_application_nfdi = '';
+				} else {
+					this.max_lifetime = 12;
 				}
 				break;
 			}
