@@ -29,10 +29,8 @@ export const WIKI_CREATE_SNAPSHOT_LINK: string = `${environment.SIMPLEVM_WIKI_PR
 export const SCALE_SCRIPT_LINK: string =	'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/scaling.py';
 export const WIKI_MOUNT_VOLUME: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/volumes/#mount-a-volume`;
 export const WIKI_MOSH_LINK: string = `${environment.WIKI_PRE}Tutorials/Mosh/`;
-export const WIKI_EPHEMERAL_LINK: string = `${environment.WIKI_PRE}simple_vm/create_instance/#about-ephemeral-flavors`;
-// GO ON HERE
-export const WIKI_GROUP_INVITATIONS: string = `${environment.WIKI_PRE}simple_vm/project_overview/#inviting-members`;
-export const SCALING_UP_WIKI: string = `${environment.WIKI_PRE}simple_vm/Cluster/cluster_overview/#3-scale-up`;
+export const WIKI_EPHEMERAL_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/create_instance/#about-ephemeral-flavors`;
+export const SCALING_UP_WIKI: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/Cluster/cluster_overview/#scale-up-your-cluster`;
 export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
 export const WIKI_PERSONAL_DATA: string = `${environment.WIKI_PRE}portal/personal_data`;
 export const SURVEY_LINK: string = 'https://cloud.denbi.de/survey/index.php/252136?lang=en';
