@@ -4,9 +4,11 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 const VO_NAME: string = window['env']['VO_NAME'] || 'denbi-dev';
+const NEW_SIMPLE_VM: string = window['env']['NEW_SIMPLE_VM'] || 'https://simplevm.denbi.de';
 
 export const environment: any = {
 	WIKI_PRE: 'https://portal-dev.denbi.de/wiki/',
+	SIMPLEVM_WIKI_PRE: `https://${NEW_SIMPLE_VM}/wiki/`,
 	NEW_SVM_PORTAL_LINK: 'http://localhost:4200/#/',
 	production: false,
 	vo: 3334,
