@@ -7,6 +7,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL, SINGLE_TESTIMONIAL_PAGE_LINK } from '../../../../links/links';
 import { NewsService } from '../../../api-connector/news.service';
 import { Application } from '../../../applications/application.model/application.model';
+import { SocialConsent } from './social-consent.model';
 
 @Component({
 	selector: 'app-testimonial-form',
@@ -42,6 +43,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	@Input() testimonialSent: boolean;
 	initialLoadingSuccessful: boolean = false;
 	image_url: string = '';
+	possibleSocialConsents: SocialConsent[] = [];
 	submissionSuccessful: boolean = false;
 	autosaveTimer: ReturnType<typeof setTimeout>;
 	autosaveTimeout: number = 60000;
@@ -62,8 +64,8 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.setInitialData();
 		this.subscription = new Subscription();
 		this.getTestimonialData();
-		this.newsService.getPossibleSocialConsents().subscribe((stuff: any) => {
-			console.log(stuff);
+		this.newsService.getPossibleSocialConsents().subscribe((consents: SocialConsent[]) => {
+			this.possibleSocialConsents = consents;
 		});
 	}
 
