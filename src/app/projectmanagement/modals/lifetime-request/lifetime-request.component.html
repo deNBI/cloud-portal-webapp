@@ -76,7 +76,18 @@
 						<span class="input-group-text" style="padding: 0 !important"> months</span>
 					</div>
 				</div>
-				<span class="help-block">Number of months you want to extend the project (up to a maximum of 6 months).</span>
+				<span class="help-block"
+					>Number of months you want to extend the project. Consider a maximum of {{ max_lifetime }} months</span
+				>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="alert alert-info">
+					Please consider: in certain cases the possible amount of months to extend the project can be higher than the
+					given maximum. This applies e.g for <strong>NFDI-projects</strong>. Please use the comment function to justify
+					the need for an extension beyond the maximum possible number of months.
+				</div>
 			</div>
 		</div>
 		<div class="form-group row" *ngIf="initial_number_of_edam_terms === 0">
