@@ -321,9 +321,6 @@
 						timeframes are displayed using the "Central European Time". The date you enter is
 						<strong> dependent on the timezone of your browser </strong>. Please enter the time slots day by day, to be
 						more precise!
-						<br />
-						See more on timeframes
-						<a [href]="WIKI_WORKSHOP_TIMEFRAMES" target="_blank" rel="noopener noreferrer">here</a>.
 					</div>
 					<h6 class="card-title">Existing timeframes</h6>
 					<table class="table" *ngIf="workshopTimeFrames.length > 0">
@@ -340,8 +337,8 @@
 						<tbody>
 							<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index">
 								<th scope="row">{{ i + 1 }}</th>
-								<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-								<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ wstimeframe.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ wstimeframe.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
 								<td>{{ wstimeframe.workshop?.longname }}</td>
 								<td>{{ wstimeframe.description }}</td>
 								<td>
@@ -722,13 +719,13 @@
 						<tbody>
 							<tr>
 								<th scope="row"></th>
-								<td>{{ newWorkShopTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-								<td>{{ newWorkShopTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ newWorkShopTimeFrame.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ newWorkShopTimeFrame.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
 								<td>{{ newWorkShopTimeFrame.workshop?.longname }}</td>
 								<td>
 									{{
 										newWorkShopTimeFrame.description.length > 12
-											? (newWorkShopTimeFrame.description | slice : 0 : 12) + '...'
+											? (newWorkShopTimeFrame.description | slice: 0 : 12) + '...'
 											: newWorkShopTimeFrame.description
 									}}
 								</td>
@@ -747,13 +744,13 @@
 						<tbody>
 							<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index">
 								<th scope="row">{{ i + 1 }}</th>
-								<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-								<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ wstimeframe.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ wstimeframe.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
 								<td>{{ wstimeframe.workshop?.longname }}</td>
 								<td>
 									{{
 										wstimeframe.description.length > 12
-											? (wstimeframe.description | slice : 0 : 12) + '...'
+											? (wstimeframe.description | slice: 0 : 12) + '...'
 											: wstimeframe.description
 									}}
 								</td>

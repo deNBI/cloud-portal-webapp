@@ -30,7 +30,6 @@ import {
 	WIKI_PERSISTENT_TERMINAL_LINK,
 	WIKI_RSTUDIO_LINK,
 	WIKI_VOLUME_OVERVIEW,
-	WIKI_VOLUMES_LINK,
 } from '../../../links/links';
 import { Volume } from '../volumes/volume';
 import { VolumeStates } from '../volumes/volume_states';
@@ -90,7 +89,6 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
 	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
-	WIKI_VOLUMES_LINK: string = WIKI_VOLUMES_LINK;
 	WIKI_CREATE_SNAPSHOT_LINK: string = WIKI_CREATE_SNAPSHOT_LINK;
 	WIKI_PERSISTENT_TERMINAL_LINK: string = WIKI_PERSISTENT_TERMINAL_LINK;
 	SNAPSHOT_MAX_RAM: number = SnapshotModel.MAX_RAM;

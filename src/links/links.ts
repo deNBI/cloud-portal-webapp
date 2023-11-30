@@ -1,19 +1,19 @@
 import { environment } from '../environments/environment';
 
-export const WIKI_SNAPSHOTS: string = `${environment.WIKI_PRE}simple_vm/snapshots/`;
+export const WIKI_SNAPSHOTS: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/snapshots/`;
 export const WIKI: string = `${environment.WIKI_PRE}`;
 export const WIKI_GENERATE_KEYS: string = `${environment.WIKI_PRE}quickstart/#generate-ssh-keys`;
 export const WIKI_NEWS_MANAGEMENT: string = `${environment.WIKI_PRE}cloud_admin/#news-management`;
-export const WIKI_SIMPLEVM_CUSTOMISATION: string = `${environment.WIKI_PRE}simple_vm/customization/`;
-export const WIKI_EXTEND_VOLUME: string = `${environment.WIKI_PRE}simple_vm/volumes/#extend-a-volume`;
-export const WIKI_VOLUME_OVERVIEW: string = `${environment.WIKI_PRE}simple_vm/volumes/`;
-export const WIKI_RESENV_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#research-environments`;
-export const WIKI_RSTUDIO_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#rstudio`;
-export const WIKI_JUPYTERLAB_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#jupyterlab`;
-export const WIKI_GUACAMOLE_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#apache-guacamole`;
-export const WIKI_NEW_INSTANCE_LINK: string = `${environment.WIKI_PRE}simple_vm/new_instance/`;
-export const WIKI_INSTANCE_OVERVIEW_LINK: string = `${environment.WIKI_PRE}simple_vm/instance_overview/`;
-export const WIKI_INSTANCE_DETAIL_LINK: string = `${environment.WIKI_PRE}simple_vm/instance_detail/`;
+export const WIKI_SIMPLEVM_CUSTOMISATION: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/customization/`;
+export const WIKI_EXTEND_VOLUME: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/volumes/#extend-a-volume`;
+export const WIKI_VOLUME_OVERVIEW: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/volumes/`;
+export const WIKI_RESENV_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/customization/#research-environments`;
+export const WIKI_RSTUDIO_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/customization/#rstudio`;
+export const WIKI_JUPYTERLAB_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/customization/#jupyterlab`;
+export const WIKI_GUACAMOLE_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/customization/#apache-guacamole`;
+export const WIKI_NEW_INSTANCE_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/create_instance/`;
+export const WIKI_INSTANCE_OVERVIEW_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/instance_overview/`;
+export const WIKI_INSTANCE_DETAIL_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/instance_detail/`;
 export const WIKI_LINK_ACCOUNTS: string = `${environment.WIKI_PRE}portal/user_information/#link-accounts-to-elixir`;
 export const WIKI_CLOUD_TERMS_LINK: string = `${environment.WIKI_PRE}portal/allocation/#terms`;
 export const LIFESCIENCE_LINKING_ACCOUNTS: string = 'https://profile.aai.lifescience-ri.eu/profile/identities';
@@ -24,16 +24,13 @@ export const WIKI_PUBLICATIONS: string = `${environment.WIKI_PRE}citation_and_pu
 export const WIKI_MEMBER_MANAGEMENT: string = `${environment.WIKI_PRE}portal/project_overview/#member-management`;
 export const WIKI_FAQ: string = `${environment.WIKI_PRE}FAQ/`;
 export const WIKI_MOTD: string = `${environment.WIKI_PRE}cloud_admin/news_management/#message-of-the-day`;
-export const WIKI_WORKSHOPS: string = `${environment.WIKI_PRE}simple_vm/workshop/`;
-export const WIKI_CREATE_SNAPSHOT_LINK: string = `${environment.WIKI_PRE}simple_vm/snapshots/#create-snapshot`;
+export const WIKI_WORKSHOPS: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/workshop/`;
+export const WIKI_CREATE_SNAPSHOT_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/snapshots/#create-a-snapshot`;
 export const SCALE_SCRIPT_LINK: string =	'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/scaling.py';
-export const WIKI_MOUNT_VOLUME: string = `${environment.WIKI_PRE}simple_vm/volumes/#mount-a-volume`;
-export const WIKI_VOLUMES_LINK: string = `${environment.WIKI_PRE}simple_vm/volumes/`;
+export const WIKI_MOUNT_VOLUME: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/volumes/#mount-a-volume`;
 export const WIKI_MOSH_LINK: string = `${environment.WIKI_PRE}Tutorials/Mosh/`;
-export const WIKI_WORKSHOP_TIMEFRAMES: string = `${environment.WIKI_PRE}simple_vm/workshop/#workshop-timeframes`;
-export const WIKI_EPHEMERAL_LINK: string = `${environment.WIKI_PRE}simple_vm/new_instance/#information-for-ephemeral-flavors`;
-export const WIKI_GROUP_INVITATIONS: string = `${environment.WIKI_PRE}simple_vm/project_overview/#inviting-members`;
-export const SCALING_UP_WIKI: string = `${environment.WIKI_PRE}simple_vm/Cluster/cluster_overview/#3-scale-up`;
+export const WIKI_EPHEMERAL_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/create_instance/#about-ephemeral-flavors`;
+export const SCALING_UP_WIKI: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/Cluster/cluster_overview/#scale-up-your-cluster`;
 export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
 export const WIKI_PERSONAL_DATA: string = `${environment.WIKI_PRE}portal/personal_data`;
 export const SURVEY_LINK: string = 'https://cloud.denbi.de/survey/index.php/252136?lang=en';
@@ -81,12 +78,10 @@ export const WIKI_LINKS: string[] = [
 	WIKI_FAQ,
 	WIKI_MOTD,
 	WIKI_CREATE_SNAPSHOT_LINK,
-	WIKI_VOLUMES_LINK,
 	WIKI_EPHEMERAL_LINK,
 	WIKI_MOSH_LINK,
 	WIKI_PERSONAL_DATA,
 	WIKI_SVM_MIGRATION_LINK,
-	WIKI_WORKSHOP_TIMEFRAMES,
 ];
 
 export const LANDING_PAGE_LINKS: string[] = [

@@ -111,9 +111,9 @@
 														selectedCenter[application.project_application_id] !== undefined ? 'is-valid' : 'is-invalid'
 													"
 													*ngIf="
-														(application | hasstatusinlist : Application_States.SUBMITTED) ||
-														(application | hasstatusinlist : Application_States.CONFIRMATION_DECLINED) ||
-														((application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION) &&
+														(application | hasstatusinlist: Application_States.SUBMITTED) ||
+														(application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
+														((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
 															!application?.project_application_compute_center?.FacilityId)
 													"
 													[(ngModel)]="selectedCenter[application.project_application_id]"
@@ -134,7 +134,7 @@
 														</option>
 													</ng-container>
 												</select>
-												<span *ngIf="application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION">{{
+												<span *ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION">{{
 													application?.project_application_compute_center?.Name
 												}}</span>
 											</td>
@@ -143,8 +143,8 @@
 												<div class="btn-group">
 													<button
 														*ngIf="
-															(application | hasstatusinlist : Application_States.CONFIRMATION_DECLINED) ||
-															((application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION) &&
+															(application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
+															((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
 																!application?.project_application_compute_center?.FacilityId)
 														"
 														style="margin: 2px"
@@ -165,8 +165,8 @@
 													</button>
 													<button
 														*ngIf="
-															(application | hasstatusinlist : Application_States.SUBMITTED) &&
-															!(application | hasstatusinlist : Application_States.APPROVED)
+															(application | hasstatusinlist: Application_States.SUBMITTED) &&
+															!(application | hasstatusinlist: Application_States.APPROVED)
 														"
 														style="margin: 2px"
 														(click)="showConfirmationModal(application, ConfirmationActions.DELETE_APPLICATION)"
@@ -199,7 +199,7 @@
 													</button>
 													<button
 														*ngIf="
-															(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION) &&
+															(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
 															application?.project_application_compute_center?.FacilityId
 														"
 														style="margin: 2px"
@@ -214,7 +214,7 @@
 													</button>
 													<button
 														*ngIf="
-															(application | hasstatusinlist : Application_States.SUBMITTED) &&
+															(application | hasstatusinlist: Application_States.SUBMITTED) &&
 															application?.project_application_openstack_project
 														"
 														style="margin: 2px"
@@ -231,7 +231,7 @@
 
 													<button
 														*ngIf="
-															(application | hasstatusinlist : Application_States.SUBMITTED) &&
+															(application | hasstatusinlist: Application_States.SUBMITTED) &&
 															!application?.project_application_openstack_project
 														"
 														style="margin: 2px"
@@ -250,7 +250,7 @@
 													</button>
 
 													<button
-														*ngIf="application | hasstatusinlist : Application_States.SUBMITTED"
+														*ngIf="application | hasstatusinlist: Application_States.SUBMITTED"
 														type="button"
 														class="btn btn-danger"
 														id="btn_decline_{{ application.project_application_shortname }}"
@@ -264,7 +264,7 @@
 													<button
 														*ngIf="
 															application.project_application_pi_approved &&
-															(application | hasstatusinlist : Application_States.SUBMITTED)
+															(application | hasstatusinlist: Application_States.SUBMITTED)
 														"
 														type="button"
 														id="btn_reset_pi_{{ application.project_application_shortname }}"
@@ -406,7 +406,7 @@
 															'modification_adjustment_' + application?.project_application_shortname
 														"
 														*ngIf="
-															(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) &&
+															(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
 															application?.project_modification_request
 														"
 														style="margin: 2px"
@@ -421,7 +421,7 @@
 													<button
 														[id]="'modification_approval_' + application?.project_application_shortname"
 														*ngIf="
-															(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) &&
+															(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
 															application?.project_application_openstack_project &&
 															application?.project_modification_request
 														"
@@ -438,7 +438,7 @@
 													<button
 														[id]="'modification_approval_' + application?.project_application_shortname"
 														*ngIf="
-															(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) &&
+															(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
 															!application?.project_application_openstack_project &&
 															application?.project_modification_request
 														"
@@ -459,7 +459,7 @@
 													</button>
 													<button
 														*ngIf="
-															(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) &&
+															(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
 															application?.project_modification_request
 														"
 														type="button"
@@ -592,7 +592,7 @@
 														[id]="'extension_approval_' + application?.project_application_shortname"
 														[attr.data-test-id]="'extension_approval_' + application?.project_application_shortname"
 														*ngIf="
-															(application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) &&
+															(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
 															application?.project_lifetime_request
 														"
 														style="margin: 2px"
@@ -607,7 +607,7 @@
 														[id]="'extension_adjustment_' + application?.project_application_shortname"
 														[attr.data-test-id]="'extension_adjustment_' + application?.project_application_shortname"
 														*ngIf="
-															(application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) &&
+															(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
 															application?.project_lifetime_request
 														"
 														style="margin: 2px"
@@ -620,7 +620,7 @@
 													</button>
 													<button
 														*ngIf="
-															(application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) &&
+															(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
 															application?.project_lifetime_request
 														"
 														type="button"
@@ -813,7 +813,7 @@
 													</button>
 													<button
 														[id]="'credit_extension_approval_' + application?.project_application_shortname"
-														*ngIf="application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED"
+														*ngIf="application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED"
 														style="margin: 2px"
 														(click)="showConfirmationModal(application, ConfirmationActions.APPROVE_CREDITS)"
 														type="button"
@@ -825,7 +825,7 @@
 
 													<button
 														[id]="'credit_extension_decline_' + application?.project_application_shortname"
-														*ngIf="application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED"
+														*ngIf="application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED"
 														(click)="showConfirmationModal(application, ConfirmationActions.DECLINE_CREDITS)"
 														type="button"
 														class="btn btn-danger"
@@ -1048,6 +1048,57 @@
 					</div>
 
 					<div class="form-group row">
+						<label class="col-md-4 form-control-label" for="initially_requested_lifetime_counter"
+							><strong
+								>Lifetime
+								<i
+									data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+									data-balloon-pos="down"
+									data-balloon-length="large"
+									><i class="icon-question" style="cursor: pointer"></i></i></strong
+						></label>
+						<div class="col">
+							<div class="input-group">
+								<input
+									required
+									class="form-control"
+									name="initially_requested_lifetime_counter"
+									id="initially_requested_lifetime_counter"
+									placeholder="NA"
+									value="{{ selectedApplication?.project_application_lifetime }}"
+									type="number"
+									disabled
+								/>
+							</div>
+							<span class="help-block">Amount of requested lifetime months</span>
+						</div>
+
+						<div class="col">
+							<div class="input-group">
+								<input
+									required
+									class="form-control"
+									id="granted_lifetime_counter"
+									name="granted_lifetime_counter"
+									placeholder="e.g. 20"
+									type="number"
+									min="0"
+									max="24"
+									step="1"
+									[(ngModel)]="adjustedApplication.project_application_lifetime"
+									appMinAmount="0"
+									appInteger
+									[ngClass]="{
+										'is-invalid': resourceAdjustmentForm.controls.granted_lifetime_counter?.invalid,
+										'is-valid': resourceAdjustmentForm.controls.granted_lifetime_counter?.valid
+									}"
+								/>
+							</div>
+							<span class="help-block">Lifetime you want to grant</span>
+						</div>
+					</div>
+
+					<div class="form-group row">
 						<h6 class="col-md-8 form-control-label">
 							Resources*
 							<i data-balloon="Select the number of Virtual Machines you want to grant." data-balloon-pos="down">
@@ -1096,7 +1147,7 @@
 													name="{{ fl.name }}_requested"
 													id="{{ fl.name }}_requested"
 													type="text"
-													value="{{ selectedApplication | flavorCounter : fl }}"
+													value="{{ selectedApplication | flavorCounter: fl }}"
 													placeholder="0"
 													disabled
 												/>
@@ -1116,7 +1167,7 @@
 													step="1"
 													placeholder="e.g 1"
 													(ngModelChange)="onChangeFlavor(fl, $event)"
-													[ngModel]="adjustedApplication | flavorCounter : fl"
+													[ngModel]="adjustedApplication | flavorCounter: fl"
 													#name="ngModel"
 													appMinAmount="0"
 													appIntegerOrNull
@@ -1485,7 +1536,7 @@
 									type="number"
 									min="1"
 									step="1"
-									max="6"
+									max="24"
 									[(ngModel)]="adjustedApplication?.project_lifetime_request.extra_lifetime"
 									appMinAmount="0"
 									appInteger
