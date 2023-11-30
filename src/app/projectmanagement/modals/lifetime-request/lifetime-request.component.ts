@@ -24,7 +24,8 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	life_time_string: string;
 	end_date: Date;
 	new_end_date: Date | string;
-	max_lifetime: number = 6;
+	MAX_LIFETIME_DEFAULT: number = 6;
+	max_lifetime: number = this.MAX_LIFETIME_DEFAULT;
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
 	ontology_search_keyword: string = 'term';
@@ -45,7 +46,11 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			this.edam_ontology_terms = terms;
 			this.searchTermsInEdamTerms();
 		});
-
+		if (this.project.project_application_nfdi?.length > 0) {
+			this.max_lifetime = 12;
+		} else {
+			this.max_lifetime = this.MAX_LIFETIME_DEFAULT;
+		}
 		if (this.project.project_lifetime_request) {
 			this.temp_project_extension = new ApplicationLifetimeExtension(this.project.project_lifetime_request);
 		} else {
