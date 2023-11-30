@@ -44,6 +44,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	initialLoadingSuccessful: boolean = false;
 	image_url: string = '';
 	possibleSocialConsents: SocialConsent[] = [];
+	selectedSocialConsents: SocialConsent[] = [];
 	submissionSuccessful: boolean = false;
 	autosaveTimer: ReturnType<typeof setTimeout>;
 	autosaveTimeout: number = 60000;
@@ -106,6 +107,21 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.testimonialFormGroup.valueChanges.subscribe((): void => {
 			this.checkAutosaveNeed();
 		});
+	}
+	/**
+	 * updateSelectedOptions does not work yet
+	 * @param socialConsent the object that got checked/unchecked
+	 */
+	updateSelectedOptions(socialConsent: SocialConsent): void {
+		// needs adustment ! let idx: number = this.selectedSocialConsents.findIndex((consent: SocialConsent): boolean => {return consent.id.toString() === socialConsent.id.toString()});
+		const idx: number = 0; // TODO: ADJUST
+		if (idx !== -1) {
+			this.selectedSocialConsents = this.selectedSocialConsents.splice(idx, 1);
+		} else {
+			this.selectedSocialConsents.push(socialConsent);
+		}
+
+		console.log(this.selectedSocialConsents);
 	}
 
 	setInitialData(): void {

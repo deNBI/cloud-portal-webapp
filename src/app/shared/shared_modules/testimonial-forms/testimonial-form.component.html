@@ -272,7 +272,7 @@
 			<div class="col-md-3">
 				<label class="form-control-label">
 					<strong>
-						Publication <Consent></Consent>
+						Publication Consent*
 						<i
 							class="icon-question"
 							data-toggle="tooltip"
@@ -294,6 +294,7 @@
 							type="checkbox"
 							[value]="socialConsent.id"
 							[id]="'checkbox_' + socialConsent.id"
+							(change)="updateSelectedOptions(socialConsent)"
 						/>
 						<label class="form-check-label" for="checkbox_{{ socialConsent.id }}">{{ socialConsent.name }}</label>
 					</div>
