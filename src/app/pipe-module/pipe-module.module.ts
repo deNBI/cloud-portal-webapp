@@ -15,6 +15,7 @@ import { IsFutureTimePipe } from './pipes/futureTime.pipe';
 import { IsMigratedProjectIdPipe } from './pipes/migratedList';
 import { HasStatusNotInListPipe } from './pipes/has-status-not-in-list.pipe';
 import { SignificancePipe } from '../shared/shared_modules/components/maintenance-notification/significance-pipe/significance.pipe';
+import { SocialConsentGivenPipe } from './pipes/social-consent-given.pipe';
 
 /**
  * Pipemodule
@@ -39,6 +40,7 @@ import { SignificancePipe } from '../shared/shared_modules/components/maintenanc
 		IsMigratedProjectIdPipe,
 		HasStatusNotInListPipe,
 		SignificancePipe,
+		SocialConsentGivenPipe,
 	],
 	exports: [
 		FlavorCounterPipe,
@@ -59,6 +61,7 @@ import { SignificancePipe } from '../shared/shared_modules/components/maintenanc
 		IsMigratedProjectIdPipe,
 		HasStatusNotInListPipe,
 		SignificancePipe,
+		SocialConsentGivenPipe,
 	],
 	imports: [CommonModule],
 	providers: [IsMigratedProjectIdPipe],

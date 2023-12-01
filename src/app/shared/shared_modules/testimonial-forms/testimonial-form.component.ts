@@ -113,10 +113,10 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	 * @param socialConsent the object that got checked/unchecked
 	 */
 	updateSelectedOptions(socialConsent: SocialConsent): void {
-		// needs adustment ! let idx: number = this.selectedSocialConsents.findIndex((consent: SocialConsent): boolean => {return consent.id.toString() === socialConsent.id.toString()});
-		const idx: number = 0; // TODO: ADJUST
+		const idx: number = this.selectedSocialConsents.findIndex(consent => consent.id === socialConsent.id);
+
 		if (idx !== -1) {
-			this.selectedSocialConsents = this.selectedSocialConsents.splice(idx, 1);
+			this.selectedSocialConsents.splice(idx, 1);
 		} else {
 			this.selectedSocialConsents.push(socialConsent);
 		}
@@ -194,6 +194,8 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.institution = result['institution'];
 		this.workgroup = result['workgroup'];
 		this.contributor = result['contributor'];
+		this.selectedSocialConsents = result['publication_channels'];
+		console.log(this.selectedSocialConsents);
 	}
 
 	stopAutosaveTimer(): void {

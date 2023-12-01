@@ -286,23 +286,30 @@
 				<div class="input-group">
 					<div class="form-check mx-2">
 						<input class="form-check-input" type="checkbox" disabled checked id="website_checkbox" />
-						<label class="form-check-label" for="website_checkbox">Website</label>
+						<label class="form-check-label" for="website_checkbox"
+							>Website
+							<i class="icon-question" data-toggle="tooltip" title="Any content on the de.NBI and de.NBI Cloud Website">
+							</i
+						></label>
 					</div>
 					<div class="form-check mx-2" *ngFor="let socialConsent of possibleSocialConsents">
 						<input
 							class="form-check-input"
 							type="checkbox"
 							[value]="socialConsent.id"
+							[checked]="selectedSocialConsents | socialConsentGiven: socialConsent"
 							[id]="'checkbox_' + socialConsent.id"
 							(change)="updateSelectedOptions(socialConsent)"
 						/>
-						<label class="form-check-label" for="checkbox_{{ socialConsent.id }}">{{ socialConsent.name }}</label>
+						<label class="form-check-label" for="checkbox_{{ socialConsent.id }}"
+							>{{ socialConsent.name }}
+							<i class="icon-question" data-toggle="tooltip" title="{{ socialConsent.description }}"> </i
+						></label>
 					</div>
-					<!-- check if handlings needs to be adjusted here!-->
 				</div>
 				<div class="form-text">
-					Please indicate here on which channels/platforms we may publish your testimonial. The website channel is
-					selected by default and is the absolute minimum.
+					Please indicate here on which channels/platforms we may publish your testimonial or information about your
+					testimonial. The website channels are selected by default and cannot be deselected as a channel.
 				</div>
 			</div>
 		</div>
