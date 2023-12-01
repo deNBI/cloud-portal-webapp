@@ -11,9 +11,9 @@ export class SocialConsentGivenPipe implements PipeTransform {
 	transform(list: SocialConsent[], value: SocialConsent): boolean {
 		const idx: number = list.findIndex(consent => consent.id === value.id);
 		if (idx !== -1) {
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 	}
 }

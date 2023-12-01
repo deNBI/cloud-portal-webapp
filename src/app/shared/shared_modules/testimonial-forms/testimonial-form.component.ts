@@ -120,8 +120,6 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		} else {
 			this.selectedSocialConsents.push(socialConsent);
 		}
-
-		console.log(this.selectedSocialConsents);
 	}
 
 	setInitialData(): void {
@@ -195,7 +193,6 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.workgroup = result['workgroup'];
 		this.contributor = result['contributor'];
 		this.selectedSocialConsents = result['publication_channels'];
-		console.log(this.selectedSocialConsents);
 	}
 
 	stopAutosaveTimer(): void {
@@ -235,6 +232,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 							this.workgroup,
 							this.simple_vm,
 							this.project_application.project_application_id.toString(),
+							this.selectedSocialConsents,
 						)
 						.subscribe(
 							(): void => {
@@ -282,6 +280,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 					this.simple_vm,
 					this.image_url,
 					this.project_application.project_application_id.toString(),
+					this.selectedSocialConsents,
 					this.file,
 				)
 				.subscribe((result: any): any => {

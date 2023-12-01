@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { SocialConsent } from 'app/shared/shared_modules/testimonial-forms/social-consent.model';
 import { ApiSettings } from './api-settings.service';
 import { FacilityNews } from '../facility_manager/newsmanagement/facility-news';
 import { News } from '../news/news.model';
@@ -113,8 +114,12 @@ export class NewsService {
 		simple_vm: boolean,
 		image_url: string,
 		project_application_id: string,
+		soc_consents: SocialConsent[],
 		file: File,
 	): Observable<any> {
+		const consents_list = soc_consents.map(soc => soc.id);
+		const consents = JSON.stringify(consents_list);
+
 		const formData: FormData = new FormData();
 		formData.append('file', file);
 		formData.append('title', title);
@@ -125,6 +130,7 @@ export class NewsService {
 		formData.append('workgroup', workgroup);
 		formData.append('simple_vm', JSON.stringify(simple_vm));
 		formData.append('project_application_id', project_application_id);
+		formData.append('consents', consents);
 		console.log(formData);
 
 		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, formData, {
@@ -141,7 +147,11 @@ export class NewsService {
 		workgroup: string,
 		simple_vm: boolean,
 		project_application_id: string,
+		soc_consents: SocialConsent[],
 	): Observable<any> {
+		const consents_list = soc_consents.map(soc => soc.id);
+		const consents = JSON.stringify(consents_list);
+
 		const testimonialData: any = {
 			title,
 			text,
@@ -151,6 +161,7 @@ export class NewsService {
 			workgroup,
 			simple_vm,
 			project_application_id,
+			consents,
 		};
 
 		return this.http.post<any>(
