@@ -8,7 +8,7 @@ const NEW_SIMPLE_VM: string = window['env']['NEW_SIMPLE_VM'] || 'https://simplev
 
 export const environment: any = {
 	WIKI_PRE: 'https://portal-dev.denbi.de/wiki/',
-	SIMPLEVM_WIKI_PRE: `https://${NEW_SIMPLE_VM}/wiki/`,
+	SIMPLEVM_WIKI_PRE: `${NEW_SIMPLE_VM}/wiki/`,
 	NEW_SVM_PORTAL_LINK: 'http://localhost:4200/#/',
 	production: false,
 	vo: 3334,
