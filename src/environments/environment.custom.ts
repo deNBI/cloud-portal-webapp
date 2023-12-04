@@ -4,7 +4,7 @@ const NEW_SIMPLE_VM: string = window['env']['NEW_SIMPLE_VM'] || 'https://simplev
 
 export const environment: any = {
 	WIKI_PRE: `https://${API_HOST}/wiki/`,
-	SIMPLEVM_WIKI_PRE: `https://${NEW_SIMPLE_VM}/wiki/`,
+	SIMPLEVM_WIKI_PRE: `${NEW_SIMPLE_VM}/wiki/`,
 	NEW_SVM_PORTAL_LINK: `${NEW_SIMPLE_VM}/portal/webapp/`,
 	vo: window['env']['VO'] || 3335,
 	voName: VO_NAME,
