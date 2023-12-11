@@ -168,6 +168,10 @@ export class Application {
 		return this.project_application_statuses?.includes(Application_States.SUBMITTED);
 	}
 
+	public isMigrated(): boolean {
+		return this.migrate_to_simple_vm || this.migrated_simple_vm_resources;
+	}
+
 	public hasTerminatedStatus(): boolean {
 		return this.project_application_statuses?.includes(Application_States.TERMINATED);
 	}
