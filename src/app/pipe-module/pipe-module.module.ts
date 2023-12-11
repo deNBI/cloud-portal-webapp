@@ -15,6 +15,7 @@ import { IsFutureTimePipe } from './pipes/futureTime.pipe';
 import { IsMigratedProjectIdPipe } from './pipes/migratedList';
 import { HasStatusNotInListPipe } from './pipes/has-status-not-in-list.pipe';
 import { SignificancePipe } from '../shared/shared_modules/components/maintenance-notification/significance-pipe/significance.pipe';
+import { IsMigratedProjectPipe } from './pipes/isMigratedProject';
 
 /**
  * Pipemodule
@@ -39,6 +40,7 @@ import { SignificancePipe } from '../shared/shared_modules/components/maintenanc
 		IsMigratedProjectIdPipe,
 		HasStatusNotInListPipe,
 		SignificancePipe,
+		IsMigratedProjectPipe,
 	],
 	exports: [
 		FlavorCounterPipe,
@@ -59,8 +61,9 @@ import { SignificancePipe } from '../shared/shared_modules/components/maintenanc
 		IsMigratedProjectIdPipe,
 		HasStatusNotInListPipe,
 		SignificancePipe,
+		IsMigratedProjectPipe,
 	],
 	imports: [CommonModule],
-	providers: [IsMigratedProjectIdPipe],
+	providers: [],
 })
 export class PipeModuleModule {}
