@@ -403,11 +403,17 @@
 						<div class="col-6">
 							<div
 								*ngIf="this.resourceDataLoaded"
-								class="callout callout-info"
+								class="callout"
+								[ngClass]="(project_application | isMigratedProject) ? 'callout-warning' : 'callout-info'"
 								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
 							>
 								<small class="text-muted">Computational Resources</small><br />
-								<strong *ngIf="project_application?.project_application_openstack_project" class="text-muted"
+								<strong
+									*ngIf="
+										project_application?.project_application_openstack_project ||
+										(project_application | isMigratedProject)
+									"
+									class="text-muted"
 									>{{ maximumVMs }} VMs with a total of {{ project_application?.project_application_total_cores }} VCPUs
 									and {{ project_application?.project_application_total_ram }} GBs of RAM
 									<span
@@ -420,7 +426,12 @@
 										{{ project_application?.project_modification_request?.date_submitted }}
 									</span>
 								</strong>
-								<strong *ngIf="!project_application?.project_application_openstack_project" class="text-muted"
+								<strong
+									*ngIf="
+										!project_application?.project_application_openstack_project &&
+										!(project_application | isMigratedProject)
+									"
+									class="text-muted"
 									>{{ vmsInUse }} of {{ maximumVMs }} VMS, {{ coresInUse }} of
 									{{ project_application?.project_application_total_cores }} VCPUs and {{ ramInUse }}
 									of
@@ -436,7 +447,10 @@
 									</span> </strong
 								><br />
 								<div
-									*ngIf="!project_application?.project_application_openstack_project"
+									*ngIf="
+										!project_application?.project_application_openstack_project &&
+										!(project_application | isMigratedProject)
+									"
 									class="progress"
 									style="height: 2px"
 								>
@@ -448,6 +462,10 @@
 										role="progressbar"
 									></div>
 								</div>
+								<small class="text-muted" *ngIf="project_application | isMigratedProject">
+									Please consider: As the project is migrated, the amount of used resources is visible in the
+									<a [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noopener noreferrer">SimpleVM platform</a>.
+								</small>
 							</div>
 						</div>
 						<div class="col-6">
@@ -503,9 +521,7 @@
 								<a
 									*ngIf="!project_application?.project_application_openstack_project && isAbleToStart()"
 									class="btn btn-outline-success"
-									[href]="
-										project_application?.migrated_simple_vm_resources ? NEW_SVM_PORTAL_LINK : '#/virtualmachines/newVM'
-									"
+									[href]="(project_application | isMigratedProject) ? NEW_SVM_PORTAL_LINK : '#/virtualmachines/newVM'"
 									>Start a VM</a
 								>
 								<a

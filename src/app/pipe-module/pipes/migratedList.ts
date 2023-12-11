@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 /**
- * Pipe which returns counter of flavors.
+ * Pipe which returns whether a project id belongs to a migrated project or not.
  */
 @Pipe({
 	name: 'isMigratedProjectId',
