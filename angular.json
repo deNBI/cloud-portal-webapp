@@ -121,17 +121,17 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "defaultConfiguration": "",
           "options": {
-            "browserTarget": "cloud-webapp:build:development",
             "port": 8001,
             "host": "localhost",
-            "ssl": false
+            "ssl": false,
+            "buildTarget": "cloud-webapp:build:development"
           },
           "configurations": {}
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cloud-webapp:build"
+            "buildTarget": "cloud-webapp:build"
           }
         },
         "test": {
