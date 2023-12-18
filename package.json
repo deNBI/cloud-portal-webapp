@@ -78,7 +78,7 @@
     "uglify-js": "3.17.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.2.10",
+    "@angular-devkit/build-angular": "17.0.7",
     "@angular-eslint/builder": "17.1.1",
     "@angular-eslint/eslint-plugin-template": "17.1.1",
     "@angular-eslint/schematics": "17.1.1",
