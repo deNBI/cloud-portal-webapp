@@ -23,7 +23,7 @@ WIKI_CREATE_SNAPSHOT_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/snapsh
 WIKI_VOLUMES_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/volumes/
 WIKI_MOSH_LINK=https://portal-dev.denbi.de/wiki/Tutorials/Mosh/
 WIKI_PERSONAL_DATA=https://portal-dev.denbi.de/wiki/portal/personal_data/
-WIKI_EPHEMERAL_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/new_instance/#information-for-ephemeral-flavors
+WIKI_EPHEMERAL_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/create_instance/#about-ephemeral-flavors
 # SURVEY_LINK=https://www.surveymonkey.de/r/HQW9V7C
 
 
