@@ -28,6 +28,7 @@ import {
 	WIKI_LINKING_ACCOUNTS,
 	WIKI_PRINCIPAL_INVESTIGATOR,
 	WIKI_CLOUD_TERMS_LINK,
+	WIKI_BACKUP_LINK,
 } from '../../../links/links';
 import { UserService } from '../../api-connector/user.service';
 import { Userinfo } from '../../userinfo/userinfo.model';
@@ -81,6 +82,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
 	WIKI_CLOUD_TERMS_LINK: string = WIKI_CLOUD_TERMS_LINK;
 	WIKI_PERSONAL_DATA: string = WIKI_PERSONAL_DATA;
+	WIKI_BACKUP_LINK: string = WIKI_BACKUP_LINK;
 	GDPR_LINK: string = GDPR_LINK;
 	survey_link_visible: boolean = false;
 
