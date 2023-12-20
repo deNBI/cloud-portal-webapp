@@ -71,7 +71,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div *ngIf="projectWorkshopsLoaded && projectMembersLoaded" class="card" id="workshopCard">
 				<div class="card-header">
 					<i class="fa fa-align-justify"></i>
@@ -447,9 +446,9 @@
 					<span class="spinner-border-sm"></span>
 				</div>
 			</div>
-			<div *ngIf="projects.length === 0" class="alert alert-warning" role="alert">
-				You are not a member of a project with workshop functionality.
-			</div>
+		</div>
+		<div *ngIf="projects.length === 0" class="alert alert-warning" role="alert">
+			You are not a member of a project with workshop functionality on this platform.
 		</div>
 	</div>
 
