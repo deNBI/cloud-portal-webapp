@@ -22,6 +22,7 @@ export class VirtualMachine {
 	created_at_date: string;
 	deleted_at_date: string;
 	still_used_confirmation_requested_date: Date;
+	still_used_confirmed_user_id: string;
 	stopped_at: string;
 	elixir_id: string;
 	fixed_ip: string;

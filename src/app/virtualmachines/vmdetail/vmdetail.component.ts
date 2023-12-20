@@ -239,11 +239,21 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	}
 
 	setVmNeeded(): void {
-		this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any): void => {
-			if (res['still_needed']) {
-				this.virtualMachine.still_used_confirmation_requested = false;
-			}
-		});
+		this.userService.getLoggedUserElixirId().subscribe(
+			(result: any) => {
+				this.virtualmachineService
+					.setVmNeeded(this.virtualMachine.openstackid, result['elixir_id'])
+					.subscribe((res: any): void => {
+						if (res['still_needed']) {
+							this.virtualMachine.still_used_confirmation_requested = false;
+						}
+					});
+			},
+			(error: any) => {
+				console.log(error);
+
+			},
+		);
 	}
 
 	checkVmVolumesStatus(): void {
