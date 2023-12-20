@@ -257,12 +257,23 @@
 								</div>
 								<span class="help-block">How long would you like to run this project?</span>
 								<div class="alert alert-primary">
-									The maximum possible initial lifetime to be requested is
-									<strong>{{ max_lifetime }} months.</strong> Under certain conditions, longer initial terms can also be
-									granted, for example in the case the project is an <strong>NFDI</strong> project. Please click the
-									corresponding options in the further course of the form and enter further information in the available
-									comment and description fields if necessary. Please consider: After initially approved, you are able
-									to extend your project lifetime by sending extension requests.
+									<p
+										*ngIf="
+											!(application?.project_application_nfdi?.length > 0) || !application?.project_application_nfdi
+										"
+									>
+										The maximum possible initial lifetime to be requested is
+										<strong>{{ max_lifetime }} months.</strong> Under certain conditions, longer initial terms can also
+										be granted, for example in the case the project is an <strong>NFDI</strong> project. Please click
+										the corresponding options in the further course of the form and enter further information in the
+										available comment and description fields if necessary.
+									</p>
+									<p *ngIf="application?.project_application_nfdi?.length > 0">
+										As your project is an <strong>NFDI</strong> project you are able to request an initial lifetime of
+										up to <strong>{{ max_lifetime }} months</strong>.
+									</p>
+									Please consider: After initially approved, you are able to extend your project lifetime by sending
+									extension requests.
 								</div>
 							</div>
 						</div>

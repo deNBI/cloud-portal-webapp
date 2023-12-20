@@ -420,6 +420,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			case 'nfdi': {
 				if (!checked) {
 					this.application.project_application_nfdi = '';
+					this.max_lifetime = this.MAX_LIFETIME_DEFAULT;
 				} else {
 					this.max_lifetime = 12;
 				}
