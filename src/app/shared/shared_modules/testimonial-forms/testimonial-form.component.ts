@@ -7,6 +7,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL, SINGLE_TESTIMONIAL_PAGE_LINK } from '../../../../links/links';
 import { NewsService } from '../../../api-connector/news.service';
 import { Application } from '../../../applications/application.model/application.model';
+import { SocialConsent } from './social-consent.model';
 
 @Component({
 	selector: 'app-testimonial-form',
@@ -42,6 +43,8 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	@Input() testimonialSent: boolean;
 	initialLoadingSuccessful: boolean = false;
 	image_url: string = '';
+	possibleSocialConsents: SocialConsent[] = [];
+	selectedSocialConsents: SocialConsent[] = [];
 	submissionSuccessful: boolean = false;
 	autosaveTimer: ReturnType<typeof setTimeout>;
 	autosaveTimeout: number = 60000;
@@ -62,6 +65,9 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.setInitialData();
 		this.subscription = new Subscription();
 		this.getTestimonialData();
+		this.newsService.getPossibleSocialConsents().subscribe((consents: SocialConsent[]) => {
+			this.possibleSocialConsents = consents;
+		});
 	}
 
 	createFormGroup(): void {
@@ -101,6 +107,19 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.testimonialFormGroup.valueChanges.subscribe((): void => {
 			this.checkAutosaveNeed();
 		});
+	}
+	/**
+	 * updateSelectedOptions does not work yet
+	 * @param socialConsent the object that got checked/unchecked
+	 */
+	updateSelectedOptions(socialConsent: SocialConsent): void {
+		const idx: number = this.selectedSocialConsents.findIndex(consent => consent.id === socialConsent.id);
+
+		if (idx !== -1) {
+			this.selectedSocialConsents.splice(idx, 1);
+		} else {
+			this.selectedSocialConsents.push(socialConsent);
+		}
 	}
 
 	setInitialData(): void {
@@ -173,6 +192,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.institution = result['institution'];
 		this.workgroup = result['workgroup'];
 		this.contributor = result['contributor'];
+		this.selectedSocialConsents = result['publication_channels'];
 	}
 
 	stopAutosaveTimer(): void {
@@ -212,6 +232,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 							this.workgroup,
 							this.simple_vm,
 							this.project_application.project_application_id.toString(),
+							this.selectedSocialConsents,
 						)
 						.subscribe(
 							(): void => {
@@ -259,6 +280,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 					this.simple_vm,
 					this.image_url,
 					this.project_application.project_application_id.toString(),
+					this.selectedSocialConsents,
 					this.file,
 				)
 				.subscribe((result: any): any => {
