@@ -48,6 +48,7 @@ export const ZAMMAD_HELPDESK_LINK = 'https://helpdesk.cloud.denbi.de';
 export const GDPR_LINK = 'https://gdpr.eu/article-9-processing-special-categories-of-personal-data-prohibited/';
 export const LIFESCIENCE_HOSTEL_SIGNUP =	'https://signup.aai.lifescience-ri.eu/non/registrar/?vo=lifescience_hostel&targetnew=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use&targetexisting=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use&targetextended=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use';
 export const WIKI_PERSISTENT_TERMINAL_LINK = `${environment.WIKI_PRE}Tutorials/Persistent_SSH_Sessions/`;
+export const WIKI_BACKUP_LINK = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/backup`;
 
 export const WIKI_SVM_MIGRATION_LINK = `${environment.WIKI_PRE}`;
 
@@ -82,6 +83,7 @@ export const WIKI_LINKS: string[] = [
 	WIKI_MOSH_LINK,
 	WIKI_PERSONAL_DATA,
 	WIKI_SVM_MIGRATION_LINK,
+	WIKI_BACKUP_LINK,
 ];
 
 export const LANDING_PAGE_LINKS: string[] = [
