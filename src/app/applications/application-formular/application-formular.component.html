@@ -257,12 +257,23 @@
 								</div>
 								<span class="help-block">How long would you like to run this project?</span>
 								<div class="alert alert-primary">
-									The maximum possible initial lifetime to be requested is
-									<strong>{{ max_lifetime }} months.</strong> Under certain conditions, longer initial terms can also be
-									granted, for example in the case the project is an <strong>NFDI</strong> project. Please click the
-									corresponding options in the further course of the form and enter further information in the available
-									comment and description fields if necessary. Please consider: After initially approved, you are able
-									to extend your project lifetime by sending extension requests.
+									<p
+										*ngIf="
+											!(application?.project_application_nfdi?.length > 0) || !application?.project_application_nfdi
+										"
+									>
+										The maximum possible initial lifetime to be requested is
+										<strong>{{ max_lifetime }} months.</strong> Under certain conditions, longer initial terms can also
+										be granted, for example in the case the project is an <strong>NFDI</strong> project. Please click
+										the corresponding options in the further course of the form and enter further information in the
+										available comment and description fields if necessary.
+									</p>
+									<p *ngIf="application?.project_application_nfdi?.length > 0">
+										As your project is an <strong>NFDI</strong> project you are able to request an initial lifetime of
+										up to <strong>{{ max_lifetime }} months</strong>.
+									</p>
+									Please consider: After initially approved, you are able to extend your project lifetime by sending
+									extension requests.
 								</div>
 							</div>
 						</div>
@@ -1707,7 +1718,7 @@
 
 						<label class="col-md-4 form-control-label">
 							<button
-								(click)="notificationModal.show(); approveApplication(form)"
+								(click)="dataBackupModal.show()"
 								[disabled]="
 									!pi_responsibility_checked ||
 									(!unknownPiAffiliationsConfirmation && !valid_pi_affiliations) ||
@@ -1874,6 +1885,73 @@
 				</button>
 
 				<button type="button" (click)="acknowledgemodal.hide()" class="btn btn-danger">Close</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div
+	bsModal
+	#dataBackupModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Note on data backups</h4>
+				<button type="button" class="close" style="cursor: pointer" (click)="dataBackupModal.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-info" role="alert">
+					<strong>Important note</strong>:
+					<p>
+						Computing in cloud environments involves the risk of data loss, for example due to software or hardware
+						errors that lead to the loss of virtual machines and the data they contain. Other possible sources of error
+						are the accidental deletion of virtual machines by authorised users.
+					</p>
+					<p>
+						We would therefore like to point out that the members of a project are solely responsible for carrying out
+						regular data backups. Information on how to save data and perform backups can be found in the following Wiki
+						article:
+						<a class="alert-link" href="{{ WIKI_BACKUP_LINK }}" target="_blank" rel="noopener noreferrer"
+							>Best practices for data backup</a
+						>
+					</p>
+					<p>Please sensitise the members of the project to this issue.</p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button
+					*ngIf="!is_validation"
+					id="backup_approve_btn"
+					type="button"
+					data-test-id="backup_approve_btn"
+					(click)="dataBackupModal.hide(); acknowledgemodal.show()"
+					class="btn btn-success"
+				>
+					I acknowledge
+				</button>
+				<button
+					*ngIf="is_validation"
+					id="backup_approve_btn"
+					type="button"
+					data-test-id="backup_approve_btn"
+					(click)="dataBackupModal.hide(); notificationModal.show(); approveApplication(form)"
+					class="btn btn-success"
+				>
+					I acknowledge
+				</button>
+
+				<button type="button" (click)="dataBackupModal.hide()" class="btn btn-danger">Close</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -2125,7 +2203,7 @@
 					type="button"
 					id="verification_btn"
 					data-test-id="verification_application_btn"
-					(click)="acknowledgemodal.show(); submitModal.hide()"
+					(click)="dataBackupModal.show(); submitModal.hide()"
 				>
 					Confirm Application
 				</button>

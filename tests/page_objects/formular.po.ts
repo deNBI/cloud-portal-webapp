@@ -10,6 +10,7 @@ export class FormularPage {
 	private NEW_OPENSTACK_BTN: string = 'newOpenstackBtn';
 	private SUBMIT_BTN: string = 'submit_application_btn';
 	private VERIFICATION_BTN: string = 'verification_application_btn';
+	private BACKUP_ACKNOWLEDGE_BTN: string = 'backup_approve_btn';
 	private ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
 	private APPLICATION_SUBMITTED: string = 'The application was submitted';
 	private NOTIFICATION_MESSAGE: string = 'notification_message';
@@ -55,6 +56,7 @@ export class FormularPage {
 
 		await this.page.locator(Util.by_data_test_id_str(this.SUBMIT_BTN)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFICATION_BTN)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.BACKUP_ACKNOWLEDGE_BTN)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.ACKNOWLEDGE_BTN)).click();
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.APPLICATION_SUBMITTED}`);
 		console.log('Submitted Application');
