@@ -40,14 +40,14 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 			.subscribe(
 				(cl: any) => {
 					this.client = new Client(null, null, null, cl['client_name'], null);
-					this.client.maxVolumeLimit = cl['maxTotalVolumeGigabytes'];
+					this.client.maxVolumeLimit = cl['max_total_volumeGigabytes'];
 					this.client.assignedVolumesStorage = cl['assigned_volume_gb'];
-					this.client.currentUsedVolumeStorage = cl['totalGigabytesUsed'];
+					this.client.currentUsedVolumeStorage = cl['total_gigabytes_used'];
 					this.client.newVolumeLimit = cl['new_volume_gb'];
 
-					this.client.maxVolumes = cl['maxTotalVolumes'];
+					this.client.maxVolumes = cl['max_total_volumes'];
 					this.client.assignedVolumes = cl['assigned_volumes'];
-					this.client.currentUsedVolumes = cl['totalVolumesUsed'];
+					this.client.currentUsedVolumes = cl['total_volumesUsed'];
 					this.client.newVolumes = cl['new_volumes'];
 
 					this.client.maxVMs = cl['max_total_instances'];
@@ -90,14 +90,14 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 			.subscribe(
 				(cl: any) => {
 					this.client = new Client(null, null, null, cl['client_name'], null);
-					this.client.maxVolumeLimit = cl['maxTotalVolumeGigabytes'];
+					this.client.maxVolumeLimit = cl['max_total_volume_gigabytes'];
 					this.client.assignedVolumesStorage = cl['assigned_volume_gb'];
-					this.client.currentUsedVolumeStorage = cl['totalGigabytesUsed'];
+					this.client.currentUsedVolumeStorage = cl['total_gigabytes_used'];
 					this.client.newVolumeLimit = cl['new_volume_gb'];
 
-					this.client.maxVolumes = cl['maxTotalVolumes'];
+					this.client.maxVolumes = cl['max_total_volumes'];
 					this.client.assignedVolumes = cl['assigned_volumes'];
-					this.client.currentUsedVolumes = cl['totalVolumesUsed'];
+					this.client.currentUsedVolumes = cl['total_volumes_used'];
 					this.client.newVolumes = cl['new_volumes'];
 
 					this.client.maxVMs = cl['max_total_instances'];
@@ -137,14 +137,14 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 		this.clientService.getClientLimits(this.client.id).subscribe(
 			(cl: any) => {
 				this.client = new Client(null, null, null, cl['client_name'], null);
-				this.client.maxVolumeLimit = cl['maxTotalVolumeGigabytes'];
+				this.client.maxVolumeLimit = cl['max_total_volume_gigabytes'];
 				this.client.assignedVolumesStorage = cl['assigned_volume_gb'];
-				this.client.currentUsedVolumeStorage = cl['totalGigabytesUsed'];
+				this.client.currentUsedVolumeStorage = cl['total_gigabytes_used'];
 				// this.client.newVolumeLimit = client['new_volume_gb'];
 
-				this.client.maxVolumes = cl['maxTotalVolumes'];
+				this.client.maxVolumes = cl['max_total_volumes'];
 				this.client.assignedVolumes = cl['assigned_volumes'];
-				this.client.currentUsedVolumes = cl['totalVolumesUsed'];
+				this.client.currentUsedVolumes = cl['total_volumes_used'];
 				// this.client.newVolumes = client['new_volumes'];
 
 				this.client.maxVMs = cl['max_total_instances'];
