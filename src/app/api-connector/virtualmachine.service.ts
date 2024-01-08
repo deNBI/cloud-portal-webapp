@@ -401,10 +401,8 @@ export class VirtualmachineService {
 			.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
 	}
 
-	setVmNeeded(openstack_id: string, elixir_id: string): Observable<any> {
-		const params: HttpParams = new HttpParams().set('user_elixir_id', elixir_id);
-
-		return this.http.post<any>(`${this.baseVmUrl}${openstack_id}/need/`, params, {
+	setVmNeeded(openstack_id: string): Observable<any> {
+		return this.http.post<any>(`${this.baseVmUrl}${openstack_id}/need/`, {
 			withCredentials: true,
 		});
 	}
