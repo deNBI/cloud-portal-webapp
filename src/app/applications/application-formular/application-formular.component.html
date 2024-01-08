@@ -1086,6 +1086,16 @@
 								/>
 							</div>
 						</div>
+						<div class="form-group row" *ngIf="part_nfdi.checked">
+							<label class="col-md-4"></label>
+							<div class="col-md-8">
+								<div class="alert alert-primary" role="alert" *ngIf="!personalData.checked">
+									As your project is within the context of NFDI, you can select a higher initial project lifetime than
+									the default maximum of 6 months (up to {{ max_lifetime }} instead).
+									<a href="#id_project_application_lifetime" class="alert-link">Adjust lifetime</a>
+								</div>
+							</div>
+						</div>
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_report_allowed"
 								><strong>Dissemination</strong></label
@@ -1917,14 +1927,11 @@
 						Computing in cloud environments involves the risk of data loss, for example due to software or hardware
 						errors that lead to the loss of virtual machines and the data they contain. Other possible sources of error
 						are the accidental deletion of virtual machines by authorised users.
+						<strong>Therefore it is particularly important to also save the data outside the cloud!</strong>
 					</p>
 					<p>
 						We would therefore like to point out that the members of a project are solely responsible for carrying out
-						regular data backups. Information on how to save data and perform backups can be found in the following Wiki
-						article:
-						<a class="alert-link" href="{{ WIKI_BACKUP_LINK }}" target="_blank" rel="noopener noreferrer"
-							>Best practices for data backup</a
-						>
+						regular data backups.
 					</p>
 					<p>Please sensitise the members of the project to this issue.</p>
 				</div>
