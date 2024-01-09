@@ -69,7 +69,7 @@
 				<strong class="text-muted">{{ virtualMachine.still_used_confirmed_date | date: 'dd-MM-yyyy' }}</strong>
 			</div>
 		</div>
-		<div class="col-6" *ngIf="this.userSurname && this.userName">
+		<div class="col-6" *ngIf="userSurname && userName">
 			<div class="callout callout-success">
 				<small class="text-muted">Usage confirmed by {{ virtualMachine.still_used_confirmed_user_id }}</small
 				><br />
