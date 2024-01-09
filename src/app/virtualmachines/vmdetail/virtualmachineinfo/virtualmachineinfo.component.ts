@@ -1,11 +1,5 @@
 import {
-	ChangeDetectionStrategy,
-	Component,
-	Input,
-	OnChanges,
-	SimpleChanges,
-	OnInit,
-	ChangeDetectorRef,
+	Component, Input, OnChanges, SimpleChanges, OnInit, ChangeDetectorRef,
 } from '@angular/core';
 import { UserService } from 'app/api-connector/user.service';
 import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
@@ -17,7 +11,6 @@ import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 @Component({
 	selector: 'app-virtualmachineinfo',
 	templateUrl: './virtualmachineinfo.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./virtualmachineinfo.component.scss'],
 
 	providers: [UserService],
@@ -54,6 +47,7 @@ export class VirtualmachineinfoComponent implements OnChanges, OnInit {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		const { changedVM } = changes;
+		console.log(changedVM);
 		if (changedVM) {
 			if (changedVM['virtualMachine']['currentValue']['still_used_confirmed_user_id']) {
 				this.userService
