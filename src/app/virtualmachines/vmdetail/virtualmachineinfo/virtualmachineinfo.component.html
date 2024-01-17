@@ -28,7 +28,7 @@
 			<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
 				<div class="callout callout-danger">
 					<small class="text-muted">Deleted at (d-m-y)</small><br />
-					<strong class="text-muted">{{ virtualMachine.deleted_at_date | date : 'dd-MM-yyyy' }}</strong>
+					<strong class="text-muted">{{ virtualMachine.deleted_at_date | date: 'dd-MM-yyyy' }}</strong>
 				</div>
 			</ng-container>
 			<ng-container *ngSwitchDefault>
@@ -53,6 +53,40 @@
 		</div>
 	</div>
 </div>
+<div class="row" *ngIf="virtualMachine.still_used_confirmation_requested_date">
+	<div class="col-3">
+		<div class="callout callout-info">
+			<small class="text-muted">Usage confirmation requested at (d-m-y)</small><br />
+			<strong class="text-muted">{{
+				virtualMachine.still_used_confirmation_requested_date | date: 'dd-MM-yyyy'
+			}}</strong>
+		</div>
+	</div>
+	<ng-container *ngIf="virtualMachine.still_used_confirmed_date">
+		<div class="col-3">
+			<div class="callout callout-success">
+				<small class="text-muted">Usage confirmed at (d-m-y)</small><br />
+				<strong class="text-muted">{{ virtualMachine.still_used_confirmed_date | date: 'dd-MM-yyyy' }}</strong>
+			</div>
+		</div>
+		<div class="col-6" *ngIf="userSurname && userName">
+			<div class="callout callout-success">
+				<small class="text-muted">Usage confirmed by {{ virtualMachine.still_used_confirmed_user_id }}</small
+				><br />
+				<strong class="text-muted">{{ this.userSurname }}, {{ this.userName }}</strong>
+			</div>
+		</div>
+	</ng-container>
+	<ng-container *ngIf="!virtualMachine.still_used_confirmed_date">
+		<div class="col-6">
+			<div class="callout callout-danger">
+				<small class="text-muted">Usage confirmed at (d-m-y)</small><br />
+				<strong class="text-muted">Usage not confirmed yet!</strong>
+			</div>
+		</div>
+	</ng-container>
+</div>
+<!-- adjust in model, still_used_confirmed_date and set on successful response-->
 <div class="row">
 	<div class="col-3">
 		<div class="callout">
