@@ -47,7 +47,7 @@ export class FlavorService {
 		const params: HttpParams = new HttpParams()
 			.set('project_id', project_id)
 			.set('specific', JSON.stringify(specific))
-			.set('custom', JSON.stringify(custom));
+			.set('custom', custom);
 
 		return this.http
 			.get<Flavor[]>(`${ApiSettings.getApiBaseURL()}project_applications/flavors/`, {

@@ -5,6 +5,7 @@ import {
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
+import { FlavorTypeShortcuts } from 'app/shared/shared_modules/baseClass/flavor-type-shortcuts';
 import { ApplicationsService } from '../api-connector/applications.service';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application } from './application.model/application.model';
@@ -265,7 +266,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	checkIfTypeGotSimpleVMFlavorOrIsCustom(type: FlavorType): boolean {
 		for (const flav of this.flavorList) {
-			if ((flav.type.shortcut === type.shortcut && flav.simple_vm) || type.shortcut === 'cstm') {
+			if (
+				(flav.type.shortcut === type.shortcut && flav.simple_vm)
+				|| type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR
+			) {
 				return true;
 			}
 		}

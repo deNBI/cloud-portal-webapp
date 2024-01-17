@@ -1,6 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { Pipe, PipeTransform } from '@angular/core';
 import { Application } from 'app/applications/application.model/application.model';
+import { FlavorTypeShortcuts } from 'app/shared/shared_modules/baseClass/flavor-type-shortcuts';
 import { Flavor } from 'app/virtualmachines/virtualmachinemodels/flavor';
 import { FlavorType } from 'app/virtualmachines/virtualmachinemodels/flavorType';
 
@@ -16,7 +17,7 @@ export class HasFlavorTypeOrIsNotCustomPipe implements PipeTransform {
 			(flavor: Flavor): boolean => flavor.type.shortcut === flavorType.shortcut,
 		);
 
-		return hasFlavorTypeFlavor || flavorType.shortcut !== 'cstm';
+		return hasFlavorTypeFlavor || flavorType.shortcut !== FlavorTypeShortcuts.CUSTOM_FLAVOR;
 	}
 }
 /**
