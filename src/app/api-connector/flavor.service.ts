@@ -39,8 +39,15 @@ export class FlavorService {
 			);
 	}
 
-	getListOfFlavorsAvailable(project_id: string = '', specific: boolean = false): Observable<Flavor[]> {
-		const params: HttpParams = new HttpParams().set('project_id', project_id).set('specific', JSON.stringify(specific));
+	getListOfFlavorsAvailable(
+		project_id: string = '',
+		specific: boolean = false,
+		custom: boolean = false,
+	): Observable<Flavor[]> {
+		const params: HttpParams = new HttpParams()
+			.set('project_id', project_id)
+			.set('specific', JSON.stringify(specific))
+			.set('custom', custom);
 
 		return this.http
 			.get<Flavor[]>(`${ApiSettings.getApiBaseURL()}project_applications/flavors/`, {
