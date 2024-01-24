@@ -5,6 +5,7 @@ import {
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
+import { FlavorTypeShortcuts } from 'app/shared/shared_modules/baseClass/flavor-type-shortcuts';
 import { ApplicationsService } from '../api-connector/applications.service';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application } from './application.model/application.model';
@@ -136,7 +137,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			this.getSubmittedApplicationsAdmin();
 			this.getApplicationHistory();
 			this.getComputeCenters();
-			this.flavorService.getListOfFlavorsAvailable().subscribe((flavList: Flavor[]): void => {
+			this.flavorService.getListOfFlavorsAvailable(undefined, undefined, true).subscribe((flavList: Flavor[]): void => {
 				this.flavorList = flavList;
 			});
 			this.flavorService.getListOfTypesAvailable().subscribe((availableTypes: FlavorType[]): void => {
@@ -256,6 +257,19 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
 		for (const flav of this.flavorList) {
 			if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	checkIfTypeGotSimpleVMFlavorOrIsCustom(type: FlavorType): boolean {
+		for (const flav of this.flavorList) {
+			if (
+				(flav.type.shortcut === type.shortcut && flav.simple_vm)
+				|| type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR
+			) {
 				return true;
 			}
 		}

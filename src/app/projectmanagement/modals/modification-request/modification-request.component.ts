@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { HasFlavorTypeOrIsNotCustomPipe } from 'app/pipe-module/pipes/has-flavor-type.pipe';
 import { ApplicationModification } from '../../../applications/application_modification.model';
 import { ResultComponent } from '../result/result.component';
 import { Application } from '../../../applications/application.model/application.model';
@@ -16,7 +17,7 @@ import { CreditsService } from '../../../api-connector/credits.service';
 	selector: 'app-modification-request',
 	templateUrl: './modification-request.component.html',
 	styleUrls: ['./modification-request.component.scss'],
-	providers: [FlavorService, CreditsService],
+	providers: [FlavorService, CreditsService, HasFlavorTypeOrIsNotCustomPipe],
 })
 export class ModificationRequestComponent implements OnInit, OnDestroy {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
@@ -116,6 +117,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 							this.shown_flavors[flavor.type.long_name].push(flavor);
 						}
 					}
+
 					this.checkFlavorDifferences();
 				}),
 		);

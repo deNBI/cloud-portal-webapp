@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -177,6 +177,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		private biocondaService: BiocondaService,
 		private clipboardService: ClipboardService,
 		private groupService: GroupService,
+		private cdr: ChangeDetectorRef,
 	) {
 		super();
 	}
@@ -242,6 +243,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any): void => {
 			if (res['still_needed']) {
 				this.virtualMachine.still_used_confirmation_requested = false;
+				this.virtualMachine.still_used_confirmed_date = new Date();
+				this.cdr.detectChanges();
 			}
 		});
 	}
