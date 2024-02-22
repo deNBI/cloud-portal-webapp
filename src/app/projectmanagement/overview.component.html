@@ -285,7 +285,15 @@
 										- Extension by {{ project_application?.project_lifetime_request?.extra_lifetime }}
 										months requested on
 										{{ project_application?.project_lifetime_request?.date_submitted }}
-									</span> </strong
+									</span>
+									<span
+										*ngIf="
+											(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+										"
+									>
+										- Termination requested</span
+									> </strong
 								><br />
 								<div class="progress" style="height: 2px">
 									<div
@@ -330,6 +338,8 @@
 										!(
 											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
 											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+											(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
 											lifetimeExtensionDisabled
 										)
 									"
@@ -343,13 +353,27 @@
 									*ngIf="
 										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
 										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
 										lifetimeExtensionDisabled
 									"
 									class="btn btn-outline-secondary"
 									disabled
+									data-toggle="tooltip"
 									id="show_doi_question_modal_disabled"
+									[title]="
+										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+											? 'You are not able to request an extension, as there is an ongoing termination request'
+											: 'You are not able to request another extension, as there currently is a pending extension request for this project'
+									"
 								>
-									Extension requested
+									{{
+										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+											? 'Request extension'
+											: 'Extension requested'
+									}}
 								</button>
 
 								<ng-container
@@ -477,6 +501,8 @@
 										!(
 											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
 											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+											(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
 											modificationRequestDisabled
 										)
 									"
@@ -497,6 +523,8 @@
 										!(
 											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
 											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+											(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
 											modificationRequestDisabled
 										)
 									"
@@ -510,13 +538,27 @@
 									*ngIf="
 										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
 										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
 										modificationRequestDisabled
 									"
 									class="btn btn-outline-secondary"
 									disabled
 									id="show_modification_extension_button_disabled"
+									data-toggle="tooltip"
+									[title]="
+										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+											? 'You are not able to request a modification request, as there is an ongoing termination request'
+											: 'You are not able to request another modification, as there currently is a pending modification request for this project'
+									"
 								>
-									Resource modification requested
+									{{
+										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+											? 'Request resource modification'
+											: 'Resource modification requested'
+									}}
 								</button>
 								<a
 									*ngIf="!project_application?.project_application_openstack_project && isAbleToStart()"
