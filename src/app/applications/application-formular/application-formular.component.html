@@ -264,9 +264,9 @@
 									>
 										The maximum possible initial lifetime to be requested is
 										<strong>{{ max_lifetime }} months.</strong> Under certain conditions, longer initial terms can also
-										be granted, for example in the case the project is an <strong>NFDI</strong> project. Please click
-										the corresponding options in the further course of the form and enter further information in the
-										available comment and description fields if necessary.
+										be granted, for example in the case the project is an <strong>NFDI</strong>
+										project. Please click the corresponding options in the further course of the form and enter further
+										information in the available comment and description fields if necessary.
 									</p>
 									<p *ngIf="application?.project_application_nfdi?.length > 0">
 										As your project is an <strong>NFDI</strong> project you are able to request an initial lifetime of
@@ -704,10 +704,10 @@
 										(click)="togglePersonalDataType(personalData.checked, 'person_related')"
 									/>
 									<span class="help-block" *ngIf="!personalData.checked">
-										My project processes data of human subjects</span
-									>
+										My project processes data of human subjects that are not public available
+									</span>
 									<span class="help-block" *ngIf="personalData.checked">
-										My project processes data of human subjects containing:</span
+										My project processes data of human subjects that are not public available containing:</span
 									>
 								</div>
 								<div class="form-check" *ngIf="personalData.checked">
@@ -723,6 +723,9 @@
 											[(ngModel)]="application.project_application_no_personal_data"
 										/>
 										<span class="help-block">a) no personal data or sufficiently anonymized data only</span>
+										<div class="alert alert-warning">
+											<strong>Please note that genomic sequences can not be anonymized!</strong>
+										</div>
 									</div>
 									<div class="form-check">
 										<input
