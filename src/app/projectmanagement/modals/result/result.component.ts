@@ -92,9 +92,8 @@ export class ResultComponent implements OnInit, OnDestroy {
 	submitLifetimeExtensionRequest(): void {
 		this.setToResultState();
 
-		this.applicationsService
-			.requestAdditionalLifetime(this.extension as ApplicationLifetimeExtension)
-			.subscribe((result: { [key: string]: string }): void => {
+		this.applicationsService.requestAdditionalLifetime(this.extension as ApplicationLifetimeExtension).subscribe(
+			(result: { [key: string]: string }): void => {
 				if (result['Error']) {
 					this.extensionStatus = 2;
 					this.errorMessage = result['Error'];
@@ -103,23 +102,32 @@ export class ResultComponent implements OnInit, OnDestroy {
 				}
 
 				this.event.emit({ reload: true });
-			});
+			},
+			() => {
+				this.extensionStatus = 2;
+				this.errorMessage =					'Submitting the extension request was not successful. Please reload this page and try again!';
+			},
+		);
 	}
 
 	submitCreditsModification(): void {
 		this.setToResultState();
 
 		this.subscription.add(
-			this.applicationsService
-				.requestAdditionalCredits(this.extension as ApplicationCreditRequest)
-				.subscribe((result: { [key: string]: string }): void => {
+			this.applicationsService.requestAdditionalCredits(this.extension as ApplicationCreditRequest).subscribe(
+				(result: { [key: string]: string }): void => {
 					if (result['Error']) {
 						this.extensionStatus = 2;
 					} else {
 						this.extensionStatus = 1;
 					}
 					this.event.emit({ reload: true });
-				}),
+				},
+				() => {
+					this.extensionStatus = 2;
+					this.errorMessage = 'Submitting the credit request was not successful. Please reload this page and try again!';
+				},
+			),
 		);
 	}
 
