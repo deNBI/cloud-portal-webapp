@@ -33,56 +33,6 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 		// eslint-disable-next-line no-empty-function
 	}
 
-	getComputeCenterClientModificationLimitsAvailable() {
-		// eslint-disable-next-line max-len
-		this.facilityService
-			.getComputeCenterClientLimitsAvailable(this.compute_center_id, this.application.project_application_id.toString())
-			.subscribe(
-				(cl: any) => {
-					this.client = new Client(null, null, null, cl['client_name'], null);
-					this.client.maxVolumeLimit = cl['max_total_volumeGigabytes'];
-					this.client.assignedVolumesStorage = cl['assigned_volume_gb'];
-					this.client.currentUsedVolumeStorage = cl['total_gigabytes_used'];
-					this.client.newVolumeLimit = cl['new_volume_gb'];
-
-					this.client.maxVolumes = cl['max_total_volumes'];
-					this.client.assignedVolumes = cl['assigned_volumes'];
-					this.client.currentUsedVolumes = cl['total_volumesUsed'];
-					this.client.newVolumes = cl['new_volumes'];
-
-					this.client.maxVMs = cl['max_total_instances'];
-					this.client.assignedVMs = cl['assigned_instances'];
-					this.client.currentUsedVms = cl['total_instances_used'];
-					this.client.newVms = cl['additional_instances'];
-
-					this.client.maxCores = cl['max_total_cores'];
-					this.client.assignedCores = cl['assigned_cores'];
-					this.client.currentUsedCores = cl['total_cores_used'];
-					this.client.newCores = cl['new_cores'];
-
-					this.client.maxRam = cl['max_total_ram_size'];
-					this.client.assignedRam = cl['assigned_ram'];
-					this.client.currentUsedRam = cl['total_ram_used'];
-					this.client.newRam = cl['new_ram'];
-					if (cl['client_available']) {
-						this.message_type = 'success';
-						this.limits_message = `The client [${this.client.location}] has enough resources left!.`;
-						this.approvable = true;
-					} else {
-						this.message_type = 'danger';
-						this.limits_message = `The client [${this.client.location}] has not the necessary resources left!`;
-						// this.approvable = false;
-					}
-				},
-				(error: object): void => {
-					console.log(error);
-					this.message_type = 'danger';
-					this.limits_message = 'The connection to chosen client cannot be established!';
-					this.request_failed = true;
-				},
-			);
-	}
-
 	getComputeCenterClientLimitsAvailable() {
 		// eslint-disable-next-line max-len
 		this.facilityService
@@ -90,30 +40,7 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 			.subscribe(
 				(cl: any) => {
 					this.client = new Client(null, null, null, cl['client_name'], null);
-					this.client.maxVolumeLimit = cl['max_total_volume_gigabytes'];
-					this.client.assignedVolumesStorage = cl['assigned_volume_gb'];
-					this.client.currentUsedVolumeStorage = cl['total_gigabytes_used'];
-					this.client.newVolumeLimit = cl['new_volume_gb'];
-
-					this.client.maxVolumes = cl['max_total_volumes'];
-					this.client.assignedVolumes = cl['assigned_volumes'];
-					this.client.currentUsedVolumes = cl['total_volumes_used'];
-					this.client.newVolumes = cl['new_volumes'];
-
-					this.client.maxVMs = cl['max_total_instances'];
-					this.client.assignedVMs = cl['assigned_instances'];
-					this.client.currentUsedVms = cl['total_instances_used'];
-					this.client.newVms = cl['additional_instances'];
-
-					this.client.maxCores = cl['max_total_cores'];
-					this.client.assignedCores = cl['assigned_cores'];
-					this.client.currentUsedCores = cl['total_cores_used'];
-					this.client.newCores = cl['new_cores'];
-
-					this.client.maxRam = cl['max_total_ram_size'];
-					this.client.assignedRam = cl['assigned_ram'];
-					this.client.currentUsedRam = cl['total_ram_used'];
-					this.client.newRam = cl['new_ram'];
+					this.client.setLimit(cl);
 					if (cl['client_available']) {
 						this.message_type = 'success';
 						this.limits_message = `The client [${this.client.location}] has enough resources left!.`;
@@ -137,29 +64,8 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 		this.clientService.getClientLimits(this.client.id).subscribe(
 			(cl: any) => {
 				this.client = new Client(null, null, null, cl['client_name'], null);
-				this.client.maxVolumeLimit = cl['max_total_volume_gigabytes'];
-				this.client.assignedVolumesStorage = cl['assigned_volume_gb'];
-				this.client.currentUsedVolumeStorage = cl['total_gigabytes_used'];
-				// this.client.newVolumeLimit = client['new_volume_gb'];
+				this.client.setLimit(cl);
 
-				this.client.maxVolumes = cl['max_total_volumes'];
-				this.client.assignedVolumes = cl['assigned_volumes'];
-				this.client.currentUsedVolumes = cl['total_volumes_used'];
-				// this.client.newVolumes = client['new_volumes'];
-
-				this.client.maxVMs = cl['max_total_instances'];
-				this.client.assignedVMs = cl['assigned_instances'];
-				this.client.currentUsedVms = cl['total_instances_used'];
-				// this.client.newVms = client['additional_instances'];
-
-				this.client.maxCores = cl['max_total_cores'];
-				this.client.assignedCores = cl['assigned_cores'];
-				this.client.currentUsedCores = cl['total_cores_used'];
-				// this.client.newCores = client['new_cores'];
-
-				this.client.maxRam = cl['max_total_ram_size'];
-				this.client.assignedRam = cl['assigned_ram'];
-				this.client.currentUsedRam = cl['total_ram_used'];
 				//	this.client.newRam = client['new_ram'];
 			},
 			(error: object): void => {
