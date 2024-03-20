@@ -59,9 +59,8 @@ export class ResultComponent implements OnInit, OnDestroy {
 		this.setToResultState();
 
 		this.subscription.add(
-			this.applicationsService
-				.requestModification(this.extension as ApplicationModification)
-				.subscribe((result: { [key: string]: string }): void => {
+			this.applicationsService.requestModification(this.extension as ApplicationModification).subscribe(
+				(result: { [key: string]: string }): void => {
 					if (result['Error']) {
 						this.extensionStatus = 2;
 						this.errorMessage = result['Error'];
@@ -70,7 +69,12 @@ export class ResultComponent implements OnInit, OnDestroy {
 					}
 
 					this.event.emit({ reload: true });
-				}),
+				},
+				() => {
+					this.extensionStatus = 2;
+					this.errorMessage =						'Submitting the modification request was not successful. Please reload this page and try again!';
+				},
+			),
 		);
 	}
 
@@ -89,6 +93,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 			),
 		);
 	}
+
 	submitLifetimeExtensionRequest(): void {
 		this.setToResultState();
 
