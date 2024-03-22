@@ -88,7 +88,7 @@
 					><i class="nav-icon fas fa-archive"></i> Applications</a
 				>
 			</li>
-			<li class="nav-item">
+			<!-- <li class="nav-item">
 				<a
 					class="nav-link"
 					routerLinkActive="active"
@@ -98,7 +98,7 @@
 					<i class="nav-icon ccs-credits_icon"> </i>
 					Credits Calculator
 				</a>
-			</li>
+			</li> -->
 			<li class="nav-item">
 				<a
 					class="nav-link"
@@ -151,7 +151,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="This project was initially approved within the last 2 weeks."
-							*ngIf="application | hasstatusinlist : Application_States.APPROVED_LAST_2_WEEKS"
+							*ngIf="application | hasstatusinlist: Application_States.APPROVED_LAST_2_WEEKS"
 						>
 							<i class="fas fa-plus-circle"></i>
 						</div>
@@ -161,8 +161,8 @@
 							data-placement="right"
 							title="The project lifetime expires soon."
 							*ngIf="
-								(application | hasstatusinlist : Application_States.EXPIRES_SOON) &&
-								!(application | hasstatusinlist : Application_States.EXPIRED)
+								(application | hasstatusinlist: Application_States.EXPIRES_SOON) &&
+								!(application | hasstatusinlist: Application_States.EXPIRED)
 							"
 						>
 							<i class="fas fa-exclamation-circle"></i>
@@ -172,7 +172,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="The lifetime of this project is expired."
-							*ngIf="application | hasstatusinlist : Application_States.EXPIRED"
+							*ngIf="application | hasstatusinlist: Application_States.EXPIRED"
 						>
 							<i class="fas fa-ban"></i>
 						</div>
@@ -181,7 +181,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="The termination of the project was requested."
-							*ngIf="application | hasstatusinlist : Application_States.TERMINATION_REQUESTED"
+							*ngIf="application | hasstatusinlist: Application_States.TERMINATION_REQUESTED"
 						>
 							<i class="fas fa-trash"></i>
 						</div>
@@ -190,7 +190,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="This project is disabled!"
-							*ngIf="application | hasstatusinlist : Application_States.DISABLED"
+							*ngIf="application | hasstatusinlist: Application_States.DISABLED"
 						>
 							<i class="fa fa-lock"></i>
 						</div>
@@ -200,8 +200,8 @@
 							data-placement="right"
 							title="An extension request was submitted for this project."
 							*ngIf="
-								(application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-								(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+								(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+								(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
 							"
 						>
 							<i class="fas fa-edit"></i>
@@ -212,8 +212,8 @@
 							data-placement="right"
 							title="A modification request was submitted for this project."
 							*ngIf="
-								(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
-								(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+								(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+								(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
 							"
 						>
 							<i class="fas fa-edit"></i>
@@ -223,7 +223,7 @@
 							data-toggle="tooltip"
 							data-placement="right"
 							title="The project application was submitted but not approved yet."
-							*ngIf="application | hasstatusinlist : Application_States.SUBMITTED"
+							*ngIf="application | hasstatusinlist: Application_States.SUBMITTED"
 						>
 							<i class="fas fa-edit"></i>
 						</div>
@@ -233,8 +233,8 @@
 							data-placement="right"
 							title="A request for additional credits was submitted for this project."
 							*ngIf="
-								(application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
-								(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+								(application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+								(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
 							"
 						>
 							<i class="fas fa-coins"></i>
@@ -300,7 +300,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="This project was initially approved within the last 2 weeks."
-								*ngIf="application | hasstatusinlist : Application_States.APPROVED_LAST_2_WEEKS"
+								*ngIf="application | hasstatusinlist: Application_States.APPROVED_LAST_2_WEEKS"
 							>
 								<i class="fas fa-plus-circle"></i>
 							</div>
@@ -310,8 +310,8 @@
 								data-placement="right"
 								title="The project lifetime expires soon."
 								*ngIf="
-									(application | hasstatusinlist : Application_States.EXPIRES_SOON) &&
-									!(application | hasstatusinlist : Application_States.EXPIRED)
+									(application | hasstatusinlist: Application_States.EXPIRES_SOON) &&
+									!(application | hasstatusinlist: Application_States.EXPIRED)
 								"
 							>
 								<i class="fas fa-exclamation-circle"></i>
@@ -321,7 +321,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="The lifetime of this project is expired."
-								*ngIf="application | hasstatusinlist : Application_States.EXPIRED"
+								*ngIf="application | hasstatusinlist: Application_States.EXPIRED"
 							>
 								<i class="fas fa-ban"></i>
 							</div>
@@ -330,7 +330,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="The termination of the project was requested."
-								*ngIf="application | hasstatusinlist : Application_States.TERMINATION_REQUESTED"
+								*ngIf="application | hasstatusinlist: Application_States.TERMINATION_REQUESTED"
 							>
 								<i class="fas fa-trash"></i>
 							</div>
@@ -339,7 +339,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="This project is disabled!"
-								*ngIf="application | hasstatusinlist : Application_States.DISABLED"
+								*ngIf="application | hasstatusinlist: Application_States.DISABLED"
 							>
 								<i class="fa fa-lock"></i>
 							</div>
@@ -349,8 +349,8 @@
 								data-placement="right"
 								title="An extension request was submitted for this project."
 								*ngIf="
-									(application | hasstatusinlist : Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-									(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+									(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+									(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
 								"
 							>
 								<i class="fas fa-edit"></i>
@@ -361,8 +361,8 @@
 								data-placement="right"
 								title="A modification request was submitted for this project."
 								*ngIf="
-									(application | hasstatusinlist : Application_States.MODIFICATION_REQUESTED) ||
-									(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+									(application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+									(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
 								"
 							>
 								<i class="fas fa-edit"></i>
@@ -372,7 +372,7 @@
 								data-toggle="tooltip"
 								data-placement="right"
 								title="The project application was submitted but not approved yet."
-								*ngIf="application | hasstatusinlist : Application_States.SUBMITTED"
+								*ngIf="application | hasstatusinlist: Application_States.SUBMITTED"
 							>
 								<i class="fas fa-edit"></i>
 							</div>
@@ -382,8 +382,8 @@
 								data-placement="right"
 								title="A request for additional credits was submitted for this project."
 								*ngIf="
-									(application | hasstatusinlist : Application_States.CREDITS_EXTENSION_REQUESTED) ||
-									(application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+									(application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+									(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
 								"
 							>
 								<i class="fas fa-coins"></i>
