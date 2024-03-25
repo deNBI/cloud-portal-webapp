@@ -10,6 +10,8 @@ import { Application } from '../../../../../applications/application.model/appli
 export class ApplicationBadgesComponent {
 	@Input() application: Application;
 	is_vo_admin: boolean = false;
+	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
+	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg';
 
 	constructor() {
 		this.is_vo_admin = is_vo;
