@@ -122,6 +122,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	memberApplicationsLoaded: boolean = false;
 	title: string = 'Project Overview';
 
+	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
+	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg';
+
 	checked_member_list: number[] = [];
 	// modal variables for User list
 	public project_members: ProjectMember[] = [];
