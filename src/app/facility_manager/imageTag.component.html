@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <div *ngIf="isLoaded === false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
@@ -334,7 +334,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Update Mode</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="updateModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="updateModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>

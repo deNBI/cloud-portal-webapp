@@ -1,7 +1,7 @@
 <ng-container *ngIf="scale_down">
 	<div class="modal-header">
 		<h4 class="modal-title">Scale-Down Cluster {{ cluster?.cluster_id }}</h4>
-		<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
+		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
@@ -114,7 +114,7 @@
 <ng-container *ngIf="scale_up">
 	<div class="modal-header">
 		<h4 class="modal-title">Scale-Up Cluster {{ cluster?.cluster_id }}</h4>
-		<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
+		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
@@ -353,7 +353,7 @@
 <ng-container *ngIf="scale_success">
 	<div class="modal-header">
 		<h4 class="modal-title">Scaling successful {{ cluster?.cluster_id }}</h4>
-		<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
+		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
@@ -367,10 +367,10 @@
 				<strong>Connect to your master instance:</strong>
 				<div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
 					<div class="col-md-1">
-						<span class="font-weight-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
+						<span class="fw-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
 					</div>
 					<div class="col-md-9">
-						<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
+						<span class="fw-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
 					</div>
 
 					<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">

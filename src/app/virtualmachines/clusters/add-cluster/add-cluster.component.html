@@ -74,7 +74,7 @@
 								>
 								</span>
 							</div>
-							<div *ngIf="projectDataLoaded && selectedProject && (allowedProjects | inAllowed : selectedProject)">
+							<div *ngIf="projectDataLoaded && selectedProject && (allowedProjects | inAllowed: selectedProject)">
 								<div
 									class="alert alert-danger"
 									role="alert"
@@ -102,7 +102,7 @@
 											class="alert alert-warning"
 											*ngIf="
 												selectedProject &&
-												((selectedProjectRessources | noVMsPipe : 2) ||
+												((selectedProjectRessources | noVMsPipe: 2) ||
 													(selectedProjectRessources | noRamPipe) ||
 													(selectedProjectRessources | noCoresPipe)) &&
 												client_available &&
@@ -394,7 +394,7 @@
 															>Grant access for specific project members of <em>{{ selectedProject[0] }}</em></strong
 														>
 														<i
-															class="pull-right float-right"
+															class="pull-right float-end"
 															style="font-size: 25px"
 															[ngClass]="{
 																'icon-arrow-up': userAccess.isOpen,
@@ -501,7 +501,7 @@
 								projectDataLoaded &&
 								!client_available &&
 								selectedProject &&
-								!(allowedProjects | inAllowed : selectedProject)
+								!(allowedProjects | inAllowed: selectedProject)
 							"
 						>
 							<div class="alert alert-info">

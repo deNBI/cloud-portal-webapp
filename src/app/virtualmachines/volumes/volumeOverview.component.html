@@ -320,7 +320,7 @@
 
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="resultModal.hide()"
 					aria-label="Close"
@@ -438,7 +438,7 @@
 				<h4 class="modal-title">Delete the following Volumes</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="deleteSelectedModal.hide()"
 					aria-label="Close"
@@ -487,7 +487,7 @@
 				<h4 class="modal-title">Detach the following Volumes</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="detachSelectedModal.hide()"
 					aria-label="Close"
@@ -537,7 +537,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Delete Volume</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -591,7 +591,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Attach Volume</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="attachModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="attachModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -646,7 +646,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Rename Volume</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="renameModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="renameModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -699,7 +699,7 @@
 				<h4 class="modal-title">Extension result</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="extendResultModal.hide()"
 					aria-label="Close"
@@ -754,7 +754,7 @@
 				<h4 class="modal-title">Extend Volume {{ selected_volume?.volume_name }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="extendModal.hide()"
 					aria-label="Close"
@@ -897,7 +897,7 @@
 				<h4 class="modal-title">Create & Attach Volume</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="createModal.hide()"
 					aria-label="Close"
@@ -1106,7 +1106,7 @@
 				<h4 *ngIf="errorState === 2" class="modal-title">Detach Volume</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="errorModal.hide()"
 					aria-label="Close"

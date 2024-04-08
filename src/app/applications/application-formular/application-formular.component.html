@@ -346,7 +346,7 @@
 									<div accordion-heading style="width: 100%; cursor: pointer">
 										<strong>{{ t.long_name }}</strong>
 										<i
-											class="pull-right float-right"
+											class="pull-right float-end"
 											style="font-size: 25px"
 											[ngClass]="{
 												'icon-arrow-up': groupval.isOpen,
@@ -1154,7 +1154,7 @@
 									<div accordion-heading style="width: 100%; cursor: pointer">
 										Dissemination Options
 										<i
-											class="pull-right float-right"
+											class="pull-right float-end"
 											style="font-size: 25px"
 											[ngClass]="{
 												'icon-arrow-up': dissemination_information_accordion.isOpen,
@@ -1565,7 +1565,7 @@
 												data-test-id="unknown-pi-affiliations-checkbox"
 												[(ngModel)]="unknownPiAffiliationsConfirmation"
 											/>
-											<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
+											<label class="form-check-label fw-bold" for="id-unknown-pi-affiliations-checkbox"
 												>I have read and understood the information in the box above.</label
 											>
 										</div>
@@ -1727,7 +1727,7 @@
 										data-test-id="project_application_responsibility_checkbox"
 										[(ngModel)]="unknownPiAffiliationsConfirmation"
 									/>
-									<label class="form-check-label font-weight-bold" for="id-unknown-pi-affiliations-checkbox"
+									<label class="form-check-label fw-bold" for="id-unknown-pi-affiliations-checkbox"
 										>I have read and understood the information in the box above.</label
 									>
 								</div>
@@ -1812,7 +1812,7 @@
 				<h4 class="modal-title">{{ notificationModalTitle }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="notificationModal.hide()"
 					aria-label="Close"
@@ -1881,7 +1881,7 @@
 				<h4 class="modal-title">{{ acknowledgeModalTitle }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="acknowledgemodal.hide()"
 					aria-label="Close"
@@ -1933,7 +1933,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Note on data backups</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="dataBackupModal.hide()" aria-label="Close">
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="dataBackupModal.hide()"
+					aria-label="Close"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -1999,7 +2005,7 @@
 				<h4 class="modal-title">{{ projectName }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="submitModal.hide()"
 					data-dismiss="modal"

@@ -38,7 +38,7 @@
 					<button
 						(click)="getFacilitySupportMails(); computeCenterSupportModal.show()"
 						type="button"
-						class="btn btn-outline-primary float-right"
+						class="btn btn-outline-primary float-end"
 					>
 						<i class="fa fa-inbox"></i>
 						Support email(s)
@@ -365,7 +365,7 @@
 				<h4 class="modal-title" *ngIf="selectedFacility">
 					Send email to members of {{ selectedFacility['Facility'] }}
 				</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="emailModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="emailModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -629,7 +629,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Send email</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -726,7 +726,13 @@
 				<h4 class="modal-title" *ngIf="emailStatus === 0">Waiting</h4>
 				<h4 class="modal-title" *ngIf="emailStatus === 1">Success</h4>
 				<h4 class="modal-title" *ngIf="emailStatus === 2">Error</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="successModal.hide()" aria-label="Close">
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="successModal.hide()"
+					aria-label="Close"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -767,7 +773,7 @@
 				<h4 class="modal-title">Description</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="descriptionModal.hide()"
 					aria-label="Close"
@@ -805,7 +811,7 @@
 				<h4 class="modal-title">Support email addresses</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="computeCenterSupportModal.hide()"
 					aria-label="Close"
@@ -881,7 +887,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Details</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -944,7 +950,7 @@
 				<h4 class="modal-title" id="notification_modal_title">{{ notificationModalTitle }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="notificationModal.hide()"
 					aria-label="Close"
@@ -989,7 +995,7 @@
 				<h4 class="modal-title">{{ notificationModalTitle }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="notificationModal.hide()"
 					aria-label="Close"

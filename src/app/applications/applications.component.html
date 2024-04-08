@@ -1016,7 +1016,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4>Adjust application for {{ selectedApplication?.project_application_shortname }}</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="adjustModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="adjustModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -1120,7 +1120,7 @@
 								<div accordion-heading style="width: 100%; cursor: pointer">
 									{{ t.long_name }}
 									<i
-										class="pull-right float-right"
+										class="pull-right float-end"
 										style="font-size: 25px"
 										[ngClass]="{
 											'icon-arrow-up': groupval.isOpen,
@@ -1495,7 +1495,7 @@
 				<h4>Adjust lifetime extension for {{ selectedApplication?.project_application_shortname }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="lifetimeAdjustModal.hide()"
 					aria-label="Close"
@@ -1623,7 +1623,7 @@
 				<h4 class="modal-title" *ngIf="extension_status === 2">Error</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="resultModal.hide(); extension_status = 0; removeModalOpen()"
 					aria-label="Close"

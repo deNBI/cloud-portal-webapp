@@ -560,7 +560,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">{{ emailHeader }}</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="emailModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="emailModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -751,7 +751,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Send email</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -797,7 +797,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Suspend Project {{ selectedProject?.project_application_shortname }}</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="suspendModal.hide()" aria-label="Close">
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="suspendModal.hide()"
+					aria-label="Close"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -830,7 +836,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Resume Project {{ selectedProject?.project_application_shortname }}</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="resumeModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="resumeModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -865,7 +871,13 @@
 				<h4 class="modal-title" *ngIf="emailStatus === 0">Waiting</h4>
 				<h4 class="modal-title" *ngIf="emailStatus === 1">Success</h4>
 				<h4 class="modal-title" *ngIf="emailStatus === 2">Error</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="successModal.hide()" aria-label="Close">
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="successModal.hide()"
+					aria-label="Close"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -906,7 +918,7 @@
 				<h4 class="modal-title">Description</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="descriptionModal.hide()"
 					aria-label="Close"
@@ -942,7 +954,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Details</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
+				<button type="button" class="btn-close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -1013,7 +1025,7 @@
 				<h4 class="modal-title">Decline Termination</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="declineTerminationModal.hide()"
 					aria-label="Close"
@@ -1057,7 +1069,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Terminate Project - {{ selectedProject?.project_application_shortname }}</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="terminateModal.hide()" aria-label="Close">
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="terminateModal.hide()"
+					aria-label="Close"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -1102,7 +1120,7 @@
 				</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="notificationModal.hide()"
 					aria-label="Close"

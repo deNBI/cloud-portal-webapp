@@ -139,7 +139,7 @@
 													<button
 														id="approval_{{ application?.project_application_shortname }}"
 														[attr.data-test-id]="'approval_' + application?.project_application_shortname"
-														*ngIf="application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION"
+														*ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION"
 														style="margin: 2px"
 														(click)="
 															resetNotificationModal(); approveApplication(application); notificationModal.show()
@@ -153,7 +153,7 @@
 													</button>
 
 													<button
-														*ngIf="application | hasstatusinlist : Application_States.WAIT_FOR_CONFIRMATION"
+														*ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION"
 														style="margin: 2px"
 														[id]="'decline_' + application?.project_application_shortname"
 														(click)="
@@ -944,7 +944,7 @@
 										"
 									>
 										<div class="spinner-border" role="status">
-											<span class="sr-only">Loading...</span>
+											<span class="visually-hidden">Loading...</span>
 										</div>
 									</div>
 								</td>
@@ -971,7 +971,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Terminate Project</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="terminateModal.hide()" aria-label="Close">
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="terminateModal.hide()"
+					aria-label="Close"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -1011,7 +1017,7 @@
 				<h4 class="modal-title">Decline Termination</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="declineTerminationModal.hide()"
 					aria-label="Close"
@@ -1056,7 +1062,7 @@
 				<h4 class="modal-title" data-test-id="notification_modal_title">{{ notificationModalTitle }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="notificationModal.hide()"
 					aria-label="Close"

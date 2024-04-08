@@ -1,7 +1,7 @@
 <ng-container *ngIf="choosingType">
 	<div class="modal-header">
 		<h4 class="modal-title">Choose Reboot Type for: {{ virtualMachine?.name }}</h4>
-		<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
+		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
@@ -15,7 +15,7 @@
 					type="button"
 					class="btn btn-primary"
 					*ngIf="
-						!(virtualMachine?.status | hasStatus : VirtualMachineStates.staticDELETED) &&
+						!(virtualMachine?.status | hasStatus: VirtualMachineStates.staticDELETED) &&
 						virtualMachine?.client.features['VM_REBOOT']
 					"
 					[attr.data-test-id]="'soft_reboot_vm_' + virtualMachine?.name"
@@ -32,7 +32,7 @@
 					class="btn btn-primary"
 					[id]="'hardRebootVM_' + virtualMachine?.name"
 					*ngIf="
-						!(virtualMachine?.status | hasStatus : VirtualMachineStates.staticDELETED) &&
+						!(virtualMachine?.status | hasStatus: VirtualMachineStates.staticDELETED) &&
 						virtualMachine?.client.features['VM_REBOOT']
 					"
 					(click)="hardRebootShow()"
@@ -56,7 +56,7 @@
 			<strong>{{ reboot_type }}</strong> reboot {{ virtualMachine?.name }}
 		</h4>
 
-		<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
+		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>

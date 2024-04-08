@@ -219,7 +219,7 @@
 												(e.g. RStudio, Apache Guacamole, Theia IDE)
 												<span class="badge badge-primary">BETA</span>
 												<i
-													class="pull-right float-right"
+													class="pull-right float-end"
 													style="font-size: 25px"
 													[ngClass]="{
 														'icon-arrow-up': res_env_group.isOpen,
@@ -287,7 +287,7 @@
 													for</strong
 												>
 												<i
-													class="pull-right float-right"
+													class="pull-right float-end"
 													style="font-size: 25px"
 													[ngClass]="{
 														'icon-arrow-up': userAccess.isOpen,
@@ -322,7 +322,7 @@
 																	{{ member.vm_amount }} VMs started in this workshop for this user
 																</span>
 																<span *ngIf="!member.hasVM" class="badge badge-danger">
-																	<span class="icon icon-close"></span>
+																	<span class="icon icon-btn-close"></span>
 																</span>
 															</td>
 															<td>

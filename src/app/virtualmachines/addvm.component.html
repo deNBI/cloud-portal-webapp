@@ -84,7 +84,7 @@
 							<div class="row justify-content-center">
 								<span *ngIf="client_available && !projectDataLoaded" class="spinner-border text-info"></span>
 							</div>
-							<div *ngIf="selectedProject && (allowedProjects | inAllowed : selectedProject)">
+							<div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
 								<div *ngIf="client_available && projectDataLoaded">
 									<app-resource-overview [ressourceUsage]="selectedProjectRessources"></app-resource-overview>
 									<div
@@ -222,7 +222,7 @@
 										>
 											<!-- Buttons Row -->
 											<div class="col">
-												<div class="card border-left-0 border-right-0 border-bottom-0 rounded-0 border-light">
+												<div class="card border-start-0 border-end-0 border-bottom-0 rounded-0 border-light">
 													<div class="card-header" style="text-align: center">
 														<strong>Volumes</strong><br />
 														<span class="text-muted"
@@ -610,7 +610,7 @@
 														>BETA</span
 													>
 													<i
-														class="pull-right float-right"
+														class="pull-right float-end"
 														style="font-size: 25px"
 														[ngClass]="{
 															'icon-arrow-up': autoGroup.isOpen,
@@ -652,7 +652,7 @@
 													(e.g. RStudio, Apache Guacamole, Theia IDE, VSCode, Jupyterlab)
 													<span class="badge bg-primary">BETA</span>
 													<i
-														class="pull-right float-right"
+														class="pull-right float-end"
 														style="font-size: 25px"
 														[ngClass]="{
 															'icon-arrow-up': resEnvGroup.isOpen,
@@ -684,7 +684,7 @@
 														>Grant access for specific project members of <em>{{ selectedProject[0] }}</em></strong
 													>
 													<i
-														class="pull-right float-right"
+														class="pull-right float-end"
 														style="font-size: 25px"
 														[ngClass]="{
 															'icon-arrow-up': userAccess.isOpen,
@@ -712,7 +712,7 @@
 												<div accordion-heading style="width: 100%; cursor: pointer">
 													<strong>Optional parameters</strong>
 													<i
-														class="pull-right float-right"
+														class="pull-right float-end"
 														style="font-size: 25px"
 														[ngClass]="{
 															'icon-arrow-up': optionalGroup.isOpen,
@@ -932,7 +932,7 @@
 									</ng-container>
 								</div>
 							</div>
-							<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed : selectedProject)">
+							<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
 								<div class="alert alert-info">
 									You are not allowed to start a machine in this project, as the administrators of the project do not
 									allow non-administrators to start machines.
