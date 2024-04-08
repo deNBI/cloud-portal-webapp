@@ -8,6 +8,7 @@ import { FlavorType } from '../../../virtualmachines/virtualmachinemodels/flavor
 import { FlavorService } from '../../../api-connector/flavor.service';
 import { FacilityService } from '../../../api-connector/facility.service';
 import { UserService } from '../../../api-connector/user.service';
+import { FlavorTypeShortcuts } from './flavor-type-shortcuts';
 
 /**
  * Application base component..
@@ -24,6 +25,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 * @type {boolean}
 	 */
 	isLoaded: boolean = false;
+	FlavorTypeShortcuts: typeof FlavorTypeShortcuts = FlavorTypeShortcuts;
 
 	/**
 	 * Selected Application.

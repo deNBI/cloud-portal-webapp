@@ -402,7 +402,7 @@ export class VirtualmachineService {
 	}
 
 	setVmNeeded(openstack_id: string): Observable<any> {
-		return this.http.post<any>(`${this.baseVmUrl}${openstack_id}/need/`, null, {
+		return this.http.post<any>(`${this.baseVmUrl}${openstack_id}/need/`, {
 			withCredentials: true,
 		});
 	}

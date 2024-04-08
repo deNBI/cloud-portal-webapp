@@ -22,6 +22,7 @@ export class VirtualMachine {
 	created_at_date: string;
 	deleted_at_date: string;
 	still_used_confirmation_requested_date: Date;
+	still_used_confirmed_user_id: string;
 	stopped_at: string;
 	elixir_id: string;
 	fixed_ip: string;
@@ -45,6 +46,8 @@ export class VirtualMachine {
 	days_running: number;
 	backend: Backend;
 	conda_packages: CondaPackage[] = [];
+	still_used_confirmed_date: Date;
+	// still used confirmed date missing in webapp!
 
 	migrate_project_to_simple_vm: boolean = false;
 	project_is_migrated_to_simple_vm: boolean = false;

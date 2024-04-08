@@ -28,7 +28,7 @@ import { IsMigratedProjectIdPipe } from '../../pipe-module/pipes/migratedList';
 @Component({
 	selector: 'app-volume-overview',
 	templateUrl: 'volumeOverview.component.html',
-	providers: [FacilityService, GroupService, VirtualmachineService],
+	providers: [FacilityService, GroupService, VirtualmachineService, IsMigratedProjectIdPipe],
 	styleUrls: ['../vmOverview.component.scss'],
 })
 export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
@@ -340,7 +340,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 		volume = this.get_volume_from_list_by_id(volume.volume_openstackid);
 		if (volume.volume_status !== VolumeStates.AVAILABLE) {
-			volume.error_msg = 'Conflict detected. The volume can\'t be attached, because it is not AVAILABLE';
+			volume.error_msg = "Conflict detected. The volume can't be attached, because it is not AVAILABLE";
 			setTimeout((): void => {
 				volume.error_msg = null;
 			}, 10000);
@@ -377,7 +377,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 		volume = this.get_volume_from_list_by_id(volume.volume_openstackid);
 		if (volume.volume_status !== VolumeStates.AVAILABLE) {
-			volume.error_msg = 'Conflict detected. The volume can\'t be extended, because it is not AVAILABLE';
+			volume.error_msg = "Conflict detected. The volume can't be extended, because it is not AVAILABLE";
 			setTimeout((): void => {
 				volume.error_msg = null;
 			}, 10000);
@@ -542,7 +542,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 		volume = this.get_volume_from_list_by_id(volume.volume_openstackid);
 		if (volume.volume_status !== VolumeStates.IN_USE) {
-			volume.error_msg = 'Conflict detected. The volume can\'t be detached, because it is not IN-USE';
+			volume.error_msg = "Conflict detected. The volume can't be detached, because it is not IN-USE";
 			setTimeout((): void => {
 				volume.error_msg = null;
 			}, 10000);

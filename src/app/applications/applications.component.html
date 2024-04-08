@@ -1110,7 +1110,10 @@
 					<accordion>
 						<ng-container *ngFor="let t of typeList; first as isFirst">
 							<accordion-group
-								*ngIf="selectedApplication?.project_application_openstack_project || checkIfTypeGotSimpleVmFlavor(t)"
+								*ngIf="
+									selectedApplication?.project_application_openstack_project ||
+									checkIfTypeGotSimpleVMFlavorOrIsCustom(t)
+								"
 								[isOpen]="isFirst"
 								#groupval
 							>
@@ -1129,7 +1132,9 @@
 									<div
 										*ngIf="
 											fl.type.shortcut === t.shortcut &&
-											(fl.simple_vm || selectedApplication?.project_application_openstack_project)
+											(fl.simple_vm ||
+												selectedApplication?.project_application_openstack_project ||
+												fl.type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR)
 										"
 										class="form-group row"
 									>

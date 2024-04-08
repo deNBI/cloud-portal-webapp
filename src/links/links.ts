@@ -28,7 +28,7 @@ export const WIKI_WORKSHOPS: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm
 export const WIKI_CREATE_SNAPSHOT_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/snapshots/#create-a-snapshot`;
 export const SCALE_SCRIPT_LINK: string =	'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/scaling.py';
 export const WIKI_MOUNT_VOLUME: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/volumes/#mount-a-volume`;
-export const WIKI_MOSH_LINK: string = `${environment.WIKI_PRE}Tutorials/Mosh/`;
+export const WIKI_MOSH_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}Tutorials/Mosh/`;
 export const WIKI_EPHEMERAL_LINK: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/create_instance/#about-ephemeral-flavors`;
 export const SCALING_UP_WIKI: string = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/Cluster/cluster_overview/#scale-up-your-cluster`;
 export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
@@ -48,6 +48,7 @@ export const ZAMMAD_HELPDESK_LINK = 'https://helpdesk.cloud.denbi.de';
 export const GDPR_LINK = 'https://gdpr.eu/article-9-processing-special-categories-of-personal-data-prohibited/';
 export const LIFESCIENCE_HOSTEL_SIGNUP =	'https://signup.aai.lifescience-ri.eu/non/registrar/?vo=lifescience_hostel&targetnew=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use&targetexisting=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use&targetextended=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use';
 export const WIKI_PERSISTENT_TERMINAL_LINK = `${environment.WIKI_PRE}Tutorials/Persistent_SSH_Sessions/`;
+export const WIKI_BACKUP_LINK = `${environment.SIMPLEVM_WIKI_PRE}simple_vm/backup`;
 
 export const WIKI_SVM_MIGRATION_LINK = `${environment.WIKI_PRE}`;
 
@@ -82,6 +83,7 @@ export const WIKI_LINKS: string[] = [
 	WIKI_MOSH_LINK,
 	WIKI_PERSONAL_DATA,
 	WIKI_SVM_MIGRATION_LINK,
+	WIKI_BACKUP_LINK,
 ];
 
 export const LANDING_PAGE_LINKS: string[] = [
