@@ -108,7 +108,7 @@
 							</div>
 							<span class="col col-form-label" *ngIf="sortProjectService.loading$ | async">Loading...</span>
 							<div class="col">
-								<div class="float-right">
+								<div class="float-end">
 									<button
 										*ngIf="!tsvTaskRunning"
 										type="button "
@@ -125,7 +125,7 @@
 								</div>
 							</div>
 							<div class="col">
-								<div class="float-right">
+								<div class="float-end">
 									<button
 										type="button "
 										(click)="downloadCurrentTSV()"

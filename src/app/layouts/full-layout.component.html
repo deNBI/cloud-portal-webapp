@@ -392,7 +392,7 @@
 					</li>
 				</ul>
 			</li>
-			<li class="nav-title" *ngIf="vm_project_member">Virtual Machines</li>
+			<!--li class="nav-title" *ngIf="vm_project_member">Virtual Machines</li>
 			<li class="nav-item" *ngIf="vm_project_member">
 				<a
 					class="nav-link"
@@ -464,7 +464,7 @@
 						><i class="nav-icon fas fa-chalkboard"></i> Manage workshops</a
 					>
 				</li>
-			</ng-container>
+			</ng-container-->
 			<li *ngIf="is_facility_manager || is_vo_admin" class="nav-title">Facilities</li>
 
 			<li *ngIf="is_facility_manager || is_vo_admin" class="nav-item">
@@ -485,11 +485,11 @@
 				>
 			</li>
 
-			<li *ngIf="(is_facility_manager && is_simple_vm_manager) || is_vo_admin" class="nav-item">
+			<!--li *ngIf="(is_facility_manager && is_simple_vm_manager) || is_vo_admin" class="nav-item">
 				<a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/imageTags']"
 					><i class="nav-icon fas fa-tags"></i> Image Tags</a
 				>
-			</li>
+			</li-->
 
 			<li *ngIf="is_facility_manager || is_vo_admin" class="nav-item">
 				<a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/news-manager']"
