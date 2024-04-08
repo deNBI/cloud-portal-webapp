@@ -10,7 +10,9 @@
 				</div>
 				<div style="width: 100%" class="table-responsive">
 					<table class="table table-striped">
-						<tr app-public-key [userinfo]="userinfo" (currentKeyBlockedChanged)="setCurrentKeyBlocked($event)"></tr>
+						<tbody>
+							<tr app-public-key [userinfo]="userinfo" (currentKeyBlockedChanged)="setCurrentKeyBlocked($event)"></tr>
+						</tbody>
 					</table>
 				</div>
 			</div>
@@ -84,9 +86,9 @@
 							<div class="row justify-content-center">
 								<span *ngIf="client_available && !projectDataLoaded" class="spinner-border text-info"></span>
 							</div>
-							<div *ngIf="selectedProject && (allowedProjects | inAllowed : selectedProject)">
+							<div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
 								<div *ngIf="client_available && projectDataLoaded">
-									<app-resource-overview [ressourceUsage]="selectedProjectRessources"></app-resource-overview>
+									<app-resource-overview [ressourceUsage]="selectedProjectRessources"> </app-resource-overview>
 									<div
 										class="alert alert-warning"
 										*ngIf="
@@ -204,7 +206,8 @@
 														[selectedFlavor]="selectedFlavor"
 														(selectedImageChange)="setSelectedImage($event)"
 														id="id_image_detail"
-													></app-image-detail>
+													>
+													</app-image-detail>
 												</div>
 											</div>
 										</div>
@@ -222,7 +225,7 @@
 										>
 											<!-- Buttons Row -->
 											<div class="col">
-												<div class="card border-left-0 border-right-0 border-bottom-0 rounded-0 border-light">
+												<div class="card border-start-0 border-end-0 border-bottom-0 rounded-0 border-light">
 													<div class="card-header" style="text-align: center">
 														<strong>Volumes</strong><br />
 														<span class="text-muted"
@@ -293,7 +296,9 @@
 															<div class="col">
 																<div id="addVolumeDiv" *ngIf="showAddVol">
 																	<div class="form-group row">
-																		<div class="col-md-2"><strong>Name</strong></div>
+																		<div class="col-md-2">
+																			<strong>Name</strong>
+																		</div>
 																		<div class="col-md-10" style="width: 100%">
 																			<input
 																				type="text"
@@ -312,7 +317,9 @@
 																		</div>
 																	</div>
 																	<div class="form-group row">
-																		<div class="col-md-2"><strong>Mountpath</strong></div>
+																		<div class="col-md-2">
+																			<strong>Mountpath</strong>
+																		</div>
 																		<div class="input-group col-md-10">
 																			<div class="input-group-prepend">
 																				<span class="input-group-text" id="basic-addon3">/vol/</span>
@@ -337,7 +344,9 @@
 																		</div>
 																	</div>
 																	<div class="form-group row">
-																		<div class="col-md-2"><strong>Storage</strong></div>
+																		<div class="col-md-2">
+																			<strong>Storage</strong>
+																		</div>
 																		<div class="input-group col-md-10" style="width: 100%">
 																			<input
 																				min="0"
@@ -403,7 +412,8 @@
 																			(click)="selected_detached_vol = vol"
 																		>
 																			{{ vol.volume_name }}
-																			({{ vol.volume_storage }} GB)
+																			({{ vol.volume_storage }}
+																			GB)
 																		</option>
 																	</select>
 																	<div
@@ -455,7 +465,8 @@
 															<div class="form-group col-md-12 row" *ngIf="showAddVol || showAttachVol">
 																<div class="btn-toolbar col" role="group" *ngIf="showAddVol">
 																	<button class="btn btn-danger col-md-4" (click)="toggleShowAddVol()" type="button">
-																		Discard <span class="fa fa-times"></span>
+																		Discard
+																		<span class="fa fa-times"></span>
 																	</button>
 																	<button
 																		*ngIf="showAddVol"
@@ -466,12 +477,14 @@
 																		data-test-id="add_volume_confirmation_button"
 																		type="button"
 																	>
-																		Add Volume <span class="fa fa-check"></span>
+																		Add Volume
+																		<span class="fa fa-check"></span>
 																	</button>
 																</div>
 																<div class="col" role="group" *ngIf="showAttachVol">
 																	<button class="btn btn-danger col-md-4" (click)="toggleShowAttachVol()" type="button">
-																		Close selection <span class="fa fa-times"></span>
+																		Close selection
+																		<span class="fa fa-times"></span>
 																	</button>
 																</div>
 															</div>
@@ -481,7 +494,9 @@
 															class="row col-md-12"
 															*ngIf="volumesToMount?.length > 0 || volumesToAttach?.length > 0"
 														>
-															<div class="col-md-2"><strong>Volumes to mount</strong></div>
+															<div class="col-md-2">
+																<strong>Volumes to mount</strong>
+															</div>
 															<div class="col-md-10">
 																<div
 																	class="rTableRow"
@@ -493,9 +508,15 @@
 																		)
 																	"
 																>
-																	<div class="rTableHeadNoBorder col-md-3"><strong>Name</strong></div>
-																	<div class="rTableHeadNoBorder col-md-4"><strong>Mountpath</strong></div>
-																	<div class="rTableHeadNoBorder col-md-2"><strong>Storage</strong></div>
+																	<div class="rTableHeadNoBorder col-md-3">
+																		<strong>Name</strong>
+																	</div>
+																	<div class="rTableHeadNoBorder col-md-4">
+																		<strong>Mountpath</strong>
+																	</div>
+																	<div class="rTableHeadNoBorder col-md-2">
+																		<strong>Storage</strong>
+																	</div>
 																	<div class="rTableHeadNoBorder col-md-1"></div>
 																</div>
 																<ng-container *ngFor="let vol of volumesToMount">
@@ -582,7 +603,8 @@
 																		*ngIf="volumesToMount?.length > 0 || volumesToAttach?.length > 0"
 																	>
 																		In a few cases the automatic mounting might not work, then the volume must be
-																		<a href="{{ WIKI_VOLUME_OVERVIEW }}"> mounted</a> manually!
+																		<a href="{{ WIKI_VOLUME_OVERVIEW }}"> mounted</a>
+																		manually!
 																	</div>
 																</div>
 															</div>
@@ -603,14 +625,15 @@
 												"
 											>
 												<div accordion-heading style="width: 100%; cursor: pointer">
-													<strong>Tools </strong> powered by
+													<strong>Tools </strong>
+													powered by
 													<img src="{{ conda_img_path }}" alt="Conda® " style="height: 12px; width: auto" /><span
 														class="badge bg-primary"
 														style="margin-left: 5px"
 														>BETA</span
 													>
 													<i
-														class="pull-right float-right"
+														class="pull-right float-end"
 														style="font-size: 25px"
 														[ngClass]="{
 															'icon-arrow-up': autoGroup.isOpen,
@@ -628,7 +651,7 @@
 												</div>
 
 												<div class="col">
-													<app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
+													<app-bioconda #bioconda (hasTools)="hasChosenTools($event)"> </app-bioconda>
 												</div>
 											</accordion-group>
 
@@ -652,7 +675,7 @@
 													(e.g. RStudio, Apache Guacamole, Theia IDE, VSCode, Jupyterlab)
 													<span class="badge bg-primary">BETA</span>
 													<i
-														class="pull-right float-right"
+														class="pull-right float-end"
 														style="font-size: 25px"
 														[ngClass]="{
 															'icon-arrow-up': resEnvGroup.isOpen,
@@ -668,7 +691,8 @@
 													[selectedImageTags]="selectedImage?.tags"
 													[blockedImageTagsResenv]="blockedImageTagsResenv"
 													[onlyNamespace]="resenvSelected"
-												></app-res-env>
+												>
+												</app-res-env>
 											</accordion-group>
 											<accordion-group
 												#userAccess
@@ -684,7 +708,7 @@
 														>Grant access for specific project members of <em>{{ selectedProject[0] }}</em></strong
 													>
 													<i
-														class="pull-right float-right"
+														class="pull-right float-end"
 														style="font-size: 25px"
 														[ngClass]="{
 															'icon-arrow-up': userAccess.isOpen,
@@ -696,7 +720,8 @@
 													[members_to_add]="members_to_add"
 													[user_member_id]="userinfo.MemberId"
 													[project_id]="selectedProject[1]"
-												></app-project-user-list>
+												>
+												</app-project-user-list>
 											</accordion-group>
 
 											<accordion-group
@@ -712,7 +737,7 @@
 												<div accordion-heading style="width: 100%; cursor: pointer">
 													<strong>Optional parameters</strong>
 													<i
-														class="pull-right float-right"
+														class="pull-right float-end"
 														style="font-size: 25px"
 														[ngClass]="{
 															'icon-arrow-up': optionalGroup.isOpen,
@@ -932,7 +957,7 @@
 									</ng-container>
 								</div>
 							</div>
-							<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed : selectedProject)">
+							<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
 								<div class="alert alert-info">
 									You are not allowed to start a machine in this project, as the administrators of the project do not
 									allow non-administrators to start machines.
@@ -947,7 +972,8 @@
 
 				<div class="alert alert-danger" *ngIf="!client_available && selectedProject && client_checked">
 					The corresponding client is currently offline. If you have any questions please contact
-					<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a> Check our
+					<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}.</a>
+					Check our
 					<a href="{{ STATUS_LINK }}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site
 					of your project is reachable.
 				</div>
@@ -972,7 +998,9 @@
 	<div class="modal-dialog modal-info" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">{{ !error_starting_machine ? 'Redirecting' : 'Error starting VM' }}</h4>
+				<h4 class="modal-title">
+					{{ !error_starting_machine ? 'Redirecting' : 'Error starting VM' }}
+				</h4>
 			</div>
 			<div class="modal-body" *ngIf="!error_starting_machine">
 				<p>{{ progress_bar_status }}</p>

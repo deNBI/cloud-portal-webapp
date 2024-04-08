@@ -57,10 +57,10 @@
 	<div class="card-img-overlay text-center overflow-auto">
 		<h5 class="card-title">{{ news.title }}</h5>
 		<p class="card-text">{{ news.short_text }}</p>
-		<small class="float-left text-muted">
+		<small class="float-start text-muted">
 			{{ news.date | date: 'YYYY-MM-dd' }}
 		</small>
-		<small class="float-right">
+		<small class="float-end">
 			<a [href]="news.url" target="_blank" rel="noopener noreferrer"
 				>See full news&nbsp;<i class="fa fa-external-link-alt"></i
 			></a>

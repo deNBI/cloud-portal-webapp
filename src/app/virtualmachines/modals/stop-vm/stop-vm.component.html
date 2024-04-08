@@ -1,8 +1,12 @@
 <div class="modal-header">
 	<h4 class="modal-title">Stop VM</h4>
-	<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-	</button>
+	<button
+		type="button"
+		class="btn-close"
+		style="cursor: pointer"
+		(click)="bsModalRef.hide()"
+		aria-label="Close"
+	></button>
 </div>
 <div class="modal-body" id="submitStopVmModal">
 	<div class="alert alert-warning" role="alert">Are you sure you want to stop {{ virtualMachine?.name }}?</div>

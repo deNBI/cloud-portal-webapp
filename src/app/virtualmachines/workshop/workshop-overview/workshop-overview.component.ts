@@ -133,12 +133,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	datesOverlap(
-		first_start: number | Date,
-		first_end: number | Date,
-		second_start: number,
-		second_end: number,
-	): boolean {
+	datesOverlap(first_start: number, first_end: number, second_start: number, second_end: number): boolean {
 		return (
 			(first_start >= second_start && first_start <= second_end)
 			|| (first_end >= second_start && first_end <= second_end)
