@@ -1,9 +1,13 @@
 <ng-container *ngIf="scale_down">
 	<div class="modal-header">
 		<h4 class="modal-title">Scale-Down Cluster {{ cluster?.cluster_id }}</h4>
-		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			aria-label="Close"
+		></button>
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-warning" role="alert">
@@ -114,9 +118,13 @@
 <ng-container *ngIf="scale_up">
 	<div class="modal-header">
 		<h4 class="modal-title">Scale-Up Cluster {{ cluster?.cluster_id }}</h4>
-		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			aria-label="Close"
+		></button>
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-info" role="alert" *ngIf="!max_scale_up_count_loaded">
@@ -353,9 +361,13 @@
 <ng-container *ngIf="scale_success">
 	<div class="modal-header">
 		<h4 class="modal-title">Scaling successful {{ cluster?.cluster_id }}</h4>
-		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			aria-label="Close"
+		></button>
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-info" role="alert">

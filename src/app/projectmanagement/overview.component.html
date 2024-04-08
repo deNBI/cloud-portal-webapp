@@ -1287,9 +1287,7 @@
 					class="btn-close"
 					style="cursor: pointer"
 					type="button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
@@ -1442,9 +1440,7 @@
 					class="btn-close"
 					style="cursor: pointer"
 					type="button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">Are you sure you want to terminate this project?</div>
@@ -1508,9 +1504,7 @@
 					class="btn-close"
 					style="cursor: pointer"
 					type="button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div *ngIf="!memberApplicationsLoaded" style="text-align: center">
@@ -1609,9 +1603,7 @@
 					class="btn-close"
 					style="cursor: pointer"
 					type="button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-{{ notificationModalType }}" role="alert" data-test-id="request_result_div">
@@ -1652,9 +1644,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Delete Application</h4>
-				<button (click)="deleteModal.hide()" aria-label="Close" class="btn-close" style="cursor: pointer" type="button">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					(click)="deleteModal.hide()"
+					aria-label="Close"
+					class="btn-close"
+					style="cursor: pointer"
+					type="button"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">Are you sure you want to remove this application?</div>
@@ -1696,9 +1692,7 @@
 					class="btn-close"
 					style="cursor: pointer"
 					type="button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">Are you sure you want to leave the project?</div>
@@ -1744,9 +1738,7 @@
 					class="btn-close"
 					style="cursor: pointer"
 					type="button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body" style="word-break: break-word">
 				<div class="alert alert-info" role="alert" data-test-id="public_key_modal_id">

@@ -10,7 +10,9 @@
 				</div>
 				<div style="width: 100%" class="table-responsive">
 					<table class="table table-striped">
-						<tr app-public-key [userinfo]="userinfo" (currentKeyBlockedChanged)="setCurrentKeyBlocked($event)"></tr>
+						<tbody>
+							<tr app-public-key [userinfo]="userinfo" (currentKeyBlockedChanged)="setCurrentKeyBlocked($event)"></tr>
+						</tbody>
 					</table>
 				</div>
 			</div>
@@ -96,7 +98,8 @@
 										[newGpus]="newGpus"
 										[newVms]="newVms"
 										[showAdditionalRes]="true"
-									></app-resource-overview>
+									>
+									</app-resource-overview>
 									<accordion class="col">
 										<div
 											class="alert alert-warning"
@@ -179,7 +182,8 @@
 															[allowReload]="true"
 															(reloadFlavors)="reloadFlavors()"
 															(selectedFlavorChange)="setMasterFlavor($event); resetBatches(); calculateNewValues()"
-														></app-flavor-detail>
+														>
+														</app-flavor-detail>
 														<div class="d-flex align-items-center" *ngIf="userinfo_loaded && !flavors_loaded">
 															<strong data-test-id="loading_flavors">Loading flavors ...</strong>
 															<div class="spinner-border m-sm-auto" role="status"></div>
@@ -271,7 +275,8 @@
 																*ngFor="let batch of selectedWorkerBatches"
 															>
 																<a [ngClass]="{ active: selectedBatch === batch }" class="nav-link"
-																	>Batch {{ batch.index }}
+																	>Batch
+																	{{ batch.index }}
 																</a>
 															</li>
 														</ul>
@@ -307,7 +312,9 @@
 																><strong
 																	>Count*
 																	<span *ngIf="selectedBatch.max_worker_count"
-																		>(max {{ selectedBatch.max_worker_count }} )</span
+																		>(max
+																		{{ selectedBatch.max_worker_count }}
+																		)</span
 																	></strong
 																></label
 															>
@@ -341,8 +348,9 @@
 																				f.controls['workerInstancesCount_' + selectedBatch.index]?.touched)
 																	}"
 																/>
-															</div></div
-													></span>
+															</div>
+														</div>
+													</span>
 													<button
 														*ngIf="this.selectedWorkerBatches.length > 1"
 														type="button"
@@ -406,7 +414,8 @@
 														[members_to_add]="members_to_add"
 														[user_member_id]="userinfo.MemberId"
 														[project_id]="selectedProject[1]"
-													></app-project-user-list>
+													>
+													</app-project-user-list>
 												</accordion-group>
 											</accordion>
 										</div>

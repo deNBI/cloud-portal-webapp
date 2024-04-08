@@ -1016,9 +1016,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4>Adjust application for {{ selectedApplication?.project_application_shortname }}</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="adjustModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="adjustModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body" *ngIf="selectedApplication">
 				<form id="resource_adjustment_form" #resourceAdjustmentForm="ngForm" class="form-horizontal">
@@ -1499,9 +1503,7 @@
 					style="cursor: pointer"
 					(click)="lifetimeAdjustModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body" *ngIf="selectedApplication && adjustedApplication.project_lifetime_request">
 				<form id="lifetime_adjustment_form" #lifetimeAdjustmentForm="ngForm" class="form-horizontal">
@@ -1627,9 +1629,7 @@
 					style="cursor: pointer"
 					(click)="resultModal.hide(); extension_status = 0; removeModalOpen()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 
 			<div class="modal-body">

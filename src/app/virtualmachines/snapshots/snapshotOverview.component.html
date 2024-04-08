@@ -215,9 +215,13 @@
 				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.WAITING">Waiting</h4>
 				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.SUCCESS">Success</h4>
 				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.ERROR">Error</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="deleteModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="deleteModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-primary" role="alert" *ngIf="delete_status === 0">
@@ -268,9 +272,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Delete Snapshot</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="verifyModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
@@ -314,9 +322,7 @@
 					style="cursor: pointer"
 					(click)="deleteSelectedModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">

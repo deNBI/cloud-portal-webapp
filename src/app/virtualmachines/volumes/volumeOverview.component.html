@@ -325,9 +325,7 @@
 					(click)="resultModal.hide()"
 					aria-label="Close"
 					id="close_result_modal"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 
 			<div class="modal-body">
@@ -442,9 +440,7 @@
 					style="cursor: pointer"
 					(click)="deleteSelectedModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
@@ -491,9 +487,7 @@
 					style="cursor: pointer"
 					(click)="detachSelectedModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
@@ -537,9 +531,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Delete Volume</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="verifyModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div *ngIf="request_status === volumeRequestStates.DELETE" class="alert alert-warning" role="alert">
@@ -591,9 +589,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Attach Volume</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="attachModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="attachModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
@@ -646,9 +648,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Rename Volume</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="renameModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="renameModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<strong>Please enter a new name for the volume:</strong>
@@ -703,9 +709,7 @@
 					style="cursor: pointer"
 					(click)="extendResultModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div *ngIf="extendDone && !extendError" class="alert alert-warning" role="alert">
@@ -759,9 +763,7 @@
 					(click)="extendModal.hide()"
 					aria-label="Close"
 					id="close_extend_modal_button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div *ngIf="!selected_volume_data_loaded" id="serach_vol_spinner" style="margin: 10px; padding: 10px">
@@ -902,9 +904,7 @@
 					(click)="createModal.hide()"
 					aria-label="Close"
 					id="close_create_modal_button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="form-group row">
@@ -1111,9 +1111,7 @@
 					(click)="errorModal.hide()"
 					aria-label="Close"
 					id="close_error_modal_button"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<p *ngIf="errorState === 0">

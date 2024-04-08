@@ -1,9 +1,13 @@
 <ng-container *ngIf="choosingType">
 	<div class="modal-header">
 		<h4 class="modal-title">Choose Reboot Type for: {{ virtualMachine?.name }}</h4>
-		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			aria-label="Close"
+		></button>
 	</div>
 	<div class="modal-body">
 		<div class="row" style="margin: auto; text-align: left; padding: 5px">
@@ -56,9 +60,13 @@
 			<strong>{{ reboot_type }}</strong> reboot {{ virtualMachine?.name }}
 		</h4>
 
-		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			aria-label="Close"
+		></button>
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-warning" role="alert">

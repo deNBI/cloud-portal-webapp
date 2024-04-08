@@ -1,9 +1,13 @@
 <div class="modal-content">
 	<div class="modal-header">
 		<h4 class="modal-title">Members of the Project {{ projectId }} ({{ projectName }})</h4>
-		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			aria-label="Close"
+		></button>
 	</div>
 	<div class="modal-body">
 		<div *ngIf="members.length === 0" class="row">

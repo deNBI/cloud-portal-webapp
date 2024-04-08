@@ -365,9 +365,13 @@
 				<h4 class="modal-title" *ngIf="selectedFacility">
 					Send email to members of {{ selectedFacility['Facility'] }}
 				</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="emailModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="emailModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="modal-body">
@@ -629,9 +633,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Send email</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="verifyModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
@@ -732,9 +740,7 @@
 					style="cursor: pointer"
 					(click)="successModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
@@ -777,9 +783,7 @@
 					style="cursor: pointer"
 					(click)="descriptionModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 
 			<div class="modal-body">
@@ -815,9 +819,7 @@
 					style="cursor: pointer"
 					(click)="computeCenterSupportModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 
 			<div class="modal-body" *ngIf="selectedFacility">
@@ -887,9 +889,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Details</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="infoModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 
 			<div class="modal-body">
@@ -954,9 +960,7 @@
 					style="cursor: pointer"
 					(click)="notificationModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
@@ -999,9 +1003,7 @@
 					style="cursor: pointer"
 					(click)="notificationModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">

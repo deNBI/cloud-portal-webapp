@@ -1,8 +1,12 @@
 <div class="modal-header">
 	<h4>Extension request for {{ project?.project_application_shortname }}</h4>
-	<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-	</button>
+	<button
+		type="button"
+		class="btn-close"
+		style="cursor: pointer"
+		(click)="bsModalRef.hide()"
+		aria-label="Close"
+	></button>
 </div>
 <div class="modal-body">
 	<form id="extension_application_form" #extensionForm="ngForm" class="form-horizontal">

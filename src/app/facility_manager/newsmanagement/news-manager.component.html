@@ -372,9 +372,7 @@ we are happy to inform..."
 						style="cursor: pointer"
 						(click)="deleteModal.hide()"
 						aria-label="Close"
-					>
-						<span aria-hidden="true">&times;</span>
-					</button>
+					></button>
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-info" role="alert">
@@ -428,9 +426,7 @@ we are happy to inform..."
 						style="cursor: pointer"
 						(click)="updateModal.hide()"
 						aria-label="Close"
-					>
-						<span aria-hidden="true">&times;</span>
-					</button>
+					></button>
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-info" role="alert">
@@ -477,9 +473,13 @@ we are happy to inform..."
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Upload News: {{ this.selectedNewsForm.controls['title'].value }} ?</h4>
-					<button type="button" class="btn-close" style="cursor: pointer" (click)="addModal.hide()" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="addModal.hide()"
+						aria-label="Close"
+					></button>
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-info" role="alert">
@@ -523,9 +523,13 @@ we are happy to inform..."
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Information</h4>
-					<button type="button" class="btn-close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="infoModal.hide()"
+						aria-label="Close"
+					></button>
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-primary" role="alert">

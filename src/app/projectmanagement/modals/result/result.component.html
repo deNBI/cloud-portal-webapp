@@ -8,9 +8,7 @@
 			(click)="bsModalRef.hide()"
 			data-dismiss="modal"
 			aria-label="Close"
-		>
-			<span aria-hidden="true">&times;</span>
-		</button>
+		></button>
 	</div>
 
 	<div class="modal-body">
@@ -24,113 +22,119 @@
 		</div>
 		<div class="table-responsive">
 			<table class="table table-striped">
-				<ng-container *ngIf="modificationExtension && !adjustedModification">
-					<tr *ngFor="let flav of extension.flavors">
-						<td>{{ flav.name + ': ' + flav.counter + ' VMs' }}</td>
-					</tr>
-					<tr *ngIf="extension.volume_counter > 0">
-						<td>Number of storage volumes: {{ extension.volume_counter }}</td>
-					</tr>
-					<tr *ngIf="extension.volume_counter > 0 && extension.volume_limit > 0">
-						<td>Amount of storage space: {{ extension.volume_limit }} GBs</td>
+				<tbody>
+					<ng-container *ngIf="modificationExtension && !adjustedModification">
+						<tr *ngFor="let flav of extension.flavors">
+							<td>{{ flav.name + ': ' + flav.counter + ' VMs' }}</td>
+						</tr>
+						<tr *ngIf="extension.volume_counter > 0">
+							<td>Number of storage volumes: {{ extension.volume_counter }}</td>
+						</tr>
+						<tr *ngIf="extension.volume_counter > 0 && extension.volume_limit > 0">
+							<td>Amount of storage space: {{ extension.volume_limit }} GBs</td>
+						</tr>
+
+						<tr *ngIf="project.project_application_openstack_project && extension.object_storage > 0">
+							<td>Amount of object storage: {{ extension.object_storage }} GB</td>
+						</tr>
+					</ng-container>
+					<ng-container *ngIf="adjustedModification">
+						<tr *ngIf="adjustedModification.manager_comment">
+							<td>VO Comment: {{ adjustedModification.manager_comment }}</td>
+						</tr>
+						<tr *ngFor="let flav of adjustedModification.flavors">
+							<td>
+								<strong>{{ flav.name + ': ' + flav.counter + ' VMs' }}</strong>
+							</td>
+						</tr>
+						<tr *ngIf="adjustedModification.volume_counter > 0">
+							<td>Number of storage volumes: {{ adjustedModification.volume_counter }}</td>
+						</tr>
+						<tr *ngIf="adjustedModification.volume_counter > 0 && adjustedModification.volume_limit > 0">
+							<td>Amount of storage space: {{ adjustedModification.volume_limit }} GBs</td>
+						</tr>
+
+						<tr *ngIf="project.project_application_openstack_project && adjustedModification.object_storage > 0">
+							<td>Amount of object storage: {{ adjustedModification.object_storage }} GB</td>
+						</tr>
+					</ng-container>
+
+					<tr *ngIf="selected_ontology_terms?.length > 0">
+						<td>
+							Selected Terms:
+							<span *ngFor="let term of selected_ontology_terms" class="badge bg-info">{{ term.term }}</span>
+						</td>
 					</tr>
 
-					<tr *ngIf="project.project_application_openstack_project && extension.object_storage > 0">
-						<td>Amount of object storage: {{ extension.object_storage }} GB</td>
+					<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension) && extension.comment?.length > 0">
+						<td>Comment : {{ extension.comment }}</td>
 					</tr>
-				</ng-container>
-				<ng-container *ngIf="adjustedModification">
-					<tr *ngIf="adjustedModification.manager_comment">
-						<td>VO Comment: {{ adjustedModification.manager_comment }}</td>
-					</tr>
-					<tr *ngFor="let flav of adjustedModification.flavors">
-						<td>
-							<strong>{{ flav.name + ': ' + flav.counter + ' VMs' }}</strong>
-						</td>
-					</tr>
-					<tr *ngIf="adjustedModification.volume_counter > 0">
-						<td>Number of storage volumes: {{ adjustedModification.volume_counter }}</td>
-					</tr>
-					<tr *ngIf="adjustedModification.volume_counter > 0 && adjustedModification.volume_limit > 0">
-						<td>Amount of storage space: {{ adjustedModification.volume_limit }} GBs</td>
-					</tr>
+					<ng-container *ngIf="modificationExtension && !adjustedModification">
+						<tr>
+							<td>
+								<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
+							</td>
+						</tr>
+					</ng-container>
+					<ng-container *ngIf="adjustedModification">
+						<tr>
+							<td>
+								<strong>Number of cores in total: {{ adjustedModification?.total_cores }}</strong>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong
+									>Value of RAM in total:
+									{{ adjustedModification?.total_ram }}
+									GBs</strong
+								>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Number of GPUs in total: {{ adjustedModification?.total_gpu }}</strong>
+							</td>
+						</tr>
+					</ng-container>
 
-					<tr *ngIf="project.project_application_openstack_project && adjustedModification.object_storage > 0">
-						<td>Amount of object storage: {{ adjustedModification.object_storage }} GB</td>
-					</tr>
-				</ng-container>
-
-				<tr *ngIf="selected_ontology_terms?.length > 0">
-					<td>
-						Selected Terms:
-						<span *ngFor="let term of selected_ontology_terms" class="badge bg-info">{{ term.term }}</span>
-					</td>
-				</tr>
-
-				<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension) && extension.comment?.length > 0">
-					<td>Comment : {{ extension.comment }}</td>
-				</tr>
-				<ng-container *ngIf="modificationExtension && !adjustedModification">
-					<tr>
+					<tr *ngIf="lifetimeExtension">
 						<td>
-							<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
+							<strong>Additional lifetime in months: {{ extension?.extra_lifetime }}</strong>
 						</td>
 					</tr>
-					<tr>
-						<td>
-							<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
+					<tr *ngIf="creditsExtension">
+						<td>Amount of requested extra credits: {{ extension?.extra_credits }}</td>
+					</tr>
+					<tr *ngIf="project?.credits_allowed && !creditsExtension">
+						<td *ngIf="modificationExtension || lifetimeExtension">
+							<strong>Approximate number of extra credits:{{ extension?.extra_credits }}</strong>
+							<br />
+							<strong>Approximate number of total credits:{{ expectedTotalCredits }}</strong>
+							<br />
+							<alert type="info" *ngIf="modificationExtension">
+								Please note, that the approximate credits amounts shown here are calculated for the currently approved
+								remaining lifetime of this project. This amount will be calculated anew at extension approval and may
+								therefore vary.
+							</alert>
+							<alert type="info" *ngIf="lifetimeExtension">
+								Please note, that the approximate credits amounts shown here are calculated for the currently approved
+								resource configuration of this project. This amount will be calculated anew at extension approval and
+								may therefore vary.
+							</alert>
 						</td>
 					</tr>
-					<tr>
-						<td>
-							<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
-						</td>
-					</tr>
-				</ng-container>
-				<ng-container *ngIf="adjustedModification">
-					<tr>
-						<td>
-							<strong>Number of cores in total: {{ adjustedModification?.total_cores }}</strong>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<strong>Value of RAM in total: {{ adjustedModification?.total_ram }} GBs</strong>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<strong>Number of GPUs in total: {{ adjustedModification?.total_gpu }}</strong>
-						</td>
-					</tr>
-				</ng-container>
-
-				<tr *ngIf="lifetimeExtension">
-					<td>
-						<strong>Additional lifetime in months: {{ extension?.extra_lifetime }}</strong>
-					</td>
-				</tr>
-				<tr *ngIf="creditsExtension">
-					<td>Amount of requested extra credits: {{ extension?.extra_credits }}</td>
-				</tr>
-				<tr *ngIf="project?.credits_allowed && !creditsExtension">
-					<td *ngIf="modificationExtension || lifetimeExtension">
-						<strong>Approximate number of extra credits:{{ extension?.extra_credits }}</strong>
-						<br />
-						<strong>Approximate number of total credits:{{ expectedTotalCredits }}</strong>
-						<br />
-						<alert type="info" *ngIf="modificationExtension">
-							Please note, that the approximate credits amounts shown here are calculated for the currently approved
-							remaining lifetime of this project. This amount will be calculated anew at extension approval and may
-							therefore vary.
-						</alert>
-						<alert type="info" *ngIf="lifetimeExtension">
-							Please note, that the approximate credits amounts shown here are calculated for the currently approved
-							resource configuration of this project. This amount will be calculated anew at extension approval and may
-							therefore vary.
-						</alert>
-					</td>
-				</tr>
+				</tbody>
 			</table>
 		</div>
 	</div>
@@ -186,9 +190,13 @@
 		<h4 class="modal-title" *ngIf="extensionStatus === 0">Waiting</h4>
 		<h4 class="modal-title" *ngIf="extensionStatus === 1">Success</h4>
 		<h4 class="modal-title" *ngIf="extensionStatus === 2">Error</h4>
-		<button type="button" class="btn-close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			aria-label="Close"
+		></button>
 	</div>
 
 	<div class="modal-body">

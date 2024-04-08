@@ -560,9 +560,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">{{ emailHeader }}</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="emailModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="emailModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-info">
@@ -751,9 +755,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Send email</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="verifyModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
@@ -803,9 +811,7 @@
 					style="cursor: pointer"
 					(click)="suspendModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				Are you sure you want to suspend {{ selectedProject?.project_application_shortname }} ?
@@ -836,9 +842,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Resume Project {{ selectedProject?.project_application_shortname }}</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="resumeModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="resumeModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				Are you sure you want to resume {{ selectedProject?.project_application_shortname }} ?
@@ -877,9 +887,7 @@
 					style="cursor: pointer"
 					(click)="successModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
@@ -922,9 +930,7 @@
 					style="cursor: pointer"
 					(click)="descriptionModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 
 			<div class="modal-body">
@@ -954,9 +960,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Details</h4>
-				<button type="button" class="btn-close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="infoModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 
 			<div class="modal-body">
@@ -1029,9 +1039,7 @@
 					style="cursor: pointer"
 					(click)="declineTerminationModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
@@ -1075,9 +1083,7 @@
 					style="cursor: pointer"
 					(click)="terminateModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
@@ -1124,9 +1130,7 @@
 					style="cursor: pointer"
 					(click)="notificationModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div
