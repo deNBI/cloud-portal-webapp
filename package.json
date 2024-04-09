@@ -88,7 +88,7 @@
     "@compodoc/compodoc": "1.1.23",
     "@playwright/test": "1.43.0",
     "@types/jasmine": "5.1.4",
-    "@types/node": "20.12.5",
+    "@types/node": "20.12.6",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "async": "3.2.5",
