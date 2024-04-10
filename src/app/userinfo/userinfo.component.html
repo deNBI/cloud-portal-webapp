@@ -142,9 +142,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Leave de.NBI Virtual Organisation</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="leaveVoModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="leaveVoModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning">
@@ -264,13 +268,11 @@
 				<h4 class="modal-title">Please confirm</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="confirmLeaveModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning">
@@ -312,13 +314,11 @@
 				<h4 class="modal-title">Leaving of VO {{ this.leavingSucceeded ? 'successful' : 'failed' }}</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="leaveResultModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-info" [ngClass]="leavingSucceeded ? 'alert-info' : 'alert-danger'">
@@ -361,13 +361,11 @@
 				<h4 class="modal-title">Request preferred email change</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="emailChangeModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" id="email_form" #f="ngForm">

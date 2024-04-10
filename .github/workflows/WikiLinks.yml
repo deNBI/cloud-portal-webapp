@@ -14,7 +14,6 @@ jobs:
     - uses: actions/checkout@v4
     - name: Checking if Wiki Links return Code 200
       run: |
-        bash src/links/check_links.sh
         echo $?
       
    

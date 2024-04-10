@@ -31,11 +31,13 @@
 		</button>
 	</div>
 	<div *ngIf="isLoaded" class="card" style="">
-		<div class="card-header">
-			<strong>Snapshots</strong> – Overview
-		</div>
+		<div class="card-header"><strong>Snapshots</strong> – Overview</div>
 		<div class="card-body" *ngIf="migratedProjectIds.length > 0">
-			<app-migration-information [type]="'snapshots'" [isCreationPage]="false" [affectedProjects]="migratedProjectNames">
+			<app-migration-information
+				[type]="'snapshots'"
+				[isCreationPage]="false"
+				[affectedProjects]="migratedProjectNames"
+			>
 			</app-migration-information>
 		</div>
 		<div class="card-body">
@@ -154,10 +156,8 @@
 									Delete Snapshot
 								</button>
 							</div>
-							<div class="rTableCell" *ngIf="(snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds)">
-								<div class="alert alert-info">
-									This snapshot is part of a migrated project!
-								</div>
+							<div class="rTableCell" *ngIf="snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds">
+								<div class="alert alert-info">This snapshot is part of a migrated project!</div>
 							</div>
 							<div class="rTableCell">
 								<span
@@ -177,8 +177,10 @@
 							<div class="rTableCell">
 								<input
 									type="checkbox"
-									[disabled]="(snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds)"
-									[checked]="isSnapChecked(snapshot) && !(snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds)"
+									[disabled]="snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds"
+									[checked]="
+										isSnapChecked(snapshot) && !(snapshot.snapshot_projectid | isMigratedProjectId: migratedProjectIds)
+									"
 									(change)="changeCheckedSnapshot(snapshot)"
 									*ngIf="snapshot.snapshot_created || showFacilities"
 								/>
@@ -213,9 +215,13 @@
 				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.WAITING">Waiting</h4>
 				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.SUCCESS">Success</h4>
 				<h4 class="modal-title" *ngIf="delete_status === delete_statuses.ERROR">Error</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="deleteModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="deleteModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-primary" role="alert" *ngIf="delete_status === 0">
@@ -266,9 +272,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Delete Snapshot</h4>
-				<button type="button" class="close" style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="verifyModal.hide()"
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">
@@ -308,13 +318,11 @@
 				<h4 class="modal-title">Delete the following Snapshots</h4>
 				<button
 					type="button"
-					class="close"
+					class="btn-close"
 					style="cursor: pointer"
 					(click)="deleteSelectedModal.hide()"
 					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
+				></button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-warning" role="alert">

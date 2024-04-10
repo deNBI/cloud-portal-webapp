@@ -1,4 +1,4 @@
-<span *ngIf="with_text" class="text-muted font-weight-bold" style="margin-left: 15px">Status: </span>
+<span *ngIf="with_text" class="text-muted fw-bold" style="margin-left: 15px">Status: </span>
 <ng-container [ngSwitch]="vm?.status">
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
 		<div
