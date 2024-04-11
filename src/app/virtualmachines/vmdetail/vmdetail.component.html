@@ -9,7 +9,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header">
-					<span class="font-weight-bold text-muted">{{ virtualMachine?.name }}</span>
+					<span class="fw-bold text-muted">{{ virtualMachine?.name }}</span>
 					<app-vmstatus [with_text]="true" [vm]="virtualMachine"></app-vmstatus>
 				</div>
 				<div
@@ -80,7 +80,7 @@
 					"
 				>
 					<ng-container *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
-						<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Connect Information</span>
+						<span class="text-muted fw-bold card-title" style="margin-left: 15px"> Connect Information</span>
 						<div class="p-x-1 py-h">
 							<div *ngFor="let mode of virtualMachine?.modes">
 								<div class="row">
@@ -98,7 +98,7 @@
 									</div>
 									<div class="col-4">
 										<div
-											class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
+											class="fw-bold font-xs btn-block btn btn-outline-secondary"
 											id="copyCommandButton"
 											style="margin-top: 20px"
 											(click)="copyToClipboard(mode.copy_field)"
@@ -112,7 +112,7 @@
 								</div>
 								<div class="row" *ngIf="mode.name === 'SSH' || mode.name === 'ssh'">
 									<div class="col-auto">
-										<p class="font-weight-bold font-xs text-muted">
+										<p class="fw-bold font-xs text-muted">
 											Learn more about persistent terminal sessions when using ssh:
 											<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer"
 												>Tutorial</a
@@ -130,9 +130,9 @@
 									"
 								>
 									<div class="col-md-1">
-										<span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
+										<span class="fw-bold font-xs btn-block text-muted">Research Environment:</span>
 									</div>
-									<div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+									<div class="col-md-11 fw-bold font-xs btn-block text-muted">
 										<a href="{{ virtualMachine?.res_env_url }}" rel="noopener noreferrer" target="_blank">{{
 											virtualMachine?.res_env_url
 										}}</a>
@@ -152,7 +152,7 @@
 						</div>
 					</ng-container>
 					<ng-container *ngIf="virtualMachine?.status === virtualMachineStates.staticERROR">
-						<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Connect Information</span>
+						<span class="text-muted fw-bold card-title" style="margin-left: 15px"> Connect Information</span>
 						<div class="row">
 							<div class="col-auto">
 								<div class="alert alert-info">
@@ -164,7 +164,7 @@
 
 					<hr *ngIf="virtualMachine?.elixir_id === user_elixir_id" />
 					<div class="card-body" *ngIf="virtualMachine?.elixir_id === user_elixir_id || is_project_admin">
-						<span class="text-muted font-weight-bold card-title" style="margin-left: 15px"> Actions</span>
+						<span class="text-muted fw-bold card-title" style="margin-left: 15px"> Actions</span>
 						<div class="row" style="margin-top: 15px" *ngIf="!isMigrated">
 							<div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
 								<button
@@ -356,7 +356,7 @@
 							<div class="col-12" *ngIf="image?.description">
 								<div class="callout">
 									<small class="text-muted">Description</small><br />
-									<small class="text-muted font-weight-bold">{{ image?.description }}</small>
+									<small class="text-muted fw-bold">{{ image?.description }}</small>
 								</div>
 							</div>
 						</div>
@@ -644,9 +644,13 @@
 						<h4 class="modal-title" *ngIf="status_changed === 0">Waiting</h4>
 						<h4 class="modal-title" *ngIf="status_changed === 1">Success</h4>
 						<h4 class="modal-title" *ngIf="status_changed === 2">Error</h4>
-						<button type="button" class="close" style="cursor: pointer" (click)="stopModal.hide()" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button
+							type="button"
+							class="btn-close"
+							style="cursor: pointer"
+							(click)="stopModal.hide()"
+							aria-label="Close"
+						></button>
 					</div>
 					<div class="modal-body">
 						<div
@@ -703,9 +707,13 @@
 						<h4 class="modal-title" *ngIf="status_changed === 0">Waiting</h4>
 						<h4 class="modal-title" *ngIf="status_changed === 1">Success</h4>
 						<h4 class="modal-title" *ngIf="status_changed === 2">Error</h4>
-						<button type="button" class="close" style="cursor: pointer" (click)="resumeModal.hide()" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button
+							type="button"
+							class="btn-close"
+							style="cursor: pointer"
+							(click)="resumeModal.hide()"
+							aria-label="Close"
+						></button>
 					</div>
 					<div class="modal-body">
 						<div
@@ -762,9 +770,13 @@
 						<h4 class="modal-title" *ngIf="status_changed === 0">Waiting</h4>
 						<h4 class="modal-title" *ngIf="status_changed === 1">Success</h4>
 						<h4 class="modal-title" *ngIf="status_changed === 2">Error</h4>
-						<button type="button" class="close" style="cursor: pointer" (click)="deleteModal.hide()" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button
+							type="button"
+							class="btn-close"
+							style="cursor: pointer"
+							(click)="deleteModal.hide()"
+							aria-label="Close"
+						></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-primary" role="alert" *ngIf="status_changed === 0">
@@ -812,13 +824,11 @@
 						<h4 class="modal-title">Create Snapshot</h4>
 						<button
 							type="button"
-							class="close"
+							class="btn-close"
 							style="cursor: pointer"
 							(click)="snapshotModal.hide()"
 							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
+						></button>
 					</div>
 					<div class="modal-body">
 						<div><strong>Snapshot Name*</strong></div>
@@ -904,13 +914,11 @@
 						<h4 class="modal-title">Snapshot</h4>
 						<button
 							type="button"
-							class="close"
+							class="btn-close"
 							style="cursor: pointer"
 							(click)="snapshotResult.hide()"
 							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
+						></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-primary" role="alert" *ngIf="snapshotDone === 'Waiting'">
@@ -966,13 +974,11 @@
 						<h4 class="modal-title">Stop VM</h4>
 						<button
 							type="button"
-							class="close"
+							class="btn-close"
 							style="cursor: pointer"
 							(click)="submitStopVmModal.hide()"
 							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
+						></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning" role="alert">
@@ -1017,13 +1023,11 @@
 						<h4 class="modal-title">Add a member to your research environment.</h4>
 						<button
 							type="button"
-							class="close"
+							class="btn-close"
 							style="cursor: pointer"
 							(click)="addUserModal.hide()"
 							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
+						></button>
 					</div>
 					<div class="modal-body">
 						<div class="container-fluid">
@@ -1121,9 +1125,13 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Attach Volume</h4>
-					<button type="button" class="close" style="cursor: pointer" (click)="attachModal.hide()" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="attachModal.hide()"
+						aria-label="Close"
+					></button>
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-warning" role="alert">

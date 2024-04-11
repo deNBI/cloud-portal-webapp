@@ -30,7 +30,7 @@
 						(click)="setSelectedTemplate(null)"
 						style="cursor: pointer"
 					>
-						<button type="button" class="close" aria-label="Close">
+						<button type="button" class="btn-close" aria-label="Close">
 							<i class="fas fa-minus-circle"></i>
 						</button>
 						<strong *ngIf="selectedTemplate.title !== null">{{ selectedTemplate.title }}</strong>
@@ -90,7 +90,7 @@
 							<!-- quickfix -->
 							<button
 								type="button"
-								class="close"
+								class="btn-close"
 								[attr.data-test-id]="'add_resenv_template_' + template.template_name"
 								id="id_template_owl_{{ template.template_name }}"
 							>

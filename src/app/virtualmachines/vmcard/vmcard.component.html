@@ -276,7 +276,7 @@
 		<div class="row" *ngIf="!(this.vm.project_is_migrated_to_simple_vm || this.vm.migrate_project_to_simple_vm)">
 			<div class="col-md-auto">
 				<button
-					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+					class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					[id]="'showDetailsButton_' + vm?.name"
 					*ngIf="vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin"
 					[disabled]="
@@ -291,7 +291,7 @@
 			</div>
 			<div class="col-md-auto">
 				<button
-					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+					class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					*ngIf="vm.cardState !== 1"
 					[disabled]="!(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)"
 					[id]="'showHowToConnectButton_' + vm?.name"
@@ -300,7 +300,7 @@
 					How to connect ...
 				</button>
 				<button
-					class="font-weight-bold font-xs btn-block btn btn-secondary"
+					class="fw-bold font-xs btn-block btn btn-secondary"
 					*ngIf="vm.cardState === 1"
 					[id]="'hideHowToConnectButton_' + vm?.name"
 					(click)="vm.cardState = 0"
@@ -310,7 +310,7 @@
 			</div>
 			<div class="col-md-auto">
 				<button
-					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+					class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 					*ngIf="vm.cardState !== 2 && (vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin)"
 					[disabled]="
 						((vm?.status | statusInList: VirtualMachineStates.staticIN_PROCESS_STATE) &&
@@ -329,7 +329,7 @@
 					Show actions ...
 				</button>
 				<button
-					class="font-weight-bold font-xs btn-block btn btn-secondary"
+					class="fw-bold font-xs btn-block btn btn-secondary"
 					*ngIf="vm.cardState === 2"
 					[id]="'hideActionsButton_' + vm?.name"
 					[disabled]="
@@ -372,14 +372,14 @@
 			<div *ngFor="let mode of vm?.modes">
 				<div class="row">
 					<div class="col-md-1">
-						<span class="font-weight-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
+						<span class="fw-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
 					</div>
 					<div class="col-md-9">
-						<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
+						<span class="fw-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
 					</div>
 					<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
 						<div
-							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							(click)="copyToClipboard(mode.copy_field)"
 							[closeDelay]="3000"
 							ngbTooltip="Copied!"
@@ -391,7 +391,7 @@
 				</div>
 				<div class="row" *ngIf="mode.name === 'ssh' || mode.name === 'SSH'">
 					<div class="col-md-auto">
-						<p class="font-weight-bold font-xs text-muted">
+						<p class="fw-bold font-xs text-muted">
 							Learn more about persistent terminal sessions when using ssh:
 							<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Tutorial</a>
 						</p>
@@ -406,9 +406,9 @@
 				"
 			>
 				<div class="col-md-1">
-					<span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
+					<span class="fw-bold font-xs btn-block text-muted">Research Environment:</span>
 				</div>
-				<div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+				<div class="col-md-11 fw-bold font-xs btn-block text-muted">
 					<a href="{{ vm?.res_env_url }}" target="_blank" rel="noopener noreferrer">{{ vm?.res_env_url }}</a>
 					<br />
 					For JupyterLab Token please visit:
@@ -427,7 +427,7 @@
 			<div class="row">
 				<div class="col-md-auto" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
 					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'attachVolume' + vm?.name"
 						[attr.data-test-id]="'attach_volume_' + vm?.name"
 						(click)="showVolumeModal('attach')"
@@ -447,7 +447,7 @@
 						title="Start the virtual machine to attach volumes"
 					>
 						<button
-							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							[id]="'attachVolume' + vm?.name"
 							disabled
 							(click)="showVolumeModal('attach')"
@@ -462,7 +462,7 @@
 					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) && vm?.volumes.length > 0"
 				>
 					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'detachVolume' + vm?.name"
 						[attr.data-test-id]="'detach_volume_' + vm?.name"
 						(click)="showVolumeModal('detach')"
@@ -482,7 +482,7 @@
 						title="Start the virtual machine to detach volumes"
 					>
 						<button
-							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							[id]="'detachVolume' + vm?.name"
 							disabled
 							(click)="showVolumeModal('detach')"
@@ -494,7 +494,7 @@
 				</div>
 				<div class="col-md-auto" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
 					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'stopVMButton_' + vm?.name"
 						[attr.data-test-id]="'stop_vm_' + vm?.name"
 						(click)="showStopModal()"
@@ -504,7 +504,7 @@
 				</div>
 				<div class="col-md-2" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF">
 					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'restartVMButton_' + vm?.name"
 						[attr.data-test-id]="'restart_vm_' + vm?.name"
 						(click)="showRestartModal()"
@@ -523,7 +523,7 @@
 					"
 				>
 					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'chooseRebootVMButton_' + vm?.name"
 						[attr.data-test-id]="'reboot_vm_' + vm?.name"
 						(click)="showRebootModal()"
@@ -533,7 +533,7 @@
 				</div>
 				<div class="col-md-auto" *ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) && vm?.backend">
 					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'recreateBackend_' + vm?.name"
 						[attr.data-test-id]="'recreate_backend_' + vm?.name"
 						(click)="showRecreateBackendModal()"
@@ -549,7 +549,7 @@
 					"
 				>
 					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'createSnapshotVMButton_' + vm?.name"
 						[attr.data-test-id]="'create_snapshot_' + vm?.name"
 						(click)="showSnapshotModal()"
@@ -559,7 +559,7 @@
 				</div>
 				<div class="col-md-auto" *ngIf="vm?.status | statusInList: VirtualMachineStates.staticDELETABLE_STATES">
 					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'deleteVMButton_' + vm?.name"
 						[attr.data-test-id]="'delete_vm_' + vm?.name"
 						(click)="showDeleteModal()"

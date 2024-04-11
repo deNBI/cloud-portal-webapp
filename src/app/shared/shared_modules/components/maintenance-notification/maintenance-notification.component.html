@@ -29,7 +29,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="urgent-notification-modal-title">Maintenance Information</h5>
-				<button type="button" class="close" (click)="toggleModal()">
+				<button type="button" class="btn-close" (click)="toggleModal()">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -42,8 +42,8 @@
 								<p class="card-text">{{ maintenance.message }}</p>
 								<p class="card-text">
 									<small class="text-muted"
-										>{{ maintenance.start_time | date : 'dd.MM.yyyy hh:mm' }} -
-										{{ maintenance.end_time | date : 'dd.MM.yyyy hh:mm' }}</small
+										>{{ maintenance.start_time | date: 'dd.MM.yyyy hh:mm' }} -
+										{{ maintenance.end_time | date: 'dd.MM.yyyy hh:mm' }}</small
 									>
 								</p>
 							</div>
