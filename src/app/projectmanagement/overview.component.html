@@ -309,6 +309,18 @@
 									</span>
 								</ng-container>
 								<button
+									(click)="showWithDrawExtensionModal()"
+									*ngIf="
+										project_application.user_is_admin &&
+										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
+									"
+									class="btn btn-outline-warning"
+									data-test-id="open_modification_request_button"
+									id="show_lifetime_extension_withdraw_button"
+								>
+									Withdraw extension request
+								</button>
+								<button
 									(click)="showExtensionInformationModal()"
 									*ngIf="
 										project_application.user_is_admin &&
@@ -403,7 +415,7 @@
 					<div class="row">
 						<div class="col-6">
 							<div
-								*ngIf="this.resourceDataLoaded"
+								*ngIf="resourceDataLoaded"
 								class="callout"
 								[ngClass]="(project_application | isMigratedProject) ? 'callout-warning' : 'callout-info'"
 								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
@@ -510,6 +522,18 @@
 									id="show_modification_extension_button"
 								>
 									Request resource modification
+								</button>
+								<button
+									(click)="showWithDrawModificationModal()"
+									*ngIf="
+										project_application.user_is_admin &&
+										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+									"
+									class="btn btn-outline-warning"
+									data-test-id="open_modification_request_button"
+									id="show_modification_extension_withdraw_button"
+								>
+									Withdraw resource modification
 								</button>
 								<button
 									*ngIf="
@@ -1202,8 +1226,8 @@
 					<div class="alert alert-info">
 						<p>
 							If you are unsure whether a DOI has already been entered (for example, in a previous or expired project):
-							<strong>Duplicate entries are recognized by our system and do not pose a problem.</strong> In addition to
-							the public page, a
+							<strong>Duplicate entries are recognized by our system and do not pose a problem.</strong>
+							In addition to the public page, a
 							<a href="{{ PUBLIC_DOI_ENDPOINT }}" rel="noopener noreferrer" class="alert-link" target="_blank"
 								>public endpoint</a
 							>
@@ -1211,7 +1235,8 @@
 						</p>
 						<hr />
 						<p>
-							Please note that <strong>the publications entered on this page are listed publicly</strong> on
+							Please note that <strong>the publications entered on this page are listed publicly</strong>
+							on
 							<a href="{{ PUBLICATIONS_LINK }}" rel="noopener noreferrer" class="alert-link" target="_blank"
 								>this page on our website</a
 							>. We kindly ask you to list your publications which have been created during your work in the de.NBI
