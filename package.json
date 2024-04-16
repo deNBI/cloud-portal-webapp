@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.829.0",
+  "version": "4.830.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -125,7 +125,7 @@
   },
   "overrides": {
     "undici": "6.13.0",
-    "vite": "5.2.8"
+    "vite": "5.2.9"
   },
   "lint-staged": {
     "*.{js,jsx,ts}": [
