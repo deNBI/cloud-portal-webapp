@@ -239,6 +239,26 @@ export class ApplicationsService {
 		);
 	}
 
+	withdrawExtensionRequest(request_id: number | string): Observable<any> {
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/withdraw/`,
+			null,
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
+	withdrawModificationRequest(request_id: number | string): Observable<any> {
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/withdraw/`,
+			null,
+			{
+				withCredentials: true,
+			},
+		);
+	}
+
 	declineAdditionalLifetime(request_id: number | string): Observable<any> {
 		return this.http.post(
 			`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/decline/`,

@@ -34,12 +34,12 @@ import {
 	CREDITS_WIKI,
 	NEW_SVM_PORTAL_LINK,
 	OPENSTACK_LINK,
+	PUBLIC_DOI_ENDPOINT,
 	PUBLICATIONS_LINK,
 	SIMPLE_VM_LINK,
 	STATUS_LINK,
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
-	PUBLIC_DOI_ENDPOINT,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -49,6 +49,7 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component';
+import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component';
 
 /**
  * Projectoverview component.
@@ -229,6 +230,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 						return;
 					}
+					this.modificationRequestDisabled = false;
+					this.lifetimeExtensionDisabled = false;
 
 					this.project_application = aj;
 
@@ -331,6 +334,29 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
+	}
+
+	showWithDrawExtensionModal(): void {
+		this.showWithdrawModal(this.project_application.lifetime_extension_request_id, WITHDRAWAL_TYPES.EXTENSION);
+	}
+
+	showWithDrawModificationModal(): void {
+		this.showWithdrawModal(this.project_application.modification_extension_request_id, WITHDRAWAL_TYPES.MODIFICATION);
+	}
+
+	showWithdrawModal(target_id: string | number, type: WITHDRAWAL_TYPES): void {
+		const initialState = {
+			target_id,
+			type,
+		};
+		this.bsModalRef = this.modalService.show(WithdrawModalComponent, { initialState, class: 'modal-lg' });
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe((event: boolean): void => {
+				if (event) {
+					this.getApplication();
+				}
+			}),
+		);
 	}
 
 	showExtensionInformationModal(): void {

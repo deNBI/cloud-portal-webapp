@@ -37,6 +37,8 @@ export class Application {
 	project_application_compute_center: ComputecenterComponent;
 	project_application_openstack_project: boolean;
 	project_application_total_gpu: number = 0;
+	lifetime_extension_request_id: number | string;
+	modification_extension_request_id: number | string;
 
 	pi_approval_notification_send: boolean;
 	pi_approval_notification_expired: boolean;
