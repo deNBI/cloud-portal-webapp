@@ -36,6 +36,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	title: string = 'Projects Overview';
 	filter: string;
+	userElixirIdFilter: string;
 
 	membersLoaded: boolean = false;
 	public memberFilter: string = '';
@@ -45,7 +46,9 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	filterChanged: Subject<string> = new Subject<string>();
 	isLoaded: boolean = false;
+	projectsLoaded: boolean = false;
 	projects: Application[] = [];
+	projectsCopy: Application[] = [];
 	show_openstack_projects: boolean = true;
 	show_simple_vm_projects: boolean = true;
 	details_loaded: boolean = false;
@@ -207,17 +210,30 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	getProjectsByMemberElixirId(): void {
 		// tslint:disable-next-line:max-line-length
-		this.facilityService
-			.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter)
-			.subscribe((applications: Application[]): void => {
-				this.projects_filtered = [];
-				for (const group of applications) {
-					if (group.project_application_lifetime > 0) {
-						group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
+		this.projectsLoaded = false;
+		this.userElixirIdFilter = this.userElixirIdFilter.trim();
+		if (this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')) {
+			this.facilityService
+				.getFacilityGroupsByMemberElixirId(this.selectedFacility['FacilityId'], this.userElixirIdFilter)
+				.subscribe((applications: Application[]): void => {
+					this.projects = applications;
+					for (const group of applications) {
+						if (group.project_application_lifetime > 0) {
+							group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
+						}
+						this.sortProjectService.applications = this.projects;
+						this.applictions$ = this.sortProjectService.applications$;
+						this.total$ = this.sortProjectService.total$;
+
+						this.projectsLoaded = true;
 					}
-					this.projects_filtered.push(group);
-				}
-			});
+				});
+		} else {
+			this.sortProjectService.applications = this.projectsCopy;
+			this.applictions$ = this.sortProjectService.applications$;
+			this.total$ = this.sortProjectService.total$;
+			this.projectsLoaded = true;
+		}
 	}
 
 	/**
@@ -311,6 +327,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	getFacilityProjects(facility: string): void {
 		this.projects = [];
+		this.projectsLoaded = false;
 
 		// tslint:disable-next-line:max-line-length
 		this.facilityService
@@ -322,9 +339,11 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 					}
 					this.projects.push(group);
 				}
+				this.projectsCopy = this.projects;
 				this.sortProjectService.applications = this.projects;
 				this.applictions$ = this.sortProjectService.applications$;
 				this.total$ = this.sortProjectService.total$;
+				this.projectsLoaded = true;
 
 				this.isLoaded = true;
 			});
