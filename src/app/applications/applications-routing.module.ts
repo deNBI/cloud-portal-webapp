@@ -7,6 +7,7 @@ import { AddsimplevmComponent } from './application-formular/simplevm-formular/a
 import { AddcloudapplicationComponent } from './application-formular/openstack-formular/addcloudapplication.component';
 import { TypeOverviewComponent } from './type-overview.component';
 import { ValidationApplicationComponent } from '../validation-application/validation-application.component';
+import { KubernetesFormularComponent } from './application-formular/kubernetes-formular/kubernetes-formular.component';
 
 const routes: Routes = [
 	{
@@ -20,14 +21,21 @@ const routes: Routes = [
 		path: 'newCloudApplication',
 		component: AddcloudapplicationComponent,
 		data: {
-			title: 'New Application',
+			title: 'New OpenStack Application',
+		},
+	},
+	{
+		path: 'newKubernetesApplication',
+		component: KubernetesFormularComponent,
+		data: {
+			title: 'New Kubernetes Application',
 		},
 	},
 	{
 		path: 'newSimpleVmApplication',
 		component: AddsimplevmComponent,
 		data: {
-			title: 'New Application',
+			title: 'New SimpleVM Application',
 		},
 	},
 	{

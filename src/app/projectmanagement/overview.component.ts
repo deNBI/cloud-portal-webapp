@@ -40,6 +40,7 @@ import {
 	STATUS_LINK,
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
+	KUBERNETES_LINK,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -82,6 +83,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	PUBLIC_DOI_ENDPOINT: string = PUBLIC_DOI_ENDPOINT;
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
 	OPENSTACK_LINK: string = OPENSTACK_LINK;
+	KUBERNETES_LINK: string = KUBERNETES_LINK;
 	STATUS_LINK: string = STATUS_LINK;
 	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK;
 	@ViewChild('creditsChart') creditsCanvas: ElementRef;
@@ -125,7 +127,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg';
-
+	kubernetes_logo: string = 'static/webapp/assets/img/kubernetes_logo.svg';
 	checked_member_list: number[] = [];
 	// modal variables for User list
 	public project_members: ProjectMember[] = [];

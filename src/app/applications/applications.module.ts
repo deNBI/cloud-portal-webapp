@@ -26,6 +26,7 @@ import { CreditsExtensionDetailComponent } from './application-detail/credits-ex
 import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
 import { NewsModule } from '../news/news.module';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
+import { KubernetesFormularComponent } from './application-formular/kubernetes-formular/kubernetes-formular.component';
 
 /**
  * Applications Module.
@@ -49,6 +50,7 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		ApplicationsComponent,
 		AddsimplevmComponent,
 		AddcloudapplicationComponent,
+		KubernetesFormularComponent,
 		TypeOverviewComponent,
 		ValidationApplicationComponent,
 		ApplicationDetailComponent,
