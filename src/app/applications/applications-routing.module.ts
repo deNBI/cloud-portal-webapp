@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ApplicationsComponent } from './applications.component';
 
-import { AddsimplevmComponent } from './addsimplevm.component';
-import { AddcloudapplicationComponent } from './addcloudapplication.component';
+import { AddsimplevmComponent } from './application-formular/simplevm-formular/addsimplevm.component';
+import { AddcloudapplicationComponent } from './application-formular/openstack-formular/addcloudapplication.component';
 import { TypeOverviewComponent } from './type-overview.component';
 import { ValidationApplicationComponent } from '../validation-application/validation-application.component';
 
@@ -15,7 +15,6 @@ const routes: Routes = [
 		data: {
 			title: 'Application overview',
 		},
-
 	},
 	{
 		path: 'newCloudApplication',
@@ -23,7 +22,6 @@ const routes: Routes = [
 		data: {
 			title: 'New Application',
 		},
-
 	},
 	{
 		path: 'newSimpleVmApplication',
@@ -31,7 +29,6 @@ const routes: Routes = [
 		data: {
 			title: 'New Application',
 		},
-
 	},
 	{
 		path: 'type-overview',
@@ -47,7 +44,6 @@ const routes: Routes = [
 			title: 'Application Validation',
 		},
 	},
-
 ];
 
 /**
@@ -57,5 +53,4 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class ApplicationsRoutingModule {
-}
+export class ApplicationsRoutingModule {}
