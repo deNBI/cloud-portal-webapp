@@ -96,6 +96,11 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 				type: ConfirmationTypes.DECLINE,
 				message: 'Do you really want to delete the application?',
 			},
+			[ConfirmationActions.DECLINE_APPLICATION]: {
+				title: 'Confirm declien of project application',
+				type: ConfirmationTypes.DECLINE,
+				message: 'Do you really want to decline the project application',
+			},
 			[ConfirmationActions.DECLINE_EXTENSION]: {
 				title: 'Confirm decline of extension request',
 				type: ConfirmationTypes.DECLINE,

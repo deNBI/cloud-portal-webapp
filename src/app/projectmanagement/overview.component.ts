@@ -100,7 +100,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	dois: Doi[];
 	disabledDoiInput: boolean = false;
 	invitation_link: string;
-	filteredMembers: any = null;
 	project_application: Application;
 	application_action: string = '';
 	application_member_name: string = '';
@@ -130,7 +129,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	// modal variables for User list
 	public project_members: ProjectMember[] = [];
 	public isLoaded: boolean = false;
-	public showLink: boolean = true;
 	creditsChart: any;
 	ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
 	Application_States: typeof Application_States = Application_States;
@@ -875,13 +873,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	setAddUserInvitationLink(): void {
 		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.project_application_shortname}`;
-		const elixir_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=${encodeURIComponent(
-			project_reg,
-		)}&targetexisting=${encodeURIComponent(project_reg)}&targetextended=${encodeURIComponent(project_reg)}`;
-		const uri: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=lifescience&targetnew=${encodeURIComponent(
-			elixir_reg,
-		)}&targetexisting=${encodeURIComponent(elixir_reg)}&targetextended=${encodeURIComponent(elixir_reg)}`;
-		this.invitation_link = uri;
+		this.invitation_link = project_reg;
 	}
 
 	copyToClipboard(text: string): void {
@@ -891,137 +883,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			document.removeEventListener('copy', null);
 		});
 		document.execCommand('copy');
-	}
-
-	filterMembers(searchString: string): void {
-		this.subscription.add(
-			this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: any): void => {
-				this.filteredMembers = [];
-				for (const entry of result) {
-					let member_exist: boolean = false;
-
-					for (const projectMember of this.project_members) {
-						if (projectMember.memberId === entry.member_id) {
-							member_exist = true;
-							break;
-						}
-					}
-					if (!member_exist) {
-						this.filteredMembers.push(entry);
-					}
-				}
-			}),
-		);
-	}
-
-	public addMember(memberid: number, firstName: string, lastName: string): void {
-		this.subscription.add(
-			this.groupService
-				.addMember(
-					this.project_application.project_application_perun_id,
-					memberid,
-					this.project_application.project_application_compute_center.FacilityId,
-				)
-				.subscribe(
-					(result: any): void => {
-						if (result.status === 200) {
-							this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
-							this.getMembersOfTheProject();
-						} else {
-							this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
-						}
-					},
-					(error: any): void => {
-						if (error['name'] === 'AlreadyMemberException') {
-							this.updateNotificationModal(
-								'Info',
-								`${firstName} ${lastName} is already a member of the project.`,
-								true,
-								'info',
-							);
-						} else {
-							this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
-						}
-					},
-				),
-		);
-	}
-
-	public addAdmin(memberId: number, userId: number, firstName: string, lastName: string): void {
-		this.subscription.add(
-			this.groupService
-				.addMember(
-					this.project_application.project_application_perun_id,
-					memberId,
-					this.project_application.project_application_compute_center.FacilityId,
-				)
-				.subscribe(
-					(): void => {
-						this.subscription.add(
-							this.groupService
-								.addAdmin(
-									this.project_application.project_application_perun_id,
-									userId,
-									this.project_application.project_application_compute_center.FacilityId,
-								)
-								.subscribe(
-									(result: any): void => {
-										if (result.status === 200) {
-											this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-											this.getMembersOfTheProject();
-										} else {
-											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-										}
-									},
-									(error: any): void => {
-										if (error['name'] === 'AlreadyAdminException') {
-											this.updateNotificationModal(
-												'Info',
-												`${firstName} ${lastName} is already a admin of the project.`,
-												true,
-												'info',
-											);
-										} else {
-											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-										}
-									},
-								),
-						);
-					},
-					(): void => {
-						this.subscription.add(
-							this.groupService
-								.addAdmin(
-									this.project_application.project_application_perun_id,
-									userId,
-									this.project_application.project_application_compute_center.FacilityId,
-								)
-								.subscribe(
-									(result: any): void => {
-										if (result.status === 200) {
-											this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-											this.getMembersOfTheProject();
-										} else {
-											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-										}
-									},
-									(error: any): void => {
-										if (error['name'] === 'AlreadyAdminException') {
-											this.updateNotificationModal(
-												'Info',
-												`${firstName} ${lastName} is already a admin of the project.`,
-												true,
-												'info',
-											);
-										} else {
-											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-										}
-									},
-								),
-						);
-					},
-				),
-		);
 	}
 
 	public promoteAdmin(userid: number, username: string): void {
