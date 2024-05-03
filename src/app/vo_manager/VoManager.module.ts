@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-import { BadgeComponent } from '@coreui/angular';
+import { BadgeComponent, ButtonDirective, InputGroupComponent } from '@coreui/angular';
 import { VoManagerRoutingModule } from './VoManager-routing.module';
 import { VoOverviewComponent } from './VoOverviewComponent';
 import { VoGuardService } from './vo-guard.service';
@@ -43,6 +43,8 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		TimepickerComponent,
 		SharedModuleModule,
 		BadgeComponent,
+		InputGroupComponent,
+		ButtonDirective,
 	],
 	declarations: [
 		VoOverviewComponent,
