@@ -1,6 +1,6 @@
 {
     "name": "@denbi/cloud-portal-webapp",
-    "version": "4.845.0",
+    "version": "4.846.0",
     "description": "de.NBI Cloud Portal",
     "scripts": {
         "ng": "ng serve",
@@ -94,7 +94,7 @@
         "async": "3.2.5",
         "audit-ci": "6.6.1",
         "autoprefixer": "10.4.19",
-        "eslint": "^8.57.0",
+        "eslint": "^9.0.0",
         "eslint-config-airbnb-base": "15.0.0",
         "eslint-plugin-import": "^2.29.0",
         "eslint-plugin-jsdoc": "48.2.3",
