@@ -25,15 +25,18 @@ import { CreditsService } from '../api-connector/credits.service';
 import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limits..component';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
-import { ModificationRequestComponent } from '../projectmanagement/modals/modification-request/modification-request.component';
+import {
+	ModificationRequestComponent,
+} from '../projectmanagement/modals/modification-request/modification-request.component';
 import { ConfirmationActions } from '../shared/modal/confirmation_actions';
+import { User } from './application.model/user.model';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
-	'SUBMITTED' = 0,
-	'CREDITS_EXTENSION' = 3,
-	'LIFETIME_EXTENSION' = 5,
-	'MODIFICATION_EXTENSION' = 4,
+		'SUBMITTED' = 0,
+		'CREDITS_EXTENSION' = 3,
+		'LIFETIME_EXTENSION' = 5,
+		'MODIFICATION_EXTENSION' = 4,
 }
 
 /**
@@ -66,29 +69,29 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	subscription: Subscription = new Subscription();
 
 	/**
-	 * All Applications, just visible for a vo admin.
-	 *
-	 * @type {Array}
-	 */
+		 * All Applications, just visible for a vo admin.
+		 *
+		 * @type {Array}
+		 */
 	all_applications: Application[] = [];
 	selectedApplication: Application;
 	adjustedApplication: Application;
 	applications_history: Application[] = [];
 
 	/**
-	 * Limits information for Client tested/used for Simple Vm Project creation.
-	 */
+		 * Limits information for Client tested/used for Simple Vm Project creation.
+		 */
 	notificationClientInfo: Client[] = [];
 
 	/**
-	 * id of the extension status.
-	 *
-	 * @type {number}
-	 */
+		 * id of the extension status.
+		 *
+		 * @type {number}
+		 */
 	extension_status: number = 0;
 	/**
-	 * id of Application set for deletion.
-	 */
+		 * id of Application set for deletion.
+		 */
 
 	numberOfExtensionRequests: number = 0;
 	numberOfModificationRequests: number = 0;
@@ -101,28 +104,28 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	approveLocked: boolean = false;
 
 	/**
-	 * Constructor.
-	 * Loads all Applications if user is vo admin and all user_applications.
-	 *
-	 * @param applicationsService
-	 * @param userService
-	 * @param groupservice
-	 * @param modalService
-	 * @param voService
-	 * @param facilityService
-	 * @param flavorService
-	 * @param creditsService
-	 */
+		 * Constructor.
+		 * Loads all Applications if user is vo admin and all user_applications.
+		 *
+		 * @param applicationsService
+		 * @param userService
+		 * @param groupservice
+		 * @param modalService
+		 * @param voService
+		 * @param facilityService
+		 * @param flavorService
+		 * @param creditsService
+		 */
 	constructor(
 		applicationsService: ApplicationsService,
 		userService: UserService,
-		private groupservice: GroupService,
-		private modalService: BsModalService,
-		private voService: VoService,
-		facilityService: FacilityService,
-		private flavorService: FlavorService,
-		private creditsService: CreditsService,
-		cdrRef: ChangeDetectorRef,
+				private groupservice: GroupService,
+				private modalService: BsModalService,
+				private voService: VoService,
+				facilityService: FacilityService,
+				private flavorService: FlavorService,
+				private creditsService: CreditsService,
+				cdrRef: ChangeDetectorRef,
 	) {
 		super(userService, applicationsService, facilityService, cdrRef);
 	}
@@ -149,9 +152,37 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		}
 	}
 
+	getAndSetPiAndUserApplication(application: Application) {
+		if (!application.project_application_user) {
+			this.getAndSetApplicationUser(application.project_application_id);
+		}
+		if (!application.project_application_pi) {
+			this.getAndSetApplicationPi(application.project_application_id);
+		}
+
+	}
+
+	getAndSetApplicationPi(project_application_id: number | string) {
+		this.applicationsService.getApplicationPI(project_application_id).subscribe((pi: User) => {
+			const index = this.all_applications.findIndex(app => app.project_application_id === project_application_id);
+			if (index !== -1) { // Check if the application exists in the array
+				this.all_applications[index].project_application_pi = pi;
+			}
+		});
+	}
+
+	getAndSetApplicationUser(project_application_id: number | string) {
+		this.applicationsService.getApplicationUser(project_application_id).subscribe((user: User) => {
+			const index = this.all_applications.findIndex(app => app.project_application_id === project_application_id);
+			if (index !== -1) { // Check if the application exists in the array
+				this.all_applications[index].project_application_user = user;
+			}
+		});
+	}
+
 	/**
-	 * Getting the current numbers of all Application-Request types from the API
-	 */
+		 * Getting the current numbers of all Application-Request types from the API
+		 */
 	getApplicationNumbers(): void {
 		this.applicationsService.getExtensionRequestsCounter().subscribe((result: any): void => {
 			this.numberOfCreditRequests = result['credits_extension_requests_all'];
@@ -162,10 +193,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Sets both the selected application and the adjusted application which serves as a model for the
-	 * application adjustment of the VO
-	 * @param application
-	 */
+		 * Sets both the selected application and the adjusted application which serves as a model for the
+		 * application adjustment of the VO
+		 * @param application
+		 */
 	setApplicationToAdjust(application: Application): void {
 		this.selectedApplication = application;
 		this.adjustedApplication = new Application(application);
@@ -251,9 +282,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Checks if the flavor is available for SimpleVM
-	 * @param type
-	 */
+		 * Checks if the flavor is available for SimpleVM
+		 * @param type
+		 */
 	checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
 		for (const flav of this.flavorList) {
 			if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
@@ -268,7 +299,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		for (const flav of this.flavorList) {
 			if (
 				(flav.type.shortcut === type.shortcut && flav.simple_vm)
-				|| type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR
+								|| type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR
 			) {
 				return true;
 			}
@@ -278,10 +309,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Checks if the key given represents a flavor and if so returns the respective Flavor
-	 *
-	 * @param key the key which is checked
-	 */
+		 * Checks if the key given represents a flavor and if so returns the respective Flavor
+		 *
+		 * @param key the key which is checked
+		 */
 	isKeyFlavor(key: string): Flavor {
 		for (const fkey in this.flavorList) {
 			if (fkey in this.flavorList) {
@@ -302,10 +333,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Get the facility of an application.
-	 *
-	 * @param app
-	 */
+		 * Get the facility of an application.
+		 *
+		 * @param app
+		 */
 	getFacilityProject(app: Application): void {
 		if (!app.project_application_compute_center && !app.hasSubmittedStatus() && !app.hasTerminatedStatus()) {
 			this.groupservice
@@ -439,22 +470,34 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		);
 	}
 
+	setApplicationByLoadedApplication(applications: Application[]) {
+		this.all_applications = [];
+		if (applications.length === 0) {
+			this.isLoaded_userApplication = true;
+		}
+		for (const application of applications) {
+			const newApplication = new Application(application);
+
+			this.all_applications.push(newApplication);
+			this.getAndSetPiAndUserApplication(application);
+
+		}
+		this.isLoaded = true;
+		for (const app of this.all_applications) {
+			this.getFacilityProject(app);
+		}
+		this.sortApplicationsByTabState();
+		this.loading_applications = false;
+
+	}
+
 	/**
-	 * Get all Applications if user is admin.
-	 */
+		 * Get all Applications if user is admin.
+		 */
 	getSubmittedApplicationsAdmin(): void {
 		if (this.is_vo_admin) {
 			this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
-				if (applications.length === 0) {
-					this.isLoaded_userApplication = true;
-				}
-				for (const application of applications) {
-					this.all_applications.push(new Application(application));
-				}
-				this.isLoaded = true;
-				for (const app of this.all_applications) {
-					this.getFacilityProject(app);
-				}
+				this.setApplicationByLoadedApplication(applications);
 			});
 		}
 	}
@@ -470,42 +513,42 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Emptying all application lists, so applications don't get pushed to the lists multiple times.
-	 */
+		 * Emptying all application lists, so applications don't get pushed to the lists multiple times.
+		 */
 	clearApplicationLists(): void {
 		this.all_applications = [];
 	}
 
 	/**
-	 * Loading Applications dependent from the current tab selected (submitted, credits, lifetime, modification)
-	 */
+		 * Loading Applications dependent from the current tab selected (submitted, credits, lifetime, modification)
+		 */
 	sortApplicationsByTabState(): void {
 		switch (this.tab_state) {
 			case TabStates.SUBMITTED:
 				this.all_applications.sort(
 					(a, b) => new Date(a.project_application_date_submitted).getTime()
-						- new Date(b.project_application_date_submitted).getTime(),
+												- new Date(b.project_application_date_submitted).getTime(),
 				);
 				break;
 
 			case TabStates.LIFETIME_EXTENSION:
 				this.all_applications.sort(
 					(a, b) => new Date(a.project_lifetime_request.date_submitted).getTime()
-						- new Date(b.project_lifetime_request.date_submitted).getTime(),
+												- new Date(b.project_lifetime_request.date_submitted).getTime(),
 				);
 				break;
 
 			case TabStates.MODIFICATION_EXTENSION:
 				this.all_applications.sort(
 					(a, b) => new Date(a.project_modification_request.date_submitted).getTime()
-						- new Date(b.project_modification_request.date_submitted).getTime(),
+												- new Date(b.project_modification_request.date_submitted).getTime(),
 				);
 				break;
 
 			case TabStates.CREDITS_EXTENSION:
 				this.all_applications.sort(
 					(a, b) => new Date(a.project_credit_request.date_submitted).getTime()
-						- new Date(b.project_credit_request.date_submitted).getTime(),
+												- new Date(b.project_credit_request.date_submitted).getTime(),
 				);
 				break;
 
@@ -516,19 +559,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	getSubmittedApplications(): void {
 		this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
-			if (applications.length === 0) {
-				this.isLoaded_userApplication = true;
-			}
-			for (const application of applications) {
-				this.all_applications.push(new Application(application));
-			}
-			for (const app of this.all_applications) {
-				this.getFacilityProject(app);
-			}
-			this.sortApplicationsByTabState();
+			this.setApplicationByLoadedApplication(applications);
 
-			this.isLoaded = true;
-			this.loading_applications = false;
 		});
 	}
 
@@ -554,19 +586,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.applicationsService
 			.getLifetimeRequestedApplications()
 			.subscribe((lifetime_applications: Application[]): void => {
-				if (lifetime_applications.length === 0) {
-					// bool here?
-				}
-				for (const lifetime_application of lifetime_applications) {
-					this.all_applications.push(new Application(lifetime_application));
-				}
-				for (const app of this.all_applications) {
-					this.getFacilityProject(app);
-				}
-				this.sortApplicationsByTabState();
-
-				this.isLoaded = true;
-				this.loading_applications = false;
+				this.setApplicationByLoadedApplication(lifetime_applications);
 			});
 	}
 
@@ -574,19 +594,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.applicationsService
 			.getModificationRequestedApplications()
 			.subscribe((modification_applications: Application[]): void => {
-				if (modification_applications.length === 0) {
-					// bool here?
-				}
-				for (const modification_application of modification_applications) {
-					this.all_applications.push(new Application(modification_application));
-				}
-				for (const app of this.all_applications) {
-					this.getFacilityProject(app);
-				}
-				this.sortApplicationsByTabState();
+				this.setApplicationByLoadedApplication(modification_applications);
 
-				this.isLoaded = true;
-				this.loading_applications = false;
 			});
 	}
 
@@ -607,8 +616,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Get all Applications if user is admin.
-	 */
+		 * Get all Applications if user is admin.
+		 */
 	getAllApplications(): void {
 		if (this.is_vo_admin) {
 			this.applicationsService.getAllApplications().subscribe((applications: Application[]): void => {
@@ -627,10 +636,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Updates an application with the actual values.
-	 *
-	 * @param application
-	 */
+		 * Updates an application with the actual values.
+		 *
+		 * @param application
+		 */
 	public getApplication(application: Application): void {
 		const index: number = this.all_applications.indexOf(application);
 
@@ -647,10 +656,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Remove Application from facility , where it is for confirmation
-	 *
-	 * @param application the application
-	 */
+		 * Remove Application from facility , where it is for confirmation
+		 *
+		 * @param application the application
+		 */
 	removeApplicationFromFacilityConfirmation(application: Application): void {
 		this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe(
 			(): void => {
@@ -665,11 +674,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Create a new Group in perun with the specific attributes.
-	 *
-	 * @param application
-	 * @param compute_center
-	 */
+		 * Create a new Group in perun with the specific attributes.
+		 *
+		 * @param application
+		 * @param compute_center
+		 */
 	public createOpenStackProjectGroup(application: Application, compute_center: string): void {
 		this.groupservice.createGroupOpenStack(application.project_application_id, compute_center).subscribe(
 			(result: { [key: string]: string }): void => {
@@ -684,7 +693,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			},
 			(error: any): void => {
-				const errorMessage =					error && error.error === 'locked'
+				const errorMessage = error && error.error === 'locked'
 					? 'Project is locked and could not be created!'
 					: 'Project could not be created!';
 
@@ -703,8 +712,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Bugfix not scrollable site after closing modal
-	 */
+		 * Bugfix not scrollable site after closing modal
+		 */
 	removeModalOpen(): void {
 		document.body.classList.remove('modal-open');
 	}
@@ -762,8 +771,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Function to listen to modal results.
-	 */
+		 * Function to listen to modal results.
+		 */
 	subscribeToBsModalRef(): void {
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
@@ -840,7 +849,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				},
 				(error: any): void => {
 					console.log(error);
-					const errorMessage =						error && error.error === 'locked'
+					const errorMessage = error && error.error === 'locked'
 						? 'Project is locked and could not be created!'
 						: 'Project could not be created!';
 
@@ -897,7 +906,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			},
 			(error: any): void => {
-				const errorMessage =					error && error.error === 'locked'
+				const errorMessage = error && error.error === 'locked'
 					? 'Project is locked and could not be created!'
 					: 'Project could not be created!';
 
@@ -937,10 +946,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	/**
-	 * Decline an application.
-	 *
-	 * @param app
-	 */
+		 * Decline an application.
+		 *
+		 * @param app
+		 */
 
 	public declineApplication(app: Application): void {
 		const idx: number = this.all_applications.indexOf(app);

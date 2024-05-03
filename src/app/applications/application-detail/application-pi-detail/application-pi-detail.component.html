@@ -1,57 +1,103 @@
 <table class="table table-hover" style="table-layout: fixed">
-	<tbody>
-		<tr *ngIf="application?.approved_by_vo_manager" id="id_approved_vo_row">
-			<td>Approved by VO</td>
-			<td>
-				{{ application?.approved_by_vo_manager }}
-			</td>
-		</tr>
-		<tr *ngIf="application?.approved_by_facility_manager" id="id_pi_row">
-			<td>Approved by FM</td>
-			<td>
-				{{ application?.approved_by_facility_manager }}
-			</td>
-		</tr>
-		<tr *ngIf="application?.project_application_pi_approved" id="id_pi_row">
-			<td>PI Name</td>
-			<td>
-				{{ application?.project_application_pi?.username }}
-			</td>
-		</tr>
-		<tr *ngIf="application?.project_application_pi_approved">
-			<td>PI Email</td>
-			<td id="id_pi_email">
-				{{ application?.project_application_pi?.email }}
-			</td>
-		</tr>
-		<tr *ngIf="application?.project_application_pi_link">
-			<td>PI institue or workgroup link</td>
-			<td id="id_pi_link" *ngIf="application?.project_application_pi_link?.length > 0">
-				{{ application?.project_application_pi_link }}
-			</td>
-			<td id="id_pi_link" *ngIf="application?.project_application_pi_link?.length === 0">Not provided</td>
-		</tr>
-		<tr *ngIf="application?.project_application_pi_approved">
-			<td>PI Affiliations</td>
-			<td>
-				{{ application?.project_application_pi?.user_affiliations }}
-			</td>
-		</tr>
-		<tr>
-			<td>User Affiliations</td>
-			<td>{{ application?.project_application_user?.user_affiliations }}</td>
-		</tr>
-		<tr>
-			<td>User Name</td>
-			<td>
-				{{ application?.project_application_user?.username }}
-			</td>
-		</tr>
-		<tr>
-			<td>User Email</td>
-			<td>
-				{{ application?.project_application_user?.email }}
-			</td>
-		</tr>
-	</tbody>
+    <tbody>
+    <tr *ngIf="application?.approved_by_vo_manager" id="id_approved_vo_row">
+        <td>Approved by VO</td>
+        <td>
+            {{ application?.approved_by_vo_manager }}
+        </td>
+    </tr>
+    <tr *ngIf="application?.approved_by_facility_manager" id="id_pi_row">
+        <td>Approved by FM</td>
+        <td>
+            {{ application?.approved_by_facility_manager }}
+        </td>
+    </tr>
+    <tr *ngIf="application?.project_application_pi_approved" id="id_pi_row">
+        <td>PI Name</td>
+        <td>
+            @if(application.project_application_pi?.username){
+            {{ application?.project_application_pi?.username }}
+            @if (application?.project_application_pi?.pi_project_count_total > 0) {
+            <span
+                    data-toggle="tooltip"
+                    title="This user acts as the Principal Investigator for {{ application?.project_application_pi?.pi_project_count_total }} project(s) (including this one).">
+                    <c-badge
+                            color="info"> {{ application?.project_application_pi?.pi_project_count_total }}</c-badge></span>
+
+
+            }}
+            @else{
+            <span class="spinner-border text-info"></span>
+
+            }
+        </td>
+    </tr>
+    <tr *ngIf="application?.project_application_pi_approved">
+        <td>PI Email</td>
+        <td id="id_pi_email">
+            @if (application?.project_application_pi?.email) {
+            {{ application?.project_application_pi?.email }}
+            }
+            @else{
+            <span class="spinner-border text-info"></span>
+
+            }
+        </td>
+    </tr>
+    <tr *ngIf="application?.project_application_pi_link">
+        <td>PI institue or workgroup link</td>
+        <td id="id_pi_link" *ngIf="application?.project_application_pi_link?.length > 0">
+            {{ application?.project_application_pi_link }}
+        </td>
+        <td id="id_pi_link" *ngIf="application?.project_application_pi_link?.length === 0">Not provided</td>
+    </tr>
+    <tr *ngIf="application?.project_application_pi_approved">
+        <td>PI Affiliations</td>
+        <td>
+            @if (application?.project_application_pi?.user_affiliations) {
+            {{ application?.project_application_pi?.user_affiliations }}
+            }
+            @else{
+            <span class="spinner-border text-info"></span>
+
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>User Affiliations</td>
+        <td>
+            @if (application?.project_application_pi?.user_affiliations) {
+            {{ application?.project_application_pi?.user_affiliations }}
+            }
+            @else{
+            <span class="spinner-border text-info"></span>
+
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>User Name</td>
+        <td>
+            @if (application?.project_application_pi?.username) {
+            {{ application?.project_application_pi?.username }}
+            }
+            @else{
+            <span class="spinner-border text-info"></span>
+
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>User Email</td>
+        <td>
+            @if (application?.project_application_pi?.email) {
+            {{ application?.project_application_pi?.email }}
+            }
+            @else{
+            <span class="spinner-border text-info"></span>
+
+            }
+        </td>
+    </tr>
+    </tbody>
 </table>
