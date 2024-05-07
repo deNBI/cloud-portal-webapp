@@ -30,14 +30,9 @@ import {
 } from '../projectmanagement/modals/modification-request/modification-request.component';
 import { ConfirmationActions } from '../shared/modal/confirmation_actions';
 import { User } from './application.model/user.model';
+import { ApplicationTabStates } from '../shared/enums/application-tab-states';
 
 // eslint-disable-next-line no-shadow
-enum TabStates {
-		'SUBMITTED' = 0,
-		'CREDITS_EXTENSION' = 3,
-		'LIFETIME_EXTENSION' = 5,
-		'MODIFICATION_EXTENSION' = 4,
-}
 
 /**
  * Application Overview component.
@@ -58,8 +53,8 @@ enum TabStates {
 })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	title: string = 'Application Overview';
-	tab_state: number = TabStates.SUBMITTED;
-	TabStates: typeof TabStates = TabStates;
+	tab_state: number = ApplicationTabStates.SUBMITTED;
+	ApplicationTabStates: typeof ApplicationTabStates = ApplicationTabStates;
 	selectedCenter: { [key: string]: string } = {};
 	ConfirmationActions = ConfirmationActions;
 
@@ -184,6 +179,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		 * Getting the current numbers of all Application-Request types from the API
 		 */
 	getApplicationNumbers(): void {
+		console.log('rload numbers 3');
 		this.applicationsService.getExtensionRequestsCounter().subscribe((result: any): void => {
 			this.numberOfCreditRequests = result['credits_extension_requests_all'];
 			this.numberOfExtensionRequests = result['lifetime_extension_requests_all'];
@@ -524,28 +520,28 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		 */
 	sortApplicationsByTabState(): void {
 		switch (this.tab_state) {
-			case TabStates.SUBMITTED:
+			case ApplicationTabStates.SUBMITTED:
 				this.all_applications.sort(
 					(a, b) => new Date(a.project_application_date_submitted).getTime()
 												- new Date(b.project_application_date_submitted).getTime(),
 				);
 				break;
 
-			case TabStates.LIFETIME_EXTENSION:
+			case ApplicationTabStates.LIFETIME_EXTENSION:
 				this.all_applications.sort(
 					(a, b) => new Date(a.project_lifetime_request.date_submitted).getTime()
 												- new Date(b.project_lifetime_request.date_submitted).getTime(),
 				);
 				break;
 
-			case TabStates.MODIFICATION_EXTENSION:
+			case ApplicationTabStates.MODIFICATION_EXTENSION:
 				this.all_applications.sort(
 					(a, b) => new Date(a.project_modification_request.date_submitted).getTime()
 												- new Date(b.project_modification_request.date_submitted).getTime(),
 				);
 				break;
 
-			case TabStates.CREDITS_EXTENSION:
+			case ApplicationTabStates.CREDITS_EXTENSION:
 				this.all_applications.sort(
 					(a, b) => new Date(a.project_credit_request.date_submitted).getTime()
 												- new Date(b.project_credit_request.date_submitted).getTime(),
@@ -603,13 +599,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.loading_applications = true;
 		if (this.is_vo_admin) {
 			this.clearApplicationLists();
-			if (this.tab_state === TabStates.SUBMITTED) {
+			if (this.tab_state === ApplicationTabStates.SUBMITTED) {
 				this.getSubmittedApplications();
-			} else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
+			} else if (this.tab_state === ApplicationTabStates.CREDITS_EXTENSION) {
 				this.getCreditsExtensionRequests();
-			} else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
+			} else if (this.tab_state === ApplicationTabStates.LIFETIME_EXTENSION) {
 				this.getLifetimeExtensionRequests();
-			} else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
+			} else if (this.tab_state === ApplicationTabStates.MODIFICATION_EXTENSION) {
 				this.getModificationRequests();
 			}
 		}
@@ -820,7 +816,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 				if (action === 'adjustedModificationRequest') {
 					this.isLoaded = false;
-					this.changeTabState(TabStates.MODIFICATION_EXTENSION);
+					this.changeTabState(ApplicationTabStates.MODIFICATION_EXTENSION);
 				}
 			}),
 		);
@@ -922,7 +918,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		});
 	}
 
-	assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void {
+	assignGroupToFacility(group_id: number, application_id: string, compute_center: string): void {
 		if (compute_center !== 'undefined') {
 			this.groupservice.assignGroupToResource(group_id, compute_center).subscribe(
 				(): void => {

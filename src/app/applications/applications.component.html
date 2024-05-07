@@ -6,55 +6,55 @@
         <div class="btn-group" role="group">
             <button
                     class="btn"
-                    (click)="changeTabState(TabStates.SUBMITTED)"
+                    (click)="changeTabState(ApplicationTabStates.SUBMITTED)"
                     [ngClass]="{
-					'btn-light': !(tab_state === TabStates.SUBMITTED),
-					'btn-primary': tab_state === TabStates.SUBMITTED
+					'btn-light': !(tab_state === ApplicationTabStates.SUBMITTED),
+					'btn-primary': tab_state === ApplicationTabStates.SUBMITTED
 				}"
                     id="tab_state_button_submitted_applications"
                     data-test-id="submitted_applications_tab"
             >
                 <i class="fas fa-envelope"></i> Submitted Applications
-                <span class="badge badge-pill bg-dark">{{ this.numberOfProjectApplications }}</span>
+                <span class="badge badge-pill bg-dark">{{ numberOfProjectApplications }}</span>
             </button>
             <button
                     class="btn"
-                    (click)="changeTabState(TabStates.CREDITS_EXTENSION)"
+                    (click)="changeTabState(ApplicationTabStates.CREDITS_EXTENSION)"
                     [ngClass]="{
-					'btn-light': !(tab_state === TabStates.CREDITS_EXTENSION),
-					'btn-primary': tab_state === TabStates.CREDITS_EXTENSION
+					'btn-light': !(tab_state === ApplicationTabStates.CREDITS_EXTENSION),
+					'btn-primary': tab_state === ApplicationTabStates.CREDITS_EXTENSION
 				}"
                     id="tab_state_button_credit_request"
                     data-test-id="credit_requests_applications_tab"
             >
                 <i class="fas fa-coins"></i> Credit Extension Requests
-                <span class="badge badge-pill bg-dark">{{ this.numberOfCreditRequests }}</span>
+                <span class="badge badge-pill bg-dark">{{ numberOfCreditRequests }}</span>
             </button>
             <button
                     class="btn"
-                    (click)="changeTabState(TabStates.LIFETIME_EXTENSION)"
+                    (click)="changeTabState(ApplicationTabStates.LIFETIME_EXTENSION)"
                     [ngClass]="{
-					'btn-light': !(tab_state === TabStates.LIFETIME_EXTENSION),
-					'btn-primary': tab_state === TabStates.LIFETIME_EXTENSION
+					'btn-light': !(tab_state === ApplicationTabStates.LIFETIME_EXTENSION),
+					'btn-primary': tab_state === ApplicationTabStates.LIFETIME_EXTENSION
 				}"
                     id="tab_state_button_extension_request"
                     data-test-id="extension_requests_applications_tab"
             >
                 <i class="fas fa-clock"></i> Lifetime Extension Requests
-                <span class="badge badge-pill bg-dark">{{ this.numberOfExtensionRequests }}</span>
+                <span class="badge badge-pill bg-dark">{{ numberOfExtensionRequests }}</span>
             </button>
             <button
                     class="btn"
-                    (click)="changeTabState(TabStates.MODIFICATION_EXTENSION)"
+                    (click)="changeTabState(ApplicationTabStates.MODIFICATION_EXTENSION)"
                     [ngClass]="{
-					'btn-light': !(tab_state === TabStates.MODIFICATION_EXTENSION),
-					'btn-primary': tab_state === TabStates.MODIFICATION_EXTENSION
+					'btn-light': !(tab_state === ApplicationTabStates.MODIFICATION_EXTENSION),
+					'btn-primary': tab_state === ApplicationTabStates.MODIFICATION_EXTENSION
 				}"
                     id="tab_state_button_modification_request"
                     data-test-id="modification_requests_applications_tab"
             >
                 <i class="fas fa-memory"></i> Resource Modification Requests
-                <span class="badge badge-pill bg-dark">{{ this.numberOfModificationRequests }}</span>
+                <span class="badge badge-pill bg-dark">{{ numberOfModificationRequests }}</span>
             </button>
         </div>
         <div class="card-body" *ngIf="loading_applications" id="loading_applications"
@@ -64,290 +64,22 @@
             </div>
         </div>
         <ng-container [ngSwitch]="tab_state">
-            <ng-container *ngSwitchCase="TabStates.SUBMITTED">
+            <ng-container *ngSwitchCase="ApplicationTabStates.SUBMITTED">
+                @if(all_applications.length <= 0 && !loading_applications){
                 <div
                         class="card-body"
-                        *ngIf="all_applications.length <= 0 && !loading_applications"
                         data-test-id="submitted_applications_container"
                 >
                     <div class="alert alert-success" role="alert">
                         <strong>No new Applications!</strong> There are no new project applications for review.
                     </div>
-                </div>
+                </div>}
+                @else{
+                <app-application-list (reloadNumbersTrigger)="getApplicationNumbers()" [applications]="all_applications" [computeCenters]="computeCenters"
+                                      [tabState]="tab_state"></app-application-list>}
 
-                <div *ngIf="all_applications.length > 0" class="card-body"
-                     data-test-id="submitted_applications_container">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Project Name</th>
-                                <th>Short Name</th>
-                                <th>Date submitted</th>
-                                <th>User</th>
-                                <th>Institute</th>
-                                <th>Compute Center</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <ng-container *ngFor="let application of all_applications">
-                                <ng-container>
-                                    <tr>
-                                        <td>
-                                            <app-application-badges
-                                                    [application]="application"></app-application-badges>
-                                        </td>
-                                        <td>{{ application?.project_application_name }}</td>
-                                        <td>{{ application?.project_application_shortname }}</td>
-                                        <td>{{ application?.project_application_date_submitted }}</td>
-                                        <td style="word-wrap: break-word; min-width: 110px; max-width: 130px; white-space: normal">
-                                            @if (application?.project_application_user?.username) {
-                                            {{ application?.project_application_user?.username }}
-                                            }
-                                            @else{
-                                            <span class="spinner-border text-info"></span>
-
-                                            }
-
-                                        </td>
-                                        <td>{{ application?.project_application_institute }}</td>
-
-                                        <td>
-                                            <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED) || (!application?.project_application_compute_center?.FacilityId ))? 'inherit' :'none'"-->
-                                            <select
-                                                    [ngClass]="
-														selectedCenter[application.project_application_id] !== undefined ? 'is-valid' : 'is-invalid'
-													"
-                                                    *ngIf="
-														(application | hasstatusinlist: Application_States.SUBMITTED) ||
-														(application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
-														((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
-															!application?.project_application_compute_center?.FacilityId)
-													"
-                                                    [(ngModel)]="selectedCenter[application.project_application_id]"
-                                                    class="form-select"
-                                                    [id]="'id_compute_center_option_' + application?.project_application_name"
-                                                    [attr.data-test-id]="'id_compute_center_option_' + application?.project_application_name"
-                                                    #selectedComputeCenter
-                                            >
-                                                <option [ngValue]="undefined" selected>no center selected</option>
-                                                <ng-container *ngFor="let computeCenter of computeCenters">
-                                                    <option
-                                                            *ngIf="computeCenter.hasClient || application?.project_application_openstack_project"
-                                                            label="{{ computeCenter.Name }}"
-                                                            [ngValue]="computeCenter.FacilityId"
-                                                            [id]="computeCenter.Name"
-                                                    >
-                                                        {{ computeCenter.Name }}
-                                                    </option>
-                                                </ng-container>
-                                            </select>
-                                            <span *ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION">{{
-                                                    application?.project_application_compute_center?.Name
-                                                }}</span>
-                                        </td>
-
-                                        <td>
-                                            <div class="btn-group">
-                                                <button
-                                                        *ngIf="
-															(application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
-															((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
-																!application?.project_application_compute_center?.FacilityId)
-														"
-                                                        style="margin: 2px"
-                                                        (click)="
-															assignGroupToFacility(
-																application?.project_application_perun_id,
-																application?.project_application_id,
-																selectedCenter[application.project_application_id]
-															);
-															switchAssignLocked(true)
-														"
-                                                        [disabled]="!selectedCenter[application.project_application_id] || assignLocked"
-                                                        type="button"
-                                                        class="btn btn-info"
-                                                >
-                                                    <i class="fa fa-check"></i>&nbsp;
-                                                    <span class="d-none">Assign</span>
-                                                </button>
-                                                <button
-                                                        *ngIf="
-															(application | hasstatusinlist: Application_States.SUBMITTED) &&
-															!(application | hasstatusinlist: Application_States.APPROVED)
-														"
-                                                        style="margin: 2px"
-                                                        (click)="showConfirmationModal(application, ConfirmationActions.DELETE_APPLICATION)"
-                                                        type="button"
-                                                        class="btn btn-danger"
-                                                        title="Delete Application"
-                                                >
-                                                    <i class="fa fa-trash"></i>&nbsp;
-                                                    <span class="d-none">Assign</span>
-                                                </button>
-                                                <button
-                                                        *ngIf="application?.processing_vo_initials"
-                                                        style="margin: 2px"
-                                                        (click)="unsetProcessingVoManager(application)"
-                                                        type="button"
-                                                        class="btn btn-danger"
-                                                        title="Unassign Processing VO"
-                                                >
-                                                    <i class="fa fa-user-slash"></i>&nbsp; <span class="d-none">Unassign Proccessing VO</span>
-                                                </button>
-                                                <button
-                                                        *ngIf="!application?.processing_vo_initials"
-                                                        style="margin: 2px"
-                                                        (click)="setCurrentUserProcessingVoManager(application)"
-                                                        type="button"
-                                                        class="btn btn-secondary"
-                                                >
-                                                    <i class="fa fa-user-pen"></i>&nbsp;
-                                                    <span class="d-none">Assign Proccessing VO</span>
-                                                </button>
-                                                <button
-                                                        *ngIf="
-															(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
-															application?.project_application_compute_center?.FacilityId
-														"
-                                                        style="margin: 2px"
-                                                        (click)="removeApplicationFromFacilityConfirmation(application); switchReassignLocked(true)"
-                                                        [disabled]="reassignLocked"
-                                                        type="button"
-                                                        class="btn btn-secondary"
-                                                        title="Assign yourself as Processing VO"
-                                                >
-                                                    <i class="fa fa-check"></i>&nbsp;
-                                                    <span class="d-none">Reassign</span>
-                                                </button>
-                                                <button
-                                                        *ngIf="
-															(application | hasstatusinlist: Application_States.SUBMITTED) &&
-															application?.project_application_openstack_project
-														"
-                                                        style="margin: 2px"
-                                                        [id]="'approve_' + application?.project_application_shortname"
-                                                        [attr.data-test-id]="'approve_' + application?.project_application_shortname"
-                                                        (click)="this.showConfirmationModal(application, ConfirmationActions.APPROVE_APPLICATION)"
-                                                        [disabled]="!selectedCenter[application.project_application_id] || approveLocked"
-                                                        type="button"
-                                                        class="btn btn-success"
-                                                >
-                                                    <i class="fa fa-check"></i>&nbsp;
-                                                    <span class="d-none">Approve & Create </span>
-                                                </button>
-
-                                                <button
-                                                        *ngIf="
-															(application | hasstatusinlist: Application_States.SUBMITTED) &&
-															!application?.project_application_openstack_project
-														"
-                                                        style="margin: 2px"
-                                                        [id]="'approve_' + application?.project_application_shortname"
-                                                        [attr.data-test-id]="'approve_' + application?.project_application_shortname"
-                                                        (click)="
-															showClientsLimitsModal(selectedCenter[application.project_application_id], application);
-															switchApproveLocked(true)
-														"
-                                                        [disabled]="!selectedCenter[application.project_application_id] || approveLocked"
-                                                        type="button"
-                                                        class="btn btn-success"
-                                                >
-                                                    <i class="fa fa-check"></i>&nbsp;
-                                                    <span class="d-none">Approve & Create </span>
-                                                </button>
-
-                                                <button
-                                                        *ngIf="application | hasstatusinlist: Application_States.SUBMITTED"
-                                                        type="button"
-                                                        class="btn btn-danger"
-                                                        id="btn_decline_{{ application.project_application_shortname }}"
-                                                        [attr.data-test-id]="'btn_decline_' + application.project_application_shortname"
-                                                        style="margin: 2px"
-                                                        (click)="showConfirmationModal(application, ConfirmationActions.DECLINE_APPLICATION)"
-                                                >
-                                                    <i class="fas fa-times"></i>&nbsp;
-                                                    <span class="d-none">Decline</span>
-                                                </button>
-                                                <button
-                                                        *ngIf="
-															application.project_application_pi_approved &&
-															(application | hasstatusinlist: Application_States.SUBMITTED)
-														"
-                                                        type="button"
-                                                        id="btn_reset_pi_{{ application.project_application_shortname }}"
-                                                        class="btn btn-warning"
-                                                        style="margin: 2px"
-                                                        (click)="setApplicationToAdjust(application); unsetPiModal.show()"
-                                                >
-                                                    <i class="fa fa-user-times"></i>&nbsp;
-                                                    <span class="d-none"> Unset PI</span>
-                                                </button>
-                                                <button
-                                                        type="button"
-                                                        id="btn_adjust_{{ application.project_application_shortname }}"
-                                                        class="btn btn-primary"
-                                                        style="margin: 2px"
-                                                        (click)="setApplicationToAdjust(application); adjustModal.show()"
-                                                >
-                                                    <i class="fa fa-pen"></i>&nbsp;
-                                                    <span class="d-none"> Adjust</span>
-                                                </button>
-                                                <button
-                                                        (click)="
-															switchCollapseStatus('application_review-' + application?.project_application_id);
-															getMemberDetailsByElixirIdIfCollapsed(
-																application,
-																'application_review-' + application?.project_application_id
-															)
-														"
-                                                        type="button"
-                                                        class="btn btn-secondary"
-                                                        style="margin: 2px"
-                                                >
-                                                    <i class="fa fa-info-circle"></i>&nbsp;
-                                                    <span
-                                                            class="d-none"
-                                                            [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)"
-                                                    >Show</span
-                                                    >
-                                                    <span
-                                                            class="d-none"
-                                                            [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)"
-                                                    >Hide</span
-                                                    >
-                                                    <span class="d-none"> Information</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <td colspan="12">
-                                        <ng-container
-                                                *ngIf="!getCollapseStatus('application_review-' + application?.project_application_id)">
-
-                                            <app-application-detail
-                                                    [default_tab]="tab_state"
-                                                    [class.collapse_no_margin]="
-													getCollapseStatus('application_review-' + application?.project_application_id)
-												"
-                                                    [class.collapse]="
-													getCollapseStatus('application_review-' + application?.project_application_id)
-												"
-                                                    [application]="application"
-                                            ></app-application-detail>
-                                        </ng-container>
-                                    </td>
-                                </ng-container>
-                            </ng-container>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
             </ng-container>
-            <ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
+            <ng-container *ngSwitchCase="ApplicationTabStates.MODIFICATION_EXTENSION">
                 <div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
                     <div class="alert alert-success" role="alert"
                          data-test-id="modification_requests_applications_container">
@@ -387,10 +119,9 @@
                                         <td>{{ application?.project_modification_request?.date_submitted }}</td>
                                         <td style="word-wrap: break-word; min-width: 110px; max-width: 130px; white-space: normal">
                                             @if (application?.project_application_user?.username) {
-                                            {{ application?.project_application_user?.username }}
-                                            }
-                                            @else{
-                                            <span class="spinner-border text-info"></span>
+                                                {{ application?.project_application_user?.username }}
+                                            } @else {
+                                                <span class="spinner-border text-info"></span>
 
                                             }
 
@@ -542,7 +273,7 @@
                     </div>
                 </div>
             </ng-container>
-            <ng-container *ngSwitchCase="TabStates.LIFETIME_EXTENSION">
+            <ng-container *ngSwitchCase="ApplicationTabStates.LIFETIME_EXTENSION">
                 <div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
                     <div class="alert alert-success" role="alert"
                          data-test-id="lifetime_requests_applications_container">
@@ -582,10 +313,9 @@
                                         <td>{{ application?.project_lifetime_request?.date_submitted }}</td>
                                         <td style="word-wrap: break-word; min-width: 110px; max-width: 130px; white-space: normal">
                                             @if (application?.project_application_user?.username) {
-                                            {{ application?.project_application_user?.username }}
-                                            }
-                                            @else{
-                                            <span class="spinner-border text-info"></span>
+                                                {{ application?.project_application_user?.username }}
+                                            } @else {
+                                                <span class="spinner-border text-info"></span>
 
                                             }                                        </td>
                                         <td>{{ application?.project_application_institute }}</td>
@@ -714,7 +444,7 @@
                     </div>
                 </div>
             </ng-container>
-            <ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION"
+            <ng-container *ngSwitchCase="ApplicationTabStates.CREDITS_EXTENSION"
                           data-test-id="credit_requests_applications_container">
                 <div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
                     <div class="alert alert-success" role="alert">
@@ -929,12 +659,12 @@
 
     <div class="card" *ngIf="is_vo_admin && false">
         <div class="card-header"><i class="fa fa-align-justify"></i> Applications history</div>
-        <div class="card-body" *ngIf="this.applications_history?.length === 0">
+        <div class="card-body" *ngIf="applications_history?.length === 0">
             <div class="alert alert-success" role="alert">
                 <strong>No submitted Applications</strong> There are no applications at all.
             </div>
         </div>
-        <div *ngIf="this.applications_history.length > 0" class="card-body">
+        <div *ngIf="applications_history.length > 0" class="card-body">
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -949,7 +679,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <ng-container *ngFor="let application of this.applications_history">
+                    <ng-container *ngFor="let application of applications_history">
                         <ng-container *ngIf="application?.project_application_date_submitted">
                             <tr>
                                 <td>

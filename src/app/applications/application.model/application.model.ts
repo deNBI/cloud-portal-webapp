@@ -55,7 +55,7 @@ export class Application {
 	project_lifetime_request: ApplicationLifetimeExtension;
 	project_modification_request: ApplicationModification;
 	project_credit_request: ApplicationCreditRequest = null;
-	project_application_perun_id: number | string;
+	project_application_perun_id: number;
 	project_application_total_cores: number = 0;
 	project_application_total_ram: number = 0;
 	project_application_initial_credits: number = 0;
