@@ -737,47 +737,7 @@
     </div>
 </div>
 
-<div
-        bsModal
-        #unsetPiModal="bs-modal"
-        class="modal fade"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="Label"
-        aria-hidden="true"
-        id="unsetPiModal"
->
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Unset PI</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-primary">
-                    Do you really want to unset the PI from the
-                    project {{ selectedApplication?.project_application_shortname }}?
-                </div>
-            </div>
 
-            <div class="modal-footer">
-                <button
-                        type="button"
-                        class="btn btn-success"
-                        (click)="resetApplicationPI(selectedApplication); unsetPiModal.hide()"
-                        id="unset_pi"
-                >
-                    Unset PI
-                </button>
-                <button type="button" class="btn btn-danger" (click)="unsetPiModal.hide()" id="close_unset_pi_modal">
-                    Close
-                </button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
 
 <div
         bsModal

@@ -77,7 +77,7 @@
 															!(application | hasstatusinlist: Application_States.APPROVED)
 														"
                     style="margin: 2px"
-                    (click)="showConfirmationModal(application, ConfirmationActions.DELETE_APPLICATION)"
+                    (click)="showConfirmationModal( ConfirmationActions.DELETE_APPLICATION)"
                     type="button"
                     class="btn btn-danger"
                     title="Delete Application"
@@ -131,7 +131,7 @@
                     style="margin: 2px"
                     [id]="'approve_' + application?.project_application_shortname"
                     [attr.data-test-id]="'approve_' + application?.project_application_shortname"
-                    (click)="showConfirmationModal(application, ConfirmationActions.APPROVE_APPLICATION)"
+                    (click)="showConfirmationModal( ConfirmationActions.APPROVE_APPLICATION)"
                     [disabled]="!selectedComputeCenter"
                     type="button"
                     class="btn btn-success"
@@ -167,25 +167,28 @@
                     id="btn_decline_{{ application.project_application_shortname }}"
                     [attr.data-test-id]="'btn_decline_' + application.project_application_shortname"
                     style="margin: 2px"
-                    (click)="showConfirmationModal(application, ConfirmationActions.DECLINE_APPLICATION)"
+                    (click)="showConfirmationModal( ConfirmationActions.DECLINE_APPLICATION)"
             >
                 <i class="fas fa-times"></i>&nbsp;
                 <span class="d-none">Decline</span>
             </button>
-            <button
-                    *ngIf="
-															application.project_application_pi_approved &&
-															(application | hasstatusinlist: Application_States.SUBMITTED)
-														"
-                    type="button"
-                    id="btn_reset_pi_{{ application.project_application_shortname }}"
-                    class="btn btn-warning"
-                    style="margin: 2px"
-            >
-                <!--                    (click)="setApplicationToAdjust(application); unsetPiModal.show()"-->
-                <i class="fa fa-user-times"></i>&nbsp;
-                <span class="d-none"> Unset PI</span>
-            </button>
+            @if (application.project_application_pi_approved &&
+            (application | hasstatusinlist: Application_States.SUBMITTED)) {
+                <button
+
+
+                        type="button"
+                        id="btn_reset_pi_{{ application.project_application_shortname }}"
+                        class="btn btn-warning"
+                        tooltip="Unset PI"
+                        style="margin: 2px"
+                        (click)="showConfirmationModal(ConfirmationActions.RESET_PI)"
+                >
+
+                    <i class="fa fa-user-times"></i>&nbsp;
+                    <span class="d-none"> Unset PI</span>
+                </button>
+            }
             <button
                     type="button"
                     id="btn_adjust_{{ application.project_application_shortname }}"
@@ -232,3 +235,5 @@
         ></app-application-detail>
     }
 </td>
+
+

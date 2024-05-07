@@ -1,16 +1,11 @@
 import {
 	Component, EventEmitter, Input, OnInit, Output,
 } from '@angular/core';
-import { NgForOf, NgIf } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
 import { AbstractBaseClass, Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class';
 import { ConfirmationActions } from '../../shared/modal/confirmation_actions';
-import { ApplicationsModule } from '../applications.module';
-import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
-import { PublicKeyModule } from '../../shared/shared_modules/public-key/public-key.module';
-import { SharedModuleModule } from '../../shared/shared_modules/shared-module.module';
 import { Application } from '../application.model/application.model';
 import { ApplicationTabStates } from '../../shared/enums/application-tab-states';
 import { ApplicationsService } from '../../api-connector/applications.service';
@@ -73,13 +68,15 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 			}
 		}
 
-		showConfirmationModal(application: Application, action: ConfirmationActions): void {
+		showConfirmationModal(action: ConfirmationActions): void {
 			let initialState = {};
 			if (action === ConfirmationActions.APPROVE_APPLICATION) {
 				const application_center = !this.selectedComputeCenter.FacilityId;
-				initialState = { application, action, application_center };
+				initialState = { application: this.application, action, application_center };
 			} else {
-				initialState = { application, action };
+				initialState = {
+					application: this.application, action,
+				};
 			}
 			this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' });
 			this.subscribeToBsModalRef();
@@ -145,6 +142,12 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 			} else {
 				this.showNotificationModal('Failed', 'You need to select an compute center!', 'danger');
 			}
+		}
+
+		resetApplicationPI(): void {
+			this.applicationsService.resetPIValidation(this.application).subscribe((app: Application) => {
+				this.getApplication();
+			});
 		}
 
 		switchCollaps() {
@@ -416,6 +419,9 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 
 					if (action === ConfirmationActions.APPROVE_EXTENSION) {
 						this.approveLifetimeExtension();
+					}
+					if (action === ConfirmationActions.RESET_PI) {
+						this.resetApplicationPI();
 					}
 					if (action === ConfirmationActions.APPROVE_CREDITS) {
 						this.approveCreditExtension();

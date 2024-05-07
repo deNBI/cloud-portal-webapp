@@ -34,6 +34,8 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 			[ConfirmationActions.DECLINE_CREDITS]: { action: ConfirmationActions.DECLINE_CREDITS },
 			[ConfirmationActions.DECLINE_APPLICATION]: { action: ConfirmationActions.DECLINE_APPLICATION },
 			[ConfirmationActions.APPROVE_MODIFICATION]: { action: ConfirmationActions.APPROVE_MODIFICATION },
+			[ConfirmationActions.RESET_PI]: { action: ConfirmationActions.RESET_PI },
+
 			[ConfirmationActions.APPROVE_EXTENSION]: { action: ConfirmationActions.APPROVE_EXTENSION },
 			[ConfirmationActions.DELETE_APPLICATION]: { action: ConfirmationActions.DELETE_APPLICATION },
 
@@ -76,6 +78,9 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 				return 'Deletion';
 			case ConfirmationTypes.DECLINE:
 				return 'Declination';
+			case ConfirmationTypes.RESET_PI:
+				return 'Reset PI';
+
 			default:
 				break;
 		}
@@ -97,7 +102,7 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 				message: 'Do you really want to delete the application?',
 			},
 			[ConfirmationActions.DECLINE_APPLICATION]: {
-				title: 'Confirm declien of project application',
+				title: 'Confirm decline of project application',
 				type: ConfirmationTypes.DECLINE,
 				message: 'Do you really want to decline the project application',
 			},
@@ -140,6 +145,11 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 				title: 'Confirm enabling of application',
 				type: ConfirmationTypes.ENABLE,
 				message: 'Do you really want to enable the application',
+			},
+			[ConfirmationActions.RESET_PI]: {
+				title: 'Confirm reset pi',
+				type: ConfirmationTypes.RESET_PI,
+				message: 'Do you really want to reset the PI',
 			},
 		};
 
