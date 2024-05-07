@@ -1,16 +1,20 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Adjust application for {{ application?.project_application_shortname }}</h4>
+            <button
+                    type="button"
+                    class="btn-close"
+                    style="cursor: pointer"
+                    (click)="hide()"
+                    aria-label="Close"
+            ></button>
+        </div>
 
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Adjust application for {{ application?.project_application_shortname }}</h4>
-                <button
-                        type="button"
-                        class="btn-close"
-                        style="cursor: pointer"
-                        (click)="hide()"
-                        aria-label="Close"
-                ></button>
-            </div>
+        @if (!loaded) {
+            <div class="spinner-border text-primary" style="display: block; margin: auto"></div>
+
+        } @else {
             <div class="modal-body" *ngIf="application">
                 <form id="resource_adjustment_form" #resourceAdjustmentForm="ngForm" class="form-horizontal">
                     <div class="form-group row">
@@ -461,7 +465,7 @@
                             class="btn btn-primary"
                             form="resource_adjustment_form"
                             id="submitAdjustmentButton"
-                            (click)="hide(); adjustApplication()"
+                            (click)=" adjustApplication()"
                             [disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM"
                     >
                         <i class="far fa-dot-circle"></i>
@@ -470,8 +474,9 @@
                     <button type="button" class="btn btn-danger" (click)="hide()">Discard</button>
                 </div>
             </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
+        }
+        <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
+</div>
 

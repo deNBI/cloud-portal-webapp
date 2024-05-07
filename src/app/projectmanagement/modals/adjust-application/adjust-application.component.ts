@@ -24,6 +24,9 @@ import { FlavorTypeShortcuts } from '../../../shared/shared_modules/baseClass/fl
 })
 export class AdjustApplicationComponent implements OnInit {
 	bsModalRef = BsModalRef;
+	loaded: boolean = false;
+	loadedFlavorTypes: boolean = false;
+	loadedFlavors: boolean = false;
 	modalId: number | string | undefined;
 	totalNumberOfCores: number = 0;
 	newFlavors: {
@@ -40,9 +43,10 @@ export class AdjustApplicationComponent implements OnInit {
 	flavorList: Flavor[] = [];
 
 	application: Application;
-	adjustedApplication:Application;
+	adjustedApplication: Application;
+	FlavorTypeShortcuts: typeof FlavorTypeShortcuts = FlavorTypeShortcuts;
 
-		@Output() onConfirmation: EventEmitter<boolean> = new EventEmitter();
+		@Output() eventSuccess: EventEmitter<boolean> = new EventEmitter();
 
 		constructor(
 				private modalService: BsModalService,
@@ -53,6 +57,9 @@ export class AdjustApplicationComponent implements OnInit {
 		}
 
 		ngOnInit() {
+			this.loaded = false;
+			this.loadedFlavorTypes = false;
+			this.loadedFlavors = false;
 			this.adjustedApplication = new Application(this.application);
 			this.getAvailableFlavorTypes();
 			this.getAvailableFlavors();
@@ -61,12 +68,17 @@ export class AdjustApplicationComponent implements OnInit {
 		getAvailableFlavors() {
 			this.flavorService.getListOfFlavorsAvailable(undefined, undefined, true).subscribe((flavList: Flavor[]): void => {
 				this.flavorList = flavList;
+				this.loadedFlavors = true;
+				this.loaded = this.loadedFlavorTypes && this.loadedFlavors;
+
 			});
 		}
 
 		getAvailableFlavorTypes() {
 			this.flavorService.getListOfTypesAvailable().subscribe((availableTypes: FlavorType[]): void => {
 				this.typeList = availableTypes;
+				this.loadedFlavorTypes = true;
+				this.loaded = this.loadedFlavorTypes && this.loadedFlavors;
 			});
 		}
 
@@ -131,8 +143,6 @@ export class AdjustApplicationComponent implements OnInit {
 		}
 
 		hide(): void {
-			this.onConfirmation.emit(false);
-
 			this.modalService.hide(this.modalId);
 		}
 
@@ -164,20 +174,23 @@ export class AdjustApplicationComponent implements OnInit {
 			bsModalRef.setClass('modal-lg');
 			this.modalId = bsModalRef.id;
 
-			return bsModalRef.content.onConfirmation;
+			return bsModalRef.content.eventSuccess;
 		}
 
 		adjustApplication(): void {
+			this.loaded = false;
 			this.applicationsService.adjustApplication(this.adjustedApplication).subscribe(
 				(): void => {
-					this.onConfirmation.emit(true);
+					this.hide();
 
-					// this.showNotificationModal('Success', 'The resources of the application were adjusted successfully!', 'success');
+					this.eventSuccess.emit(true);
+
 				},
 				(): void => {
-					this.onConfirmation.emit(false);
+					this.hide();
 
-					//	this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
+					this.eventSuccess.emit(false);
+
 				},
 			);
 		}

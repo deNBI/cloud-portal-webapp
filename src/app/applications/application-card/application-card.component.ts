@@ -52,21 +52,26 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 				private voService: VoService,
 				private groupService: GroupService,
 				private adjustLifeTimeExtensionModal: AdjustLifetimeRequestComponent,
-				private adjustApplicationModal:AdjustApplicationComponent,
+				private adjustApplicationModal: AdjustApplicationComponent,
 		) {
 			super();
 		}
 
 		triggerRemoveApplication() {
-			console.log('trigger remove');
 
 			this.removeApplicationTrigger.emit(this.application.project_application_id);
 		}
 
 		showAdjustLifetimeExtensionModal() {
 			this.adjustLifeTimeExtensionModal.showAdjustLifetimeExtensionModal(this.application).subscribe((changed: boolean) => {
+				console.log(changed);
 				if (changed) {
 					this.getApplication();
+					this.showNotificationModal('Success', 'The lifetime of the extension request were adjusted successfully!', 'success');
+
+				} else {
+					this.showNotificationModal('Failed', 'The adjustment of the lifetime has failed!', 'danger');
+
 				}
 			});
 		}
@@ -75,6 +80,12 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 			this.adjustApplicationModal.showAdjustApplicationModal(this.application).subscribe((changed: boolean) => {
 				if (changed) {
 					this.getApplication();
+
+					this.showNotificationModal('Success', 'The resources of the application were adjusted successfully!', 'success');
+
+				} else {
+					this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
+
 				}
 			});
 		}
@@ -183,25 +194,15 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 			notificationModalMessage: string,
 			notificationModalType: string,
 		) {
+			console.log('hsoe notification');
 			const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
 			if (this.bsModalRef) {
 				this.bsModalRef.hide();
 			}
 
 			this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
+			console.log(this.bsModalRef);
 			this.bsModalRef.setClass('modal-lg');
-		}
-
-		adjustApplication(): void {
-			this.applicationsService.adjustApplication(this.application).subscribe(
-				(adjustmentResult: Application): void => {
-					this.application = adjustmentResult;
-					this.showNotificationModal('Success', 'The resources of the application were adjusted successfully!', 'success');
-				},
-				(): void => {
-					this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
-				},
-			);
 		}
 
 		createSimpleVmProjectGroup(): void {
