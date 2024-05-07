@@ -16,6 +16,12 @@ import { ComputecenterComponent } from '../../projectmanagement/computecenter.co
 import { GroupService } from '../../api-connector/group.service';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal.component';
 import { ClientLimitsComponent } from '../../vo_manager/clients/modals/client-limits..component';
+import {
+	AdjustLifetimeRequestComponent,
+} from '../../projectmanagement/modals/adjust-lifetime/adjust-lifetime-request.component';
+import {
+	AdjustApplicationComponent,
+} from '../../projectmanagement/modals/adjust-application/adjust-application.component';
 
 @Component({
 	selector: 'app-application-card',
@@ -45,6 +51,8 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 				private modalService: BsModalService,
 				private voService: VoService,
 				private groupService: GroupService,
+				private adjustLifeTimeExtensionModal: AdjustLifetimeRequestComponent,
+				private adjustApplicationModal:AdjustApplicationComponent,
 		) {
 			super();
 		}
@@ -53,6 +61,22 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 			console.log('trigger remove');
 
 			this.removeApplicationTrigger.emit(this.application.project_application_id);
+		}
+
+		showAdjustLifetimeExtensionModal() {
+			this.adjustLifeTimeExtensionModal.showAdjustLifetimeExtensionModal(this.application).subscribe((changed: boolean) => {
+				if (changed) {
+					this.getApplication();
+				}
+			});
+		}
+
+		showAdjustApplicationModal() {
+			this.adjustApplicationModal.showAdjustApplicationModal(this.application).subscribe((changed: boolean) => {
+				if (changed) {
+					this.getApplication();
+				}
+			});
 		}
 
 		triggerReloadNumbers() {
@@ -442,4 +466,5 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 		isCollapsed: boolean = true;
 		protected readonly Application_States = Application_States;
 		protected readonly ConfirmationActions = ConfirmationActions;
+		protected readonly ApplicationTabStates = ApplicationTabStates;
 }

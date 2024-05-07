@@ -53,38 +53,8 @@
 
     <td>
         <div class="btn-group">
-            @if ((application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
-            ((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
-                !application?.project_application_compute_center?.FacilityId)) {
-                <button
 
-                        style="margin: 2px"
-                        (click)="
-						assignGroupToFacility();
-														"
-                        [disabled]="!selectedComputeCenter"
-                        type="button"
-                        class="btn btn-info"
-                        tooltip="Assign to facility"
-                >
-                    <i class="fa fa-check"></i>&nbsp;
-                    <span class="d-none">Assign</span>
-                </button>
-            }
-            <button
-                    *ngIf="
-															(application | hasstatusinlist: Application_States.SUBMITTED) &&
-															!(application | hasstatusinlist: Application_States.APPROVED)
-														"
-                    style="margin: 2px"
-                    (click)="showConfirmationModal( ConfirmationActions.DELETE_APPLICATION)"
-                    type="button"
-                    class="btn btn-danger"
-                    title="Delete Application"
-            >
-                <i class="fa fa-trash"></i>&nbsp;
-                <span class="d-none">Assign</span>
-            </button>
+
             @if (application?.processing_vo_initials && is_vo_admin) {
 
                 <button
@@ -92,7 +62,7 @@
                         (click)="unsetProcessingVoManager(application)"
                         type="button"
                         class="btn btn-danger"
-                        title="Unassign Processing VO"
+                        tooltip="Unassign Processing VO"
                 >
                     <i class="fa fa-user-slash"></i>&nbsp; <span
                         class="d-none">Unassign Proccessing VO</span>
@@ -104,107 +74,203 @@
                         (click)="setCurrentUserProcessingVoManager(application)"
                         type="button"
                         class="btn btn-secondary"
+                        tooltip="Assign self as processing vo"
                 >
                     <i class="fa fa-user-pen"></i>&nbsp;
                     <span class="d-none">Assign Proccessing VO</span>
                 </button>
             }
-            <button
-                    *ngIf="
-															(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
-															application?.project_application_compute_center?.FacilityId
-														"
-                    style="margin: 2px"
-                    (click)="removeApplicationFromFacilityConfirmation()"
-                    type="button"
-                    class="btn btn-secondary"
-                    title="Assign yourself as Processing VO"
-            >
-                <i class="fa fa-check"></i>&nbsp;
-                <span class="d-none">Reassign</span>
-            </button>
-            <button
-                    *ngIf="
-															(application | hasstatusinlist: Application_States.SUBMITTED) &&
-															application?.project_application_openstack_project
-														"
-                    style="margin: 2px"
-                    [id]="'approve_' + application?.project_application_shortname"
-                    [attr.data-test-id]="'approve_' + application?.project_application_shortname"
-                    (click)="showConfirmationModal( ConfirmationActions.APPROVE_APPLICATION)"
-                    [disabled]="!selectedComputeCenter"
-                    type="button"
-                    class="btn btn-success"
-            >
-                <i class="fa fa-check"></i>&nbsp;
-                <span class="d-none">Approve & Create </span>
-            </button>
 
-            <button
-                    *ngIf="
-															(application | hasstatusinlist: Application_States.SUBMITTED) &&
-															!application?.project_application_openstack_project
-														"
-                    style="margin: 2px"
-                    [id]="'approve_' + application?.project_application_shortname"
-                    [attr.data-test-id]="'approve_' + application?.project_application_shortname"
-                    (click)="
+
+            @switch (tabState) {
+
+                @case (ApplicationTabStates.SUBMITTED) {
+                    <button
+                            type="button"
+                            id="btn_adjust_{{ application.project_application_shortname }}"
+                            class="btn btn-primary"
+                            tooltip="Adjust Application"
+                            style="margin: 2px"
+                            (click)="showAdjustApplicationModal()"
+                    >
+
+                        <i class="fa fa-pen"></i>&nbsp;
+                        <span class="d-none"> Adjust</span>
+                    </button>
+                    @if ((application | hasstatusinlist: Application_States.SUBMITTED) &&
+                    !application?.project_application_openstack_project) {
+                        <button
+
+                                style="margin: 2px"
+                                [id]="'approve_' + application?.project_application_shortname"
+                                [attr.data-test-id]="'approve_' + application?.project_application_shortname"
+                                (click)="
 															showClientsLimitsModal();
 														"
-                    [disabled]="!selectedComputeCenter"
-                    type="button"
-                    class="btn btn-success"
-                    tooltip="Approve Application!!!"
-            >
-                <i class="fa fa-check"></i>&nbsp;
-                <span class="d-none">Approve & Create </span>
-            </button>
+                                [disabled]="!selectedComputeCenter"
+                                type="button"
+                                class="btn btn-success"
+                                tooltip="Approve Application!!!"
+                        >
+                            <i class="fa fa-check"></i>&nbsp;
+                            <span class="d-none">Approve & Create </span>
+                        </button>
+                    }
+                    @if (application | hasstatusinlist: Application_States.SUBMITTED) {
+                        <button
+                                type="button"
+                                class="btn btn-danger"
+                                id="btn_decline_{{ application.project_application_shortname }}"
+                                [attr.data-test-id]="'btn_decline_' + application.project_application_shortname"
+                                style="margin: 2px"
+                                tooltip="Decline Application"
+                                (click)="showConfirmationModal( ConfirmationActions.DECLINE_APPLICATION)"
+                        >
+                            <i class="fas fa-times"></i>&nbsp;
+                            <span class="d-none">Decline</span>
+                        </button>
+                    }
+                    @if (application.project_application_pi_approved &&
+                    (application | hasstatusinlist: Application_States.SUBMITTED)) {
+                        <button
 
-            <button
-                    *ngIf="application | hasstatusinlist: Application_States.SUBMITTED"
-                    type="button"
-                    class="btn btn-danger"
-                    id="btn_decline_{{ application.project_application_shortname }}"
-                    [attr.data-test-id]="'btn_decline_' + application.project_application_shortname"
-                    style="margin: 2px"
-                    (click)="showConfirmationModal( ConfirmationActions.DECLINE_APPLICATION)"
-            >
-                <i class="fas fa-times"></i>&nbsp;
-                <span class="d-none">Decline</span>
-            </button>
-            @if (application.project_application_pi_approved &&
-            (application | hasstatusinlist: Application_States.SUBMITTED)) {
-                <button
+
+                                type="button"
+                                id="btn_reset_pi_{{ application.project_application_shortname }}"
+                                class="btn btn-warning"
+                                tooltip="Unset PI"
+                                style="margin: 2px"
+                                (click)="showConfirmationModal(ConfirmationActions.RESET_PI)"
+                        >
+
+                            <i class="fa fa-user-times"></i>&nbsp;
+                            <span class="d-none"> Unset PI</span>
+                        </button>
+                    }
+                    @if ((application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
+                    ((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
+                        !application?.project_application_compute_center?.FacilityId)) {
+                        <button
+
+                                style="margin: 2px"
+                                (click)="
+						assignGroupToFacility();
+														"
+                                [disabled]="!selectedComputeCenter"
+                                type="button"
+                                class="btn btn-info"
+                                tooltip="Assign to facility"
+                        >
+                            <i class="fa fa-check"></i>&nbsp;
+                            <span class="d-none">Assign</span>
+                        </button>
+                    }
+                    @if ((application | hasstatusinlist: Application_States.SUBMITTED) &&
+                    !(application | hasstatusinlist: Application_States.APPROVED)) {
+                        <button
+
+                                style="margin: 2px"
+                                (click)="showConfirmationModal( ConfirmationActions.DELETE_APPLICATION)"
+                                type="button"
+                                class="btn btn-danger"
+                                tooltip="Delete Application"
+                        >
+                            <i class="fa fa-trash"></i>&nbsp;
+                            <span class="d-none">Delete</span>
+                        </button>
+                    }
+                    @if ((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
+                    application?.project_application_compute_center?.FacilityId) {
+
+                        <button
+
+                                style="margin: 2px"
+                                (click)="removeApplicationFromFacilityConfirmation()"
+                                type="button"
+                                class="btn btn-secondary"
+                                tooltip="Assign yourself as Processing VO"
+                        >
+                            <i class="fa fa-check"></i>&nbsp;
+                            <span class="d-none">Reassign</span>
+                        </button>
+                    }
+                    @if ((application | hasstatusinlist: Application_States.SUBMITTED) &&
+                    application?.project_application_openstack_project) {
+                        <button
+
+                                style="margin: 2px"
+                                [id]="'approve_' + application?.project_application_shortname"
+                                [attr.data-test-id]="'approve_' + application?.project_application_shortname"
+                                (click)="showConfirmationModal( ConfirmationActions.APPROVE_APPLICATION)"
+                                [disabled]="!selectedComputeCenter"
+                                type="button"
+                                class="btn btn-success"
+                        >
+                            <i class="fa fa-check"></i>&nbsp;
+                            <span class="d-none">Approve & Create </span>
+                        </button>
+                    }
+
+                }
+                @case (ApplicationTabStates.LIFETIME_EXTENSION) {
+                    @if ((application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
+                    application?.project_lifetime_request) {
+                        <button
+                                [id]="'extension_approval_' + application?.project_application_shortname"
+                                [attr.data-test-id]="'extension_approval_' + application?.project_application_shortname"
+                                *ngIf="
+															(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
+															application?.project_lifetime_request
+														"
+                                style="margin: 2px"
+                                (click)="showConfirmationModal( ConfirmationActions.APPROVE_EXTENSION)"
+                                type="button"
+                                class="btn btn-success"
+                        >
+                            <i class="fa fa-check"></i>&nbsp;
+                            <span class="d-none">Approve Extension</span>
+                        </button>
 
 
-                        type="button"
-                        id="btn_reset_pi_{{ application.project_application_shortname }}"
-                        class="btn btn-warning"
-                        tooltip="Unset PI"
-                        style="margin: 2px"
-                        (click)="showConfirmationModal(ConfirmationActions.RESET_PI)"
-                >
+                        <button
+                                [id]="'extension_adjustment_' + application?.project_application_shortname"
+                                [attr.data-test-id]="'extension_adjustment_' + application?.project_application_shortname"
 
-                    <i class="fa fa-user-times"></i>&nbsp;
-                    <span class="d-none"> Unset PI</span>
-                </button>
+
+                                style="margin: 2px"
+                                type="button"
+                                (click)="showAdjustLifetimeExtensionModal()"
+                                class="btn btn-primary"
+                        >
+                            <i class="fa fa-pen"></i>&nbsp;
+                            <span class="d-none"> Adjust Extension</span>
+                        </button>
+                    }
+
+                }
+                @case (ApplicationTabStates.CREDITS_EXTENSION) {
+
+                }
+                @case (ApplicationTabStates.MODIFICATION_EXTENSION) {
+
+
+                }
+                @case (ApplicationTabStates.TERMINATION_REQUEST) {
+
+                }
             }
-            <button
-                    type="button"
-                    id="btn_adjust_{{ application.project_application_shortname }}"
-                    class="btn btn-primary"
-                    style="margin: 2px"
-            >
-                <!-- (click)="adjustModal.show()"-->
 
-                <i class="fa fa-pen"></i>&nbsp;
-                <span class="d-none"> Adjust</span>
-            </button>
+
+
+
+
+
             <button
                     (click)="switchCollaps()			"
                     type="button"
                     class="btn btn-secondary"
                     style="margin: 2px"
+                    tooltip="Show details"
             >
                 <i class="fa fa-info-circle"></i>&nbsp;
                 <span

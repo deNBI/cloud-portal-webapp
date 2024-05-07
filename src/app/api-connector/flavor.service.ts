@@ -9,7 +9,7 @@ import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 /**
  * Service which provides methods for Flavors.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FlavorService {
 	constructor(private http: HttpClient) {
 		this.http = http;
