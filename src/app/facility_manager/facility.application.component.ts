@@ -10,11 +10,11 @@ import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClas
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
-	'SUBMITTED' = 0,
-	'CREDITS_EXTENSION' = 1,
-	'LIFETIME_EXTENSION' = 2,
-	'MODIFICATION_EXTENSION' = 3,
-	'TERMINATION_REQUEST' = 4,
+		'SUBMITTED' = 0,
+		'CREDITS_EXTENSION' = 1,
+		'LIFETIME_EXTENSION' = 2,
+		'MODIFICATION_EXTENSION' = 3,
+		'TERMINATION_REQUEST' = 4,
 }
 
 /**
@@ -36,25 +36,25 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
 	title: string = 'Application Overview';
 	/**
-	 * All Applications waiting for confirmation for the selected facility.
-	 *
-	 * @type {Array}
-	 */
+		 * All Applications waiting for confirmation for the selected facility.
+		 *
+		 * @type {Array}
+		 */
 
 	/**
-	 * Facilitties where the user is manager ['name',id].
-	 */
+		 * Facilitties where the user is manager ['name',id].
+		 */
 	public managerFacilities: [string, number][];
 	/**
-	 * Chosen facility.
-	 */
+		 * Chosen facility.
+		 */
 	public selectedFacility: [string, number];
 
 	/**
-	 * List of all application modifications.
-	 *
-	 * @type {Array}
-	 */
+		 * List of all application modifications.
+		 *
+		 * @type {Array}
+		 */
 	all_application_modifications: Application[] = [];
 	isHistoryLoaded: boolean = false;
 
@@ -90,10 +90,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	/**
-	 * Get all application ( with all stati) for a facility.
-	 *
-	 * @param facility id of the facility
-	 */
+		 * Get all application ( with all stati) for a facility.
+		 *
+		 * @param facility id of the facility
+		 */
 	getAllApplicationsHistory(facility: number): void {
 		this.isHistoryLoaded = false;
 
@@ -129,10 +129,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	/**
-	 * Decline an extension request.
-	 *
-	 * @param application_id
-	 */
+		 * Decline an extension request.
+		 *
+		 * @param application_id
+		 */
 	public declineExtension(app: Application): void {
 		this.applicationsService.declineAdditionalLifetime(app.project_application_id).subscribe(
 			(): void => {
@@ -260,10 +260,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	/**
-	 * Approves an  application.
-	 *
-	 * @param app: Application
-	 */
+		 * Approves an  application.
+		 *
+		 * @param app: Application
+		 */
 	approveApplication(app: Application): void {
 		this.setApproveLocked(true);
 
@@ -286,10 +286,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	/**
-	 * Declines an Application.
-	 *
-	 * @param application_id
-	 */
+		 * Declines an Application.
+		 *
+		 * @param application_id
+		 */
 	declineApplication(app: Application): void {
 		this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
 
@@ -312,10 +312,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	/**
-	 * If the selected facility changes, reload the applicatins.
-	 *
-	 * @param value
-	 */
+		 * If the selected facility changes, reload the applicatins.
+		 *
+		 * @param value
+		 */
 	onChangeSelectedFacility(): void {
 		this.isLoaded = false;
 		this.allApplicationsToCheck = [];
@@ -337,8 +337,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	/**
-	 * may need changes due to multiple facilities for one single fm?
-	 */
+		 * may need changes due to multiple facilities for one single fm?
+		 */
 	changeTabState(state: number): void {
 		if (!this.loadingApplications) {
 			this.tab_state = state;
@@ -412,19 +412,23 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 		}
 	}
 
+	getApplicationNumbers() {
+		this.facilityService
+			.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
+			.subscribe((res: any): void => {
+				this.numberOfCreditRequests = res['credits_extension_requests'];
+				this.numberOfExtensionRequests = res['lifetime_extension_requests'];
+				this.numberOfModificationRequests = res['modification_requests'];
+				this.numberOfProjectApplications = res['applications_submitted'];
+				this.numberOfTerminationRequests = res['termination_requests'];
+			});
+	}
+
 	ngOnInit(): void {
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result;
 			this.selectedFacility = this.managerFacilities[0];
-			this.facilityService
-				.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
-				.subscribe((res: any): void => {
-					this.numberOfCreditRequests = res['credits_extension_requests'];
-					this.numberOfExtensionRequests = res['lifetime_extension_requests'];
-					this.numberOfModificationRequests = res['modification_requests'];
-					this.numberOfProjectApplications = res['applications_submitted'];
-					this.numberOfTerminationRequests = res['termination_requests'];
-				});
+			this.getApplicationNumbers();
 			this.changeTabState(TabStates.SUBMITTED);
 			this.isLoaded = true;
 

@@ -40,6 +40,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		@Input() computeCenters: ComputecenterComponent[] = [];
 		@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
 		@Output() removeApplicationTrigger: EventEmitter<number | string> = new EventEmitter();
+		@Output() switchCollapseEvent: EventEmitter<void> = new EventEmitter();
 
 		bsModalRef: BsModalRef;
 		is_vo_admin: boolean = false;
@@ -109,7 +110,6 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		}
 
 		triggerReloadNumbers() {
-			console.log('trigger reload');
 			this.reloadNumbersTrigger.emit();
 		}
 
@@ -204,7 +204,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		}
 
 		switchCollaps() {
-			this.isCollapsed = !this.isCollapsed;
+			this.switchCollapseEvent.emit();
 		}
 
 		showNotificationModal(

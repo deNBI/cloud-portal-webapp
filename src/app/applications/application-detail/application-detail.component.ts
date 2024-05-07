@@ -45,7 +45,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		Application_States: typeof Application_States = Application_States;
 
 		setAllTabsFalse(): void {
-			this.PI_USER_TAB_ACTIVE = true;
+			this.PI_USER_TAB_ACTIVE = false;
 			this.INFORMATION_TAB_ACTIVE = false;
 			this.RESOURCE_TAB_ACTIVE = false;
 			this.CREDITS_TAB_ACTIVE = false;
@@ -95,6 +95,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		}
 
 		ngOnInit(): void {
+			this.setAllTabsFalse();
 			this.setTab(this.default_tab);
 
 			this.getPi();

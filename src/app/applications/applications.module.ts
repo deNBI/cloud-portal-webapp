@@ -34,6 +34,9 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 import { ApplicationListComponent } from './application-list/application-list.component';
 import { ApplicationCardComponent } from './application-card/application-card.component';
 import { ApplicationVoActionsComponent } from './application-vo-actions/application-vo-actions.component';
+import {
+	ApplicationFacilityActionsComponent,
+} from './application-facility-actions/application-facility-actions.component';
 
 /**
  * Applications Module.
@@ -73,9 +76,10 @@ import { ApplicationVoActionsComponent } from './application-vo-actions/applicat
 		ApplicationListComponent,
 		ApplicationCardComponent,
 		ApplicationVoActionsComponent,
+		ApplicationFacilityActionsComponent,
 
 	],
-	exports: [ApplicationDetailComponent],
+	exports: [ApplicationDetailComponent, ApplicationListComponent],
 })
 export class ApplicationsModule {
 }

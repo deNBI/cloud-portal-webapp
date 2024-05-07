@@ -147,34 +147,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		}
 	}
 
-	getAndSetPiAndUserApplication(application: Application) {
-		if (!application.project_application_user) {
-			this.getAndSetApplicationUser(application.project_application_id);
-		}
-		if (!application.project_application_pi) {
-			this.getAndSetApplicationPi(application.project_application_id);
-		}
-
-	}
-
-	getAndSetApplicationPi(project_application_id: number | string) {
-		this.applicationsService.getApplicationPI(project_application_id).subscribe((pi: User) => {
-			const index = this.all_applications.findIndex(app => app.project_application_id === project_application_id);
-			if (index !== -1) { // Check if the application exists in the array
-				this.all_applications[index].project_application_pi = pi;
-			}
-		});
-	}
-
-	getAndSetApplicationUser(project_application_id: number | string) {
-		this.applicationsService.getApplicationUser(project_application_id).subscribe((user: User) => {
-			const index = this.all_applications.findIndex(app => app.project_application_id === project_application_id);
-			if (index !== -1) { // Check if the application exists in the array
-				this.all_applications[index].project_application_user = user;
-			}
-		});
-	}
-
 	/**
 		 * Getting the current numbers of all Application-Request types from the API
 		 */
@@ -475,7 +447,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			const newApplication = new Application(application);
 
 			this.all_applications.push(newApplication);
-			this.getAndSetPiAndUserApplication(application);
 
 		}
 		this.isLoaded = true;

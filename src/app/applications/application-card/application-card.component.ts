@@ -25,6 +25,7 @@ import {
 import {
 	ModificationRequestComponent,
 } from '../../projectmanagement/modals/modification-request/modification-request.component';
+import { User } from '../application.model/user.model';
 
 @Component({
 	selector: 'app-application-card',
@@ -39,8 +40,8 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 		@Input() computeCenters: ComputecenterComponent[] = [];
 		@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
 		@Output() removeApplicationTrigger: EventEmitter<number | string> = new EventEmitter();
-				@Input() facilityView:boolean = false;
-		@Input() voView:boolean = false;
+		@Input() facilityView: boolean = false;
+		@Input() voView: boolean = false;
 
 		bsModalRef: BsModalRef;
 		is_vo_admin: boolean = false;
@@ -48,16 +49,38 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 
 		ngOnInit() {
 			this.is_vo_admin = is_vo;
+			this.getAndSetPiAndUserApplication();
 
+		}
+
+		getAndSetPiAndUserApplication() {
+			if (!this.application.project_application_user) {
+				this.getAndSetApplicationUser();
+			}
+			if (!this.application.project_application_pi) {
+				this.getAndSetApplicationPi();
+			}
+
+		}
+
+		getAndSetApplicationPi() {
+			this.applicationsService.getApplicationPI(this.application.project_application_id).subscribe((pi: User) => {
+				this.application.project_application_pi = pi;
+
+			});
+		}
+
+		getAndSetApplicationUser() {
+			this.applicationsService.getApplicationUser(this.application.project_application_id).subscribe((user: User) => {
+				this.application.project_application_user = user;
+
+			});
 		}
 
 		constructor(
 				private applicationsService: ApplicationsService,
 				private modalService: BsModalService,
-				private voService: VoService,
 				private groupService: GroupService,
-				private adjustLifeTimeExtensionModal: AdjustLifetimeRequestComponent,
-				private adjustApplicationModal: AdjustApplicationComponent,
 		) {
 			super();
 		}
@@ -67,106 +90,8 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 			this.removeApplicationTrigger.emit(this.application.project_application_id);
 		}
 
-		showAdjustLifetimeExtensionModal() {
-			this.adjustLifeTimeExtensionModal.showAdjustLifetimeExtensionModal(this.application).subscribe((changed: boolean) => {
-				console.log(changed);
-				if (changed) {
-					this.getApplication();
-					this.showNotificationModal('Success', 'The lifetime of the extension request were adjusted successfully!', 'success');
-
-				} else {
-					this.showNotificationModal('Failed', 'The adjustment of the lifetime has failed!', 'danger');
-
-				}
-			});
-		}
-
-		showAdjustApplicationModal() {
-			this.adjustApplicationModal.showAdjustApplicationModal(this.application).subscribe((changed: boolean) => {
-				if (changed) {
-					this.getApplication();
-
-					this.showNotificationModal('Success', 'The resources of the application were adjusted successfully!', 'success');
-
-				} else {
-					this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
-
-				}
-			});
-		}
-
-		showModificationAdjustmentModal() {
-			const initialState = {
-				project: this.application,
-				adjustment: true,
-			};
-
-			this.bsModalRef = this.modalService.show(ModificationRequestComponent, {
-				initialState,
-				class: 'modal-lg',
-			});
-			this.subscribeToBsModalRef();
-			// this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
-		}
-
 		triggerReloadNumbers() {
-			console.log('trigger reload');
 			this.reloadNumbersTrigger.emit();
-		}
-
-		setCurrentUserProcessingVoManager(application: Application): void {
-			if (this.is_vo_admin) {
-				this.voService.setCurrentUserProcessingVoManager(application.project_application_id).subscribe((res: any) => {
-					application.processing_vo_initials = res['processing_vo_initials'];
-				});
-			}
-		}
-
-		showConfirmationModal(action: ConfirmationActions): void {
-			let initialState = {};
-			if (action === ConfirmationActions.APPROVE_APPLICATION) {
-				const application_center = !this.selectedComputeCenter.FacilityId;
-				initialState = { application: this.application, action, application_center };
-			} else {
-				initialState = {
-					application: this.application, action,
-				};
-			}
-			this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' });
-			this.subscribeToBsModalRef();
-		}
-
-		unsetProcessingVoManager(application: Application): void {
-			if (this.is_vo_admin) {
-				this.voService.unsetProcessingVoManager(application.project_application_id).subscribe(() => {
-					application.processing_vo_initials = null;
-				});
-			}
-		}
-
-		showClientsLimitsModal(
-			is_modification_request: boolean = false,
-		): void {
-			const initialState = {
-				compute_center_id: this.selectedComputeCenter.FacilityId,
-				application: this.application,
-				is_modification_request,
-			};
-
-			this.bsModalRef = this.modalService.show(ClientLimitsComponent, { initialState });
-			this.subscribeToBsModalRef();
-		}
-
-		removeApplicationFromFacilityConfirmation(): void {
-			this.groupService.removeGroupFromResource(this.application.project_application_perun_id.toString()).subscribe(
-				(): void => {
-					this.getApplication();
-					this.showNotificationModal('Success', 'The application was removed from the compute center', 'success');
-				},
-				(): void => {
-					this.showNotificationModal('Failed', 'The application was removed from the compute center', 'danger');
-				},
-			);
 		}
 
 		getApplication(): void {
@@ -178,24 +103,6 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 					console.log(error);
 				},
 			);
-		}
-
-		assignGroupToFacility(): void {
-			if (this.selectedComputeCenter) {
-				this.groupService.assignGroupToResource(this.application.project_application_perun_id, this.selectedComputeCenter.Name).subscribe(
-					(): void => {
-						this.getApplication();
-
-						this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
-					},
-					(error: object): void => {
-						console.log(error);
-						this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-					},
-				);
-			} else {
-				this.showNotificationModal('Failed', 'You need to select an compute center!', 'danger');
-			}
 		}
 
 		resetApplicationPI(): void {
@@ -213,7 +120,6 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 			notificationModalMessage: string,
 			notificationModalType: string,
 		) {
-			console.log('hsoe notification');
 			const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
 			if (this.bsModalRef) {
 				this.bsModalRef.hide();
