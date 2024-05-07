@@ -760,13 +760,13 @@ export class FacilityService {
 		});
 	}
 
-	approveTerminationByFM(groupId: number | string, facility: number): Observable<object> {
+	approveTerminationByFM(groupId: number | string, facility: number|string): Observable<object> {
 		return this.http.delete(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupId}/`, {
 			withCredentials: true,
 		});
 	}
 
-	declineTerminationByFM(groupId: number | string, facility: number): Observable<object> {
+	declineTerminationByFM(groupId: number | string, facility: number|string): Observable<object> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupId}/`, {
 			withCredentials: true,
 		});

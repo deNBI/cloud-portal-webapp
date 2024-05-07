@@ -146,11 +146,20 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		showClientsLimitsModal(
 			is_modification_request: boolean = false,
 		): void {
-			const initialState = {
-				compute_center_id: this.selectedComputeCenter.FacilityId,
-				application: this.application,
-				is_modification_request,
-			};
+			let initialState = {};
+			if (is_modification_request) {
+				initialState = {
+					compute_center_id: this.application.project_application_compute_center.FacilityId,
+					application: this.application,
+					is_modification_request,
+				};
+			} else {
+				initialState = {
+					compute_center_id: this.selectedComputeCenter.FacilityId,
+					application: this.application,
+					is_modification_request,
+				};
+			}
 
 			this.bsModalRef = this.modalService.show(ClientLimitsComponent, { initialState });
 			this.subscribeToBsModalRef();

@@ -12,6 +12,7 @@ import { AbstractBaseClass, Application_States } from '../../shared/shared_modul
 import { FacilityService } from '../../api-connector/facility.service';
 import { NotificationModalComponent } from '../../shared/modal/notification-modal';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal.component';
+import { ApplicationsService } from '../../api-connector/applications.service';
 
 @Component({
 	selector: 'app-application-facility-actions',
@@ -33,7 +34,7 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 		bsModalRef: BsModalRef;
 		@Output() switchCollapseEvent: EventEmitter<void> = new EventEmitter();
 
-		constructor(private facilityService: FacilityService, private modalService: BsModalService) {
+		constructor(private facilityService: FacilityService, private modalService: BsModalService, private applicationsService: ApplicationsService) {
 			super();
 		}
 
@@ -70,6 +71,37 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 						this.showNotificationModal('Failed', 'Failed to decline the application.', 'danger');
 					},
 				);
+		}
+
+		public approveExtension(): void {
+			this.applicationsService.approveAdditionalLifetime(this.application.project_application_id).subscribe(
+				(): void => {
+					this.showNotificationModal('Success', 'Successfully approved extension!', 'success');
+					this.triggerReloadNumbers();
+					this.triggerRemoveApplication();
+				},
+				(): void => {
+					this.showNotificationModal('Failed', 'The approval of the extension request has failed.', 'danger');
+				},
+			);
+		}
+
+		/**
+		 * Decline an extension request.
+		 *
+		 * @param application_id
+		 */
+		public declineExtension(): void {
+			this.applicationsService.declineAdditionalLifetime(this.application.project_application_id).subscribe(
+				(): void => {
+					this.showNotificationModal('Success', 'Successfully declined extension!', 'success');
+					this.triggerReloadNumbers();
+					this.triggerRemoveApplication();
+				},
+				(): void => {
+					this.showNotificationModal('Failed', 'The decline of the extension request has failed.', 'danger');
+				},
+			);
 		}
 
 		showNotificationModal(
@@ -115,6 +147,80 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 			this.subscribeToBsModalRef();
 		}
 
+		approveModification(): void {
+			this.applicationsService.approveModificationRequest(this.application.project_application_id).subscribe(
+				(): void => {
+					this.showNotificationModal('Success', 'Successfully approved modification!', 'success');
+					this.triggerReloadNumbers();
+					this.triggerRemoveApplication();
+				},
+				(): void => {
+					this.showNotificationModal('Failed', 'The approval of the modification request has failed.', 'danger');
+				},
+			);
+		}
+
+		declineModification(): void {
+			this.applicationsService.declineModificationRequest(this.application.project_application_id).subscribe(
+				(): void => {
+					this.showNotificationModal('Success', 'Successfully declined modification!', 'success');
+					this.triggerReloadNumbers();
+					this.triggerRemoveApplication();
+				},
+				(): void => {
+					this.showNotificationModal('Failed', 'The decline of the modification request has failed.', 'danger');
+				},
+			);
+		}
+
+		approveTermination(): void {
+			this.facilityService
+				.approveTerminationByFM(this.application.project_application_perun_id, this.application.project_application_compute_center.FacilityId)
+				.subscribe(
+					(): void => {
+						this.triggerReloadNumbers();
+						this.triggerRemoveApplication();
+						this.showNotificationModal('Success', 'The  project was terminated.', 'success');
+					},
+					(error: any): void => {
+						if (error['status'] === 409) {
+							this.showNotificationModal(
+								'Failed',
+								`The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+
+								'danger',
+							);
+						} else {
+							this.showNotificationModal('Failed', 'The project could not be terminated.', 'danger');
+						}
+					},
+				);
+		}
+
+		declineTermination(): void {
+			this.facilityService
+				.declineTerminationByFM(this.application.project_application_perun_id, this.application.project_application_compute_center.FacilityId)
+				.subscribe(
+					(): void => {
+						this.triggerReloadNumbers();
+						this.triggerRemoveApplication();
+						this.showNotificationModal('Success', 'The termination of the project was declined.', 'success');
+					},
+					(error: any): void => {
+						if (error['status'] === 409) {
+							this.showNotificationModal(
+								'Failed',
+								`The decline of the project was not successful. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+
+								'danger',
+							);
+						} else {
+							this.showNotificationModal('Failed', 'The decline of the project failed.', 'danger');
+						}
+					},
+				);
+		}
+
 		subscribeToBsModalRef(): void {
 			this.subscription.add(
 				this.bsModalRef.content.event.subscribe((event: any) => {
@@ -127,6 +233,30 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 						}
 						case ConfirmationActions.DECLINE_APPLICATION: {
 							this.declineApplication();
+							break;
+						}
+						case ConfirmationActions.DECLINE_EXTENSION: {
+							this.declineExtension();
+							break;
+						}
+						case ConfirmationActions.APPROVE_EXTENSION: {
+							this.approveExtension();
+							break;
+						}
+						case ConfirmationActions.DECLINE_MODIFICATION: {
+							this.declineModification();
+							break;
+						}
+						case ConfirmationActions.APPROVE_MODIFICATION: {
+							this.approveModification();
+							break;
+						}
+						case ConfirmationActions.APPROVE_TERMINATION: {
+							this.approveTermination();
+							break;
+						}
+						case ConfirmationActions.DECLINE_TERMINATION: {
+							this.declineTermination();
 							break;
 						}
 					}
