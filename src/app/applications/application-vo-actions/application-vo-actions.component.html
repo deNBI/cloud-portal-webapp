@@ -1,27 +1,38 @@
-<tr>
+@if (is_vo_admin) {
     <td>
-        <app-application-badges
-                [application]="application"></app-application-badges>
-    </td>
-    <td>{{ application?.project_application_name }}</td>
-    <td>{{ application?.project_application_shortname }}</td>
-    <td>{{ application?.project_application_date_submitted }}</td>
-    <td style="word-wrap: break-word; min-width: 110px; max-width: 130px; white-space: normal">
-        @if (application?.project_application_user?.username) {
-            {{ application?.project_application_user?.username }}
-        } @else {
-            <span class="spinner-border text-info"></span>
 
+        @if ((application | hasstatusinlist: Application_States.SUBMITTED) ||
+        (application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
+        ((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
+            !application?.project_application_compute_center?.FacilityId)) {
+            <select
+                    [ngClass]="
+														selectedComputeCenter !== undefined ? 'is-valid' : 'is-invalid'
+													"
+
+                    [(ngModel)]="selectedComputeCenter"
+                    class="form-select"
+                    [id]="'id_compute_center_option_' + application?.project_application_name"
+                    [attr.data-test-id]="'id_compute_center_option_' + application?.project_application_name"
+                    #computeCenterSelection
+            >
+                <option [ngValue]="undefined" selected>no center selected</option>
+                <ng-container *ngFor="let computeCenter of computeCenters">
+                    <option
+                            *ngIf="computeCenter.hasClient || application?.project_application_openstack_project"
+                            label="{{ computeCenter.Name }}"
+                            [ngValue]="computeCenter"
+                            [id]="computeCenter.Name"
+                    >
+                        {{ computeCenter.Name }}
+                    </option>
+                </ng-container>
+            </select>
+        } @else if (application?.project_application_compute_center?.Name) {
+            <span> {{ application?.project_application_compute_center?.Name }}</span>
         }
-
     </td>
-    <td>{{ application?.project_application_institute }}</td>
-
-
-        <app-application-vo-actions   class="table-line" [application]="application" [tabState]="tabState" [computeCenters]="computeCenters"
-                                    (reloadNumbersTrigger)="triggerReloadNumbers()"
-                                    (removeApplicationTrigger)="triggerRemoveApplication()"></app-application-vo-actions>
-        <!--
+    <td>
         <div class="btn-group">
 
 
@@ -158,9 +169,9 @@
                                 (click)="removeApplicationFromFacilityConfirmation()"
                                 type="button"
                                 class="btn btn-secondary"
-                                tooltip="Assign yourself as Processing VO"
+                                tooltip="Remove the application from the facility"
                         >
-                            <i class="fa fa-check"></i>&nbsp;
+                            <i class="fa fa-eraser"></i>&nbsp;
                             <span class="d-none">Reassign</span>
                         </button>
                     }
@@ -325,20 +336,6 @@
                 >
                 <span class="d-none"> Information</span>
             </button>
-        </div>-->
-</tr>
-<td colspan="12">
-    @if (!isCollapsed) {
-
-        <app-application-detail
-                [default_tab]="tabState"
-                [class.collapse_no_margin]="isCollapsed
-                                            "
-                [class.collapse]="isCollapsed
-                                            "
-                [application]="application"
-        ></app-application-detail>
-    }
-</td>
-
-
+        </div>
+    </td>
+}

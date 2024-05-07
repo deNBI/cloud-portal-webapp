@@ -10,7 +10,7 @@
                 <th>Date submitted</th>
                 <th>User</th>
                 <th>Institute</th>
-                <th>Compute Center</th>
+                <th *ngIf="is_vo_admin && voView">Compute Center</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -18,6 +18,8 @@
 
                 @for (application of applications; track application.project_application_id) {
                     <app-application-card class="table-line" [application]="application"
+                                          [facilityView]="facilityView"
+                                          [voView]="voView"
                                           (reloadNumbersTrigger)="triggerReloadNumbers()"
                                           [computeCenters]="computeCenters"
                                           (removeApplicationTrigger)="removeApplicationFromList($event)"

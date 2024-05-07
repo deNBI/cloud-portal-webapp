@@ -74,7 +74,7 @@
                     </div>
                 </div>
             } @else {
-                <app-application-list (reloadNumbersTrigger)="getApplicationNumbers()" [applications]="all_applications"
+                <app-application-list [voView]="true" (reloadNumbersTrigger)="getApplicationNumbers()" [applications]="all_applications"
                                       [computeCenters]="computeCenters"
                                       [tabState]="tab_state"></app-application-list>
             }

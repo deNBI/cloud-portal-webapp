@@ -1,21 +1,19 @@
 import {
 	Component, EventEmitter, Input, OnInit, Output,
 } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { HttpStatusCode } from '@angular/common/http';
+import { ApplicationTabStates } from 'app/shared/enums/application-tab-states';
+import { ConfirmationActions } from 'app/shared/modal/confirmation_actions';
 import { AbstractBaseClass, Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class';
-import { ConfirmationActions } from '../../shared/modal/confirmation_actions';
+
 import { Application } from '../application.model/application.model';
-import { ApplicationTabStates } from '../../shared/enums/application-tab-states';
-import { ApplicationsService } from '../../api-connector/applications.service';
-import { NotificationModalComponent } from '../../shared/modal/notification-modal';
-import { is_vo } from '../../shared/globalvar';
-import { VoService } from '../../api-connector/vo.service';
 import { ComputecenterComponent } from '../../projectmanagement/computecenter.component';
+import { is_vo } from '../../shared/globalvar';
+import { ApplicationsService } from '../../api-connector/applications.service';
+import { VoService } from '../../api-connector/vo.service';
 import { GroupService } from '../../api-connector/group.service';
-import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal.component';
-import { ClientLimitsComponent } from '../../vo_manager/clients/modals/client-limits..component';
 import {
 	AdjustLifetimeRequestComponent,
 } from '../../projectmanagement/modals/adjust-lifetime/adjust-lifetime-request.component';
@@ -25,13 +23,16 @@ import {
 import {
 	ModificationRequestComponent,
 } from '../../projectmanagement/modals/modification-request/modification-request.component';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal.component';
+import { ClientLimitsComponent } from '../../vo_manager/clients/modals/client-limits..component';
+import { NotificationModalComponent } from '../../shared/modal/notification-modal';
 
 @Component({
-	selector: 'app-application-card',
-	templateUrl: './application-card.component.html',
-	styleUrl: './application-card.component.scss',
+	selector: 'app-application-vo-actions',
+	templateUrl: './application-vo-actions.component.html',
+	styleUrl: './application-vo-actions.component.scss',
 })
-export class ApplicationCardComponent extends AbstractBaseClass implements OnInit {
+export class ApplicationVoActionsComponent extends AbstractBaseClass implements OnInit {
 	private subscription: Subscription = new Subscription();
 
 		@Input() application: Application;
@@ -39,8 +40,6 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 		@Input() computeCenters: ComputecenterComponent[] = [];
 		@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
 		@Output() removeApplicationTrigger: EventEmitter<number | string> = new EventEmitter();
-				@Input() facilityView:boolean = false;
-		@Input() voView:boolean = false;
 
 		bsModalRef: BsModalRef;
 		is_vo_admin: boolean = false;
@@ -182,7 +181,7 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 
 		assignGroupToFacility(): void {
 			if (this.selectedComputeCenter) {
-				this.groupService.assignGroupToResource(this.application.project_application_perun_id, this.selectedComputeCenter.Name).subscribe(
+				this.groupService.assignGroupToResource(this.application.project_application_perun_id, this.selectedComputeCenter.FacilityId).subscribe(
 					(): void => {
 						this.getApplication();
 

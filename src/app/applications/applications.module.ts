@@ -33,6 +33,7 @@ import { NewsModule } from '../news/news.module';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 import { ApplicationListComponent } from './application-list/application-list.component';
 import { ApplicationCardComponent } from './application-card/application-card.component';
+import { ApplicationVoActionsComponent } from './application-vo-actions/application-vo-actions.component';
 
 /**
  * Applications Module.
@@ -71,6 +72,7 @@ import { ApplicationCardComponent } from './application-card/application-card.co
 		AdjustmentDetailComponent,
 		ApplicationListComponent,
 		ApplicationCardComponent,
+		ApplicationVoActionsComponent,
 
 	],
 	exports: [ApplicationDetailComponent],
