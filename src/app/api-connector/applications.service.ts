@@ -64,7 +64,7 @@ export class ApplicationsService {
 	}
 
 	getModificationUser(project_id: string | number): Observable<User> {
-		return this.http.get<User>(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/modification/${project_id}/user/`, {
+		return this.http.get<User>(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${project_id}/user/`, {
 			withCredentials: true,
 		});
 	}

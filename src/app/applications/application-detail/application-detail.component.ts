@@ -9,6 +9,7 @@ import { FacilityService } from '../../api-connector/facility.service';
 import { is_vo } from '../../shared/globalvar';
 import { CreditsService } from '../../api-connector/credits.service';
 import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class';
+import { User } from '../application.model/user.model';
 
 /**
  * Class which displays the details of an application.
@@ -44,7 +45,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		Application_States: typeof Application_States = Application_States;
 
 		setAllTabsFalse(): void {
-			this.PI_USER_TAB_ACTIVE = false;
+			this.PI_USER_TAB_ACTIVE = true;
 			this.INFORMATION_TAB_ACTIVE = false;
 			this.RESOURCE_TAB_ACTIVE = false;
 			this.CREDITS_TAB_ACTIVE = false;
@@ -96,12 +97,32 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		ngOnInit(): void {
 			this.setTab(this.default_tab);
 
-			this.getApplicationPi(this.application);
-			this.getApplicationUser(this.application);
+			this.getPi();
+			this.getUser();
 			if (this.application.credits_allowed) {
 				this.getCurrentCredits();
 			}
 			this.is_vo_admin = is_vo;
+		}
+
+		getUser() {
+			if (!this.application.project_application_user) {
+				this.applicationsService.getApplicationUser(this.application.project_application_id).subscribe((user: User) => {
+
+					this.application.project_application_user = user;
+
+				});
+			}
+		}
+
+		getPi() {
+			if (!this.application.project_application_pi) {
+				this.applicationsService.getApplicationPI(this.application.project_application_id).subscribe((pi: User) => {
+
+					this.application.project_application_pi = pi;
+
+				});
+			}
 		}
 
 		getCurrentCredits(): void {

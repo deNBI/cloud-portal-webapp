@@ -22,6 +22,9 @@ import {
 import {
 	AdjustApplicationComponent,
 } from '../../projectmanagement/modals/adjust-application/adjust-application.component';
+import {
+	ModificationRequestComponent,
+} from '../../projectmanagement/modals/modification-request/modification-request.component';
 
 @Component({
 	selector: 'app-application-card',
@@ -88,6 +91,20 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 
 				}
 			});
+		}
+
+		showModificationAdjustmentModal() {
+			const initialState = {
+				project: this.application,
+				adjustment: true,
+			};
+
+			this.bsModalRef = this.modalService.show(ModificationRequestComponent, {
+				initialState,
+				class: 'modal-lg',
+			});
+			this.subscribeToBsModalRef();
+			// this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
 		}
 
 		triggerReloadNumbers() {
@@ -201,7 +218,6 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 			}
 
 			this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
-			console.log(this.bsModalRef);
 			this.bsModalRef.setClass('modal-lg');
 		}
 
@@ -386,7 +402,7 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 		}
 
 		createOpenStackProjectGroup(): void {
-			this.groupService.createGroupOpenStack(this.application.project_application_id, this.selectedComputeCenter.Name).subscribe(
+			this.groupService.createGroupOpenStack(this.application.project_application_id, this.selectedComputeCenter.FacilityId).subscribe(
 				(result: { [key: string]: string }): void => {
 					if (result['Error']) {
 						this.showNotificationModal('Failed', result['Error'], 'danger');

@@ -18,37 +18,37 @@
     <td>{{ application?.project_application_institute }}</td>
 
     <td>
-        <select
-                [ngClass]="
+
+        @if ((application | hasstatusinlist: Application_States.SUBMITTED) ||
+        (application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
+        ((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
+            !application?.project_application_compute_center?.FacilityId)) {
+            <select
+                    [ngClass]="
 														selectedComputeCenter !== undefined ? 'is-valid' : 'is-invalid'
 													"
-                *ngIf="
-														(application | hasstatusinlist: Application_States.SUBMITTED) ||
-														(application | hasstatusinlist: Application_States.CONFIRMATION_DECLINED) ||
-														((application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) &&
-															!application?.project_application_compute_center?.FacilityId)
-													"
-                [(ngModel)]="selectedComputeCenter"
-                class="form-select"
-                [id]="'id_compute_center_option_' + application?.project_application_name"
-                [attr.data-test-id]="'id_compute_center_option_' + application?.project_application_name"
-                #computeCenterSelection
-        >
-            <option [ngValue]="undefined" selected>no center selected</option>
-            <ng-container *ngFor="let computeCenter of computeCenters">
-                <option
-                        *ngIf="computeCenter.hasClient || application?.project_application_openstack_project"
-                        label="{{ computeCenter.Name }}"
-                        [ngValue]="computeCenter"
-                        [id]="computeCenter.Name"
-                >
-                    {{ computeCenter.Name }}
-                </option>
-            </ng-container>
-        </select>
-        <span *ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION">{{
-                application?.project_application_compute_center?.Name
-            }}</span>
+
+                    [(ngModel)]="selectedComputeCenter"
+                    class="form-select"
+                    [id]="'id_compute_center_option_' + application?.project_application_name"
+                    [attr.data-test-id]="'id_compute_center_option_' + application?.project_application_name"
+                    #computeCenterSelection
+            >
+                <option [ngValue]="undefined" selected>no center selected</option>
+                <ng-container *ngFor="let computeCenter of computeCenters">
+                    <option
+                            *ngIf="computeCenter.hasClient || application?.project_application_openstack_project"
+                            label="{{ computeCenter.Name }}"
+                            [ngValue]="computeCenter"
+                            [id]="computeCenter.Name"
+                    >
+                        {{ computeCenter.Name }}
+                    </option>
+                </ng-container>
+            </select>
+        } @else if (application?.project_application_compute_center?.Name) {
+            <span> {{ application?.project_application_compute_center?.Name }}</span>
+        }
     </td>
 
     <td>
@@ -252,6 +252,76 @@
 
                 }
                 @case (ApplicationTabStates.MODIFICATION_EXTENSION) {
+                    @if ((application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
+                    application?.project_application_openstack_project &&
+                    application?.project_modification_request) {
+
+                        <button
+                                [id]="'modification_approval_' + application?.project_application_shortname"
+
+                                style="margin: 2px"
+                                [attr.data-test-id]="'modification_approval_' + application?.project_application_shortname"
+                                (click)="showConfirmationModal(ConfirmationActions.APPROVE_MODIFICATION)"
+                                type="button"
+                                class="btn btn-success"
+                        >
+                            <i class="fa fa-check"></i>&nbsp;
+                            <span class="d-none">Approve Modification</span>
+                        </button>
+                    }
+
+                    @if ((application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
+                    !application?.project_application_openstack_project &&
+                    application?.project_modification_request) {
+
+                        <button
+                                [id]="'modification_approval_' + application?.project_application_shortname"
+
+                                style="margin: 2px"
+                                [attr.data-test-id]="'modification_approval_' + application?.project_application_shortname"
+                                (click)="
+															showClientsLimitsModal(
+																true
+															)
+														"
+                                type="button"
+                                class="btn btn-success"
+                        >
+                            <i class="fa fa-check"></i>&nbsp;
+                            <span class="d-none">Approve Modification</span>
+                        </button>
+                    }
+
+                    @if ((application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
+                    application?.project_modification_request) {
+                        <button
+                                [id]="'modification_adjustment_' + application?.project_application_shortname"
+                                [attr.data-test-id]="
+															'modification_adjustment_' + application?.project_application_shortname
+														"
+
+                                style="margin: 2px"
+                                type="button"
+                                (click)="showModificationAdjustmentModal()"
+                                class="btn btn-primary"
+                        >
+                            <i class="fa fa-pen"></i>&nbsp;
+                            <span class="d-none"> Adjust Modification</span>
+                        </button>
+                    }
+                    @if ((application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) &&
+                    application?.project_modification_request) {
+                        <button
+
+                                type="button"
+                                class="btn btn-danger"
+                                style="margin: 2px"
+                                (click)="showConfirmationModal( ConfirmationActions.DECLINE_MODIFICATION)"
+                        >
+                            <i class="fa fa-times"></i>&nbsp;
+                            <span class="d-none">Decline Modification</span>
+                        </button>
+                    }
 
 
                 }
