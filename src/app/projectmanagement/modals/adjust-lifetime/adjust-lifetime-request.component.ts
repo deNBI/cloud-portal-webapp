@@ -53,12 +53,14 @@ export class AdjustLifetimeRequestComponent implements OnInit {
 		adjustLifetimeExtension(): void {
 			this.loaded = false;
 			this.applicationsService.adjustLifetimeExtension(this.adjustedApplicationLifetimeExtension).subscribe((): void => {
-				this.eventSuccess.emit(true);
 				this.hide();
 
+				this.eventSuccess.emit(true);
+
 			}, (): void => {
-				this.eventSuccess.emit(false);
 				this.hide();
+
+				this.eventSuccess.emit(false);
 
 			});
 		}

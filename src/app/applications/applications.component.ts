@@ -132,6 +132,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	ngOnInit(): void {
 		this.is_vo_admin = is_vo;
 		if (this.is_vo_admin) {
+			this.getApplicationNumbers();
+
 			this.getSubmittedApplicationsAdmin();
 			this.getApplicationHistory();
 			this.getComputeCenters();
@@ -141,7 +143,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			this.flavorService.getListOfTypesAvailable().subscribe((availableTypes: FlavorType[]): void => {
 				this.typeList = availableTypes;
 			});
-			this.getApplicationNumbers();
 		} else {
 			this.isLoaded = true;
 		}

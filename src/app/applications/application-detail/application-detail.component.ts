@@ -56,6 +56,8 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 
 		setTab(tab_num: number): void {
 			this.setAllTabsFalse();
+			console.log('set tab');
+			console.log(tab_num);
 			switch (tab_num) {
 				case this.PI_USER_TAB:
 					this.PI_USER_TAB_ACTIVE = true;
@@ -95,7 +97,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		}
 
 		ngOnInit(): void {
-			this.setAllTabsFalse();
+
 			this.setTab(this.default_tab);
 
 			this.getPi();

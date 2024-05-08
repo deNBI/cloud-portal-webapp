@@ -31,13 +31,12 @@
                                           (reloadNumbersTrigger)="triggerReloadNumbers()"
                                           (removeApplicationTrigger)="triggerRemoveApplication()"></app-application-facility-actions>
     }
-   
+
 </tr>
 <td colspan="12">
     @if (!isCollapsed) {
 
         <app-application-detail
-                [default_tab]="tabState"
                 [class.collapse_no_margin]="isCollapsed
                                             "
                 [class.collapse]="isCollapsed

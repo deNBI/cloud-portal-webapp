@@ -68,9 +68,8 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		}
 
 		showAdjustLifetimeExtensionModal() {
-			this.adjustLifeTimeExtensionModal.showAdjustLifetimeExtensionModal(this.application).subscribe((changed: boolean) => {
-				console.log(changed);
-				if (changed) {
+			this.adjustLifeTimeExtensionModal.showAdjustLifetimeExtensionModal(this.application).subscribe((eventSuccess: boolean) => {
+				if (eventSuccess) {
 					this.getApplication();
 					this.showNotificationModal('Success', 'The lifetime of the extension request were adjusted successfully!', 'success');
 
@@ -221,7 +220,6 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 			notificationModalMessage: string,
 			notificationModalType: string,
 		) {
-			console.log('hsoe notification');
 			const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
 			if (this.bsModalRef) {
 				this.bsModalRef.hide();
