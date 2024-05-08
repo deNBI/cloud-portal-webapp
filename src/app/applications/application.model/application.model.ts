@@ -75,6 +75,7 @@ export class Application {
 	dissemination: ApplicationDissemination;
 	project_application_pi_approved: boolean;
 	project_application_cloud_service: boolean;
+	project_application_kubernetes_access: boolean = false;
 	project_application_cloud_service_develop: boolean;
 	project_application_cloud_service_user_number: number;
 	flavors: Flavor[] = [];
