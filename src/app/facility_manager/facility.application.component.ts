@@ -10,11 +10,11 @@ import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClas
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
-		'SUBMITTED' = 0,
-		'CREDITS_EXTENSION' = 1,
-		'LIFETIME_EXTENSION' = 2,
-		'MODIFICATION_EXTENSION' = 3,
-		'TERMINATION_REQUEST' = 4,
+	'SUBMITTED' = 0,
+	'CREDITS_EXTENSION' = 1,
+	'LIFETIME_EXTENSION' = 2,
+	'MODIFICATION_EXTENSION' = 3,
+	'TERMINATION_REQUEST' = 4,
 }
 
 /**
@@ -36,25 +36,25 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
 	title: string = 'Application Overview';
 	/**
-		 * All Applications waiting for confirmation for the selected facility.
-		 *
-		 * @type {Array}
-		 */
+	 * All Applications waiting for confirmation for the selected facility.
+	 *
+	 * @type {Array}
+	 */
 
 	/**
-		 * Facilitties where the user is manager ['name',id].
-		 */
+	 * Facilitties where the user is manager ['name',id].
+	 */
 	public managerFacilities: [string, number][];
 	/**
-		 * Chosen facility.
-		 */
+	 * Chosen facility.
+	 */
 	public selectedFacility: [string, number];
 
 	/**
-		 * List of all application modifications.
-		 *
-		 * @type {Array}
-		 */
+	 * List of all application modifications.
+	 *
+	 * @type {Array}
+	 */
 	all_application_modifications: Application[] = [];
 	isHistoryLoaded: boolean = false;
 
@@ -90,10 +90,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	/**
-		 * Get all application ( with all stati) for a facility.
-		 *
-		 * @param facility id of the facility
-		 */
+	 * Get all application ( with all stati) for a facility.
+	 *
+	 * @param facility id of the facility
+	 */
 	getAllApplicationsHistory(facility: number): void {
 		this.isHistoryLoaded = false;
 
@@ -111,211 +111,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 		});
 	}
 
-	public approveExtension(app: Application): void {
-		this.setApproveLocked(true);
-		this.applicationsService.approveAdditionalLifetime(app.project_application_id).subscribe(
-			(): void => {
-				this.setApproveLocked(false);
-				this.updateNotificationModal('Success', 'Successfully approved extension!', true, 'success');
-				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-				this.numberOfExtensionRequests -= 1;
-				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-			},
-			(): void => {
-				this.setApproveLocked(false);
-				this.updateNotificationModal('Failed', 'The approval of the extension request has failed.', true, 'danger');
-			},
-		);
-	}
-
 	/**
-		 * Decline an extension request.
-		 *
-		 * @param application_id
-		 */
-	public declineExtension(app: Application): void {
-		this.applicationsService.declineAdditionalLifetime(app.project_application_id).subscribe(
-			(): void => {
-				this.updateNotificationModal('Success', 'Successfully declined extension!', true, 'success');
-				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-				this.numberOfExtensionRequests -= 1;
-				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-			},
-			(): void => {
-				this.updateNotificationModal('Failed', 'The decline of the extension request has failed.', true, 'danger');
-			},
-		);
-	}
-
-	public approveModification(app: Application): void {
-		this.setApproveLocked(true);
-		this.applicationsService.approveModificationRequest(app.project_application_id).subscribe(
-			(): void => {
-				this.setApproveLocked(false);
-				this.updateNotificationModal('Success', 'Successfully approved modification!', true, 'success');
-				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-				this.numberOfModificationRequests -= 1;
-				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-			},
-			(): void => {
-				this.setApproveLocked(false);
-				this.updateNotificationModal('Failed', 'The approval of the modification request has failed.', true, 'danger');
-			},
-		);
-	}
-
-	public declineModification(app: Application): void {
-		this.applicationsService.declineModificationRequest(app.project_application_id).subscribe(
-			(): void => {
-				this.updateNotificationModal('Success', 'Successfully declined modification!', true, 'success');
-				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-				this.numberOfModificationRequests -= 1;
-				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-			},
-			(): void => {
-				this.updateNotificationModal('Failed', 'The decline of the modification request has failed.', true, 'danger');
-			},
-		);
-	}
-
-	public approveCreditRequest(app: Application): void {
-		this.setApproveLocked(true);
-		this.applicationsService.approveAdditionalCreditsRequest(app.project_application_id).subscribe(
-			(): void => {
-				this.setApproveLocked(false);
-				this.updateNotificationModal('Success', 'Successfully approved credit extension!', true, 'success');
-				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-				this.numberOfCreditRequests -= 1;
-				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-			},
-			(): void => {
-				this.setApproveLocked(false);
-				this.updateNotificationModal('Failed', 'The approval of the credit request has failed.', true, 'danger');
-			},
-		);
-	}
-
-	public declineCreditRequest(app: Application): void {
-		this.applicationsService.declineAdditionalCredits(app.project_application_id).subscribe(
-			(): void => {
-				this.updateNotificationModal('Success', 'Successfully declined credit extension!', true, 'success');
-				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-				this.numberOfCreditRequests -= 1;
-				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-			},
-			(): void => {
-				this.updateNotificationModal('Failed', 'The decline of the credit request has failed.', true, 'danger');
-			},
-		);
-	}
-
-	approveTermination(app: Application): void {
-		this.facilityService
-			.approveTerminationByFM(app.project_application_perun_id, this.selectedFacility['FacilityId'])
-			.subscribe(
-				(): void => {
-					this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-					this.numberOfTerminationRequests -= 1;
-					this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-					this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
-				},
-				(error: any): void => {
-					if (error['status'] === 409) {
-						this.updateNotificationModal(
-							'Failed',
-							`The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
-							true,
-							'danger',
-						);
-					} else {
-						this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
-					}
-				},
-			);
-	}
-
-	declineTermination(app: Application): void {
-		this.facilityService
-			.declineTerminationByFM(app.project_application_perun_id, this.selectedFacility['FacilityId'])
-			.subscribe(
-				(): void => {
-					this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-					this.numberOfTerminationRequests -= 1;
-					this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-					this.updateNotificationModal('Success', 'The termination of the project was declined.', true, 'success');
-				},
-				(error: any): void => {
-					if (error['status'] === 409) {
-						this.updateNotificationModal(
-							'Failed',
-							`The decline of the project was not successful. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
-							true,
-							'danger',
-						);
-					} else {
-						this.updateNotificationModal('Failed', 'The decline of the project failed.', true, 'danger');
-					}
-				},
-			);
-	}
-
-	/**
-		 * Approves an  application.
-		 *
-		 * @param app: Application
-		 */
-	approveApplication(app: Application): void {
-		this.setApproveLocked(true);
-
-		this.updateNotificationModal('Approving Application', 'Waiting..', true, 'info');
-		this.facilityService
-			.approveFacilityApplication(this.selectedFacility['FacilityId'], app.project_application_id)
-			.subscribe(
-				(): void => {
-					this.setApproveLocked(false);
-					this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
-					this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-					this.numberOfProjectApplications -= 1;
-					this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-				},
-				(): void => {
-					this.setApproveLocked(false);
-					this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
-				},
-			);
-	}
-
-	/**
-		 * Declines an Application.
-		 *
-		 * @param application_id
-		 */
-	declineApplication(app: Application): void {
-		this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
-
-		this.facilityService
-			.declineFacilityApplication(
-				this.selectedFacility['FacilityId'],
-				parseInt(app.project_application_id.toString(), 10),
-			)
-			.subscribe(
-				(): void => {
-					this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
-					this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-					this.numberOfProjectApplications -= 1;
-					this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-				},
-				(): void => {
-					this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
-				},
-			);
-	}
-
-	/**
-		 * If the selected facility changes, reload the applicatins.
-		 *
-		 * @param value
-		 */
+	 * If the selected facility changes, reload the applicatins.
+	 *
+	 * @param value
+	 */
 	onChangeSelectedFacility(): void {
 		this.isLoaded = false;
 		this.allApplicationsToCheck = [];
@@ -337,8 +137,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	/**
-		 * may need changes due to multiple facilities for one single fm?
-		 */
+	 * may need changes due to multiple facilities for one single fm?
+	 */
 	changeTabState(state: number): void {
 		if (!this.loadingApplications) {
 			this.tab_state = state;
@@ -435,9 +235,5 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 			// this.getFullApplications(this.selectedFacility ['FacilityId']);
 			this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 		});
-	}
-
-	setApproveLocked(locked: boolean): void {
-		this.approveLocked = locked;
 	}
 }
