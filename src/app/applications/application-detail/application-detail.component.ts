@@ -36,105 +36,98 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 	EXTENSION_TAB_ACTIVE: boolean = false;
 	COMMENT_TAB_ACTIVE: boolean = false;
 
-		@Input() application: Application;
-		@Input() default_tab: number = this.PI_USER_TAB;
+	@Input() application: Application;
+	@Input() default_tab: number = this.PI_USER_TAB;
 
-		creditsService: CreditsService;
-		is_vo_admin: boolean = false;
-		current_credits: number = 0;
-		Application_States: typeof Application_States = Application_States;
+	creditsService: CreditsService;
+	is_vo_admin: boolean = false;
+	current_credits: number = 0;
+	Application_States: typeof Application_States = Application_States;
 
-		setAllTabsFalse(): void {
-			this.PI_USER_TAB_ACTIVE = false;
-			this.INFORMATION_TAB_ACTIVE = false;
-			this.RESOURCE_TAB_ACTIVE = false;
-			this.CREDITS_TAB_ACTIVE = false;
-			this.MODIFICATION_TAB_ACTIVE = false;
-			this.EXTENSION_TAB_ACTIVE = false;
-			this.COMMENT_TAB_ACTIVE = false;
+	setAllTabsFalse(): void {
+		this.PI_USER_TAB_ACTIVE = false;
+		this.INFORMATION_TAB_ACTIVE = false;
+		this.RESOURCE_TAB_ACTIVE = false;
+		this.CREDITS_TAB_ACTIVE = false;
+		this.MODIFICATION_TAB_ACTIVE = false;
+		this.EXTENSION_TAB_ACTIVE = false;
+		this.COMMENT_TAB_ACTIVE = false;
+	}
+
+	setTab(tab_num: number): void {
+		this.setAllTabsFalse();
+		switch (tab_num) {
+			case this.PI_USER_TAB:
+				this.PI_USER_TAB_ACTIVE = true;
+				break;
+			case this.INFORMATION_TAB:
+				this.INFORMATION_TAB_ACTIVE = true;
+				break;
+			case this.RESOURCE_TAB:
+				this.RESOURCE_TAB_ACTIVE = true;
+				break;
+			case this.CREDITS_TAB:
+				this.CREDITS_TAB_ACTIVE = true;
+				break;
+			case this.MODIFICATION_TAB:
+				this.MODIFICATION_TAB_ACTIVE = true;
+				break;
+			case this.EXTENSION_TAB:
+				this.EXTENSION_TAB_ACTIVE = true;
+				break;
+			case this.COMMENT_TAB:
+				this.COMMENT_TAB_ACTIVE = true;
+				break;
+			default:
+				break;
 		}
+	}
 
-		setTab(tab_num: number): void {
-			this.setAllTabsFalse();
-			console.log('set tab');
-			console.log(tab_num);
-			switch (tab_num) {
-				case this.PI_USER_TAB:
-					this.PI_USER_TAB_ACTIVE = true;
-					break;
-				case this.INFORMATION_TAB:
-					this.INFORMATION_TAB_ACTIVE = true;
-					break;
-				case this.RESOURCE_TAB:
-					this.RESOURCE_TAB_ACTIVE = true;
-					break;
-				case this.CREDITS_TAB:
-					this.CREDITS_TAB_ACTIVE = true;
-					break;
-				case this.MODIFICATION_TAB:
-					this.MODIFICATION_TAB_ACTIVE = true;
-					break;
-				case this.EXTENSION_TAB:
-					this.EXTENSION_TAB_ACTIVE = true;
-					break;
-				case this.COMMENT_TAB:
-					this.COMMENT_TAB_ACTIVE = true;
-					break;
-				default:
-					break;
-			}
+	constructor(
+		applicationsService: ApplicationsService,
+		userService: UserService,
+		facilityService: FacilityService,
+		creditsService: CreditsService,
+		cdrRef: ChangeDetectorRef,
+	) {
+		super(userService, applicationsService, facilityService, cdrRef);
+		this.creditsService = creditsService;
+	}
+
+	ngOnInit(): void {
+		this.setTab(this.default_tab);
+
+		this.getPi();
+		this.getUser();
+		if (this.application.credits_allowed) {
+			this.getCurrentCredits();
 		}
+		this.is_vo_admin = is_vo;
+	}
 
-		constructor(
-			applicationsService: ApplicationsService,
-			userService: UserService,
-			facilityService: FacilityService,
-			creditsService: CreditsService,
-			cdrRef: ChangeDetectorRef,
-		) {
-			super(userService, applicationsService, facilityService, cdrRef);
-			this.creditsService = creditsService;
+	getUser() {
+		if (!this.application.project_application_user) {
+			this.applicationsService.getApplicationUser(this.application.project_application_id).subscribe((user: User) => {
+				this.application.project_application_user = user;
+			});
 		}
+	}
 
-		ngOnInit(): void {
-
-			this.setTab(this.default_tab);
-
-			this.getPi();
-			this.getUser();
-			if (this.application.credits_allowed) {
-				this.getCurrentCredits();
-			}
-			this.is_vo_admin = is_vo;
+	getPi() {
+		if (!this.application.project_application_pi.email) {
+			this.applicationsService.getApplicationPI(this.application.project_application_id).subscribe((pi: User) => {
+				this.application.project_application_pi = pi;
+			});
 		}
+	}
 
-		getUser() {
-			if (!this.application.project_application_user) {
-				this.applicationsService.getApplicationUser(this.application.project_application_id).subscribe((user: User) => {
-
-					this.application.project_application_user = user;
-
-				});
-			}
-		}
-
-		getPi() {
-			if (!this.application.project_application_pi) {
-				this.applicationsService.getApplicationPI(this.application.project_application_id).subscribe((pi: User) => {
-
-					this.application.project_application_pi = pi;
-
-				});
-			}
-		}
-
-		getCurrentCredits(): void {
-			this.creditsService
-				.getCurrentCreditsOfProject(Number(this.application.project_application_perun_id.toString()))
-				.toPromise()
-				.then((credits: number): void => {
-					this.current_credits = credits;
-				})
-				.catch((err: Error): void => console.log(err.message));
-		}
+	getCurrentCredits(): void {
+		this.creditsService
+			.getCurrentCreditsOfProject(Number(this.application.project_application_perun_id.toString()))
+			.toPromise()
+			.then((credits: number): void => {
+				this.current_credits = credits;
+			})
+			.catch((err: Error): void => console.log(err.message));
+	}
 }
