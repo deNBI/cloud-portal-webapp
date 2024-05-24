@@ -9,9 +9,9 @@ WIKI_VOLUME_OVERVIEW=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/volumes/
 WIKI_RESENV_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/customization/#research-environments
 WIKI_RSTUDIO_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/customization/#rstudio
 WIKI_GUACAMOLE_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/customization/#apache-guacamole
-WIKI_NEW_INSTANCE_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/create_instance/
-WIKI_INSTANCE_OVERVIEW_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/instance_overview/
-WIKI_INSTANCE_DETAIL_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/instance_detail/
+WIKI_NEW_INSTANCE_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/Instance/create_instance/
+WIKI_INSTANCE_OVERVIEW_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/Instance/instance_overview/
+WIKI_INSTANCE_DETAIL_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/Instance/instance_detail/
 WIKI_LINK_ACCOUNTS=https://portal-dev.denbi.de/wiki/portal/user_information/#link-accounts-to-lifescience-formerly-elixir
 SCALE_SCRIPT_LINK=https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/scaling.py
 SCALING_UP_WIKI=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/Cluster/cluster_overview/#3-scale-up
@@ -23,7 +23,7 @@ WIKI_CREATE_SNAPSHOT_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/snapsh
 WIKI_VOLUMES_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/volumes/
 WIKI_MOSH_LINK=https://simplevm-dev.bi.denbi.de/wiki/Tutorials/Mosh/
 WIKI_PERSONAL_DATA=https://portal-dev.denbi.de/wiki/portal/personal_data/
-WIKI_EPHEMERAL_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/create_instance/#about-ephemeral-flavors
+WIKI_EPHEMERAL_LINK=https://simplevm-dev.bi.denbi.de/wiki/simple_vm/Instance/create_instance/#about-ephemeral-flavors
 # SURVEY_LINK=https://www.surveymonkey.de/r/HQW9V7C
 
 
