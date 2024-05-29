@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Userinfo } from './userinfo.model';
@@ -22,6 +22,7 @@ import { Application } from '../applications/application.model/application.model
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
+import { MatomoTracker } from 'ngx-matomo-client';
 
 /**
  * UserInformation component.
@@ -120,6 +121,8 @@ export class UserInfoComponent implements OnInit {
 
 	confirmEventEmitter: EventEmitter<any> = new EventEmitter<any>();
 
+	private readonly tracker = inject(MatomoTracker);
+
 	constructor(
 		private groupService: GroupService,
 		private userService: UserService,
@@ -152,6 +155,7 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('User Info');
 		this.getUserinfo();
 		this.isFreemiumActive();
 		this.isUserSimpleVmMember();

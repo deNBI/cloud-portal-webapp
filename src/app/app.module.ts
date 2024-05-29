@@ -1,4 +1,5 @@
 import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
+import { environment } from '../environments/environment';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -45,6 +46,7 @@ import { VoService } from './api-connector/vo.service';
 import { TokenInterceptor } from './api-connector/token-interceptor';
 import { PipeModuleModule } from './pipe-module/pipe-module.module';
 import { FacilityService } from './api-connector/facility.service';
+import { MatomoModule, MatomoRouterModule } from 'ngx-matomo-client';
 
 /**
  * App module.
@@ -70,6 +72,11 @@ import { FacilityService } from './api-connector/facility.service';
 		TimepickerModule.forRoot(),
 		BsDatepickerModule.forRoot(),
 		AlertModule,
+		MatomoModule.forRoot({
+			siteId: environment.MATOMO_SITE_ID,
+			trackerUrl: environment.MATOMO_TRACKING_URL,
+		}),
+		MatomoRouterModule, 
 	],
 	declarations: [
 		AppComponent,

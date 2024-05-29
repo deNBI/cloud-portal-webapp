@@ -33,7 +33,6 @@
               ]
             },
             "scripts": [
-              "src/assets/js/matomo.js"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
