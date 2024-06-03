@@ -28,5 +28,4 @@ export const environment: any = {
 	webapp: 'http://localhost:8001/',
 	MATOMO_SITE_ID,
 	MATOMO_TRACKING_URL,
-	MATOMO_TRACKING_URL,
 };
