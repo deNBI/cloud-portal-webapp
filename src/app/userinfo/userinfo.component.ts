@@ -1,6 +1,9 @@
-import { Component, EventEmitter, OnInit, inject } from '@angular/core';
+import {
+	Component, EventEmitter, OnInit, inject,
+} from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { Userinfo } from './userinfo.model';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { KeyService } from '../api-connector/key.service';
@@ -22,7 +25,6 @@ import { Application } from '../applications/application.model/application.model
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { NotificationModalComponent } from '../shared/modal/notification-modal';
-import { MatomoTracker } from 'ngx-matomo-client';
 
 /**
  * UserInformation component.
