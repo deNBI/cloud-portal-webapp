@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { MatomoTracker } from 'ngx-matomo-client';
 import {
 	WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK,
 } from '../../links/links';
@@ -12,6 +13,7 @@ import {
 	styleUrls: ['./type-overview.component.css'],
 })
 export class TypeOverviewComponent implements OnInit {
+	private readonly tracker = inject(MatomoTracker);
 
 	title: string = 'Project Type Overview';
 
@@ -32,6 +34,7 @@ export class TypeOverviewComponent implements OnInit {
 	OPENSTACK_LINK: string = OPENSTACK_LINK;
 
 	ngOnInit(): any {
+		this.tracker.trackPageView('New Project - Project Type Overview');
 		this.simpleVM_logo_link = `${this.static_img_folder}simpleVM_Logo.svg`;
 		this.simpleVM_curve_logo = `${this.static_img_folder}/simplevm-info-page/flatlearning.svg`;
 		this.simpleVM_ease_logo = `${this.static_img_folder}/simplevm-info-page/easytouse.svg`;
@@ -42,5 +45,4 @@ export class TypeOverviewComponent implements OnInit {
 		this.openstack_conf_logo = `${this.static_img_folder}/openstack-info-page/configuration.svg`;
 		this.openstack_scale_logo = `${this.static_img_folder}/openstack-info-page/scale.svg`;
 	}
-
 }

@@ -1,7 +1,8 @@
 import {
-	ChangeDetectorRef, Component, Input, OnInit, ViewChild,
+	ChangeDetectorRef, Component, Input, OnInit, ViewChild, inject,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor';
 import { FlavorService } from '../../api-connector/flavor.service';
 import { FlavorType } from '../../virtualmachines/virtualmachinemodels/flavorType';
@@ -49,6 +50,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	@Input() application: Application;
 	@Input() is_validation: boolean = false;
 	@Input() hash: string;
+
+	private readonly tracker = inject(MatomoTracker);
 
 	userinfo: Userinfo;
 	valid_pi_affiliations;
@@ -112,6 +115,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	}
 
 	ngOnInit(): void {
+		if (!this.is_validation) {
+			const typeStr: string = this.openstack_project ? ' Openstack' : 'SimpleVM';
+			this.tracker.trackPageView(`New Application Formular: ${typeStr}`);
+		}
+
 		this.getUserinfo();
 		this.getListOfFlavors();
 		this.getListOfTypes();

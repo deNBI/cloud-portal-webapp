@@ -1,9 +1,10 @@
 import {
-	ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild,
+	ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject,
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { KeyValue } from '@angular/common';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { GroupService } from '../../../api-connector/group.service';
 import { ImageService } from '../../../api-connector/image.service';
 import { KeyService } from '../../../api-connector/key.service';
@@ -49,6 +50,7 @@ import { ProjectMember } from '../../../projectmanagement/project_member.model';
 	],
 })
 export class AddClusterComponent implements OnInit, OnDestroy {
+	private readonly tracker = inject(MatomoTracker);
 	is_vo: boolean = false;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	STATUS_LINK: string = STATUS_LINK;
@@ -524,6 +526,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Create Cluster');
 		this.initializeData();
 		this.generateRandomName();
 		this.subscription.add(

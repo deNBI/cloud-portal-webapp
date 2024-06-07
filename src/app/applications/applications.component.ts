@@ -1,11 +1,12 @@
 /* eslint-disable no-lonely-if */
 import {
-	ChangeDetectorRef, Component, OnDestroy, OnInit,
+	ChangeDetectorRef, Component, OnDestroy, OnInit, inject,
 } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
 import { FlavorTypeShortcuts } from 'app/shared/shared_modules/baseClass/flavor-type-shortcuts';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { ApplicationsService } from '../api-connector/applications.service';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application } from './application.model/application.model';
@@ -27,7 +28,6 @@ import { NotificationModalComponent } from '../shared/modal/notification-modal';
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
 import { ModificationRequestComponent } from '../projectmanagement/modals/modification-request/modification-request.component';
 import { ConfirmationActions } from '../shared/modal/confirmation_actions';
-
 // eslint-disable-next-line no-shadow
 enum TabStates {
 	'SUBMITTED' = 0,
@@ -54,6 +54,7 @@ enum TabStates {
 	],
 })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
+	private readonly tracker = inject(MatomoTracker);
 	title: string = 'Application Overview';
 	tab_state: number = TabStates.SUBMITTED;
 	TabStates: typeof TabStates = TabStates;
@@ -132,6 +133,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Application Overview');
 		this.is_vo_admin = is_vo;
 		if (this.is_vo_admin) {
 			this.getSubmittedApplicationsAdmin();

@@ -37,7 +37,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 		pullDrag: false,
 		dots: true,
 		navSpeed: 700,
-		navText: ['<i class=\'fa fa-chevron-left\'></i>', '<i class=\'fa fa-chevron-right\'></i>'],
+		navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
 		responsive: {
 			0: {
 				items: 1,
@@ -55,7 +55,10 @@ export class NewsComponent implements OnInit, OnDestroy {
 		nav: true,
 	};
 
-	constructor(private news_service: NewsService, private groupService: GroupService) {
+	constructor(
+		private news_service: NewsService,
+		private groupService: GroupService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 

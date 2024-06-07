@@ -1,8 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+	Component, OnDestroy, OnInit, inject,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ClipboardService } from 'ngx-clipboard';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { Clusterinfo } from '../clusterinfo';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
@@ -27,6 +30,7 @@ import { TemplateNames } from '../../conda/template-names';
 	providers: [VirtualmachineService],
 })
 export class ClusterdetailComponent implements OnInit, OnDestroy {
+	private readonly tracker = inject(MatomoTracker);
 	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
 	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
@@ -62,6 +66,7 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
 			this.cluster_id = paramsId.id;
+			this.tracker.trackPageView(`Cluster Detail Page: ${paramsId.id}`);
 			this.setClusterById();
 		});
 	}
