@@ -9,7 +9,7 @@ import { ResourceWeight, IResourceWeight } from '../credits-calculator/resource-
 /**
  * Service which delivers functions for services related to the credit service.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CreditsService {
 	constructor(private http: HttpClient) {
 		this.http = http;

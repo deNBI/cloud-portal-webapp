@@ -8,6 +8,7 @@ import { Application } from '../applications/application.model/application.model
 import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
 import { ApplicationModification } from '../applications/application_modification.model';
 import { ApplicationCreditRequest } from '../applications/application_credit_request';
+import { User } from '../applications/application.model/user.model';
 
 /**
  * Service which provides methods for creating application.
@@ -44,6 +45,29 @@ export class ApplicationsService {
 		);
 	}
 
+	getApplicationPI(application_id: string | number): Observable<User> {
+		return this.http.get<User>(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/pi/`, {
+			withCredentials: true,
+		});
+	}
+
+	getApplicationUser(application_id: string | number): Observable<User> {
+		return this.http.get<User>(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/user/`, {
+			withCredentials: true,
+		});
+	}
+
+	getLifetimeExtensionUser(lifetimeextension_id: string | number): Observable<User> {
+		return this.http.get<User>(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${lifetimeextension_id}/user/`, {
+			withCredentials: true,
+		});
+	}
+
+	getModificationUser(project_id: string | number): Observable<User> {
+		return this.http.get<User>(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${project_id}/user/`, {
+			withCredentials: true,
+		});
+	}
 	getApplicationValidationByHash(hash: string): Observable<Application> {
 		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
 			withCredentials: true,
@@ -124,11 +148,11 @@ export class ApplicationsService {
 	}
 
 	/**
-	 * Checks if some client has the resource available for an application.
-	 *
-	 * @param app_id
-	 * @returns
-	 */
+		 * Checks if some client has the resource available for an application.
+		 *
+		 * @param app_id
+		 * @returns
+		 */
 	getApplicationClientAvaiable(app_id: string): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/clients/resource/`, {
 			withCredentials: true,
