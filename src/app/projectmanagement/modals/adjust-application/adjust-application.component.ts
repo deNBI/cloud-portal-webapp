@@ -1,16 +1,10 @@
 import {
-	Component, EventEmitter, Injectable, OnDestroy, OnInit, Output,
+	Component, EventEmitter, Injectable, OnInit, Output,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Application } from '../../../applications/application.model/application.model';
-import { ApplicationLifetimeExtension } from '../../../applications/application_extension.model';
 import { CreditsService } from '../../../api-connector/credits.service';
-import { EdamOntologyTerm } from '../../../applications/edam-ontology-term';
-import { ResultComponent } from '../result/result.component';
 import { ApplicationsService } from '../../../api-connector/applications.service';
-import { AbstractBaseClass } from '../../../shared/shared_modules/baseClass/abstract-base-class';
-import { NotificationModalComponent } from '../../../shared/modal/notification-modal';
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor';
 import { FlavorType } from '../../../virtualmachines/virtualmachinemodels/flavorType';
 import { FlavorService } from '../../../api-connector/flavor.service';

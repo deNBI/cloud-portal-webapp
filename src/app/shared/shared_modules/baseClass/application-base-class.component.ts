@@ -10,7 +10,6 @@ import { FacilityService } from '../../../api-connector/facility.service';
 import { UserService } from '../../../api-connector/user.service';
 import { FlavorTypeShortcuts } from './flavor-type-shortcuts';
 import { User } from '../../../applications/application.model/user.model';
-import { ApplicationLifetimeExtension } from '../../../applications/application_extension.model';
 
 /**
  * Application base component..

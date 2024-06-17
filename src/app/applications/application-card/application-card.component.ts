@@ -11,20 +11,8 @@ import { ApplicationTabStates } from '../../shared/enums/application-tab-states'
 import { ApplicationsService } from '../../api-connector/applications.service';
 import { NotificationModalComponent } from '../../shared/modal/notification-modal';
 import { is_vo } from '../../shared/globalvar';
-import { VoService } from '../../api-connector/vo.service';
 import { ComputecenterComponent } from '../../projectmanagement/computecenter.component';
 import { GroupService } from '../../api-connector/group.service';
-import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal.component';
-import { ClientLimitsComponent } from '../../vo_manager/clients/modals/client-limits..component';
-import {
-	AdjustLifetimeRequestComponent,
-} from '../../projectmanagement/modals/adjust-lifetime/adjust-lifetime-request.component';
-import {
-	AdjustApplicationComponent,
-} from '../../projectmanagement/modals/adjust-application/adjust-application.component';
-import {
-	ModificationRequestComponent,
-} from '../../projectmanagement/modals/modification-request/modification-request.component';
 import { User } from '../application.model/user.model';
 
 @Component({
