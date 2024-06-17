@@ -75,7 +75,7 @@ export class GroupService {
 		}
 	}
 
-	assignGroupToResource(groupid: string, computecenter: string): Observable<any> {
+	assignGroupToResource(groupid: number, computecenter: string): Observable<any> {
 		const params: HttpParams = new HttpParams().set('compute_center', computecenter);
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/resource/`, params, {
