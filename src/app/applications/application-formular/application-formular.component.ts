@@ -180,6 +180,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			if (this.simple_vm_project) {
 				this.simple_vm_min_vm = this.application.flavors.length > 0;
 			}
+			if (this.application.project_application_nfdi && this.application.project_application_nfdi.length > 0) {
+				this.max_lifetime = 12;
+			}
 			this.initiated_validation = true;
 		} else {
 			this.application = new Application(null);
