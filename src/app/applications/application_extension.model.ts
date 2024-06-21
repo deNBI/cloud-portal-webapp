@@ -5,7 +5,7 @@ import { Application } from './application.model/application.model';
  * Application Extension class.
  */
 export class ApplicationLifetimeExtension {
-	Id: number;
+	id: number;
 	project_application_id: number | string;
 	extra_lifetime: number;
 

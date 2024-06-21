@@ -23,6 +23,8 @@ import { CreditsRequestComponent } from './modals/credits-request/credits-reques
 import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component';
 import { ResultComponent } from './modals/result/result.component';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
+import { AdjustLifetimeRequestComponent } from './modals/adjust-lifetime/adjust-lifetime-request.component';
+import { AdjustApplicationComponent } from './modals/adjust-application/adjust-application.component';
 
 /**
  * Projectmanagment module.
@@ -55,6 +57,8 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		ModificationRequestComponent,
 		ResultComponent,
 		ExtensionEntryComponent,
+		AdjustLifetimeRequestComponent,
+		AdjustApplicationComponent,
 	],
 	exports: [ProjectOsDetailsComponent, ExtensionEntryComponent],
 })

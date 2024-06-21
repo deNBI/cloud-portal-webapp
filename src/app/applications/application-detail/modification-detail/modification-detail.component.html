@@ -4,9 +4,14 @@
 			<td>Modification Requested from:</td>
 
 			<td>
-				{{ application?.project_modification_request?.user?.username }}
-				( {{ application?.project_modification_request?.user?.email }} |
-				{{ application?.project_modification_request?.user?.elixir_id }})
+				@if (application?.project_modification_request?.user) {
+					{{ application?.project_modification_request?.user?.username }}
+					( {{ application?.project_modification_request?.user?.email }} |
+					{{ application?.project_modification_request?.user?.elixir_id }})
+
+				} @else {
+					<span class="spinner-border text-info"></span>
+				}
 			</td>
 		</tr>
 		<tr>

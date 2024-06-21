@@ -9,6 +9,7 @@ import { FlavorService } from '../../../api-connector/flavor.service';
 import { FacilityService } from '../../../api-connector/facility.service';
 import { UserService } from '../../../api-connector/user.service';
 import { FlavorTypeShortcuts } from './flavor-type-shortcuts';
+import { User } from '../../../applications/application.model/user.model';
 
 /**
  * Application base component..
@@ -174,6 +175,38 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		this.cdRef.detectChanges();
 	}
 
+	getApplicationPi(application: Application) {
+		if (!application.project_application_pi) {
+			this.applicationsService.getApplicationPI(application.project_application_id).subscribe((pi: User) => {
+				application.project_application_pi = pi;
+			});
+		}
+	}
+
+	getApplicationUser(application: Application) {
+		if (!application.project_application_user) {
+			this.applicationsService.getApplicationUser(application.project_application_id).subscribe((user: User) => {
+				application.project_application_user = user;
+			});
+		}
+	}
+
+	getExtensionUser(application: Application) {
+		if (application.project_lifetime_request && !application.project_lifetime_request.user) {
+			this.applicationsService.getLifetimeExtensionUser(application.project_application_id).subscribe((user: User) => {
+				application.project_lifetime_request.user = user;
+			});
+		}
+	}
+
+	getModificationUser(application: Application) {
+		if (application.project_modification_request && !application.project_modification_request.user) {
+			this.applicationsService.getLifetimeExtensionUser(application.project_application_id).subscribe((user: User) => {
+				application.project_modification_request.user = user;
+			});
+		}
+	}
+
 	calculateRamCores(): void {
 		this.totalNumberOfCores = 0;
 		this.totalRAM = 0;
@@ -299,9 +332,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 		for (const key in this.flavorList) {
 			if (key in this.flavorList) {
-				this.constantStrings[
-					`project_application_${this.flavorList[key].name}`
-				] = `Number of VMs of type  ${this.flavorList[key].name}: `;
+				this.constantStrings[`project_application_${this.flavorList[key].name}`] =					`Number of VMs of type  ${this.flavorList[key].name}: `;
 			}
 		}
 	}

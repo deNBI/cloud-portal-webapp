@@ -33,6 +33,7 @@ import {
 } from '../../../links/links';
 import { UserService } from '../../api-connector/user.service';
 import { Userinfo } from '../../userinfo/userinfo.model';
+import { User } from '../application.model/user.model';
 
 /**
  * Application formular component.
@@ -178,6 +179,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		if (this.application && !this.initiated_validation && this.is_validation) {
 			this.openstack_project = this.application.project_application_openstack_project;
 			this.simple_vm_project = !this.openstack_project;
+			this.application.project_application_pi = new User();
 			this.searchTermsInEdamTerms();
 
 			if (this.application.dissemination.someAllowed()) {

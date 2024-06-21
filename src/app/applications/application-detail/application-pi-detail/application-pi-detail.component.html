@@ -15,13 +15,31 @@
 		<tr *ngIf="application?.project_application_pi_approved" id="id_pi_row">
 			<td>PI Name</td>
 			<td>
-				{{ application?.project_application_pi?.username }}
+				@if (application.project_application_pi?.username) {
+					{{ application?.project_application_pi?.username }}
+					@if (application?.project_application_pi?.pi_project_count_total > 0) {
+						<span
+							data-toggle="tooltip"
+							title="This user acts as the Principal Investigator for {{
+								application?.project_application_pi?.pi_project_count_total
+							}} project(s) (including this one)."
+						>
+							<c-badge color="info"> {{ application?.project_application_pi?.pi_project_count_total }}</c-badge></span
+						>
+					}
+				} @else if (this.application.project_application_pi_approved) {
+					<span class="spinner-border text-info"></span>
+				}
 			</td>
 		</tr>
 		<tr *ngIf="application?.project_application_pi_approved">
 			<td>PI Email</td>
 			<td id="id_pi_email">
-				{{ application?.project_application_pi?.email }}
+				@if (application?.project_application_pi?.email) {
+					{{ application?.project_application_pi?.email }}
+				} @else {
+					<span class="spinner-border text-info"></span>
+				}
 			</td>
 		</tr>
 		<tr *ngIf="application?.project_application_pi_link">
@@ -34,23 +52,41 @@
 		<tr *ngIf="application?.project_application_pi_approved">
 			<td>PI Affiliations</td>
 			<td>
-				{{ application?.project_application_pi?.user_affiliations }}
+				@if (application?.project_application_pi?.user_affiliations) {
+					{{ application?.project_application_pi?.user_affiliations }}
+				} @else {
+					<span class="spinner-border text-info"></span>
+				}
 			</td>
 		</tr>
 		<tr>
 			<td>User Affiliations</td>
-			<td>{{ application?.project_application_user?.user_affiliations }}</td>
+			<td>
+				@if (application?.project_application_pi?.user_affiliations) {
+					{{ application?.project_application_pi?.user_affiliations }}
+				} @else {
+					<span class="spinner-border text-info"></span>
+				}
+			</td>
 		</tr>
 		<tr>
 			<td>User Name</td>
 			<td>
-				{{ application?.project_application_user?.username }}
+				@if (application?.project_application_pi?.username) {
+					{{ application?.project_application_pi?.username }}
+				} @else {
+					<span class="spinner-border text-info"></span>
+				}
 			</td>
 		</tr>
 		<tr>
 			<td>User Email</td>
 			<td>
-				{{ application?.project_application_user?.email }}
+				@if (application?.project_application_pi?.email) {
+					{{ application?.project_application_pi?.email }}
+				} @else {
+					<span class="spinner-border text-info"></span>
+				}
 			</td>
 		</tr>
 	</tbody>
