@@ -15,34 +15,35 @@ import { is_vo } from '../../shared/globalvar';
 	styleUrl: './application-list.component.scss',
 })
 export class ApplicationListComponent implements OnInit {
-		@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
+	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
 
-		@Input() applications: Application[] = [];
-		@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED;
-		@Input() computeCenters: ComputecenterComponent[] = [];
-		@Input() facilityView:boolean = false;
-		@Input() voView:boolean = false;
+	@Input() applications: Application[] = [];
+	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED;
+	@Input() computeCenters: ComputecenterComponent[] = [];
+	@Input() facilityView: boolean = false;
+	@Input() voView: boolean = false;
 
-		is_vo_admin: boolean = false;
+	is_vo_admin: boolean = false;
 
-		ngOnInit() {
-			this.is_vo_admin = is_vo;
+	ngOnInit() {
+		this.is_vo_admin = is_vo;
+	}
 
+	triggerReloadNumbers() {
+		console.log('trigger reload 2');
+		this.reloadNumbersTrigger.emit();
+	}
+
+	removeApplicationFromList(application_id: string | number) {
+		const idx: number = this.applications.findIndex(
+			(application: Application) => application.project_application_id === application_id,
+		);
+
+		if (idx !== -1) {
+			console.log('remove index');
+			this.applications.splice(idx, 1);
 		}
+	}
 
-		triggerReloadNumbers() {
-			console.log('trigger reload 2');
-			this.reloadNumbersTrigger.emit();
-		}
-
-		removeApplicationFromList(application_id: string | number) {
-			const idx: number = this.applications.findIndex((application: Application) => application.project_application_id === application_id);
-
-			if (idx !== -1) {
-				console.log('remove index');
-				this.applications.splice(idx, 1);
-			}
-		}
-
-		protected readonly Application_States = Application_States;
+	protected readonly Application_States = Application_States;
 }

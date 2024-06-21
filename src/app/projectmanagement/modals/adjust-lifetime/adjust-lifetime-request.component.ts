@@ -20,49 +20,49 @@ export class AdjustLifetimeRequestComponent implements OnInit {
 
 	application: Application;
 	adjustedApplicationLifetimeExtension: ApplicationLifetimeExtension;
-		@Output() eventSuccess: EventEmitter<boolean> = new EventEmitter();
+	@Output() eventSuccess: EventEmitter<boolean> = new EventEmitter();
 
-		constructor(
-				private modalService: BsModalService,
-				private applicationsService: ApplicationsService,
-		) {
-		}
+	constructor(
+		private modalService: BsModalService,
+		private applicationsService: ApplicationsService,
+	) {}
 
-		ngOnInit() {
-			this.loaded = false;
-			this.adjustedApplicationLifetimeExtension = new ApplicationLifetimeExtension(this.application.project_lifetime_request);
-			this.loaded = true;
-		}
+	ngOnInit() {
+		this.loaded = false;
+		this.adjustedApplicationLifetimeExtension = new ApplicationLifetimeExtension(
+			this.application.project_lifetime_request,
+		);
+		this.loaded = true;
+	}
 
-		hide(): void {
+	hide(): void {
+		this.modalService.hide(this.modalId);
+	}
 
-			this.modalService.hide(this.modalId);
-		}
+	showAdjustLifetimeExtensionModal(application: Application): EventEmitter<boolean> {
+		const initialState = {
+			application,
+		};
+		const bsModalRef: BsModalRef = this.modalService.show(AdjustLifetimeRequestComponent, { initialState });
+		bsModalRef.setClass('modal-lg');
+		this.modalId = bsModalRef.id;
 
-		showAdjustLifetimeExtensionModal(application: Application): EventEmitter<boolean> {
-			const initialState = {
-				application,
-			};
-			const bsModalRef: BsModalRef = this.modalService.show(AdjustLifetimeRequestComponent, { initialState });
-			bsModalRef.setClass('modal-lg');
-			this.modalId = bsModalRef.id;
+		return bsModalRef.content.eventSuccess;
+	}
 
-			return bsModalRef.content.eventSuccess;
-		}
-
-		adjustLifetimeExtension(): void {
-			this.loaded = false;
-			this.applicationsService.adjustLifetimeExtension(this.adjustedApplicationLifetimeExtension).subscribe((): void => {
+	adjustLifetimeExtension(): void {
+		this.loaded = false;
+		this.applicationsService.adjustLifetimeExtension(this.adjustedApplicationLifetimeExtension).subscribe(
+			(): void => {
 				this.hide();
 
 				this.eventSuccess.emit(true);
-
-			}, (): void => {
+			},
+			(): void => {
 				this.hide();
 
 				this.eventSuccess.emit(false);
-
-			});
-		}
-
+			},
+		);
+	}
 }

@@ -11,19 +11,19 @@ import { User } from '../../application.model/user.model';
 	templateUrl: './lifetime-extension-detail.component.html',
 })
 export class LifetimeExtensionDetailComponent extends ApplicationBaseClassComponent implements OnInit {
-		@Input() application: Application;
+	@Input() application: Application;
 
-		ngOnInit() {
-			this.getRequestingUser();
-		}
+	ngOnInit() {
+		this.getRequestingUser();
+	}
 
-		getRequestingUser() {
-			if (this.application.project_lifetime_request && !this.application.project_lifetime_request.user) {
-				this.applicationsService.getLifetimeExtensionUser(this.application.project_application_id).subscribe((user: User) => {
-
+	getRequestingUser() {
+		if (this.application.project_lifetime_request && !this.application.project_lifetime_request.user) {
+			this.applicationsService
+				.getLifetimeExtensionUser(this.application.project_application_id)
+				.subscribe((user: User) => {
 					this.application.project_lifetime_request.user = user;
-
 				});
-			}
 		}
+	}
 }

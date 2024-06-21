@@ -1,9 +1,10 @@
 import {
-	Component, OnDestroy, OnInit, QueryList, ViewChildren,
+	Component, OnDestroy, OnInit, QueryList, ViewChildren, inject,
 } from '@angular/core';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { ClipboardService } from 'ngx-clipboard';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { VirtualmachineService } from '../api-connector/virtualmachine.service';
 import { VirtualMachine } from './virtualmachinemodels/virtualmachine';
 import { VirtualMachinePage } from './virtualmachinemodels/virtualMachinePage';
@@ -28,6 +29,7 @@ import { ApplicationsService } from '../api-connector/applications.service';
 	providers: [FacilityService, ImageService, UserService, FullLayoutComponent, GroupService, ClientService],
 })
 export class VmOverviewComponent implements OnInit, OnDestroy {
+	private readonly tracker = inject(MatomoTracker);
 	/**
 	 * Title of page
 	 */
@@ -178,6 +180,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Instance Overview');
 		this.set_cluster_allowed();
 		this.getVms();
 		this.is_vo_admin = is_vo;
