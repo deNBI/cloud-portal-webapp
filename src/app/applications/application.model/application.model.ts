@@ -56,7 +56,7 @@ export class Application {
 	project_lifetime_request: ApplicationLifetimeExtension;
 	project_modification_request: ApplicationModification;
 	project_credit_request: ApplicationCreditRequest = null;
-	project_application_perun_id: number | string;
+	project_application_perun_id: number;
 	project_application_total_cores: number = 0;
 	project_application_total_ram: number = 0;
 	project_application_initial_credits: number = 0;
@@ -76,6 +76,7 @@ export class Application {
 	dissemination: ApplicationDissemination;
 	project_application_pi_approved: boolean;
 	project_application_cloud_service: boolean;
+	project_application_kubernetes_access: boolean = false;
 	project_application_cloud_service_develop: boolean;
 	project_application_cloud_service_user_number: number;
 	flavors: Flavor[] = [];

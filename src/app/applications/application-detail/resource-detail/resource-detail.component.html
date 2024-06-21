@@ -1,55 +1,232 @@
+@if (application.project_modification_request) {
+    <table class="table table-hover" style="table-layout: fixed">
+
+        <thead>
+        <th>Modification</th>
+
+
+        <th></th>
+
+        </thead>
+
+        <tbody>
+
+        <tr>
+            <td>Modification Requested from:</td>
+
+
+            <td> @if (application?.project_modification_request?.user) {
+
+                {{ application?.project_modification_request?.user?.username }}
+                ( {{ application?.project_modification_request?.user?.email }} |
+                {{ application?.project_modification_request?.user?.elixir_id }})
+            } @else {
+                <span class="spinner-border text-info"></span>
+
+            }
+            </td>
+        </tr>
+        <tr>
+            <td>Comment</td>
+
+            <td>{{ application?.project_modification_request?.comment }}</td>
+        </tr>
+        <tr *ngIf="application?.project_application_openstack_project && application?.project_application_cloud_service">
+            <td>Service status</td>
+
+            <td>
+				<span *ngIf="application?.project_modification_request?.cloud_service_develop" class="badge bg-success"
+                >In development</span
+                >
+                <span *ngIf="!application?.project_modification_request?.cloud_service_develop" class="badge bg-danger"
+                >Existing</span
+                >
+            </td>
+        </tr>
+        <tr>
+            <td>Date Submitted</td>
+
+
+            <td>
+                {{ application?.project_modification_request?.date_submitted }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+}
 <table class="table table-hover" style="table-layout: fixed">
-	<tbody>
-		<tr>
-			<td>VMs</td>
 
-			<td>
-				{{ application?.project_application_vms_requested }}
-			</td>
-		</tr>
+    <thead>
 
-		<ng-container *ngFor="let flavor of application?.flavors">
-			<tr *ngIf="flavor.counter > 0">
-				<td>Flavor: {{ flavor.name }}</td>
-				<td>{{ flavor.counter }}</td>
-			</tr>
-		</ng-container>
+    <th>Resource</th>
+    <th>Current</th>
+        @if (application.project_modification_request) {
+            <th>Changes</th>
 
-		<tr>
-			<td>Total Cores</td>
-			<td>{{ application?.project_application_total_cores }}</td>
-		</tr>
+            <th>Modification</th>
+        }
+    </thead>
+    <tbody>
+    <tr>
+        <td>VMs</td>
 
-		<tr>
-			<td>Total RAM</td>
-			<td>{{ application?.project_application_total_ram }} GB</td>
-		</tr>
-		<tr>
-			<td>Total GPUs</td>
-			<td>{{ application?.project_application_total_gpu }}</td>
-		</tr>
+        <td>
+            {{ application?.project_application_vms_requested }}
+        </td>
+        @if (application.project_modification_request) {
+            <td>
+    <span [ngStyle]="{
+        color: application.project_modification_request.vms_requested >= application.project_application_vms_requested ? 'green' : 'red'
+    }">
+        {{ application.project_modification_request.vms_requested === application.project_application_vms_requested ? '' : (application.project_modification_request.vms_requested > application.project_application_vms_requested ? '+' : '-') }}        {{ Math.abs(application.project_modification_request.vms_requested - application.project_application_vms_requested) }}
+    </span>
+            </td>
 
-		<tr *ngIf="is_vo_admin">
-			<td>Initial Credits</td>
-			<td>{{ application?.project_application_initial_credits }}</td>
-		</tr>
+            <td>{{ application.project_modification_request.vms_requested }}</td>
+        }
+    </tr>
 
-		<tr *ngIf="is_vo_admin">
-			<td>Used Credits</td>
-			<td>{{ current_credits }}</td>
-		</tr>
+        @for (flavorDiff of flavorDiffs; track flavorDiff.name) {
+            <tr>
+                <td>Flavor: {{ flavorDiff.name }}</td>
+                <td>{{ flavorDiff.current }}</td>
+                @if (application.project_modification_request) {
+                    <td>
+    <span [ngStyle]="{
+        color: flavorDiff.diff > 0 ? 'green' : 'red'
+    }">
+        {{ flavorDiff.diff === 0 ? '' : (flavorDiff.diff > 0 ? '+' : '-') }}
+        {{ flavorDiff.diff }}
+    </span>
+                    </td>
 
-		<tr>
-			<td>Storage Limit</td>
-			<td>{{ application?.project_application_volume_limit }} GB</td>
-		</tr>
-		<tr>
-			<td>Volume Counter</td>
-			<td>{{ application?.project_application_volume_counter }} volumes</td>
-		</tr>
-		<tr *ngIf="application?.project_application_openstack_project">
-			<td>ObjectStorage</td>
-			<td>{{ application?.project_application_object_storage }} GB</td>
-		</tr>
-	</tbody>
+
+                    <td>{{ flavorDiff.new }}</td>
+                }
+
+            </tr>
+        }
+
+
+    <tr>
+        <td>Total Cores</td>
+        <td>{{ application?.project_application_total_cores }}</td>
+        @if (application.project_modification_request) {
+            <td>
+    <span [ngStyle]="{
+        color: application.project_modification_request.total_cores >= application.project_application_total_cores ? 'green' : 'red'
+    }">
+        {{ application.project_modification_request.total_cores === application.project_application_total_cores ? '' : (application.project_modification_request.total_cores > application.project_application_total_cores ? '+' : '-') }}
+        {{ Math.abs(application.project_modification_request.total_cores - application.project_application_total_cores) }}
+    </span>
+            </td>
+            <td>{{ application.project_modification_request.total_cores }}</td>
+        }
+    </tr>
+
+    <tr>
+        <td>Total RAM</td>
+        <td>{{ application?.project_application_total_ram }} GB
+
+        </td>
+        @if (application.project_modification_request) {
+            <td>
+    <span [ngStyle]="{
+        color: application.project_modification_request.total_ram >= application.project_application_total_ram ? 'green' : 'red'
+    }">
+        {{ application.project_modification_request.total_ram === application.project_application_total_ram ? '' : (application.project_modification_request.total_ram > application.project_application_total_ram ? '+' : '-') }}
+        {{ Math.abs(application.project_modification_request.total_ram - application.project_application_total_ram) }}
+    </span>
+            </td>
+            <td>{{ application.project_modification_request.total_ram }}</td>
+        }
+    </tr>
+    <tr>
+        <td>Total GPUs</td>
+        <td>{{ application?.project_application_total_gpu }}</td>
+        @if (application.project_modification_request) {
+            <td>
+    <span [ngStyle]="{
+        color: application.project_modification_request.total_gpu >= application.project_application_total_gpu ? 'green' : 'red'
+    }">
+        {{ application.project_modification_request.total_gpu === application.project_application_total_gpu ? '' : (application.project_modification_request.total_gpu > application.project_application_total_gpu ? '+' : '-') }}
+        {{ Math.abs(application.project_modification_request.total_gpu - application.project_application_total_gpu) }}
+    </span>
+            </td>
+            <td>{{ application.project_modification_request.total_gpu }}</td>
+        }
+    </tr>
+
+    <tr *ngIf="is_vo_admin">
+        <td>Initial Credits</td>
+        <td>{{ application?.project_application_initial_credits }}</td>
+
+        @if (application.project_modification_request) {
+            <td>
+    <span [ngStyle]="{
+        color: green
+    }">
+        + {{ application.project_modification_request.extra_credits }}
+    </span>
+            </td>
+            <td>{{ application.project_modification_request.extra_credits + application.project_application_initial_credits }}</td>
+        }
+    </tr>
+
+    <tr *ngIf="is_vo_admin">
+        <td>Used Credits</td>
+        <td>{{ current_credits }}</td>
+        @if (application.project_modification_request) {
+            <td></td>
+            <td></td>
+
+        }
+    </tr>
+
+    <tr>
+        <td>Storage Limit</td>
+        <td>{{ application?.project_application_volume_limit }} GB</td>
+        @if (application.project_modification_request) {
+            <td>
+    <span [ngStyle]="{
+        color: application.project_modification_request.volume_limit >= application.project_application_volume_limit ? 'green' : 'red'
+    }">
+        {{ application.project_modification_request.volume_limit === application.project_application_volume_limit ? '' : (application.project_modification_request.volume_limit > application.project_application_volume_limit ? '+' : '-') }}
+        {{ Math.abs(application.project_modification_request.volume_limit - application.project_application_volume_limit) }}
+    </span>
+            </td>
+            <td>{{ application.project_modification_request.volume_limit }}</td>
+        }
+    </tr>
+    <tr>
+        <td>Volume Counter</td>
+        <td>{{ application?.project_application_volume_counter }} volumes</td>
+        @if (application.project_modification_request) {
+            <td>
+    <span [ngStyle]="{
+        color: application.project_modification_request.volume_counter >= application.project_application_volume_counter ? 'green' : 'red'
+    }">
+        {{ application.project_modification_request.volume_counter === application.project_application_volume_counter ? '' : (application.project_modification_request.volume_counter > application.project_application_volume_counter ? '+' : '-') }}
+        {{ Math.abs(application.project_modification_request.volume_counter - application.project_application_volume_counter) }}
+    </span>
+            </td>
+            <td>{{ application.project_modification_request.volume_counter }}</td>
+        }
+    </tr>
+    <tr *ngIf="application?.project_application_openstack_project">
+        <td>ObjectStorage</td>
+        <td>{{ application?.project_application_object_storage }} GB</td>
+        @if (application.project_modification_request) {
+            <td>
+    <span [ngStyle]="{
+        color: application.project_modification_request.object_storage >= application.project_application_object_storage ? 'green' : 'red'
+    }">
+        {{ application.project_modification_request.object_storage === application.project_application_object_storage ? '' : (application.project_modification_request.object_storage > application.project_application_object_storage ? '+' : '-') }}
+        {{ Math.abs(application.project_modification_request.object_storage - application.project_application_object_storage) }}
+    </span>
+            </td>
+            <td>{{ application.project_modification_request.object_storage }}</td>
+        }
+    </tr>
+    </tbody>
 </table>
