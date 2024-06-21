@@ -10,8 +10,8 @@ import { BadgeModule, TableDirective } from '@coreui/angular';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
-import { AddsimplevmComponent } from './addsimplevm.component';
-import { AddcloudapplicationComponent } from './addcloudapplication.component';
+import { AddsimplevmComponent } from './application-formular/simplevm-formular/addsimplevm.component';
+import { AddcloudapplicationComponent } from './application-formular/openstack-formular/addcloudapplication.component';
 import { TypeOverviewComponent } from './type-overview.component';
 import { ValidationApplicationComponent } from '../validation-application/validation-application.component';
 import { ApplicationDetailComponent } from './application-detail/application-detail.component';
@@ -31,6 +31,8 @@ import {
 } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
 import { NewsModule } from '../news/news.module';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
+import { KubernetesFormularComponent } from './application-formular/kubernetes-formular/kubernetes-formular.component';
+
 import { ApplicationListComponent } from './application-list/application-list.component';
 import { ApplicationCardComponent } from './application-card/application-card.component';
 import { ApplicationVoActionsComponent } from './application-vo-actions/application-vo-actions.component';
@@ -62,6 +64,7 @@ import {
 		ApplicationsComponent,
 		AddsimplevmComponent,
 		AddcloudapplicationComponent,
+		KubernetesFormularComponent,
 		TypeOverviewComponent,
 		ValidationApplicationComponent,
 		ApplicationDetailComponent,

@@ -1,28 +1,33 @@
-<span
-	*ngIf="application?.project_application_openstack_project"
-	data-toggle="tooltip"
-	title="This is an Openstack project"
->
-	<img
-		data-toggle="tooltip"
-		title="This is an OpenStack project"
-		src="{{ openstack_logo }}"
-		style="width: 20px; margin-bottom: 10px"
-	/>
-</span>
-<span
-	*ngIf="!application?.project_application_openstack_project"
-	class=""
-	data-toggle="tooltip"
-	title="This is a Simple VM project"
->
-	<img
-		data-toggle="tooltip"
-		title="This is a Simple VM project"
-		src="{{ simple_vm_logo }}"
-		style="width: 20px; margin-bottom: 10px"
-	/>
-</span>
+@if (application?.project_application_openstack_project) {
+	@if (application?.project_application_kubernetes_access) {
+		<span data-toggle="tooltip" title="This is an Kubernetes project">
+			<img
+				data-toggle="tooltip"
+				title="This is an Kubernetes project"
+				src="{{ kubernetes_logo }}"
+				style="width: 20px; margin-bottom: 10px"
+			/>
+		</span>
+	} @else {
+		<span data-toggle="tooltip" title="This is an Openstack project">
+			<img
+				data-toggle="tooltip"
+				title="This is an OpenStack project"
+				src="{{ openstack_logo }}"
+				style="width: 20px; margin-bottom: 10px"
+			/>
+		</span>
+	}
+} @else {
+	<span class="" data-toggle="tooltip" title="This is a Simple VM project">
+		<img
+			data-toggle="tooltip"
+			title="This is a Simple VM project"
+			src="{{ simple_vm_logo }}"
+			style="width: 20px; margin-bottom: 10px"
+		/>
+	</span>
+}
 
 <span
 	*ngIf="application?.project_application_pi_approved && is_vo_admin"

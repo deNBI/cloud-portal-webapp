@@ -55,6 +55,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	// brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
 	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg';
+	kubernetes_logo: string = 'static/webapp/assets/img/kubernetes_logo.svg';
 
 	cluster_allowed: boolean = false;
 	has_workshops: boolean = false;

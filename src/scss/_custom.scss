@@ -368,6 +368,11 @@ $simplevmcolour: #00ADEF;
 
 }
 
+.nav-icon.proj-icon {
+    max-width: 20px;
+    height: auto;
+}
+
 .sidebar .nav-link {
     color: $deNBI_darkgrey;
 }
@@ -1157,6 +1162,7 @@ header {
     aspect-ratio: auto;
     margin: 1rem;
 }
+
 
 .bg-info-flavor {
     background-color: $deNBI_lightgrey;

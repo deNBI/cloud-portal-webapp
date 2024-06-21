@@ -12,6 +12,7 @@ export class ApplicationBadgesComponent {
 	is_vo_admin: boolean = false;
 	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg';
+	kubernetes_logo: string = 'static/webapp/assets/img/kubernetes_logo.svg';
 
 	constructor() {
 		this.is_vo_admin = is_vo;

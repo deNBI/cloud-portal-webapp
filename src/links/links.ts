@@ -38,6 +38,7 @@ export const CLOUD_PORTAL_SUPPORT_MAIL = 'cloud-helpdesk@denbi.de';
 export const POLICY_LINK: string = 'https://cloud.denbi.de/about/policies/';
 export const SIMPLE_VM_LINK: string = 'https://cloud.denbi.de/about/project-types/simplevm/';
 export const OPENSTACK_LINK: string = 'https://cloud.denbi.de/about/project-types/openstack/';
+export const KUBERNETES_LINK: string = 'https://cloud.denbi.de/about/project-types/kubernetes/';
 export const PROJECT_TYPES_LINK: string = 'https://cloud.denbi.de/about/project-types/';
 export const PUBLICATIONS_LINK: string = 'https://cloud.denbi.de/about/publications/';
 export const PUBLIC_DOI_ENDPOINT: string = `${environment.apiBase}public/statistic/doi/ `;

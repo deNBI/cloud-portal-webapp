@@ -8,8 +8,6 @@ import { Component } from '@angular/core';
 	templateUrl: 'addsimplevm.component.html',
 })
 export class AddsimplevmComponent {
-
 	simple_vm_application: boolean = true;
 	title: string = 'New Simple Vm Application';
-
 }

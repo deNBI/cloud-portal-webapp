@@ -61,8 +61,14 @@
 								</strong>
 							</label>
 							<div class="col-md-8">
-								A cloud project is represented by an Openstack project which allows you to manage your virtual machines,
-								storage and network configurations.
+								@if (kubernetes_access) {
+									A cloud project is represented by a Kubernetes project which allows you to manage your virtual
+									machines, storage and network configurations. If it matches your project requirements, it may be that
+									Kubernetes is operated on top OpenStack.
+								} @else {
+									A cloud project is represented by an Openstack project which allows you to manage your virtual
+									machines, storage and network configurations.
+								}
 							</div>
 						</div>
 						<div class="form-group row" *ngIf="simple_vm_project">

@@ -8,10 +8,8 @@ import { Component } from '@angular/core';
 	templateUrl: 'addcloudapplication.component.html',
 	styleUrls: ['addcloudapplication.component.css'],
 })
-
 export class AddcloudapplicationComponent {
 	openstack_application: boolean = true;
 
 	title: string = 'New OpenStack Application';
-
 }

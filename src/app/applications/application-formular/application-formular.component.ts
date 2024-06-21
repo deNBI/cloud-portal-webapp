@@ -46,6 +46,7 @@ import { User } from '../application.model/user.model';
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
 	@Input() openstack_project: boolean = false;
 	@Input() simple_vm_project: boolean = false;
+	@Input() kubernetes_access: boolean = false;
 	@Input() title: string;
 	@Input() application: Application;
 	@Input() is_validation: boolean = false;
@@ -170,6 +171,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	initiateFormWithApplication(): void {
 		if (this.application && !this.initiated_validation && this.is_validation) {
 			this.openstack_project = this.application.project_application_openstack_project;
+
 			this.simple_vm_project = !this.openstack_project;
 			this.application.project_application_pi = new User();
 			this.searchTermsInEdamTerms();
@@ -184,6 +186,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		} else {
 			this.application = new Application(null);
 			this.application.project_application_openstack_project = this.openstack_project;
+			this.application.project_application_kubernetes_access = this.kubernetes_access;
 			if (this.openstack_project) {
 				this.application.project_application_object_storage = 0;
 			}
