@@ -21,8 +21,18 @@
 						<span
 							data-toggle="tooltip"
 							title="This user acts as the Principal Investigator for {{
+								application?.project_application_pi?.pi_project_count_active
+							}} active project(s)"
+						>
+							<c-badge color="success">
+								{{ application?.project_application_pi?.pi_project_count_active }}</c-badge
+							></span
+						>/
+						<span
+							data-toggle="tooltip"
+							title="This user acts as the Principal Investigator for {{
 								application?.project_application_pi?.pi_project_count_total
-							}} project(s) (including this one)."
+							}} total project(s) (including this one)."
 						>
 							<c-badge color="info"> {{ application?.project_application_pi?.pi_project_count_total }}</c-badge></span
 						>
@@ -62,8 +72,8 @@
 		<tr>
 			<td>User Affiliations</td>
 			<td>
-				@if (application?.project_application_pi?.user_affiliations) {
-					{{ application?.project_application_pi?.user_affiliations }}
+				@if (application?.project_application_user?.user_affiliations) {
+					{{ application?.project_application_user?.user_affiliations }}
 				} @else {
 					<span class="spinner-border text-info"></span>
 				}
@@ -72,8 +82,8 @@
 		<tr>
 			<td>User Name</td>
 			<td>
-				@if (application?.project_application_pi?.username) {
-					{{ application?.project_application_pi?.username }}
+				@if (application?.project_application_user?.username) {
+					{{ application?.project_application_user?.username }}
 				} @else {
 					<span class="spinner-border text-info"></span>
 				}
@@ -82,8 +92,8 @@
 		<tr>
 			<td>User Email</td>
 			<td>
-				@if (application?.project_application_pi?.email) {
-					{{ application?.project_application_pi?.email }}
+				@if (application?.project_application_user?.email) {
+					{{ application?.project_application_user?.email }}
 				} @else {
 					<span class="spinner-border text-info"></span>
 				}

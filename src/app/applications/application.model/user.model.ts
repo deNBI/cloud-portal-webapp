@@ -7,4 +7,5 @@ export class User {
 	elixir_id: string;
 	email: string;
 	pi_project_count_total: number = 0;
+	pi_project_count_active: number = 0;
 }
