@@ -1,11 +1,12 @@
 import {
-	Component, OnDestroy, OnInit, ViewChild,
+	Component, OnDestroy, OnInit, ViewChild, inject,
 } from '@angular/core';
 import {
 	forkJoin, lastValueFrom, Subject, Subscription,
 } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { AbstractControl, UntypedFormControl, ValidatorFn } from '@angular/forms';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { Volume } from './volume';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
 import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
@@ -33,6 +34,7 @@ import { IsMigratedProjectIdPipe } from '../../pipe-module/pipes/migratedList';
 })
 export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
 	@ViewChild('errorModal') errorModal: any;
+	private readonly tracker = inject(MatomoTracker);
 
 	volume_page: VolumePage = new VolumePage();
 
@@ -283,6 +285,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Volume Overview');
 		this.getVolumes();
 		this.getUserApprovedProjects();
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {

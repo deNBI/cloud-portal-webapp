@@ -21,54 +21,54 @@ import { User } from '../../../applications/application.model/user.model';
 })
 export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	/**
-		 * If all Applications are loaded, important for the loader.
-		 *
-		 * @type {boolean}
-		 */
+	 * If all Applications are loaded, important for the loader.
+	 *
+	 * @type {boolean}
+	 */
 	isLoaded: boolean = false;
 	FlavorTypeShortcuts: typeof FlavorTypeShortcuts = FlavorTypeShortcuts;
 
 	/**
-		 * Selected Application.
-		 */
+	 * Selected Application.
+	 */
 	selectedApplication: Application;
 
 	/**
-		 * All available compute centers.
-		 *
-		 * @type {Array}
-		 */
+	 * All available compute centers.
+	 *
+	 * @type {Array}
+	 */
 	computeCenters: ComputecenterComponent[] = [];
 
 	/**
-		 * List of flavor types.
-		 */
+	 * List of flavor types.
+	 */
 	typeList: FlavorType[];
 
 	/**
-		 * Total number of cores.
-		 *
-		 * @type {number}
-		 */
+	 * Total number of cores.
+	 *
+	 * @type {number}
+	 */
 	totalNumberOfCores: number = 0;
 	/**
-		 * Total number of ram.
-		 *
-		 * @type {number}
-		 */
+	 * Total number of ram.
+	 *
+	 * @type {number}
+	 */
 	totalRAM: number = 0;
 
 	/**
-		 * Total number of GPUs
-		 */
+	 * Total number of GPUs
+	 */
 	totalGPU: number = 0;
 
 	newFlavors: {
-				[id: string]: {
-						counter: number
-						flavor: Flavor
-				}
-		} = {};
+		[id: string]: {
+			counter: number
+			flavor: Flavor
+		}
+	} = {};
 
 	GPU_SHORTCUT = 'GPU';
 	HMF_SHORTCUT = 'HMF';
@@ -76,57 +76,57 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	extension_request: boolean = false;
 
 	/**
-		 * If shortname is valid.
-		 *
-		 * @type {boolean}
-		 */
+	 * If shortname is valid.
+	 *
+	 * @type {boolean}
+	 */
 	public wronginput: boolean = false;
 	/**
-		 *
-		 */
+	 *
+	 */
 	constantStrings: Object;
 
 	/**
-		 * List of flavors.
-		 */
+	 * List of flavors.
+	 */
 	flavorList: Flavor[] = [];
 	extraResourceCommentRequired: boolean = false;
 
 	/**
-		 * If all userApplications are loaded, important for the loader.
-		 *
-		 * @type {boolean}
-		 */
+	 * If all userApplications are loaded, important for the loader.
+	 *
+	 * @type {boolean}
+	 */
 	isLoaded_userApplication: boolean = false;
 
 	public project_application_pi_approved: boolean = false;
 
 	/**
-		 * Name of the project.
-		 */
+	 * Name of the project.
+	 */
 	public projectName: string;
 
 	public project_application_report_allowed: boolean = false;
 
 	/**
-		 * Applications of the user viewing the Application overview.
-		 *
-		 * @type {Array}
-		 */
+	 * Applications of the user viewing the Application overview.
+	 *
+	 * @type {Array}
+	 */
 	user_applications: Application[] = [];
 
 	constructor(
-				protected userService: UserService,
-				protected applicationsService: ApplicationsService,
-				protected facilityService: FacilityService,
-				private cdRef: ChangeDetectorRef,
+		protected userService: UserService,
+		protected applicationsService: ApplicationsService,
+		protected facilityService: FacilityService,
+		private cdRef: ChangeDetectorRef,
 	) {
 		super();
 	}
 
 	/**
-		 * Gets all available compute centers and saves them in the computeCenters attribute.
-		 */
+	 * Gets all available compute centers and saves them in the computeCenters attribute.
+	 */
 	getComputeCenters(): void {
 		this.facilityService.getComputeCenters().subscribe((result: [{ [key: string]: string }]): void => {
 			for (const cc of result) {
@@ -162,8 +162,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 			if (
 				(entry?.flavor?.type?.shortcut.toUpperCase() === this.GPU_SHORTCUT
-										|| entry?.flavor?.type?.shortcut.toUpperCase() === this.HMF_SHORTCUT)
-								&& entry.counter > 0
+					|| entry?.flavor?.type?.shortcut.toUpperCase() === this.HMF_SHORTCUT)
+				&& entry.counter > 0
 			) {
 				this.extraResourceCommentRequired = true;
 				this.cdRef.detectChanges();
@@ -173,26 +173,20 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		}
 		this.extraResourceCommentRequired = false;
 		this.cdRef.detectChanges();
-
 	}
 
 	getApplicationPi(application: Application) {
 		if (!application.project_application_pi) {
 			this.applicationsService.getApplicationPI(application.project_application_id).subscribe((pi: User) => {
-
 				application.project_application_pi = pi;
-
 			});
 		}
-
 	}
 
 	getApplicationUser(application: Application) {
 		if (!application.project_application_user) {
 			this.applicationsService.getApplicationUser(application.project_application_id).subscribe((user: User) => {
-
 				application.project_application_user = user;
-
 			});
 		}
 	}
@@ -200,9 +194,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	getExtensionUser(application: Application) {
 		if (application.project_lifetime_request && !application.project_lifetime_request.user) {
 			this.applicationsService.getLifetimeExtensionUser(application.project_application_id).subscribe((user: User) => {
-
 				application.project_lifetime_request.user = user;
-
 			});
 		}
 	}
@@ -210,9 +202,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	getModificationUser(application: Application) {
 		if (application.project_modification_request && !application.project_modification_request.user) {
 			this.applicationsService.getLifetimeExtensionUser(application.project_application_id).subscribe((user: User) => {
-
 				application.project_modification_request.user = user;
-
 			});
 		}
 	}
@@ -231,11 +221,11 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	}
 
 	/**
-		 * Get details of member like name and email by elixir.
-		 *
-		 * @param application
-		 * @param collapse_id
-		 */
+	 * Get details of member like name and email by elixir.
+	 *
+	 * @param application
+	 * @param collapse_id
+	 */
 	public getMemberDetailsByElixirIdIfCollapsed(application: Application, collapse_id: string): void {
 		if (!this.getCollapseStatus(collapse_id)) {
 			this.getMemberDetailsByElixirId(application);
@@ -256,11 +246,11 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	}
 
 	/**
-		 * Get status name  by status id.
-		 *
-		 * @param id
-		 * @returns
-		 */
+	 * Get status name  by status id.
+	 *
+	 * @param id
+	 * @returns
+	 */
 	public getStatusById(id: number): string {
 		const dummy: string = 'Unknown';
 		if (Application_States_Strings[Application_States[id]]) {
@@ -271,20 +261,20 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	}
 
 	/**
-		 * Sets the selected application.
-		 *
-		 * @param application
-		 */
+	 * Sets the selected application.
+	 *
+	 * @param application
+	 */
 	setSelectedApplication(application: Application): void {
 		this.selectedApplication = application;
 	}
 
 	/**
-		 * Uses the param types to safe the available FlavorTypes to the array typeList.
-		 * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
-		 *
-		 * @param types array of all available FlavorTypes
-		 */
+	 * Uses the param types to safe the available FlavorTypes to the array typeList.
+	 * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+	 *
+	 * @param types array of all available FlavorTypes
+	 */
 	setListOfTypes(types: FlavorType[]): void {
 		let index: number = -1;
 		for (let i: number = 0; i < types.length; i += 1) {
@@ -303,17 +293,17 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	}
 
 	/**
-		 * Check if short name is valid.
-		 *
-		 * @param shortname
-		 */
+	 * Check if short name is valid.
+	 *
+	 * @param shortname
+	 */
 	public checkShortname(shortname: string): void {
 		this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
 	}
 
 	/**
-		 * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
-		 */
+	 * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
+	 */
 	generateConstants(): void {
 		this.constantStrings = [];
 		this.constantStrings['project_application_shortname'] = 'Shortname: ';
@@ -342,21 +332,19 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 		for (const key in this.flavorList) {
 			if (key in this.flavorList) {
-				this.constantStrings[
-					`project_application_${this.flavorList[key].name}`
-				] = `Number of VMs of type  ${this.flavorList[key].name}: `;
+				this.constantStrings[`project_application_${this.flavorList[key].name}`] =					`Number of VMs of type  ${this.flavorList[key].name}: `;
 			}
 		}
 	}
 
 	/**
-		 * This function concatenates a given key combined with a given value to a string
-		 * which is used on the confirmation-modal.
-		 *
-		 * @param key the key to access a string in the array constantStrings
-		 * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
-		 * @returns the concatenated string for the confirmation-modal
-		 */
+	 * This function concatenates a given key combined with a given value to a string
+	 * which is used on the confirmation-modal.
+	 *
+	 * @param key the key to access a string in the array constantStrings
+	 * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
+	 * @returns the concatenated string for the confirmation-modal
+	 */
 	matchString(key: string, val: string): string {
 		if (key in this.constantStrings) {
 			switch (key) {

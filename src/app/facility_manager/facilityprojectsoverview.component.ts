@@ -1,8 +1,9 @@
 import {
-	Component, Input, OnInit, QueryList, ViewChildren,
+	Component, Input, OnInit, QueryList, ViewChildren, inject,
 } from '@angular/core';
 import { Observable, Subject, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { environment } from '../../environments/environment';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -32,6 +33,7 @@ import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
 	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService],
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
+	private readonly tracker = inject(MatomoTracker);
 	@Input() voRegistrationLink: string = environment.voRegistrationLink;
 
 	title: string = 'Projects Overview';
@@ -147,6 +149,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Facility Project Overview');
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result;
 			this.selectedFacility = this.managerFacilities[0];

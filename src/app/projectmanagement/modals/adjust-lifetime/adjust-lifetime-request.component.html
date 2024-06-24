@@ -1,120 +1,109 @@
 <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4>Adjust lifetime extension for {{ application?.project_application_shortname }}</h4>
-            <button
-                    type="button"
-                    class="btn-close"
-                    style="cursor: pointer"
-                    (click)="hide()"
-                    aria-label="Close"
-            ></button>
-        </div>
-        <div class="modal-body">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4>Adjust lifetime extension for {{ application?.project_application_shortname }}</h4>
+			<button type="button" class="btn-close" style="cursor: pointer" (click)="hide()" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			@if (!loaded) {
+				<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
+			} @else {
+				<form id="lifetime_adjustment_form" #lifetimeAdjustmentForm="ngForm" class="form-horizontal">
+					<div class="form-group row">
+						<label class="col-md-4 form-control-label"
+							><strong
+								>Number of additional months*
+								<i
+									data-balloon="Number of months the project shall be extended by."
+									data-balloon-pos="down"
+									data-balloon-length="large"
+									><i class="icon-question" style="cursor: pointer"></i></i></strong
+						></label>
+						<div class="col">
+							<div class="input-group">
+								<input
+									class="form-control"
+									name="requested_lifetime_counter"
+									id="requested_lifetime_counter"
+									placeholder="NA"
+									value="{{ application?.project_lifetime_request?.extra_lifetime }}"
+									type="text"
+									disabled
+								/>
+							</div>
+							<span class="help-block">Requested number of months to extend</span>
+						</div>
 
-            @if (!loaded) {
-                <div class="spinner-border text-primary" style="display: block; margin: auto"></div>
-
-            } @else {
-
-
-                <form id="lifetime_adjustment_form" #lifetimeAdjustmentForm="ngForm" class="form-horizontal">
-                    <div class="form-group row">
-                        <label class="col-md-4 form-control-label"
-                        ><strong
-                        >Number of additional months*
-                            <i
-                                    data-balloon="Number of months the project shall be extended by."
-                                    data-balloon-pos="down"
-                                    data-balloon-length="large"
-                            ><i class="icon-question" style="cursor: pointer"></i></i></strong
-                        ></label>
-                        <div class="col">
-                            <div class="input-group">
-                                <input
-                                        class="form-control"
-                                        name="requested_lifetime_counter"
-                                        id="requested_lifetime_counter"
-                                        placeholder="NA"
-                                        value="{{ application?.project_lifetime_request?.extra_lifetime }}"
-                                        type="text"
-                                        disabled
-                                />
-                            </div>
-                            <span class="help-block">Requested number of months to extend</span>
-                        </div>
-
-                        <div class="col" *ngIf="application?.project_lifetime_request">
-                            <div class="input-group">
-                                <input
-                                        required
-                                        class="form-control"
-                                        id="adjusted_lifetime_counter"
-                                        name="adjusted_lifetime_counter"
-                                        placeholder="e.g. 3 months"
-                                        type="number"
-                                        min="1"
-                                        step="1"
-                                        max="24"
-                                        [(ngModel)]="adjustedApplicationLifetimeExtension.extra_lifetime"
-                                        appMinAmount="0"
-                                        appInteger
-                                        [ngClass]="{
+						<div class="col" *ngIf="application?.project_lifetime_request">
+							<div class="input-group">
+								<input
+									required
+									class="form-control"
+									id="adjusted_lifetime_counter"
+									name="adjusted_lifetime_counter"
+									placeholder="e.g. 3 months"
+									type="number"
+									min="1"
+									step="1"
+									max="24"
+									[(ngModel)]="adjustedApplicationLifetimeExtension.extra_lifetime"
+									appMinAmount="0"
+									appInteger
+									[ngClass]="{
 										'is-invalid': lifetimeAdjustmentForm.controls.adjusted_lifetime_counter?.invalid,
 										'is-valid': lifetimeAdjustmentForm.controls.adjusted_lifetime_counter?.valid
 									}"
-                                />
-                            </div>
-                            <span class="help-block">Number of months you want to prolong the project</span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-4 form-control-label" for="lifetime_manager_comment"
-                        ><strong
-                        >Comment
-                            <i
-                                    data-balloon="Additional comment to the project owner regarding the extension request."
-                                    data-balloon-pos="down"
-                                    data-balloon-length="medium"
-                            ><i class="icon-question" style="cursor: pointer"></i></i></strong
-                        ></label>
-                        <div class="col">
-                            <div class="input-group">
+								/>
+							</div>
+							<span class="help-block">Number of months you want to prolong the project</span>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-4 form-control-label" for="lifetime_manager_comment"
+							><strong
+								>Comment
+								<i
+									data-balloon="Additional comment to the project owner regarding the extension request."
+									data-balloon-pos="down"
+									data-balloon-length="medium"
+									><i class="icon-question" style="cursor: pointer"></i></i></strong
+						></label>
+						<div class="col">
+							<div class="input-group">
 								<textarea
-                                        class="form-control"
-                                        id="lifetime_manager_comment"
-                                        name="lifetime_manager_comment"
-                                        [(ngModel)]="adjustedApplicationLifetimeExtension.manager_comment"
-                                        type="text"
-                                ></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+									class="form-control"
+									id="lifetime_manager_comment"
+									name="lifetime_manager_comment"
+									[(ngModel)]="adjustedApplicationLifetimeExtension.manager_comment"
+									type="text"
+								></textarea>
+							</div>
+						</div>
+					</div>
+				</form>
 
-                <div class="modal-footer">
-                    <div class="label">
-                        The application values will be adjusted. The adjusted values still need to be approved
-                        separately.
-                    </div>
-                    <button
-                            type="button"
-                            class="btn btn-primary"
-                            form="lifetime_adjustment_form"
-                            id="submitLifetimeAdjustmentButton"
-                            (click)="adjustLifetimeExtension()"
-                            [disabled]="lifetimeAdjustmentForm.invalid"
-                    >
-                        <i class="far fa-dot-circle"></i>
-                        Adjust
-                    </button>
-                    <button type="button" class="btn btn-danger" (click)="hide()">Discard</button>
-                </div>
-            }
-        </div>
+				<div class="modal-footer">
+					<div class="label">
+						The application values will be adjusted. The adjusted values still need to be approved separately.
+					</div>
+					<button
+						type="button"
+						class="btn btn-primary"
+						form="lifetime_adjustment_form"
+						id="submitLifetimeAdjustmentButton"
+						(click)="adjustLifetimeExtension()"
+						[disabled]="lifetimeAdjustmentForm.invalid"
+					>
+						<i class="far fa-dot-circle"></i>
+						Adjust
+					</button>
+					<button type="button" class="btn btn-danger" (click)="hide()">Discard</button>
+				</div>
+			}
+		</div>
 
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->

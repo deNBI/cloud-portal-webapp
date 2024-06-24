@@ -1,8 +1,8 @@
 export enum ConfirmationTypes {
-		ENABLE,
-		DISABLE,
-		APPROVE,
-		DECLINE,
-		DELETE,
-		RESET_PI
+	ENABLE,
+	DISABLE,
+	APPROVE,
+	DECLINE,
+	DELETE,
+	RESET_PI,
 }

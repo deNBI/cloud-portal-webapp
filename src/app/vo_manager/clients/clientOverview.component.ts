@@ -1,6 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+	Component, OnDestroy, OnInit, inject,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { Client } from './client.model';
 import { ClientService } from '../../api-connector/client.service';
 import { ApiSettings } from '../../api-connector/api-settings.service';
@@ -11,18 +14,15 @@ import { FacilityService } from '../../api-connector/facility.service';
 import { IResponseTemplate } from '../../api-connector/response-template';
 import { is_vo } from '../../shared/globalvar';
 import { ClientLimitsComponent } from './modals/client-limits..component';
-
 /**
  * Client component.
  */
 @Component({
-	           selector: 'app-client-overview',
-	           templateUrl: 'clientOverview.html',
-	           providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
+	selector: 'app-client-overview',
+	templateUrl: 'clientOverview.html',
+	providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
 })
-
 export class ClientOverviewComponent implements OnInit, OnDestroy {
-
 	title: string = 'Client Overview';
 	/**
 	 * All clients.
@@ -64,12 +64,13 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 	isLoaded: boolean = false;
 
 	subscription: Subscription = new Subscription();
+	private readonly tracker = inject(MatomoTracker);
 
 	constructor(
-private facilityService: FacilityService,
-private userService: UserService,
-	            private clientservice: ClientService,
-private modalService: BsModalService,
+		private facilityService: FacilityService,
+		private userService: UserService,
+		private clientservice: ClientService,
+		private modalService: BsModalService,
 	) {
 		this.facilityService = facilityService;
 		this.userService = userService;
@@ -145,7 +146,6 @@ private modalService: BsModalService,
 	 * @param location
 	 */
 	postClient(host: string, port: string, location: string): void {
-
 		if (host && port && location) {
 			this.subscription.add(
 				this.clientservice.postClient(host, port, location).subscribe((newClient: Client): void => {
@@ -167,16 +167,15 @@ private modalService: BsModalService,
 
 	switchActiveClient(id: string): void {
 		this.subscription.add(
-			this.clientservice.switchActive(id).subscribe(
-				(client: Client) => {
-					this.clients[this.clients.indexOf(this.selectedClient)] = client;
-					this.selectedClient = null;
-				},
-			),
+			this.clientservice.switchActive(id).subscribe((client: Client) => {
+				this.clients[this.clients.indexOf(this.selectedClient)] = client;
+				this.selectedClient = null;
+			}),
 		);
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('VO Clients Overview');
 		this.is_vo_admin = is_vo;
 		this.getClientsChecked();
 		this.getComputeCenters();
@@ -185,5 +184,4 @@ private modalService: BsModalService,
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
 	}
-
 }
