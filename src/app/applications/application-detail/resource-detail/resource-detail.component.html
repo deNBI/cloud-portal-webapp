@@ -105,7 +105,7 @@
 							}"
 						>
 							{{ flavorDiff.diff === 0 ? '' : flavorDiff.diff > 0 ? '+' : '-' }}
-							{{ flavorDiff.diff }}
+							{{ Math.abs(flavorDiff.diff) }}
 						</span>
 					</td>
 
