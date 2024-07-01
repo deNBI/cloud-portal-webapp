@@ -5,7 +5,7 @@ import { Util } from '../util';
  * LoginPage.
  */
 export class LoginPagePlaywright {
-	TEST_RP_WARNING: string = 'testRpWarning';
+	TEST_RP_WARNING: string = 'testSp';
 	TEST_RP_CONTINUE: string = 'Continue';
 	CONSENT_CONTINUE: string = 'Yes, continue';
 	AUTHORIZE_BTN: string = 'authorize-button';
@@ -123,7 +123,7 @@ export class LoginPagePlaywright {
 	async skipElixirTestWarning(): Promise<void> {
 		console.log('checking for elixir warnining');
 		try {
-			await this.page.waitForURL(`**/oidc/${this.TEST_RP_WARNING}**`, { timeout: 5000 });
+			await this.page.waitForURL(`**/${this.TEST_RP_WARNING}**`, { timeout: 5000 });
 			await this.page.locator(`text=${this.TEST_RP_CONTINUE}`).click();
 			//	await this.page.waitForURL('**/profile');
 		} catch (error) {
