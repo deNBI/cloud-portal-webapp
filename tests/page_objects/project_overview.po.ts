@@ -78,7 +78,7 @@ export class ProjectOverViewPage {
 		console.log(`Project ${project_name} should be visible!`);
 
 		await this.page
-			.locator(Util.by_data_test_id_str_prefix(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`))
+			.locator(Util.by_data_test_id_str_prefix(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`)).first()
 			.click();
 
 		console.log(this.page.url());
@@ -92,9 +92,9 @@ export class ProjectOverViewPage {
 		simpleVM
 			? console.log('Filling extension formular and requesting extension for SimpleVM project')
 			: console.log('Filling extension formular and requesting extension for Openstack project');
-		await this.page.locator(Util.by_data_test_id_str(this.OPEN_EXTENSION_REQUEST_BUTTON)).click();
-		await this.page.locator(Util.by_data_test_id_str(this.CONTINUE_TESTIMONIAL_MODAL_BUTTON)).click();
-		await this.page.locator(Util.by_data_test_id_str(this.DECLINE_NEW_PUBLICATION_BUTTON)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.OPEN_EXTENSION_REQUEST_BUTTON)).first().click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONTINUE_TESTIMONIAL_MODAL_BUTTON)).first().click();
+		// await this.page.locator(Util.by_data_test_id_str(this.DECLINE_NEW_PUBLICATION_BUTTON)).first().click();
 		await this.page.waitForSelector(`data-test-id=${this.PROJECT_EXTENSION_MONTHS_INPUT}`);
 		await this.page.fill(Util.by_data_test_id_str(this.PROJECT_EXTENSION_MONTHS_INPUT), '3');
 		await this.page.locator(Util.by_data_test_id_str(this.SUBMIT_EXTENSION_REQUEST_BUTTON)).click();
@@ -109,7 +109,7 @@ export class ProjectOverViewPage {
 		simpleVM
 			? console.log('Filling modification formular and requesting extension for SimpleVM project')
 			: console.log('Filling modification formular and requesting extension for Openstack project');
-		await this.page.locator(Util.by_data_test_id_str(this.OPEN_MODIFICATION_REQUEST_BUTTON)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.OPEN_MODIFICATION_REQUEST_BUTTON)).first().click();
 		await this.page.fill(Util.by_data_test_id_str('std_1'), this.NUMBER_MODIFICATION_FLAVORS);
 		await this.page.fill(
 			Util.by_data_test_id_str(this.MODIFICATION_REQUEST_VOLUME_COUNTER_INPUT),
@@ -127,7 +127,7 @@ export class ProjectOverViewPage {
 	}
 
 	async requestTermination() {
-		await this.page.locator(Util.by_data_test_id_str(this.OPEN_TERMINATION_REQUEST_BUTTON)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.OPEN_TERMINATION_REQUEST_BUTTON)).first().click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_TERMINATION_REQUEST_INPUT)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_TERMINATION_REQUEST_BUTTON)).click();
 		await this.page.waitForSelector(
