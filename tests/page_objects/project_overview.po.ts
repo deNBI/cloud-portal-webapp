@@ -16,6 +16,9 @@ export class ProjectOverViewPage {
 
 	// MODIFICATIONS
 	private OPEN_EXTENSION_REQUEST_BUTTON: string = 'open_extension_request_button';
+	private CONFIRM_WITHDRAW_BTN: string = 'confirm_withdraw_btn';
+	private SHOW_LIFETIME_EXTENSIO_WITHDRAW_BUTTON: string = 'show_lifetime_extension_withdraw_button';
+	private SHOW_MODIFICATION_EXTENSION_WITHDRAW_BUTTON: string = 'show_modification_extension_withdraw_button';
 	private OPEN_MODIFICATION_REQUEST_BUTTON: string = 'open_modification_request_button';
 	private OPEN_TERMINATION_REQUEST_BUTTON: string = 'open_termination_request_button';
 	private DECLINE_NEW_PUBLICATION_BUTTON: string = 'decline_publication_button';
@@ -78,7 +81,8 @@ export class ProjectOverViewPage {
 		console.log(`Project ${project_name} should be visible!`);
 
 		await this.page
-			.locator(Util.by_data_test_id_str_prefix(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`)).first()
+			.locator(Util.by_data_test_id_str_prefix(`${this.PROJECT_OVERVIEW_BUTTON_PREFIX}${project_name}`))
+			.first()
 			.click();
 
 		console.log(this.page.url());
@@ -102,6 +106,27 @@ export class ProjectOverViewPage {
 		await this.page.waitForSelector(
 			`data-test-id=${this.EXTENSION_REQUEST_RESULT_DIV} >> text=${this.EXTENSION_REQUESTED_SUCCESSFULLY}`,
 		);
+	}
+
+	async withdrawtProjectExtension() {
+		console.log('Withdraw extension request');
+
+		// eslint-disable-next-line no-unused-expressions,@typescript-eslint/no-unused-expressions
+		await this.page.locator(Util.by_data_test_id_str(this.SHOW_LIFETIME_EXTENSIO_WITHDRAW_BUTTON)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_WITHDRAW_BTN)).click();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.SHOW_LIFETIME_EXTENSIO_WITHDRAW_BUTTON), {
+			state: 'hidden',
+		});
+	}
+
+	async withdrawtProjectModification() {
+		console.log('Withdraw modification request');
+		// eslint-disable-next-line no-unused-expressions,@typescript-eslint/no-unused-expressions
+		await this.page.locator(Util.by_data_test_id_str(this.SHOW_MODIFICATION_EXTENSION_WITHDRAW_BUTTON)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_WITHDRAW_BTN)).click();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.SHOW_MODIFICATION_EXTENSION_WITHDRAW_BUTTON), {
+			state: 'hidden',
+		});
 	}
 
 	async requestProjectModification(simpleVM: boolean) {
