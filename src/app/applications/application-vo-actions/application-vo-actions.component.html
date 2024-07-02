@@ -76,7 +76,7 @@
 						<button
 							style="margin: 2px"
 							[id]="'approve_' + application?.project_application_shortname"
-							[attr.data-test-id]="'approve_' + application?.project_application_shortname"
+							[attr.data-test-id]="'approve_' + application?.project_application_name"
 							(click)="showClientsLimitsModal()"
 							[disabled]="!selectedComputeCenter"
 							type="button"
@@ -92,7 +92,7 @@
 							type="button"
 							class="btn btn-danger"
 							id="btn_decline_{{ application.project_application_shortname }}"
-							[attr.data-test-id]="'btn_decline_' + application.project_application_shortname"
+							[attr.data-test-id]="'btn_decline_' + application.project_application_name"
 							style="margin: 2px"
 							tooltip="Decline Application"
 							(click)="showConfirmationModal(ConfirmationActions.DECLINE_APPLICATION)"
@@ -188,7 +188,7 @@
 					) {
 						<button
 							[id]="'extension_approval_' + application?.project_application_shortname"
-							[attr.data-test-id]="'extension_approval_' + application?.project_application_shortname"
+							[attr.data-test-id]="'extension_approval_' + application?.project_application_name"
 							*ngIf="
 								(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
 								application?.project_lifetime_request
@@ -225,7 +225,7 @@
 						<button
 							[id]="'modification_approval_' + application?.project_application_shortname"
 							style="margin: 2px"
-							[attr.data-test-id]="'modification_approval_' + application?.project_application_shortname"
+							[attr.data-test-id]="'modification_approval_' + application?.project_application_name"
 							(click)="showConfirmationModal(ConfirmationActions.APPROVE_MODIFICATION)"
 							type="button"
 							class="btn btn-success"
@@ -243,7 +243,7 @@
 						<button
 							[id]="'modification_approval_' + application?.project_application_shortname"
 							style="margin: 2px"
-							[attr.data-test-id]="'modification_approval_' + application?.project_application_shortname"
+							[attr.data-test-id]="'modification_approval_' + application?.project_application_name"
 							(click)="showClientsLimitsModal(true)"
 							type="button"
 							class="btn btn-success"
