@@ -7,6 +7,7 @@
 			(ngModelChange)="onChangeSelectedFacility($event)"
 			class="form-control form-select"
 			name="selectedFacility"
+			data-test-id="selectFacilitySelect"
 			id="selectFacilitySelect"
 		>
 			<option *ngFor="let facility of managerFacilities" [ngValue]="facility">{{ facility['Facility'] }}</option>
@@ -28,7 +29,7 @@
 				data-test-id="submitted_applications_tab"
 			>
 				<i class="fas fa-envelope"></i> Submitted Applications
-				<span class="badge badge-pill bg-dark">{{ numberOfProjectApplications }}</span>
+				<span class="badge badge-pill bg-dark">{{ this.numberOfProjectApplications }}</span>
 			</button>
 			<button
 				class="btn"
@@ -40,7 +41,7 @@
 				id="tab_state_button_credit_requests"
 			>
 				<i class="fas fa-coins"></i> Credit Extension Requests
-				<span class="badge badge-pill bg-dark">{{ numberOfCreditRequests }}</span>
+				<span class="badge badge-pill bg-dark">{{ this.numberOfCreditRequests }}</span>
 			</button>
 			<button
 				class="btn"
@@ -53,7 +54,7 @@
 				id="tab_state_button_lifetime_requests"
 			>
 				<i class="fas fa-clock"></i> Lifetime Extension Requests
-				<span class="badge badge-pill bg-dark">{{ numberOfExtensionRequests }}</span>
+				<span class="badge badge-pill bg-dark">{{ this.numberOfExtensionRequests }}</span>
 			</button>
 			<button
 				class="btn"
@@ -66,7 +67,7 @@
 				id="tab_state_button_modification_requests"
 			>
 				<i class="fas fa-memory"></i> Resource Modification Requests
-				<span class="badge badge-pill bg-dark">{{ numberOfModificationRequests }}</span>
+				<span class="badge badge-pill bg-dark">{{ this.numberOfModificationRequests }}</span>
 			</button>
 			<button
 				class="btn"
@@ -90,13 +91,7 @@
 		</div>
 
 		<ng-container>
-			@if (allApplicationsToCheck.length <= 0 && !loadingApplications) {
-				<div class="card-body" data-test-id="submitted_applications_container">
-					<div class="alert alert-success" role="alert">
-						<strong>No new Applications!</strong> There is nothing to review.
-					</div>
-				</div>
-			} @else {
+			@if (!loadingApplications) {
 				<app-application-list
 					[facilityView]="true"
 					(reloadNumbersTrigger)="getApplicationNumbers()"
@@ -169,10 +164,10 @@
 											Information
 										</button>
 										<!--button (click)="deleteModal.show();setDeleteId(application?.application_status_id)"
-                                            type="button"
-                                            class="btn btn-secondary">
-                                    Remove Application
-                            </button-->
+                                        type="button"
+                                        class="btn btn-secondary">
+                                Remove Application
+                        </button-->
 									</td>
 								</tr>
 								<td colspan="12">
