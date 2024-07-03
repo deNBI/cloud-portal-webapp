@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
 	WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK,
 } from '../../links/links';
+import { is_vo } from '../shared/globalvar';
 
 /**
  * The type overview of the different project classes.
@@ -16,6 +17,7 @@ export class TypeOverviewComponent implements OnInit {
 	openstack_color: string = '#ed1944';
 	simplevm_color: string = '#00adef';
 	kubernetes_color: string = '#326ce5';
+	is_vo_admin: boolean = is_vo;
 
 	simpleVM_logo_link: String;
 	simpleVM_ease_logo: String;
