@@ -58,9 +58,12 @@ export class ApplicationsService {
 	}
 
 	getLifetimeExtensionUser(lifetimeextension_id: string | number): Observable<User> {
-		return this.http.get<User>(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${lifetimeextension_id}/user/`, {
-			withCredentials: true,
-		});
+		return this.http.get<User>(
+			`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${lifetimeextension_id}/user/`,
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	getModificationUser(project_id: string | number): Observable<User> {
@@ -148,11 +151,11 @@ export class ApplicationsService {
 	}
 
 	/**
-		 * Checks if some client has the resource available for an application.
-		 *
-		 * @param app_id
-		 * @returns
-		 */
+	 * Checks if some client has the resource available for an application.
+	 *
+	 * @param app_id
+	 * @returns
+	 */
 	getApplicationClientAvaiable(app_id: string): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/clients/resource/`, {
 			withCredentials: true,

@@ -23,12 +23,8 @@ import { InformationDetailComponent } from './application-detail/information-det
 import { AdjustmentDetailComponent } from './application-detail/adjustment-detail/adjustment-detail.component';
 import { ResourceDetailComponent } from './application-detail/resource-detail/resource-detail.component';
 import { ModificationDetailComponent } from './application-detail/modification-detail/modification-detail.component';
-import {
-	CreditsExtensionDetailComponent,
-} from './application-detail/credits-extension-detail/credits-extension-detail.component';
-import {
-	LifetimeExtensionDetailComponent,
-} from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
+import { CreditsExtensionDetailComponent } from './application-detail/credits-extension-detail/credits-extension-detail.component';
+import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
 import { NewsModule } from '../news/news.module';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
 import { KubernetesFormularComponent } from './application-formular/kubernetes-formular/kubernetes-formular.component';
@@ -36,9 +32,7 @@ import { KubernetesFormularComponent } from './application-formular/kubernetes-f
 import { ApplicationListComponent } from './application-list/application-list.component';
 import { ApplicationCardComponent } from './application-card/application-card.component';
 import { ApplicationVoActionsComponent } from './application-vo-actions/application-vo-actions.component';
-import {
-	ApplicationFacilityActionsComponent,
-} from './application-facility-actions/application-facility-actions.component';
+import { ApplicationFacilityActionsComponent } from './application-facility-actions/application-facility-actions.component';
 
 /**
  * Applications Module.
@@ -80,9 +74,7 @@ import {
 		ApplicationCardComponent,
 		ApplicationVoActionsComponent,
 		ApplicationFacilityActionsComponent,
-
 	],
 	exports: [ApplicationDetailComponent, ApplicationListComponent],
 })
-export class ApplicationsModule {
-}
+export class ApplicationsModule {}

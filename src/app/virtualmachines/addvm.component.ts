@@ -1,5 +1,5 @@
 import {
-	Component, DoCheck, OnDestroy, OnInit, ViewChild,
+	Component, DoCheck, OnDestroy, OnInit, ViewChild, inject,
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ import {
 	WIKI_VOLUME_OVERVIEW,
 } from 'links/links';
 import { KeyValue } from '@angular/common';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { Image } from './virtualmachinemodels/image';
 import { Flavor } from './virtualmachinemodels/flavor';
 import { Userinfo } from '../userinfo/userinfo.model';
@@ -56,6 +57,7 @@ import { ImageService } from '../api-connector/image.service';
 	],
 })
 export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
+	private readonly tracker = inject(MatomoTracker);
 	SIXTY_SIX_PERCENT: number = 66;
 
 	SEVENTY_FIVE: number = 75;
@@ -783,6 +785,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Create New Instance');
 		this.initializeData();
 		this.is_vo = is_vo;
 	}

@@ -62,7 +62,8 @@ export class ProfilePage {
 		await this.page.locator(Util.by_data_test_id_str(this.OPEN_SET_KEY_BUTTON)).click();
 		console.log('Copying public key into textfield.');
 		await this.page.fill(Util.by_data_test_id_str(this.ENTER_PUBLIC_KEY_AREA), this.TEST_PUBLIC_KEY);
-		await this.page.locator(Util.by_data_test_id_str(this.PUBLIC_KEY_ACKNOWLEDGE_CHECKBOX)).click();
+		console.log('Confirming effects of generating a new Key');
+		//	await this.page.locator(Util.by_data_test_id_str(this.GENERATE_KEY_CHECKBOX)).click();
 		console.log('Clicking on Set-Button');
 		await Promise.all([
 			this.page.waitForResponse(response => response.status() === 200),

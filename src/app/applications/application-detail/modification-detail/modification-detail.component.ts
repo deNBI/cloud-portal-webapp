@@ -12,22 +12,19 @@ import { User } from '../../application.model/user.model';
 	templateUrl: './modification-detail.component.html',
 })
 export class ModificationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
-		@Input() application: Application;
-		@Input() is_vo_admin: boolean;
-		Application_States: typeof Application_States = Application_States;
+	@Input() application: Application;
+	@Input() is_vo_admin: boolean;
+	Application_States: typeof Application_States = Application_States;
 
-		ngOnInit() {
-			this.getRequestingUser();
+	ngOnInit() {
+		this.getRequestingUser();
+	}
+
+	getRequestingUser() {
+		if (this.application.project_modification_request && !this.application.project_modification_request.user) {
+			this.applicationsService.getModificationUser(this.application.project_application_id).subscribe((user: User) => {
+				this.application.project_modification_request.user = user;
+			});
 		}
-
-		getRequestingUser() {
-			if (this.application.project_modification_request && !this.application.project_modification_request.user) {
-				this.applicationsService.getModificationUser(this.application.project_application_id).subscribe((user: User) => {
-
-					this.application.project_modification_request.user = user;
-
-				});
-			}
-		}
-
+	}
 }

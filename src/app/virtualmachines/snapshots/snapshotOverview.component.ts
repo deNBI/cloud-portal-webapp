@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { ImageService } from '../../api-connector/image.service';
 import { SnapshotModel } from './snapshot.model';
 import { IResponseTemplate } from '../../api-connector/response-template';
@@ -26,6 +27,7 @@ enum Snapshot_Delete_Statuses {
 	providers: [FacilityService, ImageService],
 })
 export class SnapshotOverviewComponent implements OnInit {
+	private readonly tracker = inject(MatomoTracker);
 	snapshot_page: SnapshotPage = new SnapshotPage();
 	WIKI_SNAPSHOTS: string = WIKI_SNAPSHOTS;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
@@ -210,6 +212,7 @@ export class SnapshotOverviewComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Snapshot Overview');
 		this.getSnapshots();
 
 		this.filterChanged

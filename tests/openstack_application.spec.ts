@@ -62,6 +62,22 @@ test.describe.serial('@openstack_application', () => {
 		});
 	});
 
+	test.describe('Should withdraw a project extension for OpenStack', () => {
+		test.use({ storageState: Util.MEMBER_STORAGE });
+		test('Member @openstack_application', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+			await projectOverviewPage.withdrawtProjectExtension();
+		});
+	});
+	test.describe('Should request a project extension2 for OpenStack', () => {
+		test.use({ storageState: Util.MEMBER_STORAGE });
+		test('Member @openstack_application', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+			await projectOverviewPage.requestProjectExtension(false);
+		});
+	});
 	test.describe('Should request a project modification for OpenStack', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @openstack_application', async ({ page, baseURL }) => {
@@ -70,7 +86,22 @@ test.describe.serial('@openstack_application', () => {
 			await projectOverviewPage.requestProjectModification(false);
 		});
 	});
-
+	test.describe('Should withdraw a project modification for OpenStack', () => {
+		test.use({ storageState: Util.MEMBER_STORAGE });
+		test('Member @openstack_application', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+			await projectOverviewPage.withdrawtProjectModification();
+		});
+	});
+	test.describe('Should request a project modification2 for OpenStack', () => {
+		test.use({ storageState: Util.MEMBER_STORAGE });
+		test('Member @openstack_application', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+			await projectOverviewPage.requestProjectModification(false);
+		});
+	});
 	test.describe('Should approve a project extension for OpenStack', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @openstack_application', async ({ page, baseURL }) => {

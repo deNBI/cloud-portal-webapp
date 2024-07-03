@@ -7,6 +7,7 @@ import {
 	OnInit,
 	Renderer2,
 	ViewChild,
+	inject,
 } from '@angular/core';
 import * as moment from 'moment';
 import { forkJoin, Observable, Subscription } from 'rxjs';
@@ -14,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
 import { Userinfo } from '../userinfo/userinfo.model';
@@ -51,7 +53,6 @@ import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-req
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component';
 import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component';
-
 /**
  * Projectoverview component.
  */
@@ -69,6 +70,7 @@ import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/with
 	],
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
+	private readonly tracker = inject(MatomoTracker);
 	bsModalRef: BsModalRef;
 	modificationRequestDisabled: boolean = false;
 	lifetimeExtensionDisabled: boolean = false;
@@ -197,6 +199,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.project_application = null;
 			this.project_members = [];
 			this.application_id = paramsId.id;
+			this.tracker.trackPageView(`Project Overview for pid: ${paramsId.id}`);
 			this.is_vo_admin = is_vo;
 
 			this.getApplication();

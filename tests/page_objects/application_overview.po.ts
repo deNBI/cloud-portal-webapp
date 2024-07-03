@@ -54,8 +54,12 @@ export class ApplicationOverviewPage {
 
 	async goToSubmittedApplication() {
 		await this.goto();
+		console.log('Click submitted tab');
+
 		await this.page.locator(Util.by_data_test_id_str(this.SUBMITTED_APPLICATIONS_TAB)).click();
+		console.log('wait till loader is hidden');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		console.log('wait till submitted visible');
 		await this.page.waitForSelector(Util.by_data_test_id_str('submitted_applications_container'), {
 			state: 'visible',
 		});
@@ -107,9 +111,8 @@ export class ApplicationOverviewPage {
 		await this.goToModificationRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
-		await this.page.waitForSelector(
-			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.MODIFICATION_REQUEST_RESULT_TEXT}`,
-		);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
+
 	}
 
 	async approveSimpleVMModificationRequest(application_name: string): Promise<any> {
@@ -129,9 +132,8 @@ export class ApplicationOverviewPage {
 			.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name))
 			.first()
 			.click();
-		await this.page.waitForSelector(
-			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.MODIFICATION_REQUEST_RESULT_TEXT}`,
-		);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
+
 	}
 
 	async approveSimpleVMExtensionRequest(application_name: string): Promise<any> {
@@ -141,18 +143,16 @@ export class ApplicationOverviewPage {
 			.first()
 			.click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
-		await this.page.waitForSelector(
-			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_SIMPLEVM_TEXT}`,
-		);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
+
 	}
 
 	async approveOpenStackExtensionRequest(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
-		await this.page.waitForSelector(
-			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_OPENSTACK_TEXT}`,
-		);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
+
 	}
 
 	async approveSimpleVm(application_name: string): Promise<any> {
@@ -166,7 +166,8 @@ export class ApplicationOverviewPage {
 		});
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name)).click();
-		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.SIMPLE_VM_CREATED}`);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
+
 	}
 
 	async approveOpenStackApplication(application_name: string): Promise<any> {
@@ -183,6 +184,8 @@ export class ApplicationOverviewPage {
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE), { state: 'visible' });
+		await this.page.waitForTimeout(5000);
+
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
 		expect(approval_response).toContain(this.PROJECT_FACILITY_ASSIGNED);

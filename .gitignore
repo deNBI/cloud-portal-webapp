@@ -34,7 +34,7 @@
 npm-debug.log
 testem.log
 /typings
-
+/.nx
 #test environment
 /tests/environment.json
 *e2e/environment.json
