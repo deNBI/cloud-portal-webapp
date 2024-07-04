@@ -39,6 +39,7 @@ export class Application {
 	project_application_total_gpu: number = 0;
 	lifetime_extension_request_id: number | string;
 	modification_extension_request_id: number | string;
+	project_application_kubernetes_access: boolean = false;
 
 	pi_approval_notification_send: boolean;
 	pi_approval_notification_expired: boolean;
@@ -75,7 +76,6 @@ export class Application {
 	dissemination: ApplicationDissemination;
 	project_application_pi_approved: boolean;
 	project_application_cloud_service: boolean;
-	project_application_kubernetes_access: boolean = false;
 	project_application_cloud_service_develop: boolean;
 	project_application_cloud_service_user_number: number;
 	flavors: Flavor[] = [];
