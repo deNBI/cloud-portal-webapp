@@ -3,6 +3,7 @@ import { MatomoTracker } from 'ngx-matomo-client';
 import {
 	WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK,
 } from '../../links/links';
+import { is_vo } from '../shared/globalvar';
 
 /**
  * The type overview of the different project classes.
@@ -16,11 +17,18 @@ export class TypeOverviewComponent implements OnInit {
 	private readonly tracker = inject(MatomoTracker);
 
 	title: string = 'Project Type Overview';
+	openstack_color: string = '#ed1944';
+	simplevm_color: string = '#00adef';
+	kubernetes_color: string = '#326ce5';
+	is_vo_admin: boolean = is_vo;
 
 	simpleVM_logo_link: String;
 	simpleVM_ease_logo: String;
 	simpleVM_curve_logo: String;
 	simpleVM_remote_logo: String;
+
+	kubernetes_logo_link: string;
+	kubernetes_logo_border: string;
 
 	openstack_logo_link: String;
 	openstack_api_logo: String;
@@ -39,6 +47,9 @@ export class TypeOverviewComponent implements OnInit {
 		this.simpleVM_curve_logo = `${this.static_img_folder}/simplevm-info-page/flatlearning.svg`;
 		this.simpleVM_ease_logo = `${this.static_img_folder}/simplevm-info-page/easytouse.svg`;
 		this.simpleVM_remote_logo = `${this.static_img_folder}/simplevm-info-page/remote.svg`;
+
+		this.kubernetes_logo_link = `${this.static_img_folder}kubernetes_logo.svg`;
+		this.kubernetes_logo_border = `${this.static_img_folder}kubernetes_logo_border.svg`;
 
 		this.openstack_logo_link = `${this.static_img_folder}openstack_plain_red.svg`;
 		this.openstack_api_logo = `${this.static_img_folder}/openstack-info-page/api.svg`;
