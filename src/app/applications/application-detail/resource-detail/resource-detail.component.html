@@ -101,7 +101,7 @@
 					<td>
 						<span
 							[ngStyle]="{
-								color: flavorDiff.diff > 0 ? 'green' : 'red'
+								color: flavorDiff.diff >= 0 ? 'green' : 'red'
 							}"
 						>
 							{{ flavorDiff.diff === 0 ? '' : flavorDiff.diff > 0 ? '+' : '-' }}
