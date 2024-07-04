@@ -118,7 +118,7 @@ export class FacilityApplicationOverviewPage {
 	async approveApplication(application_name: string): Promise<any> {
 		await this.goToSubmittedApplication();
 		console.log(`Approve Application: ${application_name}`);
-		await this.page.locator(Util.by_data_test_id_str(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
@@ -130,7 +130,7 @@ export class FacilityApplicationOverviewPage {
 	async approveApplicationExtension(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		console.log(`Approve Application${application_name} Extension`);
-		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
@@ -161,7 +161,7 @@ export class FacilityApplicationOverviewPage {
 
 	async approveApplicationModification(application_name: string): Promise<any> {
 		await this.goToModificationRequests();
-		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);

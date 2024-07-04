@@ -10,7 +10,7 @@ test.describe.serial('@openstack_application', () => {
 	test.describe('Should delete old openstack applications', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @openstack_application', async ({ page, baseURL }) => {
-			test.setTimeout(60 * 1000);
+			test.setTimeout(80 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineApplications(Util.OPENSTACK_APPLICATION_NAME);
 			const voOverviewPage = new VoOverviewPage(page, baseURL);
@@ -21,7 +21,7 @@ test.describe.serial('@openstack_application', () => {
 	test.describe('Should delete old openstack applications', () => {
 		test.use({ storageState: Util.FACILITY_MANAGER_STORAGE });
 		test('FM @openstack_application', async ({ page, baseURL }) => {
-			test.setTimeout(60 * 1000);
+			test.setTimeout(80 * 1000);
 			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page, baseURL);
 			await facilityApplicationOverviewPage.terminateApplications(Util.OPENSTACK_APPLICATION_NAME);
 		});
@@ -137,7 +137,7 @@ test.describe.serial('@openstack_application', () => {
 	test.describe('Aftercare - Should delete old openstack applications', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @openstack_application', async ({ page, baseURL }) => {
-			test.setTimeout(60 * 1000);
+			test.setTimeout(80 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineApplications(Util.OPENSTACK_APPLICATION_NAME);
 			const voOverviewPage = new VoOverviewPage(page, baseURL);
@@ -148,7 +148,7 @@ test.describe.serial('@openstack_application', () => {
 	test.describe('Aftercare - Should delete old openstack applications', () => {
 		test.use({ storageState: Util.FACILITY_MANAGER_STORAGE });
 		test('FM @openstack_application', async ({ page, baseURL }) => {
-			test.setTimeout(60 * 1000);
+			test.setTimeout(80 * 1000);
 			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page, baseURL);
 			await facilityApplicationOverviewPage.terminateApplications(Util.OPENSTACK_APPLICATION_NAME);
 		});

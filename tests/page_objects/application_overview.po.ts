@@ -63,6 +63,8 @@ export class ApplicationOverviewPage {
 		await this.page.waitForSelector(Util.by_data_test_id_str('submitted_applications_container'), {
 			state: 'visible',
 		});
+		console.log('submitted visible');
+
 	}
 
 	async goToLifetimeRequests() {
@@ -97,7 +99,7 @@ export class ApplicationOverviewPage {
 		// eslint-disable-next-line no-plusplus
 		for (let i = 0; i < application_count; i++) {
 			// eslint-disable-next-line no-await-in-loop
-			await this.page.locator(`data-test-id=${this.DECLINE_OPEN_APPLICATION_PRE}${projectName}`).first().click();
+			await this.page.locator(Util.by_data_test_id_str_prefix(this.DECLINE_OPEN_APPLICATION_PRE + projectName)).first().click();
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 			// eslint-disable-next-line no-await-in-loop
@@ -109,7 +111,7 @@ export class ApplicationOverviewPage {
 
 	async approveOpenStackModificationRequest(application_name: string): Promise<any> {
 		await this.goToModificationRequests();
-		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 
@@ -149,7 +151,7 @@ export class ApplicationOverviewPage {
 
 	async approveOpenStackExtensionRequest(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
-		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 
@@ -158,14 +160,14 @@ export class ApplicationOverviewPage {
 	async approveSimpleVm(application_name: string): Promise<any> {
 		console.log('Approve Simple VM');
 		await this.goToSubmittedApplication();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
+		await this.page.waitForSelector(Util.by_data_test_id_str_prefix(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
 			state: 'visible',
 		});
-		await this.page.selectOption(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
+		await this.page.selectOption(Util.by_data_test_id_str_prefix(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
 			label: this.DEFAULT_DENBI_COMPUTE_CENTER,
 		});
-		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
-		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name)).click();
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 
 	}
@@ -173,15 +175,15 @@ export class ApplicationOverviewPage {
 	async approveOpenStackApplication(application_name: string): Promise<any> {
 		console.log('Approve Openstack');
 		await this.goToSubmittedApplication();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
+		await this.page.waitForSelector(Util.by_data_test_id_str_prefix(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
 			state: 'visible',
 		});
-		await this.page.selectOption(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
+		await this.page.selectOption(Util.by_data_test_id_str_prefix(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
 			label: this.DEFAULT_DENBI_COMPUTE_CENTER,
 		});
 		await this.page.waitForTimeout(10000);
-		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).isEnabled();
-		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_PREFIX + application_name)).isEnabled();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE), { state: 'visible' });
 		await this.page.waitForTimeout(5000);
