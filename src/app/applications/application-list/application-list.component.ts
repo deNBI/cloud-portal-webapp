@@ -22,6 +22,7 @@ export class ApplicationListComponent implements OnInit, OnChanges {
 		@Input() computeCenters: ComputecenterComponent[] = [];
 		@Input() facilityView: boolean = false;
 		@Input() voView: boolean = false;
+
 		dataTestId: string = '';
 
 		is_vo_admin: boolean = false;
