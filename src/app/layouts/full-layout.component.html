@@ -89,16 +89,16 @@
 				>
 			</li>
 			<!-- <li class="nav-item">
-				<a
-					class="nav-link"
-					routerLinkActive="active"
-					id="sidebar_credits_calculator"
-					[routerLink]="['/credits-calculator']"
-				>
-					<i class="nav-icon ccs-credits_icon"> </i>
-					Credits Calculator
-				</a>
-			</li> -->
+                <a
+                    class="nav-link"
+                    routerLinkActive="active"
+                    id="sidebar_credits_calculator"
+                    [routerLink]="['/credits-calculator']"
+                >
+                    <i class="nav-icon ccs-credits_icon"> </i>
+                    Credits Calculator
+                </a>
+            </li> -->
 			<li class="nav-item">
 				<a
 					class="nav-link"
@@ -125,20 +125,32 @@
 						[routerLink]="['/project-management/' + application?.application_id]"
 						[attr.data-test-id]="'project_overview_' + application?.project_name"
 					>
-						<img
-							class="nav-icon"
-							*ngIf="!application?.is_open_stack"
-							data-toggle="tooltip"
-							title="This is a Simple VM project"
-							src="{{ simple_vm_logo }}"
-						/>
-						<img
-							class="nav-icon"
-							*ngIf="application?.is_open_stack"
-							data-toggle="tooltip"
-							title="This is an OpenStack project"
-							src="{{ openstack_logo }}"
-						/>
+						@if (application.is_open_stack) {
+							@if (application.has_kubernetes_access) {
+								<img
+									class="nav-icon proj-icon mx-2"
+									data-toggle="tooltip"
+									title="This is an Kubernetes project"
+									src="{{ kubernetes_logo }}"
+								/>
+							} @else {
+								<img
+									class="nav-icon proj-icon mx-2"
+									data-toggle="tooltip"
+									title="This is an OpenStack project"
+									src="{{ openstack_logo }}"
+								/>
+							}
+						} @else {
+							<img
+								class="nav-icon proj-icon mx-2"
+								*ngIf="!application?.is_open_stack"
+								data-toggle="tooltip"
+								title="This is a Simple VM project"
+								src="{{ simple_vm_logo }}"
+							/>
+						}
+
 						<span
 							style="display: inline-block; width: 65%; overflow: hidden; text-overflow: ellipsis"
 							data-toggle="tooltip"
@@ -266,20 +278,31 @@
 							[routerLink]="['/project-management/' + application?.application_id]"
 							[attr.data-test-id]="'project_overview_' + application?.project_name"
 						>
-							<img
-								class="nav-icon"
-								*ngIf="!application?.is_open_stack"
-								data-toggle="tooltip"
-								title="This is a Simple VM project"
-								src="{{ simple_vm_logo }}"
-							/>
-							<img
-								class="nav-icon"
-								*ngIf="application?.is_open_stack"
-								data-toggle="tooltip"
-								title="This is an OpenStack project"
-								src="{{ openstack_logo }}"
-							/>
+							@if (application.is_open_stack) {
+								@if (application.has_kubernetes_access) {
+									<img
+										class="nav-icon"
+										data-toggle="tooltip"
+										title="This is an Kubernetes project"
+										src="{{ kubernetes_logo }}"
+									/>
+								} @else {
+									<img
+										class="nav-icon"
+										data-toggle="tooltip"
+										title="This is an OpenStack project"
+										src="{{ openstack_logo }}"
+									/>
+								}
+							} @else {
+								<img
+									class="nav-icon"
+									*ngIf="!application?.is_open_stack"
+									data-toggle="tooltip"
+									title="This is a Simple VM project"
+									src="{{ simple_vm_logo }}"
+								/>
+							}
 							<span
 								style="display: inline-block; width: 65%; overflow: hidden; text-overflow: ellipsis"
 								data-toggle="tooltip"
@@ -393,78 +416,78 @@
 				</ul>
 			</li>
 			<!--li class="nav-title" *ngIf="vm_project_member">Virtual Machines</li>
-			<li class="nav-item" *ngIf="vm_project_member">
-				<a
-					class="nav-link"
-					routerLinkActive="active"
-					data-toggle="tooltip"
-					data-placement="right"
-					title="New Instance"
-					[routerLink]="['/virtualmachines/newVM']"
-				>
-					<i class="nav-icon fa-solid fa-desktop"></i> New Instance</a
-				>
-			</li>
-			<li class="nav-item" *ngIf="(is_vo_admin || cluster_allowed) && vm_project_member">
-				<a
-					class="nav-link"
-					routerLinkActive="active"
-					data-toggle="tooltip"
-					data-placement="right"
-					title="New Cluster"
-					[routerLink]="['/virtualmachines/newCluster']"
-				>
-					<i class="nav-icon fas fa-network-wired"></i> New Cluster</a
-				>
-			</li>
+            <li class="nav-item" *ngIf="vm_project_member">
+                <a
+                    class="nav-link"
+                    routerLinkActive="active"
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    title="New Instance"
+                    [routerLink]="['/virtualmachines/newVM']"
+                >
+                    <i class="nav-icon fa-solid fa-desktop"></i> New Instance</a
+                >
+            </li>
+            <li class="nav-item" *ngIf="(is_vo_admin || cluster_allowed) && vm_project_member">
+                <a
+                    class="nav-link"
+                    routerLinkActive="active"
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    title="New Cluster"
+                    [routerLink]="['/virtualmachines/newCluster']"
+                >
+                    <i class="nav-icon fas fa-network-wired"></i> New Cluster</a
+                >
+            </li>
 
-			<li *ngIf="vm_project_member" class="nav-group" [ngClass]="{ show: show_overviews }">
-				<a class="nav-link nav-group-toggle" (click)="toggleOverviews()"
-					><i class="nav-icon fas fa-ellipsis-h"></i> Overviews</a
-				>
-				<ul class="nav-group-items" *ngIf="vm_project_member">
-					<li class="nav-item">
-						<a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/vmOverview']"
-							><i class="nav-icon fas fa-list"></i> Instances</a
-						>
-					</li>
-					<li class="nav-item" *ngIf="is_vo_admin || (vm_project_member && cluster_allowed)">
-						<a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/clusterOverview']"
-							><i class="nav-icon fas fa-network-wired"></i> Clusters</a
-						>
-					</li>
-					<li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
-						<a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/volumeOverview']"
-							><i class="nav-icon fas fa-hdd"></i> Volumes</a
-						>
-					</li>
-					<li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
-						<a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/snapshotOverview']"
-							><i class="nav-icon fas fa-camera"></i>Snapshots</a
-						>
-					</li>
-				</ul>
-			</li>
-			<ng-container *ngIf="has_workshops && vm_project_member">
-				<li class="nav-title">Workshops</li>
-				<li class="nav-item">
-					<a
-						class="nav-link"
-						routerLinkActive="active"
-						data-toggle="tooltip"
-						data-placement="right"
-						title="New Cluster"
-						[routerLink]="['/virtualmachines/newWorkshop']"
-					>
-						<i class="nav-icon fas fa-chalkboard-teacher"></i> Add workshop VMs</a
-					>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/workshopOverview']"
-						><i class="nav-icon fas fa-chalkboard"></i> Manage workshops</a
-					>
-				</li>
-			</ng-container-->
+            <li *ngIf="vm_project_member" class="nav-group" [ngClass]="{ show: show_overviews }">
+                <a class="nav-link nav-group-toggle" (click)="toggleOverviews()"
+                    ><i class="nav-icon fas fa-ellipsis-h"></i> Overviews</a
+                >
+                <ul class="nav-group-items" *ngIf="vm_project_member">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/vmOverview']"
+                            ><i class="nav-icon fas fa-list"></i> Instances</a
+                        >
+                    </li>
+                    <li class="nav-item" *ngIf="is_vo_admin || (vm_project_member && cluster_allowed)">
+                        <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/clusterOverview']"
+                            ><i class="nav-icon fas fa-network-wired"></i> Clusters</a
+                        >
+                    </li>
+                    <li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
+                        <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/volumeOverview']"
+                            ><i class="nav-icon fas fa-hdd"></i> Volumes</a
+                        >
+                    </li>
+                    <li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
+                        <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/snapshotOverview']"
+                            ><i class="nav-icon fas fa-camera"></i>Snapshots</a
+                        >
+                    </li>
+                </ul>
+            </li>
+            <ng-container *ngIf="has_workshops && vm_project_member">
+                <li class="nav-title">Workshops</li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        routerLinkActive="active"
+                        data-toggle="tooltip"
+                        data-placement="right"
+                        title="New Cluster"
+                        [routerLink]="['/virtualmachines/newWorkshop']"
+                    >
+                        <i class="nav-icon fas fa-chalkboard-teacher"></i> Add workshop VMs</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/workshopOverview']"
+                        ><i class="nav-icon fas fa-chalkboard"></i> Manage workshops</a
+                    >
+                </li>
+            </ng-container-->
 			<li *ngIf="is_facility_manager || is_vo_admin" class="nav-title">Facilities</li>
 
 			<li *ngIf="is_facility_manager || is_vo_admin" class="nav-item">
@@ -486,10 +509,10 @@
 			</li>
 
 			<!--li *ngIf="(is_facility_manager && is_simple_vm_manager) || is_vo_admin" class="nav-item">
-				<a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/imageTags']"
-					><i class="nav-icon fas fa-tags"></i> Image Tags</a
-				>
-			</li-->
+                <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/imageTags']"
+                    ><i class="nav-icon fas fa-tags"></i> Image Tags</a
+                >
+            </li-->
 
 			<li *ngIf="is_facility_manager || is_vo_admin" class="nav-item">
 				<a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/news-manager']"

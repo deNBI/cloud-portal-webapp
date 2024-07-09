@@ -61,8 +61,14 @@
 								</strong>
 							</label>
 							<div class="col-md-8">
-								A cloud project is represented by an Openstack project which allows you to manage your virtual machines,
-								storage and network configurations.
+								@if (kubernetes_access) {
+									A cloud project is represented by a Kubernetes project which allows you to manage your virtual
+									machines, storage and network configurations. If it matches your project requirements, it may be that
+									Kubernetes is operated on top OpenStack.
+								} @else {
+									A cloud project is represented by an Openstack project which allows you to manage your virtual
+									machines, storage and network configurations.
+								}
 							</div>
 						</div>
 						<div class="form-group row" *ngIf="simple_vm_project">
@@ -431,6 +437,7 @@
 										class="form-control"
 										id="id_project_application_volume_counter"
 										name="project_application_volume_counter"
+                                        data-test-id="project_application_volume_counter"
 										placeholder="e.g. 20"
 										type="number"
 										min="0"
@@ -455,6 +462,7 @@
 										data-balloon="Storage limit is the sum of extra storage provided by volumes."
 										data-balloon-pos="right"
 										data-balloon-length="large"
+
 										><i class="icon-question" style="cursor: pointer"></i></i></strong
 							></label>
 							<div class="col-md-8">
