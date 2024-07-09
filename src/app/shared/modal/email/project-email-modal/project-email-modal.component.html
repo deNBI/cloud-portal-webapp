@@ -1,179 +1,136 @@
 <div class="modal-header">
-	<h4 class="modal-title" data-test-id="confirmation_modal_title">Sent Mail to specific projects</h4>
-	<button
-		type="button"
-		class="btn-close"
-		style="cursor: pointer"
-		(click)="bsModalRef.hide()"
-		aria-label="Close"
-	></button>
+    <h4 class="modal-title" data-test-id="confirmation_modal_title">Sent Mail to specific projects</h4>
+    <button
+            type="button"
+            class="btn-close"
+            style="cursor: pointer"
+            (click)="bsModalRef.hide()"
+            aria-label="Close"
+    ></button>
 </div>
 
 <div class="modal-body">
-	<div>
-		Send Mail to:
-		<ul>
-			<li *ngFor="let pr of selectedProjects">{{ pr.project_application_shortname }}</li>
-		</ul>
-	</div>
-	<div class="modal-body" *ngIf="csvMailTemplate?.errors?.length > 0">
-		<div class="alert alert-danger">
-			<p><strong>Error!</strong> Unable to use the CSV file "{{ csvFile.name }}". The following errors occurred:</p>
+    <div>
+        Send Mail to:
+        <ul>
+            <li *ngFor="let pr of selectedProjects">{{ pr.project_application_shortname }}</li>
+        </ul>
+    </div>
 
-			<ul>
-				<li *ngFor="let err of csvMailTemplate?.errors">{{ err }}</li>
-			</ul>
-		</div>
-		<div class="valid-example">
-			<p class="valid-example-heading">
-				<strong>Valid Example:</strong>
-			</p>
-			<pre class="valid-example-content">{{ validCSVExample }}</pre>
-		</div>
-	</div>
 
-	<div class="alert alert-warning" *ngIf="csvMailTemplate?.warnings.length > 0">
-		<p>
-			<strong>Warning!</strong> The following issues were found in the CSV file, but sending emails is still possible:
-		</p>
-
-		<ul>
-			<li *ngFor="let war of csvMailTemplate?.warnings">{{ war }}</li>
-		</ul>
-	</div>
-
-	<form class="form-horizontal" id="email_form" #f="ngForm">
-		<div class="form-group row">
-			<div class="col-md-auto">
-				<div class="form-check">
-					<input
-						class="form-check-input"
-						type="checkbox"
-						name="emailAdminsOnly"
-						[(ngModel)]="emailAdminsOnly"
-						id="adminOnlyCheckbox"
-						[disabled]="csvMailTemplate?.errors?.length > 0"
-					/>
-					<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
-				</div>
-			</div>
-		</div>
-		<div
-			class="form-group row"
-			[ngClass]="{
+    <form class="form-horizontal" id="email_form" #f="ngForm">
+        <div class="form-group row">
+            <div class="col-md-auto">
+                <div class="form-check">
+                    <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="emailAdminsOnly"
+                            [(ngModel)]="emailAdminsOnly"
+                            id="adminOnlyCheckbox"
+                    />
+                    <label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
+                </div>
+            </div>
+        </div>
+        <div
+                class="form-group row"
+                [ngClass]="{
 				'has-danger': emailSub.invalid && (emailSub.dirty || emailSub.touched),
 				'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched)
 			}"
-		>
-			<label class="col-md-12 control-label"><strong>Email subject*</strong></label>
-			<div class="col-md-12">
-				<input
-					required
-					id="emailSubject"
-					name="emailSub"
-					placeholder="Subject"
-					class="form-control"
-					type="text"
-					[(ngModel)]="emailSubject"
-					[disabled]="csvMailTemplate?.errors?.length > 0"
-					minlength="1"
-					#emailSub="ngModel"
-					[ngClass]="{
+        >
+            <label class="col-md-12 control-label"><strong>Email subject*</strong></label>
+            <div class="col-md-12">
+                <input
+                        required
+                        id="emailSubject"
+                        name="emailSub"
+                        placeholder="Subject"
+                        class="form-control"
+                        type="text"
+                        [(ngModel)]="emailSubject"
+                        minlength="1"
+                        #emailSub="ngModel"
+                        [ngClass]="{
 						'is-invalid': emailSub.invalid && (emailSub.dirty || emailSub.touched),
 						'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched)
 					}"
-				/>
-			</div>
-		</div>
+                />
+            </div>
+        </div>
 
-		<div class="form-group row">
-			<label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
-			<div class="col-md-12">
-				<input
-					id="reply_to"
-					name="emailReply"
-					placeholder=""
-					class="form-control"
-					type="text"
-					[(ngModel)]="emailReply"
-					[disabled]="csvMailTemplate?.errors.length > 0"
-					#emailRep="ngModel"
-					pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
-					[ngClass]="{
+        <div class="form-group row">
+            <label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
+            <div class="col-md-12">
+                <input
+                        id="reply_to"
+                        name="emailReply"
+                        placeholder=""
+                        class="form-control"
+                        type="text"
+                        [(ngModel)]="emailReply"
+                        #emailRep="ngModel"
+                        pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
+                        [ngClass]="{
 						'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
 						'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched)
 					}"
-				/>
-			</div>
-		</div>
-		<!-- Textarea -->
-		<div class="form-group row">
-			<label class="col-md-12 control-label"><strong>Email text*</strong></label>
-			<div class="col-md-12">
+                />
+            </div>
+        </div>
+        <!-- Textarea -->
+        <div class="form-group row">
+            <label class="col-md-12 control-label"><strong>Email text*</strong></label>
+            <div class="col-md-12">
 				<textarea
-					minlength="1"
-					required
-					class="form-control"
-					id="emailText"
-					name="emailText"
-					[(ngModel)]="emailText"
-					[disabled]="csvMailTemplate?.errors?.length > 0"
-					type="text"
-					#emailT="ngModel"
-					[ngClass]="{
+                        minlength="1"
+                        required
+                        class="form-control"
+                        id="emailText"
+                        name="emailText"
+                        [(ngModel)]="emailText"
+                        type="text"
+                        #emailT="ngModel"
+                        [ngClass]="{
 						'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
 						'is-valid': emailT.valid && (emailT.dirty || emailT.touched)
 					}"
-				></textarea>
-			</div>
-		</div>
-	</form>
-	<div class="templates-container" *ngIf="csvFile">
-		<p>
-			The following keys were provided by the CSV file: <strong>{{ csvFile.name }}</strong>
-		</p>
-		<div class="templates-list">
-			<span *ngFor="let template of csvMailTemplate?.keys">{{ '{' + template + '}' }} </span>
-		</div>
-	</div>
+                ></textarea>
+            </div>
+        </div>
+    </form>
 
-	<div class="templates-container">
-		<p>You can use the following keys as variables:</p>
-		<div class="templates-list">
-			<span *ngFor="let template of templates">{{ '{' + template + '}' }} </span>
-		</div>
-	</div>
 
-	<div class="alert alert-info">
-		Please consider: In case any dates are part of the sent E-Mails, they will be formatted in the german
-		<strong>TT.MM.YYYY</strong>-format.
-	</div>
+    <div class="templates-container">
+        <p>You can use the following keys as variables:</p>
+        <div class="templates-list">
+            <span *ngFor="let template of templates">{{ '{' + template + '}' }} </span>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        Please consider: In case any dates are part of the sent E-Mails, they will be formatted in the german
+        <strong>TT.MM.YYYY</strong>-format.
+    </div>
+
 </div>
 <div class="modal-footer">
-	<button
-		class="btn btn-secondary col-md-4"
-		type="reset"
-		data-test-id="close_confirmation_modal_btn"
-		(click)="bsModalRef.hide()"
-	>
-		Abort & Close
-	</button>
-	<button
-		*ngIf="!csvMailTemplate"
-		class="btn btn-success col-md-4"
-		[disabled]="f.invalid || csvMailTemplate?.errors?.length > 0"
-		data-test-id="confirm_confirmation_modal_btn"
-		(click)="sentProjectsMail(); bsModalRef.hide()"
-	>
-		Send Mail
-	</button>
-	<button
-		*ngIf="csvMailTemplate && csvFile"
-		class="btn btn-success col-md-4"
-		[disabled]="f.invalid || csvMailTemplate?.errors?.length > 0"
-		data-test-id="confirm_confirmation_modal_btn"
-		(click)="sentProjectsTemplatedMail(); bsModalRef.hide()"
-	>
-		Send Mail
-	</button>
+    <button
+            class="btn btn-secondary col-md-4"
+            type="reset"
+            data-test-id="close_confirmation_modal_btn"
+            (click)="bsModalRef.hide()"
+    >
+        Abort & Close
+    </button>
+    <button
+            class="btn btn-success col-md-4"
+            [disabled]="f.invalid"
+            data-test-id="confirm_confirmation_modal_btn"
+            (click)="sentProjectsMail(); bsModalRef.hide()"
+    >
+        Send Mail
+    </button>
+
 </div>
