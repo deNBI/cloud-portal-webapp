@@ -10,31 +10,41 @@
 </div>
 
 <div class="modal-body">
-    <div>
-        Send Mail to:
-        <ul>
-            <li *ngFor="let pr of selectedProjects">{{ pr.project_application_shortname }}</li>
-        </ul>
-    </div>
-
-    @if (csvMailTemplate?.errors?.length > 0) {
-        <div class="modal-body">
-            <div class="alert alert-danger">
-                <p><strong>Error!</strong> Unable to use the CSV file "{{ csvFile.name }}". The following errors
-                    occurred:</p>
-
-                <ul>
-                    <li *ngFor="let err of csvMailTemplate?.errors">{{ err }}</li>
-                </ul>
-            </div>
-            <div class="valid-example">
-                <p class="valid-example-heading">
-                    <strong>Valid Example:</strong>
+    @if (!csvFile || csvMailTemplate.errors.length > 0) {
+        <div class="valid-example">
+            <p class="valid-example-heading">
+                <strong>Valid Example:</strong>
+            </p>
+            <pre class="valid-example-content">{{ validCSVExample }}</pre>
+            <div class="templates-container">
+                <p>
+                    The following template keys would be provided by this CSV file:
                 </p>
-                <pre class="valid-example-content">{{ validCSVExample }}</pre>
+                <div class="templates-list">
+                    <span>&#123;VM&#125;</span><br>
+                    <span>&#123;LOCATION&#125;</span>
+
+                </div>
             </div>
+
         </div>
-    } @else {
+    }
+</div>
+
+
+<div class="modal-body">
+    @if (csvMailTemplate?.errors?.length > 0) {
+
+        <div class="alert alert-danger">
+            <p><strong>Error!</strong> Unable to use the CSV file "{{ csvFile.name }}". The following errors
+                occurred:</p>
+
+            <ul>
+                <li *ngFor="let err of csvMailTemplate?.errors">{{ err }}</li>
+            </ul>
+        </div>
+    }
+    @if (csvMailTemplate?.warnings?.length > 0) {
 
         <div class="alert alert-warning">
             <p>
@@ -47,7 +57,15 @@
             </ul>
         </div>
     }
-    @if (csvFile) {
+    @if (csvMailTemplate) {
+
+        <div class="templates-container">
+            <label class="col-md-12 control-label"><strong>Send Mail to:</strong></label>
+            <ul>
+                <li *ngFor="let pr of csvMailTemplate.valid_projects">{{ pr.project_application_shortname }}</li>
+            </ul>
+        </div>
+
 
         <form class="form-horizontal" id="email_form" #f="ngForm">
             <div class="form-group row">
@@ -156,32 +174,40 @@
             <strong>TT.MM.YYYY</strong>-format.
         </div>
     }
-</div>
-<div class="modal-footer">
-    <button
-            class="btn btn-secondary col-md-4"
-            type="reset"
-            data-test-id="close_confirmation_modal_btn"
-            (click)="bsModalRef.hide()"
-    >
-        Abort & Close
-    </button>
-    <button
-            *ngIf="!csvMailTemplate"
-            class="btn btn-success col-md-4"
-            [disabled]="f.invalid || csvMailTemplate?.errors?.length > 0"
-            data-test-id="confirm_confirmation_modal_btn"
-            (click)="sentProjectsMail(); bsModalRef.hide()"
-    >
-        Send Mail
-    </button>
-    <button
-            *ngIf="csvMailTemplate && csvFile"
-            class="btn btn-success col-md-4"
-            [disabled]="f.invalid || csvMailTemplate?.errors?.length > 0"
-            data-test-id="confirm_confirmation_modal_btn"
-            (click)="sentProjectsTemplatedMail(); bsModalRef.hide()"
-    >
-        Send Mail
-    </button>
+
+    <div class="modal-footer">
+        <input
+                type="file"
+                accept=".csv"
+                style="display: none"
+                #fileInput
+                (change)="onCsvFileSelected($event)"
+        />
+        <button
+                type="button"
+                class="btn btn-secondary col-md-4"
+                (click)="fileInput.click()"
+        >
+            Choose CSV File
+        </button>
+        @if (csvMailTemplate && csvFile) {
+            <button
+                    class="btn btn-success col-md-4"
+                    [disabled]="f.invalid || csvMailTemplate?.errors?.length > 0"
+                    data-test-id="confirm_confirmation_modal_btn"
+                    (click)="sentProjectsTemplatedMail(); bsModalRef.hide()"
+            >
+                Send Mail
+            </button>
+        }
+        <button
+                class="btn btn-secondary col-md-4"
+                type="reset"
+                data-test-id="close_confirmation_modal_btn"
+                (click)="bsModalRef.hide()"
+        >
+            Abort & Close
+        </button>
+    </div>
+
 </div>

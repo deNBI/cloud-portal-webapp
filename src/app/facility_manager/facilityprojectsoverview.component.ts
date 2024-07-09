@@ -196,10 +196,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		this.sortProjectService.sortDirection = direction;
 	}
 
-	searchForUserInFacility(searchString: string): void {
-		this.facilityService.getFilteredMembersOfFacility(searchString);
-	}
-
 	filterMembers(bare_searchString: string): void {
 		this.filteredMembers = [];
 		const searchString: string = bare_searchString.toLowerCase();

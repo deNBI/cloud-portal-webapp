@@ -16,6 +16,9 @@ import { SharedDirectivesModule } from './shared_directives.module';
 import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component';
 import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 import { MembersListModalComponent } from '../modal/members/members-list-modal.component';
+import {
+	ProjectCsvTemplatedEmailModalComponent,
+} from '../modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
 
 /**
  * Shared module.
@@ -30,6 +33,7 @@ import { MembersListModalComponent } from '../modal/members/members-list-modal.c
 		MigrationInformationComponent,
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
+		ProjectCsvTemplatedEmailModalComponent,
 		TestimonialFormComponent,
 		MaintenanceNotificationComponent,
 	],
@@ -53,6 +57,7 @@ import { MembersListModalComponent } from '../modal/members/members-list-modal.c
 		MigrationInformationComponent,
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
+		ProjectCsvTemplatedEmailModalComponent,
 		TestimonialFormComponent,
 		MaintenanceNotificationComponent,
 	],

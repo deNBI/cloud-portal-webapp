@@ -26,6 +26,9 @@ import { ConfirmationActions } from '../shared/modal/confirmation_actions';
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
 import { EmailService } from '../api-connector/email.service';
 import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
+import {
+	ProjectCsvTemplatedEmailModalComponent,
+} from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
 
 /**
  * Vo Overview component.
@@ -120,21 +123,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
-	}
-
-	onCsvFileSelected(event): void {
-		const inputElement = event.target as HTMLInputElement;
-		if (inputElement.files && inputElement.files.length > 0) {
-			this.emailService.sendCsvTemplate(inputElement.files[0]).subscribe(
-				(csvTemplate: CsvMailTemplateModel) => {
-					this.openProjectMailsModal(inputElement.files[0], csvTemplate);
-				},
-				(error: CsvMailTemplateModel) => {
-					console.log(error['error']);
-					this.openProjectMailsModal(inputElement.files[0], error['error']);
-				},
-			);
-		}
 	}
 
 	getTSVInformation(timeout: number = this.checkTSVTimeout): void {
@@ -252,20 +240,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		}
 	}
 
-	openProjectMailsModal(csvFile: File = null, csvTemplate: CsvMailTemplateModel = null): void {
-		let initialState = {};
+	openProjectMailsModal(): void {
 
-		if (csvFile) {
-			initialState = {
-				selectedProjects: csvTemplate.valid_projects,
-				csvFile,
-				csvMailTemplate: csvTemplate,
-			};
-		} else {
-			initialState = { selectedProjects: this.selectedEmailProjects };
-		}
-
-		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
+		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' });
 		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
 			if (sent_successfully) {
 				this.updateNotificationModal('Success', 'Mails were successfully sent', true, 'success');
