@@ -1,25 +1,21 @@
 <div class="modal-header">
 	<h4 class="modal-title" data-test-id="notification_modal_title">{{ notificationModalTitle }}</h4>
-	<button
-		type="button"
-		class="btn-close"
-		style="cursor: pointer"
-		(click)="bsModalRef.hide()"
-		aria-label="Close"
-	></button>
+	<button class="btn btn-close" style="cursor: pointer"
+					(click)="hide()"
+					aria-label="Close">
+	</button>
 </div>
 <div class="modal-body">
-	<div class="alert alert-{{ notificationModalType }}" role="alert" id="notification_modal_message">
-		<p data-test-id="notification_modal_message">{{ notificationModalMessage }}</p>
+	<div class="alert alert-{{ notificationModalType }}"role="alert"
+			 id="notification_modal_message">
+		<p data-test-id="notification_modal_message" [innerHTML]="notificationModalMessage"></p>
 	</div>
 </div>
 <div class="modal-footer">
-	<button
-		class="btn btn-danger col-md-4"
-		type="reset"
-		data-test-id="close_notification_modal_btn"
-		(click)="bsModalRef.hide()"
-	>
-		Close
+	<button *ngIf="!routerRedirectString" class="btn  btn-danger col-md-4" type="reset" data-test-id="close_notification_modal_btn"
+					(click)="hide()">Close
 	</button>
+		<a *ngIf="routerRedirectString" class="btn  btn-danger col-md-4" type="reset" data-test-id="close_notification_modal_btn"
+					(click)="hide()" [routerLink]="[routerRedirectString]">Close
+	</a>
 </div>

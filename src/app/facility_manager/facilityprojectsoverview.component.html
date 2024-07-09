@@ -45,8 +45,7 @@
 					</button>
 				</div>
 				<div class="col-md-2">
-					<input type="file" accept=".csv" style="display: none" #fileInput (change)="onCsvFileSelected($event)" />
-					<button type="button " class="btn btn-outline-primary" (click)="fileInput.click()">
+					<button type="button " class="btn btn-outline-primary" (click)="openProjectCSVMailModal()">
 						Send CSV Templated Email
 					</button>
 				</div>
