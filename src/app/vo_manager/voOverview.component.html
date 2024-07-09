@@ -583,8 +583,8 @@
 														type="button"
 														disabled
 														class="btn btn-warning"
-														[id]="'show_terminate_' + project?.project_application_shortname"
-														[attr.data-test-id]="'show_terminate_' + project?.project_application_shortname"
+														[id]="'processed_by_fm_' + project?.project_application_shortname"
+														[attr.data-test-id]="'processed_by_fm_' + project?.project_application_shortname"
 														(click)="selectedProject = project; terminateModal.show()"
 														*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
 													>
@@ -615,7 +615,7 @@
 										</tr>
 									} @else {
 										<tr>
-											<td colspan="10" style="text-align: center; vertical-align: middle">
+											<td colspan="10" style="text-align: center; vertical-align: middle" data-test-id="spinner">
 												<i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
 											</td>
 										</tr>

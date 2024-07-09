@@ -6,6 +6,7 @@ export class ProjectEnumeration {
 	application_id: string;
 	has_perun_group: boolean;
 	is_open_stack: boolean;
+	has_kubernetes_access: boolean = false;
 	project_lifetime: number;
 	project_start_date: string;
 	project_application_statuses: number[];

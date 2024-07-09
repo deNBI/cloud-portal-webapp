@@ -12,12 +12,13 @@ export class VoOverviewPage {
 	private NOTIFICATION_MESSAGE: string = 'notification_message';
 	private CLOSE_NOTIFICATION_BTN: string = 'close_notification_modal_btn';
 	private PROJECT_TERMINATED_MESSAGE: string = 'The project was terminated.';
-	private PROJECT_TERMINATION_FORWARDED_TO_FACILITY: string =		'The request to terminate the project was forwarded to the facility manager.';
+	private PROJECT_TERMINATION_FORWARDED_TO_FACILITY: string = 'The request to terminate the project was forwarded to the facility manager.';
 
 	private TERMINATE_BUTTON_TEXT: string = 'Terminate Project';
 	private NOTIFICATION_MODAL_TITLE: string = 'notification_modal_title';
 	private SUCCESS: string = 'Success';
 	private SITE_LOADER: string = 'site-loader';
+	private SPINNER: string = 'spinner';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -34,6 +35,17 @@ export class VoOverviewPage {
 
 		expect(this.page.url()).toContain(this.VO_OVERVIEW_URL);
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
+
+		try {
+			await this.page.waitForSelector(Util.by_data_test_id_str(this.SPINNER), { state: 'visible', timeout: 5000 });
+		} catch (error) {
+			console.log('Spinner not visible within 5 seconds, continuing...');
+		}
+
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.SPINNER), { state: 'hidden' });
+
+		// Add a 3-second wait at the end
+		await this.page.waitForTimeout(3000);
 	}
 
 	async filterForProjects(filter: string): Promise<any> {
@@ -46,12 +58,12 @@ export class VoOverviewPage {
 		await this.goto();
 		await this.filterForProjects(project_name);
 
-		const project_count: number = await this.page
+		let project_count: number = await this.page
 			.locator(Util.by_data_test_id_str_prefix(this.SHOW_TERMINATE_PREFIX + Util.OPENSTACK_APPLICATION_NAME))
 			.count();
 		console.log(`Terminating ${project_count} openstack projects with name ${project_name}`);
 		// eslint-disable-next-line no-plusplus
-		for (let i = 0; i < project_count; i++) {
+		while (project_count > 0) {
 			// eslint-disable-next-line no-await-in-loop
 			await this.page
 				.locator(Util.by_data_test_id_str_prefix(this.SHOW_TERMINATE_PREFIX + Util.OPENSTACK_APPLICATION_NAME))
@@ -64,7 +76,13 @@ export class VoOverviewPage {
 			await expect(this.page.locator(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE))).toHaveClass(/alert-success/);
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_BTN)).click();
+			await this.page.waitForTimeout(1500);
+
+			project_count = await this.page
+				.locator(Util.by_data_test_id_str_prefix(this.SHOW_TERMINATE_PREFIX + Util.OPENSTACK_APPLICATION_NAME))
+				.count();
 		}
+
 	}
 
 	async terminateSimpleVMProjects(project_name: string): Promise<any> {

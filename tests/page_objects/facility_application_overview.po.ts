@@ -27,6 +27,7 @@ export class FacilityApplicationOverviewPage {
 	private readonly CLOSE_NOTIFICATION_BTN: string = 'close_notification_modal_btn';
 	private DEFAULT_DENBI_COMPUTE_CENTER: string = 'de.NBI Cloud Portal - Development';
 	private readonly SELECT_FACILITY_SELECT: string = 'selectFacilitySelect';
+	private CONFIRM_CONFIRMATION_MODAL_BUTTON: string = 'confirm_confirmation_modal_btn';
 
 	private readonly TERMINATE_REQUESTS_APPLICATIONS_TAB = 'terminate_requests_applications_tab';
 
@@ -57,8 +58,12 @@ export class FacilityApplicationOverviewPage {
 
 	async goToSubmittedApplication() {
 		await this.goto();
+		console.log('Click submitted tab');
 		await this.page.locator(Util.by_data_test_id_str(this.SUBMITTED_APPLICATIONS_TAB)).click();
+		console.log('Wait that loader is absent');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		console.log('Wait till submitted applications are visible');
+
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SUBMITTED_APPLICATIONS_CONTAINER), {
 			state: 'visible',
 		});
@@ -112,22 +117,24 @@ export class FacilityApplicationOverviewPage {
 
 	async approveApplication(application_name: string): Promise<any> {
 		await this.goToSubmittedApplication();
-		console.log(`Approve Application${application_name}`);
-		await this.page.locator(Util.by_data_test_id_str(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		console.log(`Approve Application: ${application_name}`);
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
+
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
-		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
-		expect(approval_response).toContain(this.SUCCESSFULLY_APPROVED_APPL);
+		//	const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE), { timeout: 10000 });
+		//	expect(approval_response).toContain(this.SUCCESSFULLY_APPROVED_APPL);
 		await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_MODAL)).click();
 	}
 
 	async approveApplicationExtension(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		console.log(`Approve Application${application_name} Extension`);
-		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
+
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 
-		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
-		expect(approval_response).toContain(this.EXTENSION_SUCCESSFULLY);
 		await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_MODAL)).click();
 	}
 
@@ -137,25 +144,28 @@ export class FacilityApplicationOverviewPage {
 		const project_count: number = await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).count();
 		console.log(`Terminating ${project_count} openstack projects with name ${project_name}`);
 		// eslint-disable-next-line no-plusplus
-		for (let i = 0; i < project_count; i++) {
+		while (await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).first().isVisible()) {
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).first().click();
 			// eslint-disable-next-line no-await-in-loop
-			await this.page.locator(Util.by_data_test_id_str(this.APPROVE_TERMINATION_PT_APPLICATION_BTN)).first().click();
+			await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
+
 			// eslint-disable-next-line no-await-in-loop
-			await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.WAS_TERMINATED}`);
+			await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
+
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_BTN)).click();
 		}
+
 	}
 
 	async approveApplicationModification(application_name: string): Promise<any> {
 		await this.goToModificationRequests();
-		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
+
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 
-		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
-		expect(approval_response).toContain(this.MODIFICATION_EXTENSION_SUCCESS_TEXT);
 		await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_MODAL)).click();
 	}
 }

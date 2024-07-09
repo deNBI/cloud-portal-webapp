@@ -18,28 +18,42 @@
 			<div class="card" id="submittedProjectInfoDiv">
 				<div class="card-header">
 					<h3>
-						<a
-							*ngIf="project_application?.project_application_openstack_project"
-							data-toggle="tooltip"
-							href="{{ OPENSTACK_LINK }}"
-							rel="noopener noreferrer"
-							style="font-size: 2em"
-							target="_blank"
-							title="This is an Openstack project"
-						>
-							<img class="po-logo" src="{{ openstack_logo }}" />
-						</a>
-						<a
-							*ngIf="!project_application?.project_application_openstack_project"
-							data-toggle="tooltip"
-							href="{{ SIMPLE_VM_LINK }}"
-							rel="noopener noreferrer"
-							style="font-size: 2em"
-							target="_blank"
-							title="This is a Simple VM project"
-						>
-							<img class="po-logo" src="{{ simple_vm_logo }}" />
-						</a>
+						@if (project_application?.project_application_openstack_project) {
+							@if (project_application?.project_application_kubernetes_access) {
+								<a
+									data-toggle="tooltip"
+									href="{{ KUBERNETES_LINK }}"
+									rel="noopener noreferrer"
+									style="font-size: 2em"
+									target="_blank"
+									title="This is an Kubernetes project"
+								>
+									<img class="po-logo" src="{{ kubernetes_logo }}" />
+								</a>
+							} @else {
+								<a
+									data-toggle="tooltip"
+									href="{{ OPENSTACK_LINK }}"
+									rel="noopener noreferrer"
+									style="font-size: 2em"
+									target="_blank"
+									title="This is an Openstack project"
+								>
+									<img class="po-logo" src="{{ openstack_logo }}" />
+								</a>
+							}
+						} @else {
+							<a
+								data-toggle="tooltip"
+								href="{{ SIMPLE_VM_LINK }}"
+								rel="noopener noreferrer"
+								style="font-size: 2em"
+								target="_blank"
+								title="This is a Simple VM project"
+							>
+								<img class="po-logo" src="{{ simple_vm_logo }}" />
+							</a>
+						}
 						{{ project_application?.project_application_name }}
 					</h3>
 				</div>
@@ -170,28 +184,43 @@
 					<div class="row">
 						<div class="col">
 							<h3>
-								<a
-									*ngIf="project_application?.project_application_openstack_project"
-									data-toggle="tooltip"
-									href="{{ OPENSTACK_LINK }}"
-									rel="noopener noreferrer"
-									style="font-size: 2em"
-									target="_blank"
-									title="This is an Openstack project"
-								>
-									<img class="po-logo" src="{{ openstack_logo }}" />
-								</a>
-								<a
-									*ngIf="!project_application?.project_application_openstack_project"
-									data-toggle="tooltip"
-									href="{{ SIMPLE_VM_LINK }}"
-									rel="noopener noreferrer"
-									style="font-size: 2em"
-									target="_blank"
-									title="This is a Simple VM project"
-								>
-									<img class="po-logo" src="{{ simple_vm_logo }}" />
-								</a>
+								@if (project_application?.project_application_openstack_project) {
+									@if (project_application?.project_application_kubernetes_access) {
+										<a
+											data-toggle="tooltip"
+											href="{{ KUBERNETES_LINK }}"
+											rel="noopener noreferrer"
+											style="font-size: 2em"
+											target="_blank"
+											title="This is an Kubernetes project"
+										>
+											<img class="po-logo" src="{{ kubernetes_logo }}" />
+										</a>
+									} @else {
+										<a
+											data-toggle="tooltip"
+											href="{{ OPENSTACK_LINK }}"
+											rel="noopener noreferrer"
+											style="font-size: 2em"
+											target="_blank"
+											title="This is an Openstack project"
+										>
+											<img class="po-logo" src="{{ openstack_logo }}" />
+										</a>
+									}
+								} @else {
+									<a
+										data-toggle="tooltip"
+										href="{{ SIMPLE_VM_LINK }}"
+										rel="noopener noreferrer"
+										style="font-size: 2em"
+										target="_blank"
+										title="This is a Simple VM project"
+									>
+										<img class="po-logo" src="{{ simple_vm_logo }}" />
+									</a>
+								}
+
 								{{ project_application?.project_application_shortname }}
 							</h3>
 						</div>
@@ -315,7 +344,7 @@
 										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
 									"
 									class="btn btn-outline-warning"
-									data-test-id="open_modification_request_button"
+									data-test-id="show_lifetime_extension_withdraw_button"
 									id="show_lifetime_extension_withdraw_button"
 								>
 									Withdraw extension request
@@ -530,7 +559,7 @@
 										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
 									"
 									class="btn btn-outline-warning"
-									data-test-id="open_modification_request_button"
+									data-test-id="show_modification_extension_withdraw_button"
 									id="show_modification_extension_withdraw_button"
 								>
 									Withdraw resource modification

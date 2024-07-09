@@ -1,5 +1,5 @@
 import {
-	Component, EventEmitter, Input, OnInit, Output,
+	Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,
 } from '@angular/core';
 import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class';
 
@@ -14,36 +14,73 @@ import { is_vo } from '../../shared/globalvar';
 	templateUrl: './application-list.component.html',
 	styleUrl: './application-list.component.scss',
 })
-export class ApplicationListComponent implements OnInit {
-	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
+export class ApplicationListComponent implements OnInit, OnChanges {
+		@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
 
-	@Input() applications: Application[] = [];
-	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED;
-	@Input() computeCenters: ComputecenterComponent[] = [];
-	@Input() facilityView: boolean = false;
-	@Input() voView: boolean = false;
+		@Input() applications: Application[] = [];
+		@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED;
+		@Input() computeCenters: ComputecenterComponent[] = [];
+		@Input() facilityView: boolean = false;
+		@Input() voView: boolean = false;
+		dataTestId: string = '';
 
-	is_vo_admin: boolean = false;
+		is_vo_admin: boolean = false;
 
-	ngOnInit() {
-		this.is_vo_admin = is_vo;
-	}
-
-	triggerReloadNumbers() {
-		console.log('trigger reload 2');
-		this.reloadNumbersTrigger.emit();
-	}
-
-	removeApplicationFromList(application_id: string | number) {
-		const idx: number = this.applications.findIndex(
-			(application: Application) => application.project_application_id === application_id,
-		);
-
-		if (idx !== -1) {
-			console.log('remove index');
-			this.applications.splice(idx, 1);
+		ngOnInit() {
+			this.is_vo_admin = is_vo;
+			this.setDataTestId();
 		}
-	}
 
-	protected readonly Application_States = Application_States;
+		ngOnChanges(changes: SimpleChanges) {
+			this.setDataTestId();
+
+		}
+
+		setDataTestId(): void {
+			console.log('set data test id');
+			switch (this.tabState) {
+				case ApplicationTabStates.SUBMITTED: {
+					this.dataTestId = 'submitted_applications_container';
+					break;
+				}
+				case ApplicationTabStates.CREDITS_EXTENSION: {
+					this.dataTestId = 'credits_requests_applications_container';
+					break;
+				}
+				case ApplicationTabStates.LIFETIME_EXTENSION: {
+					this.dataTestId = 'lifetime_requests_applications_container';
+					break;
+				}
+				case ApplicationTabStates.MODIFICATION_EXTENSION: {
+					this.dataTestId = 'modification_requests_applications_container';
+					break;
+				}
+				case ApplicationTabStates.TERMINATION_REQUEST: {
+					this.dataTestId = 'termination_requests_applications_container';
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+			console.log(this.dataTestId);
+		}
+
+		triggerReloadNumbers() {
+			console.log('trigger reload 2');
+			this.reloadNumbersTrigger.emit();
+		}
+
+		removeApplicationFromList(application_id: string | number) {
+			const idx: number = this.applications.findIndex(
+				(application: Application) => application.project_application_id === application_id,
+			);
+
+			if (idx !== -1) {
+				console.log('remove index');
+				this.applications.splice(idx, 1);
+			}
+		}
+
+		protected readonly Application_States = Application_States;
 }

@@ -1,32 +1,41 @@
-<div *ngIf="applications.length > 0" class="card-body" data-test-id="submitted_applications_container">
-	<div>
-		<table class="table table-responsive table-borderless table-hover">
-			<thead>
-				<tr>
-					<th></th>
-					<th>Project Name</th>
-					<th>Short Name</th>
-					<th>Date submitted</th>
-					<th>User</th>
-					<th>Institute</th>
-					<th *ngIf="is_vo_admin && voView">Compute Center</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				@for (application of applications; track application.project_application_id) {
-					<app-application-card
-						class="table-line"
-						[application]="application"
-						[facilityView]="facilityView"
-						[voView]="voView"
-						(reloadNumbersTrigger)="triggerReloadNumbers()"
-						[computeCenters]="computeCenters"
-						(removeApplicationTrigger)="removeApplicationFromList($event)"
-						[tabState]="tabState"
-					></app-application-card>
-				}
-			</tbody>
-		</table>
-	</div>
-</div>
+@if (applications.length <= 0) {
+    <div class="card-body" [attr.data-test-id]="dataTestId">
+        <div class="alert alert-success" role="alert">
+            <strong>No new Applications!</strong> There is nothing to review.
+        </div>
+    </div>
+} @else {
+
+    <div class="card-body" [attr.data-test-id]="dataTestId">
+        <div>
+            <table class="table table-responsive table-borderless table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Project Name</th>
+                    <th>Short Name</th>
+                    <th>Date submitted</th>
+                    <th>User</th>
+                    <th>Institute</th>
+                    <th *ngIf="is_vo_admin && voView">Compute Center</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @for (application of applications; track application.project_application_id) {
+                        <app-application-card
+                                class="table-line"
+                                [application]="application"
+                                [facilityView]="facilityView"
+                                [voView]="voView"
+                                (reloadNumbersTrigger)="triggerReloadNumbers()"
+                                [computeCenters]="computeCenters"
+                                (removeApplicationTrigger)="removeApplicationFromList($event)"
+                                [tabState]="tabState"
+                        ></app-application-card>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
