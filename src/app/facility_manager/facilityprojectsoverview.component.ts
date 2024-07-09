@@ -19,10 +19,12 @@ import {
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
-import { NotificationModalComponent } from '../shared/modal/notification-modal';
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
 import { EmailService } from '../api-connector/email.service';
 import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
+import {
+	ProjectCsvTemplatedEmailModalComponent,
+} from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
 
 /**
  * Facility Project overview component.
@@ -43,9 +45,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	public memberFilter: string = '';
 	filteredMembers: object[] = [];
 	selectedMember: object[] = [];
-	facility_members: object[] = [];
 
-	filterChanged: Subject<string> = new Subject<string>();
 	isLoaded: boolean = false;
 	projects: Application[] = [];
 	projectsCopy: Application[] = [];
@@ -183,7 +183,12 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			);
 		}
 	}
+	openProjectCSVMailModal(): void {
+		console.log('show');
 
+		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' });
+
+	}
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers.forEach(header => {
@@ -512,24 +517,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			initialState = { selectedProjects: this.selectedEmailProjects };
 		}
 		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
-		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
-			if (sent_successfully) {
-				const initialStateNotification = {
-					notificationModalTitle: 'Success',
-					notificationModalType: 'success',
-					notificationModalMessage: 'Mails were successfully sent',
-				};
-
-				this.modalService.show(NotificationModalComponent, { initialState: initialStateNotification });
-			} else {
-				const initialStateNotification = {
-					notificationModalTitle: 'Failed',
-					notificationModalType: 'danger',
-					notificationModalMessage: 'Failed to send mails!',
-				};
-				this.modalService.show(NotificationModalComponent, { initialState: initialStateNotification });
-			}
-		});
 	}
 
 	setFacilitySupportMails(supportMails: string): void {

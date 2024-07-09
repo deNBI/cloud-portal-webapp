@@ -10,7 +10,7 @@
 </div>
 
 <div class="modal-body">
-    @if (!csvFile || csvMailTemplate.errors.length > 0) {
+    @if (!csvFile || csvMailTemplate?.errors?.length > 0) {
         <div class="valid-example">
             <p class="valid-example-heading">
                 <strong>Valid Example:</strong>
@@ -57,17 +57,20 @@
             </ul>
         </div>
     }
-    @if (csvMailTemplate) {
 
+    @if (csvMailTemplate?.valid_projects?.length > 0) {
         <div class="templates-container">
             <label class="col-md-12 control-label"><strong>Send Mail to:</strong></label>
             <ul>
-                <li *ngFor="let pr of csvMailTemplate.valid_projects">{{ pr.project_application_shortname }}</li>
+                <li *ngFor="let pr of csvMailTemplate?.valid_projects">{{ pr.project_application_shortname }}</li>
             </ul>
         </div>
+    }
 
 
-        <form class="form-horizontal" id="email_form" #f="ngForm">
+    <form class="form-horizontal" id="email_form" #f="ngForm">
+        @if (csvMailTemplate) {
+
             <div class="form-group row">
                 <div class="col-md-auto">
                     <div class="form-check">
@@ -152,7 +155,9 @@
                 ></textarea>
                 </div>
             </div>
-        </form>
+        }
+    </form>
+    @if (csvFile) {
         <div class="templates-container">
             <p>
                 The following keys were provided by the CSV file: <strong>{{ csvFile.name }}</strong>
@@ -174,6 +179,7 @@
             <strong>TT.MM.YYYY</strong>-format.
         </div>
     }
+
 
     <div class="modal-footer">
         <input
@@ -201,7 +207,7 @@
             </button>
         }
         <button
-                class="btn btn-secondary col-md-4"
+                class="btn btn-danger col-md-4"
                 type="reset"
                 data-test-id="close_confirmation_modal_btn"
                 (click)="bsModalRef.hide()"

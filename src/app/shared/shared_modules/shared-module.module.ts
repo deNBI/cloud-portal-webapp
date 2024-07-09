@@ -4,6 +4,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ProgressModule, ToastModule } from '@coreui/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { RouterLink } from '@angular/router';
 import { ApplicationBaseClassComponent } from './baseClass/application-base-class.component';
 import { NotificationModalComponent } from '../modal/notification-modal';
 import { InformationToastComponent } from '../toaster/information-toast.component';
@@ -47,6 +48,7 @@ import {
 		NgSelectModule,
 		SharedDirectivesModule,
 		ReactiveFormsModule,
+		RouterLink,
 	],
 	declarations: [
 		ApplicationBaseClassComponent,

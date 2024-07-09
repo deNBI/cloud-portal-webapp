@@ -20,12 +20,10 @@ import {
 	SortEvent,
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
-import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
 import { ConfirmationActions } from '../shared/modal/confirmation_actions';
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
 import { EmailService } from '../api-connector/email.service';
-import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
 import {
 	ProjectCsvTemplatedEmailModalComponent,
 } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
@@ -240,17 +238,10 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		}
 	}
 
-	openProjectMailsModal(): void {
+	openProjectCSVMailModal(): void {
 
 		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' });
-		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
-			if (sent_successfully) {
-				this.updateNotificationModal('Success', 'Mails were successfully sent', true, 'success');
-			} else {
-				this.updateNotificationModal('Failed', 'Failed to send mails!', true, 'danger');
-			}
-			this.notificationModal.show();
-		});
+
 	}
 
 	disableProject(project: Application): void {

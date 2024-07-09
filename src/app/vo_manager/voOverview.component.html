@@ -22,7 +22,7 @@
 			</button>
 
 			<button
-				(click)="openProjectMailsModal()"
+				(click)="emailModal.show()"
 				type="button "
 				class="btn btn-outline-primary"
 				[disabled]="selectedEmailProjects?.length === 0"
@@ -34,7 +34,7 @@
 					{{ selectedEmailProjects?.length }}
 				</c-badge>
 			</button>
-			<button type="button " class="btn btn-outline-primary" (click)="openProjectMailsModal()">
+			<button type="button " class="btn btn-outline-primary" (click)="openProjectCSVMailModal()">
 				Send CSV Templated Email
 			</button>
 			<button

@@ -7,7 +7,7 @@ import { VoService } from '../../../../api-connector/vo.service';
 import { IResponseTemplate } from '../../../../api-connector/response-template';
 import { EmailService } from '../../../../api-connector/email.service';
 import { STATUS_LINK } from '../../../../../links/links';
-import { CsvMailTemplateModel } from '../../../classes/csvMailTemplate.model';
+import { NotificationModalComponent } from '../../notification-modal';
 
 @Component({
 	selector: 'app-project-email-modal',
@@ -16,79 +16,54 @@ import { CsvMailTemplateModel } from '../../../classes/csvMailTemplate.model';
 	providers: [EmailService],
 })
 export class ProjectEmailModalComponent implements OnInit, OnDestroy {
-	@Input() selectedProjects: Application[];
-	@Input() csvMailTemplate: CsvMailTemplateModel;
-	@Input() csvFile: File;
+		@Input() selectedProjects: Application[];
 
-	emailAdminsOnly: boolean;
-	emailSubject: string;
-	emailReply: string;
-	emailText: string;
-	templates: string[];
-	validCSVExample = `Project, Key1, Key2
-Proj1, ValK1, ValK2
-Proj2, ValK1, ValK2`;
+		emailAdminsOnly: boolean;
+		emailSubject: string;
+		emailReply: string;
+		emailText: string;
+		templates: string[];
 
-	public event: EventEmitter<boolean> = new EventEmitter();
+		public event: EventEmitter<boolean> = new EventEmitter();
 
-	constructor(
-		public bsModalRef: BsModalRef,
-		private voService: VoService,
-		private emailService: EmailService,
-	) {
-		// eslint-disable-next-line no-empty-function
-	}
+		constructor(
+				public bsModalRef: BsModalRef,
+				private emailService: EmailService,
+				private notificationModal: NotificationModalComponent,
+		) {
+			// eslint-disable-next-line no-empty-function
+		}
 
-	ngOnInit() {
-		this.getMailTemplates();
-	}
+		ngOnInit() {
+			this.getMailTemplates();
+		}
 
-	getMailTemplates(): void {
-		this.emailService.getMailTemplates().subscribe((res: string[]) => {
-			this.templates = res;
-		});
-	}
+		getMailTemplates(): void {
+			this.emailService.getMailTemplates().subscribe((res: string[]) => {
+				this.templates = res;
+			});
+		}
 
-	sentProjectsTemplatedMail(): void {
-		const project_ids = this.selectedProjects.map((pr: Application) => pr.project_application_perun_id);
+		sentProjectsMail(): void {
+			const project_ids = this.selectedProjects.map((pr: Application) => pr.project_application_perun_id);
+			this.notificationModal.showInfoNotificationModal('Info', 'Sending Mails...');
 
-		this.emailService
-			.sendCsvTemplatedMail(
-				this.csvFile,
-				project_ids,
-				this.emailSubject,
-				this.emailText,
-				this.emailAdminsOnly,
-				this.emailReply,
-			)
-			.subscribe(
-				(res: IResponseTemplate) => {
-					this.event.emit(res.value as boolean);
-				},
-				() => {
-					this.event.emit(false);
-				},
-			);
-	}
+			this.emailService
+				.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
+				.subscribe(
+					(res: IResponseTemplate) => {
+						this.notificationModal.showSuccessFullNotificationModal('Success', 'Mails were successfully sent');
+					},
+					() => {
+						this.notificationModal.showSuccessFullNotificationModal('Failed', 'Failed to send mails!');
 
-	sentProjectsMail(): void {
-		const project_ids = this.selectedProjects.map((pr: Application) => pr.project_application_perun_id);
+					},
+				);
+		}
 
-		this.emailService
-			.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
-			.subscribe(
-				(res: IResponseTemplate) => {
-					this.event.emit(res.value as boolean);
-				},
-				() => {
-					this.event.emit(false);
-				},
-			);
-	}
+		ngOnDestroy(): void {
+			this.bsModalRef.hide();
+		}
 
-	ngOnDestroy(): void {
-		this.bsModalRef.hide();
-	}
-
-	protected readonly STATUS_LINK = STATUS_LINK;
+		protected readonly STATUS_LINK = STATUS_LINK;
 }

@@ -1,5 +1,5 @@
 import {
-	Component, EventEmitter, Input, OnDestroy, OnInit,
+	Component, EventEmitter, OnDestroy, OnInit,
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Application } from '../../../../applications/application.model/application.model';
@@ -7,6 +7,7 @@ import { IResponseTemplate } from '../../../../api-connector/response-template';
 import { EmailService } from '../../../../api-connector/email.service';
 import { STATUS_LINK } from '../../../../../links/links';
 import { CsvMailTemplateModel } from '../../../classes/csvMailTemplate.model';
+import { NotificationModalComponent } from '../../notification-modal';
 
 @Component({
 	selector: 'app-project-csv-templated-email-modal',
@@ -15,7 +16,6 @@ import { CsvMailTemplateModel } from '../../../classes/csvMailTemplate.model';
 	providers: [EmailService],
 })
 export class ProjectCsvTemplatedEmailModalComponent implements OnInit, OnDestroy {
-	selectedProjects: Application[];
 	csvMailTemplate: CsvMailTemplateModel;
 	csvFile: File;
 
@@ -33,6 +33,7 @@ Proj2, VM_2, Giessen`;
 	constructor(
 				public bsModalRef: BsModalRef,
 				private emailService: EmailService,
+				private notificationModal: NotificationModalComponent,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -65,7 +66,8 @@ Proj2, VM_2, Giessen`;
 	}
 
 	sentProjectsTemplatedMail(): void {
-		const project_ids = this.selectedProjects.map((pr: Application) => pr.project_application_perun_id);
+		const project_ids = this.csvMailTemplate.valid_projects.map((pr: Application) => pr.project_application_perun_id);
+		this.notificationModal.showInfoNotificationModal('Info', 'Sending Mails...');
 
 		this.emailService
 			.sendCsvTemplatedMail(
@@ -78,25 +80,12 @@ Proj2, VM_2, Giessen`;
 			)
 			.subscribe(
 				(res: IResponseTemplate) => {
-					this.event.emit(res.value as boolean);
+					this.notificationModal.showSuccessFullNotificationModal('Success', 'Mails were successfully sent!');
+
 				},
 				() => {
-					this.event.emit(false);
-				},
-			);
-	}
+					this.notificationModal.showDangerNotificationModal('Failed', 'Failed to send mails!');
 
-	sentProjectsMail(): void {
-		const project_ids = this.selectedProjects.map((pr: Application) => pr.project_application_perun_id);
-
-		this.emailService
-			.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
-			.subscribe(
-				(res: IResponseTemplate) => {
-					this.event.emit(res.value as boolean);
-				},
-				() => {
-					this.event.emit(false);
 				},
 			);
 	}
