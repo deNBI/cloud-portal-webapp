@@ -4,7 +4,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ProgressModule, ToastModule } from '@coreui/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { RouterLink } from '@angular/router';
 import { ApplicationBaseClassComponent } from './baseClass/application-base-class.component';
 import { NotificationModalComponent } from '../modal/notification-modal';
 import { InformationToastComponent } from '../toaster/information-toast.component';
@@ -17,9 +16,6 @@ import { SharedDirectivesModule } from './shared_directives.module';
 import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component';
 import { PipeModuleModule } from '../../pipe-module/pipe-module.module';
 import { MembersListModalComponent } from '../modal/members/members-list-modal.component';
-import {
-	ProjectCsvTemplatedEmailModalComponent,
-} from '../modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
 
 /**
  * Shared module.
@@ -34,7 +30,6 @@ import {
 		MigrationInformationComponent,
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
-		ProjectCsvTemplatedEmailModalComponent,
 		TestimonialFormComponent,
 		MaintenanceNotificationComponent,
 	],
@@ -48,7 +43,6 @@ import {
 		NgSelectModule,
 		SharedDirectivesModule,
 		ReactiveFormsModule,
-		RouterLink,
 	],
 	declarations: [
 		ApplicationBaseClassComponent,
@@ -59,7 +53,6 @@ import {
 		MigrationInformationComponent,
 		ApplicationBadgesComponent,
 		ProjectEmailModalComponent,
-		ProjectCsvTemplatedEmailModalComponent,
 		TestimonialFormComponent,
 		MaintenanceNotificationComponent,
 	],

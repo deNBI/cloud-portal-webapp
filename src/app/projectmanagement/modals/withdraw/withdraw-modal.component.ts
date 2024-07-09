@@ -39,8 +39,6 @@ export class WithdrawModalComponent {
 					this.event.emit(true);
 				});
 				break;
-			default:
-				this.event.emit(false);
 		}
 	}
 
