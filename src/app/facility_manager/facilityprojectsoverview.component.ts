@@ -1,7 +1,7 @@
 import {
 	Component, Input, OnInit, QueryList, ViewChildren, inject,
 } from '@angular/core';
-import { Observable, Subject, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { MatomoTracker } from 'ngx-matomo-client';
 import { ProjectMember } from '../projectmanagement/project_member.model';
@@ -22,9 +22,7 @@ import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
 import { EmailService } from '../api-connector/email.service';
 import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
-import {
-	ProjectCsvTemplatedEmailModalComponent,
-} from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
+import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
 
 /**
  * Facility Project overview component.
@@ -187,7 +185,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		console.log('show');
 
 		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' });
-
 	}
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers

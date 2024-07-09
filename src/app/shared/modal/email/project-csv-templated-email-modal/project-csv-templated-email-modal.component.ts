@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Application } from '../../../../applications/application.model/application.model';
-import { IResponseTemplate } from '../../../../api-connector/response-template';
 import { EmailService } from '../../../../api-connector/email.service';
 import { STATUS_LINK } from '../../../../../links/links';
 import { CsvMailTemplateModel } from '../../../classes/csvMailTemplate.model';
@@ -31,9 +30,9 @@ Proj2, VM_2, Giessen`;
 	public event: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(
-				public bsModalRef: BsModalRef,
-				private emailService: EmailService,
-				private notificationModal: NotificationModalComponent,
+		public bsModalRef: BsModalRef,
+		private emailService: EmailService,
+		private notificationModal: NotificationModalComponent,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -49,7 +48,6 @@ Proj2, VM_2, Giessen`;
 			this.emailService.sendCsvTemplate(this.csvFile).subscribe(
 				(csvTemplate: CsvMailTemplateModel) => {
 					this.csvMailTemplate = csvTemplate;
-
 				},
 				(error: CsvMailTemplateModel) => {
 					this.csvMailTemplate = error;
@@ -79,13 +77,11 @@ Proj2, VM_2, Giessen`;
 				this.emailReply,
 			)
 			.subscribe(
-				(res: IResponseTemplate) => {
+				() => {
 					this.notificationModal.showSuccessFullNotificationModal('Success', 'Mails were successfully sent!');
-
 				},
 				() => {
 					this.notificationModal.showDangerNotificationModal('Failed', 'Failed to send mails!');
-
 				},
 			);
 	}

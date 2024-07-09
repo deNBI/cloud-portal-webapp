@@ -19,8 +19,8 @@ export class NotificationModalComponent implements OnDestroy {
 	}
 
 	constructor(
-				private router: Router,
-				private modalService: BsModalService,
+		private router: Router,
+		private modalService: BsModalService,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -42,25 +42,41 @@ export class NotificationModalComponent implements OnDestroy {
 		this.modalId = bsModalRef.id;
 	}
 
-	showSuccessFullNotificationModal(notificationModalTitle: string, notificationModalMessage: string, routerRedirectString?: string): void {
+	showSuccessFullNotificationModal(
+		notificationModalTitle: string,
+		notificationModalMessage: string,
+		routerRedirectString?: string,
+	): void {
 		this.showNotificationModal(notificationModalTitle, notificationModalMessage, 'success', routerRedirectString);
 	}
 
-	showDangerNotificationModal(notificationModalTitle: string, notificationModalMessage: string, routerRedirectString?: string): void {
+	showDangerNotificationModal(
+		notificationModalTitle: string,
+		notificationModalMessage: string,
+		routerRedirectString?: string,
+	): void {
 		this.showNotificationModal(notificationModalTitle, notificationModalMessage, 'danger', routerRedirectString);
 	}
 
-	showWarningNotificationModal(notificationModalTitle: string, notificationModalMessage: string, routerRedirectString?: string): void {
+	showWarningNotificationModal(
+		notificationModalTitle: string,
+		notificationModalMessage: string,
+		routerRedirectString?: string,
+	): void {
 		this.showNotificationModal(notificationModalTitle, notificationModalMessage, 'warning', routerRedirectString);
 	}
 
-	showInfoNotificationModal(notificationModalTitle: string, notificationModalMessage: string, routerRedirectString?: string): void {
+	showInfoNotificationModal(
+		notificationModalTitle: string,
+		notificationModalMessage: string,
+		routerRedirectString?: string,
+	): void {
 		this.showNotificationModal(notificationModalTitle, notificationModalMessage, 'info', routerRedirectString);
 	}
 
 	ngOnDestroy(): void {
 		if (this.routerRedirectString) {
-			this.router.navigateByUrl(this.routerRedirectString);
+			void this.router.navigateByUrl(this.routerRedirectString);
 		}
 	}
 }

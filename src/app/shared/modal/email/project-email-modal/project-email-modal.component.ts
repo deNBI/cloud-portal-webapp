@@ -3,8 +3,6 @@ import {
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Application } from '../../../../applications/application.model/application.model';
-import { VoService } from '../../../../api-connector/vo.service';
-import { IResponseTemplate } from '../../../../api-connector/response-template';
 import { EmailService } from '../../../../api-connector/email.service';
 import { STATUS_LINK } from '../../../../../links/links';
 import { NotificationModalComponent } from '../../notification-modal';
@@ -16,54 +14,53 @@ import { NotificationModalComponent } from '../../notification-modal';
 	providers: [EmailService],
 })
 export class ProjectEmailModalComponent implements OnInit, OnDestroy {
-		@Input() selectedProjects: Application[];
+	@Input() selectedProjects: Application[];
 
-		emailAdminsOnly: boolean;
-		emailSubject: string;
-		emailReply: string;
-		emailText: string;
-		templates: string[];
+	emailAdminsOnly: boolean;
+	emailSubject: string;
+	emailReply: string;
+	emailText: string;
+	templates: string[];
 
-		public event: EventEmitter<boolean> = new EventEmitter();
+	public event: EventEmitter<boolean> = new EventEmitter();
 
-		constructor(
-				public bsModalRef: BsModalRef,
-				private emailService: EmailService,
-				private notificationModal: NotificationModalComponent,
-		) {
-			// eslint-disable-next-line no-empty-function
-		}
+	constructor(
+		public bsModalRef: BsModalRef,
+		private emailService: EmailService,
+		private notificationModal: NotificationModalComponent,
+	) {
+		// eslint-disable-next-line no-empty-function
+	}
 
-		ngOnInit() {
-			this.getMailTemplates();
-		}
+	ngOnInit() {
+		this.getMailTemplates();
+	}
 
-		getMailTemplates(): void {
-			this.emailService.getMailTemplates().subscribe((res: string[]) => {
-				this.templates = res;
-			});
-		}
+	getMailTemplates(): void {
+		this.emailService.getMailTemplates().subscribe((res: string[]) => {
+			this.templates = res;
+		});
+	}
 
-		sentProjectsMail(): void {
-			const project_ids = this.selectedProjects.map((pr: Application) => pr.project_application_perun_id);
-			this.notificationModal.showInfoNotificationModal('Info', 'Sending Mails...');
+	sentProjectsMail(): void {
+		const project_ids = this.selectedProjects.map((pr: Application) => pr.project_application_perun_id);
+		this.notificationModal.showInfoNotificationModal('Info', 'Sending Mails...');
 
-			this.emailService
-				.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
-				.subscribe(
-					(res: IResponseTemplate) => {
-						this.notificationModal.showSuccessFullNotificationModal('Success', 'Mails were successfully sent');
-					},
-					() => {
-						this.notificationModal.showSuccessFullNotificationModal('Failed', 'Failed to send mails!');
+		this.emailService
+			.sendMailToProjects(project_ids, this.emailSubject, this.emailText, this.emailAdminsOnly, this.emailReply)
+			.subscribe(
+				() => {
+					this.notificationModal.showSuccessFullNotificationModal('Success', 'Mails were successfully sent');
+				},
+				() => {
+					this.notificationModal.showSuccessFullNotificationModal('Failed', 'Failed to send mails!');
+				},
+			);
+	}
 
-					},
-				);
-		}
+	ngOnDestroy(): void {
+		this.bsModalRef.hide();
+	}
 
-		ngOnDestroy(): void {
-			this.bsModalRef.hide();
-		}
-
-		protected readonly STATUS_LINK = STATUS_LINK;
+	protected readonly STATUS_LINK = STATUS_LINK;
 }

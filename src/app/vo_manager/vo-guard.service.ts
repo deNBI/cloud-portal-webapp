@@ -1,4 +1,5 @@
 /* eslint-disable */
+/* tslint:disable */
 import { Injectable } from '@angular/core'
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router'
 import { Observable } from 'rxjs'
@@ -9,9 +10,7 @@ import { is_vo } from '../shared/globalvar'
  */
 @Injectable()
 export class VoGuardService {
-	constructor(private router: Router) {
-		this.router = router
-	}
+	constructor(private router: Router) {}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	canActivate(
