@@ -23,6 +23,7 @@
 			[computeCenters]="computeCenters"
 			(reloadNumbersTrigger)="triggerReloadNumbers()"
 			(removeApplicationTrigger)="triggerRemoveApplication()"
+			(reloadApplicationTrigger)="getApplication()"
 		></app-application-vo-actions>
 	} @else if (facilityView) {
 		<app-application-facility-actions
@@ -32,12 +33,14 @@
 			[tabState]="tabState"
 			(reloadNumbersTrigger)="triggerReloadNumbers()"
 			(removeApplicationTrigger)="triggerRemoveApplication()"
+			(reloadApplicationTrigger)="getApplication()"
 		></app-application-facility-actions>
 	}
 </tr>
 <td colspan="12">
 	@if (!isCollapsed) {
 		<app-application-detail
+			#applicationdetail
 			[class.collapse_no_margin]="isCollapsed"
 			[class.collapse]="isCollapsed"
 			[application]="application"

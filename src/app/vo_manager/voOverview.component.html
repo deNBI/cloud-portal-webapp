@@ -22,7 +22,7 @@
 			</button>
 
 			<button
-				(click)="openProjectMailsModal()"
+				(click)="emailModal.show()"
 				type="button "
 				class="btn btn-outline-primary"
 				[disabled]="selectedEmailProjects?.length === 0"
@@ -34,8 +34,7 @@
 					{{ selectedEmailProjects?.length }}
 				</c-badge>
 			</button>
-			<input type="file" accept=".csv" style="display: none" #fileInput (change)="onCsvFileSelected($event)" />
-			<button type="button " class="btn btn-outline-primary" (click)="fileInput.click()">
+			<button type="button " class="btn btn-outline-primary" (click)="openProjectCSVMailModal()">
 				Send CSV Templated Email
 			</button>
 			<button

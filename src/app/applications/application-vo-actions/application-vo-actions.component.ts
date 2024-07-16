@@ -33,6 +33,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED;
 	@Input() computeCenters: ComputecenterComponent[] = [];
 	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
+	@Output() reloadApplicationTrigger: EventEmitter<void> = new EventEmitter();
 	@Output() removeApplicationTrigger: EventEmitter<number | string> = new EventEmitter();
 	@Output() switchCollapseEvent: EventEmitter<void> = new EventEmitter();
 
@@ -64,7 +65,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 			.showAdjustLifetimeExtensionModal(this.application)
 			.subscribe((eventSuccess: boolean) => {
 				if (eventSuccess) {
-					this.getApplication();
+					this.triggerReloadApplication();
 					this.showNotificationModal(
 						'Success',
 						'The lifetime of the extension request were adjusted successfully!',
@@ -76,10 +77,14 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 			});
 	}
 
+	triggerReloadApplication(): void {
+		this.reloadApplicationTrigger.emit();
+	}
+
 	showAdjustApplicationModal() {
 		this.adjustApplicationModal.showAdjustApplicationModal(this.application).subscribe((changed: boolean) => {
 			if (changed) {
-				this.getApplication();
+				this.triggerReloadApplication();
 
 				this.showNotificationModal('Success', 'The resources of the application were adjusted successfully!', 'success');
 			} else {
@@ -160,22 +165,11 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	removeApplicationFromFacilityConfirmation(): void {
 		this.groupService.removeGroupFromResource(this.application.project_application_perun_id.toString()).subscribe(
 			(): void => {
-				this.getApplication();
+				this.triggerReloadApplication();
 				this.showNotificationModal('Success', 'The application was removed from the compute center', 'success');
 			},
 			(): void => {
 				this.showNotificationModal('Failed', 'The application was removed from the compute center', 'danger');
-			},
-		);
-	}
-
-	getApplication(): void {
-		this.applicationsService.getApplication(this.application.project_application_id.toString()).subscribe(
-			(aj: Application): void => {
-				this.application = aj;
-			},
-			(error: any): void => {
-				console.log(error);
 			},
 		);
 	}
@@ -186,7 +180,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 				.assignGroupToResource(this.application.project_application_perun_id, this.selectedComputeCenter.FacilityId)
 				.subscribe(
 					(): void => {
-						this.getApplication();
+						this.triggerReloadApplication();
 
 						this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
 					},
@@ -202,7 +196,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 
 	resetApplicationPI(): void {
 		this.applicationsService.resetPIValidation(this.application).subscribe(() => {
-			this.getApplication();
+			this.triggerReloadApplication();
 		});
 	}
 
@@ -269,7 +263,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 						// this.all_applications.splice(this.all_applications.indexOf(application), 1);
 					}
 				} else {
-					this.getApplication();
+					this.triggerReloadApplication();
 				}
 			},
 			(err: any): void => {
@@ -286,7 +280,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 				this.triggerReloadNumbers();
 				this.triggerRemoveApplication();
 
-				this.getApplication();
+				this.triggerReloadApplication();
 			},
 			(err: any): void => {
 				console.log('error', err.status);
@@ -360,7 +354,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		this.applicationsService.approveAdditionalLifetime(this.application.project_application_id).subscribe(
 			(res: Response): void => {
 				if (this.application.project_application_openstack_project) {
-					this.getApplication();
+					this.triggerReloadApplication();
 					this.showNotificationModal('Success', 'The request has been sent to the facility manager.', 'success');
 				} else {
 					this.showNotificationModal('Success', 'The project has been extended!', 'success');
@@ -389,7 +383,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 						this.triggerRemoveApplication();
 					}
 				} else {
-					this.getApplication();
+					this.triggerReloadApplication();
 				}
 			},
 			(err: any): void => {
@@ -408,7 +402,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 						this.showNotificationModal('Failed', result['Error'], 'danger');
 					} else {
 						this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
-						this.getApplication();
+						this.triggerReloadApplication();
 						// this.switchApproveLocked(false);
 					}
 				},

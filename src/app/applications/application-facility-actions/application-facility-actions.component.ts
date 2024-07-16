@@ -33,6 +33,7 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	isCollapsed: boolean = true;
 	bsModalRef: BsModalRef;
 	@Output() switchCollapseEvent: EventEmitter<void> = new EventEmitter();
+	@Output() reloadApplicationTrigger: EventEmitter<void> = new EventEmitter();
 
 	constructor(
 		private facilityService: FacilityService,
@@ -52,6 +53,10 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 
 	triggerReloadNumbers() {
 		this.reloadNumbersTrigger.emit();
+	}
+
+	triggerReloadApplication(): void {
+		this.reloadApplicationTrigger.emit();
 	}
 
 	declineApplication(): void {
