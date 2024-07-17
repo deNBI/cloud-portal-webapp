@@ -101,6 +101,14 @@ test.describe.serial('@openstack_application', () => {
 			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
 			await projectOverviewPage.requestProjectModification(false);
 		});
+
+		test.describe('Should ajdust a project modification for OpenStack', () => {
+			test.use({ storageState: Util.VO_MANAGER_STORAGE });
+			test('VO @openstack_application', async ({ page, baseURL }) => {
+				const applicationPage = new ApplicationOverviewPage(page, baseURL);
+				await applicationPage.adjustOpenStackModificationRequest(Util.OPENSTACK_APPLICATION_NAME);
+			});
+		});
 	});
 	test.describe('Should approve a project extension for OpenStack', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
