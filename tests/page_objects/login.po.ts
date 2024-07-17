@@ -56,13 +56,14 @@ export class LoginPagePlaywright {
 	async useOrcid(email: string, psw: string): Promise<any> {
 		console.log('Using Orcid Login');
 		await Util.consoleLogCurrentUrl(this.page);
-		const link = await this.page.locator('a:has-text("ORCID")').first({ timeout: 15000 });
+		await this.page.locator('a:has-text("ORCID")').elementHandle({ timeout: 10000});
+		const link = this.page.locator('a:has-text("ORCID")').first();
 		await link.click();
 		await Util.consoleLogCurrentUrl(this.page);
 		await this.acceptAllCookies();
 		console.log('Waiting for login page');
 		await Util.consoleLogCurrentUrl(this.page);
-		await this.page.waitForURL('https://orcid.org/signin**', { timeout: 5000 });
+		await this.page.waitForURL('https://orcid.org/signin**', { timeout: 10000 });
 		await this.page.fill('id=username-input', email);
 		await this.page.fill('id=password', psw);
 		console.log('click signin button');
@@ -78,7 +79,7 @@ export class LoginPagePlaywright {
 		await this.giveConsent();
 		await Util.consoleLogCurrentUrl(this.page);
 		//	await this.skipElixirTestWarning()
-		await this.page.waitForURL(`${this.baseURL}/#/userinfo`);
+		await this.page.waitForURL(`**/userinfo`);
 		await Util.consoleLogCurrentUrl(this.page);
 	}
 
@@ -101,7 +102,7 @@ export class LoginPagePlaywright {
 		try {
 			await this.page.waitForURL('**/oauth/authorize**', { timeout: 5000 });
 			await this.page.waitForSelector('[id="authorize-button"]');
-			const authorizeButton = await this.page.$('[id="authorize-button"]');
+			const authorizeButton = await this.page.$('[id="authorize-button"]')
 			authorizeButton?.click();
 		} catch (error) {
 			console.log(`Didn't Authorize ${error}`);
