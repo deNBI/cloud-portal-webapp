@@ -33,13 +33,15 @@ export class ApplicationOverviewPage {
 	private LOADING_APPLICATIONS: string = 'loading_applications';
 	private APPLICATIONS_CONTAINER: string = 'applications_container';
 	private MODIFICATION_ADJUSTMENT_PREFIX = 'modification_adjustment_';
+	private LIFETIME_ADJUSTMENT_PREFIX: string = 'extension_adjustment_';
 	private ADJUSTMENT_FLAVOR_STD_4: string = 'adjusted_std_4'; // de.NBI mini
 	private VO_MANAGER_COMMENT_INPUT: string = 'vo_manager_comment_input';
 	private SUBMIT_MODIFICATION_ADJUSTMENT_BUTTON: string = 'submit_modification_adjustment_button';
 	private CONFIRM_ADJUSTMENT_BUTTON: string = 'confirm_adjustment_request_button';
 	private MODIFICATION_ADJUSTMENT_REQUEST: string = 'modification_adjustment_request_result_div';
 	private MODIFICATION_ADJUSTMENT_SUCCESSFULL_TXT: string = 'Modification adjustment successfully submitted!';
-
+	private SUBMITTED_LIFETIME_ADJUSTMENT_BUTTON: string = 'submitLifetimeAdjustmentButton';
+	private ADJUSTED_LIFETIME_COUNTER: string = 'adjusted_lifetime_counter';
 	private CONFIRM_CONFIRMATION_MODAL_BUTTON: string = 'confirm_confirmation_modal_btn';
 	private SITE_LOADER: string = 'site-loader';
 
@@ -144,6 +146,17 @@ export class ApplicationOverviewPage {
 		await this.page.waitForSelector(
 			`data-test-id=${this.MODIFICATION_ADJUSTMENT_REQUEST} >> text=${this.MODIFICATION_ADJUSTMENT_SUCCESSFULL_TXT}`,
 		);
+	}
+
+	async adjustOpenStackLifetimeRequest(application_name: string): Promise<any> {
+		await this.goToLifetimeRequests();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.LIFETIME_ADJUSTMENT_PREFIX + application_name)).click();
+		await this.page.waitForTimeout(2000);
+		await this.page.fill(Util.by_data_test_id_str(this.ADJUSTED_LIFETIME_COUNTER), '3');
+
+		await Util.clickByDataTestIdStr(this.page, this.SUBMITTED_LIFETIME_ADJUSTMENT_BUTTON);
+		console.log('Wait for Success Message');
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 	}
 
 	async approveSimpleVMModificationRequest(application_name: string): Promise<any> {
