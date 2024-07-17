@@ -110,11 +110,10 @@
 					New Project
 				</a>
 			</li>
-			<ng-container class="nav-group" *ngIf="project_enumeration?.length <= 3">
+			<span data-test-id="project_list" class="nav-group" *ngIf="project_enumeration?.length <= 3">
 				<li
 					class="nav-item"
 					id="project_list"
-					data-test-id="project_list"
 					*ngFor="let application of project_enumeration"
 					style="width: 100% !important"
 				>
@@ -253,7 +252,7 @@
 						</div>
 					</a>
 				</li>
-			</ng-container>
+			</span>
 			<li
 				class="nav-group"
 				id="project_list_folded"
