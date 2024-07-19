@@ -14,8 +14,7 @@ import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeF
  */
 @Injectable()
 export class VoService {
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
 	getTsvInformation(): Observable<any> {
 		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/tsv_information/`, {
@@ -31,6 +30,10 @@ export class VoService {
 
 	downloadProjectsTsv(): Observable<Blob> {
 		return this.http.get<Blob>(`${ApiSettings.getApiBaseURL()}voManagers/get_current_tsv/`, {});
+	}
+
+	getLatestProjectTsvName(): Observable<any> {
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}voManagers/get_current_tsv/name/`, {});
 	}
 
 	sendTestError(): Observable<IResponseTemplate> {
@@ -79,12 +82,20 @@ export class VoService {
 			);
 	}
 
-	getGroupsByMemberElixirId(elixir_id: string, isPi: boolean, isAdmin: boolean, isMember: boolean): Observable<Application[]> {
+	getGroupsByMemberElixirId(
+		elixir_id: string,
+		isPi: boolean,
+		isAdmin: boolean,
+		isMember: boolean,
+	): Observable<Application[]> {
 		return this.http
 			.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/filter/`, {
 				withCredentials: true,
 				params: {
-					elixir_id, isPi, isAdmin, isMember,
+					elixir_id,
+					isPi,
+					isAdmin,
+					isMember,
 				},
 			})
 			.pipe(
@@ -203,11 +214,11 @@ export class VoService {
 	}
 
 	/**
-		 * Get members of a project with emails.
-		 *
-		 * @param groupid id of the group
-		 * @returns
-		 */
+	 * Get members of a project with emails.
+	 *
+	 * @param groupid id of the group
+	 * @returns
+	 */
 	getVoGroupRichMembers(groupid: number | string): Observable<ProjectMember[]> {
 		return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/members/`, {
 			withCredentials: true,

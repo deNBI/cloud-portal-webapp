@@ -71,6 +71,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	checkTSVTimer: ReturnType<typeof setTimeout>;
 	checkTSVTimeout: number = 10000;
 	projectsCopy: Application[] = [];
+	latestTsvName: string = '';
 
 	selectedProjectType: string = 'ALL';
 	selectedFacility: string | number = 'ALL';
@@ -114,6 +115,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
 			this.newsletterSubscriptionCounter = result.value as number;
 		});
+		this.getLatestTsvName();
 		this.getTSVInformation();
 	}
 
@@ -148,6 +150,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	stopCheckTSVTimer(): void {
+		this.getLatestTsvName();
 		if (this.checkTSVTimer) {
 			clearTimeout(this.checkTSVTimer);
 		}
@@ -658,6 +661,12 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		});
 	}
 
+	getLatestTsvName(): void {
+		this.voService.getLatestProjectTsvName().subscribe((result: any) => {
+			this.latestTsvName = result['latest_entry'];
+		});
+	}
+
 	downloadCurrentTSV(): void {
 		this.voService.downloadProjectsTsv().subscribe(
 			(result): void => {
@@ -665,8 +674,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 					type: 'text/tsv',
 				});
 
-				const dateTime = new Date();
-				FileSaver.saveAs(blobn, `projects-${dateTime.getDate()}-${dateTime.getMonth()}-${dateTime.getFullYear()}.tsv`);
+				FileSaver.saveAs(blobn, this.latestTsvName);
 			},
 			(err: any) => {
 				console.log(`No such file found! - ${err.toString()}`);
