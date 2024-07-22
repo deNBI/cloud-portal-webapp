@@ -174,6 +174,7 @@
 							(click)="showConfirmationModal(ConfirmationActions.APPROVE_APPLICATION)"
 							[disabled]="!selectedComputeCenter"
 							type="button"
+							tooltip="Approve Application"
 							class="btn btn-success"
 						>
 							<i class="fa fa-check"></i>&nbsp;
@@ -197,6 +198,7 @@
 							(click)="showConfirmationModal(ConfirmationActions.APPROVE_EXTENSION)"
 							type="button"
 							class="btn btn-success"
+							tooltip="Approve Extension"
 						>
 							<i class="fa fa-check"></i>&nbsp;
 							<span class="d-none">Approve Extension</span>
@@ -209,6 +211,7 @@
 							type="button"
 							(click)="showAdjustLifetimeExtensionModal()"
 							class="btn btn-primary"
+							tooltip="Adjust Extension"
 						>
 							<i class="fa fa-pen"></i>&nbsp;
 							<span class="d-none"> Adjust Extension</span>
@@ -228,6 +231,7 @@
 							[attr.data-test-id]="'modification_approval_' + application?.project_application_name"
 							(click)="showConfirmationModal(ConfirmationActions.APPROVE_MODIFICATION)"
 							type="button"
+							tooltip="Approve Modification"
 							class="btn btn-success"
 						>
 							<i class="fa fa-check"></i>&nbsp;
@@ -246,6 +250,7 @@
 							[attr.data-test-id]="'modification_approval_' + application?.project_application_name"
 							(click)="showClientsLimitsModal(true)"
 							type="button"
+							tooltip="Approve Modification"
 							class="btn btn-success"
 						>
 							<i class="fa fa-check"></i>&nbsp;
@@ -262,6 +267,7 @@
 							[attr.data-test-id]="'modification_adjustment_' + application?.project_application_shortname"
 							style="margin: 2px"
 							type="button"
+							tooltip="Adjust Modification"
 							(click)="showModificationAdjustmentModal()"
 							class="btn btn-primary"
 						>
@@ -276,6 +282,7 @@
 						<button
 							type="button"
 							class="btn btn-danger"
+							tooltip="Decline Modification"
 							style="margin: 2px"
 							(click)="showConfirmationModal(ConfirmationActions.DECLINE_MODIFICATION)"
 						>
