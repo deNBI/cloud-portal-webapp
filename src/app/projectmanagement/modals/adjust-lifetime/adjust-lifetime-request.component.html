@@ -40,6 +40,7 @@
 									required
 									class="form-control"
 									id="adjusted_lifetime_counter"
+									data-test-id="adjusted_lifetime_counter"
 									name="adjusted_lifetime_counter"
 									placeholder="e.g. 3 months"
 									type="number"
@@ -91,6 +92,7 @@
 						class="btn btn-primary"
 						form="lifetime_adjustment_form"
 						id="submitLifetimeAdjustmentButton"
+						data-test-id="submitLifetimeAdjustmentButton"
 						(click)="adjustLifetimeExtension()"
 						[disabled]="lifetimeAdjustmentForm.invalid"
 					>
