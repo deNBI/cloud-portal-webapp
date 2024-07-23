@@ -182,7 +182,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
 			this.simple_vm_project = !this.openstack_project;
 			this.application.project_application_pi = new User();
-			this.searchTermsInEdamTerms();
+
+			//	this.searchTermsInEdamTerms();
 
 			if (this.application.dissemination.someAllowed()) {
 				this.project_application_report_allowed = true;
