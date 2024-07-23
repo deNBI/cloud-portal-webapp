@@ -18,7 +18,6 @@ import { ApplicationDetailComponent } from '../application-detail/application-de
 	styleUrl: './application-card.component.scss',
 })
 export class ApplicationCardComponent extends AbstractBaseClass implements OnInit {
-
 	@Input() application: Application;
 	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED;
 	@Input() computeCenters: ComputecenterComponent[] = [];
@@ -57,10 +56,7 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 		});
 	}
 
-	constructor(
-		private applicationsService: ApplicationsService,
-
-	) {
+	constructor(private applicationsService: ApplicationsService) {
 		super();
 	}
 
