@@ -79,7 +79,6 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 
 	triggerReloadApplication(): void {
 		this.reloadApplicationTrigger.emit();
-		console.log('trgger reloaded');
 	}
 
 	showAdjustApplicationModal() {
@@ -469,6 +468,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 				}
 				if (action === 'adjustedModificationRequest') {
 					this.triggerReloadApplication();
+
 					//	this.isLoaded = false;
 					// this.changeTabState(ApplicationTabStates.MODIFICATION_EXTENSION);
 				}
