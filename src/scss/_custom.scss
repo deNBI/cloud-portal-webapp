@@ -318,6 +318,7 @@ $slight_danger_persian_red: #CA3433;
 
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
+$kubernetescolor: #326ce5;
 
 
 @media (max-width: 992px) {
@@ -972,6 +973,10 @@ header {
 
 .btn-outline-simplevm {
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour, 5%), $simplevmcolour);
+}
+
+.btn-outline-kubernetes {
+    @include button-outline-variant($kubernetescolor, #222222, lighten($kubernetescolor, 5%), $kubernetescolor);
 }
 
 // Google Font as on landing page.
