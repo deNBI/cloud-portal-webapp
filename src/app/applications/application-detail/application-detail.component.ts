@@ -28,6 +28,8 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 	MODIFICATION_TAB: number = 4;
 	EXTENSION_TAB: number = 5;
 	COMMENT_TAB: number = 6;
+	MODIFICATION_COMMENT_TAB: number = 7;
+	LIFETIME_COMMENT_TAB: number = 8;
 	PI_USER_TAB_ACTIVE: boolean = true;
 	INFORMATION_TAB_ACTIVE: boolean = false;
 	RESOURCE_TAB_ACTIVE: boolean = false;
@@ -35,7 +37,8 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 	MODIFICATION_TAB_ACTIVE: boolean = false;
 	EXTENSION_TAB_ACTIVE: boolean = false;
 	COMMENT_TAB_ACTIVE: boolean = false;
-
+	MODIFICATION_COMMENT_TAB_ACTIVE: boolean = false;
+	LIFETIME_COMMENT_TAB_ACTIVE: boolean = false;
 	@Input() application: Application;
 	@Input() default_tab: number = this.PI_USER_TAB;
 
@@ -52,10 +55,13 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		this.MODIFICATION_TAB_ACTIVE = false;
 		this.EXTENSION_TAB_ACTIVE = false;
 		this.COMMENT_TAB_ACTIVE = false;
+		this.MODIFICATION_COMMENT_TAB_ACTIVE = false;
+		this.LIFETIME_COMMENT_TAB_ACTIVE = false;
 	}
 
 	setTab(tab_num: number): void {
 		this.setAllTabsFalse();
+		console.log(tab_num);
 		switch (tab_num) {
 			case this.PI_USER_TAB:
 				this.PI_USER_TAB_ACTIVE = true;
@@ -77,6 +83,12 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 				break;
 			case this.COMMENT_TAB:
 				this.COMMENT_TAB_ACTIVE = true;
+				break;
+			case this.LIFETIME_COMMENT_TAB:
+				this.LIFETIME_COMMENT_TAB_ACTIVE = true;
+				break;
+			case this.MODIFICATION_COMMENT_TAB:
+				this.MODIFICATION_COMMENT_TAB_ACTIVE = true;
 				break;
 			default:
 				break;

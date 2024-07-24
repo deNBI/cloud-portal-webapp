@@ -58,6 +58,26 @@
 				>Application Adjustment</a
 			>
 		</li>
+		<li class="nav-item">
+			<a
+				class="nav-link"
+				id="modification_comment_tab"
+				*ngIf="application?.project_modification_request?.manager_comment"
+				[ngClass]="{ active: MODIFICATION_COMMENT_TAB_ACTIVE }"
+				(click)="setTab(MODIFICATION_COMMENT_TAB)"
+				>Modification Adjustment</a
+			>
+		</li>
+		<li class="nav-item">
+			<a
+				class="nav-link"
+				id="lifetime_comment_tab"
+				*ngIf="application?.project_lifetime_request?.manager_comment"
+				[ngClass]="{ active: LIFETIME_COMMENT_TAB_ACTIVE }"
+				(click)="setTab(LIFETIME_COMMENT_TAB)"
+				>Lifetime Adjustment</a
+			>
+		</li>
 	</ul>
 
 	<div class="tab-content">
@@ -99,8 +119,22 @@
 			<app-lifetime-extension-detail [application]="application"></app-lifetime-extension-detail>
 		</div>
 
-		<div *ngIf="COMMENT_TAB_ACTIVE" class="table-responsive">
-			<app-adjustment-detail [application]="application"></app-adjustment-detail>
-		</div>
+		@if (COMMENT_TAB_ACTIVE) {
+			<div class="table-responsive">
+				<app-adjustment-detail [comment]="application.project_application_manager_comment"></app-adjustment-detail>
+			</div>
+		} @else if (MODIFICATION_COMMENT_TAB_ACTIVE) {
+			<div class="table-responsive">
+				<app-adjustment-detail
+					[comment]="application?.project_modification_request?.manager_comment"
+				></app-adjustment-detail>
+			</div>
+		} @else if (LIFETIME_COMMENT_TAB_ACTIVE) {
+			<div class="table-responsive">
+				<app-adjustment-detail
+					[comment]="application?.project_lifetime_request?.manager_comment"
+				></app-adjustment-detail>
+			</div>
+		}
 	</div>
 </div>
