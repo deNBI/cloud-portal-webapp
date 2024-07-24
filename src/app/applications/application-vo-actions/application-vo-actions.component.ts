@@ -467,6 +467,8 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 					}
 				}
 				if (action === 'adjustedModificationRequest') {
+					this.triggerReloadApplication();
+
 					//	this.isLoaded = false;
 					// this.changeTabState(ApplicationTabStates.MODIFICATION_EXTENSION);
 				}
