@@ -9,8 +9,7 @@ import {
 	ViewChild,
 	inject,
 } from '@angular/core';
-import * as moment from 'moment';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import moment from 'moment'; import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Router } from '@angular/router';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { ClientService } from '../api-connector/client.service';
