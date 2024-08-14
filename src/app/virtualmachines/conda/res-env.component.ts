@@ -26,7 +26,7 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 	@Input() blockedImageTagsResenv: BlockedImageTagResenv[];
 	@Input() workshopMode: boolean = false;
 
-	Object: Object = Object;
+	Object: object = Object;
 
 	templates_to_block: string[] = [];
 
