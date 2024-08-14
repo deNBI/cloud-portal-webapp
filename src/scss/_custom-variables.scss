@@ -6,5 +6,10 @@
 $gray-lighter: #cfd8dc;
 $border-color: $gray-lighter;
 
+
+$primary: #00adef;
 // $navbar-brand-logo-size:            120px auto;
 // $navbar-brand-logo:                 url('../img/denbi_cloud_logo.svg');
+
+$theme-colors: ('primary': $primary);
+$--cui-primary: $primary !important;

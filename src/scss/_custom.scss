@@ -1,7 +1,7 @@
 // Here you can add other styles
 @use "sass:math";
 
-@import "../node_modules/bootstrap/scss/bootstrap";
+//@import "../node_modules/bootstrap/scss/bootstrap";
 
 
 // due to change from ngx-perfect-scrollbar to ngx-scrollbar
@@ -337,6 +337,14 @@ $kubernetescolor: #326ce5;
     top: 4.688rem;
     margin: 0.938rem;
     width: 13rem;
+}
+
+.sidebar-nav .nav-item {
+    padding: 0;
+}
+
+.sidebar-nav {
+    padding: 2px 0;
 }
 
 .row>.ng-star-inserted {
@@ -875,6 +883,14 @@ app-dashboard {
     border-color: #BBC1C7;
 }
 
+.alert-link {
+    color: $deNBI_blue;
+}
+
+.alert-link:hover {
+    color: $deNBI_cyan;
+}
+
 .btn-secondary,
 .btn-info {
     background-color: $deNBI_lightgrey !important;
@@ -1071,6 +1087,8 @@ header {
     color: $deNBI_darkgrey;
 }
 
+
+
 .nav-link:hover,
 .nav-link:hover {
     color: $deNBI_lightgrey;
@@ -1113,8 +1131,14 @@ header {
 }
 
 .sidebar-nav .nav-item:hover,
-.sidebar .nav-item:hover>.nav-link {
-    background-color: $deNBI_lightgrey
+.sidebar .nav-item:hover>.nav-link,
+.sidebar .nav-item:hover>.nav-link .nav-icon {
+    background-color: $deNBI_lightgrey;
+    color: white;
+}
+
+.sidebar .nav-item .nav-link.active .nav-icon {
+    color: white;
 }
 
 .sidebar-nav .nav-group-toggle::after {
