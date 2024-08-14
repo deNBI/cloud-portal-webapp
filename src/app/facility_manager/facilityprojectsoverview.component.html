@@ -45,8 +45,7 @@
 					</button>
 				</div>
 				<div class="col-md-2">
-					<input type="file" accept=".csv" style="display: none" #fileInput (change)="onCsvFileSelected($event)" />
-					<button type="button " class="btn btn-outline-primary" (click)="fileInput.click()">
+					<button type="button " class="btn btn-outline-primary" (click)="openProjectCSVMailModal()">
 						Send CSV Templated Email
 					</button>
 				</div>
@@ -125,8 +124,76 @@
 									[(ngModel)]="sortProjectService.searchTerm"
 								/>
 							</div>
-							<span class="col col-form-label" *ngIf="sortProjectService.loading$ | async">Loading...</span>
+							<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label"
+								>User Full Elixir Id search:</label
+							>
+							<div class="col-xs-4 col-sm-4">
+								<!-- Adjust the column size based on your layout -->
+								<c-input-group class="mb-3">
+									<input
+										[attr.data-test-id]="'filter_project_name'"
+										id="table-user-elixir-complete-search"
+										type="text"
+										class="form-control"
+										name="searchTerm"
+										[(ngModel)]="userElixirIdFilter"
+										(ngModelChange)="checkValidElixirIdFilter()"
+									/>
+									<button
+										cButton
+										color="secondary"
+										id="searchbyElixirId"
+										type="button"
+										[disabled]="!validElixirIdFilter"
+										variant="outline"
+										(click)="getProjectsByMemberElixirId()"
+									>
+										Search
+									</button>
+								</c-input-group>
+
+								<span class="col col-form-label" *ngIf="sortProjectService.loading$ | async">Loading...</span>
+
+								<div class="row">
+									<div class="col">
+										<label for="pi-checkbox">
+											<c-badge color="danger"> PI </c-badge>
+										</label>
+										<input
+											type="checkbox"
+											id="pi-checkbox"
+											(change)="getProjectsByMemberElixirId()"
+											[(ngModel)]="userElixirSearchPI"
+										/>
+									</div>
+
+									<div class="col">
+										<label for="admin-checkbox">
+											<c-badge color="info"> Admin </c-badge>
+										</label>
+										<input
+											type="checkbox"
+											id="admin-checkbox"
+											(change)="getProjectsByMemberElixirId()"
+											[(ngModel)]="userElixirSearchAdmin"
+										/>
+									</div>
+
+									<div class="col">
+										<label for="member-checkbox">
+											<c-badge color="warning"> Member </c-badge>
+										</label>
+										<input
+											type="checkbox"
+											id="member-checkbox"
+											(change)="getProjectsByMemberElixirId()"
+											[(ngModel)]="userElixirSearchMember"
+										/>
+									</div>
+								</div>
+							</div>
 						</div>
+
 						<div class="row">
 							<div class="checkbox col">
 								<label style="margin-top: 7px; margin-bottom: 0px !important">
@@ -226,120 +293,128 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let project of applictions$ | async; index as i">
-									<td>
-										<input
-											type="checkbox"
-											[(ngModel)]="project.is_project_selected"
-											(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
-										/>
-									</td>
-									<td>
-										<app-application-badges [application]="project"></app-application-badges>
-									</td>
+								@if (projectsLoaded) {
+									<tr *ngFor="let project of applictions$ | async; index as i">
+										<td>
+											<input
+												type="checkbox"
+												[(ngModel)]="project.is_project_selected"
+												(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
+											/>
+										</td>
+										<td>
+											<app-application-badges [application]="project"></app-application-badges>
+										</td>
 
-									<td>
-										<ngb-highlight
-											[result]="project.project_application_perun_id"
-											highlightClass="highlight-filter"
-											[term]="sortProjectService.searchTerm"
-											>>
-										</ngb-highlight>
-									</td>
-									<td>
-										<ngb-highlight
-											[result]="project.project_application_shortname"
-											highlightClass="highlight-filter"
-											[term]="sortProjectService.searchTerm"
-										></ngb-highlight>
-									</td>
-									<td>
-										<ngb-highlight
-											[result]="project.project_application_name"
-											highlightClass="highlight-filter"
-											[term]="sortProjectService.searchTerm"
-										></ngb-highlight>
-									</td>
-									<td>
-										<span
-											*ngIf="project | hasstatusinlist: project_states.ACTIVE"
-											style="margin-left: 5px"
-											class="badge bg-success"
-											>{{ project_states[project_states.ACTIVE] }}
-										</span>
-										<span
-											*ngIf="
-												(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
-												!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
-											"
-											style="margin-left: 5px"
-											class="badge bg-danger"
-											>{{ lifetime_states[lifetime_states.EXPIRED] }}
-										</span>
-										<span
-											*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
-											style="margin-left: 5px"
-											class="badge bg-warning"
-											>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
-										>
+										<td>
+											<ngb-highlight
+												[result]="project.project_application_perun_id"
+												highlightClass="highlight-filter"
+												[term]="sortProjectService.searchTerm"
+												>>
+											</ngb-highlight>
+										</td>
+										<td>
+											<ngb-highlight
+												[result]="project.project_application_shortname"
+												highlightClass="highlight-filter"
+												[term]="sortProjectService.searchTerm"
+											></ngb-highlight>
+										</td>
+										<td>
+											<ngb-highlight
+												[result]="project.project_application_name"
+												highlightClass="highlight-filter"
+												[term]="sortProjectService.searchTerm"
+											></ngb-highlight>
+										</td>
+										<td>
+											<span
+												*ngIf="project | hasstatusinlist: project_states.ACTIVE"
+												style="margin-left: 5px"
+												class="badge bg-success"
+												>{{ project_states[project_states.ACTIVE] }}
+											</span>
+											<span
+												*ngIf="
+													(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
+													!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
+												"
+												style="margin-left: 5px"
+												class="badge bg-danger"
+												>{{ lifetime_states[lifetime_states.EXPIRED] }}
+											</span>
+											<span
+												*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
+												style="margin-left: 5px"
+												class="badge bg-warning"
+												>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
+											>
 
-										<span
-											*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
-											style="margin-left: 5px"
-											class="badge bg-info"
-											>WAIT FOR CONFIRMATION
-										</span>
+											<span
+												*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
+												style="margin-left: 5px"
+												class="badge bg-info"
+												>WAIT FOR CONFIRMATION
+											</span>
 
-										<span
-											*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
-											style="margin-left: 5px"
-											class="badge bg-dark"
-											>WAIT FOR TERMINATION BY FM
-										</span>
-									</td>
-									<td>
-										<ngb-highlight
-											[result]="project.project_application_total_ram"
-											highlightClass="highlight-filter"
-											[term]="sortProjectService.searchTerm"
-										></ngb-highlight>
-									</td>
-									<td>
-										<ngb-highlight
-											[result]="project.project_application_total_cores"
-											highlightClass="highlight-filter"
-											[term]="sortProjectService.searchTerm"
-											>>
-										</ngb-highlight>
-									</td>
-									<td>
-										<ngb-highlight
-											[result]="project.project_application_total_gpu"
-											highlightClass="highlight-filter"
-											[term]="sortProjectService.searchTerm"
-											>>
-										</ngb-highlight>
-									</td>
-									<td>
-										<button
-											class="btn btn-secondary"
-											(click)="getProjectLifetime(); selectedProject = project; infoModal.show()"
-										>
-											Show Details
-										</button>
-									</td>
+											<span
+												*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+												style="margin-left: 5px"
+												class="badge bg-dark"
+												>WAIT FOR TERMINATION BY FM
+											</span>
+										</td>
+										<td>
+											<ngb-highlight
+												[result]="project.project_application_total_ram"
+												highlightClass="highlight-filter"
+												[term]="sortProjectService.searchTerm"
+											></ngb-highlight>
+										</td>
+										<td>
+											<ngb-highlight
+												[result]="project.project_application_total_cores"
+												highlightClass="highlight-filter"
+												[term]="sortProjectService.searchTerm"
+												>>
+											</ngb-highlight>
+										</td>
+										<td>
+											<ngb-highlight
+												[result]="project.project_application_total_gpu"
+												highlightClass="highlight-filter"
+												[term]="sortProjectService.searchTerm"
+												>>
+											</ngb-highlight>
+										</td>
+										<td>
+											<button
+												class="btn btn-secondary"
+												(click)="getProjectLifetime(); selectedProject = project; infoModal.show()"
+											>
+												Show Details
+											</button>
+										</td>
 
-									<td>
-										<button
-											type="button"
-											class="btn btn-secondary"
-											data-toggle="modal"
-											(click)="showMembersModal(project)"
-										>
-											<i class="fa fa-users"></i>&nbsp;Show Members
-										</button>
-									</td>
-								</tr>
+										<td>
+											<button
+												type="button"
+												class="btn btn-secondary"
+												data-toggle="modal"
+												(click)="showMembersModal(project)"
+											>
+												<i class="fa fa-users"></i>&nbsp;Show Members
+											</button>
+										</td>
+									</tr>
+								} @else {
+									<tr>
+										<td colspan="10" style="text-align: center; vertical-align: middle">
+											<i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
+										</td>
+									</tr>
+								}
 							</tbody>
 						</table>
 					</div>

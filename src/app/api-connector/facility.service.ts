@@ -204,11 +204,22 @@ export class FacilityService {
 	 * @param facility the facility
 	 * @param elixir_id the id of the member
 	 */
-	getFacilityGroupsByMemberElixirId(facility: number | string, elixir_id: string): Observable<Application[]> {
+	getFacilityGroupsByMemberElixirId(
+		facility: number | string,
+		elixir_id: string,
+		isPi: boolean,
+		isAdmin: boolean,
+		isMember: boolean,
+	): Observable<Application[]> {
 		return this.http
 			.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
 				withCredentials: true,
-				params: { elixir_id: elixir_id.toString() },
+				params: {
+					elixir_id,
+					isPi,
+					isAdmin,
+					isMember,
+				},
 			})
 			.pipe(
 				map((applications: Application[]): Application[] => applications.map((application: Application): Application => new Application(application))),
@@ -681,7 +692,7 @@ export class FacilityService {
 	 * @param application_id
 	 * @returns
 	 */
-	declineFacilityApplication(facility: number, application_id: number): Observable<any> {
+	declineFacilityApplication(facility: string | number, application_id: number | string): Observable<any> {
 		const params: HttpParams = new HttpParams().set('action', 'decline');
 
 		return this.http.post(
@@ -758,13 +769,13 @@ export class FacilityService {
 		});
 	}
 
-	approveTerminationByFM(groupId: number | string, facility: number): Observable<object> {
+	approveTerminationByFM(groupId: number | string, facility: number | string): Observable<object> {
 		return this.http.delete(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupId}/`, {
 			withCredentials: true,
 		});
 	}
 
-	declineTerminationByFM(groupId: number | string, facility: number): Observable<object> {
+	declineTerminationByFM(groupId: number | string, facility: number | string): Observable<object> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupId}/`, {
 			withCredentials: true,
 		});

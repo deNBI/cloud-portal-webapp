@@ -639,6 +639,7 @@
 					type="text"
 					id="id_project_application_renewal_manager_comment"
 					name="project_application_renewal_manager_comment"
+					data-test-id="vo_manager_comment_input"
 					class="form-control"
 					maxlength="8192"
 					placeholder=""
@@ -724,7 +725,7 @@
 			class="btn btn-primary"
 			form="resource_modification_application_form"
 			id="submit_adjustment_btn"
-			data-test-id="submit_modification_request_button"
+			data-test-id="submit_modification_adjustment_button"
 			(click)="bsModalRef.hide(); showSubmitModal(true)"
 			[disabled]="modificationForm.invalid || !min_vm_adjusted"
 		>

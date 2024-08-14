@@ -3,10 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ApplicationsComponent } from './applications.component';
 
-import { AddsimplevmComponent } from './addsimplevm.component';
-import { AddcloudapplicationComponent } from './addcloudapplication.component';
+import { AddsimplevmComponent } from './application-formular/simplevm-formular/addsimplevm.component';
+import { AddcloudapplicationComponent } from './application-formular/openstack-formular/addcloudapplication.component';
 import { TypeOverviewComponent } from './type-overview.component';
 import { ValidationApplicationComponent } from '../validation-application/validation-application.component';
+import { KubernetesFormularComponent } from './application-formular/kubernetes-formular/kubernetes-formular.component';
+import { VoGuardService } from '../shared/guards/vo-guard.service';
 
 const routes: Routes = [
 	{
@@ -15,23 +17,28 @@ const routes: Routes = [
 		data: {
 			title: 'Application overview',
 		},
-
 	},
 	{
 		path: 'newCloudApplication',
 		component: AddcloudapplicationComponent,
 		data: {
-			title: 'New Application',
+			title: 'New OpenStack Application',
 		},
-
+	},
+	{
+		path: 'newKubernetesApplication',
+		component: KubernetesFormularComponent,
+		canActivate: [VoGuardService],
+		data: {
+			title: 'New Kubernetes Application',
+		},
 	},
 	{
 		path: 'newSimpleVmApplication',
 		component: AddsimplevmComponent,
 		data: {
-			title: 'New Application',
+			title: 'New SimpleVM Application',
 		},
-
 	},
 	{
 		path: 'type-overview',
@@ -47,7 +54,6 @@ const routes: Routes = [
 			title: 'Application Validation',
 		},
 	},
-
 ];
 
 /**

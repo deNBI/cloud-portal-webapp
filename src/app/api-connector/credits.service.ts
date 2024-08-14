@@ -9,7 +9,7 @@ import { ResourceWeight, IResourceWeight } from '../credits-calculator/resource-
 /**
  * Service which delivers functions for services related to the credit service.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CreditsService {
 	constructor(private http: HttpClient) {
 		this.http = http;
@@ -21,10 +21,13 @@ export class CreditsService {
 	 * @returns The expected credits for the resources.
 	 */
 	public getCreditsForApplication(flavors: Flavor[], months: number): Observable<number> {
-
-		return this.http.post<number>(`${ApiSettings.getApiBaseURL()}creditManager/getCreditsForApplication/`, { flavors, months }, {
-			withCredentials: true,
-		});
+		return this.http.post<number>(
+			`${ApiSettings.getApiBaseURL()}creditManager/getCreditsForApplication/`,
+			{ flavors, months },
+			{
+				withCredentials: true,
+			},
+		);
 	}
 
 	/**
@@ -32,8 +35,15 @@ export class CreditsService {
 	 *
 	 * @returns The expected credits for the resources.
 	 */
-	public getExtraCreditsForExtension(cpus: number, ram: number, months: number, projectApplicationId: string): Observable<number> {
-		const params: HttpParams = new HttpParams().set('new_cpu', cpus.toString()).set('new_ram', ram.toString())
+	public getExtraCreditsForExtension(
+		cpus: number,
+		ram: number,
+		months: number,
+		projectApplicationId: string,
+	): Observable<number> {
+		const params: HttpParams = new HttpParams()
+			.set('new_cpu', cpus.toString())
+			.set('new_ram', ram.toString())
 			.set('new_lifetime', months.toString())
 			.set('project_application_id', projectApplicationId);
 
@@ -49,7 +59,8 @@ export class CreditsService {
 	 * @returns The expected credits for the resources.
 	 */
 	public getExtraCreditsForLifetimeExtension(months: number, projectApplicationId: string): Observable<number> {
-		const params: HttpParams = new HttpParams().set('new_lifetime', months.toString())
+		const params: HttpParams = new HttpParams()
+			.set('new_lifetime', months.toString())
 			.set('project_application_id', projectApplicationId);
 
 		return this.http.get<number>(`${ApiSettings.getApiBaseURL()}creditManager/getExtraCreditsNumberLifetime/`, {
@@ -64,7 +75,6 @@ export class CreditsService {
 	 * @returns The expected credits for the resources.
 	 */
 	public getExtraCreditsForResourceExtension(flavors: Flavor[], projectApplicationId: string): Observable<number> {
-
 		return this.http.post<number>(
 			`${ApiSettings.getApiBaseURL()}creditManager/getExtraCreditsNumberResource/`,
 			{ flavors, projectApplicationId },
@@ -116,7 +126,10 @@ export class CreditsService {
 		start_timestamp: number,
 	): Observable<{}> {
 		const params: {} = {
-			hours, flavor_pairs, compute_center_name, start_timestamp,
+			hours,
+			flavor_pairs,
+			compute_center_name,
+			start_timestamp,
 		};
 
 		return this.http.post(`${ApiSettings.getApiBase()}public/credits_calculator/needed/`, params, {
@@ -131,7 +144,10 @@ export class CreditsService {
 		start_timestamp: number,
 	): Observable<{}> {
 		const params: {} = {
-			credits, flavor_pairs, compute_center_name, start_timestamp,
+			credits,
+			flavor_pairs,
+			compute_center_name,
+			start_timestamp,
 		};
 
 		return this.http.post(`${ApiSettings.getApiBase()}public/credits_calculator/time/`, params, {
@@ -140,13 +156,10 @@ export class CreditsService {
 	}
 
 	public getCreditsWeights(): Observable<ResourceWeight[]> {
-
-		return this.http.get<IResourceWeight[]>(`${ApiSettings.getApiBase()}public/creditsweights/`).pipe(
-			map(
-				(weights: IResourceWeight[]): ResourceWeight[] => weights.map(
-					(weight: IResourceWeight): ResourceWeight => new ResourceWeight(weight),
-				),
-			),
-		);
+		return this.http
+			.get<IResourceWeight[]>(`${ApiSettings.getApiBase()}public/creditsweights/`)
+			.pipe(
+				map((weights: IResourceWeight[]): ResourceWeight[] => weights.map((weight: IResourceWeight): ResourceWeight => new ResourceWeight(weight))),
+			);
 	}
 }

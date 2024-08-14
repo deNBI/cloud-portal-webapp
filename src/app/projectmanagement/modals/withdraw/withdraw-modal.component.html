@@ -1,0 +1,64 @@
+<div>
+	<div class="modal-header">
+		<h4 class="modal-title">
+			Withdraw
+			@if (type === WITHDRAWAL_TYPES.MODIFICATION) {
+				Modification
+			} @else if (type === WITHDRAWAL_TYPES.EXTENSION) {
+				Extension
+			}
+			Request
+		</h4>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			data-dismiss="modal"
+			aria-label="Close"
+		></button>
+	</div>
+	<div class="modal-body">
+		<div class="col-md-auto mx-auto">
+			<div class="alert alert-warning" role="alert">
+				<p>
+					Are you sure you want to withdraw this
+					@if (type === WITHDRAWAL_TYPES.MODIFICATION) {
+						Modification
+					} @else if (type === WITHDRAWAL_TYPES.EXTENSION) {
+						Extension
+					}
+					Request?
+				</p>
+				<p>You can always create a new request if needed.</p>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="row" style="margin: auto">
+			<div class="col-md-auto mx-auto">
+				<button
+					id="withdraw_btn"
+					class="btn btn-danger"
+					type="reset"
+					data-test-id="confirm_withdraw_btn"
+					(click)="withdrawTarget()"
+				>
+					Withdraw
+				</button>
+			</div>
+			<div class="col-md-auto mx-auto">
+				<button
+					id="close_withdrawal_button"
+					class="btn btn-primary"
+					type="reset"
+					data-test-id="close_withdrawal_button"
+					(click)="bsModalRef.hide()"
+				>
+					Cancel
+				</button>
+			</div>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>

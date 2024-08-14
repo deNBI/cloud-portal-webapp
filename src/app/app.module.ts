@@ -1,7 +1,6 @@
 import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -9,7 +8,6 @@ import { NgChartsModule } from 'ng2-charts';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ClipboardModule } from 'ngx-clipboard';
-
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Angulartics2Module } from 'angulartics2';
@@ -18,6 +16,9 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { MatomoModule, MatomoRouterModule } from 'ngx-matomo-client';
+import { environment } from '../environments/environment';
+
 import { AppComponent } from './app.component';
 
 import { ApiSettings } from './api-connector/api-settings.service';
@@ -70,6 +71,11 @@ import { FacilityService } from './api-connector/facility.service';
 		TimepickerModule.forRoot(),
 		BsDatepickerModule.forRoot(),
 		AlertModule,
+		MatomoModule.forRoot({
+			siteId: environment.MATOMO_SITE_ID,
+			trackerUrl: environment.MATOMO_TRACKING_URL,
+		}),
+		MatomoRouterModule,
 	],
 	declarations: [
 		AppComponent,

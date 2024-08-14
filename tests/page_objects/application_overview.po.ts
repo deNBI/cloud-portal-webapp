@@ -32,7 +32,16 @@ export class ApplicationOverviewPage {
 	private SUBMITTED_APPLICATIONS_TAB: string = 'submitted_applications_tab';
 	private LOADING_APPLICATIONS: string = 'loading_applications';
 	private APPLICATIONS_CONTAINER: string = 'applications_container';
-
+	private MODIFICATION_ADJUSTMENT_PREFIX = 'modification_adjustment_';
+	private LIFETIME_ADJUSTMENT_PREFIX: string = 'extension_adjustment_';
+	private ADJUSTMENT_FLAVOR_STD_4: string = 'adjusted_std_4'; // de.NBI mini
+	private VO_MANAGER_COMMENT_INPUT: string = 'vo_manager_comment_input';
+	private SUBMIT_MODIFICATION_ADJUSTMENT_BUTTON: string = 'submit_modification_adjustment_button';
+	private CONFIRM_ADJUSTMENT_BUTTON: string = 'confirm_adjustment_request_button';
+	private MODIFICATION_ADJUSTMENT_REQUEST: string = 'modification_adjustment_request_result_div';
+	private MODIFICATION_ADJUSTMENT_SUCCESSFULL_TXT: string = 'Modification adjustment successfully submitted!';
+	private SUBMITTED_LIFETIME_ADJUSTMENT_BUTTON: string = 'submitLifetimeAdjustmentButton';
+	private ADJUSTED_LIFETIME_COUNTER: string = 'adjusted_lifetime_counter';
 	private CONFIRM_CONFIRMATION_MODAL_BUTTON: string = 'confirm_confirmation_modal_btn';
 	private SITE_LOADER: string = 'site-loader';
 
@@ -54,11 +63,16 @@ export class ApplicationOverviewPage {
 
 	async goToSubmittedApplication() {
 		await this.goto();
+		console.log('Click submitted tab');
+
 		await this.page.locator(Util.by_data_test_id_str(this.SUBMITTED_APPLICATIONS_TAB)).click();
+		console.log('wait till loader is hidden');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		console.log('wait till submitted visible');
 		await this.page.waitForSelector(Util.by_data_test_id_str('submitted_applications_container'), {
 			state: 'visible',
 		});
+		console.log('submitted visible');
 	}
 
 	async goToLifetimeRequests() {
@@ -93,7 +107,10 @@ export class ApplicationOverviewPage {
 		// eslint-disable-next-line no-plusplus
 		for (let i = 0; i < application_count; i++) {
 			// eslint-disable-next-line no-await-in-loop
-			await this.page.locator(`data-test-id=${this.DECLINE_OPEN_APPLICATION_PRE}${projectName}`).first().click();
+			await this.page
+				.locator(Util.by_data_test_id_str_prefix(this.DECLINE_OPEN_APPLICATION_PRE + projectName))
+				.first()
+				.click();
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 			// eslint-disable-next-line no-await-in-loop
@@ -105,11 +122,41 @@ export class ApplicationOverviewPage {
 
 	async approveOpenStackModificationRequest(application_name: string): Promise<any> {
 		await this.goToModificationRequests();
-		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page
+			.locator(Util.by_data_test_id_str_prefix(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name))
+			.click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
+	}
+
+	async adjustOpenStackModificationRequest(application_name: string): Promise<any> {
+		await this.goToModificationRequests();
+		await this.page
+			.locator(Util.by_data_test_id_str_prefix(this.MODIFICATION_ADJUSTMENT_PREFIX + application_name))
+			.click();
+		await this.page.waitForTimeout(2000);
+		console.log('Fill Adjustment Flavor');
+		await this.page.fill(Util.by_data_test_id_str(this.ADJUSTMENT_FLAVOR_STD_4), '4');
+		console.log('Fill Vo Adjustment Comment ');
+
+		await this.page.fill(Util.by_data_test_id_str(this.VO_MANAGER_COMMENT_INPUT), 'PlawrightUpdate');
+		await Util.clickByDataTestIdStr(this.page, this.SUBMIT_MODIFICATION_ADJUSTMENT_BUTTON);
+		await Util.clickByDataTestIdStr(this.page, this.CONFIRM_ADJUSTMENT_BUTTON);
+		console.log('Wait for Success Message');
 		await this.page.waitForSelector(
-			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.MODIFICATION_REQUEST_RESULT_TEXT}`,
+			`data-test-id=${this.MODIFICATION_ADJUSTMENT_REQUEST} >> text=${this.MODIFICATION_ADJUSTMENT_SUCCESSFULL_TXT}`,
 		);
+	}
+
+	async adjustOpenStackLifetimeRequest(application_name: string): Promise<any> {
+		await this.goToLifetimeRequests();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.LIFETIME_ADJUSTMENT_PREFIX + application_name)).click();
+		await this.page.waitForTimeout(2000);
+		await this.page.fill(Util.by_data_test_id_str(this.ADJUSTED_LIFETIME_COUNTER), '3');
+
+		await Util.clickByDataTestIdStr(this.page, this.SUBMITTED_LIFETIME_ADJUSTMENT_BUTTON);
+		console.log('Wait for Success Message');
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 	}
 
 	async approveSimpleVMModificationRequest(application_name: string): Promise<any> {
@@ -129,9 +176,7 @@ export class ApplicationOverviewPage {
 			.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name))
 			.first()
 			.click();
-		await this.page.waitForSelector(
-			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.MODIFICATION_REQUEST_RESULT_TEXT}`,
-		);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 	}
 
 	async approveSimpleVMExtensionRequest(application_name: string): Promise<any> {
@@ -141,48 +186,62 @@ export class ApplicationOverviewPage {
 			.first()
 			.click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
-		await this.page.waitForSelector(
-			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_SIMPLEVM_TEXT}`,
-		);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 	}
 
 	async approveOpenStackExtensionRequest(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
-		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page
+			.locator(Util.by_data_test_id_str_prefix(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name))
+			.click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
-		await this.page.waitForSelector(
-			`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_OPENSTACK_TEXT}`,
-		);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 	}
 
 	async approveSimpleVm(application_name: string): Promise<any> {
 		console.log('Approve Simple VM');
 		await this.goToSubmittedApplication();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
-			state: 'visible',
-		});
-		await this.page.selectOption(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
-			label: this.DEFAULT_DENBI_COMPUTE_CENTER,
-		});
-		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
-		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name)).click();
-		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.SIMPLE_VM_CREATED}`);
+		await this.page.waitForSelector(
+			Util.by_data_test_id_str_prefix(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name),
+			{
+				state: 'visible',
+			},
+		);
+		await this.page.selectOption(
+			Util.by_data_test_id_str_prefix(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name),
+			{
+				label: this.DEFAULT_DENBI_COMPUTE_CENTER,
+			},
+		);
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_PREFIX + application_name)).click();
+		await this.page
+			.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name))
+			.click();
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 	}
 
 	async approveOpenStackApplication(application_name: string): Promise<any> {
 		console.log('Approve Openstack');
 		await this.goToSubmittedApplication();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
-			state: 'visible',
-		});
-		await this.page.selectOption(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), {
-			label: this.DEFAULT_DENBI_COMPUTE_CENTER,
-		});
+		await this.page.waitForSelector(
+			Util.by_data_test_id_str_prefix(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name),
+			{
+				state: 'visible',
+			},
+		);
+		await this.page.selectOption(
+			Util.by_data_test_id_str_prefix(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name),
+			{
+				label: this.DEFAULT_DENBI_COMPUTE_CENTER,
+			},
+		);
 		await this.page.waitForTimeout(10000);
-		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).isEnabled();
-		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_PREFIX + application_name)).isEnabled();
+		await this.page.locator(Util.by_data_test_id_str_prefix(this.APPROVAL_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.CONFIRM_CONFIRMATION_MODAL_BUTTON)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE), { state: 'visible' });
+		await this.page.waitForTimeout(5000);
+
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
 		expect(approval_response).toContain(this.PROJECT_FACILITY_ASSIGNED);

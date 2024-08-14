@@ -1,10 +1,11 @@
 import {
-	Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren,
+	Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, inject,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import * as FileSaver from 'file-saver';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { VoService } from '../api-connector/vo.service';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { GroupService } from '../api-connector/group.service';
@@ -19,12 +20,11 @@ import {
 	SortEvent,
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive';
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
-import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
 import { ConfirmationActions } from '../shared/modal/confirmation_actions';
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
 import { EmailService } from '../api-connector/email.service';
-import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
+import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
 
 /**
  * Vo Overview component.
@@ -35,6 +35,7 @@ import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
 	providers: [VoService, GroupService, FacilityService, ProjectSortService],
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
+	private readonly tracker = inject(MatomoTracker);
 	title: string = 'VO Overview';
 	public emailSubject: string;
 	public emailReply: string = '';
@@ -55,25 +56,29 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	bsModalRef: BsModalRef;
 	subscription: Subscription = new Subscription();
 	protected readonly ConfirmationActions = ConfirmationActions;
-
+	userElixirSearchPI: boolean = true;
+	userElixirSearchAdmin: boolean = true;
+	userElixirSearchMember: boolean = true;
+	projectsLoaded: boolean = false;
 	show_openstack_projects: boolean = true;
 	show_simple_vm_projects: boolean = true;
 	show_simple_vm: boolean = true;
 	show_openstack: boolean = true;
 
-	tsvTaskRunning: boolean = true;
+	validElixirIdFilter: boolean = false;
+	tsvTaskRunning: boolean = false;
 	numberOfTsvs: number = 0;
 	checkTSVTimer: ReturnType<typeof setTimeout>;
 	checkTSVTimeout: number = 10000;
+	projectsCopy: Application[] = [];
 
 	selectedProjectType: string = 'ALL';
 	selectedFacility: string | number = 'ALL';
+	userElixirIdFilter: string;
 
 	public newsletterSubscriptionCounter: number;
-	isLoaded: boolean = false;
 	member_id: number;
 	projects: Application[] = [];
-	projects_filtered: Application[] = [];
 
 	// modal variables for User list
 	public usersModalProjectMembers: ProjectMember[] = [];
@@ -103,6 +108,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Vo Overview');
 		this.getVoProjects();
 		this.getComputeCenters();
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
@@ -113,21 +119,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
-	}
-
-	onCsvFileSelected(event): void {
-		const inputElement = event.target as HTMLInputElement;
-		if (inputElement.files && inputElement.files.length > 0) {
-			this.emailService.sendCsvTemplate(inputElement.files[0]).subscribe(
-				(csvTemplate: CsvMailTemplateModel) => {
-					this.openProjectMailsModal(inputElement.files[0], csvTemplate);
-				},
-				(error: CsvMailTemplateModel) => {
-					console.log(error['error']);
-					this.openProjectMailsModal(inputElement.files[0], error['error']);
-				},
-			);
-		}
 	}
 
 	getTSVInformation(timeout: number = this.checkTSVTimeout): void {
@@ -245,28 +236,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		}
 	}
 
-	openProjectMailsModal(csvFile: File = null, csvTemplate: CsvMailTemplateModel = null): void {
-		let initialState = {};
-
-		if (csvFile) {
-			initialState = {
-				selectedProjects: csvTemplate.valid_projects,
-				csvFile,
-				csvMailTemplate: csvTemplate,
-			};
-		} else {
-			initialState = { selectedProjects: this.selectedEmailProjects };
-		}
-
-		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
-		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
-			if (sent_successfully) {
-				this.updateNotificationModal('Success', 'Mails were successfully sent', true, 'success');
-			} else {
-				this.updateNotificationModal('Failed', 'Failed to send mails!', true, 'danger');
-			}
-			this.notificationModal.show();
-		});
+	openProjectCSVMailModal(): void {
+		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' });
 	}
 
 	disableProject(project: Application): void {
@@ -275,6 +246,49 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 			this.projects[idx] = upd_app;
 			this.sortProjectService.applications = this.projects;
 		});
+	}
+
+	checkValidElixirIdFilter(): void {
+		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org');
+		if (!this.validElixirIdFilter) {
+			this.sortProjectService.applications = this.projectsCopy;
+			this.applictions$ = this.sortProjectService.applications$;
+			this.total$ = this.sortProjectService.total$;
+			this.projectsLoaded = true;
+		}
+	}
+
+	getProjectsByMemberElixirId(): void {
+		// tslint:disable-next-line:max-line-length
+		this.userElixirIdFilter = this.userElixirIdFilter.trim();
+		if (this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')) {
+			this.projectsLoaded = false;
+
+			this.voService
+				.getGroupsByMemberElixirId(
+					this.userElixirIdFilter,
+					this.userElixirSearchPI,
+					this.userElixirSearchAdmin,
+					this.userElixirSearchMember,
+				)
+				.subscribe((applications: Application[]): void => {
+					this.projects = applications;
+					for (const group of applications) {
+						if (group.project_application_lifetime > 0) {
+							group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
+						}
+					}
+					this.sortProjectService.applications = this.projects;
+					this.applictions$ = this.sortProjectService.applications$;
+					this.total$ = this.sortProjectService.total$;
+					this.projectsLoaded = true;
+				});
+		} else {
+			this.sortProjectService.applications = this.projectsCopy;
+			this.applictions$ = this.sortProjectService.applications$;
+			this.total$ = this.sortProjectService.total$;
+			this.projectsLoaded = true;
+		}
 	}
 
 	enableProject(project: Application): void {
@@ -471,11 +485,12 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 				}
 				this.projects.push(application);
 			}
+			this.projectsCopy = this.projects;
+
 			this.sortProjectService.applications = this.projects;
 			this.applictions$ = this.sortProjectService.applications$;
 			this.total$ = this.sortProjectService.total$;
-
-			this.isLoaded = true;
+			this.projectsLoaded = true;
 		});
 	}
 

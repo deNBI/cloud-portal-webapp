@@ -1,9 +1,10 @@
 import {
-	Component, ElementRef, OnInit, ViewChild,
+	Component, ElementRef, OnInit, ViewChild, inject,
 } from '@angular/core';
 import {
 	download, mkConfig, generateCsv, CsvOutput,
 } from 'export-to-csv';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { Resources } from '../../vo_manager/resources/resources';
 import { FacilityService } from '../../api-connector/facility.service';
 import { ObjectStorageFactor } from './object-storage-factor';
@@ -22,6 +23,7 @@ import { GPUSpecification } from './gpu-specification';
 	providers: [FacilityService],
 })
 export class ResourcesComponent implements OnInit {
+	private readonly tracker = inject(MatomoTracker);
 	title: string = 'Resource Overview';
 
 	tableId: string = 'contentToConvert';
@@ -154,6 +156,7 @@ export class ResourcesComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Facility Resources');
 		this.facilityService.getManagerFacilities().subscribe((result: [string, number][]): void => {
 			this.managerFacilities = result;
 			this.selectedFacility = this.managerFacilities[0];

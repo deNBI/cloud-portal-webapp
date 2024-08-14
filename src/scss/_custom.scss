@@ -318,6 +318,7 @@ $slight_danger_persian_red: #CA3433;
 
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
+$kubernetescolor: #326ce5;
 
 
 @media (max-width: 992px) {
@@ -366,6 +367,11 @@ $simplevmcolour: #00ADEF;
 .sidebar .nav-title {
     color: $deNBI_darkgrey;
 
+}
+
+.nav-icon.proj-icon {
+    max-width: 20px;
+    height: auto;
 }
 
 .sidebar .nav-link {
@@ -969,6 +975,10 @@ header {
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour, 5%), $simplevmcolour);
 }
 
+.btn-outline-kubernetes {
+    @include button-outline-variant($kubernetescolor, #222222, lighten($kubernetescolor, 5%), $kubernetescolor);
+}
+
 // Google Font as on landing page.
 .app-body {
     color: $deNBI_darkgrey;
@@ -1157,6 +1167,7 @@ header {
     aspect-ratio: auto;
     margin: 1rem;
 }
+
 
 .bg-info-flavor {
     background-color: $deNBI_lightgrey;

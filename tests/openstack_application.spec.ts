@@ -10,7 +10,7 @@ test.describe.serial('@openstack_application', () => {
 	test.describe('Should delete old openstack applications', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @openstack_application', async ({ page, baseURL }) => {
-			test.setTimeout(60 * 1000);
+			test.setTimeout(80 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineApplications(Util.OPENSTACK_APPLICATION_NAME);
 			const voOverviewPage = new VoOverviewPage(page, baseURL);
@@ -21,7 +21,7 @@ test.describe.serial('@openstack_application', () => {
 	test.describe('Should delete old openstack applications', () => {
 		test.use({ storageState: Util.FACILITY_MANAGER_STORAGE });
 		test('FM @openstack_application', async ({ page, baseURL }) => {
-			test.setTimeout(60 * 1000);
+			test.setTimeout(80 * 1000);
 			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page, baseURL);
 			await facilityApplicationOverviewPage.terminateApplications(Util.OPENSTACK_APPLICATION_NAME);
 		});
@@ -62,6 +62,29 @@ test.describe.serial('@openstack_application', () => {
 		});
 	});
 
+	test.describe('Should withdraw a project extension for OpenStack', () => {
+		test.use({ storageState: Util.MEMBER_STORAGE });
+		test('Member @openstack_application', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+			await projectOverviewPage.withdrawtProjectExtension();
+		});
+	});
+	test.describe('Should request a project extension2 for OpenStack', () => {
+		test.use({ storageState: Util.MEMBER_STORAGE });
+		test('Member @openstack_application', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+			await projectOverviewPage.requestProjectExtension(false);
+		});
+	});
+	test.describe('Should adjust a project lifetime extesion for OpenStack', () => {
+		test.use({ storageState: Util.VO_MANAGER_STORAGE });
+		test('VO @openstack_application', async ({ page, baseURL }) => {
+			const applicationPage = new ApplicationOverviewPage(page, baseURL);
+			await applicationPage.adjustOpenStackLifetimeRequest(Util.OPENSTACK_APPLICATION_NAME);
+		});
+	});
 	test.describe('Should request a project modification for OpenStack', () => {
 		test.use({ storageState: Util.MEMBER_STORAGE });
 		test('Member @openstack_application', async ({ page, baseURL }) => {
@@ -70,7 +93,29 @@ test.describe.serial('@openstack_application', () => {
 			await projectOverviewPage.requestProjectModification(false);
 		});
 	});
-
+	test.describe('Should withdraw a project modification for OpenStack', () => {
+		test.use({ storageState: Util.MEMBER_STORAGE });
+		test('Member @openstack_application', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+			await projectOverviewPage.withdrawtProjectModification();
+		});
+	});
+	test.describe('Should request a project modification2 for OpenStack', () => {
+		test.use({ storageState: Util.MEMBER_STORAGE });
+		test('Member @openstack_application', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+			await projectOverviewPage.requestProjectModification(false);
+		});
+	});
+	test.describe('Should adjust a project modification for OpenStack', () => {
+		test.use({ storageState: Util.VO_MANAGER_STORAGE });
+		test('VO @openstack_application', async ({ page, baseURL }) => {
+			const applicationPage = new ApplicationOverviewPage(page, baseURL);
+			await applicationPage.adjustOpenStackModificationRequest(Util.OPENSTACK_APPLICATION_NAME);
+		});
+	});
 	test.describe('Should approve a project extension for OpenStack', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @openstack_application', async ({ page, baseURL }) => {
@@ -106,7 +151,7 @@ test.describe.serial('@openstack_application', () => {
 	test.describe('Aftercare - Should delete old openstack applications', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @openstack_application', async ({ page, baseURL }) => {
-			test.setTimeout(60 * 1000);
+			test.setTimeout(80 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineApplications(Util.OPENSTACK_APPLICATION_NAME);
 			const voOverviewPage = new VoOverviewPage(page, baseURL);
@@ -117,7 +162,7 @@ test.describe.serial('@openstack_application', () => {
 	test.describe('Aftercare - Should delete old openstack applications', () => {
 		test.use({ storageState: Util.FACILITY_MANAGER_STORAGE });
 		test('FM @openstack_application', async ({ page, baseURL }) => {
-			test.setTimeout(60 * 1000);
+			test.setTimeout(80 * 1000);
 			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page, baseURL);
 			await facilityApplicationOverviewPage.terminateApplications(Util.OPENSTACK_APPLICATION_NAME);
 		});

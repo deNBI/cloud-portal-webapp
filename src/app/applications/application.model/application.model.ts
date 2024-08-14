@@ -37,6 +37,9 @@ export class Application {
 	project_application_compute_center: ComputecenterComponent;
 	project_application_openstack_project: boolean;
 	project_application_total_gpu: number = 0;
+	lifetime_extension_request_id: number | string;
+	modification_extension_request_id: number | string;
+	project_application_kubernetes_access: boolean = false;
 
 	pi_approval_notification_send: boolean;
 	pi_approval_notification_expired: boolean;
@@ -53,7 +56,7 @@ export class Application {
 	project_lifetime_request: ApplicationLifetimeExtension;
 	project_modification_request: ApplicationModification;
 	project_credit_request: ApplicationCreditRequest = null;
-	project_application_perun_id: number | string;
+	project_application_perun_id: number;
 	project_application_total_cores: number = 0;
 	project_application_total_ram: number = 0;
 	project_application_initial_credits: number = 0;
@@ -114,9 +117,10 @@ export class Application {
 
 			if (aj.project_application_edam_terms) {
 				this.project_application_edam_terms = aj.project_application_edam_terms.map(
-					(term: any): EdamOntologyTerm => new EdamOntologyTerm(null, term, null, null),
+					(term: any): EdamOntologyTerm => new EdamOntologyTerm(null, term, null),
 				);
 			}
+			console.log(this.project_application_edam_terms);
 			if (aj.project_lifetime_request) {
 				this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
 				this.totalLifetimeExtensionCredits = this.calcLifetimeExtensionCredits();

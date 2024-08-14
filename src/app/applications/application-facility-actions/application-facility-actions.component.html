@@ -1,0 +1,120 @@
+<td>
+	<div class="btn-group">
+		@switch (tabState) {
+			@case (ApplicationTabStates.SUBMITTED) {
+				@if (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) {
+					<button
+						id="approval_{{ application?.project_application_shortname }}"
+						[attr.data-test-id]="'approval_' + application?.project_application_name"
+						style="margin: 2px"
+						(click)="showConfirmationModal(ConfirmationActions.APPROVE_APPLICATION)"
+						type=" button"
+						class="btn btn-success"
+					>
+						<i class="fa fa-check"></i>&nbsp;
+						<span class="d-none">Approve</span>
+					</button>
+				}
+				@if (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) {
+					<button
+						*ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION"
+						style="margin: 2px"
+						[id]="'decline_' + application?.project_application_shortname"
+						(click)="showConfirmationModal(ConfirmationActions.DECLINE_APPLICATION)"
+						type="button"
+						class="btn btn-danger"
+					>
+						<i class="fa fa-times"></i>&nbsp;
+						<span class="d-none">Decline</span>
+					</button>
+				}
+			}
+			@case (ApplicationTabStates.LIFETIME_EXTENSION) {
+				<button
+					style="margin: 2px"
+					(click)="showConfirmationModal(ConfirmationActions.APPROVE_EXTENSION)"
+					type="button"
+					[attr.data-test-id]="'extension_approval_' + application?.project_application_name"
+					class="btn btn-success"
+				>
+					<i class="fa fa-check"></i>&nbsp;
+					<span class="d-none">Approve Extension</span>
+				</button>
+
+				<button
+					style="margin: 2px"
+					[id]="'decline_' + application?.project_application_shortname"
+					[attr.data-test-id]="'decline_' + application?.project_application_shortname"
+					(click)="showConfirmationModal(ConfirmationActions.DECLINE_EXTENSION)"
+					type="button"
+					class="btn btn-danger"
+				>
+					<i class="fa fa-times"></i>&nbsp;
+					<span class="d-none">Decline Extension</span>
+				</button>
+			}
+			@case (ApplicationTabStates.CREDITS_EXTENSION) {}
+			@case (ApplicationTabStates.MODIFICATION_EXTENSION) {
+				<button
+					[id]="'approveModificationButton_' + application?.project_application_shortname"
+					style="margin: 2px"
+					type="button"
+					class="btn btn-success"
+					[attr.data-test-id]="'approveModificationButton_' + application?.project_application_shortname"
+					(click)="showConfirmationModal(ConfirmationActions.APPROVE_MODIFICATION)"
+				>
+					<i class="fa fa-check"></i>&nbsp;
+					<span class="d-none">Approve Modification</span>
+				</button>
+
+				<button
+					style="margin: 2px"
+					[id]="'decline_' + application?.project_application_shortname"
+					(click)="showConfirmationModal(ConfirmationActions.DECLINE_MODIFICATION)"
+					type="button"
+					class="btn btn-danger"
+				>
+					<i class="fa fa-times"></i>
+					<span class="d-none">Decline Modification</span>
+				</button>
+			}
+			@case (ApplicationTabStates.TERMINATION_REQUEST) {
+				<button
+					[id]="'approveTerminationButton_' + application?.project_application_shortname"
+					style="margin: 2px"
+					type="button"
+					class="btn btn-danger"
+					data-test-id="terminate_project_btn"
+					(click)="showConfirmationModal(ConfirmationActions.APPROVE_TERMINATION)"
+				>
+					<i class="fa fa-check"></i>&nbsp;
+					<span class="d-none"> Terminate Project</span>
+				</button>
+
+				<button
+					style="margin: 2px"
+					[id]="'declineTermination_' + application?.project_application_shortname"
+					(click)="showConfirmationModal(ConfirmationActions.DECLINE_TERMINATION)"
+					type="button"
+					class="btn btn-warning"
+				>
+					<i class="fa fa-times"></i>
+					<span class="d-none"> Decline Termination</span>
+				</button>
+			}
+		}
+
+		<button
+			(click)="switchCollaps()"
+			type="button"
+			class="btn btn-secondary"
+			style="margin: 2px"
+			tooltip="Show details"
+		>
+			<i class="fa fa-info-circle"></i>&nbsp;
+			<span class="d-none" [hidden]="!isCollapsed">Show</span>
+			<span class="d-none" [hidden]="isCollapsed">Hide</span>
+			<span class="d-none"> Information</span>
+		</button>
+	</div>
+</td>

@@ -7,6 +7,7 @@ import {
 	OnInit,
 	Renderer2,
 	ViewChild,
+	inject,
 } from '@angular/core';
 import * as moment from 'moment';
 import { forkJoin, Observable, Subscription } from 'rxjs';
@@ -14,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
 import { Userinfo } from '../userinfo/userinfo.model';
@@ -34,12 +36,13 @@ import {
 	CREDITS_WIKI,
 	NEW_SVM_PORTAL_LINK,
 	OPENSTACK_LINK,
+	PUBLIC_DOI_ENDPOINT,
 	PUBLICATIONS_LINK,
 	SIMPLE_VM_LINK,
 	STATUS_LINK,
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
-	PUBLIC_DOI_ENDPOINT,
+	KUBERNETES_LINK,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -49,7 +52,7 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component';
-
+import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component';
 /**
  * Projectoverview component.
  */
@@ -67,6 +70,7 @@ import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.co
 	],
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
+	private readonly tracker = inject(MatomoTracker);
 	bsModalRef: BsModalRef;
 	modificationRequestDisabled: boolean = false;
 	lifetimeExtensionDisabled: boolean = false;
@@ -81,6 +85,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	PUBLIC_DOI_ENDPOINT: string = PUBLIC_DOI_ENDPOINT;
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
 	OPENSTACK_LINK: string = OPENSTACK_LINK;
+	KUBERNETES_LINK: string = KUBERNETES_LINK;
 	STATUS_LINK: string = STATUS_LINK;
 	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK;
 	@ViewChild('creditsChart') creditsCanvas: ElementRef;
@@ -99,7 +104,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	dois: Doi[];
 	disabledDoiInput: boolean = false;
 	invitation_link: string;
-	filteredMembers: any = null;
 	project_application: Application;
 	application_action: string = '';
 	application_member_name: string = '';
@@ -124,12 +128,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg';
-
+	kubernetes_logo: string = 'static/webapp/assets/img/kubernetes_logo.svg';
 	checked_member_list: number[] = [];
 	// modal variables for User list
 	public project_members: ProjectMember[] = [];
 	public isLoaded: boolean = false;
-	public showLink: boolean = true;
 	creditsChart: any;
 	ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
 	Application_States: typeof Application_States = Application_States;
@@ -196,6 +199,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.project_application = null;
 			this.project_members = [];
 			this.application_id = paramsId.id;
+			this.tracker.trackPageView(`Project Overview for pid: ${paramsId.id}`);
 			this.is_vo_admin = is_vo;
 
 			this.getApplication();
@@ -229,6 +233,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 						return;
 					}
+					this.modificationRequestDisabled = false;
+					this.lifetimeExtensionDisabled = false;
 
 					this.project_application = aj;
 
@@ -331,6 +337,29 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
+	}
+
+	showWithDrawExtensionModal(): void {
+		this.showWithdrawModal(this.project_application.lifetime_extension_request_id, WITHDRAWAL_TYPES.EXTENSION);
+	}
+
+	showWithDrawModificationModal(): void {
+		this.showWithdrawModal(this.project_application.modification_extension_request_id, WITHDRAWAL_TYPES.MODIFICATION);
+	}
+
+	showWithdrawModal(target_id: string | number, type: WITHDRAWAL_TYPES): void {
+		const initialState = {
+			target_id,
+			type,
+		};
+		this.bsModalRef = this.modalService.show(WithdrawModalComponent, { initialState, class: 'modal-lg' });
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe((event: boolean): void => {
+				if (event) {
+					this.getApplication();
+				}
+			}),
+		);
 	}
 
 	showExtensionInformationModal(): void {
@@ -849,13 +878,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	setAddUserInvitationLink(): void {
 		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.project_application_shortname}`;
-		const elixir_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=elixir&targetnew=${encodeURIComponent(
-			project_reg,
-		)}&targetexisting=${encodeURIComponent(project_reg)}&targetextended=${encodeURIComponent(project_reg)}`;
-		const uri: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=lifescience&targetnew=${encodeURIComponent(
-			elixir_reg,
-		)}&targetexisting=${encodeURIComponent(elixir_reg)}&targetextended=${encodeURIComponent(elixir_reg)}`;
-		this.invitation_link = uri;
+		this.invitation_link = project_reg;
 	}
 
 	copyToClipboard(text: string): void {
@@ -865,137 +888,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			document.removeEventListener('copy', null);
 		});
 		document.execCommand('copy');
-	}
-
-	filterMembers(searchString: string): void {
-		this.subscription.add(
-			this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: any): void => {
-				this.filteredMembers = [];
-				for (const entry of result) {
-					let member_exist: boolean = false;
-
-					for (const projectMember of this.project_members) {
-						if (projectMember.memberId === entry.member_id) {
-							member_exist = true;
-							break;
-						}
-					}
-					if (!member_exist) {
-						this.filteredMembers.push(entry);
-					}
-				}
-			}),
-		);
-	}
-
-	public addMember(memberid: number, firstName: string, lastName: string): void {
-		this.subscription.add(
-			this.groupService
-				.addMember(
-					this.project_application.project_application_perun_id,
-					memberid,
-					this.project_application.project_application_compute_center.FacilityId,
-				)
-				.subscribe(
-					(result: any): void => {
-						if (result.status === 200) {
-							this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
-							this.getMembersOfTheProject();
-						} else {
-							this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
-						}
-					},
-					(error: any): void => {
-						if (error['name'] === 'AlreadyMemberException') {
-							this.updateNotificationModal(
-								'Info',
-								`${firstName} ${lastName} is already a member of the project.`,
-								true,
-								'info',
-							);
-						} else {
-							this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
-						}
-					},
-				),
-		);
-	}
-
-	public addAdmin(memberId: number, userId: number, firstName: string, lastName: string): void {
-		this.subscription.add(
-			this.groupService
-				.addMember(
-					this.project_application.project_application_perun_id,
-					memberId,
-					this.project_application.project_application_compute_center.FacilityId,
-				)
-				.subscribe(
-					(): void => {
-						this.subscription.add(
-							this.groupService
-								.addAdmin(
-									this.project_application.project_application_perun_id,
-									userId,
-									this.project_application.project_application_compute_center.FacilityId,
-								)
-								.subscribe(
-									(result: any): void => {
-										if (result.status === 200) {
-											this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-											this.getMembersOfTheProject();
-										} else {
-											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-										}
-									},
-									(error: any): void => {
-										if (error['name'] === 'AlreadyAdminException') {
-											this.updateNotificationModal(
-												'Info',
-												`${firstName} ${lastName} is already a admin of the project.`,
-												true,
-												'info',
-											);
-										} else {
-											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-										}
-									},
-								),
-						);
-					},
-					(): void => {
-						this.subscription.add(
-							this.groupService
-								.addAdmin(
-									this.project_application.project_application_perun_id,
-									userId,
-									this.project_application.project_application_compute_center.FacilityId,
-								)
-								.subscribe(
-									(result: any): void => {
-										if (result.status === 200) {
-											this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-											this.getMembersOfTheProject();
-										} else {
-											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-										}
-									},
-									(error: any): void => {
-										if (error['name'] === 'AlreadyAdminException') {
-											this.updateNotificationModal(
-												'Info',
-												`${firstName} ${lastName} is already a admin of the project.`,
-												true,
-												'info',
-											);
-										} else {
-											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-										}
-									},
-								),
-						);
-					},
-				),
-		);
 	}
 
 	public promoteAdmin(userid: number, username: string): void {

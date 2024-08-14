@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { BadgeModule } from '@coreui/angular';
+import { BadgeModule, TableDirective } from '@coreui/angular';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
-import { AddsimplevmComponent } from './addsimplevm.component';
-import { AddcloudapplicationComponent } from './addcloudapplication.component';
+import { AddsimplevmComponent } from './application-formular/simplevm-formular/addsimplevm.component';
+import { AddcloudapplicationComponent } from './application-formular/openstack-formular/addcloudapplication.component';
 import { TypeOverviewComponent } from './type-overview.component';
 import { ValidationApplicationComponent } from '../validation-application/validation-application.component';
 import { ApplicationDetailComponent } from './application-detail/application-detail.component';
@@ -26,6 +27,12 @@ import { CreditsExtensionDetailComponent } from './application-detail/credits-ex
 import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
 import { NewsModule } from '../news/news.module';
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module';
+import { KubernetesFormularComponent } from './application-formular/kubernetes-formular/kubernetes-formular.component';
+
+import { ApplicationListComponent } from './application-list/application-list.component';
+import { ApplicationCardComponent } from './application-card/application-card.component';
+import { ApplicationVoActionsComponent } from './application-vo-actions/application-vo-actions.component';
+import { ApplicationFacilityActionsComponent } from './application-facility-actions/application-facility-actions.component';
 
 /**
  * Applications Module.
@@ -44,11 +51,14 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		NgSelectModule,
 		BadgeModule,
 		SharedModuleModule,
+		TableDirective,
+		TooltipModule,
 	],
 	declarations: [
 		ApplicationsComponent,
 		AddsimplevmComponent,
 		AddcloudapplicationComponent,
+		KubernetesFormularComponent,
 		TypeOverviewComponent,
 		ValidationApplicationComponent,
 		ApplicationDetailComponent,
@@ -60,7 +70,11 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		CreditsExtensionDetailComponent,
 		LifetimeExtensionDetailComponent,
 		AdjustmentDetailComponent,
+		ApplicationListComponent,
+		ApplicationCardComponent,
+		ApplicationVoActionsComponent,
+		ApplicationFacilityActionsComponent,
 	],
-	exports: [ApplicationDetailComponent],
+	exports: [ApplicationDetailComponent, ApplicationListComponent],
 })
 export class ApplicationsModule {}

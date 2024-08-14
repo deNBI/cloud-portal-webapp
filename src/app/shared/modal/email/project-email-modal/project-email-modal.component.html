@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h4 class="modal-title" data-test-id="confirmation_modal_title">Sent Mail to specific projects</h4>
+	<h4 class="modal-title" data-test-id="confirmation_modal_title">Send Mail to specific projects</h4>
 	<button
 		type="button"
 		class="btn-close"
@@ -16,31 +16,6 @@
 			<li *ngFor="let pr of selectedProjects">{{ pr.project_application_shortname }}</li>
 		</ul>
 	</div>
-	<div class="modal-body" *ngIf="csvMailTemplate?.errors?.length > 0">
-		<div class="alert alert-danger">
-			<p><strong>Error!</strong> Unable to use the CSV file "{{ csvFile.name }}". The following errors occurred:</p>
-
-			<ul>
-				<li *ngFor="let err of csvMailTemplate?.errors">{{ err }}</li>
-			</ul>
-		</div>
-		<div class="valid-example">
-			<p class="valid-example-heading">
-				<strong>Valid Example:</strong>
-			</p>
-			<pre class="valid-example-content">{{ validCSVExample }}</pre>
-		</div>
-	</div>
-
-	<div class="alert alert-warning" *ngIf="csvMailTemplate?.warnings.length > 0">
-		<p>
-			<strong>Warning!</strong> The following issues were found in the CSV file, but sending emails is still possible:
-		</p>
-
-		<ul>
-			<li *ngFor="let war of csvMailTemplate?.warnings">{{ war }}</li>
-		</ul>
-	</div>
 
 	<form class="form-horizontal" id="email_form" #f="ngForm">
 		<div class="form-group row">
@@ -52,7 +27,6 @@
 						name="emailAdminsOnly"
 						[(ngModel)]="emailAdminsOnly"
 						id="adminOnlyCheckbox"
-						[disabled]="csvMailTemplate?.errors?.length > 0"
 					/>
 					<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
 				</div>
@@ -75,7 +49,6 @@
 					class="form-control"
 					type="text"
 					[(ngModel)]="emailSubject"
-					[disabled]="csvMailTemplate?.errors?.length > 0"
 					minlength="1"
 					#emailSub="ngModel"
 					[ngClass]="{
@@ -96,7 +69,6 @@
 					class="form-control"
 					type="text"
 					[(ngModel)]="emailReply"
-					[disabled]="csvMailTemplate?.errors.length > 0"
 					#emailRep="ngModel"
 					pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
 					[ngClass]="{
@@ -117,7 +89,6 @@
 					id="emailText"
 					name="emailText"
 					[(ngModel)]="emailText"
-					[disabled]="csvMailTemplate?.errors?.length > 0"
 					type="text"
 					#emailT="ngModel"
 					[ngClass]="{
@@ -128,14 +99,6 @@
 			</div>
 		</div>
 	</form>
-	<div class="templates-container" *ngIf="csvFile">
-		<p>
-			The following keys were provided by the CSV file: <strong>{{ csvFile.name }}</strong>
-		</p>
-		<div class="templates-list">
-			<span *ngFor="let template of csvMailTemplate?.keys">{{ '{' + template + '}' }} </span>
-		</div>
-	</div>
 
 	<div class="templates-container">
 		<p>You can use the following keys as variables:</p>
@@ -159,21 +122,11 @@
 		Abort & Close
 	</button>
 	<button
-		*ngIf="!csvMailTemplate"
 		class="btn btn-success col-md-4"
-		[disabled]="f.invalid || csvMailTemplate?.errors?.length > 0"
+		[disabled]="f.invalid"
 		data-test-id="confirm_confirmation_modal_btn"
 		(click)="sentProjectsMail(); bsModalRef.hide()"
 	>
-		Sent Mail
-	</button>
-	<button
-		*ngIf="csvMailTemplate && csvFile"
-		class="btn btn-success col-md-4"
-		[disabled]="f.invalid || csvMailTemplate?.errors?.length > 0"
-		data-test-id="confirm_confirmation_modal_btn"
-		(click)="sentProjectsTemplatedMail(); bsModalRef.hide()"
-	>
-		Sent Mail
+		Send Mail
 	</button>
 </div>

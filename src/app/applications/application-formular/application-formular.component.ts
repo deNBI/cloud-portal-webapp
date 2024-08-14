@@ -1,7 +1,8 @@
 import {
-	ChangeDetectorRef, Component, Input, OnInit, ViewChild,
+	ChangeDetectorRef, Component, Input, OnInit, ViewChild, inject,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor';
 import { FlavorService } from '../../api-connector/flavor.service';
 import { FlavorType } from '../../virtualmachines/virtualmachinemodels/flavorType';
@@ -32,6 +33,7 @@ import {
 } from '../../../links/links';
 import { UserService } from '../../api-connector/user.service';
 import { Userinfo } from '../../userinfo/userinfo.model';
+import { User } from '../application.model/user.model';
 
 /**
  * Application formular component.
@@ -45,10 +47,13 @@ import { Userinfo } from '../../userinfo/userinfo.model';
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
 	@Input() openstack_project: boolean = false;
 	@Input() simple_vm_project: boolean = false;
+	@Input() kubernetes_access: boolean = false;
 	@Input() title: string;
 	@Input() application: Application;
 	@Input() is_validation: boolean = false;
 	@Input() hash: string;
+
+	private readonly tracker = inject(MatomoTracker);
 
 	userinfo: Userinfo;
 	valid_pi_affiliations;
@@ -112,6 +117,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	}
 
 	ngOnInit(): void {
+		if (!this.is_validation) {
+			const typeStr: string = this.openstack_project ? ' Openstack' : 'SimpleVM';
+			this.tracker.trackPageView(`New Application Formular: ${typeStr}`);
+		}
+
 		this.getUserinfo();
 		this.getListOfFlavors();
 		this.getListOfTypes();
@@ -169,8 +179,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	initiateFormWithApplication(): void {
 		if (this.application && !this.initiated_validation && this.is_validation) {
 			this.openstack_project = this.application.project_application_openstack_project;
+
 			this.simple_vm_project = !this.openstack_project;
-			this.searchTermsInEdamTerms();
+			this.application.project_application_pi = new User();
+
+			//	this.searchTermsInEdamTerms();
 
 			if (this.application.dissemination.someAllowed()) {
 				this.project_application_report_allowed = true;
@@ -178,10 +191,14 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			if (this.simple_vm_project) {
 				this.simple_vm_min_vm = this.application.flavors.length > 0;
 			}
+			if (this.application.project_application_nfdi && this.application.project_application_nfdi.length > 0) {
+				this.max_lifetime = 12;
+			}
 			this.initiated_validation = true;
 		} else {
 			this.application = new Application(null);
 			this.application.project_application_openstack_project = this.openstack_project;
+			this.application.project_application_kubernetes_access = this.kubernetes_access;
 			if (this.openstack_project) {
 				this.application.project_application_object_storage = 0;
 			}

@@ -1,8 +1,9 @@
 import {
-	Component, Input, OnInit, QueryList, ViewChildren,
+	Component, Input, OnInit, QueryList, ViewChildren, inject,
 } from '@angular/core';
-import { Observable, Subject, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { environment } from '../../environments/environment';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -18,10 +19,10 @@ import {
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
 import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component';
-import { NotificationModalComponent } from '../shared/modal/notification-modal';
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
 import { EmailService } from '../api-connector/email.service';
 import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
+import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
 
 /**
  * Facility Project overview component.
@@ -32,6 +33,7 @@ import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model';
 	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService],
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
+	private readonly tracker = inject(MatomoTracker);
 	@Input() voRegistrationLink: string = environment.voRegistrationLink;
 
 	title: string = 'Projects Overview';
@@ -41,16 +43,21 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	public memberFilter: string = '';
 	filteredMembers: object[] = [];
 	selectedMember: object[] = [];
-	facility_members: object[] = [];
 
-	filterChanged: Subject<string> = new Subject<string>();
 	isLoaded: boolean = false;
 	projects: Application[] = [];
+	projectsCopy: Application[] = [];
 	show_openstack_projects: boolean = true;
 	show_simple_vm_projects: boolean = true;
 	details_loaded: boolean = false;
 	selectedEmailProjects: Application[] = [];
 	bsModalRef: BsModalRef;
+	userElixirSearchPI: boolean = true;
+	userElixirSearchAdmin: boolean = true;
+	userElixirSearchMember: boolean = true;
+	userElixirIdFilter: string;
+
+	projectsLoaded: boolean = false;
 
 	/**
 	 * Approved group status.
@@ -69,6 +76,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	public usersModalProjectName: string;
 	public selectedProject: Application;
 	public userSearchValue: string;
+	validElixirIdFilter: boolean = false;
 
 	public emailSubject: string;
 	public emailText: string;
@@ -139,6 +147,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Facility Project Overview');
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result;
 			this.selectedFacility = this.managerFacilities[0];
@@ -172,7 +181,11 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			);
 		}
 	}
+	openProjectCSVMailModal(): void {
+		console.log('show');
 
+		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' });
+	}
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers.forEach(header => {
@@ -183,10 +196,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 		this.sortProjectService.sortColumn = column;
 		this.sortProjectService.sortDirection = direction;
-	}
-
-	searchForUserInFacility(searchString: string): void {
-		this.facilityService.getFilteredMembersOfFacility(searchString);
 	}
 
 	filterMembers(bare_searchString: string): void {
@@ -205,19 +214,48 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		});
 	}
 
+	checkValidElixirIdFilter(): void {
+		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org');
+		if (!this.validElixirIdFilter) {
+			this.sortProjectService.applications = this.projectsCopy;
+			this.applictions$ = this.sortProjectService.applications$;
+			this.total$ = this.sortProjectService.total$;
+			this.projectsLoaded = true;
+		}
+	}
+
 	getProjectsByMemberElixirId(): void {
 		// tslint:disable-next-line:max-line-length
-		this.facilityService
-			.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter)
-			.subscribe((applications: Application[]): void => {
-				this.projects_filtered = [];
-				for (const group of applications) {
-					if (group.project_application_lifetime > 0) {
-						group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
+		this.userElixirIdFilter = this.userElixirIdFilter.trim();
+		if (this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')) {
+			this.projectsLoaded = false;
+
+			this.facilityService
+				.getFacilityGroupsByMemberElixirId(
+					this.selectedFacility['FacilityId'],
+					this.userElixirIdFilter,
+					this.userElixirSearchPI,
+					this.userElixirSearchAdmin,
+					this.userElixirSearchMember,
+				)
+				.subscribe((applications: Application[]): void => {
+					this.projects = applications;
+					for (const group of applications) {
+						if (group.project_application_lifetime > 0) {
+							group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
+						}
 					}
-					this.projects_filtered.push(group);
-				}
-			});
+					this.sortProjectService.applications = this.projects;
+					this.applictions$ = this.sortProjectService.applications$;
+					this.total$ = this.sortProjectService.total$;
+					this.projectsLoaded = true;
+				});
+		} else {
+			this.sortProjectService.applications = this.projectsCopy;
+			this.applictions$ = this.sortProjectService.applications$;
+			this.total$ = this.sortProjectService.total$;
+			this.projectsLoaded = true;
+		}
 	}
 
 	/**
@@ -311,6 +349,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	getFacilityProjects(facility: string): void {
 		this.projects = [];
+		this.projectsLoaded = false;
 
 		// tslint:disable-next-line:max-line-length
 		this.facilityService
@@ -322,9 +361,11 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 					}
 					this.projects.push(group);
 				}
+				this.projectsCopy = this.projects;
 				this.sortProjectService.applications = this.projects;
 				this.applictions$ = this.sortProjectService.applications$;
 				this.total$ = this.sortProjectService.total$;
+				this.projectsLoaded = true;
 
 				this.isLoaded = true;
 			});
@@ -473,24 +514,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			initialState = { selectedProjects: this.selectedEmailProjects };
 		}
 		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' });
-		this.bsModalRef.content.event.subscribe((sent_successfully: boolean) => {
-			if (sent_successfully) {
-				const initialStateNotification = {
-					notificationModalTitle: 'Success',
-					notificationModalType: 'success',
-					notificationModalMessage: 'Mails were successfully sent',
-				};
-
-				this.modalService.show(NotificationModalComponent, { initialState: initialStateNotification });
-			} else {
-				const initialStateNotification = {
-					notificationModalTitle: 'Failed',
-					notificationModalType: 'danger',
-					notificationModalMessage: 'Failed to send mails!',
-				};
-				this.modalService.show(NotificationModalComponent, { initialState: initialStateNotification });
-			}
-		});
 	}
 
 	setFacilitySupportMails(supportMails: string): void {

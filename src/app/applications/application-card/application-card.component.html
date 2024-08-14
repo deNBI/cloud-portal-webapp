@@ -1,0 +1,49 @@
+<tr>
+	<td>
+		<app-application-badges [application]="application"></app-application-badges>
+	</td>
+	<td>{{ application?.project_application_name }}</td>
+	<td>{{ application?.project_application_shortname }}</td>
+	<td>{{ application?.project_application_date_submitted }}</td>
+	<td style="word-wrap: break-word; min-width: 110px; max-width: 130px; white-space: normal">
+		@if (application?.project_application_user?.username) {
+			{{ application?.project_application_user?.username }}
+		} @else {
+			<span class="spinner-border text-info"></span>
+		}
+	</td>
+	<td>{{ application?.project_application_institute }}</td>
+
+	@if (voView) {
+		<app-application-vo-actions
+			(switchCollapseEvent)="switchCollaps()"
+			class="table-line"
+			[application]="application"
+			[tabState]="tabState"
+			[computeCenters]="computeCenters"
+			(reloadNumbersTrigger)="triggerReloadNumbers()"
+			(removeApplicationTrigger)="triggerRemoveApplication()"
+			(reloadApplicationTrigger)="getApplication()"
+		></app-application-vo-actions>
+	} @else if (facilityView) {
+		<app-application-facility-actions
+			(switchCollapseEvent)="switchCollaps()"
+			class="table-line"
+			[application]="application"
+			[tabState]="tabState"
+			(reloadNumbersTrigger)="triggerReloadNumbers()"
+			(removeApplicationTrigger)="triggerRemoveApplication()"
+			(reloadApplicationTrigger)="getApplication()"
+		></app-application-facility-actions>
+	}
+</tr>
+<td colspan="12">
+	@if (!isCollapsed) {
+		<app-application-detail
+			#applicationdetail
+			[class.collapse_no_margin]="isCollapsed"
+			[class.collapse]="isCollapsed"
+			[application]="application"
+		></app-application-detail>
+	}
+</td>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { forkJoin } from 'rxjs';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { ImageService } from '../api-connector/image.service';
 import {
 	BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag,
@@ -16,6 +17,7 @@ import { BiocondaService } from '../api-connector/bioconda.service';
 	providers: [ImageService, FacilityService, BiocondaService],
 })
 export class ImageTagComponent implements OnInit {
+	private readonly tracker = inject(MatomoTracker);
 
 	title: string = 'Image Tags';
 
@@ -50,7 +52,11 @@ export class ImageTagComponent implements OnInit {
 	 */
 	public selectedFacility: [string, number];
 
-	constructor(private imageService: ImageService, private facilityService: FacilityService, private biocondaService: BiocondaService) {
+	constructor(
+		private imageService: ImageService,
+		private facilityService: FacilityService,
+		private biocondaService: BiocondaService,
+	) {
 		// constructor for ImageTags
 	}
 
@@ -91,18 +97,18 @@ export class ImageTagComponent implements OnInit {
 			this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
 			this.imageService.getImageModes(this.selectedFacility['FacilityId']),
 			this.imageService.getBlockedImageTagsResenv(this.selectedFacility['FacilityId']),
-		)
-			.subscribe((res: any): void => {
-				this.imageTags = res[0];
-				this.imageLogos = res[1];
-				this.blockedImageTags = res[2];
-				this.imageModes = res[3];
-				this.blockedImageTagsResenv = res[4];
-				this.isLoaded = true;
-			});
+		).subscribe((res: any): void => {
+			this.imageTags = res[0];
+			this.imageLogos = res[1];
+			this.blockedImageTags = res[2];
+			this.imageModes = res[3];
+			this.blockedImageTagsResenv = res[4];
+			this.isLoaded = true;
+		});
 	}
 
 	ngOnInit(): void {
+		this.tracker.trackPageView('Image Tags');
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result;
 			this.selectedFacility = this.managerFacilities[0];
@@ -113,15 +119,14 @@ export class ImageTagComponent implements OnInit {
 				this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
 				this.imageService.getImageModes(this.selectedFacility['FacilityId']),
 				this.imageService.getBlockedImageTagsResenv(this.selectedFacility['FacilityId']),
-			)
-				.subscribe((res: any): void => {
-					this.imageTags = res[0];
-					this.imageLogos = res[1];
-					this.blockedImageTags = res[2];
-					this.imageModes = res[3];
-					this.blockedImageTagsResenv = res[4];
-					this.isLoaded = true;
-				});
+			).subscribe((res: any): void => {
+				this.imageTags = res[0];
+				this.imageLogos = res[1];
+				this.blockedImageTags = res[2];
+				this.imageModes = res[3];
+				this.blockedImageTagsResenv = res[4];
+				this.isLoaded = true;
+			});
 		});
 	}
 
@@ -150,10 +155,12 @@ export class ImageTagComponent implements OnInit {
 
 	addTag(tag: string, input: HTMLInputElement): void {
 		if (input.validity.valid) {
-			this.imageService.addImageTags(tag.trim(), this.checkedModes, this.selectedFacility['FacilityId']).subscribe((newTag: ImageTag): void => {
-				this.checkedModes = [];
-				this.imageTags.push(newTag);
-			});
+			this.imageService
+				.addImageTags(tag.trim(), this.checkedModes, this.selectedFacility['FacilityId'])
+				.subscribe((newTag: ImageTag): void => {
+					this.checkedModes = [];
+					this.imageTags.push(newTag);
+				});
 			this.alertRed = false;
 		} else {
 			this.alertRed = true;
@@ -166,16 +173,15 @@ export class ImageTagComponent implements OnInit {
 			description: this.newModeDescription,
 			copy_field: this.newModeCopy,
 		};
-		this.imageService.addImageMode(newMode, this.selectedFacility['FacilityId']).subscribe((createdMode: ImageMode): void => {
-
-			this.newModeName = '';
-			this.newModeDescription = '';
-			this.newModeCopy = '';
-			this.imageModes.push(createdMode);
-			this.getTagModeSuggestions();
-
-		});
-
+		this.imageService
+			.addImageMode(newMode, this.selectedFacility['FacilityId'])
+			.subscribe((createdMode: ImageMode): void => {
+				this.newModeName = '';
+				this.newModeDescription = '';
+				this.newModeCopy = '';
+				this.imageModes.push(createdMode);
+				this.getTagModeSuggestions();
+			});
 	}
 
 	deleteTag(tag: ImageTag): void {
@@ -208,9 +214,11 @@ export class ImageTagComponent implements OnInit {
 
 	addBlockedTag(tag: string, input: HTMLInputElement): void {
 		if (input.validity.valid) {
-			this.imageService.addBlockedImageTag(tag.trim(), this.selectedFacility['FacilityId']).subscribe((newTag: BlockedImageTag): void => {
-				this.blockedImageTags.push(newTag);
-			});
+			this.imageService
+				.addBlockedImageTag(tag.trim(), this.selectedFacility['FacilityId'])
+				.subscribe((newTag: BlockedImageTag): void => {
+					this.blockedImageTags.push(newTag);
+				});
 			this.alertRed_blocked = false;
 		} else {
 			this.alertRed_blocked = true;
@@ -250,5 +258,4 @@ export class ImageTagComponent implements OnInit {
 			});
 		});
 	}
-
 }

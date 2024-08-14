@@ -4,11 +4,15 @@
 			<td>Lifetime Extension Requested from:</td>
 
 			<td>
-				{{ application?.project_lifetime_request?.user?.username }}
+				@if (application?.project_lifetime_request?.user) {
+					{{ application?.project_lifetime_request?.user?.username }}
 
-				( {{ application?.project_lifetime_request?.user?.email }} |
-				{{ application?.project_lifetime_request?.user?.elixir_id }}
-				)
+					( {{ application?.project_lifetime_request?.user?.email }} |
+					{{ application?.project_lifetime_request?.user?.elixir_id }}
+					)
+				} @else {
+					<span class="spinner-border text-info"></span>
+				}
 			</td>
 		</tr>
 		<tr>

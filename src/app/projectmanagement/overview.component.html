@@ -18,28 +18,42 @@
 			<div class="card" id="submittedProjectInfoDiv">
 				<div class="card-header">
 					<h3>
-						<a
-							*ngIf="project_application?.project_application_openstack_project"
-							data-toggle="tooltip"
-							href="{{ OPENSTACK_LINK }}"
-							rel="noopener noreferrer"
-							style="font-size: 2em"
-							target="_blank"
-							title="This is an Openstack project"
-						>
-							<img class="po-logo" src="{{ openstack_logo }}" />
-						</a>
-						<a
-							*ngIf="!project_application?.project_application_openstack_project"
-							data-toggle="tooltip"
-							href="{{ SIMPLE_VM_LINK }}"
-							rel="noopener noreferrer"
-							style="font-size: 2em"
-							target="_blank"
-							title="This is a Simple VM project"
-						>
-							<img class="po-logo" src="{{ simple_vm_logo }}" />
-						</a>
+						@if (project_application?.project_application_openstack_project) {
+							@if (project_application?.project_application_kubernetes_access) {
+								<a
+									data-toggle="tooltip"
+									href="{{ KUBERNETES_LINK }}"
+									rel="noopener noreferrer"
+									style="font-size: 2em"
+									target="_blank"
+									title="This is an Kubernetes project"
+								>
+									<img class="po-logo" src="{{ kubernetes_logo }}" />
+								</a>
+							} @else {
+								<a
+									data-toggle="tooltip"
+									href="{{ OPENSTACK_LINK }}"
+									rel="noopener noreferrer"
+									style="font-size: 2em"
+									target="_blank"
+									title="This is an Openstack project"
+								>
+									<img class="po-logo" src="{{ openstack_logo }}" />
+								</a>
+							}
+						} @else {
+							<a
+								data-toggle="tooltip"
+								href="{{ SIMPLE_VM_LINK }}"
+								rel="noopener noreferrer"
+								style="font-size: 2em"
+								target="_blank"
+								title="This is a Simple VM project"
+							>
+								<img class="po-logo" src="{{ simple_vm_logo }}" />
+							</a>
+						}
 						{{ project_application?.project_application_name }}
 					</h3>
 				</div>
@@ -170,28 +184,43 @@
 					<div class="row">
 						<div class="col">
 							<h3>
-								<a
-									*ngIf="project_application?.project_application_openstack_project"
-									data-toggle="tooltip"
-									href="{{ OPENSTACK_LINK }}"
-									rel="noopener noreferrer"
-									style="font-size: 2em"
-									target="_blank"
-									title="This is an Openstack project"
-								>
-									<img class="po-logo" src="{{ openstack_logo }}" />
-								</a>
-								<a
-									*ngIf="!project_application?.project_application_openstack_project"
-									data-toggle="tooltip"
-									href="{{ SIMPLE_VM_LINK }}"
-									rel="noopener noreferrer"
-									style="font-size: 2em"
-									target="_blank"
-									title="This is a Simple VM project"
-								>
-									<img class="po-logo" src="{{ simple_vm_logo }}" />
-								</a>
+								@if (project_application?.project_application_openstack_project) {
+									@if (project_application?.project_application_kubernetes_access) {
+										<a
+											data-toggle="tooltip"
+											href="{{ KUBERNETES_LINK }}"
+											rel="noopener noreferrer"
+											style="font-size: 2em"
+											target="_blank"
+											title="This is an Kubernetes project"
+										>
+											<img class="po-logo" src="{{ kubernetes_logo }}" />
+										</a>
+									} @else {
+										<a
+											data-toggle="tooltip"
+											href="{{ OPENSTACK_LINK }}"
+											rel="noopener noreferrer"
+											style="font-size: 2em"
+											target="_blank"
+											title="This is an Openstack project"
+										>
+											<img class="po-logo" src="{{ openstack_logo }}" />
+										</a>
+									}
+								} @else {
+									<a
+										data-toggle="tooltip"
+										href="{{ SIMPLE_VM_LINK }}"
+										rel="noopener noreferrer"
+										style="font-size: 2em"
+										target="_blank"
+										title="This is a Simple VM project"
+									>
+										<img class="po-logo" src="{{ simple_vm_logo }}" />
+									</a>
+								}
+
 								{{ project_application?.project_application_shortname }}
 							</h3>
 						</div>
@@ -309,6 +338,18 @@
 									</span>
 								</ng-container>
 								<button
+									(click)="showWithDrawExtensionModal()"
+									*ngIf="
+										project_application.user_is_admin &&
+										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
+									"
+									class="btn btn-outline-warning"
+									data-test-id="show_lifetime_extension_withdraw_button"
+									id="show_lifetime_extension_withdraw_button"
+								>
+									Withdraw extension request
+								</button>
+								<button
 									(click)="showExtensionInformationModal()"
 									*ngIf="
 										project_application.user_is_admin &&
@@ -403,7 +444,7 @@
 					<div class="row">
 						<div class="col-6">
 							<div
-								*ngIf="this.resourceDataLoaded"
+								*ngIf="resourceDataLoaded"
 								class="callout"
 								[ngClass]="(project_application | isMigratedProject) ? 'callout-warning' : 'callout-info'"
 								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
@@ -510,6 +551,18 @@
 									id="show_modification_extension_button"
 								>
 									Request resource modification
+								</button>
+								<button
+									(click)="showWithDrawModificationModal()"
+									*ngIf="
+										project_application.user_is_admin &&
+										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+									"
+									class="btn btn-outline-warning"
+									data-test-id="show_modification_extension_withdraw_button"
+									id="show_modification_extension_withdraw_button"
+								>
+									Withdraw resource modification
 								</button>
 								<button
 									*ngIf="
@@ -1202,8 +1255,8 @@
 					<div class="alert alert-info">
 						<p>
 							If you are unsure whether a DOI has already been entered (for example, in a previous or expired project):
-							<strong>Duplicate entries are recognized by our system and do not pose a problem.</strong> In addition to
-							the public page, a
+							<strong>Duplicate entries are recognized by our system and do not pose a problem.</strong>
+							In addition to the public page, a
 							<a href="{{ PUBLIC_DOI_ENDPOINT }}" rel="noopener noreferrer" class="alert-link" target="_blank"
 								>public endpoint</a
 							>
@@ -1211,7 +1264,8 @@
 						</p>
 						<hr />
 						<p>
-							Please note that <strong>the publications entered on this page are listed publicly</strong> on
+							Please note that <strong>the publications entered on this page are listed publicly</strong>
+							on
 							<a href="{{ PUBLICATIONS_LINK }}" rel="noopener noreferrer" class="alert-link" target="_blank"
 								>this page on our website</a
 							>. We kindly ask you to list your publications which have been created during your work in the de.NBI
@@ -1291,135 +1345,58 @@
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
-					<div class="row">
-						<p style="margin-bottom: 15px">
-							Search and add a user to your project by providing at least four characters of their name:
-						</p>
+					<div class="alert alert-info" role="alert">
+						Please share the following invitation link with users you want to add to the project. As soon as they have
+						requested membership, project admins can approve their application via the member applications tab.
 					</div>
-					<div class="row">
-						<div class="col-md-8">
-							<input
-								#searchString
-								id="add_member_input"
-								data-test-id="add_member_input"
-								placeholder=""
-								style="width: 100%"
-							/>
-						</div>
-						<div class="col-md-4">
-							<button
-								(click)="filterMembers(searchString.value)"
-								class="btn btn-primary"
-								id="search_member_btn"
-								data-test-id="search_member_btn"
-								type="button"
-							>
-								<i class="fa fa-search"></i> Search Member
-							</button>
-						</div>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col-md-12">
-							<strong>Please note</strong> that if you can not find the user, they are not registered for a de.NBI Cloud
-							account. In that case you can invite them by sending them the following link:
-							<br />
-							<br />
-							<ul style="list-style-type: none">
-								<li>
-									<pre [hidden]="showLink"><strong>{{ invitation_link }}</strong></pre>
-									<div class="btn-group-vertical">
-										<button (click)="showLink = !showLink" class="btn btn-primary" style="margin-bottom: 5px">
-											<span [hidden]="!showLink">Show</span>
-											<span [hidden]="showLink">Hide</span>
-											link
-										</button>
-										<button
-											(click)="copyToClipboard(invitation_link)"
-											class="btn btn-success"
-											[closeDelay]="3000"
-											ngbTooltip="Copied!"
-											triggers="click:blur"
-										>
-											Copy link
-										</button>
-									</div>
-								</li>
-							</ul>
-							<br />
-							After the user registered for ELIXIR/de.NBI and applied for your group, you can approve their application.
-							Read more about the process
-							<a href="{{ WIKI_MEMBER_MANAGEMENT }}" rel="noopener noreferrer" target="_blank">here</a>.
-						</div>
-					</div>
-
-					<div class="table-responsive">
-						<table *ngIf="filteredMembers !== null" class="table table-bordered table-striped table-sm">
-							<thead>
-								<th></th>
-								<th>First Name</th>
-								<th>Last Name</th>
-								<th>Email</th>
-							</thead>
-							<tbody *ngFor="let member of filteredMembers">
-								<td>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-md-12">
+						<ul style="list-style-type: none">
+							<li>
+								<pre><strong>{{ invitation_link }}</strong></pre>
+								<div class="btn-group-vertical">
 									<button
-										(click)="
-											resetNotificationModal();
-											addMember(member['member_id'], member['firstName'], member['lastName']);
-											filteredMembers = null;
-											notificationModal.show()
-										"
-										class="btn btn-outline-success"
-										id="add_member_btn"
-										data-test-id="add_member_btn"
-										style="padding: 5px; margin: 5px"
+										(click)="copyToClipboard(invitation_link)"
+										class="btn btn-success"
+										[closeDelay]="3000"
+										ngbTooltip="Copied!"
+										triggers="click:blur"
 									>
-										<i class="fa fa-plus"></i> Add Member
+										Copy link
 									</button>
-									<button
-										(click)="
-											resetNotificationModal();
-											addAdmin(member['member_id'], member['user_id'], member['firstName'], member['lastName']);
-											filteredMembers = null;
-											notificationModal.show()
-										"
-										class="btn btn-outline-primary"
-										style="padding: 5px; margin: 5px"
-									>
-										<i class="fa fa-plus"></i> Add Admin
-									</button>
-								</td>
-								<td>{{ member['firstName'] }}</td>
-								<td>{{ member['lastName'] }}</td>
-								<td>{{ member['mail'] }}</td>
-							</tbody>
-						</table>
+								</div>
+							</li>
+						</ul>
+						<br />
+						After the user registered for de.NBI and applied for your group, you can approve their application. Read
+						more about the process
+						<a href="{{ WIKI_MEMBER_MANAGEMENT }}" rel="noopener noreferrer" target="_blank">here</a>.
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
-				<!--  <button type="button" (click)="addUserModal.hide();
-                                                                                    notificationModal.show();
-                                                                                    addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="far fa-dot-circle"></i>
-                            Add User
-                    </button> -->
-				<button
-					(click)="filteredMembers = null; addUserModal.hide()"
-					class="btn btn-danger"
-					id="close_add_user_modal_btn"
-					data-test-id="close_add_user_modal_btn"
-					type="button"
-				>
-					<i class="fa fa-times"></i> Close
-				</button>
-			</div>
 		</div>
-		<!-- /.modal-content -->
+		<div class="modal-footer">
+			<!--  <button type="button" (click)="addUserModal.hide();
+                                                                                notificationModal.show();
+                                                                                addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="far fa-dot-circle"></i>
+                        Add User
+                </button> -->
+			<button
+				(click)="addUserModal.hide()"
+				class="btn btn-danger"
+				id="close_add_user_modal_btn"
+				data-test-id="close_add_user_modal_btn"
+				type="button"
+			>
+				<i class="fa fa-times"></i> Close
+			</button>
+		</div>
 	</div>
-	<!-- /.modal-dialog -->
+	<!-- /.modal-content -->
 </div>
-<!-- /.modal -->
+<!-- /.modal-dialog -->
 
 <div
 	#terminateModal="bs-modal"
