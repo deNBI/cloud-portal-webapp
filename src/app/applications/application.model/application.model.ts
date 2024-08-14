@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+ import moment from 'moment';
 import { ApplicationLifetimeExtension } from '../application_extension.model';
 import { ComputecenterComponent } from '../../projectmanagement/computecenter.component';
 import { ApplicationDissemination } from '../application-dissemination';
