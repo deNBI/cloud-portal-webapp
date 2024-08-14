@@ -40,4 +40,4 @@ RUN mkdir -p /usr/share/nginx/html/portal/webapp
 COPY --from=builder /ng-app/dist/browser /usr/share/nginx/html/portal/webapp
 
 # Start nginx server
-CMD ["/bin/sh", "-c", "envsubst < /usr/share/nginx/html/portal/webapp/browser/static/webapp/assets/environment/env.template.js> /usr/share/nginx/html/portal/webapp/browser/static/webapp/assets/environment/env.js && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "envsubst < /usr/share/nginx/html/portal/webapp/static/webapp/assets/environment/env.template.js> /usr/share/nginx/html/portal/webapp/static/webapp/assets/environment/env.js && exec nginx -g 'daemon off;'"]
