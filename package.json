@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.850.0",
+  "version": "4.851.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -67,7 +67,7 @@
     "ngx-cookie-service": "18.0.0",
     "ngx-matomo-client": "6.2.0",
     "ngx-owl-carousel-o": "18.0.0",
-    "ngx-scrollbar": "13.0.3",
+    "ngx-scrollbar": "15.1.2",
     "postcss-loader": "8.1.1",
     "postcss-url": "10.1.3",
     "rxjs": "7.8.1",
