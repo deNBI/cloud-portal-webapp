@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-	HttpErrorResponse,
-	HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
+	HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Cookie } from 'ng2-cookies';
@@ -12,7 +11,6 @@ import { catchError } from 'rxjs/operators';
  */
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		const skipIntercept: boolean = req.headers.has('skip');
 		const skipXRequestedWith: boolean = req.headers.has('skip-x-requested-with');
