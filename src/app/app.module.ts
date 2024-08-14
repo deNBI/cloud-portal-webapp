@@ -3,7 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgChartsModule } from 'ng2-charts';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -51,10 +51,23 @@ import { FacilityService } from './api-connector/facility.service';
  * App module.
  */
 @NgModule({
+	declarations: [
+		AppComponent,
+		FullLayoutComponent,
+		AsideToggleDirective,
+		RegistrationInfoComponent,
+		ConsentInfoComponent,
+		BreadcrumbsComponent,
+		SidebarToggleDirective,
+		SidebarMinimizeDirective,
+		MobileSidebarToggleDirective,
+		SidebarOffCanvasCloseDirective,
+		TitleHeadbarComponent,
+	],
+	bootstrap: [AppComponent],
 	imports: [
 		NgScrollbarModule,
 		BrowserModule,
-		HttpClientModule,
 		AppRoutingModule,
 		CommonModule,
 		BsDropdownModule.forRoot(),
@@ -76,19 +89,6 @@ import { FacilityService } from './api-connector/facility.service';
 			trackerUrl: environment.MATOMO_TRACKING_URL,
 		}),
 		MatomoRouterModule,
-	],
-	declarations: [
-		AppComponent,
-		FullLayoutComponent,
-		AsideToggleDirective,
-		RegistrationInfoComponent,
-		ConsentInfoComponent,
-		BreadcrumbsComponent,
-		SidebarToggleDirective,
-		SidebarMinimizeDirective,
-		MobileSidebarToggleDirective,
-		SidebarOffCanvasCloseDirective,
-		TitleHeadbarComponent,
 	],
 	providers: [
 		{
@@ -114,7 +114,7 @@ import { FacilityService } from './api-connector/facility.service';
 		CookieService,
 		VoService,
 		FacilityService,
+		provideHttpClient(withInterceptorsFromDi()),
 	],
-	bootstrap: [AppComponent],
 })
 export class AppModule {}
