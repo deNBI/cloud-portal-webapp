@@ -1,35 +1,43 @@
-### STAGE 1: Build ###
+# STAGE 1: Build
 
 # We label our stage as 'builder'
-FROM node:19-alpine3.15 as builder
+FROM node:20-alpine3.20 AS builder
 
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-COPY package.json  ./
-
+# Set npm configuration to optimize performance
 RUN npm set progress=false && npm config set depth 0 && npm cache clean --force
 
+# Update and install required packages
 RUN apk update && apk upgrade && apk add --no-cache bash git openssh
-## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN npm i && mkdir /ng-app && cp -R ./node_modules ./ng-app
 
+# Install node modules
+RUN npm install && mkdir /ng-app && cp -R ./node_modules ./ng-app
+
+# Set working directory
 WORKDIR /ng-app
 
+# Copy all files to the working directory
 COPY . .
 
-## Build the angular app in production mode and store the artifacts in dist folder
-RUN $(npm bin)/ng build --configuration=custom
+# Build the Angular app in production mode
+RUN npx ng build --configuration=custom
 
-### STAGE 2: Setup ###
+### STAGE 2: Setup
 FROM nginx:1.26.1-alpine
 
-## Copy our default nginx config
+# Copy our default nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/
 
-## Remove default nginx website
+# Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
 
+# Create directory for the web application
 RUN mkdir -p /usr/share/nginx/html/portal/webapp
-## From 'builder' stage copy over the artifacts in dist folder to default nginx public folder
+
+# Copy built Angular artifacts to nginx public folder
 COPY --from=builder /ng-app/dist /usr/share/nginx/html/portal/webapp
 
-CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/portal/webapp/static/webapp/assets/environment/env.template.js> /usr/share/nginx/html/portal/webapp/static/webapp/assets/environment/env.js && exec nginx -g 'daemon off;'"]
+# Start nginx server
+CMD ["/bin/sh", "-c", "envsubst < /usr/share/nginx/html/portal/webapp/static/webapp/assets/environment/env.template.js> /usr/share/nginx/html/portal/webapp/static/webapp/assets/environment/env.js && exec nginx -g 'daemon off;'"]
