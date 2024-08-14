@@ -124,8 +124,6 @@
     "webpack-cli": "5.1.4"
   },
   "overrides": {
-    "undici": "6.19.2",
-    "vite": "5.2.12"
   },
   "lint-staged": {
     "*.{js,jsx,ts}": [
