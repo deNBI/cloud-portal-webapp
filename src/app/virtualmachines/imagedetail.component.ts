@@ -65,7 +65,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
+	STATIC_IMG_FOLDER: string = 'static/webapp/assets/img/';
 	RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
 	STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
 
@@ -76,7 +76,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 		pullDrag: false,
 		dots: true,
 		navSpeed: 700,
-		navText: ['<i class=\'fa fa-chevron-left\'></i>', '<i class=\'fa fa-chevron-right\'></i>'],
+		navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
 		responsive: {
 			0: {
 				items: 1,
@@ -94,7 +94,10 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
 		nav: true,
 	};
 
-	constructor(private imageService: ImageService, private condaService: BiocondaService) {
+	constructor(
+		private imageService: ImageService,
+		private condaService: BiocondaService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 

@@ -73,7 +73,7 @@ export class NumberChartsComponent implements OnInit {
 	getData(): void {
 		/* tslint:disable */
 		this.numbersService.getProjectCounterTimeline().subscribe(
-			(result: Object[]): void => {
+			(result: object[]): void => {
 				result.forEach((valuePack: any): void => {
 					this.runningOpenstack.push(valuePack['running_openstack']);
 					this.runningSimpleVM.push(valuePack['running_simple_vm']);
@@ -89,8 +89,8 @@ export class NumberChartsComponent implements OnInit {
 		);
 
 		this.numbersService.getRamCoresTimeline().subscribe(
-			(result: Object[]): void => {
-				result.forEach((valuePack: Object): void => {
+			(result: object[]): void => {
+				result.forEach((valuePack: object): void => {
 					this.openstackCores.push(valuePack['openstack_cores']);
 					this.openstackRam.push(valuePack['openstack_ram']);
 					this.simpleVMCores.push(valuePack['simple_vm_cores']);

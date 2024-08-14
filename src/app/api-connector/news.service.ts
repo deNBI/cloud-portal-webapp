@@ -50,8 +50,8 @@ export class NewsService {
 		});
 	}
 
-	getFacilitiesFromWagtail(): Observable<Object[]> {
-		return this.http.get<Object[]>(`${ApiSettings.getApiBaseURL()}facility-management/`, {
+	getFacilitiesFromWagtail(): Observable<object[]> {
+		return this.http.get<object[]>(`${ApiSettings.getApiBaseURL()}facility-management/`, {
 			withCredentials: true,
 		});
 	}
