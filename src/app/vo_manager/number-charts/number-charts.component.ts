@@ -1,12 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
-import html2canvas from 'html2canvas';
-import * as saveSVG from 'save-svg-as-png';
-import bb, { areaSpline, bar, Chart } from 'billboard.js';
-import { jsPDF } from 'jspdf';
-import * as d3 from 'd3';
-import { MatomoTracker } from 'ngx-matomo-client';
-import { NumbersService } from '../../api-connector/numbers.service';
-import 'svg2pdf.js';
+import { Component, OnInit, inject } from '@angular/core'
+import html2canvas from 'html2canvas'
+import * as saveSVG from 'save-svg-as-png'
+import bb, { areaSpline, bar, Chart } from 'billboard.js'
+import { jsPDF } from 'jspdf'
+import * as d3 from 'd3'
+import { MatomoTracker } from 'ngx-matomo-client'
+import { NumbersService } from '../../api-connector/numbers.service'
+import 'svg2pdf.js'
 
 /**
  * Component to display graphs which illustrate numbers for VO.
@@ -15,56 +15,56 @@ import 'svg2pdf.js';
 	selector: 'app-number-charts',
 	templateUrl: './number-charts.component.html',
 	styleUrls: ['./number-charts.component.css'],
-	providers: [NumbersService],
+	providers: [NumbersService]
 })
 export class NumberChartsComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker);
-	is_vo_admin: boolean = true;
-	title: string = 'Cloud Numbers';
+	private readonly tracker = inject(MatomoTracker)
+	is_vo_admin: boolean = true
+	title: string = 'Cloud Numbers'
 
 	constructor(private numbersService: NumbersService) {
-		this.numbersService = numbersService;
+		this.numbersService = numbersService
 	}
 
 	/**
 	 * Charts
 	 */
-	public coresAreaChart: Chart;
-	public coresBarChart: Chart;
-	public ramAreaChart: Chart;
-	public ramBarChart: Chart;
-	public projectNumbersAreaChart: Chart;
-	public projectNumbersBarChart: Chart;
+	public coresAreaChart: Chart
+	public coresBarChart: Chart
+	public ramAreaChart: Chart
+	public ramBarChart: Chart
+	public projectNumbersAreaChart: Chart
+	public projectNumbersBarChart: Chart
 
-	showCoresBarChart: boolean = false;
-	showCoresAreChart: boolean = true;
-	showRamBarChart: boolean = false;
-	showRamAreChart: boolean = true;
-	showProjectNumbersAreaChart: boolean = true;
-	showProjectNumbersBarChart: boolean = false;
+	showCoresBarChart: boolean = false
+	showCoresAreChart: boolean = true
+	showRamBarChart: boolean = false
+	showRamAreChart: boolean = true
+	showProjectNumbersAreaChart: boolean = true
+	showProjectNumbersBarChart: boolean = false
 
 	/**
 	 * Lists for numbers of projects per project type and status.
 	 */
-	private runningOpenstack: any[] = ['OpenStack running'];
-	private runningSimpleVM: any[] = ['SimpleVM running'];
-	private terminatedOpenstack: any[] = ['OpenStack terminated'];
-	private terminatedSimpleVM: any[] = ['SimpleVM terminated'];
-	private endDatesProjects: any[] = ['x'];
+	private runningOpenstack: any[] = ['OpenStack running']
+	private runningSimpleVM: any[] = ['SimpleVM running']
+	private terminatedOpenstack: any[] = ['OpenStack terminated']
+	private terminatedSimpleVM: any[] = ['SimpleVM terminated']
+	private endDatesProjects: any[] = ['x']
 
 	/**
 	 * Lists for ram and cores numbers.
 	 */
 
-	private simpleVMRam: any[] = ['RAM SimpleVM'];
-	private simpleVMCores: any[] = ['Cores SimpleVM'];
-	private openstackRam: any[] = ['RAM OpenStack'];
-	private openstackCores: any[] = ['Cores Openstack'];
-	private endDatesResources: any[] = ['x'];
+	private simpleVMRam: any[] = ['RAM SimpleVM']
+	private simpleVMCores: any[] = ['Cores SimpleVM']
+	private openstackRam: any[] = ['RAM OpenStack']
+	private openstackCores: any[] = ['Cores Openstack']
+	private endDatesResources: any[] = ['x']
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Cloud Numbers');
-		this.getData();
+		this.tracker.trackPageView('Cloud Numbers')
+		this.getData()
 	}
 
 	/**
@@ -73,37 +73,37 @@ export class NumberChartsComponent implements OnInit {
 	getData(): void {
 		/* tslint:disable */
 		this.numbersService.getProjectCounterTimeline().subscribe(
-			(result: Object[]): void => {
+			(result: object[]): void => {
 				result.forEach((valuePack: any): void => {
-					this.runningOpenstack.push(valuePack['running_openstack']);
-					this.runningSimpleVM.push(valuePack['running_simple_vm']);
-					this.terminatedOpenstack.push(valuePack['terminated_openstack']);
-					this.terminatedSimpleVM.push(valuePack['terminated_simple_vm']);
-					this.endDatesProjects.push(valuePack['end_date']);
-				});
-				this.drawProjectNumbersChart();
+					this.runningOpenstack.push(valuePack['running_openstack'])
+					this.runningSimpleVM.push(valuePack['running_simple_vm'])
+					this.terminatedOpenstack.push(valuePack['terminated_openstack'])
+					this.terminatedSimpleVM.push(valuePack['terminated_simple_vm'])
+					this.endDatesProjects.push(valuePack['end_date'])
+				})
+				this.drawProjectNumbersChart()
 			},
 			(err: Error) => {
-				console.log(err);
-			},
-		);
+				console.log(err)
+			}
+		)
 
 		this.numbersService.getRamCoresTimeline().subscribe(
-			(result: Object[]): void => {
-				result.forEach((valuePack: Object): void => {
-					this.openstackCores.push(valuePack['openstack_cores']);
-					this.openstackRam.push(valuePack['openstack_ram']);
-					this.simpleVMCores.push(valuePack['simple_vm_cores']);
-					this.simpleVMRam.push(valuePack['simple_vm_ram']);
-					this.endDatesResources.push(valuePack['end_date']);
-				});
-				this.drawRamNumbersChart();
-				this.drawCoresNumbersChart();
+			(result: object[]): void => {
+				result.forEach((valuePack: object): void => {
+					this.openstackCores.push(valuePack['openstack_cores'])
+					this.openstackRam.push(valuePack['openstack_ram'])
+					this.simpleVMCores.push(valuePack['simple_vm_cores'])
+					this.simpleVMRam.push(valuePack['simple_vm_ram'])
+					this.endDatesResources.push(valuePack['end_date'])
+				})
+				this.drawRamNumbersChart()
+				this.drawCoresNumbersChart()
 			},
 			(err: Error) => {
-				console.log(err);
-			},
-		);
+				console.log(err)
+			}
+		)
 	}
 
 	/**
@@ -113,29 +113,29 @@ export class NumberChartsComponent implements OnInit {
 		html2canvas(document.getElementById(elementId))
 			.then((canvas: HTMLCanvasElement): void => {
 				// Few necessary setting options
-				const imgWidth: number = 208;
-				const imgHeight: number = (canvas.height * imgWidth) / canvas.width;
-				const contentDataURL: string = canvas.toDataURL('image/png');
-				// eslint-disable-next-line new-cap
-				const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-				const position: number = 0;
-				pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-				pdf.save(filename.concat('.pdf'));
+				const imgWidth: number = 208
+				const imgHeight: number = (canvas.height * imgWidth) / canvas.width
+				const contentDataURL: string = canvas.toDataURL('image/png')
+				 
+				const pdf: jsPDF = new jsPDF('p', 'mm', 'a4') // A4 size page of PDF
+				const position: number = 0
+				pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+				pdf.save(filename.concat('.pdf'))
 			})
 			.catch((): void => {
-				console.log('failed to convert to pdf');
-			});
+				console.log('failed to convert to pdf')
+			})
 	}
 
 	/**
 	 * Downloads the numbers graphic as a png.
 	 */
 	downloadAsPNG(elementId: string, filename: string): void {
-		const svg = d3.select(`#${elementId} svg`);
-		svg.attr('id', 'svgToDownload');
+		const svg = d3.select(`#${elementId} svg`)
+		svg.attr('id', 'svgToDownload')
 
-		saveSVG.saveSvgAsPng(document.getElementById('svgToDownload'), filename.concat('.png'), {});
-		svg.attr('id', null);
+		saveSVG.saveSvgAsPng(document.getElementById('svgToDownload'), filename.concat('.png'), {})
+		svg.attr('id', null)
 	}
 
 	/**
@@ -146,90 +146,90 @@ export class NumberChartsComponent implements OnInit {
 		this.coresAreaChart = bb.generate({
 			bindto: '#coresAreaChart',
 			size: {
-				height: 600,
+				height: 600
 			},
 			data: {
 				x: 'x',
 				columns: [this.endDatesResources, this.simpleVMCores, this.openstackCores],
 				type: areaSpline(),
 				groups: [[this.simpleVMCores[0], this.openstackCores[0]]],
-				order: null,
+				order: null
 			},
 
 			color: {
-				pattern: ['#00adef', '#ed1944'],
+				pattern: ['#00adef', '#ed1944']
 			},
 			grid: {
 				y: {
-					show: true,
-				},
+					show: true
+				}
 			},
 			axis: {
 				x: {
 					label: {
 						text: 'Date',
-						position: 'outer-right',
+						position: 'outer-right'
 					},
 					type: 'timeseries',
 					tick: {
-						format: '%Y-%m-%d',
-					},
+						format: '%Y-%m-%d'
+					}
 				},
 				y: {
 					label: {
 						text: 'Amount of allocated cores',
-						position: 'outer-right',
-					},
-				},
+						position: 'outer-right'
+					}
+				}
 			},
 			point: {
-				show: false,
-			},
-		});
+				show: false
+			}
+		})
 
 		this.coresBarChart = bb.generate({
 			bindto: '#coresBarChart',
 			size: {
-				height: 600,
+				height: 600
 			},
 			data: {
 				x: 'x',
 				columns: [this.endDatesResources, this.simpleVMCores, this.openstackCores],
 				type: bar(),
 				groups: [[this.simpleVMCores[0], this.openstackCores[0]]],
-				order: null,
+				order: null
 			},
 
 			color: {
-				pattern: ['#00adef', '#ed1944'],
+				pattern: ['#00adef', '#ed1944']
 			},
 			grid: {
 				y: {
-					show: true,
-				},
+					show: true
+				}
 			},
 			axis: {
 				x: {
 					label: {
 						text: 'Date',
-						position: 'outer-right',
+						position: 'outer-right'
 					},
 					type: 'timeseries',
 					tick: {
-						format: '%Y-%m-%d',
-					},
+						format: '%Y-%m-%d'
+					}
 				},
 				y: {
 					label: {
 						text: 'Amount of allocated cores',
-						position: 'outer-right',
-					},
-				},
+						position: 'outer-right'
+					}
+				}
 			},
 			point: {
-				show: false,
-			},
-		});
+				show: false
+			}
+		})
 	}
 
 	/**
@@ -240,90 +240,90 @@ export class NumberChartsComponent implements OnInit {
 		this.ramAreaChart = bb.generate({
 			bindto: '#ramAreaChart',
 			size: {
-				height: 600,
+				height: 600
 			},
 			data: {
 				x: 'x',
 				columns: [this.endDatesResources, this.simpleVMRam, this.openstackRam],
 				type: areaSpline(),
 				groups: [[this.simpleVMRam[0], this.openstackRam[0]]],
-				order: null,
+				order: null
 			},
 
 			color: {
-				pattern: ['#00adef', '#ed1944'],
+				pattern: ['#00adef', '#ed1944']
 			},
 			grid: {
 				y: {
-					show: true,
-				},
+					show: true
+				}
 			},
 			axis: {
 				x: {
 					label: {
 						text: 'Date',
-						position: 'outer-right',
+						position: 'outer-right'
 					},
 					type: 'timeseries',
 					tick: {
-						format: '%Y-%m-%d',
-					},
+						format: '%Y-%m-%d'
+					}
 				},
 				y: {
 					label: {
 						text: 'Amount of allocated VRAM in GB',
-						position: 'outer-right',
-					},
-				},
+						position: 'outer-right'
+					}
+				}
 			},
 			point: {
-				show: false,
-			},
-		});
+				show: false
+			}
+		})
 
 		this.ramBarChart = bb.generate({
 			bindto: '#ramBarChart',
 			size: {
-				height: 600,
+				height: 600
 			},
 			data: {
 				x: 'x',
 				columns: [this.endDatesResources, this.simpleVMRam, this.openstackRam],
 				type: bar(),
 				groups: [[this.simpleVMRam[0], this.openstackRam[0]]],
-				order: null,
+				order: null
 			},
 
 			color: {
-				pattern: ['#00adef', '#ed1944'],
+				pattern: ['#00adef', '#ed1944']
 			},
 			grid: {
 				y: {
-					show: true,
-				},
+					show: true
+				}
 			},
 			axis: {
 				x: {
 					label: {
 						text: 'Date',
-						position: 'outer-right',
+						position: 'outer-right'
 					},
 					type: 'timeseries',
 					tick: {
-						format: '%Y-%m-%d',
-					},
+						format: '%Y-%m-%d'
+					}
 				},
 				y: {
 					label: {
 						text: 'Amount of allocated VRAM in GB',
-						position: 'outer-right',
-					},
-				},
+						position: 'outer-right'
+					}
+				}
 			},
 			point: {
-				show: false,
-			},
-		});
+				show: false
+			}
+		})
 	}
 
 	/**
@@ -333,7 +333,7 @@ export class NumberChartsComponent implements OnInit {
 		this.projectNumbersAreaChart = bb.generate({
 			bindto: '#projectNumbersAreaChart',
 			size: {
-				height: 600,
+				height: 600
 			},
 			data: {
 				x: 'x',
@@ -342,50 +342,50 @@ export class NumberChartsComponent implements OnInit {
 					this.runningSimpleVM,
 					this.terminatedSimpleVM,
 					this.runningOpenstack,
-					this.terminatedOpenstack,
+					this.terminatedOpenstack
 				],
 				type: areaSpline(),
 				groups: [
-					[this.runningSimpleVM[0], this.terminatedSimpleVM[0], this.runningOpenstack[0], this.terminatedOpenstack[0]],
+					[this.runningSimpleVM[0], this.terminatedSimpleVM[0], this.runningOpenstack[0], this.terminatedOpenstack[0]]
 				],
-				order: null,
+				order: null
 			},
 
 			color: {
-				pattern: ['#00adef', '#004b69', '#ed1944', '#590000'],
+				pattern: ['#00adef', '#004b69', '#ed1944', '#590000']
 			},
 			grid: {
 				y: {
-					show: true,
-				},
+					show: true
+				}
 			},
 			axis: {
 				x: {
 					label: {
 						text: 'Date',
-						position: 'outer-right',
+						position: 'outer-right'
 					},
 					type: 'timeseries',
 					tick: {
-						format: '%Y-%m-%d',
-					},
+						format: '%Y-%m-%d'
+					}
 				},
 				y: {
 					label: {
 						text: 'Number of projects',
-						position: 'outer-right',
-					},
-				},
+						position: 'outer-right'
+					}
+				}
 			},
 			point: {
-				show: false,
-			},
-		});
+				show: false
+			}
+		})
 
 		this.projectNumbersBarChart = bb.generate({
 			bindto: '#projectNumbersBarChart',
 			size: {
-				height: 600,
+				height: 600
 			},
 			data: {
 				x: 'x',
@@ -394,67 +394,67 @@ export class NumberChartsComponent implements OnInit {
 					this.runningSimpleVM,
 					this.terminatedSimpleVM,
 					this.runningOpenstack,
-					this.terminatedOpenstack,
+					this.terminatedOpenstack
 				],
 				type: bar(),
 				groups: [
-					[this.runningSimpleVM[0], this.terminatedSimpleVM[0], this.runningOpenstack[0], this.terminatedOpenstack[0]],
+					[this.runningSimpleVM[0], this.terminatedSimpleVM[0], this.runningOpenstack[0], this.terminatedOpenstack[0]]
 				],
-				order: null,
+				order: null
 			},
 
 			color: {
-				pattern: ['#00adef', '#004b69', '#ed1944', '#590000'],
+				pattern: ['#00adef', '#004b69', '#ed1944', '#590000']
 			},
 			grid: {
 				y: {
-					show: true,
-				},
+					show: true
+				}
 			},
 			axis: {
 				x: {
 					label: {
 						text: 'Date',
-						position: 'outer-right',
+						position: 'outer-right'
 					},
 					type: 'timeseries',
 					tick: {
-						format: '%Y-%m-%d',
-					},
+						format: '%Y-%m-%d'
+					}
 				},
 				y: {
 					label: {
 						text: 'Number of projects',
-						position: 'outer-right',
-					},
-				},
+						position: 'outer-right'
+					}
+				}
 			},
 			point: {
-				show: false,
-			},
-		});
+				show: false
+			}
+		})
 	}
 
 	toggleGraph(chart: string): void {
 		switch (chart) {
 			case 'cores': {
-				this.showCoresBarChart = !this.showCoresBarChart;
-				this.showCoresAreChart = !this.showCoresAreChart;
+				this.showCoresBarChart = !this.showCoresBarChart
+				this.showCoresAreChart = !this.showCoresAreChart
 
-				break;
+				break
 			}
 			case 'ram': {
-				this.showRamAreChart = !this.showRamAreChart;
-				this.showRamBarChart = !this.showRamBarChart;
-				break;
+				this.showRamAreChart = !this.showRamAreChart
+				this.showRamBarChart = !this.showRamBarChart
+				break
 			}
 			case 'projects': {
-				this.showProjectNumbersBarChart = !this.showProjectNumbersBarChart;
-				this.showProjectNumbersAreaChart = !this.showProjectNumbersAreaChart;
-				break;
+				this.showProjectNumbersBarChart = !this.showProjectNumbersBarChart
+				this.showProjectNumbersAreaChart = !this.showProjectNumbersAreaChart
+				break
 			}
 			default: {
-				break;
+				break
 			}
 		}
 	}

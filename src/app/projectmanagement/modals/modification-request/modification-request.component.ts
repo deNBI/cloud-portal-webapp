@@ -1,108 +1,106 @@
-import {
-	ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit,
-} from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription } from 'rxjs';
-import { HasFlavorTypeOrIsNotCustomPipe } from 'app/pipe-module/pipes/has-flavor-type.pipe';
-import { ApplicationModification } from '../../../applications/application_modification.model';
-import { ResultComponent } from '../result/result.component';
-import { Application } from '../../../applications/application.model/application.model';
-import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
-import { FlavorType } from '../../../virtualmachines/virtualmachinemodels/flavorType';
-import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor';
-import { FlavorService } from '../../../api-connector/flavor.service';
-import { CreditsService } from '../../../api-connector/credits.service';
+import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core'
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { Subscription } from 'rxjs'
+import { HasFlavorTypeOrIsNotCustomPipe } from 'app/pipe-module/pipes/has-flavor-type.pipe'
+import { ApplicationModification } from '../../../applications/application_modification.model'
+import { ResultComponent } from '../result/result.component'
+import { Application } from '../../../applications/application.model/application.model'
+import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links'
+import { FlavorType } from '../../../virtualmachines/virtualmachinemodels/flavorType'
+import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
+import { FlavorService } from '../../../api-connector/flavor.service'
+import { CreditsService } from '../../../api-connector/credits.service'
 
 @Component({
 	selector: 'app-modification-request',
 	templateUrl: './modification-request.component.html',
 	styleUrls: ['./modification-request.component.scss'],
-	providers: [FlavorService, CreditsService, HasFlavorTypeOrIsNotCustomPipe],
+	providers: [FlavorService, CreditsService, HasFlavorTypeOrIsNotCustomPipe]
 })
 export class ModificationRequestComponent implements OnInit, OnDestroy {
-	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
 
-	project: Application;
-	temp_project_modification: ApplicationModification;
+	project: Application
+	temp_project_modification: ApplicationModification
 
-	adjusted_project_modification: ApplicationModification;
+	adjusted_project_modification: ApplicationModification
 
-	expected_total_credits: number = 0;
-	flavorTypes: FlavorType[] = [];
-	shown_flavors: { [name: string]: Flavor[] } = {};
-	min_vm: boolean = true;
+	expected_total_credits: number = 0
+	flavorTypes: FlavorType[] = []
+	shown_flavors: { [name: string]: Flavor[] } = {}
+	min_vm: boolean = true
 
-	min_vm_adjusted: boolean = true;
+	min_vm_adjusted: boolean = true
 
-	adjustment: boolean = false;
+	adjustment: boolean = false
 
-	private subscription: Subscription = new Subscription();
-	public event: EventEmitter<any> = new EventEmitter();
-	submitted: boolean = false;
-	extraResourceCommentRequired: boolean = false;
-	GPU_SHORTCUT = 'GPU';
-	HMF_SHORTCUT = 'HMF';
+	private subscription: Subscription = new Subscription()
+	public event: EventEmitter<any> = new EventEmitter()
+	submitted: boolean = false
+	extraResourceCommentRequired: boolean = false
+	GPU_SHORTCUT = 'GPU'
+	HMF_SHORTCUT = 'HMF'
 
 	constructor(
 		public bsModalRef: BsModalRef,
 		private modalService: BsModalService,
 		private flavorService: FlavorService,
 		private creditsService: CreditsService,
-		private cdRef: ChangeDetectorRef,
+		private cdRef: ChangeDetectorRef
 	) {
 		// do nothing.
 	}
 
 	ngOnDestroy(): void {
-		this.subscription.unsubscribe();
+		this.subscription.unsubscribe()
 		if (!this.submitted) {
-			this.event.emit({ reload: false });
+			this.event.emit({ reload: false })
 		}
 	}
 
 	ngOnInit(): void {
 		this.subscription.add(
 			this.flavorService.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
-				this.flavorTypes = result;
+				this.flavorTypes = result
 				for (const flavorType of this.flavorTypes) {
-					this.shown_flavors[flavorType.long_name] = [];
+					this.shown_flavors[flavorType.long_name] = []
 				}
-				this.getFlavors();
-			}),
-		);
+				this.getFlavors()
+			})
+		)
 		if (this.project.project_modification_request) {
-			this.temp_project_modification = new ApplicationModification(this.project.project_modification_request);
-			this.temp_project_modification.flavors = [];
+			this.temp_project_modification = new ApplicationModification(this.project.project_modification_request)
+			this.temp_project_modification.flavors = []
 			this.temp_project_modification.flavors = this.project.project_modification_request.flavors.map(
-				(flavor: Flavor): Flavor => new Flavor(flavor),
-			);
+				(flavor: Flavor): Flavor => new Flavor(flavor)
+			)
 		} else {
-			this.temp_project_modification = new ApplicationModification();
-			this.temp_project_modification.setByApp(this.project);
+			this.temp_project_modification = new ApplicationModification()
+			this.temp_project_modification.setByApp(this.project)
 		}
 
 		if (this.adjustment) {
-			this.adjusted_project_modification = new ApplicationModification(this.project.project_modification_request);
-			this.adjusted_project_modification.flavors = [];
+			this.adjusted_project_modification = new ApplicationModification(this.project.project_modification_request)
+			this.adjusted_project_modification.flavors = []
 			this.adjusted_project_modification.flavors = this.project.project_modification_request.flavors.map(
-				(flavor: Flavor): Flavor => new Flavor(flavor),
-			);
+				(flavor: Flavor): Flavor => new Flavor(flavor)
+			)
 		}
 
-		this.checkExtraResourceCommentRequired();
+		this.checkExtraResourceCommentRequired()
 	}
 
 	checkValidityComment(): boolean {
 		if (this.extraResourceCommentRequired) {
 			if (this.temp_project_modification.comment.length < 50) {
-				return false;
+				return false
 			} else {
-				const regExp = /[a-zA-Z]/g;
+				const regExp = /[a-zA-Z]/g
 
-				return regExp.test(this.temp_project_modification.comment);
+				return regExp.test(this.temp_project_modification.comment)
 			}
 		} else {
-			return true;
+			return true
 		}
 	}
 
@@ -111,67 +109,68 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			this.flavorService
 				.getListOfFlavorsAvailable(this.project.project_application_id.toString(), true)
 				.subscribe((flavors: Flavor[]): void => {
-					this.temp_project_modification.flavors = [];
+					this.temp_project_modification.flavors = []
 					for (const flavor of flavors) {
 						if (this.project.project_application_openstack_project || flavor.simple_vm) {
-							this.shown_flavors[flavor.type.long_name].push(flavor);
+							this.shown_flavors[flavor.type.long_name].push(flavor)
 						}
 					}
 
-					this.checkFlavorDifferences();
-				}),
-		);
+					this.checkFlavorDifferences()
+				})
+		)
 	}
 
 	checkFlavorDifferences(): void {
 		for (const flavor of this.project.flavors) {
 			const idx: number = this.shown_flavors[flavor.type.long_name].findIndex(
-				(fl: Flavor): boolean => fl.name === flavor.name,
-			);
+				(fl: Flavor): boolean => fl.name === flavor.name
+			)
 			// not in shown_flavors, so flavor only for project
 			if (idx < 0) {
-				const disabled_flavor: Flavor = new Flavor(flavor);
-				disabled_flavor.setDisabled(true);
-				const mod_flavor: Flavor = new Flavor(flavor);
-				this.shown_flavors[flavor.type.long_name].push(disabled_flavor);
-				this.shown_flavors[flavor.type.long_name].push(mod_flavor);
-				this.temp_project_modification.flavors.push(mod_flavor);
+				const disabled_flavor: Flavor = new Flavor(flavor)
+				disabled_flavor.setDisabled(true)
+				const mod_flavor: Flavor = new Flavor(flavor)
+				this.shown_flavors[flavor.type.long_name].push(disabled_flavor)
+				this.shown_flavors[flavor.type.long_name].push(mod_flavor)
+				this.temp_project_modification.flavors.push(mod_flavor)
 			} else {
 				// else in shown_flavors, may be different than old one
-				this.shown_flavors[flavor.type.long_name][idx].counter = flavor.counter;
-				const mod_flavor: Flavor = new Flavor(this.shown_flavors[flavor.type.long_name][idx]);
-				this.temp_project_modification.flavors.push(mod_flavor);
-				this.shown_flavors[flavor.type.long_name].splice(idx, 0, flavor);
-				this.shown_flavors[flavor.type.long_name][idx].setDisabled(true);
+				this.shown_flavors[flavor.type.long_name][idx].counter = flavor.counter
+				const mod_flavor: Flavor = new Flavor(this.shown_flavors[flavor.type.long_name][idx])
+				this.temp_project_modification.flavors.push(mod_flavor)
+				this.shown_flavors[flavor.type.long_name].splice(idx, 0, flavor)
+				this.shown_flavors[flavor.type.long_name][idx].setDisabled(true)
 			}
 		}
-		this.temp_project_modification.calculateRamCores();
+		this.temp_project_modification.calculateRamCores()
 	}
 
 	checkFlavorPairs(flavor: Flavor, event: any): void {
-		const amount: number = Number(event.target.value);
+		const amount: number = Number(event.target.value)
 		const idx: number = this.temp_project_modification.flavors.findIndex(
-			(fl: Flavor): boolean => fl.name === flavor.name,
-		);
+			(fl: Flavor): boolean => fl.name === flavor.name
+		)
 		if (idx >= 0) {
-			this.temp_project_modification.flavors.splice(idx, 1);
+			this.temp_project_modification.flavors.splice(idx, 1)
 			if (amount > 0) {
-				flavor.counter = amount;
-				this.temp_project_modification.flavors.push(flavor);
+				flavor.counter = amount
+				this.temp_project_modification.flavors.push(flavor)
 			}
 		} else if (amount > 0) {
-			flavor.counter = amount;
-			this.temp_project_modification.flavors.push(flavor);
+			flavor.counter = amount
+			this.temp_project_modification.flavors.push(flavor)
 		}
-		this.min_vm =			this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0;
-		this.temp_project_modification.calculateRamCores();
-		this.getExtraCredits();
-		this.checkExtraResourceCommentRequired();
+		this.min_vm =
+			this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0
+		this.temp_project_modification.calculateRamCores()
+		this.getExtraCredits()
+		this.checkExtraResourceCommentRequired()
 	}
 
 	checkExtraResourceCommentRequired(): void {
-		this.extraResourceCommentRequired = this.compareCriticalResourceValues();
-		this.cdRef.detectChanges();
+		this.extraResourceCommentRequired = this.compareCriticalResourceValues()
+		this.cdRef.detectChanges()
 	}
 
 	/**
@@ -185,126 +184,128 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			total_cores: 0,
 			total_ram: 0,
 			total_gpus: 0,
-			machines: 0,
-		};
-		let correspondingProject: Application | ApplicationModification;
+			machines: 0
+		}
+		let correspondingProject: Application | ApplicationModification
 		if (current) {
-			correspondingProject = this.project;
+			correspondingProject = this.project
 		} else {
-			correspondingProject = this.temp_project_modification;
+			correspondingProject = this.temp_project_modification
 		}
 		for (const flavor of correspondingProject.flavors) {
 			if (flavor?.type.shortcut.toUpperCase() === shortcut) {
-				dict.total_cores += flavor.counter * flavor.vcpus;
-				dict.total_ram += flavor.counter * flavor.ram_mb;
-				dict.machines += flavor.counter;
+				dict.total_cores += flavor.counter * flavor.vcpus
+				dict.total_ram += flavor.counter * flavor.ram_mb
+				dict.machines += flavor.counter
 				if (flavor?.type?.shortcut.toUpperCase() === this.GPU_SHORTCUT) {
-					dict.total_gpus += flavor.counter * flavor.gpu;
+					dict.total_gpus += flavor.counter * flavor.gpu
 				}
 			}
 		}
 
-		return dict;
+		return dict
 	}
 
 	/**
 	 * checks whether the user tries to apply for more critical resources in the application
 	 */
 	compareCriticalResourceValues(): boolean {
-		const currentHMF: any = this.calculateResourcesByType(this.HMF_SHORTCUT, true);
-		const currentGPU: any = this.calculateResourcesByType(this.GPU_SHORTCUT, true);
-		const requestingHMF: any = this.calculateResourcesByType(this.HMF_SHORTCUT, false);
-		const requestingGPU: any = this.calculateResourcesByType(this.GPU_SHORTCUT, false);
+		const currentHMF: any = this.calculateResourcesByType(this.HMF_SHORTCUT, true)
+		const currentGPU: any = this.calculateResourcesByType(this.GPU_SHORTCUT, true)
+		const requestingHMF: any = this.calculateResourcesByType(this.HMF_SHORTCUT, false)
+		const requestingGPU: any = this.calculateResourcesByType(this.GPU_SHORTCUT, false)
 
 		return (
 			this.isMoreCriticalResources(currentHMF, requestingHMF) || this.isMoreCriticalResources(currentGPU, requestingGPU)
-		);
+		)
 	}
 
 	isMoreCriticalResources(current: any, requesting: any): boolean {
 		for (const key in current) {
 			if (requesting[key] > current[key]) {
-				return true;
+				return true
 			}
 		}
 
-		return false;
+		return false
 	}
 
 	checkFlavorPairsAdjustment(flavor: Flavor, event: any): void {
-		const amount: number = Number(event.target.value);
+		const amount: number = Number(event.target.value)
 		const idx: number = this.adjusted_project_modification.flavors.findIndex(
-			(fl: Flavor): boolean => fl.name === flavor.name,
-		);
+			(fl: Flavor): boolean => fl.name === flavor.name
+		)
 		if (idx >= 0) {
-			this.adjusted_project_modification.flavors.splice(idx, 1);
+			this.adjusted_project_modification.flavors.splice(idx, 1)
 			if (amount > 0) {
-				flavor.counter = amount;
-				this.adjusted_project_modification.flavors.push(flavor);
+				flavor.counter = amount
+				this.adjusted_project_modification.flavors.push(flavor)
 			}
 		} else if (amount > 0) {
-			flavor.counter = amount;
-			this.adjusted_project_modification.flavors.push(flavor);
+			flavor.counter = amount
+			this.adjusted_project_modification.flavors.push(flavor)
 		}
-		this.min_vm_adjusted =			this.project.project_application_openstack_project || this.adjusted_project_modification.flavors.length > 0;
-		this.adjusted_project_modification.calculateRamCores();
+		this.min_vm_adjusted =
+			this.project.project_application_openstack_project || this.adjusted_project_modification.flavors.length > 0
+		this.adjusted_project_modification.calculateRamCores()
 	}
 
 	getExtraCredits(): void {
 		if (!this.project.credits_allowed) {
-			return;
+			return
 		}
 
 		this.subscription.add(
 			this.creditsService
 				.getExtraCreditsForResourceExtension(
 					this.temp_project_modification.flavors,
-					this.project.project_application_id.toString(),
+					this.project.project_application_id.toString()
 				)
 				.subscribe((credits: number): void => {
-					this.temp_project_modification.extra_credits = credits;
-					this.expected_total_credits =						this.project.project_application_initial_credits + this.temp_project_modification.extra_credits;
+					this.temp_project_modification.extra_credits = credits
+					this.expected_total_credits =
+						this.project.project_application_initial_credits + this.temp_project_modification.extra_credits
 					if (this.expected_total_credits <= 0) {
-						this.expected_total_credits = 0;
+						this.expected_total_credits = 0
 					}
-				}),
-		);
+				})
+		)
 	}
 
 	showSubmitModal(adjustment: boolean): void {
-		let initialState: {};
+		let initialState: object
 		if (adjustment) {
 			initialState = {
 				project: this.project,
 				extension: this.temp_project_modification,
 				adjustedModification: this.adjusted_project_modification,
 				modificationExtension: true,
-				expectedTotalCredits: this.expected_total_credits,
-			};
+				expectedTotalCredits: this.expected_total_credits
+			}
 		} else {
 			initialState = {
 				project: this.project,
 				extension: this.temp_project_modification,
 				modificationExtension: true,
-				expectedTotalCredits: this.expected_total_credits,
-			};
+				expectedTotalCredits: this.expected_total_credits
+			}
 		}
-		this.submitted = true;
+		this.submitted = true
 		this.bsModalRef = this.modalService.show(ResultComponent, {
 			initialState,
-			class: 'modal-lg modal-dialog-scrollable ',
-		});
+			class: 'modal-lg modal-dialog-scrollable '
+		})
 
 		this.bsModalRef.content.event.subscribe((result: any) => {
 			if ('reload' in result && result['reload']) {
 				if (adjustment) {
-					this.event.emit({ action: 'adjustedModificationRequest' });
+					this.event.emit({ action: 'adjustedModificationRequest' })
 				} else {
-					this.event.emit({ reload: true });
+					this.event.emit({ reload: true })
 				}
 			} else {
-				this.event.emit({ reload: false });
+				this.event.emit({ reload: false })
 			}
-		});
+		})
 	}
 }

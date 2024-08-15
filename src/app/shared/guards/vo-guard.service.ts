@@ -1,30 +1,29 @@
-import { Injectable } from '@angular/core';
-import {
-	ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree,
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { is_vo } from '../globalvar';
+import { Injectable } from '@angular/core'
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router'
+import { Observable } from 'rxjs'
+import { is_vo } from '../globalvar'
 
 /**
  * Guard which checks if the user is member of the vo.
  */
 @Injectable({
-	providedIn: 'root',
-}) export class VoGuardService {
-	constructor(private router: Router) {
-	}
+	providedIn: 'root'
+})
+export class VoGuardService {
+	constructor(private router: Router) {}
 
 	canActivate(
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		next: ActivatedRouteSnapshot,
-		state: RouterStateSnapshot,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
 		if (is_vo) {
-			return true;
+			return true
 		} else {
-			this.router.navigate(['/userinfo']);
+			void this.router.navigate(['/userinfo'])
 
-			return false;
+			return false
 		}
 	}
 }
