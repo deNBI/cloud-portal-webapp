@@ -57,7 +57,7 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 
 	// icons for graphics within flavor cards:
 
-	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
+	STATIC_IMG_FOLDER: string = 'static/webapp/assets/img/';
 
 	CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
 	RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;

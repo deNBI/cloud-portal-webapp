@@ -84,7 +84,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	/**
 	 *
 	 */
-	constantStrings: Object;
+	constantStrings: object;
 
 	/**
 	 * List of flavors.
