@@ -1,17 +1,13 @@
-import {
-	Component, ElementRef, OnInit, ViewChild, inject,
-} from '@angular/core';
-import {
-	download, mkConfig, generateCsv, CsvOutput,
-} from 'export-to-csv';
-import { MatomoTracker } from 'ngx-matomo-client';
-import { Resources } from '../../vo_manager/resources/resources';
-import { FacilityService } from '../../api-connector/facility.service';
-import { ObjectStorageFactor } from './object-storage-factor';
-import { VolumeStorageFactor } from './volume-storage-factor';
-import { GeneralStorageFactor } from './general-storage-factor';
-import { ResourceMachine } from './resource-machine';
-import { GPUSpecification } from './gpu-specification';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core'
+import { download, mkConfig, generateCsv, CsvOutput } from 'export-to-csv'
+import { MatomoTracker } from 'ngx-matomo-client'
+import { Resources } from '../../vo_manager/resources/resources'
+import { FacilityService } from '../../api-connector/facility.service'
+import { ObjectStorageFactor } from './object-storage-factor'
+import { VolumeStorageFactor } from './volume-storage-factor'
+import { GeneralStorageFactor } from './general-storage-factor'
+import { ResourceMachine } from './resource-machine'
+import { GPUSpecification } from './gpu-specification'
 
 /**
  * Facility resource component.
@@ -20,220 +16,220 @@ import { GPUSpecification } from './gpu-specification';
 	selector: 'app-resources',
 	templateUrl: './resources.component.html',
 	styleUrls: ['./resources.component.scss'],
-	providers: [FacilityService],
+	providers: [FacilityService]
 })
 export class ResourcesComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker);
-	title: string = 'Resource Overview';
+	private readonly tracker = inject(MatomoTracker)
+	title: string = 'Resource Overview'
 
-	tableId: string = 'contentToConvert';
-	@ViewChild('contentToConvert') pdfTable: ElementRef;
+	tableId: string = 'contentToConvert'
+	@ViewChild('contentToConvert') pdfTable: ElementRef
 
-	managerFacilities: [string, number][];
+	managerFacilities: [string, number][]
 
-	ALL_RESOURCES: number = 0;
-	INTERN_RESOURCES: number = 1;
-	PUBLIC_RESOURCES: number = 2;
+	ALL_RESOURCES: number = 0
+	INTERN_RESOURCES: number = 1
+	PUBLIC_RESOURCES: number = 2
 
-	ALL_ACTIVE: boolean = false;
-	INTERN_ACTIVE: boolean = false;
-	PUBLIC_ACTIVE: boolean = true;
+	ALL_ACTIVE: boolean = false
+	INTERN_ACTIVE: boolean = false
+	PUBLIC_ACTIVE: boolean = true
 
-	MACHINE_DEFINITION_TAB: number = 0;
-	STORAGE_TAB: number = 1;
-	OBJECT_STORAGE_TAB: number = 2;
-	VOLUME_STORAGE_TAB: number = 3;
-	GENERAL_STORAGE_TAB: number = 4;
-	GPU_TAB: number = 5;
+	MACHINE_DEFINITION_TAB: number = 0
+	STORAGE_TAB: number = 1
+	OBJECT_STORAGE_TAB: number = 2
+	VOLUME_STORAGE_TAB: number = 3
+	GENERAL_STORAGE_TAB: number = 4
+	GPU_TAB: number = 5
 
-	MACHINE_DEFINITION_TAB_ACTIVE: boolean = false;
-	STORAGE_TAB_ACTIVE: boolean = false;
-	GENERAL_STORAGE_TAB_ACTIVE: boolean = false;
-	OBJECT_STORAGE_TAB_ACTIVE: boolean = false;
-	VOLUME_STORAGE_TAB_ACTIVE: boolean = false;
-	GPU_TAB_ACTIVE: boolean = false;
+	MACHINE_DEFINITION_TAB_ACTIVE: boolean = false
+	STORAGE_TAB_ACTIVE: boolean = false
+	GENERAL_STORAGE_TAB_ACTIVE: boolean = false
+	OBJECT_STORAGE_TAB_ACTIVE: boolean = false
+	VOLUME_STORAGE_TAB_ACTIVE: boolean = false
+	GPU_TAB_ACTIVE: boolean = false
 
-	objectStorageFactors: ObjectStorageFactor[] = [];
-	volumeStorageFactors: VolumeStorageFactor[] = [];
-	generalStorageFactors: GeneralStorageFactor[] = [];
-	resourceMachines: ResourceMachine[] = [];
-	gpuSpecifications: GPUSpecification[] = [];
+	objectStorageFactors: ObjectStorageFactor[] = []
+	volumeStorageFactors: VolumeStorageFactor[] = []
+	generalStorageFactors: GeneralStorageFactor[] = []
+	resourceMachines: ResourceMachine[] = []
+	gpuSpecifications: GPUSpecification[] = []
 
 	/**
 	 * Chosen facility.
 	 */
-	public selectedFacility: [string, number];
+	public selectedFacility: [string, number]
 
-	isLoaded: boolean = false;
-	resources: Resources[];
-	visible_resources: Resources[];
+	isLoaded: boolean = false
+	resources: Resources[]
+	visible_resources: Resources[]
 
 	/**
 	 * Id of the table which will be converted to pdf or csv.
 	 */
-	today: number = Date.now();
+	today: number = Date.now()
 
 	constructor(private facilityService: FacilityService) {
-		this.facilityService = facilityService;
+		this.facilityService = facilityService
 	}
 
 	setAllTabsFalse(): void {
-		this.MACHINE_DEFINITION_TAB_ACTIVE = false;
-		this.GENERAL_STORAGE_TAB_ACTIVE = false;
-		this.OBJECT_STORAGE_TAB_ACTIVE = false;
-		this.VOLUME_STORAGE_TAB_ACTIVE = false;
-		this.GPU_TAB_ACTIVE = false;
-		this.STORAGE_TAB_ACTIVE = false;
+		this.MACHINE_DEFINITION_TAB_ACTIVE = false
+		this.GENERAL_STORAGE_TAB_ACTIVE = false
+		this.OBJECT_STORAGE_TAB_ACTIVE = false
+		this.VOLUME_STORAGE_TAB_ACTIVE = false
+		this.GPU_TAB_ACTIVE = false
+		this.STORAGE_TAB_ACTIVE = false
 	}
 
 	setAllResourcesFalse(): void {
-		this.ALL_ACTIVE = false;
-		this.PUBLIC_ACTIVE = false;
-		this.INTERN_ACTIVE = false;
+		this.ALL_ACTIVE = false
+		this.PUBLIC_ACTIVE = false
+		this.INTERN_ACTIVE = false
 	}
 
 	setResources(tab_num: number): void {
-		this.setAllResourcesFalse();
+		this.setAllResourcesFalse()
 		switch (tab_num) {
 			case this.ALL_RESOURCES:
-				this.ALL_ACTIVE = true;
-				break;
+				this.ALL_ACTIVE = true
+				break
 			case this.INTERN_RESOURCES:
-				this.INTERN_ACTIVE = true;
-				break;
+				this.INTERN_ACTIVE = true
+				break
 			case this.PUBLIC_RESOURCES:
-				this.PUBLIC_ACTIVE = true;
-				break;
+				this.PUBLIC_ACTIVE = true
+				break
 
 			default:
-				break;
+				break
 		}
-		this.setVisibleResources();
+		this.setVisibleResources()
 	}
 
 	setTab(tab_num: number): void {
-		this.setAllTabsFalse();
+		this.setAllTabsFalse()
 		switch (tab_num) {
 			case this.MACHINE_DEFINITION_TAB:
-				this.MACHINE_DEFINITION_TAB_ACTIVE = true;
-				break;
+				this.MACHINE_DEFINITION_TAB_ACTIVE = true
+				break
 			case this.STORAGE_TAB:
-				this.STORAGE_TAB_ACTIVE = true;
+				this.STORAGE_TAB_ACTIVE = true
 				if (this.generalStorageFactors.length > 0) {
-					this.GENERAL_STORAGE_TAB_ACTIVE = true;
+					this.GENERAL_STORAGE_TAB_ACTIVE = true
 				} else if (this.volumeStorageFactors.length > 0 || this.objectStorageFactors.length > 0) {
-					this.OBJECT_STORAGE_TAB_ACTIVE = true;
+					this.OBJECT_STORAGE_TAB_ACTIVE = true
 				}
-				break;
+				break
 			case this.GENERAL_STORAGE_TAB:
-				this.GENERAL_STORAGE_TAB_ACTIVE = true;
-				this.STORAGE_TAB_ACTIVE = true;
+				this.GENERAL_STORAGE_TAB_ACTIVE = true
+				this.STORAGE_TAB_ACTIVE = true
 
-				break;
+				break
 			case this.OBJECT_STORAGE_TAB:
-				this.OBJECT_STORAGE_TAB_ACTIVE = true;
-				this.STORAGE_TAB_ACTIVE = true;
+				this.OBJECT_STORAGE_TAB_ACTIVE = true
+				this.STORAGE_TAB_ACTIVE = true
 
-				break;
+				break
 			case this.VOLUME_STORAGE_TAB:
-				this.VOLUME_STORAGE_TAB_ACTIVE = true;
-				this.STORAGE_TAB_ACTIVE = true;
+				this.VOLUME_STORAGE_TAB_ACTIVE = true
+				this.STORAGE_TAB_ACTIVE = true
 
-				break;
+				break
 
 			case this.GPU_TAB:
-				this.GPU_TAB_ACTIVE = true;
-				break;
+				this.GPU_TAB_ACTIVE = true
+				break
 
 			default:
-				break;
+				break
 		}
 	}
 
 	onChangeSelectedFacility(): void {
-		this.setAllTabsFalse();
-		this.getSelectedFacilityResources();
+		this.setAllTabsFalse()
+		this.getSelectedFacilityResources()
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Facility Resources');
+		this.tracker.trackPageView('Facility Resources')
 		this.facilityService.getManagerFacilities().subscribe((result: [string, number][]): void => {
-			this.managerFacilities = result;
-			this.selectedFacility = this.managerFacilities[0];
-			this.getSelectedFacilityResources();
-		});
+			this.managerFacilities = result
+			this.selectedFacility = this.managerFacilities[0]
+			this.getSelectedFacilityResources()
+		})
 	}
 
 	setVisibleResources(): void {
 		if (this.PUBLIC_ACTIVE) {
 			this.visible_resources = this.resources.filter(
-				(res: Resources): boolean => !res.resource_name.includes('Intern') && !res.resource_name.includes('All'),
-			);
+				(res: Resources): boolean => !res.resource_name.includes('Intern') && !res.resource_name.includes('All')
+			)
 		} else if (this.INTERN_ACTIVE) {
-			this.visible_resources = this.resources.filter((res: Resources): boolean => res.resource_name.includes('Intern'));
+			this.visible_resources = this.resources.filter((res: Resources): boolean => res.resource_name.includes('Intern'))
 		} else if (this.ALL_ACTIVE) {
-			this.visible_resources = this.resources;
+			this.visible_resources = this.resources
 		}
-		this.isLoaded = true;
+		this.isLoaded = true
 	}
 
 	public getSelectedFacilityResources(): void {
 		this.facilityService
 			.getObjectStorageFactors(this.selectedFacility['FacilityId'])
 			.subscribe((res: ObjectStorageFactor[]): void => {
-				this.objectStorageFactors = res;
-			});
+				this.objectStorageFactors = res
+			})
 		this.facilityService
 			.getGeneralStorageFactors(this.selectedFacility['FacilityId'])
 			.subscribe((res: GeneralStorageFactor[]): void => {
-				this.generalStorageFactors = res;
-			});
+				this.generalStorageFactors = res
+			})
 		this.facilityService
 			.getResourceMachines(this.selectedFacility['FacilityId'])
 			.subscribe((res: ResourceMachine[]): void => {
-				this.resourceMachines = res;
-			});
+				this.resourceMachines = res
+			})
 
 		this.facilityService
 			.getVolumeStorageFactors(this.selectedFacility['FacilityId'])
 			.subscribe((res: VolumeStorageFactor[]): void => {
-				this.volumeStorageFactors = res;
-			});
+				this.volumeStorageFactors = res
+			})
 		this.facilityService
 			.getGPUSpecifications(this.selectedFacility['FacilityId'])
 			.subscribe((specs: GPUSpecification[]): void => {
-				this.gpuSpecifications = specs;
-			});
+				this.gpuSpecifications = specs
+			})
 		this.facilityService
 			.getFacilityResources(this.selectedFacility['FacilityId'])
 			.subscribe((res: Resources[]): void => {
-				res = this.transformGbToTb(res);
-				this.resources = res;
-				this.setVisibleResources();
-			});
+				res = this.transformGbToTb(res)
+				this.resources = res
+				this.setVisibleResources()
+			})
 	}
 
 	transformGbToTb(res: Resources[]): Resources[] {
 		res.forEach((resource: Resources) => {
 			if (
-				resource['resource_name'] === 'Expired | In-Use'
-				|| resource['resource_name'] === 'Total Used'
-				|| resource['resource_name'] === 'Simple VM'
-				|| resource['resource_name'] === 'Wait for Confirmation: OpenStack'
-				|| resource['resource_name'] === 'Running: OpenStack'
+				resource['resource_name'] === 'Expired | In-Use' ||
+				resource['resource_name'] === 'Total Used' ||
+				resource['resource_name'] === 'Simple VM' ||
+				resource['resource_name'] === 'Wait for Confirmation: OpenStack' ||
+				resource['resource_name'] === 'Running: OpenStack'
 			) {
-				resource['totalObjectStorage'] /= 1024;
-				resource['totalObjectStorage'] = Math.round((resource['totalObjectStorage'] + Number.EPSILON) * 1000) / 1000;
-				resource['totalVolumeLimit'] /= 1024;
-				resource['totalVolumeLimit'] = Math.round((resource['totalVolumeLimit'] + Number.EPSILON) * 1000) / 1000;
+				resource['totalObjectStorage'] /= 1024
+				resource['totalObjectStorage'] = Math.round((resource['totalObjectStorage'] + Number.EPSILON) * 1000) / 1000
+				resource['totalVolumeLimit'] /= 1024
+				resource['totalVolumeLimit'] = Math.round((resource['totalVolumeLimit'] + Number.EPSILON) * 1000) / 1000
 			}
-		});
+		})
 
-		return res;
+		return res
 	}
 
 	public tableToCSV(): void {
-		console.log('to csv');
+		console.log('to csv')
 		const csvConfig = mkConfig({
 			fieldSeparator: ',',
 			quoteStrings: true,
@@ -242,12 +238,12 @@ export class ResourcesComponent implements OnInit {
 			filename: `${this.selectedFacility['Facility']}_resources.csv`,
 			useTextFile: false,
 			useBom: true,
-			useKeysAsHeaders: true,
-		});
+			useKeysAsHeaders: true
+		})
 
-		const converted: any[] = this.visible_resources.map((res: Resources) => Object.assign(res));
-		const csv: CsvOutput = generateCsv(csvConfig)(converted);
+		const converted: any[] = this.visible_resources.map((res: Resources) => Object.assign(res))
+		const csv: CsvOutput = generateCsv(csvConfig)(converted)
 
-		download(csvConfig)(csv);
+		download(csvConfig)(csv)
 	}
 }

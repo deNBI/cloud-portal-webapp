@@ -1,30 +1,28 @@
-import {
-	Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, inject,
-} from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, Subscription, take } from 'rxjs';
-import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
-import * as FileSaver from 'file-saver';
-import { MatomoTracker } from 'ngx-matomo-client';
-import { VoService } from '../api-connector/vo.service';
-import { ProjectMember } from '../projectmanagement/project_member.model';
-import { GroupService } from '../api-connector/group.service';
-import { ComputecenterComponent } from '../projectmanagement/computecenter.component';
-import { IResponseTemplate } from '../api-connector/response-template';
-import { FacilityService } from '../api-connector/facility.service';
-import { FullLayoutComponent } from '../layouts/full-layout.component';
-import { Application } from '../applications/application.model/application.model';
-import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, inject } from '@angular/core'
+import { DomSanitizer } from '@angular/platform-browser'
+import { Observable, Subscription, take } from 'rxjs'
+import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal'
+import * as FileSaver from 'file-saver'
+import { MatomoTracker } from 'ngx-matomo-client'
+import { VoService } from '../api-connector/vo.service'
+import { ProjectMember } from '../projectmanagement/project_member.model'
+import { GroupService } from '../api-connector/group.service'
+import { ComputecenterComponent } from '../projectmanagement/computecenter.component'
+import { IResponseTemplate } from '../api-connector/response-template'
+import { FacilityService } from '../api-connector/facility.service'
+import { FullLayoutComponent } from '../layouts/full-layout.component'
+import { Application } from '../applications/application.model/application.model'
+import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class'
 import {
 	NgbdSortableHeaderDirective,
-	SortEvent,
-} from '../shared/shared_modules/directives/nbd-sortable-header.directive';
-import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service';
-import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component';
-import { ConfirmationActions } from '../shared/modal/confirmation_actions';
-import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component';
-import { EmailService } from '../api-connector/email.service';
-import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component';
+	SortEvent
+} from '../shared/shared_modules/directives/nbd-sortable-header.directive'
+import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service'
+import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component'
+import { ConfirmationActions } from '../shared/modal/confirmation_actions'
+import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component'
+import { EmailService } from '../api-connector/email.service'
+import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
 
 /**
  * Vo Overview component.
@@ -32,65 +30,65 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/pr
 @Component({
 	selector: 'app-vo-overview',
 	templateUrl: 'voOverview.component.html',
-	providers: [VoService, GroupService, FacilityService, ProjectSortService],
+	providers: [VoService, GroupService, FacilityService, ProjectSortService]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
-	private readonly tracker = inject(MatomoTracker);
-	title: string = 'VO Overview';
-	public emailSubject: string;
-	public emailReply: string = '';
-	public emailText: string;
-	public emailStatus: number = 0;
+	private readonly tracker = inject(MatomoTracker)
+	title: string = 'VO Overview'
+	public emailSubject: string
+	public emailReply: string = ''
+	public emailText: string
+	public emailStatus: number = 0
 
-	@ViewChild('notificationModal') notificationModal: ModalDirective;
-	public emailHeader: string;
-	public emailVerify: string;
-	public emailType: number;
-	public emailAdminsOnly: boolean = false;
-	public expiredTemplated: boolean = false;
+	@ViewChild('notificationModal') notificationModal: ModalDirective
+	public emailHeader: string
+	public emailVerify: string
+	public emailType: number
+	public emailAdminsOnly: boolean = false
+	public expiredTemplated: boolean = false
 
-	public removalDate: Date = new Date();
-	public selectedProject: Application;
-	selectedEmailProjects: Application[] = [];
-	computecenters: ComputecenterComponent[] = [];
-	bsModalRef: BsModalRef;
-	subscription: Subscription = new Subscription();
-	protected readonly ConfirmationActions = ConfirmationActions;
-	userElixirSearchPI: boolean = true;
-	userElixirSearchAdmin: boolean = true;
-	userElixirSearchMember: boolean = true;
-	projectsLoaded: boolean = false;
-	show_openstack_projects: boolean = true;
-	show_simple_vm_projects: boolean = true;
-	show_simple_vm: boolean = true;
-	show_openstack: boolean = true;
+	public removalDate: Date = new Date()
+	public selectedProject: Application
+	selectedEmailProjects: Application[] = []
+	computecenters: ComputecenterComponent[] = []
+	bsModalRef: BsModalRef
+	subscription: Subscription = new Subscription()
+	protected readonly ConfirmationActions = ConfirmationActions
+	userElixirSearchPI: boolean = true
+	userElixirSearchAdmin: boolean = true
+	userElixirSearchMember: boolean = true
+	projectsLoaded: boolean = false
+	show_openstack_projects: boolean = true
+	show_simple_vm_projects: boolean = true
+	show_simple_vm: boolean = true
+	show_openstack: boolean = true
 
-	validElixirIdFilter: boolean = false;
-	tsvTaskRunning: boolean = false;
-	numberOfTsvs: number = 0;
-	checkTSVTimer: ReturnType<typeof setTimeout>;
-	checkTSVTimeout: number = 10000;
-	projectsCopy: Application[] = [];
+	validElixirIdFilter: boolean = false
+	tsvTaskRunning: boolean = false
+	numberOfTsvs: number = 0
+	checkTSVTimer: ReturnType<typeof setTimeout>
+	checkTSVTimeout: number = 10000
+	projectsCopy: Application[] = []
 
-	selectedProjectType: string = 'ALL';
-	selectedFacility: string | number = 'ALL';
-	userElixirIdFilter: string;
+	selectedProjectType: string = 'ALL'
+	selectedFacility: string | number = 'ALL'
+	userElixirIdFilter: string
 
-	public newsletterSubscriptionCounter: number;
-	member_id: number;
-	projects: Application[] = [];
+	public newsletterSubscriptionCounter: number
+	member_id: number
+	projects: Application[] = []
 
 	// modal variables for User list
-	public usersModalProjectMembers: ProjectMember[] = [];
-	public usersModalProjectID: number;
-	public usersModalProjectName: string;
-	public managerFacilities: [string, number][];
+	public usersModalProjectMembers: ProjectMember[] = []
+	public usersModalProjectID: number
+	public usersModalProjectName: string
+	public managerFacilities: [string, number][]
 
-	projectMailTemplates: string[] = [];
-	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
+	projectMailTemplates: string[] = []
+	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>
 
-	applictions$: Observable<Application[]>;
-	total$: Observable<number>;
+	applictions$: Observable<Application[]>
+	total$: Observable<number>
 
 	// public selectedFacility: [string, number];
 
@@ -102,110 +100,110 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		private facilityService: FacilityService,
 		public sortProjectService: ProjectSortService,
 		private modalService: BsModalService,
-		private emailService: EmailService,
+		private emailService: EmailService
 	) {
-		super();
+		super()
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Vo Overview');
-		this.getVoProjects();
-		this.getComputeCenters();
+		this.tracker.trackPageView('Vo Overview')
+		this.getVoProjects()
+		this.getComputeCenters()
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
-			this.newsletterSubscriptionCounter = result.value as number;
-		});
-		this.getTSVInformation();
+			this.newsletterSubscriptionCounter = result.value as number
+		})
+		this.getTSVInformation()
 	}
 
 	ngOnDestroy() {
-		this.subscription.unsubscribe();
+		this.subscription.unsubscribe()
 	}
 
 	getTSVInformation(timeout: number = this.checkTSVTimeout): void {
-		this.stopCheckTSVTimer();
+		this.stopCheckTSVTimer()
 		this.subscription.add(
 			this.voService.getTsvInformation().subscribe(
 				(result: any): void => {
-					this.tsvTaskRunning = result[0];
-					this.numberOfTsvs = result[1];
+					this.tsvTaskRunning = result[0]
+					this.numberOfTsvs = result[1]
 					if (result[0] !== true) {
-						this.stopCheckTSVTimer();
+						this.stopCheckTSVTimer()
 					} else {
 						this.checkTSVTimer = setTimeout((): void => {
-							this.getTSVInformation();
-						}, timeout);
+							this.getTSVInformation()
+						}, timeout)
 					}
 				},
 				() => {
-					this.tsvTaskRunning = true;
-					this.numberOfTsvs = 0;
+					this.tsvTaskRunning = true
+					this.numberOfTsvs = 0
 					this.checkTSVTimer = setTimeout((): void => {
-						this.getTSVInformation();
-					}, timeout);
-				},
-			),
-		);
+						this.getTSVInformation()
+					}, timeout)
+				}
+			)
+		)
 	}
 
 	stopCheckTSVTimer(): void {
 		if (this.checkTSVTimer) {
-			clearTimeout(this.checkTSVTimer);
+			clearTimeout(this.checkTSVTimer)
 		}
 	}
 
 	selectAllFilteredProjects(): void {
-		this.selectedEmailProjects = [];
+		this.selectedEmailProjects = []
 
 		// get all the applications
 		this.applictions$.pipe(take(1)).subscribe(applications => {
 			// set the selected state of all projects to true
 			applications.forEach(application => {
-				application.is_project_selected = true;
-				this.toggleSelectedEmailApplication(application, application.is_project_selected);
-			});
-		});
+				application.is_project_selected = true
+				this.toggleSelectedEmailApplication(application, application.is_project_selected)
+			})
+		})
 	}
 
 	showConfirmationModal(application: Application, action: ConfirmationActions): void {
-		const initialState = { application, action };
-		console.log(initialState);
+		const initialState = { application, action }
+		console.log(initialState)
 
-		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' });
-		this.subscribeToBsModalRef();
+		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' })
+		this.subscribeToBsModalRef()
 	}
 
 	showMembersModal(application: Application): void {
 		const initialState = {
 			projectId: application.project_application_perun_id,
-			projectName: application.project_application_shortname,
-		};
+			projectName: application.project_application_shortname
+		}
 
-		this.bsModalRef = this.modalService.show(MembersListModalComponent, { initialState, class: 'modal-lg' });
+		this.bsModalRef = this.modalService.show(MembersListModalComponent, { initialState, class: 'modal-lg' })
 	}
 
 	subscribeToBsModalRef(): void {
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
-				let action = null;
+				let action = null
 				if ('action' in result) {
-					action = result['action'];
+					action = result['action']
 				}
 
 				if (ConfirmationActions.ENABLE_APPLICATION === action) {
-					this.enableProject(result['application']);
+					this.enableProject(result['application'])
 				}
 				if (ConfirmationActions.DISABLE_APPLICATION === action) {
-					this.disableProject(result['application']);
+					this.disableProject(result['application'])
 				}
-			}),
-		);
+			})
+		)
 	}
 
 	unselectAll(): void {
 		this.sortProjectService.applications.forEach((pr: Application) => {
-			pr.is_project_selected = false;
-			this.toggleSelectedEmailApplication(pr, pr.is_project_selected);
-		});
+			pr.is_project_selected = false
+			this.toggleSelectedEmailApplication(pr, pr.is_project_selected)
+		})
 		//		this.selectedEmailProjects = []; // clear the selectedEmailProjects list
 	}
 
@@ -214,113 +212,113 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		this.applictions$.pipe(take(1)).subscribe(applications => {
 			// set the selected state of all projects to false
 			applications.forEach(application => {
-				application.is_project_selected = false;
-				this.toggleSelectedEmailApplication(application, application.is_project_selected);
-			});
-		});
+				application.is_project_selected = false
+				this.toggleSelectedEmailApplication(application, application.is_project_selected)
+			})
+		})
 	}
 
 	toggleSelectedEmailApplication(application: Application, isChecked: boolean): void {
-		const index = this.selectedEmailProjects.indexOf(application);
+		const index = this.selectedEmailProjects.indexOf(application)
 
 		if (isChecked) {
 			// checkbox was checked
 			if (index === -1) {
 				// application is not in the list, so add it
-				this.selectedEmailProjects.push(application);
+				this.selectedEmailProjects.push(application)
 			}
 		} else {
 			// checkbox was unchecked
 			// application is in the list, so remove it
-			this.selectedEmailProjects.splice(index, 1);
+			this.selectedEmailProjects.splice(index, 1)
 		}
 	}
 
 	openProjectCSVMailModal(): void {
-		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' });
+		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' })
 	}
 
 	disableProject(project: Application): void {
 		this.voService.setDisabledProject(project.project_application_perun_id).subscribe((upd_app: Application) => {
-			const idx = this.projects.indexOf(project);
-			this.projects[idx] = upd_app;
-			this.sortProjectService.applications = this.projects;
-		});
+			const idx = this.projects.indexOf(project)
+			this.projects[idx] = upd_app
+			this.sortProjectService.applications = this.projects
+		})
 	}
 
 	checkValidElixirIdFilter(): void {
-		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org');
+		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')
 		if (!this.validElixirIdFilter) {
-			this.sortProjectService.applications = this.projectsCopy;
-			this.applictions$ = this.sortProjectService.applications$;
-			this.total$ = this.sortProjectService.total$;
-			this.projectsLoaded = true;
+			this.sortProjectService.applications = this.projectsCopy
+			this.applictions$ = this.sortProjectService.applications$
+			this.total$ = this.sortProjectService.total$
+			this.projectsLoaded = true
 		}
 	}
 
 	getProjectsByMemberElixirId(): void {
 		// tslint:disable-next-line:max-line-length
-		this.userElixirIdFilter = this.userElixirIdFilter.trim();
+		this.userElixirIdFilter = this.userElixirIdFilter.trim()
 		if (this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')) {
-			this.projectsLoaded = false;
+			this.projectsLoaded = false
 
 			this.voService
 				.getGroupsByMemberElixirId(
 					this.userElixirIdFilter,
 					this.userElixirSearchPI,
 					this.userElixirSearchAdmin,
-					this.userElixirSearchMember,
+					this.userElixirSearchMember
 				)
 				.subscribe((applications: Application[]): void => {
-					this.projects = applications;
+					this.projects = applications
 					for (const group of applications) {
 						if (group.project_application_lifetime > 0) {
-							group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
+							group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning)
 						}
 					}
-					this.sortProjectService.applications = this.projects;
-					this.applictions$ = this.sortProjectService.applications$;
-					this.total$ = this.sortProjectService.total$;
-					this.projectsLoaded = true;
-				});
+					this.sortProjectService.applications = this.projects
+					this.applictions$ = this.sortProjectService.applications$
+					this.total$ = this.sortProjectService.total$
+					this.projectsLoaded = true
+				})
 		} else {
-			this.sortProjectService.applications = this.projectsCopy;
-			this.applictions$ = this.sortProjectService.applications$;
-			this.total$ = this.sortProjectService.total$;
-			this.projectsLoaded = true;
+			this.sortProjectService.applications = this.projectsCopy
+			this.applictions$ = this.sortProjectService.applications$
+			this.total$ = this.sortProjectService.total$
+			this.projectsLoaded = true
 		}
 	}
 
 	enableProject(project: Application): void {
 		this.voService.unsetDisabledProject(project.project_application_perun_id).subscribe((upd_app: Application) => {
-			const idx = this.projects.indexOf(project);
-			this.projects[idx] = upd_app;
-			this.sortProjectService.applications = this.projects;
-		});
+			const idx = this.projects.indexOf(project)
+			this.projects[idx] = upd_app
+			this.sortProjectService.applications = this.projects
+		})
 	}
 
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers.forEach(header => {
 			if (header.appSortable !== column) {
-				header.direction = '';
+				header.direction = ''
 			}
-		});
+		})
 
-		this.sortProjectService.sortColumn = column;
-		this.sortProjectService.sortDirection = direction;
+		this.sortProjectService.sortColumn = column
+		this.sortProjectService.sortDirection = direction
 	}
 
 	getApplicationInfos(): void {
-		this.voService.getVoProjectResourcesTimeframes().subscribe();
+		this.voService.getVoProjectResourcesTimeframes().subscribe()
 
-		this.voService.getVoProjectCounter().subscribe();
-		this.voService.getVoProjectDates().subscribe();
+		this.voService.getVoProjectCounter().subscribe()
+		this.voService.getVoProjectDates().subscribe()
 	}
 
 	sendEmail(subject: string, message: string, reply?: string): void {
 		if (reply) {
-			reply = reply.trim();
+			reply = reply.trim()
 		}
 		switch (this.emailType) {
 			case 0: {
@@ -332,20 +330,20 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 					this.emailAdminsOnly,
 					this.expiredTemplated,
 					this.removalDate,
-					reply,
-				);
-				break;
+					reply
+				)
+				break
 			}
 			case 1: {
-				this.sendNewsletterToVo(subject, message, this.selectedProjectType, this.emailAdminsOnly, reply);
-				break;
+				this.sendNewsletterToVo(subject, message, this.selectedProjectType, this.emailAdminsOnly, reply)
+				break
 			}
 			default:
 		}
 	}
 
 	sendTestBug(): void {
-		this.voService.sendTestError().subscribe();
+		this.voService.sendTestError().subscribe()
 	}
 
 	sendNewsletterToVo(
@@ -353,7 +351,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		message: string,
 		selectedProjectType: string,
 		adminsOnly: boolean,
-		reply?: string,
+		reply?: string
 	): void {
 		this.voService
 			.sendNewsletterToVo(
@@ -361,15 +359,15 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 				encodeURIComponent(message),
 				selectedProjectType,
 				adminsOnly,
-				encodeURIComponent(reply),
+				encodeURIComponent(reply)
 			)
 			.subscribe((result: IResponseTemplate): void => {
 				if ((result.value as boolean) === true) {
-					this.emailStatus = 1;
+					this.emailStatus = 1
 				} else {
-					this.emailStatus = 2;
+					this.emailStatus = 2
 				}
-			});
+			})
 	}
 
 	sendMailToVo(
@@ -380,7 +378,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		adminsOnly: boolean,
 		expiredTemplate: boolean,
 		removalDate: Date,
-		reply?: string,
+		reply?: string
 	): void {
 		this.voService
 			.sendMailToVo(
@@ -391,50 +389,50 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 				adminsOnly,
 				expiredTemplate,
 				removalDate,
-				encodeURIComponent(reply),
+				encodeURIComponent(reply)
 			)
 			.subscribe((result: IResponseTemplate): void => {
 				if ((result.value as boolean) === true) {
-					this.emailStatus = 1;
+					this.emailStatus = 1
 				} else {
-					this.emailStatus = 2;
+					this.emailStatus = 2
 				}
-				this.selectedProjectType = 'ALL';
-				this.selectedFacility = 'ALL';
-			});
+				this.selectedProjectType = 'ALL'
+				this.selectedFacility = 'ALL'
+			})
 	}
 
 	dayChanged(date: { year: number; month: number; day: number }): void {
-		this.removalDate.setDate(date.day);
-		this.removalDate.setMonth(date.month - 1);
-		this.removalDate.setFullYear(date.year);
+		this.removalDate.setDate(date.day)
+		this.removalDate.setMonth(date.month - 1)
+		this.removalDate.setFullYear(date.year)
 	}
 
 	setEmailType(type: number): void {
-		this.emailType = type;
+		this.emailType = type
 		switch (this.emailType) {
 			case 0: {
-				this.emailHeader = 'Send email to selected members of the VO';
-				break;
+				this.emailHeader = 'Send email to selected members of the VO'
+				break
 			}
 			case 1: {
-				this.emailHeader = 'Send newsletter to VO';
-				break;
+				this.emailHeader = 'Send newsletter to VO'
+				break
 			}
 			default:
 		}
-		this.emailVerify = 'Are you sure you want to send this newsletter to all members of the de.NBI VO?';
+		this.emailVerify = 'Are you sure you want to send this newsletter to all members of the de.NBI VO?'
 	}
 
 	getFacilityName(): string {
 		if (this.selectedFacility === 'ALL') {
-			return 'of the de.NBI VO';
+			return 'of the de.NBI VO'
 		} else {
-			const temp_cc = this.computecenters.find(cc => cc.FacilityId === this.selectedFacility);
+			const temp_cc = this.computecenters.find(cc => cc.FacilityId === this.selectedFacility)
 			if (temp_cc === undefined) {
-				return 'of the de.NBI VO';
+				return 'of the de.NBI VO'
 			} else {
-				return `of the facility "${temp_cc.Name}"`;
+				return `of the facility "${temp_cc.Name}"`
 			}
 		}
 	}
@@ -442,17 +440,17 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	getMailConfinementByProjectType(): string {
 		switch (this.selectedProjectType) {
 			case 'ALL_GM':
-				return 'of all active projects';
+				return 'of all active projects'
 			case 'EXP':
-				return 'of all expired projects';
+				return 'of all expired projects'
 			case 'SVP':
-				return 'of all SimpleVM projects';
+				return 'of all SimpleVM projects'
 			case 'OVP':
-				return 'of all OpenStack projects';
+				return 'of all OpenStack projects'
 			case 'WSH':
-				return 'of all Workshops';
+				return 'of all Workshops'
 			default:
-				return '';
+				return ''
 		}
 	}
 
@@ -461,55 +459,55 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 			case 0: {
 				this.emailVerify = `Are you sure you want to send this email to all ${
 					this.emailAdminsOnly ? ' group administrators' : 'members'
-				} ${this.getMailConfinementByProjectType()} ${this.getFacilityName()} ?`;
-				break;
+				} ${this.getMailConfinementByProjectType()} ${this.getFacilityName()} ?`
+				break
 			}
 			case 1: {
-				this.emailVerify = `Are you sure you want to send this newsletter to all members ${this.getMailConfinementByProjectType()} ${this.getFacilityName()} ?`;
-				break;
+				this.emailVerify = `Are you sure you want to send this newsletter to all members ${this.getMailConfinementByProjectType()} ${this.getFacilityName()} ?`
+				break
 			}
 			default:
-				this.emailVerify = 'Are you sure you want to send this?';
+				this.emailVerify = 'Are you sure you want to send this?'
 		}
 		if (this.selectedProjectType !== 'EXP') {
-			this.expiredTemplated = false;
+			this.expiredTemplated = false
 		}
 	}
 
 	getVoProjects(): void {
-		this.projects = [];
+		this.projects = []
 		this.voService.getAllGroupsWithDetails().subscribe((applications: Application[]): void => {
 			for (const application of applications) {
 				if (application.project_application_lifetime > 0) {
-					application.lifetime_reached = this.lifeTimeReached(application.lifetime_days, application.DaysRunning);
+					application.lifetime_reached = this.lifeTimeReached(application.lifetime_days, application.DaysRunning)
 				}
-				this.projects.push(application);
+				this.projects.push(application)
 			}
-			this.projectsCopy = this.projects;
+			this.projectsCopy = this.projects
 
-			this.sortProjectService.applications = this.projects;
-			this.applictions$ = this.sortProjectService.applications$;
-			this.total$ = this.sortProjectService.total$;
-			this.projectsLoaded = true;
-		});
+			this.sortProjectService.applications = this.projects
+			this.applictions$ = this.sortProjectService.applications$
+			this.total$ = this.sortProjectService.total$
+			this.projectsLoaded = true
+		})
 	}
 
 	resetEmailModal(): void {
-		this.emailHeader = null;
-		this.emailSubject = null;
-		this.emailText = null;
-		this.emailType = null;
-		this.emailVerify = null;
-		this.emailReply = '';
-		this.emailStatus = 0;
-		this.emailAdminsOnly = false;
+		this.emailHeader = null
+		this.emailSubject = null
+		this.emailText = null
+		this.emailType = null
+		this.emailVerify = null
+		this.emailReply = ''
+		this.emailStatus = 0
+		this.emailAdminsOnly = false
 	}
 
 	public resetNotificationModal(): void {
-		this.notificationModalTitle = 'Notification';
-		this.notificationModalMessage = 'Please wait...';
-		this.notificationModalIsClosable = false;
-		this.notificationModalType = 'info';
+		this.notificationModalTitle = 'Notification'
+		this.notificationModalMessage = 'Please wait...'
+		this.notificationModalIsClosable = false
+		this.notificationModalType = 'info'
 	}
 
 	/**
@@ -522,40 +520,40 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 					cc['compute_center_facility_id'],
 					cc['compute_center_name'],
 					cc['compute_center_login'],
-					cc['compute_center_support_mail'],
-				);
-				this.computecenters.push(compute_center);
+					cc['compute_center_support_mail']
+				)
+				this.computecenters.push(compute_center)
 			}
-		});
+		})
 	}
 
 	/**
 	 * Bugfix not scrollable site after closing modal
 	 */
 	removeModalOpen(): void {
-		document.body.classList.remove('modal-open');
+		document.body.classList.remove('modal-open')
 	}
 
 	public terminateProject(): void {
 		this.voService.terminateProject(this.selectedProject.project_application_perun_id).subscribe(
 			(): void => {
-				const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
+				const indexAll: number = this.projects.indexOf(this.selectedProject, 0)
 				if (!this.selectedProject.project_application_openstack_project) {
-					this.projects.splice(indexAll, 1);
-					this.sortProjectService.applications = this.projects;
+					this.projects.splice(indexAll, 1)
+					this.sortProjectService.applications = this.projects
 				} else {
-					this.getProjectStatus(this.projects[indexAll]);
+					this.getProjectStatus(this.projects[indexAll])
 				}
-				this.fullLayout.getGroupsEnumeration();
+				this.fullLayout.getGroupsEnumeration()
 				if (this.selectedProject.project_application_openstack_project) {
 					this.updateNotificationModal(
 						'Success',
 						'The request to terminate the project was forwarded to the facility manager.',
 						true,
-						'success',
-					);
+						'success'
+					)
 				} else {
-					this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+					this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success')
 				}
 			},
 			(error: any): void => {
@@ -564,57 +562,57 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 						'Failed',
 						`The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
 						true,
-						'danger',
-					);
+						'danger'
+					)
 				} else {
-					this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+					this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger')
 				}
-			},
-		);
+			}
+		)
 	}
 
 	getProjectStatus(project: Application): void {
 		this.voService.getProjectStatus(project.project_application_perun_id).subscribe((res: any): void => {
-			project.project_application_statuses = res['status'];
-		});
+			project.project_application_statuses = res['status']
+		})
 	}
 
 	suspendProject(project: Application): void {
 		this.voService.removeResourceFromGroup(project.project_application_perun_id).subscribe(
 			(): void => {
-				this.updateNotificationModal('Success', 'The project got suspended successfully', true, 'success');
-				this.getProjectStatus(project);
-				project.project_application_compute_center = null;
+				this.updateNotificationModal('Success', 'The project got suspended successfully', true, 'success')
+				this.getProjectStatus(project)
+				project.project_application_compute_center = null
 			},
 			(): void => {
-				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
-			},
-		);
+				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger')
+			}
+		)
 	}
 
 	resumeProject(project: Application): void {
 		this.voService.resumeProject(project.project_application_perun_id).subscribe(
 			(): void => {
-				this.updateNotificationModal('Success', 'The project got resumed successfully', true, 'success');
-				this.getProjectStatus(project);
+				this.updateNotificationModal('Success', 'The project got resumed successfully', true, 'success')
+				this.getProjectStatus(project)
 			},
 			(): void => {
-				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
-			},
-		);
+				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger')
+			}
+		)
 	}
 
 	declineTermination(project: Application): void {
 		this.voService.declineTermination(project.project_application_perun_id).subscribe(
 			(): void => {
-				this.updateNotificationModal('Success', 'The termination was successfully declined', true, 'success');
-				const indexAll: number = this.projects.indexOf(project, 0);
-				this.getProjectStatus(this.projects[indexAll]);
+				this.updateNotificationModal('Success', 'The termination was successfully declined', true, 'success')
+				const indexAll: number = this.projects.indexOf(project, 0)
+				this.getProjectStatus(this.projects[indexAll])
 			},
 			(): void => {
-				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
-			},
-		);
+				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger')
+			}
+		)
 	}
 
 	setProtected(project: Application, set: boolean): void {
@@ -626,51 +624,51 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 						? 'The project was successfully set as protected.'
 						: 'The status "Protected" was removed successfully',
 					true,
-					'success',
-				);
-				const indexAll: number = this.projects.indexOf(project, 0);
-				this.getProjectStatus(this.projects[indexAll]);
+					'success'
+				)
+				const indexAll: number = this.projects.indexOf(project, 0)
+				this.getProjectStatus(this.projects[indexAll])
 			},
 			(error: any): void => {
 				if (error['status'] === 500) {
-					this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
+					this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger')
 				}
-			},
-		);
+			}
+		)
 	}
 
 	getMembersOfTheProject(projectid: number, projectname: string): void {
 		this.voService.getVoGroupRichMembers(projectid).subscribe((members: ProjectMember[]): void => {
-			this.usersModalProjectID = projectid;
-			this.usersModalProjectName = projectname;
-			this.usersModalProjectMembers = members;
-		});
+			this.usersModalProjectID = projectid
+			this.usersModalProjectName = projectname
+			this.usersModalProjectMembers = members
+		})
 	}
 
 	showMembersOfTheProject(projectid: number, projectname: string): void {
-		this.getMembersOfTheProject(projectid, projectname);
+		this.getMembersOfTheProject(projectid, projectname)
 	}
 
 	initiateTsvExport(): void {
-		this.tsvTaskRunning = true;
+		this.tsvTaskRunning = true
 		this.voService.getAllProjectsForTsvExport().subscribe((): void => {
-			this.getTSVInformation();
-		});
+			this.getTSVInformation()
+		})
 	}
 
 	downloadCurrentTSV(): void {
 		this.voService.downloadProjectsTsv().subscribe(
 			(result): void => {
 				const blobn = new Blob([result], {
-					type: 'text/tsv',
-				});
+					type: 'text/tsv'
+				})
 
-				const dateTime = new Date();
-				FileSaver.saveAs(blobn, `projects-${dateTime.getDate()}-${dateTime.getMonth()}-${dateTime.getFullYear()}.tsv`);
+				const dateTime = new Date()
+				FileSaver.saveAs(blobn, `projects-${dateTime.getDate()}-${dateTime.getMonth()}-${dateTime.getFullYear()}.tsv`)
 			},
 			(err: any) => {
-				console.log(`No such file found! - ${err.toString()}`);
-			},
-		);
+				console.log(`No such file found! - ${err.toString()}`)
+			}
+		)
 	}
 }

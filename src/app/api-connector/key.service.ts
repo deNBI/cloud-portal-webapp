@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ApiSettings } from './api-settings.service';
-import { IResponseTemplate } from './response-template';
-import { BlacklistedResponse } from './response-interfaces';
+import { Injectable } from '@angular/core'
+import { HttpClient, HttpParams } from '@angular/common/http'
+import { Observable } from 'rxjs'
+import { ApiSettings } from './api-settings.service'
+import { IResponseTemplate } from './response-template'
+import { BlacklistedResponse } from './response-interfaces'
 
 /**
  * Service which provides public key methods.
@@ -14,17 +14,17 @@ export class KeyService {
 
 	getKey(): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, {
-			withCredentials: true,
-		});
+			withCredentials: true
+		})
 	}
 
 	postKey(public_key_param: string): Observable<IResponseTemplate> {
-		const public_key: string = public_key_param.replace(/\r?\n|\r/gi, '');
-		const params: HttpParams = new HttpParams().set('public_key', public_key);
+		const public_key: string = public_key_param.replace(/\r?\n|\r/gi, '')
+		const params: HttpParams = new HttpParams().set('public_key', public_key)
 
 		return this.http.put<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, params, {
-			withCredentials: true,
-		});
+			withCredentials: true
+		})
 	}
 
 	validateKey(public_key_param: string): Observable<IResponseTemplate> {
@@ -32,9 +32,9 @@ export class KeyService {
 			`${ApiSettings.getApiBaseURL()}users/current/public_key/validate/`,
 			{ public_key: public_key_param },
 			{
-				withCredentials: true,
-			},
-		);
+				withCredentials: true
+			}
+		)
 	}
 
 	isBlocked(public_key_param: string): Observable<BlacklistedResponse> {
@@ -42,14 +42,14 @@ export class KeyService {
 			`${ApiSettings.getApiBaseURL()}users/current/public_key/blacklisted/`,
 			{ public_key: public_key_param },
 			{
-				withCredentials: true,
-			},
-		);
+				withCredentials: true
+			}
+		)
 	}
 
 	generateKey(): Observable<any> {
 		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}users/current/public_key/generate/`, {
-			withCredentials: true,
-		});
+			withCredentials: true
+		})
 	}
 }

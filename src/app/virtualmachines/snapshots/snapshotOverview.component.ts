@@ -1,17 +1,17 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { forkJoin, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { MatomoTracker } from 'ngx-matomo-client';
-import { ImageService } from '../../api-connector/image.service';
-import { SnapshotModel } from './snapshot.model';
-import { IResponseTemplate } from '../../api-connector/response-template';
-import { FacilityService } from '../../api-connector/facility.service';
-import { CLOUD_PORTAL_SUPPORT_MAIL, WIKI_SNAPSHOTS } from '../../../links/links';
-import { SnapshotPage } from './snapshotPage.model';
-import { ApplicationsService } from '../../api-connector/applications.service';
-import { IsMigratedProjectIdPipe } from '../../pipe-module/pipes/migratedList';
+import { Component, OnInit, inject } from '@angular/core'
+import { forkJoin, Subject } from 'rxjs'
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators'
+import { MatomoTracker } from 'ngx-matomo-client'
+import { ImageService } from '../../api-connector/image.service'
+import { SnapshotModel } from './snapshot.model'
+import { IResponseTemplate } from '../../api-connector/response-template'
+import { FacilityService } from '../../api-connector/facility.service'
+import { CLOUD_PORTAL_SUPPORT_MAIL, WIKI_SNAPSHOTS } from '../../../links/links'
+import { SnapshotPage } from './snapshotPage.model'
+import { ApplicationsService } from '../../api-connector/applications.service'
+import { IsMigratedProjectIdPipe } from '../../pipe-module/pipes/migratedList'
 
-// eslint-disable-next-line no-shadow
+ 
 enum Snapshot_Delete_Statuses {
 	WAITING = 0,
 	SUCCESS = 1,
@@ -24,70 +24,70 @@ enum Snapshot_Delete_Statuses {
 @Component({
 	selector: 'app-snapshot-overview',
 	templateUrl: 'snapshotOverview.component.html',
-	providers: [FacilityService, ImageService],
+	providers: [FacilityService, ImageService]
 })
 export class SnapshotOverviewComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker);
-	snapshot_page: SnapshotPage = new SnapshotPage();
-	WIKI_SNAPSHOTS: string = WIKI_SNAPSHOTS;
-	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
-	checked_snapshots: SnapshotModel[] = [];
+	private readonly tracker = inject(MatomoTracker)
+	snapshot_page: SnapshotPage = new SnapshotPage()
+	WIKI_SNAPSHOTS: string = WIKI_SNAPSHOTS
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
+	checked_snapshots: SnapshotModel[] = []
 
-	title: string = 'Snapshot Overview';
+	title: string = 'Snapshot Overview'
 
-	showFacilities: boolean = false;
+	showFacilities: boolean = false
 
 	/**
 	 * Facilitties where the user is manager ['name',id].
 	 */
-	managerFacilities: [string, number][];
+	managerFacilities: [string, number][]
 	/**
 	 * Chosen facility.
 	 */
-	selectedFacility: [string, number];
+	selectedFacility: [string, number]
 
 	/**
 	 * Selected snapshot.
 	 */
-	selected_snapshot: SnapshotModel;
+	selected_snapshot: SnapshotModel
 	/**
 	 * Actual delete status.
 	 *
 	 * @type {Snapshot_Delete_Statuses}
 	 */
-	delete_status: number = Snapshot_Delete_Statuses.WAITING;
-	delete_statuses: typeof Snapshot_Delete_Statuses = Snapshot_Delete_Statuses;
+	delete_status: number = Snapshot_Delete_Statuses.WAITING
+	delete_statuses: typeof Snapshot_Delete_Statuses = Snapshot_Delete_Statuses
 	/**
 	 * If site was initialized.
 	 *
 	 * @type {boolean}
 	 */
-	isLoaded: boolean = false;
-	filterChanged: Subject<string> = new Subject<string>();
-	filter: string = '';
-	all_snapshots_checked: boolean = false;
+	isLoaded: boolean = false
+	filterChanged: Subject<string> = new Subject<string>()
+	filter: string = ''
+	all_snapshots_checked: boolean = false
 
-	private checkStatusTimeout: number = 5000;
+	private checkStatusTimeout: number = 5000
 
-	currentPage: number = 1;
-	snapshotsPerPageChange: Subject<number> = new Subject<number>();
-	isSearching: boolean = true;
-	DEBOUNCE_TIME: number = 300;
-	migratedProjectIds: string[] = [];
-	migratedProjectNames: string[] = [];
+	currentPage: number = 1
+	snapshotsPerPageChange: Subject<number> = new Subject<number>()
+	isSearching: boolean = true
+	DEBOUNCE_TIME: number = 300
+	migratedProjectIds: string[] = []
+	migratedProjectNames: string[] = []
 
 	constructor(
 		private facilityService: FacilityService,
 		private imageService: ImageService,
 		private applicationsService: ApplicationsService,
-		private isMigratedPipe: IsMigratedProjectIdPipe,
+		private isMigratedPipe: IsMigratedProjectIdPipe
 	) {
-		this.facilityService = facilityService;
-		this.imageService = imageService;
+		this.facilityService = facilityService
+		this.imageService = imageService
 	}
 
 	changedFilter(text: string): void {
-		this.filterChanged.next(text);
+		this.filterChanged.next(text)
 	}
 
 	/**
@@ -96,95 +96,95 @@ export class SnapshotOverviewComponent implements OnInit {
 	 * @param snapshot
 	 */
 	setSelectedSnapshot(snapshot: SnapshotModel): void {
-		this.selected_snapshot = snapshot;
+		this.selected_snapshot = snapshot
 	}
 
 	/**
 	 * Get snapshots by user.
 	 */
 	getSnapshots(): void {
-		this.filter = this.filter.trim();
+		this.filter = this.filter.trim()
 		this.imageService
 			.getSnapshotsByUser(this.currentPage, this.snapshot_page.items_per_page, this.filter)
 			.subscribe((snapshot_page: SnapshotPage): void => {
-				this.snapshot_page = snapshot_page;
-				this.generateMigratedProjectIdList();
-				this.generateMigratedProjectNamesList();
-				this.isLoaded = true;
-				this.checkSnapShotsStatus();
-				this.isSearching = false;
-			});
+				this.snapshot_page = snapshot_page
+				this.generateMigratedProjectIdList()
+				this.generateMigratedProjectNamesList()
+				this.isLoaded = true
+				this.checkSnapShotsStatus()
+				this.isSearching = false
+			})
 	}
 
 	generateMigratedProjectIdList(): void {
-		this.migratedProjectIds = [];
+		this.migratedProjectIds = []
 		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel) => {
 			if (snap.migrate_project_to_simple_vm || snap.project_is_migrated_to_simple_vm) {
-				this.migratedProjectIds.push(snap.snapshot_projectid.toString());
+				this.migratedProjectIds.push(snap.snapshot_projectid.toString())
 			}
-			const unique = (arr: string[]): string[] => [...new Set(arr)];
-			this.migratedProjectIds = unique(this.migratedProjectIds);
-		});
+			const unique = (arr: string[]): string[] => [...new Set(arr)]
+			this.migratedProjectIds = unique(this.migratedProjectIds)
+		})
 	}
 	generateMigratedProjectNamesList(): void {
-		this.migratedProjectNames = [];
+		this.migratedProjectNames = []
 		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel) => {
 			if (snap.migrate_project_to_simple_vm || snap.project_is_migrated_to_simple_vm) {
-				this.migratedProjectNames.push(snap.snapshot_project);
+				this.migratedProjectNames.push(snap.snapshot_project)
 			}
-		});
+		})
 	}
 
 	changeCheckAllSnapshots(): void {
 		if (this.all_snapshots_checked) {
-			this.checked_snapshots = [];
-			this.all_snapshots_checked = false;
+			this.checked_snapshots = []
+			this.all_snapshots_checked = false
 
-			return;
+			return
 		}
 
 		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel): void => {
 			if (
-				!this.isSnapChecked(snap)
-				&& !this.isMigratedPipe.transform(snap.snapshot_projectid, this.migratedProjectIds)
+				!this.isSnapChecked(snap) &&
+				!this.isMigratedPipe.transform(snap.snapshot_projectid, this.migratedProjectIds)
 			) {
-				this.checked_snapshots.push(snap);
+				this.checked_snapshots.push(snap)
 			}
-		});
-		this.all_snapshots_checked = true;
+		})
+		this.all_snapshots_checked = true
 	}
 
 	checkSnapShotsStatus(): void {
-		let all_active_or_migrated: boolean = true;
+		let all_active_or_migrated: boolean = true
 
 		setTimeout((): void => {
-			const observables: any = [];
+			const observables: any = []
 			for (const snapshot of this.snapshot_page.snapshot_list) {
 				if (snapshot.snapshot_status !== 'active' && snapshot.snapshot_status !== 'MIGRATED') {
-					observables.push(this.imageService.getSnapshot(snapshot.snapshot_openstackid));
+					observables.push(this.imageService.getSnapshot(snapshot.snapshot_openstackid))
 				}
 			}
 			forkJoin(observables).subscribe((res: any): void => {
 				for (const snap of res) {
-					this.snapshot_page.snapshot_list[res.indexOf(snap)].snapshot_status = snap['status'];
+					this.snapshot_page.snapshot_list[res.indexOf(snap)].snapshot_status = snap['status']
 					if (snap['status'] !== 'active' && snap['status'] !== 'MIGRATED') {
-						all_active_or_migrated = false;
+						all_active_or_migrated = false
 					}
 				}
 				if (!all_active_or_migrated) {
-					this.checkSnapShotsStatus();
+					this.checkSnapShotsStatus()
 				}
-			});
-		}, this.checkStatusTimeout);
+			})
+		}, this.checkStatusTimeout)
 	}
 
 	getFacilitySnapshots(): void {
 		this.facilityService
 			.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.snapshot_page.items_per_page)
 			.subscribe((snapshot_page: SnapshotPage): void => {
-				this.snapshot_page = snapshot_page;
-				this.isSearching = false;
-			});
+				this.snapshot_page = snapshot_page
+				this.isSearching = false
+			})
 	}
 
 	/**
@@ -194,105 +194,105 @@ export class SnapshotOverviewComponent implements OnInit {
 	 */
 	deleteSnapshot(snapshot: SnapshotModel): void {
 		this.imageService.deleteSnapshot(snapshot.snapshot_openstackid).subscribe((result: IResponseTemplate): void => {
-			this.delete_status = 0;
+			this.delete_status = 0
 
 			if (result.value as boolean) {
-				this.delete_status = 1;
-				const idx: number = this.snapshot_page.snapshot_list.indexOf(snapshot);
+				this.delete_status = 1
+				const idx: number = this.snapshot_page.snapshot_list.indexOf(snapshot)
 
-				this.snapshot_page.snapshot_list.splice(idx, 1);
+				this.snapshot_page.snapshot_list.splice(idx, 1)
 			} else if (result.value) {
-				this.delete_status = 3;
-				this.getSnapshots();
+				this.delete_status = 3
+				this.getSnapshots()
 			} else {
-				this.delete_status = 2;
-				this.getSnapshots();
+				this.delete_status = 2
+				this.getSnapshots()
 			}
-		});
+		})
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Snapshot Overview');
-		this.getSnapshots();
+		this.tracker.trackPageView('Snapshot Overview')
+		this.getSnapshots()
 
 		this.filterChanged
 			.pipe(
 				debounceTime(this.DEBOUNCE_TIME),
 				distinctUntilChanged(),
 				switchMap((filterName: string): any => {
-					this.isSearching = true;
+					this.isSearching = true
 
-					this.filter = filterName.trim();
+					this.filter = filterName.trim()
 					if (this.showFacilities) {
 						return this.facilityService.getFacilitySnapshots(
 							this.selectedFacility['FacilityId'],
 							this.currentPage,
 							this.snapshot_page.items_per_page,
-							this.filter,
-						);
+							this.filter
+						)
 					} else {
 						return this.imageService.getSnapshotsByUser(
 							this.currentPage,
 							this.snapshot_page.items_per_page,
-							this.filter,
-						);
+							this.filter
+						)
 					}
-				}),
+				})
 			)
 			.subscribe((snapshot_page: SnapshotPage): void => {
-				this.snapshot_page = snapshot_page;
-				this.isLoaded = true;
-				this.checkSnapShotsStatus();
-				this.isSearching = false;
-			});
+				this.snapshot_page = snapshot_page
+				this.isLoaded = true
+				this.checkSnapShotsStatus()
+				this.isSearching = false
+			})
 
 		this.snapshotsPerPageChange.pipe(debounceTime(this.DEBOUNCE_TIME), distinctUntilChanged()).subscribe((): void => {
 			if (this.showFacilities) {
-				this.getFacilitySnapshots();
+				this.getFacilitySnapshots()
 			} else {
-				this.getSnapshots();
+				this.getSnapshots()
 			}
-		});
+		})
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
-			this.managerFacilities = result;
-			this.selectedFacility = this.managerFacilities[0];
-		});
+			this.managerFacilities = result
+			this.selectedFacility = this.managerFacilities[0]
+		})
 	}
 
 	areAllSnapshotsChecked(): void {
-		let all_checked: boolean = true;
+		let all_checked: boolean = true
 		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel): void => {
 			if (!this.isSnapChecked(snap)) {
-				all_checked = false;
+				all_checked = false
 			}
-		});
+		})
 
-		this.all_snapshots_checked = all_checked;
+		this.all_snapshots_checked = all_checked
 	}
 
 	changeCheckedSnapshot(snap: SnapshotModel): void {
 		if (!this.isSnapChecked(snap)) {
-			this.checked_snapshots.push(snap);
+			this.checked_snapshots.push(snap)
 		} else {
-			this.checked_snapshots.splice(this.checked_snapshots.indexOf(snap), 1);
+			this.checked_snapshots.splice(this.checked_snapshots.indexOf(snap), 1)
 		}
-		this.areAllSnapshotsChecked();
+		this.areAllSnapshotsChecked()
 	}
 
 	isSnapChecked(snap: SnapshotModel): boolean {
-		return this.checked_snapshots.indexOf(snap) !== -1;
+		return this.checked_snapshots.indexOf(snap) !== -1
 	}
 
 	deleteSelectedSnapshots(): void {
 		this.checked_snapshots.forEach((snap: SnapshotModel): void => {
-			this.deleteSnapshot(snap);
-		});
-		this.uncheckAll();
+			this.deleteSnapshot(snap)
+		})
+		this.uncheckAll()
 	}
 
 	uncheckAll(): void {
-		this.checked_snapshots = [];
-		this.all_snapshots_checked = false;
+		this.checked_snapshots = []
+		this.all_snapshots_checked = false
 	}
 
 	/**
@@ -301,19 +301,19 @@ export class SnapshotOverviewComponent implements OnInit {
 	 * @param event
 	 */
 	pageChanged(event: any): void {
-		this.isSearching = true;
+		this.isSearching = true
 
-		this.currentPage = event.page;
+		this.currentPage = event.page
 		if (this.showFacilities) {
-			this.getFacilitySnapshots();
+			this.getFacilitySnapshots()
 		} else {
-			this.getSnapshots();
+			this.getSnapshots()
 		}
 	}
 
 	reset(): void {
-		this.snapshot_page = new SnapshotPage();
-		this.isSearching = true;
-		this.currentPage = 1;
+		this.snapshot_page = new SnapshotPage()
+		this.isSearching = true
+		this.currentPage = 1
 	}
 }

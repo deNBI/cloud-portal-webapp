@@ -1,20 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Application } from '../../application.model/application.model';
-import { ApplicationBaseClassComponent } from '../../../shared/shared_modules/baseClass/application-base-class.component';
-import { User } from '../../application.model/user.model';
+import { Component, Input, OnInit } from '@angular/core'
+import { Application } from '../../application.model/application.model'
+import { ApplicationBaseClassComponent } from '../../../shared/shared_modules/baseClass/application-base-class.component'
+import { User } from '../../application.model/user.model'
 
 /**
  * Lifetime extension details.
  */
 @Component({
 	selector: 'app-lifetime-extension-detail',
-	templateUrl: './lifetime-extension-detail.component.html',
+	templateUrl: './lifetime-extension-detail.component.html'
 })
 export class LifetimeExtensionDetailComponent extends ApplicationBaseClassComponent implements OnInit {
-	@Input() application: Application;
+	@Input() application: Application
 
 	ngOnInit() {
-		this.getRequestingUser();
+		this.getRequestingUser()
 	}
 
 	getRequestingUser() {
@@ -22,8 +22,8 @@ export class LifetimeExtensionDetailComponent extends ApplicationBaseClassCompon
 			this.applicationsService
 				.getLifetimeExtensionUser(this.application.project_application_id)
 				.subscribe((user: User) => {
-					this.application.project_lifetime_request.user = user;
-				});
+					this.application.project_lifetime_request.user = user
+				})
 		}
 	}
 }

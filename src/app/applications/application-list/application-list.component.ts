@@ -1,87 +1,85 @@
-import {
-	Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,
-} from '@angular/core';
-import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core'
+import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class'
 
-import { Application } from '../application.model/application.model';
-import { ApplicationTabStates } from '../../shared/enums/application-tab-states';
-import { ComputecenterComponent } from '../../projectmanagement/computecenter.component';
-import { is_vo } from '../../shared/globalvar';
+import { Application } from '../application.model/application.model'
+import { ApplicationTabStates } from '../../shared/enums/application-tab-states'
+import { ComputecenterComponent } from '../../projectmanagement/computecenter.component'
+import { is_vo } from '../../shared/globalvar'
 
 @Component({
 	selector: 'app-application-list',
 
 	templateUrl: './application-list.component.html',
-	styleUrl: './application-list.component.scss',
+	styleUrl: './application-list.component.scss'
 })
 export class ApplicationListComponent implements OnInit, OnChanges {
-	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter();
+	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter()
 
-	@Input() applications: Application[] = [];
-	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED;
-	@Input() computeCenters: ComputecenterComponent[] = [];
-	@Input() facilityView: boolean = false;
-	@Input() voView: boolean = false;
+	@Input() applications: Application[] = []
+	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED
+	@Input() computeCenters: ComputecenterComponent[] = []
+	@Input() facilityView: boolean = false
+	@Input() voView: boolean = false
 
-	dataTestId: string = '';
+	dataTestId: string = ''
 
-	is_vo_admin: boolean = false;
+	is_vo_admin: boolean = false
 
 	ngOnInit() {
-		this.is_vo_admin = is_vo;
-		this.setDataTestId();
+		this.is_vo_admin = is_vo
+		this.setDataTestId()
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	ngOnChanges(changes: SimpleChanges) {
-		this.setDataTestId();
+		this.setDataTestId()
 	}
 
 	setDataTestId(): void {
-		console.log('set data test id');
+		console.log('set data test id')
 		switch (this.tabState) {
 			case ApplicationTabStates.SUBMITTED: {
-				this.dataTestId = 'submitted_applications_container';
-				break;
+				this.dataTestId = 'submitted_applications_container'
+				break
 			}
 			case ApplicationTabStates.CREDITS_EXTENSION: {
-				this.dataTestId = 'credits_requests_applications_container';
-				break;
+				this.dataTestId = 'credits_requests_applications_container'
+				break
 			}
 			case ApplicationTabStates.LIFETIME_EXTENSION: {
-				this.dataTestId = 'lifetime_requests_applications_container';
-				break;
+				this.dataTestId = 'lifetime_requests_applications_container'
+				break
 			}
 			case ApplicationTabStates.MODIFICATION_EXTENSION: {
-				this.dataTestId = 'modification_requests_applications_container';
-				break;
+				this.dataTestId = 'modification_requests_applications_container'
+				break
 			}
 			case ApplicationTabStates.TERMINATION_REQUEST: {
-				this.dataTestId = 'termination_requests_applications_container';
-				break;
+				this.dataTestId = 'termination_requests_applications_container'
+				break
 			}
 			default: {
-				break;
+				break
 			}
 		}
-		console.log(this.dataTestId);
+		console.log(this.dataTestId)
 	}
 
 	triggerReloadNumbers() {
-		console.log('trigger reload 2');
-		this.reloadNumbersTrigger.emit();
+		console.log('trigger reload 2')
+		this.reloadNumbersTrigger.emit()
 	}
 
 	removeApplicationFromList(application_id: string | number) {
 		const idx: number = this.applications.findIndex(
-			(application: Application) => application.project_application_id === application_id,
-		);
+			(application: Application) => application.project_application_id === application_id
+		)
 
 		if (idx !== -1) {
-			console.log('remove index');
-			this.applications.splice(idx, 1);
+			console.log('remove index')
+			this.applications.splice(idx, 1)
 		}
 	}
 
-	protected readonly Application_States = Application_States;
+	protected readonly Application_States = Application_States
 }
