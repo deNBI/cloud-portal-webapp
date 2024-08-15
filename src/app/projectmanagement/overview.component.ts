@@ -179,7 +179,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.creditHistoryLoaded = false;
 					this.creditsChart = undefined;
 				}
-			} catch (error: Error) {
+			} catch (error: any) {
 				console.log(error);
 			}
 
