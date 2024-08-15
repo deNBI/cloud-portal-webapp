@@ -3,10 +3,10 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
-const VO_NAME: string = window['env']['VO_NAME'] || 'denbi-dev';
-const NEW_SIMPLE_VM: string = window['env']['NEW_SIMPLE_VM'] || 'https://simplevm.denbi.de';
-const MATOMO_SITE_ID = window['env']['MATOMO_SITE_ID'] || 0;
-const MATOMO_TRACKING_URL = window['env']['MATOMO_TRACKING_URL'] || '';
+const VO_NAME: string = window['env']['VO_NAME'] || 'denbi-dev'
+const NEW_SIMPLE_VM: string = window['env']['NEW_SIMPLE_VM'] || 'https://simplevm.denbi.de'
+const MATOMO_SITE_ID = window['env']['MATOMO_SITE_ID'] || 0
+const MATOMO_TRACKING_URL = window['env']['MATOMO_TRACKING_URL'] || ''
 
 export const environment: any = {
 	WIKI_PRE: 'https://portal-dev.denbi.de/wiki/',
@@ -27,5 +27,5 @@ export const environment: any = {
 	login: 'http://localhost:8000/api/v0/loggedUser/',
 	webapp: 'http://localhost:8001/',
 	MATOMO_SITE_ID,
-	MATOMO_TRACKING_URL,
-};
+	MATOMO_TRACKING_URL
+}

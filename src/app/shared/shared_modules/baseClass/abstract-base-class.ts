@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 
 enum Lifetime_States {
 	EXPIRED = 0,
@@ -83,8 +83,7 @@ enum Vm_Statuses {
 	RESTARTING = 6,
 	'NOT FOUND' = 7,
 }
-
-/* eslint-enable */
+ 
 
 /**
  * Abstract class for basic things.
@@ -95,50 +94,50 @@ export abstract class AbstractBaseClass {
 	 *
 	 * @type {boolean}
 	 */
-	isLoaded: boolean = false;
+	isLoaded: boolean = false
 
 	/**
 	 * If the user is a vo admin.
 	 *
 	 * @type {boolean}
 	 */
-	is_vo_admin: boolean = false;
+	is_vo_admin: boolean = false
 
-	lifetime_states: typeof Lifetime_States = Lifetime_States;
-	project_states: typeof Project_States = Project_States;
-	application_states: typeof Application_States = Application_States;
-	vm_statuses: typeof Vm_Statuses = Vm_Statuses;
+	lifetime_states: typeof Lifetime_States = Lifetime_States
+	project_states: typeof Project_States = Project_States
+	application_states: typeof Application_States = Application_States
+	vm_statuses: typeof Vm_Statuses = Vm_Statuses
 
-	collapse_status: { [id: string]: boolean } = {};
+	collapse_status: { [id: string]: boolean } = {}
 
 	/**
 	 * Used in application formular and on instance detail page
 	 */
 	gpuInformationLinks: [string, string][] = [
 		['https://developer.nvidia.com/cuda-gpus', 'NVIDIA'],
-		['https://en.wikipedia.org/wiki/CUDA', 'Wikipedia'],
-	];
+		['https://en.wikipedia.org/wiki/CUDA', 'Wikipedia']
+	]
 
 	// notification Modal variables
-	public notificationModalTitle: string = 'Notification';
-	public notificationModalMessage: string = 'Please wait...';
-	public notificationModalType: string = 'info';
-	public notificationModalInfoMessage: string = '';
-	public notificationModalIsClosable: boolean = false;
-	public notificationModalStay: boolean;
+	public notificationModalTitle: string = 'Notification'
+	public notificationModalMessage: string = 'Please wait...'
+	public notificationModalType: string = 'info'
+	public notificationModalInfoMessage: string = ''
+	public notificationModalIsClosable: boolean = false
+	public notificationModalStay: boolean
 
 	public resetNotificationModal(): void {
-		this.notificationModalTitle = 'Notification';
-		this.notificationModalMessage = 'Please wait...';
-		this.notificationModalIsClosable = false;
-		this.notificationModalType = 'info';
+		this.notificationModalTitle = 'Notification'
+		this.notificationModalMessage = 'Please wait...'
+		this.notificationModalIsClosable = false
+		this.notificationModalType = 'info'
 	}
 
 	public updateNotificationModal(title: string, message: string, closable: true, type: string): void {
-		this.notificationModalTitle = title;
-		this.notificationModalMessage = message;
-		this.notificationModalIsClosable = closable;
-		this.notificationModalType = type;
+		this.notificationModalTitle = title
+		this.notificationModalMessage = message
+		this.notificationModalIsClosable = closable
+		this.notificationModalType = type
 	}
 
 	/**
@@ -149,16 +148,16 @@ export abstract class AbstractBaseClass {
 	 */
 	public getCollapseStatus(id: string): boolean {
 		if (id in this.collapse_status) {
-			return this.collapse_status[id];
+			return this.collapse_status[id]
 		} else {
-			this.collapse_status[id] = true;
+			this.collapse_status[id] = true
 
-			return true;
+			return true
 		}
 	}
 
 	public setCollapseStatus(id: string, status: boolean): void {
-		this.collapse_status[id] = status;
+		this.collapse_status[id] = status
 	}
 
 	/**
@@ -167,36 +166,36 @@ export abstract class AbstractBaseClass {
 	 * @param id
 	 */
 	public switchCollapseStatus(id: string): void {
-		this.collapse_status[id] = !this.getCollapseStatus(id);
+		this.collapse_status[id] = !this.getCollapseStatus(id)
 	}
 
 	lifeTimeReached(lifetimeDays: number, running: number): Lifetime_States {
 		if (!lifetimeDays || !running) {
-			return null;
+			return null
 		}
 		if (lifetimeDays - running < 0) {
 			// expired
-			return this.lifetime_states.EXPIRED;
+			return this.lifetime_states.EXPIRED
 		} else if (lifetimeDays - running < 21) {
 			// expires soon
-			return this.lifetime_states.EXPIRES_SOON;
+			return this.lifetime_states.EXPIRES_SOON
 		} else {
 			// still valid
-			return this.lifetime_states.VALID_LIFETIME;
+			return this.lifetime_states.VALID_LIFETIME
 		}
 	}
 
 	copyToClipboard(text: string): void {
 		document.addEventListener('copy', (clipEvent: ClipboardEvent): void => {
-			clipEvent.clipboardData.setData('text/plain', text);
-			clipEvent.preventDefault();
-			document.removeEventListener('copy', null);
-		});
-		document.execCommand('copy');
+			clipEvent.clipboardData.setData('text/plain', text)
+			clipEvent.preventDefault()
+			document.removeEventListener('copy', null)
+		})
+		document.execCommand('copy')
 	}
 
 	isASCII(testString: string): boolean {
 		// eslint-disable-next-line no-control-regex
-		return /^[\x00-\x7F]*$/.test(testString);
+		return /^[\x00-\x7F]*$/.test(testString)
 	}
 }
