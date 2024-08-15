@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { green } from 'audit-ci/dist/colors';
 import { Application } from '../../application.model/application.model';
 import { User } from '../../application.model/user.model';
 import { ApplicationBaseClassComponent } from '../../../shared/shared_modules/baseClass/application-base-class.component';
@@ -24,7 +23,6 @@ export class ResourceDetailComponent extends ApplicationBaseClassComponent imple
 	@Input() is_vo_admin: boolean;
 	@Input() current_credits: number;
 	protected readonly Math = Math;
-	protected readonly green = green;
 	flavorDiffs: FlavorDiff[] = [];
 
 	ngOnInit() {

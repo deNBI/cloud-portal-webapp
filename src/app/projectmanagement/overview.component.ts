@@ -9,7 +9,8 @@ import {
 	ViewChild,
 	inject,
 } from '@angular/core';
-import moment from 'moment'; import { forkJoin, Observable, Subscription } from 'rxjs';
+import moment from 'moment';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
@@ -178,8 +179,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.creditHistoryLoaded = false;
 					this.creditsChart = undefined;
 				}
-			} catch (someError) {
-				// empty catch
+			} catch (error: any) {
+				console.log(error);
 			}
 
 			this.subscription.unsubscribe();
@@ -217,8 +218,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			if (this.updateCreditsHistoryIntervals) {
 				clearInterval(this.updateCreditsHistoryIntervals);
 			}
-		} catch (someError) {
-			// empty catch
+		} catch (error: any) {
+			console.log(error);
 		}
 	}
 
@@ -440,7 +441,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.subscription.add(
 				this.creditsService
 					.getCreditsUsageHistoryOfProject(Number(this.project_application.project_application_perun_id.toString()))
-					.subscribe((response: {}): void => {
+					.subscribe((response: any): void => {
 						if (response['data_points'] !== undefined) {
 							const data_points: number[] = response['data_points'];
 							if (this.creditsChart !== undefined) {
@@ -517,7 +518,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 								this.project_application.project_application_current_credits = credits;
 							}
 						},
-						(err: Error): void => {
+						(err: any): void => {
 							console.log(err.message);
 						},
 					),

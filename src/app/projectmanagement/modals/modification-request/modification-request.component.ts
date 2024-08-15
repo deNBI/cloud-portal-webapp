@@ -272,7 +272,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	}
 
 	showSubmitModal(adjustment: boolean): void {
-		let initialState: {};
+		let initialState: object;
 		if (adjustment) {
 			initialState = {
 				project: this.project,
