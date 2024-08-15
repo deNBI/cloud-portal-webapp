@@ -1,1 +1,3 @@
-yarn
+#!/bin/sh
+
+npx lint-staged

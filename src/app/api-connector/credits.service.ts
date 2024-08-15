@@ -113,7 +113,7 @@ export class CreditsService {
 	 *
 	 * @param group_id
 	 */
-	public getCreditsUsageHistoryOfProject(group_id: number): Observable<{}> {
+	public getCreditsUsageHistoryOfProject(group_id: number): Observable<object> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}creditManager/${group_id}/getCreditsHistory/`, {
 			withCredentials: true,
 		});
@@ -124,8 +124,8 @@ export class CreditsService {
 		flavor_pairs: [string, number][],
 		compute_center_name: string,
 		start_timestamp: number,
-	): Observable<{}> {
-		const params: {} = {
+	): Observable<object> {
+		const params: object = {
 			hours,
 			flavor_pairs,
 			compute_center_name,
@@ -142,8 +142,8 @@ export class CreditsService {
 		flavor_pairs: [string, number][],
 		compute_center_name: string,
 		start_timestamp: number,
-	): Observable<{}> {
-		const params: {} = {
+	): Observable<object> {
+		const params: object = {
 			credits,
 			flavor_pairs,
 			compute_center_name,
