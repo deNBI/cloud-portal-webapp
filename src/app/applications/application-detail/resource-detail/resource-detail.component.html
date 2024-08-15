@@ -71,7 +71,7 @@
 							color:
 								application.project_modification_request.vms_requested >= application.project_application_vms_requested
 									? 'green'
-									: 'red'
+									: 'red',
 						}"
 					>
 						{{
@@ -101,7 +101,7 @@
 					<td>
 						<span
 							[ngStyle]="{
-								color: flavorDiff.diff >= 0 ? 'green' : 'red'
+								color: flavorDiff.diff >= 0 ? 'green' : 'red',
 							}"
 						>
 							{{ flavorDiff.diff === 0 ? '' : flavorDiff.diff > 0 ? '+' : '-' }}
@@ -124,7 +124,7 @@
 							color:
 								application.project_modification_request.total_cores >= application.project_application_total_cores
 									? 'green'
-									: 'red'
+									: 'red',
 						}"
 					>
 						{{
@@ -155,7 +155,7 @@
 							color:
 								application.project_modification_request.total_ram >= application.project_application_total_ram
 									? 'green'
-									: 'red'
+									: 'red',
 						}"
 					>
 						{{
@@ -183,7 +183,7 @@
 							color:
 								application.project_modification_request.total_gpu >= application.project_application_total_gpu
 									? 'green'
-									: 'red'
+									: 'red',
 						}"
 					>
 						{{
@@ -210,7 +210,7 @@
 				<td>
 					<span
 						[ngStyle]="{
-							color: green
+							color: 'green',
 						}"
 					>
 						+ {{ application.project_modification_request.extra_credits }}
@@ -241,7 +241,7 @@
 							color:
 								application.project_modification_request.volume_limit >= application.project_application_volume_limit
 									? 'green'
-									: 'red'
+									: 'red',
 						}"
 					>
 						{{
@@ -272,7 +272,7 @@
 								application.project_modification_request.volume_counter >=
 								application.project_application_volume_counter
 									? 'green'
-									: 'red'
+									: 'red',
 						}"
 					>
 						{{
@@ -304,7 +304,7 @@
 								application.project_modification_request.object_storage >=
 								application.project_application_object_storage
 									? 'green'
-									: 'red'
+									: 'red',
 						}"
 					>
 						{{
