@@ -126,7 +126,7 @@ export class ClusterActionsComponent implements OnDestroy {
 		this.cluster.status = VirtualMachineStates.POWERING_OFF;
 		this.subscription.add(
 			this.virtualmachineservice.stopCluster(this.cluster.cluster_id).subscribe((): void => {
-				this.cluster.status === VirtualMachineStates.POWERING_OFF;
+				this.cluster.status = VirtualMachineStates.POWERING_OFF;
 				this.startStatusLoop.emit();
 			}),
 		);
