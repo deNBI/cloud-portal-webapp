@@ -22,19 +22,19 @@ export class TypeOverviewComponent implements OnInit {
 	kubernetes_color: string = '#326ce5';
 	is_vo_admin: boolean = is_vo;
 
-	simpleVM_logo_link: String;
-	simpleVM_ease_logo: String;
-	simpleVM_curve_logo: String;
-	simpleVM_remote_logo: String;
+	simpleVM_logo_link: string;
+	simpleVM_ease_logo: string;
+	simpleVM_curve_logo: string;
+	simpleVM_remote_logo: string;
 
 	kubernetes_logo_link: string;
 	kubernetes_logo_border: string;
 
-	openstack_logo_link: String;
-	openstack_api_logo: String;
-	openstack_conf_logo: String;
-	openstack_scale_logo: String;
-	static_img_folder: String = 'static/webapp/assets/img/';
+	openstack_logo_link: string;
+	openstack_api_logo: string;
+	openstack_conf_logo: string;
+	openstack_scale_logo: string;
+	static_img_folder: string = 'static/webapp/assets/img/';
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
