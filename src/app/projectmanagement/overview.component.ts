@@ -218,7 +218,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			if (this.updateCreditsHistoryIntervals) {
 				clearInterval(this.updateCreditsHistoryIntervals);
 			}
-		} catch (error: Error) {
+		} catch (error: any) {
 			console.log(error);
 		}
 	}
@@ -518,7 +518,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 								this.project_application.project_application_current_credits = credits;
 							}
 						},
-						(err: Error): void => {
+						(err: any): void => {
 							console.log(err.message);
 						},
 					),
