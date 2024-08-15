@@ -17,7 +17,7 @@ import { filter } from 'rxjs/operators';
                  </ng-template>`,
 })
 export class BreadcrumbsComponent implements OnInit {
-	breadcrumbs: Object[];
+	breadcrumbs: object[];
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		this.router = router;
