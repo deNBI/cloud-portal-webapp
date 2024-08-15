@@ -10,6 +10,7 @@
 						(click)="showConfirmationModal(ConfirmationActions.APPROVE_APPLICATION)"
 						type=" button"
 						class="btn btn-success"
+						tooltip="Approve Application"
 					>
 						<i class="fa fa-check"></i>&nbsp;
 						<span class="d-none">Approve</span>
@@ -23,6 +24,7 @@
 						(click)="showConfirmationModal(ConfirmationActions.DECLINE_APPLICATION)"
 						type="button"
 						class="btn btn-danger"
+						tooltip="Decline Application"
 					>
 						<i class="fa fa-times"></i>&nbsp;
 						<span class="d-none">Decline</span>
@@ -36,6 +38,7 @@
 					type="button"
 					[attr.data-test-id]="'extension_approval_' + application?.project_application_name"
 					class="btn btn-success"
+					tooltip="Approve Extension"
 				>
 					<i class="fa fa-check"></i>&nbsp;
 					<span class="d-none">Approve Extension</span>
@@ -48,6 +51,7 @@
 					(click)="showConfirmationModal(ConfirmationActions.DECLINE_EXTENSION)"
 					type="button"
 					class="btn btn-danger"
+					tooltip="Decline Extension"
 				>
 					<i class="fa fa-times"></i>&nbsp;
 					<span class="d-none">Decline Extension</span>
@@ -62,6 +66,7 @@
 					class="btn btn-success"
 					[attr.data-test-id]="'approveModificationButton_' + application?.project_application_shortname"
 					(click)="showConfirmationModal(ConfirmationActions.APPROVE_MODIFICATION)"
+					tooltop="Approve Modification"
 				>
 					<i class="fa fa-check"></i>&nbsp;
 					<span class="d-none">Approve Modification</span>
@@ -73,6 +78,7 @@
 					(click)="showConfirmationModal(ConfirmationActions.DECLINE_MODIFICATION)"
 					type="button"
 					class="btn btn-danger"
+					tooltip="Decline Modification"
 				>
 					<i class="fa fa-times"></i>
 					<span class="d-none">Decline Modification</span>
@@ -85,6 +91,7 @@
 					type="button"
 					class="btn btn-danger"
 					data-test-id="terminate_project_btn"
+					tooltip="Terminate Project"
 					(click)="showConfirmationModal(ConfirmationActions.APPROVE_TERMINATION)"
 				>
 					<i class="fa fa-check"></i>&nbsp;
@@ -97,6 +104,7 @@
 					(click)="showConfirmationModal(ConfirmationActions.DECLINE_TERMINATION)"
 					type="button"
 					class="btn btn-warning"
+					tooltip="Decline Termination"
 				>
 					<i class="fa fa-times"></i>
 					<span class="d-none"> Decline Termination</span>
@@ -109,7 +117,7 @@
 			type="button"
 			class="btn btn-secondary"
 			style="margin: 2px"
-			tooltip="Show details"
+			tooltip="{{ isCollapsed ? 'Show' : 'Hide' }} details"
 		>
 			<i class="fa fa-info-circle"></i>&nbsp;
 			<span class="d-none" [hidden]="!isCollapsed">Show</span>
