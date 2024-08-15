@@ -16,10 +16,8 @@ export class PlaybookService {
 	}
 
 	getPlaybookForVM(vm_id: string): Observable<any> {
-
-		return this.http.get<Object>(`${this.baseUrl}${vm_id}/`, {
+		return this.http.get<object>(`${this.baseUrl}${vm_id}/`, {
 			withCredentials: true,
 		});
 	}
-
 }
