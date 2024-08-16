@@ -42,7 +42,8 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	}
 
 	switchCollaps() {
-		this.switchCollapseEvent.emit()
+		this.isCollapsed = !this.isCollapsed;
+		this.switchCollapseEvent.emit();
 	}
 
 	triggerRemoveApplication() {
