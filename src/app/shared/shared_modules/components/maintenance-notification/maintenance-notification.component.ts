@@ -1,17 +1,17 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { MaintenanceTimeFrame } from '../../../../vo_manager/maintenance/maintenanceTimeFrame.model';
+import { Component, Input, ViewChild } from '@angular/core'
+import { ModalDirective } from 'ngx-bootstrap/modal'
+import { MaintenanceTimeFrame } from '../../../../vo_manager/maintenance/maintenanceTimeFrame.model'
 
 @Component({
 	selector: 'app-maintenance-notification',
 	templateUrl: './maintenance-notification.component.html',
-	styleUrls: ['./maintenance-notification.component.scss'],
+	styleUrls: ['./maintenance-notification.component.scss']
 })
 export class MaintenanceNotificationComponent {
-	@Input() maintenanceTimeframes: MaintenanceTimeFrame[] = [];
-	@ViewChild('maintenanceModal') maintenanceModal: ModalDirective;
+	@Input() maintenanceTimeframes: MaintenanceTimeFrame[] = []
+	@ViewChild('maintenanceModal') maintenanceModal: ModalDirective
 
 	toggleModal(): void {
-		this.maintenanceModal.toggle();
+		this.maintenanceModal.toggle()
 	}
 }

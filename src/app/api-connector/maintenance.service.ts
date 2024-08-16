@@ -1,15 +1,15 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApiSettings } from './api-settings.service';
-import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model';
+import { HttpClient, HttpParams } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { ApiSettings } from './api-settings.service'
+import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model'
 
 /**
  * Service which provides the newest maintenance timeframes, e.g. to show in userInformation
  */
 @Injectable({
-	providedIn: 'root',
+	providedIn: 'root'
 })
 export class MaintenanceService {
 	constructor(private http: HttpClient) {}
@@ -20,32 +20,35 @@ export class MaintenanceService {
 	getFutureMaintenanceTimeFrames(): Observable<MaintenanceTimeFrame[]> {
 		return this.http
 			.get<MaintenanceTimeFrame[]>(`${ApiSettings.getApiBaseURL()}maintenance/`, {
-				withCredentials: true,
+				withCredentials: true
 			})
 			.pipe(
-				map((maintenanceTimeFrames: MaintenanceTimeFrame[]): MaintenanceTimeFrame[] => maintenanceTimeFrames.map(
-					(maintenanceTimeFrame: MaintenanceTimeFrame): MaintenanceTimeFrame => new MaintenanceTimeFrame(maintenanceTimeFrame),
-				)),
-			);
+				map((maintenanceTimeFrames: MaintenanceTimeFrame[]): MaintenanceTimeFrame[] =>
+					maintenanceTimeFrames.map(
+						(maintenanceTimeFrame: MaintenanceTimeFrame): MaintenanceTimeFrame =>
+							new MaintenanceTimeFrame(maintenanceTimeFrame)
+					)
+				)
+			)
 	}
 
 	getNumberOfUnconfirmedTimeFrames(elixir_id: string): Observable<any> {
-		const params: HttpParams = new HttpParams().set('elixir_id', elixir_id);
+		const params: HttpParams = new HttpParams().set('elixir_id', elixir_id)
 
 		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}maintenance/confirmable/`, {
 			withCredentials: true,
-			params,
-		});
+			params
+		})
 	}
 
 	confirmNote(elixir_id: string, timeframes: MaintenanceTimeFrame[]): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('elixir_id', elixir_id)
-			.set('ids', JSON.stringify(timeframes.map((tf: MaintenanceTimeFrame) => tf.id)));
+			.set('ids', JSON.stringify(timeframes.map((tf: MaintenanceTimeFrame) => tf.id)))
 
 		return this.http.get(`${ApiSettings.getApiBaseURL()}maintenance/confirm/`, {
 			withCredentials: true,
-			params,
-		});
+			params
+		})
 	}
 }

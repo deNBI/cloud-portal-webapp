@@ -19,7 +19,6 @@
       "extends": [
         "plugin:@angular-eslint/template/process-inline-templates",
         "eslint:recommended",
-        "airbnb-base",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
       ],
@@ -28,6 +27,9 @@
         "@typescript-eslint"
       ],
       "rules": {
+            "import/newline-after-import": "off",
+            "import/no-named-as-default": "off",
+        "import/no-named-as-default-member": "off",
 
         "@angular-eslint/directive-selector": [
           "error",
@@ -59,7 +61,7 @@
         ],
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": "warn",
-        "require-jsdoc": "warn",
+       // "require-jsdoc": "warn",
         "guard-for-in": "off",
         "jsdoc/newline-after-description": "off",
         "jsdoc/no-types": "off",
@@ -171,6 +173,7 @@
         "import/no-unresolved": "off",
         "import/no-mutable-exports": "off",
         "import/extensions": "off",
+        "import/no-amd": "off",
         "import/no-extraneous-dependencies": "off",
         "indent": [
           "error",

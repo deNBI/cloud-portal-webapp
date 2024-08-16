@@ -1,29 +1,27 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { OverviewComponent } from './overview.component';
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
+import { OverviewComponent } from './overview.component'
 
 const routes: Routes = [
 	{
 		path: '',
 		redirectTo: '/userinfo',
-		pathMatch: 'full',
+		pathMatch: 'full'
 	},
 	{
 		path: ':id',
 		component: OverviewComponent,
 		data: {
-			title: 'Project Overview',
-		},
-	},
-
-];
+			title: 'Project Overview'
+		}
+	}
+]
 
 /**
  * Projectmanagement routing module.
  */
 @NgModule({
 	imports: [RouterModule.forChild(routes)],
-	exports: [RouterModule],
+	exports: [RouterModule]
 })
-export class ProjectManagementRoutingModule {
-}
+export class ProjectManagementRoutingModule {}

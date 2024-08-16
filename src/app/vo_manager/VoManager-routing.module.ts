@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { VoOverviewComponent } from './VoOverviewComponent';
-import { VoGuardService } from './vo-guard.service';
-import { ResourcesComponent } from './resources/resources.component';
-import { ClientOverviewComponent } from './clients/clientOverview.component';
-import { NumberChartsComponent } from './number-charts/number-charts.component';
-import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
+import { VoOverviewComponent } from './VoOverviewComponent'
+import { VoGuardService } from './vo-guard.service'
+import { ResourcesComponent } from './resources/resources.component'
+import { ClientOverviewComponent } from './clients/clientOverview.component'
+import { NumberChartsComponent } from './number-charts/number-charts.component'
+import { MaintenanceComponent } from './maintenance/maintenance.component'
 
 const routes: Routes = [
 	{
@@ -13,24 +13,24 @@ const routes: Routes = [
 		component: VoOverviewComponent,
 		canActivate: [VoGuardService],
 		data: {
-			title: 'Vo manager overview',
-		},
+			title: 'Vo manager overview'
+		}
 	},
 	{
 		path: 'resources',
 		component: ResourcesComponent,
 		canActivate: [VoGuardService],
 		data: {
-			title: 'Vo Resources',
-		},
+			title: 'Vo Resources'
+		}
 	},
 	{
 		path: 'clientsOverview',
 		component: ClientOverviewComponent,
 		canActivate: [VoGuardService],
 		data: {
-			title: 'Clients',
-		},
+			title: 'Clients'
+		}
 	},
 
 	{
@@ -38,8 +38,8 @@ const routes: Routes = [
 		component: NumberChartsComponent,
 		canActivate: [VoGuardService],
 		data: {
-			title: 'Cloud Numbers',
-		},
+			title: 'Cloud Numbers'
+		}
 	},
 
 	{
@@ -47,16 +47,16 @@ const routes: Routes = [
 		component: MaintenanceComponent,
 		canActivate: [VoGuardService],
 		data: {
-			title: 'Maintenance',
-		},
-	},
-];
+			title: 'Maintenance'
+		}
+	}
+]
 
 /**
  * Vo Manager routing module.
  */
 @NgModule({
 	imports: [RouterModule.forChild(routes)],
-	exports: [RouterModule],
+	exports: [RouterModule]
 })
 export class VoManagerRoutingModule {}

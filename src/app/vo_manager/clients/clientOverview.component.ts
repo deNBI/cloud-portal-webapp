@@ -1,80 +1,78 @@
-import {
-	Component, OnDestroy, OnInit, inject,
-} from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { MatomoTracker } from 'ngx-matomo-client';
-import { Client } from './client.model';
-import { ClientService } from '../../api-connector/client.service';
-import { ApiSettings } from '../../api-connector/api-settings.service';
-import { GroupService } from '../../api-connector/group.service';
-import { UserService } from '../../api-connector/user.service';
-import { ComputecenterComponent } from '../../projectmanagement/computecenter.component';
-import { FacilityService } from '../../api-connector/facility.service';
-import { IResponseTemplate } from '../../api-connector/response-template';
-import { is_vo } from '../../shared/globalvar';
-import { ClientLimitsComponent } from './modals/client-limits..component';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core'
+import { Subscription } from 'rxjs'
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { MatomoTracker } from 'ngx-matomo-client'
+import { Client } from './client.model'
+import { ClientService } from '../../api-connector/client.service'
+import { ApiSettings } from '../../api-connector/api-settings.service'
+import { GroupService } from '../../api-connector/group.service'
+import { UserService } from '../../api-connector/user.service'
+import { ComputecenterComponent } from '../../projectmanagement/computecenter.component'
+import { FacilityService } from '../../api-connector/facility.service'
+import { IResponseTemplate } from '../../api-connector/response-template'
+import { is_vo } from '../../shared/globalvar'
+import { ClientLimitsComponent } from './modals/client-limits..component'
 /**
  * Client component.
  */
 @Component({
 	selector: 'app-client-overview',
 	templateUrl: 'clientOverview.html',
-	providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
+	providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings]
 })
 export class ClientOverviewComponent implements OnInit, OnDestroy {
-	title: string = 'Client Overview';
+	title: string = 'Client Overview'
 	/**
 	 * All clients.
 	 */
-	clients: Client[];
-	bsModalRef: BsModalRef;
+	clients: Client[]
+	bsModalRef: BsModalRef
 
 	/**
 	 * Selected Client;
 	 */
-	selectedClient: Client;
+	selectedClient: Client
 	/**
 	 * If user is vo.
 	 *
 	 * @type {boolean}
 	 */
-	is_vo_admin: boolean = false;
+	is_vo_admin: boolean = false
 	/**
 	 * Default status not added client.
 	 *
 	 * @type {string}
 	 */
-	checkStatus: string = 'Not checked';
+	checkStatus: string = 'Not checked'
 	/**
 	 * All computecenters.
 	 *
 	 * @type {Array}
 	 */
-	computeCenters: ComputecenterComponent[] = [];
+	computeCenters: ComputecenterComponent[] = []
 	/**
 	 * Selected computecenter.
 	 */
-	selectedComputeCenter: ComputecenterComponent;
+	selectedComputeCenter: ComputecenterComponent
 	/**
 	 * If site is initialized with data.
 	 *
 	 * @type {boolean}
 	 */
-	isLoaded: boolean = false;
+	isLoaded: boolean = false
 
-	subscription: Subscription = new Subscription();
-	private readonly tracker = inject(MatomoTracker);
+	subscription: Subscription = new Subscription()
+	private readonly tracker = inject(MatomoTracker)
 
 	constructor(
 		private facilityService: FacilityService,
 		private userService: UserService,
 		private clientservice: ClientService,
-		private modalService: BsModalService,
+		private modalService: BsModalService
 	) {
-		this.facilityService = facilityService;
-		this.userService = userService;
-		this.facilityService = facilityService;
+		this.facilityService = facilityService
+		this.userService = userService
+		this.facilityService = facilityService
 	}
 
 	/**
@@ -83,16 +81,16 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 	getClientsChecked(): void {
 		this.subscription.add(
 			this.clientservice.getClientsChecked().subscribe((clients: Client[]): void => {
-				this.clients = clients;
-				this.isLoaded = true;
-			}),
-		);
+				this.clients = clients
+				this.isLoaded = true
+			})
+		)
 	}
 
 	showClientsLimitsModal(cl: Client): void {
-		const initialState = { client: cl };
+		const initialState = { client: cl }
 
-		this.bsModalRef = this.modalService.show(ClientLimitsComponent, { initialState });
+		this.bsModalRef = this.modalService.show(ClientLimitsComponent, { initialState })
 		// this.bsModalRef.setClass('modal-lg');
 		// this.subscribeToBsModalRef();
 	}
@@ -108,12 +106,12 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 						cc['compute_center_facility_id'],
 						cc['compute_center_name'],
 						cc['compute_center_login'],
-						cc['compute_center_support_mail'],
-					);
-					this.computeCenters.push(compute_center);
+						cc['compute_center_support_mail']
+					)
+					this.computeCenters.push(compute_center)
 				}
-			}),
-		);
+			})
+		)
 	}
 
 	/**
@@ -127,14 +125,14 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 			this.subscription.add(
 				this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate): void => {
 					if (!data.value) {
-						this.checkStatus = 'No Connection';
+						this.checkStatus = 'No Connection'
 					} else if (data.value) {
-						this.checkStatus = 'Connected';
+						this.checkStatus = 'Connected'
 					} else {
-						this.checkStatus = 'check failed';
+						this.checkStatus = 'check failed'
 					}
-				}),
-			);
+				})
+			)
 		}
 	}
 
@@ -149,39 +147,39 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 		if (host && port && location) {
 			this.subscription.add(
 				this.clientservice.postClient(host, port, location).subscribe((newClient: Client): void => {
-					this.clients.push(newClient);
-				}),
-			);
+					this.clients.push(newClient)
+				})
+			)
 		}
 	}
 
 	updateClient(host: string, port: string, location: string, id: string): void {
 		this.subscription.add(
 			this.clientservice.updateClient(new Client(null, host, port, location, id)).subscribe((res: Client): void => {
-				this.clients[this.clients.indexOf(this.selectedClient)] = res;
-				this.selectedClient = null;
-				this.getClientsChecked();
-			}),
-		);
+				this.clients[this.clients.indexOf(this.selectedClient)] = res
+				this.selectedClient = null
+				this.getClientsChecked()
+			})
+		)
 	}
 
 	switchActiveClient(id: string): void {
 		this.subscription.add(
 			this.clientservice.switchActive(id).subscribe((client: Client) => {
-				this.clients[this.clients.indexOf(this.selectedClient)] = client;
-				this.selectedClient = null;
-			}),
-		);
+				this.clients[this.clients.indexOf(this.selectedClient)] = client
+				this.selectedClient = null
+			})
+		)
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('VO Clients Overview');
-		this.is_vo_admin = is_vo;
-		this.getClientsChecked();
-		this.getComputeCenters();
+		this.tracker.trackPageView('VO Clients Overview')
+		this.is_vo_admin = is_vo
+		this.getClientsChecked()
+		this.getComputeCenters()
 	}
 
 	ngOnDestroy() {
-		this.subscription.unsubscribe();
+		this.subscription.unsubscribe()
 	}
 }

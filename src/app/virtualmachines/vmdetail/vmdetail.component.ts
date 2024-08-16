@@ -1,47 +1,45 @@
-import {
-	Component, OnInit, ChangeDetectorRef, inject,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { ClipboardService } from 'ngx-clipboard';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { MatomoTracker } from 'ngx-matomo-client';
-import { FlavorService } from '../../api-connector/flavor.service';
-import { ApplicationsService } from '../../api-connector/applications.service';
-import { FacilityService } from '../../api-connector/facility.service';
-import { VoService } from '../../api-connector/vo.service';
-import { UserService } from '../../api-connector/user.service';
-import { GroupService } from '../../api-connector/group.service';
-import { CreditsService } from '../../api-connector/credits.service';
-import { AbstractBaseClass } from '../../shared/shared_modules/baseClass/abstract-base-class';
-import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
-import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
-import { ImageService } from '../../api-connector/image.service';
-import { Image } from '../virtualmachinemodels/image';
-import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
-import { IResponseTemplate } from '../../api-connector/response-template';
-import { SnapshotModel } from '../snapshots/snapshot.model';
-import { PlaybookService } from '../../api-connector/playbook.service';
-import { BiocondaService } from '../../api-connector/bioconda.service';
-import { ResenvTemplate } from '../conda/resenvTemplate.model';
-import { elixir_id, is_vo } from '../../shared/globalvar';
+import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { Subject, Subscription } from 'rxjs'
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
+import { ClipboardService } from 'ngx-clipboard'
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { MatomoTracker } from 'ngx-matomo-client'
+import { FlavorService } from '../../api-connector/flavor.service'
+import { ApplicationsService } from '../../api-connector/applications.service'
+import { FacilityService } from '../../api-connector/facility.service'
+import { VoService } from '../../api-connector/vo.service'
+import { UserService } from '../../api-connector/user.service'
+import { GroupService } from '../../api-connector/group.service'
+import { CreditsService } from '../../api-connector/credits.service'
+import { AbstractBaseClass } from '../../shared/shared_modules/baseClass/abstract-base-class'
+import { VirtualMachine } from '../virtualmachinemodels/virtualmachine'
+import { VirtualmachineService } from '../../api-connector/virtualmachine.service'
+import { ImageService } from '../../api-connector/image.service'
+import { Image } from '../virtualmachinemodels/image'
+import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates'
+import { IResponseTemplate } from '../../api-connector/response-template'
+import { SnapshotModel } from '../snapshots/snapshot.model'
+import { PlaybookService } from '../../api-connector/playbook.service'
+import { BiocondaService } from '../../api-connector/bioconda.service'
+import { ResenvTemplate } from '../conda/resenvTemplate.model'
+import { elixir_id, is_vo } from '../../shared/globalvar'
 import {
 	NEW_SVM_PORTAL_LINK,
 	WIKI_CREATE_SNAPSHOT_LINK,
 	WIKI_GUACAMOLE_LINK,
 	WIKI_PERSISTENT_TERMINAL_LINK,
 	WIKI_RSTUDIO_LINK,
-	WIKI_VOLUME_OVERVIEW,
-} from '../../../links/links';
-import { Volume } from '../volumes/volume';
-import { VolumeStates } from '../volumes/volume_states';
-import { Condalog } from '../conda/condalog';
-import { Backend } from '../conda/backend/backend';
-import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component';
-import { TemplateNames } from '../conda/template-names';
-import { RebootVmComponent } from '../modals/reboot-vm/reboot-vm.component';
-import { NotificationModalComponent } from '../../shared/modal/notification-modal';
+	WIKI_VOLUME_OVERVIEW
+} from '../../../links/links'
+import { Volume } from '../volumes/volume'
+import { VolumeStates } from '../volumes/volume_states'
+import { Condalog } from '../conda/condalog'
+import { Backend } from '../conda/backend/backend'
+import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component'
+import { TemplateNames } from '../conda/template-names'
+import { RebootVmComponent } from '../modals/reboot-vm/reboot-vm.component'
+import { NotificationModalComponent } from '../../shared/modal/notification-modal'
 
 /**
  * VM Detail page component
@@ -62,110 +60,111 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
 		VirtualmachineService,
 		ImageService,
 		PlaybookService,
-		BiocondaService,
-	],
+		BiocondaService
+	]
 })
 export class VmDetailComponent extends AbstractBaseClass implements OnInit {
-	private readonly tracker = inject(MatomoTracker);
-	vm_id: string;
-	conda_logs: Condalog;
-	title: string = 'Instance Detail';
-	image: Image;
-	VolumeStates: VolumeStates = new VolumeStates();
-	virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
-	virtualMachine: VirtualMachine;
-	resenvTemplate: ResenvTemplate;
-	snapshotSearchTerm: Subject<string> = new Subject<string>();
-	errorMessage: boolean = false;
-	error_msg: string = '';
-	filteredMembers: any = null;
-	backend_users: any = [];
-	extendDone: boolean = false;
+	private readonly tracker = inject(MatomoTracker)
+	vm_id: string
+	conda_logs: Condalog
+	title: string = 'Instance Detail'
+	image: Image
+	VolumeStates: VolumeStates = new VolumeStates()
+	virtualMachineStates: VirtualMachineStates = new VirtualMachineStates()
+	virtualMachine: VirtualMachine
+	resenvTemplate: ResenvTemplate
+	snapshotSearchTerm: Subject<string> = new Subject<string>()
+	errorMessage: boolean = false
+	error_msg: string = ''
+	filteredMembers: any = null
+	backend_users: any = []
+	extendDone: boolean = false
 	VOLUME_END_STATES: string[] = [
 		VolumeStates.AVAILABLE,
 		VolumeStates.NOT_FOUND,
 		VolumeStates.IN_USE,
 		VirtualMachineStates.DELETED,
-		VirtualMachineStates.DELETING_FAILED,
-	];
+		VirtualMachineStates.DELETING_FAILED
+	]
 
-	is_vo_admin: boolean = is_vo;
-	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
-	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
-	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
-	WIKI_CREATE_SNAPSHOT_LINK: string = WIKI_CREATE_SNAPSHOT_LINK;
-	WIKI_PERSISTENT_TERMINAL_LINK: string = WIKI_PERSISTENT_TERMINAL_LINK;
-	SNAPSHOT_MAX_RAM: number = SnapshotModel.MAX_RAM;
+	is_vo_admin: boolean = is_vo
+	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK
+	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK
+	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW
+	WIKI_CREATE_SNAPSHOT_LINK: string = WIKI_CREATE_SNAPSHOT_LINK
+	WIKI_PERSISTENT_TERMINAL_LINK: string = WIKI_PERSISTENT_TERMINAL_LINK
+	SNAPSHOT_MAX_RAM: number = SnapshotModel.MAX_RAM
 
-	REBOOT_ERROR_MSG: string = 'Reboot of machine failed. If the error persists, please contact the support.';
+	REBOOT_ERROR_MSG: string = 'Reboot of machine failed. If the error persists, please contact the support.'
 
-	DEBOUNCE_TIME: number = 300;
+	DEBOUNCE_TIME: number = 300
 
-	volume_to_attach: Volume;
-	detached_project_volumes: Volume[] = [];
-	user_elixir_id: string = elixir_id;
+	volume_to_attach: Volume
+	detached_project_volumes: Volume[] = []
+	user_elixir_id: string = elixir_id
 
-	is_project_admin: boolean = false;
+	is_project_admin: boolean = false
 
 	/**
 	 * The changed status.
 	 *
 	 * @type {number}
 	 */
-	status_changed: number = 0;
+	status_changed: number = 0
 	/**
 	 * Timeout for checking vm status.
 	 *
 	 * @type {number}
 	 */
-	private checkStatusTimeout: number = 1500;
+	private checkStatusTimeout: number = 1500
 
-	checkStatusTimer: ReturnType<typeof setTimeout>;
+	checkStatusTimer: ReturnType<typeof setTimeout>
 	/**
 	 * Type of reboot HARD|SOFT.
 	 */
-	reboot_type: string;
+	reboot_type: string
 	/**
 	 * If an error appeared when checking vm status.
 	 */
-	status_check_error: boolean;
+	status_check_error: boolean
 	/**
 	 * IF reboot is done.
 	 */
-	reboot_done: boolean;
+	reboot_done: boolean
 
 	/**
 	 * If the snapshot name is valid.
 	 */
-	validSnapshotNameBool: boolean;
+	validSnapshotNameBool: boolean
 	/**
 	 * String if the snapshot is done.
 	 *
 	 * @type {string}
 	 */
-	snapshotNameCheckDone: boolean = false;
-	snapshotDone: string = 'Waiting';
+	snapshotNameCheckDone: boolean = false
+	snapshotDone: string = 'Waiting'
 	/**
 	 * name of the snapshot.
 	 */
-	snapshotName: string = '';
+	snapshotName: string = ''
 
-	isMigrated: boolean = false;
+	isMigrated: boolean = false
 
 	/**
 	 * Modal reference to be changed/showed/hidden depending on chosen modal.
 	 */
-	bsModalRef: BsModalRef;
+	bsModalRef: BsModalRef
 
 	/**
 	 * Default time in ms to show an error message if no other value specified.
 	 */
-	ERROR_TIMER: number = 10000;
+	ERROR_TIMER: number = 10000
 
 	/**
 	 * Error message to show if 409 status was returned, typically returned if vm is creating a snapshot.
 	 */
-	SNAPSHOT_CREATING_ERROR_MSG: string =		'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+	SNAPSHOT_CREATING_ERROR_MSG: string =
+		'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -181,31 +180,31 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		private biocondaService: BiocondaService,
 		private clipboardService: ClipboardService,
 		private groupService: GroupService,
-		private cdr: ChangeDetectorRef,
+		private cdr: ChangeDetectorRef
 	) {
-		super();
+		super()
 	}
 
 	getVmCondaLogs(): void {
 		this.virtualmachineService.getCondaLogs(this.vm_id).subscribe((log: Condalog): void => {
 			if (log) {
-				this.conda_logs = new Condalog(log);
+				this.conda_logs = new Condalog(log)
 			}
-		});
+		})
 	}
 
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
-			this.vm_id = paramsId.id;
-			this.tracker.trackPageView(`Instance Detail Page: ${paramsId.id}`);
-			this.getVmCondaLogs();
-			this.getVmById();
+			this.vm_id = paramsId.id
+			this.tracker.trackPageView(`Instance Detail Page: ${paramsId.id}`)
+			this.getVmCondaLogs()
+			this.getVmById()
 			this.snapshotSearchTerm
 				.pipe(debounceTime(this.DEBOUNCE_TIME), distinctUntilChanged())
 				.subscribe((event: any): void => {
-					this.validSnapshotName(event);
-				});
-		});
+					this.validSnapshotName(event)
+				})
+		})
 	}
 
 	/**
@@ -215,20 +214,20 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	validSnapshotName(event: any): any {
-		this.snapshotNameCheckDone = false;
+		this.snapshotNameCheckDone = false
 		this.imageService
 			.checkSnapshotNameAvailable(this.snapshotName.trim(), this.virtualMachine.client.id)
 			.subscribe((res: IResponseTemplate): void => {
-				this.validSnapshotNameBool = this.snapshotName.length > 0 && (res.value as boolean);
-				this.snapshotNameCheckDone = true;
-			});
+				this.validSnapshotNameBool = this.snapshotName.length > 0 && (res.value as boolean)
+				this.snapshotNameCheckDone = true
+			})
 	}
 
 	/**
 	 * Reset the snapshotDone to waiting.
 	 */
 	resetSnapshotResult(): void {
-		this.snapshotDone = 'Waiting';
+		this.snapshotDone = 'Waiting'
 	}
 
 	/**
@@ -240,95 +239,95 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		this.virtualmachineService
 			.checkVmStatus(this.virtualMachine.openstackid)
 			.subscribe((updated_vm: VirtualMachine): void => {
-				this.virtualMachine = updated_vm;
-			});
+				this.virtualMachine = updated_vm
+			})
 	}
 
 	setVmNeeded(): void {
 		this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any): void => {
 			if (res['still_needed']) {
-				this.virtualMachine.still_used_confirmation_requested = false;
-				this.virtualMachine.still_used_confirmed_date = new Date();
-				this.cdr.detectChanges();
+				this.virtualMachine.still_used_confirmation_requested = false
+				this.virtualMachine.still_used_confirmed_date = new Date()
+				this.cdr.detectChanges()
 			}
-		});
+		})
 	}
 
 	checkVmVolumesStatus(): void {
 		this.virtualMachine.volumes.forEach((vol: Volume): void => {
 			if (
-				vol.volume_status !== VolumeStates.AVAILABLE
-				&& vol.volume_status !== VolumeStates.NOT_FOUND
-				&& vol.volume_status !== VolumeStates.IN_USE
-				&& vol.volume_status !== VolumeStates.MIGRATED
+				vol.volume_status !== VolumeStates.AVAILABLE &&
+				vol.volume_status !== VolumeStates.NOT_FOUND &&
+				vol.volume_status !== VolumeStates.IN_USE &&
+				vol.volume_status !== VolumeStates.MIGRATED
 			) {
-				this.check_status_loop_vol(vol);
+				this.check_status_loop_vol(vol)
 			}
-		});
+		})
 	}
 
-	// eslint-disable-next-line default-param-last
+	 
 	check_status_loop_vol(
 		volume: Volume,
 		initial_timeout: number = this.checkStatusTimeout,
 		final_state?: string,
-		expected_storage?: number,
+		expected_storage?: number
 	): void {
-		const created: boolean = volume.volume_created_by_user;
+		const created: boolean = volume.volume_created_by_user
 
 		setTimeout((): void => {
-			const idx: number = this.virtualMachine.volumes.indexOf(volume);
+			const idx: number = this.virtualMachine.volumes.indexOf(volume)
 			if (volume.volume_openstackid) {
-				// eslint-disable-next-line consistent-return
+				 
 				this.virtualmachineService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
 					if (expected_storage && vol.volume_storage !== expected_storage) {
-						return this.check_status_loop_vol(volume, this.checkStatusTimeout, final_state, expected_storage);
+						return this.check_status_loop_vol(volume, this.checkStatusTimeout, final_state, expected_storage)
 					} else if (expected_storage && vol.volume_storage === expected_storage) {
-						this.extendDone = true;
+						this.extendDone = true
 					}
 					if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
-						vol.error_msg = volume.error_msg;
+						vol.error_msg = volume.error_msg
 						setTimeout((): void => {
-							vol.error_msg = null;
-						}, 5000);
+							vol.error_msg = null
+						}, 5000)
 					}
 					if (idx > -1) {
-						vol.volume_created_by_user = created;
-						this.virtualMachine.volumes[idx] = vol;
+						vol.volume_created_by_user = created
+						this.virtualMachine.volumes[idx] = vol
 					}
 					// tslint:disable-next-line:max-line-length
 					if (this.VOLUME_END_STATES.indexOf(vol.volume_status) === -1 && final_state !== vol.volume_status) {
-						this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state);
+						this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state)
 					}
-				});
+				})
 			} else {
 				// tslint:disable-next-line:max-line-length
 				this.virtualmachineService
 					.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name)
 					.subscribe((vol: Volume): void => {
 						if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
-							vol.error_msg = volume.error_msg;
+							vol.error_msg = volume.error_msg
 							setTimeout((): void => {
-								vol.error_msg = null;
-							}, 5000);
+								vol.error_msg = null
+							}, 5000)
 						}
 						if (idx > -1) {
-							vol.volume_created_by_user = created;
-							this.virtualMachine.volumes[idx] = vol;
+							vol.volume_created_by_user = created
+							this.virtualMachine.volumes[idx] = vol
 						}
 						// tslint:disable-next-line:max-line-length
 						if (
-							vol.volume_status !== VolumeStates.AVAILABLE
-							&& vol.volume_status !== VolumeStates.NOT_FOUND
-							&& vol.volume_status !== VolumeStates.IN_USE
-							&& vol.volume_status !== VolumeStates.MIGRATED
-							&& vol.volume_status !== final_state
+							vol.volume_status !== VolumeStates.AVAILABLE &&
+							vol.volume_status !== VolumeStates.NOT_FOUND &&
+							vol.volume_status !== VolumeStates.IN_USE &&
+							vol.volume_status !== VolumeStates.MIGRATED &&
+							vol.volume_status !== final_state
 						) {
-							this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state);
+							this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state)
 						}
-					});
+					})
 			}
-		}, initial_timeout);
+		}, initial_timeout)
 	}
 
 	/**
@@ -337,31 +336,32 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 * @param vm which will be deleted
 	 */
 	deleteVm(): void {
-		this.virtualMachine.status = VirtualMachineStates.DELETING;
+		this.virtualMachine.status = VirtualMachineStates.DELETING
 		this.virtualmachineService.deleteVM(this.virtualMachine.openstackid).subscribe(
 			(updated_vm: VirtualMachine): void => {
-				updated_vm.cardState = 0;
-				this.virtualMachine = updated_vm;
+				updated_vm.cardState = 0
+				this.virtualMachine = updated_vm
 				if (updated_vm.status === VirtualMachineStates.DELETED) {
-					this.status_changed = 1;
+					this.status_changed = 1
 				} else {
-					this.status_changed = 2;
+					this.status_changed = 2
 				}
 			},
 			(error1: any): void => {
-				this.status_changed = 2;
+				this.status_changed = 2
 				if (error1['status'] === 409) {
-					this.error_msg =						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+					this.error_msg =
+						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 				}
-				this.getVmById();
-			},
-		);
+				this.getVmById()
+			}
+		)
 	}
 
 	/**
 	 * Subscription object to listen to different events.
 	 */
-	subscription: Subscription = new Subscription();
+	subscription: Subscription = new Subscription()
 
 	/**
 	 * Function to listen to modal results.
@@ -370,7 +370,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
 				if ('deleteVM' in result) {
-					this.deleteVm();
+					this.deleteVm()
 					/** } else if ('stopVM' in result) {
 					 	this.stopVM();
 					 } else if ('resumeVM' in result) {
@@ -384,93 +384,97 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 					 } else if ('detachVolume' in result) {
 					 	this.detachVolume(result['volume']); */
 				} else if ('reboot_type' in result) {
-					this.rebootVM(result['reboot_type']);
+					this.rebootVM(result['reboot_type'])
 				}
-			}),
-		);
+			})
+		)
 	}
 
 	/**
 	 * Show deletion modal
 	 */
 	showDeleteModal(): void {
-		const initialState = { virtualMachine: this.virtualMachine };
+		const initialState = { virtualMachine: this.virtualMachine }
 
-		this.bsModalRef = this.modalService.show(DeleteVmComponent, { initialState });
-		this.bsModalRef.setClass('modal-lg');
-		this.subscribeToBsModalRef();
+		this.bsModalRef = this.modalService.show(DeleteVmComponent, { initialState })
+		this.bsModalRef.setClass('modal-lg')
+		this.subscribeToBsModalRef()
 	}
 
 	/**
 	 * Show reboot modal
 	 */
 	showRebootModal(): void {
-		const initialState = { virtualMachine: this.virtualMachine };
+		const initialState = { virtualMachine: this.virtualMachine }
 
-		this.bsModalRef = this.modalService.show(RebootVmComponent, { initialState });
-		this.bsModalRef.setClass('modal-lg');
-		this.subscribeToBsModalRef();
+		this.bsModalRef = this.modalService.show(RebootVmComponent, { initialState })
+		this.bsModalRef.setClass('modal-lg')
+		this.subscribeToBsModalRef()
 	}
 
 	getDetachedVolumesByVSelectedMProject(): void {
 		this.virtualmachineService
 			.getDetachedVolumesByProject(this.virtualMachine.projectid)
 			.subscribe((detached_volumes: Volume[]): void => {
-				this.detached_project_volumes = detached_volumes;
-			});
+				this.detached_project_volumes = detached_volumes
+			})
 	}
 
 	attachVolume(volume: Volume): void {
-		const volume_status_backup: string = volume.volume_status;
-		volume.volume_status = VolumeStates.ATTACHING;
+		const volume_status_backup: string = volume.volume_status
+		volume.volume_status = VolumeStates.ATTACHING
 
 		this.virtualmachineService
 			.attachVolumetoServer(volume.volume_openstackid, this.virtualMachine.openstackid)
 			.subscribe(
 				(result: IResponseTemplate): void => {
 					if (result.value === 'attached') {
-						this.getVmById();
+						this.getVmById()
 					}
 				},
 				(error1: any): void => {
-					this.status_changed = 2;
+					this.status_changed = 2
 					if (error1['error']['error'] === '409') {
-						this.volume_to_attach.error_msg =							'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+						this.volume_to_attach.error_msg =
+							'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 						setTimeout((): void => {
-							this.volume_to_attach.error_msg = null;
-						}, 5000);
-						this.error_msg =							'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-						volume.volume_status = volume_status_backup;
+							this.volume_to_attach.error_msg = null
+						}, 5000)
+						this.error_msg =
+							'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
+						volume.volume_status = volume_status_backup
 					}
-				},
-			);
+				}
+			)
 	}
 
 	detachVolume(volume: Volume): void {
-		const volume_status_backup: string = volume.volume_status;
-		volume.volume_status = VolumeStates.DETACHING;
+		const volume_status_backup: string = volume.volume_status
+		volume.volume_status = VolumeStates.DETACHING
 
 		this.virtualmachineService
 			.deleteVolumeAttachment(volume.volume_openstackid, this.virtualMachine.openstackid)
 			.subscribe(
 				(result: any): void => {
 					if (result.value === 'deleted') {
-						this.getDetachedVolumesByVSelectedMProject();
-						this.getVmById();
+						this.getDetachedVolumesByVSelectedMProject()
+						this.getVmById()
 					}
 				},
 				(error1: any): void => {
-					this.status_changed = 2;
+					this.status_changed = 2
 					if (error1['error']['error'] === '409') {
-						volume.error_msg =							'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+						volume.error_msg =
+							'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 						setTimeout((): void => {
-							volume.error_msg = null;
-						}, 5000);
-						this.error_msg =							'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-						volume.volume_status = volume_status_backup;
+							volume.error_msg = null
+						}, 5000)
+						this.error_msg =
+							'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
+						volume.volume_status = volume_status_backup
 					}
-				},
-			);
+				}
+			)
 	}
 
 	/**
@@ -480,28 +484,28 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 * @param reboot_type HARD|SOFT
 	 */
 	rebootVM(reboot_type: string): void {
-		this.stopCheckStatusTimer();
-		this.virtualMachine.status = VirtualMachineStates.GETTING_STATUS;
+		this.stopCheckStatusTimer()
+		this.virtualMachine.status = VirtualMachineStates.GETTING_STATUS
 		this.subscription.add(
 			this.virtualmachineService.rebootVM(this.virtualMachine.openstackid, reboot_type).subscribe(
 				(result: IResponseTemplate): void => {
-					this.virtualMachine.cardState = 0;
+					this.virtualMachine.cardState = 0
 					if (result.value as boolean) {
-						this.virtualMachine.setMsgWithTimeout('Reboot initiated', 5000);
-						this.check_status_loop_when_reboot();
+						this.virtualMachine.setMsgWithTimeout('Reboot initiated', 5000)
+						this.check_status_loop_when_reboot()
 					} else {
-						this.check_status_loop(VirtualMachineStates.ACTIVE);
+						this.check_status_loop(VirtualMachineStates.ACTIVE)
 					}
 				},
 				(error1: any): void => {
-					this.error_msg = this.REBOOT_ERROR_MSG;
+					this.error_msg = this.REBOOT_ERROR_MSG
 
 					if (error1['error']['error'] === '409') {
-						this.virtualMachine.setErrorMsgWithTimeout(this.REBOOT_ERROR_MSG, this.ERROR_TIMER);
+						this.virtualMachine.setErrorMsgWithTimeout(this.REBOOT_ERROR_MSG, this.ERROR_TIMER)
 					}
-				},
-			),
-		);
+				}
+			)
+		)
 	}
 
 	/**
@@ -517,36 +521,36 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 				this.virtualmachineService
 					.checkVmStatus(this.virtualMachine.openstackid)
 					.subscribe((updated_vm: VirtualMachine): void => {
-						this.virtualMachine = updated_vm;
-						this.virtualMachine.cardState = 0;
+						this.virtualMachine = updated_vm
+						this.virtualMachine.cardState = 0
 
 						if (updated_vm.status === final_state || updated_vm.status === VirtualMachineStates.MIGRATED) {
-							this.virtualMachine = updated_vm;
+							this.virtualMachine = updated_vm
 						} else {
 							if (this.virtualMachine['error']) {
-								this.status_check_error = true;
+								this.status_check_error = true
 							}
-							this.check_status_loop(final_state, is_selected_vm);
+							this.check_status_loop(final_state, is_selected_vm)
 						}
-					});
+					})
 			} else {
 				this.virtualmachineService
 					.checkVmStatus(this.virtualMachine.name)
 					.subscribe((updated_vm: VirtualMachine): void => {
-						this.virtualMachine = updated_vm;
-						this.virtualMachine.cardState = 0;
+						this.virtualMachine = updated_vm
+						this.virtualMachine.cardState = 0
 
 						if (updated_vm.status === final_state) {
-							this.virtualMachine = updated_vm;
+							this.virtualMachine = updated_vm
 						} else {
 							if (this.virtualMachine['error']) {
-								this.status_check_error = true;
+								this.status_check_error = true
 							}
-							this.check_status_loop(final_state, is_selected_vm);
+							this.check_status_loop(final_state, is_selected_vm)
 						}
-					});
+					})
 			}
-		}, timeout);
+		}, timeout)
 	}
 
 	/**
@@ -560,37 +564,37 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 				.checkVmStatusWhenReboot(this.virtualMachine.openstackid)
 				.subscribe((updated_vm: VirtualMachine): void => {
 					if (updated_vm.status === VirtualMachineStates.ACTIVE) {
-						this.reboot_done = true;
-						this.virtualMachine = updated_vm;
-						this.showNotificationModal('Success', 'The virtual machine was rebooted successfully!', 'success');
+						this.reboot_done = true
+						this.virtualMachine = updated_vm
+						this.showNotificationModal('Success', 'The virtual machine was rebooted successfully!', 'success')
 					} else {
 						if (this.virtualMachine['error']) {
-							this.status_check_error = true;
-							this.showNotificationModal('Failed', 'The reboot of the virtual machine failed!', 'danger');
+							this.status_check_error = true
+							this.showNotificationModal('Failed', 'The reboot of the virtual machine failed!', 'danger')
 						}
-						this.check_status_loop_when_reboot();
+						this.check_status_loop_when_reboot()
 					}
-				});
-		}, this.checkStatusTimeout);
+				})
+		}, this.checkStatusTimeout)
 	}
 
 	showNotificationModal(
 		notificationModalTitle: string,
 		notificationModalMessage: string,
-		notificationModalType: string,
+		notificationModalType: string
 	) {
-		const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
+		const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage }
 		if (this.bsModalRef) {
-			this.bsModalRef.hide();
+			this.bsModalRef.hide()
 		}
 
-		this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
-		this.bsModalRef.setClass('modal-lg');
+		this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState })
+		this.bsModalRef.setClass('modal-lg')
 	}
 
 	stopCheckStatusTimer(): void {
 		if (this.checkStatusTimer) {
-			clearTimeout(this.checkStatusTimer);
+			clearTimeout(this.checkStatusTimer)
 		}
 	}
 
@@ -602,67 +606,69 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	stopVm(): void {
 		this.virtualmachineService.stopVM(this.virtualMachine.openstackid).subscribe(
 			(updated_vm: VirtualMachine): void => {
-				this.status_changed = 0;
+				this.status_changed = 0
 
-				updated_vm.cardState = 0;
-				this.virtualMachine = updated_vm;
+				updated_vm.cardState = 0
+				this.virtualMachine = updated_vm
 
 				switch (updated_vm.status) {
 					case VirtualMachineStates.SHUTOFF:
-						this.status_changed = 1;
-						break;
+						this.status_changed = 1
+						break
 					case VirtualMachineStates.POWERING_OFF:
-						this.check_status_loop(VirtualMachineStates.SHUTOFF, true);
-						break;
+						this.check_status_loop(VirtualMachineStates.SHUTOFF, true)
+						break
 					default:
-						this.status_changed = 2;
-						break;
+						this.status_changed = 2
+						break
 				}
 			},
 			(error1: any): void => {
-				this.status_changed = 2;
+				this.status_changed = 2
 				if (error1['error']['error'] === '409') {
-					this.error_msg =						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+					this.error_msg =
+						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 				}
-			},
-		);
+			}
+		)
 	}
 
 	checkVmTillActive(): void {
 		if (
-			this.virtualMachine.status !== VirtualMachineStates.ACTIVE
-			&& this.virtualMachine.status !== VirtualMachineStates.SHUTOFF
-			&& this.virtualMachine.status !== VirtualMachineStates.DELETED
+			this.virtualMachine.status !== VirtualMachineStates.ACTIVE &&
+			this.virtualMachine.status !== VirtualMachineStates.SHUTOFF &&
+			this.virtualMachine.status !== VirtualMachineStates.DELETED
 		) {
-			this.check_status_loop(VirtualMachineStates.ACTIVE);
+			this.check_status_loop(VirtualMachineStates.ACTIVE)
 		}
 	}
 
 	resumeVM(): void {
 		this.virtualmachineService.resumeVM(this.virtualMachine.openstackid).subscribe(
 			(updated_vm: VirtualMachine): void => {
-				this.status_changed = 0;
-				updated_vm.cardState = 0;
-				this.virtualMachine = updated_vm;
+				this.status_changed = 0
+				updated_vm.cardState = 0
+				this.virtualMachine = updated_vm
 				switch (updated_vm.status) {
 					case VirtualMachineStates.ACTIVE:
-						this.status_changed = 1;
-						break;
+						this.status_changed = 1
+						break
 					case VirtualMachineStates.POWERING_ON:
-						this.check_status_loop(VirtualMachineStates.ACTIVE, true);
-						break;
+						this.check_status_loop(VirtualMachineStates.ACTIVE, true)
+						break
 					default:
-						this.status_changed = 2;
-						break;
+						this.status_changed = 2
+						break
 				}
 			},
 			(error1: any): void => {
-				this.status_changed = 2;
+				this.status_changed = 2
 				if (error1['error']['error'] === '409') {
-					this.error_msg =						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+					this.error_msg =
+						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 				}
-			},
-		);
+			}
+		)
 	}
 
 	/**
@@ -675,22 +681,23 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		this.imageService.createSnapshot(snapshot_instance, snapshot_name.trim(), description).subscribe(
 			(newSnapshot: SnapshotModel): void => {
 				if (newSnapshot.snapshot_openstackid) {
-					this.snapshotDone = 'true';
-					this.virtualMachine.status = VirtualMachineStates.IMAGE_PENDING_UPLOAD;
-					this.check_status_loop(VirtualMachineStates.ACTIVE, null, 10000);
+					this.snapshotDone = 'true'
+					this.virtualMachine.status = VirtualMachineStates.IMAGE_PENDING_UPLOAD
+					this.check_status_loop(VirtualMachineStates.ACTIVE, null, 10000)
 				} else {
-					this.snapshotDone = 'error';
-					this.check_status_loop(VirtualMachineStates.ACTIVE);
+					this.snapshotDone = 'error'
+					this.check_status_loop(VirtualMachineStates.ACTIVE)
 				}
 			},
 			(error1: any): void => {
-				this.snapshotDone = 'error';
-				this.status_changed = 2;
+				this.snapshotDone = 'error'
+				this.status_changed = 2
 				if (error1['error']['error'] === '409') {
-					this.error_msg =						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+					this.error_msg =
+						'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 				}
-			},
-		);
+			}
+		)
 	}
 
 	/**
@@ -700,7 +707,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 */
 	copyToClipboard(text: string): void {
 		if (this.clipboardService.isSupported) {
-			this.clipboardService.copy(text);
+			this.clipboardService.copy(text)
 		}
 	}
 
@@ -711,58 +718,58 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		this.userService.getMemberByUser().subscribe((): void => {
 			this.groupService.isLoggedUserGroupAdmin(this.virtualMachine.projectid).subscribe((result): any => {
 				if (result['admin']) {
-					this.is_project_admin = true;
+					this.is_project_admin = true
 				}
-			});
-		});
+			})
+		})
 	}
 
 	getVmById(): void {
 		this.virtualmachineService.getVmById(this.vm_id).subscribe((vm: VirtualMachine): void => {
-			vm = new VirtualMachine(vm);
-			this.checkAndGetForcDetails(vm);
-			this.title = vm['name'];
-			this.virtualMachine = vm;
+			vm = new VirtualMachine(vm)
+			this.checkAndGetForcDetails(vm)
+			this.title = vm['name']
+			this.virtualMachine = vm
 			this.applicationService
 				.getApplicationMigratedByGroupId(this.virtualMachine.projectid.toString())
 				.subscribe((migrated: boolean): void => {
-					this.isMigrated = migrated;
-				});
-			this.checkVMAdminState();
+					this.isMigrated = migrated
+				})
+			this.checkVMAdminState()
 			this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
-				if (backend != null) {
-					const template_name: string = backend.template;
+				if (backend !== null) {
+					const template_name: string = backend.template
 					this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: any): void => {
-						if (templates != null) {
+						if (templates !== null) {
 							for (const temp of templates) {
 								if (temp['template_name'] === template_name) {
-									this.resenvTemplate = temp;
-									break;
+									this.resenvTemplate = temp
+									break
 								}
 							}
 						}
-					});
+					})
 				}
-			});
-			this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
-			this.getDetachedVolumesByVSelectedMProject();
-			this.checkVmVolumesStatus();
-			this.isLoaded = true;
-		});
+			})
+			this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image)
+			this.getDetachedVolumesByVSelectedMProject()
+			this.checkVmVolumesStatus()
+			this.isLoaded = true
+		})
 	}
 
 	getImageDetails(project_id: number, name: string): Image {
-		const newImage: Image = new Image();
+		const newImage: Image = new Image()
 		this.imageService.getImageByProjectAndName(project_id, name).subscribe(
 			(image: Image): void => {
-				this.image = image;
+				this.image = image
 			},
 			(): void => {
-				this.isLoaded = false;
-			},
-		);
+				this.isLoaded = false
+			}
+		)
 
-		return newImage;
+		return newImage
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -773,33 +780,33 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		//   }
 		// }
 
-		this.getUsersForBackend();
+		this.getUsersForBackend()
 	}
 
 	filterMembers(searchString: string): void {
 		this.groupService
 			.getFilteredMembersByProject(searchString, this.virtualMachine.projectid)
 			.subscribe((result: object): void => {
-				this.filteredMembers = result;
-			});
+				this.filteredMembers = result
+			})
 	}
 
 	addUserToBackend(userId: any): void {
 		this.biocondaService.addUserToBackend(this.vm_id, userId).subscribe((): void => {
-			this.getUsersForBackend();
-		});
+			this.getUsersForBackend()
+		})
 	}
 
 	getUsersForBackend(): void {
 		this.biocondaService.getUsersForBackend(this.vm_id).subscribe((result: any): void => {
-			this.backend_users = result;
-		});
+			this.backend_users = result
+		})
 	}
 
 	deleteUserFromBackend(userId: any): void {
 		this.biocondaService.deleteUserFromBackend(this.vm_id, userId.toString()).subscribe((): void => {
-			this.getUsersForBackend();
-		});
+			this.getUsersForBackend()
+		})
 	}
 
 	/**
@@ -808,12 +815,12 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	resenv_by_play(vm: VirtualMachine): boolean {
 		for (const mode of vm.modes) {
 			if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
-				return false;
+				return false
 			}
 		}
 
-		return true;
+		return true
 	}
 
-	protected readonly NEW_SVM_PORTAL_LINK = NEW_SVM_PORTAL_LINK;
+	protected readonly NEW_SVM_PORTAL_LINK = NEW_SVM_PORTAL_LINK
 }

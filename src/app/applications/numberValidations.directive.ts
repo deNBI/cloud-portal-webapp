@@ -1,23 +1,19 @@
-// eslint-disable-next-line max-classes-per-file
-import { Directive, Input } from '@angular/core';
-import {
-	AbstractControl, NG_VALIDATORS, Validator, ValidatorFn,
-} from '@angular/forms';
+ 
+import { Directive, Input } from '@angular/core'
+import { AbstractControl, NG_VALIDATORS, Validator, ValidatorFn } from '@angular/forms'
 
 /**
  * Number validation directive.
  */
 @Directive({
 	selector: '[appMinAmount]',
-	providers: [
-		{ provide: NG_VALIDATORS, useExisting: MinAmoutValidatorDirective, multi: true },
-	],
+	providers: [{ provide: NG_VALIDATORS, useExisting: MinAmoutValidatorDirective, multi: true }]
 })
 export class MinAmoutValidatorDirective implements Validator {
-	@Input('appMinAmount') minAmount: number;
+	@Input('appMinAmount') minAmount: number
 
 	validate(control: AbstractControl): { [key: string]: any } | null {
-		return this.minAmount ? minAmountValidator(this.minAmount)(control) : null;
+		return this.minAmount ? minAmountValidator(this.minAmount)(control) : null
 	}
 }
 
@@ -27,10 +23,10 @@ export class MinAmoutValidatorDirective implements Validator {
  */
 export function minAmountValidator(val: number): ValidatorFn {
 	return (control: AbstractControl): { [key: string]: any } | null => {
-		const less: boolean = control.value < val;
+		const less: boolean = control.value < val
 
-		return less ? { minVal: { value: control.value } } : null;
-	};
+		return less ? { minVal: { value: control.value } } : null
+	}
 }
 
 /**
@@ -38,15 +34,13 @@ export function minAmountValidator(val: number): ValidatorFn {
  */
 @Directive({
 	selector: '[appMaxAmount]',
-	providers: [
-		{ provide: NG_VALIDATORS, useExisting: MaxAmoutValidatorDirective, multi: true },
-	],
+	providers: [{ provide: NG_VALIDATORS, useExisting: MaxAmoutValidatorDirective, multi: true }]
 })
 export class MaxAmoutValidatorDirective implements Validator {
-	@Input('appMaxAmount') maxAmount: number;
+	@Input('appMaxAmount') maxAmount: number
 
 	validate(control: AbstractControl): { [key: string]: any } | null {
-		return this.maxAmount ? maxAmountValidator(this.maxAmount)(control) : null;
+		return this.maxAmount ? maxAmountValidator(this.maxAmount)(control) : null
 	}
 }
 
@@ -56,10 +50,10 @@ export class MaxAmoutValidatorDirective implements Validator {
  */
 export function maxAmountValidator(val: number): ValidatorFn {
 	return (control: AbstractControl): { [key: string]: any } | null => {
-		const more: boolean = control.value > val;
+		const more: boolean = control.value > val
 
-		return more ? { maxVal: { value: control.value } } : null;
-	};
+		return more ? { maxVal: { value: control.value } } : null
+	}
 }
 
 /**
@@ -67,13 +61,11 @@ export function maxAmountValidator(val: number): ValidatorFn {
  */
 @Directive({
 	selector: '[appInteger]',
-	providers: [
-		{ provide: NG_VALIDATORS, useExisting: IntegerValidatorDirective, multi: true },
-	],
+	providers: [{ provide: NG_VALIDATORS, useExisting: IntegerValidatorDirective, multi: true }]
 })
 export class IntegerValidatorDirective implements Validator {
 	validate(control: AbstractControl): { [key: string]: any } | null {
-		return integerValidator()(control);
+		return integerValidator()(control)
 	}
 }
 
@@ -82,10 +74,10 @@ export class IntegerValidatorDirective implements Validator {
  */
 export function integerValidator(): ValidatorFn {
 	return (control: AbstractControl): { [key: string]: any } | null => {
-		const integer: boolean = Number.isInteger(control.value);
+		const integer: boolean = Number.isInteger(control.value)
 
-		return integer ? null : { integer: { value: control.value } };
-	};
+		return integer ? null : { integer: { value: control.value } }
+	}
 }
 
 /**
@@ -93,10 +85,11 @@ export function integerValidator(): ValidatorFn {
  */
 export function floatValidator(): ValidatorFn {
 	return (control: AbstractControl): { [key: string]: any } | null => {
-		const float: boolean = Number.isInteger(control.value) || (Number(control.value) === control.value && control.value % 1 !== 0);
+		const float: boolean =
+			Number.isInteger(control.value) || (Number(control.value) === control.value && control.value % 1 !== 0)
 
-		return float ? null : { float: { value: control.value } };
-	};
+		return float ? null : { float: { value: control.value } }
+	}
 }
 
 /**
@@ -104,11 +97,12 @@ export function floatValidator(): ValidatorFn {
  */
 export function floatOrNullValidator(): ValidatorFn {
 	return (control: AbstractControl): { [key: string]: any } | null => {
-		const float: boolean = ((Number.isInteger(control.value) || Number(control.value) === control.value)
-			&& control.value % 1 !== 0) || !control.value;
+		const float: boolean =
+			((Number.isInteger(control.value) || Number(control.value) === control.value) && control.value % 1 !== 0) ||
+			!control.value
 
-		return float ? null : { floatOrNulL: { value: control.value } };
-	};
+		return float ? null : { floatOrNulL: { value: control.value } }
+	}
 }
 
 /**
@@ -116,13 +110,11 @@ export function floatOrNullValidator(): ValidatorFn {
  */
 @Directive({
 	selector: '[appFloat]',
-	providers: [
-		{ provide: NG_VALIDATORS, useExisting: FloatValidatorDirective, multi: true },
-	],
+	providers: [{ provide: NG_VALIDATORS, useExisting: FloatValidatorDirective, multi: true }]
 })
 export class FloatValidatorDirective implements Validator {
 	validate(control: AbstractControl): { [key: string]: any } | null {
-		return floatValidator()(control);
+		return floatValidator()(control)
 	}
 }
 
@@ -131,13 +123,11 @@ export class FloatValidatorDirective implements Validator {
  */
 @Directive({
 	selector: '[appFloatOrNull]',
-	providers: [
-		{ provide: NG_VALIDATORS, useExisting: FloatOrNullValidatorDirective, multi: true },
-	],
+	providers: [{ provide: NG_VALIDATORS, useExisting: FloatOrNullValidatorDirective, multi: true }]
 })
 export class FloatOrNullValidatorDirective implements Validator {
 	validate(control: AbstractControl): { [key: string]: any } | null {
-		return floatOrNullValidator()(control);
+		return floatOrNullValidator()(control)
 	}
 }
 
@@ -146,13 +136,11 @@ export class FloatOrNullValidatorDirective implements Validator {
  */
 @Directive({
 	selector: '[appIntegerOrNull]',
-	providers: [
-		{ provide: NG_VALIDATORS, useExisting: IntegerOrNullValidatorDirective, multi: true },
-	],
+	providers: [{ provide: NG_VALIDATORS, useExisting: IntegerOrNullValidatorDirective, multi: true }]
 })
 export class IntegerOrNullValidatorDirective implements Validator {
 	validate(control: AbstractControl): { [key: string]: any } | null {
-		return integerOrNullValidator()(control);
+		return integerOrNullValidator()(control)
 	}
 }
 
@@ -161,8 +149,8 @@ export class IntegerOrNullValidatorDirective implements Validator {
  */
 export function integerOrNullValidator(): ValidatorFn {
 	return (control: AbstractControl): { [key: string]: any } | null => {
-		const integer: boolean = (Number.isInteger(control.value) || !control.value);
+		const integer: boolean = Number.isInteger(control.value) || !control.value
 
-		return integer ? null : { integerOrNull: { value: control.value } };
-	};
+		return integer ? null : { integerOrNull: { value: control.value } }
+	}
 }
