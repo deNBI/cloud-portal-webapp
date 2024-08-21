@@ -1,21 +1,11 @@
-import {
-	ChangeDetectorRef,
-	Component,
-	ElementRef,
-	Inject,
-	OnDestroy,
-	OnInit,
-	Renderer2,
-	ViewChild,
-	inject
-} from '@angular/core'
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core'
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
 import { DOCUMENT } from '@angular/common'
 import { Chart } from 'chart.js'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { environment } from '../../environments/environment'
 import { ProjectMemberApplication } from './project_member_application'
 import { Userinfo } from '../userinfo/userinfo.model'
@@ -70,7 +60,6 @@ import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/with
 	]
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
-	private readonly tracker = inject(MatomoTracker)
 	bsModalRef: BsModalRef
 	modificationRequestDisabled: boolean = false
 	lifetimeExtensionDisabled: boolean = false
@@ -1035,7 +1024,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				(): void => {
 					this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success')
 					this.fullLayout.getGroupsEnumeration()
-					 
+
 					void this.router.navigate(['/userinfo'])
 				},
 				(): void => {

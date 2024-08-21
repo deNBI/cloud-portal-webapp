@@ -1,8 +1,8 @@
 import { AfterViewInit, ApplicationRef, Component, OnInit, ViewChild } from '@angular/core'
 import { ModalDirective } from 'ngx-bootstrap/modal'
-import { Angulartics2Matomo } from 'angulartics2'
 import { VoService } from './api-connector/vo.service'
-
+import { MatomoTracker } from 'ngx-matomo-client'
+import { Router, NavigationEnd } from '@angular/router'
 /**
  * App component.
  */
@@ -20,8 +20,9 @@ export class AppComponent implements AfterViewInit, OnInit {
 	@ViewChild('notificationModal', { static: true }) modal: ModalDirective
 
 	constructor(
+		private router: Router,
 		private appRef: ApplicationRef,
-		private angulartics2Matomo: Angulartics2Matomo
+		private matomoTracker: MatomoTracker
 	) {
 		/*   if (environment.production) {
 			 const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
@@ -41,10 +42,11 @@ export class AppComponent implements AfterViewInit, OnInit {
 	}
 
 	ngOnInit(): void {
-		this.angulartics2Matomo.startTracking()
-		// this.voService.isVo().subscribe((result: IResponseTemplate) => {
-		// setVO(<boolean><Boolean>result.value);
-		// })
+		this.router.events.subscribe(event => {
+			if (event instanceof NavigationEnd) {
+				this.matomoTracker.trackPageView(window.location.pathname + window.location.search)
+			}
+		})
 	}
 
 	ngAfterViewInit(): void {}

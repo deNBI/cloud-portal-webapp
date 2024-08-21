@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { forkJoin } from 'rxjs'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { ImageService } from '../api-connector/image.service'
 import { BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag } from './image-tag'
 import { FacilityService } from '../api-connector/facility.service'
@@ -15,8 +15,6 @@ import { BiocondaService } from '../api-connector/bioconda.service'
 	providers: [ImageService, FacilityService, BiocondaService]
 })
 export class ImageTagComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker)
-
 	title: string = 'Image Tags'
 
 	isLoaded: boolean = false
@@ -106,7 +104,6 @@ export class ImageTagComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Image Tags')
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result
 			this.selectedFacility = this.managerFacilities[0]

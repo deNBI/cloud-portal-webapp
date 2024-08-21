@@ -1,10 +1,9 @@
- 
-import { Component, OnDestroy, OnInit, inject } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { Subject, Subscription } from 'rxjs'
 import { UntypedFormBuilder } from '@angular/forms'
 import { ClipboardService } from 'ngx-clipboard'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service'
 import { FullLayoutComponent } from '../../../layouts/full-layout.component'
 import { UserService } from '../../../api-connector/user.service'
@@ -46,7 +45,7 @@ export const SCALING_SCRIPT_NAME: string = 'scaling.py'
 })
 export class ClusterOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
 	title: string = 'Cluster Overview'
-	private readonly tracker = inject(MatomoTracker)
+
 	private subscription: Subscription = new Subscription()
 
 	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates()
@@ -279,7 +278,6 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Cluster Overview')
 		this.getClusters()
 		this.is_vo_admin = is_vo
 		this.get_is_facility_manager()
