@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core'
+import {
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	OnDestroy,
+	OnInit,
+	Renderer2,
+	ViewChild,
+	Inject
+} from '@angular/core'
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -188,7 +197,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.project_application = null
 			this.project_members = []
 			this.application_id = paramsId.id
-			this.tracker.trackPageView(`Project Overview for pid: ${paramsId.id}`)
 			this.is_vo_admin = is_vo
 
 			this.getApplication()
