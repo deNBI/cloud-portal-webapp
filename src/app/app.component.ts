@@ -1,7 +1,7 @@
 import { AfterViewInit, ApplicationRef, Component, OnInit, ViewChild } from '@angular/core'
 import { ModalDirective } from 'ngx-bootstrap/modal'
-import { Angulartics2Matomo } from 'angulartics2'
 import { VoService } from './api-connector/vo.service'
+import { TitleService } from './title.service'
 
 /**
  * App component.
@@ -21,7 +21,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
 	constructor(
 		private appRef: ApplicationRef,
-		private angulartics2Matomo: Angulartics2Matomo
+		private titleService: TitleService
 	) {
 		/*   if (environment.production) {
 			 const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
@@ -41,10 +41,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 	}
 
 	ngOnInit(): void {
-		this.angulartics2Matomo.startTracking()
-		// this.voService.isVo().subscribe((result: IResponseTemplate) => {
-		// setVO(<boolean><Boolean>result.value);
-		// })
+		this.titleService.init()
 	}
 
 	ngAfterViewInit(): void {}

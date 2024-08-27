@@ -1,10 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import html2canvas from 'html2canvas'
 import * as saveSVG from 'save-svg-as-png'
 import bb, { areaSpline, bar, Chart } from 'billboard.js'
 import { jsPDF } from 'jspdf'
 import * as d3 from 'd3'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { NumbersService } from '../../api-connector/numbers.service'
 import 'svg2pdf.js'
 
@@ -18,7 +18,6 @@ import 'svg2pdf.js'
 	providers: [NumbersService]
 })
 export class NumberChartsComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker)
 	is_vo_admin: boolean = true
 	title: string = 'Cloud Numbers'
 
@@ -63,7 +62,6 @@ export class NumberChartsComponent implements OnInit {
 	private endDatesResources: any[] = ['x']
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Cloud Numbers')
 		this.getData()
 	}
 
@@ -116,7 +114,7 @@ export class NumberChartsComponent implements OnInit {
 				const imgWidth: number = 208
 				const imgHeight: number = (canvas.height * imgWidth) / canvas.width
 				const contentDataURL: string = canvas.toDataURL('image/png')
-				 
+
 				const pdf: jsPDF = new jsPDF('p', 'mm', 'a4') // A4 size page of PDF
 				const position: number = 0
 				pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)

@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
-import { MatomoTracker } from 'ngx-matomo-client'
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
+
 import { FacilityService } from '../api-connector/facility.service'
 import { UserService } from '../api-connector/user.service'
 import { GroupService } from '../api-connector/group.service'
@@ -8,7 +8,7 @@ import { Application } from '../applications/application.model/application.model
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ApplicationsService } from '../api-connector/applications.service'
 import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component'
- 
+
 enum TabStates {
 	'SUBMITTED' = 0,
 	'CREDITS_EXTENSION' = 1,
@@ -27,7 +27,6 @@ enum TabStates {
 	providers: [FacilityService, UserService, GroupService, ApplicationsService, ApiSettings]
 })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker)
 	numberOfExtensionRequests: number = 0
 	numberOfModificationRequests: number = 0
 	numberOfCreditRequests: number = 0
@@ -226,7 +225,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Facility Application Overview')
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result
 			this.selectedFacility = this.managerFacilities[0]

@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnDestroy, OnInit, ViewChild, inject } from '@angular/core'
+import { Component, DoCheck, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { forkJoin, Subscription } from 'rxjs'
 import { Router } from '@angular/router'
 import {
@@ -10,7 +10,7 @@ import {
 	WIKI_VOLUME_OVERVIEW
 } from 'links/links'
 import { KeyValue } from '@angular/common'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { Image } from './virtualmachinemodels/image'
 import { Flavor } from './virtualmachinemodels/flavor'
 import { Userinfo } from '../userinfo/userinfo.model'
@@ -55,7 +55,6 @@ import { ImageService } from '../api-connector/image.service'
 	]
 })
 export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
-	private readonly tracker = inject(MatomoTracker)
 	SIXTY_SIX_PERCENT: number = 66
 
 	SEVENTY_FIVE: number = 75
@@ -255,9 +254,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		private router: Router,
 		private condaService: BiocondaService,
 		private applicationsService: ApplicationsService
-	) {
-		 
-	}
+	) {}
 
 	/**
 	 * Get flavors for the project.
@@ -333,7 +330,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				return false
 			}
 
-			 
 			return new RegExp('^[\\w]+$', 'i').test(text)
 		}
 
@@ -348,7 +344,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	checkStorageNumber(): boolean {
 		if (!(this.volumeStorage > 0)) {
 			return false
-			 
 		} else {
 			return (
 				this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage <=
@@ -523,7 +518,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 							if (newVm.status) {
 								if (newVm['volume_error']) {
 									this.progress_bar_width = 50
-									 
+
 									this.progress_bar_status =
 										'At least 1 volume could not be created due to invalid naming. This will not stop the machine creation process.'
 									setTimeout((): void => {
@@ -554,7 +549,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 	async delay(ms: number): Promise<any> {
-		 
 		await new Promise((resolve: any): any => setTimeout(resolve, ms))
 	}
 
@@ -784,7 +778,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Create New Instance')
 		this.initializeData()
 		this.is_vo = is_vo
 	}

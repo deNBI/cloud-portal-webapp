@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, inject } from '@angular/core'
+import { Component, EventEmitter, OnInit } from '@angular/core'
 import { forkJoin } from 'rxjs'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { Userinfo } from './userinfo.model'
 import { ApiSettings } from '../api-connector/api-settings.service'
 import { KeyService } from '../api-connector/key.service'
@@ -122,8 +122,6 @@ export class UserInfoComponent implements OnInit {
 
 	confirmEventEmitter: EventEmitter<any> = new EventEmitter<any>()
 
-	private readonly tracker = inject(MatomoTracker)
-
 	constructor(
 		private groupService: GroupService,
 		private userService: UserService,
@@ -156,7 +154,6 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('User Info')
 		this.getUserinfo()
 		this.isFreemiumActive()
 		this.isUserSimpleVmMember()
@@ -255,7 +252,6 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	showLeaveResultModal(success: boolean): void {
-		 
 		const initialState = {
 			notificationModalTitle: success ? 'Success' : 'An error occured',
 			notificationModalType: success ? 'info' : 'danger',

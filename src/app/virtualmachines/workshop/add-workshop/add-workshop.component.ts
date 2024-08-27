@@ -1,9 +1,9 @@
-import { Component, DoCheck, OnDestroy, OnInit, ViewChild, inject } from '@angular/core'
+import { Component, DoCheck, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { KeyValue } from '@angular/common'
 import transliterate from '@sindresorhus/transliterate'
 import { Router } from '@angular/router'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { Workshop } from '../workshop.model'
 import { Userinfo } from '../../../userinfo/userinfo.model'
 import { GroupService } from '../../../api-connector/group.service'
@@ -37,7 +37,6 @@ import { BiocondaService } from '../../../api-connector/bioconda.service'
 	]
 })
 export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
-	private readonly tracker = inject(MatomoTracker)
 	title: string = 'New workshop VMs'
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS
@@ -125,12 +124,9 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		private workshop_service: WorkshopService,
 		private router: Router,
 		private condaService: BiocondaService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('New Workshop')
 		this.get_applications()
 		this.get_user_data()
 	}
@@ -407,7 +403,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	}
 
 	async delay(ms: number): Promise<any> {
-		 
 		await new Promise((resolve: any): any => setTimeout(resolve, ms))
 	}
 

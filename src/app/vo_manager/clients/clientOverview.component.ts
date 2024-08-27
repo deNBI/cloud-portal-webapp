@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { Client } from './client.model'
 import { ClientService } from '../../api-connector/client.service'
 import { ApiSettings } from '../../api-connector/api-settings.service'
@@ -62,7 +62,6 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 	isLoaded: boolean = false
 
 	subscription: Subscription = new Subscription()
-	private readonly tracker = inject(MatomoTracker)
 
 	constructor(
 		private facilityService: FacilityService,
@@ -173,7 +172,6 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('VO Clients Overview')
 		this.is_vo_admin = is_vo
 		this.getClientsChecked()
 		this.getComputeCenters()

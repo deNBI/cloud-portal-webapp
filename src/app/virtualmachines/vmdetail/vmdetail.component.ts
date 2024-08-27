@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Subject, Subscription } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { ClipboardService } from 'ngx-clipboard'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { FlavorService } from '../../api-connector/flavor.service'
 import { ApplicationsService } from '../../api-connector/applications.service'
 import { FacilityService } from '../../api-connector/facility.service'
@@ -64,7 +64,6 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
 	]
 })
 export class VmDetailComponent extends AbstractBaseClass implements OnInit {
-	private readonly tracker = inject(MatomoTracker)
 	vm_id: string
 	conda_logs: Condalog
 	title: string = 'Instance Detail'
@@ -196,7 +195,6 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
 			this.vm_id = paramsId.id
-			this.tracker.trackPageView(`Instance Detail Page: ${paramsId.id}`)
 			this.getVmCondaLogs()
 			this.getVmById()
 			this.snapshotSearchTerm
@@ -266,7 +264,6 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		})
 	}
 
-	 
 	check_status_loop_vol(
 		volume: Volume,
 		initial_timeout: number = this.checkStatusTimeout,
@@ -278,7 +275,6 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		setTimeout((): void => {
 			const idx: number = this.virtualMachine.volumes.indexOf(volume)
 			if (volume.volume_openstackid) {
-				 
 				this.virtualmachineService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
 					if (expected_storage && vol.volume_storage !== expected_storage) {
 						return this.check_status_loop_vol(volume, this.checkStatusTimeout, final_state, expected_storage)

@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core'
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core'
 import { Subscription } from 'rxjs'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { Workshop } from '../workshop.model'
 import { GroupService } from '../../../api-connector/group.service'
 import { UrlData } from '../workshop-urlinfo.model'
@@ -22,7 +22,6 @@ interface MemberVm {
 	providers: [GroupService, WorkshopService]
 })
 export class WorkshopOverviewComponent implements OnInit, OnDestroy {
-	private readonly tracker = inject(MatomoTracker)
 	title: string = 'Workshop management'
 
 	@ViewChild('confirmInterferingSlotModal') confirmInterfereModal: any
@@ -66,12 +65,9 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	constructor(
 		private workshopService: WorkshopService,
 		private groupService: GroupService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Workshop Overview')
 		this.newWorkShopTimeFrame = new WorkshopTimeFrame({
 			id: null,
 			end_time: new Date(),
