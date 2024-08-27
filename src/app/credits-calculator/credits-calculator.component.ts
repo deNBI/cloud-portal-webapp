@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { FacilityService } from '../api-connector/facility.service'
 import { FlavorService } from '../api-connector/flavor.service'
 import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor'
@@ -20,7 +20,6 @@ import { ResourceWeight } from './resource-weights.model/resource-weights.model'
 	providers: [FacilityService, FlavorService, CreditsService, GroupService]
 })
 export class CreditsCalculatorComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker)
 	title: string = 'Credits Calculator'
 	got_all_cc: boolean = false
 	got_all_flavor: boolean = false
@@ -59,12 +58,9 @@ export class CreditsCalculatorComponent implements OnInit {
 		private flavor_service: FlavorService,
 		private credits_service: CreditsService,
 		private group_service: GroupService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Credits Calculator')
 		this.flavor_service.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
 			this.flavor_types = result
 		})

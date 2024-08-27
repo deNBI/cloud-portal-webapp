@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core'
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { ModalDirective } from 'ngx-bootstrap/modal'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { NewsService } from '../../api-connector/news.service'
 import { FacilityService } from '../../api-connector/facility.service'
 import { environment } from '../../../environments/environment'
@@ -17,7 +17,6 @@ import { WIKI_MOTD } from '../../../links/links'
 	providers: [NewsService, FacilityService]
 })
 export class NewsManagerComponent implements OnInit, OnDestroy {
-	private readonly tracker = inject(MatomoTracker)
 	title: string = 'News Management'
 	public production: boolean = environment.production
 	WIKI_MOTD: string = WIKI_MOTD
@@ -71,7 +70,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	 * Method on site initialization.
 	 */
 	ngOnInit(): void {
-		this.tracker.trackPageView('News Management')
 		this.subscription.add(
 			this.facilityService.getComputeCenters().subscribe((computeCenters: any[]): void => {
 				this.computeCenters = computeCenters

@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core'
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { forkJoin, Subscription } from 'rxjs'
 import { Router } from '@angular/router'
 import { KeyValue } from '@angular/common'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { GroupService } from '../../../api-connector/group.service'
 import { ImageService } from '../../../api-connector/image.service'
 import { KeyService } from '../../../api-connector/key.service'
@@ -48,7 +48,6 @@ import { ProjectMember } from '../../../projectmanagement/project_member.model'
 	]
 })
 export class AddClusterComponent implements OnInit, OnDestroy {
-	private readonly tracker = inject(MatomoTracker)
 	is_vo: boolean = false
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
 	STATUS_LINK: string = STATUS_LINK
@@ -180,9 +179,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		private applicationsService: ApplicationsService,
 		private condaService: BiocondaService,
 		private cdRef: ChangeDetectorRef
-	) {
-		 
-	}
+	) {}
 
 	calcWorkerInstancesCount(): void {
 		let count: number = 0
@@ -327,7 +324,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		const flavors_to_filter: Flavor[] = this.flavors.filter(
 			(flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0
 		)
-		 
+
 		this.selectedBatch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean =>
 			this.selectedProjectRessources.filterFlavorsTest(flav, this.selectedWorkerBatches, this.selectedMasterFlavor)
 		)
@@ -359,7 +356,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	removeBatch(batch: WorkerBatch): void {
 		const idx: number = this.selectedWorkerBatches.indexOf(batch)
 		if (batch === this.selectedBatch) {
-			 
 			for (let i = idx; i < this.selectedWorkerBatches.length; i++) {
 				this.selectedWorkerBatches[i].index -= 1
 			}
@@ -528,7 +524,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Create Cluster')
 		this.initializeData()
 		this.generateRandomName()
 		this.subscription.add(
