@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.864.0",
+  "version": "4.865.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -42,7 +42,7 @@
     "acorn": "8.12.1",
     "ajv-formats": "3.0.1",
     "angulartics2": "14.1.0",
-    "billboard.js": "3.12.4",
+    "billboard.js": "3.13.0",
     "bootstrap": "5.3.3",
     "chart.js": "4.4.4",
     "cli-color": "2.0.4",
@@ -75,7 +75,7 @@
     "slash": "^5.0.0",
     "svg2pdf.js": "2.2.4",
     "ts-helpers": "1.1.2",
-    "tslib": "2.6.3",
+    "tslib": "2.7.0",
     "uglify-js": "3.19.2"
   },
   "devDependencies": {
