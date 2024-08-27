@@ -90,7 +90,7 @@
 						</select>
 					</div>
 
-					<div class="table-responsive">
+					<div>
 						<div class="mb-3 row">
 							<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
 							<div class="col-xs-3 col-sm-auto">
@@ -740,7 +740,7 @@
 							class="form-group row"
 							[ngClass]="{
 								'has-danger': emailSub.invalid && (emailSub.dirty || emailSub.touched),
-								'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched)
+								'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched),
 							}"
 						>
 							<label class="col-md-12 control-label"><strong>Email subject*</strong></label>
@@ -757,7 +757,7 @@
 									#emailSub="ngModel"
 									[ngClass]="{
 										'is-invalid': emailSub.invalid && (emailSub.dirty || emailSub.touched),
-										'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched)
+										'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched),
 									}"
 								/>
 							</div>
@@ -777,7 +777,7 @@
 									pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
 									[ngClass]="{
 										'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
-										'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched)
+										'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched),
 									}"
 								/>
 							</div>
@@ -797,7 +797,7 @@
 									#emailT="ngModel"
 									[ngClass]="{
 										'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
-										'is-valid': emailT.valid && (emailT.dirty || emailT.touched)
+										'is-valid': emailT.valid && (emailT.dirty || emailT.touched),
 									}"
 								></textarea>
 							</div>
