@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import 'svg2pdf.js'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { WorkshopService } from '../../api-connector/workshop.service'
 import { WorkshopTimeFrame } from '../../virtualmachines/workshop/workshopTimeFrame.model'
 import { VoService } from '../../api-connector/vo.service'
@@ -20,7 +20,6 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
 	providers: [WorkshopService, VoService]
 })
 export class MaintenanceComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker)
 	is_vo_admin: boolean = false
 	title: string = 'Maintenance'
 
@@ -46,7 +45,6 @@ export class MaintenanceComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Maintenance')
 		this.newMaintenanceTimeFrame = new MaintenanceTimeFrame({
 			name: '',
 			start_time: new Date(),

@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, inject } from '@angular/core'
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 import { Observable, Subscription, take } from 'rxjs'
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal'
 import * as FileSaver from 'file-saver'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { VoService } from '../api-connector/vo.service'
 import { ProjectMember } from '../projectmanagement/project_member.model'
 import { GroupService } from '../api-connector/group.service'
@@ -33,7 +33,6 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/pr
 	providers: [VoService, GroupService, FacilityService, ProjectSortService]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
-	private readonly tracker = inject(MatomoTracker)
 	title: string = 'VO Overview'
 	public emailSubject: string
 	public emailReply: string = ''
@@ -106,7 +105,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	ngOnInit(): void {
-		this.tracker.trackPageView('Vo Overview')
 		this.getVoProjects()
 		this.getComputeCenters()
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {

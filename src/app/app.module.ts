@@ -1,6 +1,6 @@
 import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common'
 import { ErrorHandler, NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { BrowserModule, Title } from '@angular/platform-browser'
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { TabsModule } from 'ngx-bootstrap/tabs'
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
@@ -46,6 +46,7 @@ import { VoService } from './api-connector/vo.service'
 import { TokenInterceptor } from './api-connector/token-interceptor'
 import { PipeModuleModule } from './pipe-module/pipe-module.module'
 import { FacilityService } from './api-connector/facility.service'
+import { TitleService } from './title.service'
 
 /**
  * App module.
@@ -114,6 +115,8 @@ import { FacilityService } from './api-connector/facility.service'
 		CookieService,
 		VoService,
 		FacilityService,
+		Title,
+		TitleService,
 		provideHttpClient(withInterceptorsFromDi())
 	]
 })

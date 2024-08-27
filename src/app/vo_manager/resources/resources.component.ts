@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 
 import { CsvOutput, download, generateCsv, mkConfig } from 'export-to-csv'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { VoService } from '../../api-connector/vo.service'
 import { Resources } from './resources'
 
@@ -15,7 +15,6 @@ import { Resources } from './resources'
 	providers: [VoService]
 })
 export class ResourcesComponent implements OnInit {
-	private readonly tracker = inject(MatomoTracker)
 	title: string = 'VO Overview: Resources'
 	@ViewChild('resourcesTable') pdfTable: ElementRef
 
@@ -56,7 +55,5 @@ export class ResourcesComponent implements OnInit {
 		download(csvConfig)(csv)
 	}
 
-	ngOnInit(): void {
-		this.tracker.trackPageView('VO Overview Resources')
-	}
+	ngOnInit(): void {}
 }

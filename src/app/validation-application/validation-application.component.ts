@@ -1,6 +1,6 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { MatomoTracker } from 'ngx-matomo-client'
+
 import { ApplicationsService } from '../api-connector/applications.service'
 import { Application } from '../applications/application.model/application.model'
 import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component'
@@ -15,7 +15,6 @@ import { FlavorService } from '../api-connector/flavor.service'
 	providers: [ApplicationsService, FlavorService]
 })
 export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit, AfterViewChecked {
-	private readonly tracker = inject(MatomoTracker)
 	application: Application
 	isLoadedApplication: boolean = false
 	hash: string
@@ -49,8 +48,6 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
 			this.hash = paramsId.hash
-			this.tracker.trackPageView(`Application validation for hash: ${paramsId.hash}`)
-
 			this.applicationsService.getApplicationValidationByHash(this.hash).subscribe(
 				(app: Application): void => {
 					this.application = new Application(app)
