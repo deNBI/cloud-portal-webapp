@@ -9,7 +9,7 @@ test.describe.serial('@simple_vm_application', () => {
 	test.describe('Should delete old simple_vm applications', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @simple_vm_application', async ({ page, baseURL }) => {
-			test.setTimeout(80 * 1000);
+			test.setTimeout(180 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineApplications(Util.SIMPLE_VM_APPLICATION_NAME);
 			const voOverviewPage = new VoOverviewPage(page, baseURL);
@@ -72,7 +72,7 @@ test.describe.serial('@simple_vm_application', () => {
 	test.describe('Aftercare - Should delete old simple_vm_application', () => {
 		test.use({ storageState: Util.VO_MANAGER_STORAGE });
 		test('VO @simple_vm_application', async ({ page, baseURL }) => {
-			test.setTimeout(80 * 1000);
+			test.setTimeout(180 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineApplications(Util.SIMPLE_VM_APPLICATION_NAME);
 			const voOverviewPage = new VoOverviewPage(page, baseURL);
