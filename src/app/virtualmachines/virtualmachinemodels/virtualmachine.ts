@@ -3,7 +3,6 @@ import { Client } from '../../vo_manager/clients/client.model'
 import { ImageMode } from '../../facility_manager/image-tag'
 import { Clusterinfo } from '../clusters/clusterinfo'
 import { Volume } from '../volumes/volume'
-import { VirtualMachineStates } from './virtualmachinestates'
 
 /**
  * Virtualmachine class.
@@ -19,7 +18,6 @@ export class VirtualMachine {
 	openstackid: string
 	created_at_date: string
 	still_used_confirmation_requested_date: Date
-	status: VirtualMachineStates
 
 	elixir_id: string
 
