@@ -16,9 +16,7 @@ import {
 } from '../../links/links'
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { ApplicationsService } from '../api-connector/applications.service'
-import { VirtualmachineService } from '../api-connector/virtualmachine.service'
 import { VirtualMachine } from '../virtualmachines/virtualmachinemodels/virtualmachine'
-import { VirtualMachineStates } from '../virtualmachines/virtualmachinemodels/virtualmachinestates'
 import { Application } from '../applications/application.model/application.model'
 import { ProjectMember } from '../projectmanagement/project_member.model'
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
@@ -127,14 +125,12 @@ export class UserInfoComponent implements OnInit {
 		private userService: UserService,
 		private keyService: KeyService,
 		private applicationsService: ApplicationsService,
-		private vmService: VirtualmachineService,
 		private modalService: BsModalService
 	) {
 		this.groupService = groupService
 		this.userService = userService
 		this.keyService = keyService
 		this.applicationsService = applicationsService
-		this.vmService = vmService
 	}
 
 	emitConfirmation() {
@@ -308,21 +304,6 @@ export class UserInfoComponent implements OnInit {
 										this.transformUserResults(project_members)
 									}
 								})
-							}
-						})
-						const vmFilter: string[] = [
-							VirtualMachineStates.ACTIVE,
-							VirtualMachineStates.SHUTOFF,
-							VirtualMachineStates.CLIENT_OFFLINE
-						]
-						VirtualMachineStates.IN_PROCESS_STATES.forEach((state: string) => vmFilter.push(state))
-						this.vmService.getVmsFromLoggedInUser(0, 25, '', vmFilter, false, false, true).subscribe({
-							next: (res: VirtualMachine[]) => {
-								this.userVirtualMachines = res
-								this.summaryError = false
-							},
-							error: () => {
-								this.summaryError = true
 							}
 						})
 					} else {

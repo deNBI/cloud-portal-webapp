@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import html2canvas from 'html2canvas'
 import * as saveSVG from 'save-svg-as-png'
 import bb, { areaSpline, bar, Chart } from 'billboard.js'
-import { jsPDF } from 'jspdf'
 import * as d3 from 'd3'
 
 import { NumbersService } from '../../api-connector/numbers.service'
@@ -102,27 +100,6 @@ export class NumberChartsComponent implements OnInit {
 				console.log(err)
 			}
 		)
-	}
-
-	/**
-	 * Downloads the chart as a PDF-File - currently not in use
-	 */
-	downloadAsPDF(elementId: string, filename: string): void {
-		html2canvas(document.getElementById(elementId))
-			.then((canvas: HTMLCanvasElement): void => {
-				// Few necessary setting options
-				const imgWidth: number = 208
-				const imgHeight: number = (canvas.height * imgWidth) / canvas.width
-				const contentDataURL: string = canvas.toDataURL('image/png')
-
-				const pdf: jsPDF = new jsPDF('p', 'mm', 'a4') // A4 size page of PDF
-				const position: number = 0
-				pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-				pdf.save(filename.concat('.pdf'))
-			})
-			.catch((): void => {
-				console.log('failed to convert to pdf')
-			})
 	}
 
 	/**
