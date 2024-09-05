@@ -19,9 +19,7 @@ export class NumberChartsComponent implements OnInit {
 	is_vo_admin: boolean = true
 	title: string = 'Cloud Numbers'
 
-	constructor(private numbersService: NumbersService) {
-		this.numbersService = numbersService
-	}
+	constructor(private numbersService: NumbersService) {}
 
 	/**
 	 * Charts
@@ -39,6 +37,9 @@ export class NumberChartsComponent implements OnInit {
 	showRamAreChart: boolean = true
 	showProjectNumbersAreaChart: boolean = true
 	showProjectNumbersBarChart: boolean = false
+	generatingNumbersCharts: boolean = true
+	generatingRamsCharts: boolean = true
+	generatingCoresCharts: boolean = true
 
 	/**
 	 * Lists for numbers of projects per project type and status.
@@ -118,6 +119,8 @@ export class NumberChartsComponent implements OnInit {
 	 * Draws the cores Chart into the template.
 	 */
 	drawCoresNumbersChart(): void {
+		this.generatingCoresCharts = true
+
 		this.coresAreaChart = bb.generate({
 			bindto: '#coresAreaChart',
 			size: {
@@ -205,6 +208,7 @@ export class NumberChartsComponent implements OnInit {
 				show: false
 			}
 		})
+		this.generatingCoresCharts = false
 	}
 
 	/**
@@ -212,6 +216,8 @@ export class NumberChartsComponent implements OnInit {
 	 * Draws the ram Chart into the template.
 	 */
 	drawRamNumbersChart(): void {
+		this.generatingRamsCharts = true
+
 		this.ramAreaChart = bb.generate({
 			bindto: '#ramAreaChart',
 			size: {
@@ -299,12 +305,14 @@ export class NumberChartsComponent implements OnInit {
 				show: false
 			}
 		})
+		this.generatingRamsCharts = false
 	}
 
 	/**
 	 * Draws the project numbers chart in the template.
 	 */
 	drawProjectNumbersChart(): void {
+		this.generatingNumbersCharts = true
 		this.projectNumbersAreaChart = bb.generate({
 			bindto: '#projectNumbersAreaChart',
 			size: {
@@ -408,6 +416,7 @@ export class NumberChartsComponent implements OnInit {
 				show: false
 			}
 		})
+		this.generatingNumbersCharts = false
 	}
 
 	toggleGraph(chart: string): void {
