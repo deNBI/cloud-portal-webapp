@@ -39,16 +39,16 @@ export class TypeOverviewComponent implements OnInit {
 
 	ngOnInit(): any {
 		this.simpleVM_logo_link = `${this.static_img_folder}simpleVM_Logo.svg`
-		this.simpleVM_curve_logo = `${this.static_img_folder}/simplevm-info-page/flatlearning.svg`
-		this.simpleVM_ease_logo = `${this.static_img_folder}/simplevm-info-page/easytouse.svg`
-		this.simpleVM_remote_logo = `${this.static_img_folder}/simplevm-info-page/remote.svg`
+		this.simpleVM_curve_logo = `${this.static_img_folder}simplevm-info-page/flatlearning.svg`
+		this.simpleVM_ease_logo = `${this.static_img_folder}simplevm-info-page/easytouse.svg`
+		this.simpleVM_remote_logo = `${this.static_img_folder}simplevm-info-page/remote.svg`
 
 		this.kubernetes_logo_link = `${this.static_img_folder}kubernetes_logo.svg`
 		this.kubernetes_logo_border = `${this.static_img_folder}kubernetes_logo_border.svg`
 
 		this.openstack_logo_link = `${this.static_img_folder}openstack_plain_red.svg`
-		this.openstack_api_logo = `${this.static_img_folder}/openstack-info-page/api.svg`
-		this.openstack_conf_logo = `${this.static_img_folder}/openstack-info-page/configuration.svg`
-		this.openstack_scale_logo = `${this.static_img_folder}/openstack-info-page/scale.svg`
+		this.openstack_api_logo = `${this.static_img_folder}openstack-info-page/api.svg`
+		this.openstack_conf_logo = `${this.static_img_folder}openstack-info-page/configuration.svg`
+		this.openstack_scale_logo = `${this.static_img_folder}openstack-info-page/scale.svg`
 	}
 }
