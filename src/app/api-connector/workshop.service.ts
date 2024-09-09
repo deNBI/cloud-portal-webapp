@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { UrlData, WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model'
 import { ApiSettings } from './api-settings.service'
 import { Workshop } from '../virtualmachines/workshop/workshop.model'
 import { WorkshopVM } from '../virtualmachines/workshop/workshop-vm.model'
@@ -10,56 +9,7 @@ import { WorkshopTimeFrame } from '../virtualmachines/workshop/workshopTimeFrame
 
 @Injectable()
 export class WorkshopService {
-	constructor(private http: HttpClient) {
-		this.http = http
-	}
-
-	getWorkshopInfoUrl(application_id: string | number): Observable<WorkshopUrlInfoModel[]> {
-		const params: HttpParams = new HttpParams().set('application_id', application_id)
-
-		return this.http
-			.get<WorkshopUrlInfoModel[]>(`${ApiSettings.getApiBaseURL()}workshops/url_info/all_vms/`, {
-				withCredentials: true,
-				params
-			})
-			.pipe(
-				map((workshops_infos: WorkshopUrlInfoModel[]): WorkshopUrlInfoModel[] =>
-					workshops_infos.map(
-						(workshop_info: WorkshopUrlInfoModel): WorkshopUrlInfoModel => new WorkshopUrlInfoModel(workshop_info)
-					)
-				)
-			)
-	}
-
-	getUrlDataForWorkshopVm(workshop_id: number, openstackid: string): Observable<UrlData> {
-		const params: HttpParams = new HttpParams().set('openstackid', openstackid)
-
-		return this.http
-			.get<UrlData>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/url_info/one_vm/`, {
-				withCredentials: true,
-				params
-			})
-			.pipe(map((urlData: UrlData): UrlData => new UrlData(urlData)))
-	}
-
-	getResenvUrlForWorkshopVm(workshop_id: number, openstackid: string): Observable<UrlData> {
-		const params: HttpParams = new HttpParams().set('openstackid', openstackid)
-
-		return this.http
-			.get<UrlData>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/url_info/one_vm/resenv_only/`, {
-				withCredentials: true,
-				params
-			})
-			.pipe(map((urlData: UrlData): UrlData => new UrlData(urlData)))
-	}
-
-	loadWorkshopWithVms(workshop_id: number): Observable<Workshop> {
-		return this.http
-			.get<Workshop>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/vms/`, {
-				withCredentials: true
-			})
-			.pipe(map((workshop: Workshop): Workshop => new Workshop(workshop)))
-	}
+	constructor(private http: HttpClient) {}
 
 	loadWorkshopCalender(workshop_id: number): Observable<WorkshopTimeFrame[]> {
 		return this.http

@@ -4,7 +4,6 @@ import { forkJoin } from 'rxjs'
 import { ImageService } from '../api-connector/image.service'
 import { BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag } from './image-tag'
 import { FacilityService } from '../api-connector/facility.service'
-import { BiocondaService } from '../api-connector/bioconda.service'
 
 /**
  * ImageTag component.
@@ -12,7 +11,7 @@ import { BiocondaService } from '../api-connector/bioconda.service'
 @Component({
 	selector: 'app-image-tags',
 	templateUrl: 'imageTag.component.html',
-	providers: [ImageService, FacilityService, BiocondaService]
+	providers: [ImageService, FacilityService]
 })
 export class ImageTagComponent implements OnInit {
 	title: string = 'Image Tags'
@@ -50,8 +49,7 @@ export class ImageTagComponent implements OnInit {
 
 	constructor(
 		private imageService: ImageService,
-		private facilityService: FacilityService,
-		private biocondaService: BiocondaService
+		private facilityService: FacilityService
 	) {
 		// constructor for ImageTags
 	}
@@ -107,7 +105,6 @@ export class ImageTagComponent implements OnInit {
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result
 			this.selectedFacility = this.managerFacilities[0]
-			this.getTagModeSuggestions()
 			forkJoin(
 				this.imageService.getImageTags(this.selectedFacility['FacilityId']),
 				this.imageService.getImageLogos(),
@@ -175,7 +172,6 @@ export class ImageTagComponent implements OnInit {
 				this.newModeDescription = ''
 				this.newModeCopy = ''
 				this.imageModes.push(createdMode)
-				this.getTagModeSuggestions()
 			})
 	}
 
@@ -195,7 +191,6 @@ export class ImageTagComponent implements OnInit {
 		update_mode.name = this.updateModeName
 		this.imageService.updateImageMode(update_mode).subscribe((updated_mode: ImageMode): void => {
 			this.imageModes[idx] = updated_mode
-			this.getTagModeSuggestions()
 		})
 	}
 
@@ -226,14 +221,6 @@ export class ImageTagComponent implements OnInit {
 				this.blockedImageTags = tags
 			})
 		})
-	}
-
-	getTagModeSuggestions(): void {
-		this.biocondaService
-			.getSuggestedForcTemplates(this.selectedFacility['FacilityId'].toString())
-			.subscribe((response: any[]): void => {
-				this.suggestedModes = response.map((template: any): any => template)
-			})
 	}
 
 	addBlockedTagResenv(tag: string, input: HTMLInputElement): void {
