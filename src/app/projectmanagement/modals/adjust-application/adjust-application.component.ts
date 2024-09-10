@@ -54,6 +54,8 @@ export class AdjustApplicationComponent implements OnInit {
 		this.adjustedApplication = new Application(this.application)
 		this.getAvailableFlavorTypes()
 		this.getAvailableFlavors()
+
+		this.checkIfMinimumSelected()
 	}
 
 	getAvailableFlavors() {
