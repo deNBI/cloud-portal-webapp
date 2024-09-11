@@ -36,6 +36,9 @@
 						<br />
 						In case you also want to send the news as a mail to the users of your facility, please use the mail function
 						on the <a href="#/facility-manager/facilityProjects">Facility Overview page.</a>
+						<hr />
+						When not setting a specific expiry date for this news, the news will be removed from the facility news
+						section of the de.NBI Cloud website after <strong>one year</strong>.
 					</c-alert>
 				</div>
 			</div>
@@ -56,7 +59,7 @@
 										style="cursor: pointer"
 										(click)="setCurrentNews(news)"
 										[ngStyle]="{
-											'border-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#c8ced3'
+											'border-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#c8ced3',
 										}"
 									>
 										<div
@@ -100,9 +103,9 @@
 											</div>
 											<div class="row">
 												<div class="text-truncate col" data-toggle="tooltip" *ngIf="news?.motd" data-placement="auto">
-													<strong>Valid Till: </strong>
-													<span *ngIf="news?.valid_till">{{ news.valid_till | date: 'YYYY-MM-dd' }}</span>
-													<span *ngIf="!news?.valid_till">not set</span>
+													<strong>Expires at: </strong>
+													<span *ngIf="news?.expire_at">{{ news.expire_at | date: 'YYYY-MM-dd' }}</span>
+													<span *ngIf="!news?.expire_at">not set</span>
 												</div>
 											</div>
 											<br />
@@ -162,8 +165,7 @@
 									id="news_text"
 									formControlName="text"
 									name="news_text"
-									placeholder="e.g. Dear cloud users,
-we are happy to inform..."
+									placeholder="e.g. Dear cloud users, we are happy to inform..."
 									[class.is-invalid]="
 										selectedNewsForm.controls['text'].invalid &&
 										(selectedNewsForm.controls['text'].dirty || selectedNewsForm.controls['text'].touched)
@@ -201,6 +203,33 @@ we are happy to inform..."
 										How does message of the day work? (Opens in new tab)
 									</a>
 								</div>
+							</div>
+
+							<div class="form-group my-3">
+								<label class="col-form-label" for="expire_at">Expiry data</label>
+								<input
+									id="expire_at"
+									type="text"
+									name="expire_at"
+									class="form-control"
+									bsDatepicker
+									#dp="bsDatepicker"
+									[bsConfig]="{
+										adaptivePosition: true,
+										minDate: today,
+										dateInputFormat: 'YYYY-MM-DD',
+										containerClass: 'theme-dark-blue',
+									}"
+									formControlName="expire_at"
+								/>
+								<button
+									class="btn input-group-append input-group-text"
+									(click)="dp.show()"
+									[attr.aria-expanded]="dp.isOpen"
+									type="button"
+								>
+									<i class="fa fa-clock"></i>
+								</button>
 							</div>
 
 							<div class="form-group">
@@ -257,36 +286,6 @@ we are happy to inform..."
 											<label class="form-check-label" for="news_select_{{ facility['FacilityId'] }}_motd">
 												Set as MOTD for facility</label
 											>
-										</div>
-									</div>
-									<div class="form-row my-4" *ngIf="this.motdChecked">
-										<div class="col-6 my-2">Set Expiry date for MOTD</div>
-										<div class="input-group col-4">
-											<div class="input-group-prepend">
-												<span class="input-group-text">valid till</span>
-											</div>
-											<input
-												type="text"
-												name="valid_till"
-												class="form-control"
-												bsDatepicker
-												#dp="bsDatepicker"
-												[bsConfig]="{
-													adaptivePosition: true,
-													minDate: today,
-													dateInputFormat: 'YYYY-MM-DD',
-													containerClass: 'theme-dark-blue'
-												}"
-												formControlName="valid_till"
-											/>
-											<button
-												class="btn input-group-append input-group-text"
-												(click)="dp.show()"
-												[attr.aria-expanded]="dp.isOpen"
-												type="button"
-											>
-												<i class="fa fa-clock"></i>
-											</button>
 										</div>
 									</div>
 								</ng-container>

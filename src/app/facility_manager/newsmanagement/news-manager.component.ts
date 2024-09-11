@@ -43,7 +43,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		title: new UntypedFormControl({ value: this.newFacilityNews.title, disabled: false }, Validators.required),
 		text: new UntypedFormControl({ value: this.newFacilityNews.text, disabled: false }, Validators.required),
 		motd: new UntypedFormControl({ value: this.newFacilityNews.motd, disabled: false }),
-		valid_till: new UntypedFormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
+		expire_at: new UntypedFormControl({ value: this.newFacilityNews.expire_at, disabled: false }),
 		entered_tags: new UntypedFormControl({ value: this.newFacilityNews.tags, disabled: false })
 	})
 
@@ -112,7 +112,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.title = this.selectedNewsForm.controls['title'].value
 		news.text = this.selectedNewsForm.controls['text'].value
 		news.motd = this.selectedNewsForm.controls['motd'].value
-		news.valid_till = this.selectedNewsForm.controls['valid_till'].value
+		news.expire_at = this.selectedNewsForm.controls['expire_at'].value
 		news.facility = this.facilityToPost
 		news.tags = this.selectedFacilityNews.tags
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
@@ -164,7 +164,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.title = this.selectedNewsForm.controls['title'].value
 		news.text = this.selectedNewsForm.controls['text'].value
 		news.motd = this.selectedNewsForm.controls['motd'].value
-		news.valid_till = this.selectedNewsForm.controls['valid_till'].value
+		news.expire_at = this.selectedNewsForm.controls['expire_at'].value
 		news.facility = this.facilityToPost
 		news.tags = this.selectedFacilityNews.tags
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
@@ -337,7 +337,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 			text: new UntypedFormControl({ value: this.selectedFacilityNews.text, disabled: false }, Validators.required),
 			motd: new UntypedFormControl({ value: this.selectedFacilityNews.motd, disabled: false }),
 			tag: new UntypedFormControl({ value: this.selectedFacilityNews.tags, disabled: false }),
-			valid_till: new UntypedFormControl({ value: this.selectedFacilityNews.valid_till, disabled: false }),
+			expire_at: new UntypedFormControl({ value: this.selectedFacilityNews.expire_at, disabled: false }),
 			entered_tags: new UntypedFormControl({ value: this.selectedFacilityNews.tags, disabled: false })
 		})
 		this.subscription.add(
