@@ -102,7 +102,7 @@
 												</div>
 											</div>
 											<div class="row">
-												<div class="text-truncate col" data-toggle="tooltip" *ngIf="news?.motd" data-placement="auto">
+												<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
 													<strong>Expires at: </strong>
 													<span *ngIf="news?.expire_at">{{ news.expire_at | date: 'YYYY-MM-dd' }}</span>
 													<span *ngIf="!news?.expire_at">not set</span>
@@ -110,7 +110,7 @@
 											</div>
 											<br />
 											<!--<div class="row">
-												<a class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
+												<a class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"r
 													 [id]="'goToWordPressButton_' + news.id.toString()"
 													 href="{{news.url}}" target="_blank" rel="noopener noreferrer">
 													Show in WordPress
@@ -123,75 +123,42 @@
 						</div>
 					</div>
 				</div>
-				<form class="col-8" [formGroup]="selectedNewsForm">
+				<form class="col-8">
 					<div class="card" style="">
 						<div class="card-header">
 							<strong>Edit news</strong>
 						</div>
 						<div class="card-body">
-							<!-- check: *ngIf="selectedNews.editable -->
 							<div class="form-group">
 								<label class="col-form-label" for="news_title">Title:</label>
 								<input
 									type="text"
 									class="form-control"
-									formControlName="title"
+									[(ngModel)]="selectedFacilityNews.title"
 									id="news_title"
 									name="news_title"
 									placeholder="e.g. New project types in march!"
-									[class.is-invalid]="
-										selectedNewsForm.controls['title'].invalid &&
-										(selectedNewsForm.controls['title'].dirty || selectedNewsForm.controls['title'].touched)
-									"
-									[class.is-valid]="
-										selectedNewsForm.controls['title'].valid &&
-										(selectedNewsForm.controls['title'].dirty || selectedNewsForm.controls['title'].touched)
-									"
 								/>
 							</div>
-							<div
-								class="alert alert-warning"
-								*ngIf="
-									selectedNewsForm.controls['title'].invalid &&
-									(selectedNewsForm.controls['title'].dirty || selectedNewsForm.controls['title'].touched)
-								"
-							>
-								News needs a title.
-							</div>
+
 							<div class="form-group">
 								<label class="col-form-label" for="news_text">Full newstext:</label>
 								<textarea
 									class="form-control"
 									id="news_text"
-									formControlName="text"
+									[(ngModel)]="selectedFacilityNews.text"
 									name="news_text"
 									placeholder="e.g. Dear cloud users, we are happy to inform..."
-									[class.is-invalid]="
-										selectedNewsForm.controls['text'].invalid &&
-										(selectedNewsForm.controls['text'].dirty || selectedNewsForm.controls['text'].touched)
-									"
-									[class.is-valid]="
-										selectedNewsForm.controls['text'].valid &&
-										(selectedNewsForm.controls['text'].dirty || selectedNewsForm.controls['text'].touched)
-									"
 								></textarea>
 							</div>
-							<div
-								class="alert alert-warning"
-								*ngIf="
-									selectedNewsForm.controls['text'].invalid &&
-									(selectedNewsForm.controls['text'].dirty || selectedNewsForm.controls['text'].touched)
-								"
-							>
-								News needs some content.
-							</div>
+
 							<div class="form-group">
 								<label class="col-form-label" for="news_motd">Message of the day:</label>
 								<textarea
 									class="form-control"
 									id="news_motd"
-									formControlName="motd"
 									name="news_motd"
+									[(ngModel)]="selectedFacilityNews.motd"
 									placeholder="e.g. There are important changes..."
 								></textarea>
 								<div class="form-row__news_motd">
@@ -207,29 +174,35 @@
 
 							<div class="form-group my-3">
 								<label class="col-form-label" for="expire_at">Expiry data</label>
-								<input
-									id="expire_at"
-									type="text"
-									name="expire_at"
-									class="form-control"
-									bsDatepicker
-									#dp="bsDatepicker"
-									[bsConfig]="{
-										adaptivePosition: true,
-										minDate: today,
-										dateInputFormat: 'YYYY-MM-DD',
-										containerClass: 'theme-dark-blue',
-									}"
-									formControlName="expire_at"
-								/>
-								<button
-									class="btn input-group-append input-group-text"
-									(click)="dp.show()"
-									[attr.aria-expanded]="dp.isOpen"
-									type="button"
-								>
-									<i class="fa fa-clock"></i>
-								</button>
+								<div class="row">
+									<div class="col-md-6">
+										<input
+											id="expire_at"
+											type="text"
+											name="expire_at"
+											class="form-control"
+											bsDatepicker
+											#dp="bsDatepicker"
+											[bsConfig]="{
+												adaptivePosition: true,
+												minDate: today,
+												dateInputFormat: 'YYYY-MM-DD',
+												containerClass: 'theme-dark-blue',
+											}"
+											[(ngModel)]="selectedFacilityNews.expire_at"
+										/>
+									</div>
+									<div class="col-md-6">
+										<button
+											class="btn input-group-append input-group-text"
+											(click)="dp.show()"
+											[attr.aria-expanded]="dp.isOpen"
+											type="button"
+										>
+											<i class="fa fa-clock"></i>
+										</button>
+									</div>
+								</div>
 							</div>
 
 							<div class="form-group">
@@ -244,7 +217,6 @@
 									[addTagText]="'Set new Tag'"
 									bindLabel="term"
 									maxSelectedItems="10"
-									formControlName="entered_tags"
 									placeholder="You are free to enter tags"
 									dropdownPosition="bottom"
 									[(ngModel)]="selectedFacilityNews.tags"
@@ -322,7 +294,7 @@
 								class="btn btn-success"
 								style="margin: 5px"
 								(click)="addModal.show()"
-								[disabled]="selectedNewsForm.invalid || !facilityToPost"
+								[disabled]="!facilityToPost || !(selectedFacilityNews | newsValid)"
 								*ngIf="selectedFacilityNews.id === null"
 							>
 								Create & Upload News
@@ -330,7 +302,7 @@
 							<button
 								class="btn btn-secondary"
 								style="margin: 5px"
-								[disabled]="selectedNewsForm.invalid || !facilityToPost"
+								[disabled]="!facilityToPost || !(selectedFacilityNews | newsValid)"
 								(click)="updateModal.show()"
 								*ngIf="selectedFacilityNews?.id"
 							>
@@ -471,7 +443,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Upload News: {{ this.selectedNewsForm.controls['title'].value }} ?</h4>
+					<h4 class="modal-title">Upload News: {{ selectedFacilityNews.title }} ?</h4>
 					<button
 						type="button"
 						class="btn-close"
@@ -483,7 +455,7 @@
 				<div class="modal-body">
 					<div class="alert alert-info" role="alert">
 						<p>
-							Are you sure, that you want to upload <strong>{{ this.selectedFacilityNews.title }}</strong> ?
+							Are you sure, that you want to upload <strong>{{ selectedFacilityNews.title }}</strong> ?
 						</p>
 						<p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
 						<hr />

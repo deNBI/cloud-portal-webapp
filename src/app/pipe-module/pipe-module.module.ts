@@ -18,6 +18,7 @@ import { SignificancePipe } from '../shared/shared_modules/components/maintenanc
 import { SocialConsentGivenPipe } from './pipes/social-consent-given.pipe'
 import { IsMigratedProjectPipe } from './pipes/isMigratedProject'
 import { HasFlavorTypeOrIsNotCustomPipe } from './pipes/has-flavor-type.pipe'
+import { NewsValidationPipe } from './pipes/news-valid.pipe'
 
 /**
  * Pipemodule
@@ -44,7 +45,8 @@ import { HasFlavorTypeOrIsNotCustomPipe } from './pipes/has-flavor-type.pipe'
 		SignificancePipe,
 		SocialConsentGivenPipe,
 		IsMigratedProjectPipe,
-		HasFlavorTypeOrIsNotCustomPipe
+		HasFlavorTypeOrIsNotCustomPipe,
+		NewsValidationPipe
 	],
 	exports: [
 		FlavorCounterPipe,
@@ -67,7 +69,8 @@ import { HasFlavorTypeOrIsNotCustomPipe } from './pipes/has-flavor-type.pipe'
 		SignificancePipe,
 		SocialConsentGivenPipe,
 		IsMigratedProjectPipe,
-		HasFlavorTypeOrIsNotCustomPipe
+		HasFlavorTypeOrIsNotCustomPipe,
+		NewsValidationPipe
 	],
 	imports: [CommonModule],
 	providers: []
