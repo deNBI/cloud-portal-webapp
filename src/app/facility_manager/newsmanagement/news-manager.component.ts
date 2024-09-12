@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
-import { BehaviorSubject, Subscription } from 'rxjs'
+import { Subscription } from 'rxjs'
 import { ModalDirective } from 'ngx-bootstrap/modal'
 import { NewsService } from '../../api-connector/news.service'
 import { FacilityService } from '../../api-connector/facility.service'
 import { environment } from '../../../environments/environment'
 import { FacilityNews } from './facility-news'
 import { WIKI_MOTD } from '../../../links/links'
+
 /**
  * News-Manager Class to manage news in wordPress.
  */
@@ -47,8 +48,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	reg2: RegExp = /]/g
 	reg3: RegExp = /'/g
 	subscription: Subscription = new Subscription()
-
-	public motdLength: BehaviorSubject<number> = new BehaviorSubject(0)
 
 	constructor(
 		private newsService: NewsService,
@@ -345,5 +344,23 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 				}
 			)
 		)
+	}
+
+	isNewsTitleValid(): boolean {
+		if (!this.selectedFacilityNews) return false
+
+		return this.selectedFacilityNews.title?.length > 5
+	}
+
+	isNewsTextValid(): boolean {
+		if (!this.selectedFacilityNews) return false
+
+		return this.selectedFacilityNews.text?.length > 25
+	}
+
+	isNewsMOTDValid(): boolean {
+		if (!this.selectedFacilityNews) return false
+
+		return this.selectedFacilityNews.motd?.length >= 15 && this.selectedFacilityNews.motd?.length <= 100
 	}
 }

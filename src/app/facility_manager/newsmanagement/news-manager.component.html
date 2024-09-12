@@ -130,40 +130,51 @@
 						</div>
 						<div class="card-body">
 							<div class="form-group">
-								<label class="col-form-label" for="news_title">Title:</label>
+								<label class="col-form-label" for="news_title">Title (at least 5 characters):</label>
 								<input
 									type="text"
 									class="form-control"
 									[(ngModel)]="selectedFacilityNews.title"
+									[ngClass]="
+										!isNewsTitleValid() && (news_title.dirty || news_title.touched) ? 'is-invalid' : 'is-valid'
+									"
 									id="news_title"
 									name="news_title"
+									#news_title="ngModel"
 									placeholder="e.g. New project types in march!"
 								/>
 							</div>
 
 							<div class="form-group">
-								<label class="col-form-label" for="news_text">Full newstext:</label>
+								<label class="col-form-label" for="news_text">Full newstext (at least 25 characters):</label>
 								<textarea
 									class="form-control"
 									id="news_text"
 									[(ngModel)]="selectedFacilityNews.text"
+									[ngClass]="!isNewsTextValid() && (news_text.dirty || news_text.touched) ? 'is-invalid' : 'is-valid'"
 									name="news_text"
+									#news_text="ngModel"
 									placeholder="e.g. Dear cloud users, we are happy to inform..."
 								></textarea>
 							</div>
 
 							<div class="form-group">
-								<label class="col-form-label" for="news_motd">Message of the day:</label>
+								<label class="col-form-label" for="news_motd">Message of the day (15 - 100 characters):</label>
 								<textarea
 									class="form-control"
 									id="news_motd"
 									name="news_motd"
+									#news_motd="ngModel"
+									[ngClass]="!isNewsMOTDValid() && (news_motd.dirty || news_motd.touched) ? 'is-invalid' : 'is-valid'"
 									[(ngModel)]="selectedFacilityNews.motd"
 									placeholder="e.g. There are important changes..."
 								></textarea>
 								<div class="form-row__news_motd">
-									You have written {{ motdLength | async }} characters. <br />Total characters:
-									{{ motdLength.getValue() + 76 }}. (Due to appendage of newslink and timestamp).
+									You have written
+									{{ this.selectedFacilityNews?.motd ? this.selectedFacilityNews?.motd?.length : 0 }} characters.
+									<br />Total characters:
+									{{ this.selectedFacilityNews?.motd ? this.selectedFacilityNews?.motd?.length + 76 : 76 }}. (Due to
+									appendage of newslink and timestamp).
 								</div>
 								<div class="form-group">
 									<a href="{{ WIKI_MOTD }}" target="_blank" rel="noopener noreferrer">
