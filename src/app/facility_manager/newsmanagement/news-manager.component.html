@@ -136,7 +136,9 @@
 									class="form-control"
 									[(ngModel)]="selectedFacilityNews.title"
 									[ngClass]="
-										!isNewsTitleValid() && (news_title.dirty || news_title.touched) ? 'is-invalid' : 'is-valid'
+										!(selectedFacilityNews | newsTitleValid) && (news_title.dirty || news_title.touched)
+											? 'is-invalid'
+											: 'is-valid'
 									"
 									id="news_title"
 									name="news_title"
@@ -151,7 +153,11 @@
 									class="form-control"
 									id="news_text"
 									[(ngModel)]="selectedFacilityNews.text"
-									[ngClass]="!isNewsTextValid() && (news_text.dirty || news_text.touched) ? 'is-invalid' : 'is-valid'"
+									[ngClass]="
+										!(selectedFacilityNews | newsTextValid) && (news_text.dirty || news_text.touched)
+											? 'is-invalid'
+											: 'is-valid'
+									"
 									name="news_text"
 									#news_text="ngModel"
 									placeholder="e.g. Dear cloud users, we are happy to inform..."
@@ -165,7 +171,11 @@
 									id="news_motd"
 									name="news_motd"
 									#news_motd="ngModel"
-									[ngClass]="!isNewsMOTDValid() && (news_motd.dirty || news_motd.touched) ? 'is-invalid' : 'is-valid'"
+									[ngClass]="
+										!(selectedFacilityNews | newsMOTDValid) && (news_motd.dirty || news_motd.touched)
+											? 'is-invalid'
+											: 'is-valid'
+									"
 									[(ngModel)]="selectedFacilityNews.motd"
 									placeholder="e.g. There are important changes..."
 								></textarea>
@@ -473,7 +483,6 @@
 						<p><strong>Consider: This news will not be send to your users via mail!</strong></p>
 					</div>
 				</div>
-				<!-- (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()" -->
 				<div class="modal-footer">
 					<button
 						type="button"
