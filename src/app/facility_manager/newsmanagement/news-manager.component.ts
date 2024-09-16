@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
-import { BehaviorSubject, Subscription } from 'rxjs'
+import { Subscription } from 'rxjs'
 import { ModalDirective } from 'ngx-bootstrap/modal'
-
 import { NewsService } from '../../api-connector/news.service'
 import { FacilityService } from '../../api-connector/facility.service'
 import { environment } from '../../../environments/environment'
 import { FacilityNews } from './facility-news'
 import { WIKI_MOTD } from '../../../links/links'
+
 /**
  * News-Manager Class to manage news in wordPress.
  */
@@ -39,13 +38,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	today: Date = new Date()
 
 	newsSetAsMOTD: string[] = []
-	selectedNewsForm: UntypedFormGroup = new UntypedFormGroup({
-		title: new UntypedFormControl({ value: this.newFacilityNews.title, disabled: false }, Validators.required),
-		text: new UntypedFormControl({ value: this.newFacilityNews.text, disabled: false }, Validators.required),
-		motd: new UntypedFormControl({ value: this.newFacilityNews.motd, disabled: false }),
-		valid_till: new UntypedFormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
-		entered_tags: new UntypedFormControl({ value: this.newFacilityNews.tags, disabled: false })
-	})
 
 	allChecked: boolean = true
 	deletionStatus: number = 0
@@ -56,8 +48,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	reg2: RegExp = /]/g
 	reg3: RegExp = /'/g
 	subscription: Subscription = new Subscription()
-
-	public motdLength: BehaviorSubject<number> = new BehaviorSubject(0)
 
 	constructor(
 		private newsService: NewsService,
@@ -82,7 +72,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 						this.managerFacilitiesIdOnly = this.managerFacilities.map(
 							(facility: [string, number]): number => facility['FacilityId']
 						)
-						this.setFormGroup()
 						this.getNewsFromAPI()
 						this.setCurrentNews(null)
 					})
@@ -109,10 +98,10 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 
 	addNewsToAPI(bare_news: FacilityNews): void {
 		const news: FacilityNews = bare_news
-		news.title = this.selectedNewsForm.controls['title'].value
-		news.text = this.selectedNewsForm.controls['text'].value
-		news.motd = this.selectedNewsForm.controls['motd'].value
-		news.valid_till = this.selectedNewsForm.controls['valid_till'].value
+		news.title = this.selectedFacilityNews.title
+		news.text = this.selectedFacilityNews.text
+		news.motd = this.selectedFacilityNews.motd
+		news.expire_at = this.selectedFacilityNews.expire_at
 		news.facility = this.facilityToPost
 		news.tags = this.selectedFacilityNews.tags
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
@@ -161,10 +150,10 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 
 	updateNewsInAPI(bare_news: FacilityNews): void {
 		const news: FacilityNews = bare_news
-		news.title = this.selectedNewsForm.controls['title'].value
-		news.text = this.selectedNewsForm.controls['text'].value
-		news.motd = this.selectedNewsForm.controls['motd'].value
-		news.valid_till = this.selectedNewsForm.controls['valid_till'].value
+		news.title = this.selectedFacilityNews.title
+		news.text = this.selectedFacilityNews.text
+		news.motd = this.selectedFacilityNews.motd
+		news.expire_at = this.selectedFacilityNews.expire_at
 		news.facility = this.facilityToPost
 		news.tags = this.selectedFacilityNews.tags
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
@@ -273,7 +262,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		this.facilityToPost = null
 		this.facilityToSetMOTD = null
 		if (news) {
-			this.selectedFacilityNews = news
+			this.selectedFacilityNews = new FacilityNews(news)
 			this.facilityToPost = news.facility
 		} else {
 			this.selectedFacilityNews = new FacilityNews()
@@ -284,7 +273,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		} else {
 			this.motdChecked = false
 		}
-		this.setFormGroup()
 		this.setFacilityToSetMotd()
 	}
 
@@ -329,25 +317,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 * Builds reference between news-values and form-fields.
-	 */
-	setFormGroup(): void {
-		this.selectedNewsForm = new UntypedFormGroup({
-			title: new UntypedFormControl({ value: this.selectedFacilityNews.title, disabled: false }, Validators.required),
-			text: new UntypedFormControl({ value: this.selectedFacilityNews.text, disabled: false }, Validators.required),
-			motd: new UntypedFormControl({ value: this.selectedFacilityNews.motd, disabled: false }),
-			tag: new UntypedFormControl({ value: this.selectedFacilityNews.tags, disabled: false }),
-			valid_till: new UntypedFormControl({ value: this.selectedFacilityNews.valid_till, disabled: false }),
-			entered_tags: new UntypedFormControl({ value: this.selectedFacilityNews.tags, disabled: false })
-		})
-		this.subscription.add(
-			this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {
-				this.motdLength.next(value.length)
-			})
-		)
-	}
-
-	/**
 	 * Adds or deletes a facility from the list of facilities to which the news shall be uploaded/updated.
 	 *
 	 * @param facility the facility which gets added/deleted
@@ -375,5 +344,23 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 				}
 			)
 		)
+	}
+
+	isNewsTitleValid(): boolean {
+		if (!this.selectedFacilityNews) return false
+
+		return this.selectedFacilityNews.title?.length > 5
+	}
+
+	isNewsTextValid(): boolean {
+		if (!this.selectedFacilityNews) return false
+
+		return this.selectedFacilityNews.text?.length > 25
+	}
+
+	isNewsMOTDValid(): boolean {
+		if (!this.selectedFacilityNews) return false
+
+		return this.selectedFacilityNews.motd?.length >= 15 && this.selectedFacilityNews.motd?.length <= 100
 	}
 }
