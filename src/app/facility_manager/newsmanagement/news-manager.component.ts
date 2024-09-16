@@ -261,6 +261,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	setCurrentNews(news?: FacilityNews): void {
 		this.facilityToPost = null
 		this.facilityToSetMOTD = null
+		console.log(news)
 		if (news) {
 			this.selectedFacilityNews = new FacilityNews(news)
 			this.facilityToPost = news.facility
@@ -349,13 +350,13 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	isNewsTitleValid(): boolean {
 		if (!this.selectedFacilityNews) return false
 
-		return this.selectedFacilityNews.title?.length > 5
+		return this.selectedFacilityNews.title?.length >= 5
 	}
 
 	isNewsTextValid(): boolean {
 		if (!this.selectedFacilityNews) return false
 
-		return this.selectedFacilityNews.text?.length > 25
+		return this.selectedFacilityNews.text?.length >= 25
 	}
 
 	isNewsMOTDValid(): boolean {
