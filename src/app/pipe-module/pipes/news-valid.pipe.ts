@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core'
 import { FacilityNews } from 'app/facility_manager/newsmanagement/facility-news'
 
 @Pipe({
-	name: 'newsValid'
+	name: 'newsValid',
+	pure: false
 })
 export class NewsValidationPipe implements PipeTransform {
 	transform(news: FacilityNews): boolean {
@@ -15,7 +16,8 @@ export class NewsValidationPipe implements PipeTransform {
 }
 
 @Pipe({
-	name: 'newsTitleValid'
+	name: 'newsTitleValid',
+	pure: false
 })
 export class NewsTitleValidationPipe implements PipeTransform {
 	transform(news: FacilityNews): boolean {
@@ -24,7 +26,8 @@ export class NewsTitleValidationPipe implements PipeTransform {
 }
 
 @Pipe({
-	name: 'newsTextValid'
+	name: 'newsTextValid',
+	pure: false
 })
 export class NewsTextValidationPipe implements PipeTransform {
 	transform(news: FacilityNews): boolean {
@@ -33,7 +36,8 @@ export class NewsTextValidationPipe implements PipeTransform {
 }
 
 @Pipe({
-	name: 'newsMOTDValid'
+	name: 'newsMOTDValid',
+	pure: false
 })
 export class NewsMOTDValidationPipe implements PipeTransform {
 	transform(news: FacilityNews): boolean {
