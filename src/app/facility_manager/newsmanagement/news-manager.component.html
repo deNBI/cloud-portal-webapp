@@ -36,6 +36,9 @@
 						<br />
 						In case you also want to send the news as a mail to the users of your facility, please use the mail function
 						on the <a href="#/facility-manager/facilityProjects">Facility Overview page.</a>
+						<hr />
+						When not setting a specific expiry date for this news, the news will be removed from the facility news
+						section of the de.NBI Cloud website after <strong>one year</strong>.
 					</c-alert>
 				</div>
 			</div>
@@ -56,7 +59,7 @@
 										style="cursor: pointer"
 										(click)="setCurrentNews(news)"
 										[ngStyle]="{
-											'border-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#c8ced3'
+											'border-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#c8ced3',
 										}"
 									>
 										<div
@@ -99,15 +102,15 @@
 												</div>
 											</div>
 											<div class="row">
-												<div class="text-truncate col" data-toggle="tooltip" *ngIf="news?.motd" data-placement="auto">
-													<strong>Valid Till: </strong>
-													<span *ngIf="news?.valid_till">{{ news.valid_till | date: 'YYYY-MM-dd' }}</span>
-													<span *ngIf="!news?.valid_till">not set</span>
+												<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
+													<strong>Expires at: </strong>
+													<span *ngIf="news?.expire_at">{{ news.expire_at | date: 'YYYY-MM-dd' }}</span>
+													<span *ngIf="!news?.expire_at">not set</span>
 												</div>
 											</div>
 											<br />
 											<!--<div class="row">
-												<a class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"
+												<a class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"r
 													 [id]="'goToWordPressButton_' + news.id.toString()"
 													 href="{{news.url}}" target="_blank" rel="noopener noreferrer">
 													Show in WordPress
@@ -120,86 +123,96 @@
 						</div>
 					</div>
 				</div>
-				<form class="col-8" [formGroup]="selectedNewsForm">
+				<form class="col-8">
 					<div class="card" style="">
 						<div class="card-header">
 							<strong>Edit news</strong>
 						</div>
 						<div class="card-body">
-							<!-- check: *ngIf="selectedNews.editable -->
 							<div class="form-group">
-								<label class="col-form-label" for="news_title">Title:</label>
+								<label class="col-form-label" for="news_title">Title (at least 5 characters):</label>
 								<input
 									type="text"
 									class="form-control"
-									formControlName="title"
+									[(ngModel)]="selectedFacilityNews.title"
+									[ngClass]="
+										!isNewsTitleValid() && (news_title.dirty || news_title.touched) ? 'is-invalid' : 'is-valid'
+									"
 									id="news_title"
 									name="news_title"
+									#news_title="ngModel"
 									placeholder="e.g. New project types in march!"
-									[class.is-invalid]="
-										selectedNewsForm.controls['title'].invalid &&
-										(selectedNewsForm.controls['title'].dirty || selectedNewsForm.controls['title'].touched)
-									"
-									[class.is-valid]="
-										selectedNewsForm.controls['title'].valid &&
-										(selectedNewsForm.controls['title'].dirty || selectedNewsForm.controls['title'].touched)
-									"
 								/>
 							</div>
-							<div
-								class="alert alert-warning"
-								*ngIf="
-									selectedNewsForm.controls['title'].invalid &&
-									(selectedNewsForm.controls['title'].dirty || selectedNewsForm.controls['title'].touched)
-								"
-							>
-								News needs a title.
-							</div>
+
 							<div class="form-group">
-								<label class="col-form-label" for="news_text">Full newstext:</label>
+								<label class="col-form-label" for="news_text">Full newstext (at least 25 characters):</label>
 								<textarea
 									class="form-control"
 									id="news_text"
-									formControlName="text"
+									[(ngModel)]="selectedFacilityNews.text"
+									[ngClass]="!isNewsTextValid() && (news_text.dirty || news_text.touched) ? 'is-invalid' : 'is-valid'"
 									name="news_text"
-									placeholder="e.g. Dear cloud users,
-we are happy to inform..."
-									[class.is-invalid]="
-										selectedNewsForm.controls['text'].invalid &&
-										(selectedNewsForm.controls['text'].dirty || selectedNewsForm.controls['text'].touched)
-									"
-									[class.is-valid]="
-										selectedNewsForm.controls['text'].valid &&
-										(selectedNewsForm.controls['text'].dirty || selectedNewsForm.controls['text'].touched)
-									"
+									#news_text="ngModel"
+									placeholder="e.g. Dear cloud users, we are happy to inform..."
 								></textarea>
 							</div>
-							<div
-								class="alert alert-warning"
-								*ngIf="
-									selectedNewsForm.controls['text'].invalid &&
-									(selectedNewsForm.controls['text'].dirty || selectedNewsForm.controls['text'].touched)
-								"
-							>
-								News needs some content.
-							</div>
+
 							<div class="form-group">
-								<label class="col-form-label" for="news_motd">Message of the day:</label>
+								<label class="col-form-label" for="news_motd">Message of the day (15 - 100 characters):</label>
 								<textarea
 									class="form-control"
 									id="news_motd"
-									formControlName="motd"
 									name="news_motd"
+									#news_motd="ngModel"
+									[ngClass]="!isNewsMOTDValid() && (news_motd.dirty || news_motd.touched) ? 'is-invalid' : 'is-valid'"
+									[(ngModel)]="selectedFacilityNews.motd"
 									placeholder="e.g. There are important changes..."
 								></textarea>
 								<div class="form-row__news_motd">
-									You have written {{ motdLength | async }} characters. <br />Total characters:
-									{{ motdLength.getValue() + 76 }}. (Due to appendage of newslink and timestamp).
+									You have written
+									{{ this.selectedFacilityNews?.motd ? this.selectedFacilityNews?.motd?.length : 0 }} characters.
+									<br />Total characters:
+									{{ this.selectedFacilityNews?.motd ? this.selectedFacilityNews?.motd?.length + 76 : 76 }}. (Due to
+									appendage of newslink and timestamp).
 								</div>
 								<div class="form-group">
 									<a href="{{ WIKI_MOTD }}" target="_blank" rel="noopener noreferrer">
 										How does message of the day work? (Opens in new tab)
 									</a>
+								</div>
+							</div>
+
+							<div class="form-group my-3">
+								<label class="col-form-label" for="expire_at">Expiry data</label>
+								<div class="row">
+									<div class="col-md-6">
+										<input
+											id="expire_at"
+											type="text"
+											name="expire_at"
+											class="form-control"
+											bsDatepicker
+											#dp="bsDatepicker"
+											[bsConfig]="{
+												adaptivePosition: true,
+												minDate: today,
+												dateInputFormat: 'YYYY-MM-DD',
+												containerClass: 'theme-dark-blue',
+											}"
+											[(ngModel)]="selectedFacilityNews.expire_at"
+										/>
+									</div>
+									<div class="col-md-6">
+										<button
+											class="btn input-group-append input-group-text"
+											(click)="dp.show()"
+											[attr.aria-expanded]="dp.isOpen"
+											type="button"
+										>
+											<i class="fa fa-clock"></i>
+										</button>
+									</div>
 								</div>
 							</div>
 
@@ -215,7 +228,6 @@ we are happy to inform..."
 									[addTagText]="'Set new Tag'"
 									bindLabel="term"
 									maxSelectedItems="10"
-									formControlName="entered_tags"
 									placeholder="You are free to enter tags"
 									dropdownPosition="bottom"
 									[(ngModel)]="selectedFacilityNews.tags"
@@ -259,36 +271,6 @@ we are happy to inform..."
 											>
 										</div>
 									</div>
-									<div class="form-row my-4" *ngIf="this.motdChecked">
-										<div class="col-6 my-2">Set Expiry date for MOTD</div>
-										<div class="input-group col-4">
-											<div class="input-group-prepend">
-												<span class="input-group-text">valid till</span>
-											</div>
-											<input
-												type="text"
-												name="valid_till"
-												class="form-control"
-												bsDatepicker
-												#dp="bsDatepicker"
-												[bsConfig]="{
-													adaptivePosition: true,
-													minDate: today,
-													dateInputFormat: 'YYYY-MM-DD',
-													containerClass: 'theme-dark-blue'
-												}"
-												formControlName="valid_till"
-											/>
-											<button
-												class="btn input-group-append input-group-text"
-												(click)="dp.show()"
-												[attr.aria-expanded]="dp.isOpen"
-												type="button"
-											>
-												<i class="fa fa-clock"></i>
-											</button>
-										</div>
-									</div>
 								</ng-container>
 							</div>
 							<br />
@@ -323,7 +305,7 @@ we are happy to inform..."
 								class="btn btn-success"
 								style="margin: 5px"
 								(click)="addModal.show()"
-								[disabled]="selectedNewsForm.invalid || !facilityToPost"
+								[disabled]="!facilityToPost || !(selectedFacilityNews | newsValid)"
 								*ngIf="selectedFacilityNews.id === null"
 							>
 								Create & Upload News
@@ -331,7 +313,7 @@ we are happy to inform..."
 							<button
 								class="btn btn-secondary"
 								style="margin: 5px"
-								[disabled]="selectedNewsForm.invalid || !facilityToPost"
+								[disabled]="!facilityToPost || !(selectedFacilityNews | newsValid)"
 								(click)="updateModal.show()"
 								*ngIf="selectedFacilityNews?.id"
 							>
@@ -472,7 +454,7 @@ we are happy to inform..."
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Upload News: {{ this.selectedNewsForm.controls['title'].value }} ?</h4>
+					<h4 class="modal-title">Upload News: {{ selectedFacilityNews.title }} ?</h4>
 					<button
 						type="button"
 						class="btn-close"
@@ -484,7 +466,7 @@ we are happy to inform..."
 				<div class="modal-body">
 					<div class="alert alert-info" role="alert">
 						<p>
-							Are you sure, that you want to upload <strong>{{ this.selectedFacilityNews.title }}</strong> ?
+							Are you sure, that you want to upload <strong>{{ selectedFacilityNews.title }}</strong> ?
 						</p>
 						<p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
 						<hr />
