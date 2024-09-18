@@ -52,6 +52,8 @@ import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-req
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component'
 import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component'
 import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component'
+import { ApplicationRequestType } from '../shared/enums/application-request-type'
+
 /**
  * Projectoverview component.
  */
@@ -88,6 +90,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK
 	@ViewChild('creditsChart') creditsCanvas: ElementRef
 	@ViewChild('publicKeyModal') publicKeyModal: any
+	@ViewChild('terminateModal') terminateModal: any
 	publicKeyToShow: string = ''
 	publicKeyMemberName: string = ''
 	project_id: string
@@ -359,18 +362,25 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		)
 	}
 
-	showExtensionInformationModal(): void {
+	showApplicationRequestModal(type: ApplicationRequestType): void {
 		const initialState = {
 			dois: this.dois,
-			application_id: this.application_id
+			application_id: this.application_id,
+			[`is${type}`]: true
 		}
+
 		this.bsModalRef = this.modalService.show(ExtensionEntryComponent, { initialState, class: 'modal-lg' })
+
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((event: any): void => {
 				if (event.reloadDoi) {
 					this.getDois()
+				} else if (event.showModification) {
+					this.showResourceModal()
 				} else if (event.showExtension) {
 					this.showLifetimeExtensionModal()
+				} else if (event.showTermination) {
+					this.terminateModal.show()
 				}
 			})
 		)
@@ -1041,4 +1051,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			)
 		)
 	}
+
+	protected readonly ApplicationRequestType = ApplicationRequestType
 }
