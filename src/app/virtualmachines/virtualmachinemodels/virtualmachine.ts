@@ -3,9 +3,6 @@ import { Client } from '../../vo_manager/clients/client.model'
 import { ImageMode } from '../../facility_manager/image-tag'
 import { Clusterinfo } from '../clusters/clusterinfo'
 import { Volume } from '../volumes/volume'
-import { Backend } from '../conda/backend/backend'
-import { VirtualMachineStates } from './virtualmachinestates'
-import { CondaPackage } from '../conda/condaPackage.model'
 
 /**
  * Virtualmachine class.
@@ -20,37 +17,20 @@ export class VirtualMachine {
 	client: Client
 	openstackid: string
 	created_at_date: string
-	deleted_at_date: string
 	still_used_confirmation_requested_date: Date
-	still_used_confirmed_user_id: string
-	stopped_at: string
+
 	elixir_id: string
-	fixed_ip: string
-	userlogin: string
-	floating_ip: string
-	ssh_command: string
-	udp_command: string
+
 	application_id: string
 	cardState: number
 	cluster: Clusterinfo
 	projectid: number
-	playbook_successful: boolean
-	playbook_done: boolean
-	res_env_url: string
+
 	modes: ImageMode[]
 	volumes: Volume[]
-	still_used_confirmation_requested: boolean
 	error_msg: string
-	info_msg: string
 	msg: string
 	days_running: number
-	backend: Backend
-	conda_packages: CondaPackage[] = []
-	still_used_confirmed_date: Date
-	// still used confirmed date missing in webapp!
-
-	migrate_project_to_simple_vm: boolean = false
-	project_is_migrated_to_simple_vm: boolean = false
 
 	constructor(vm?: Partial<VirtualMachine>) {
 		Object.assign(this, vm)
@@ -69,15 +49,6 @@ export class VirtualMachine {
 			if (vm.volumes) {
 				for (const volume of vm.volumes) {
 					this.volumes.push(new Volume(volume))
-				}
-			}
-			if (vm.backend) {
-				this.backend = new Backend(vm.backend)
-			}
-			this.conda_packages = []
-			if (vm.conda_packages) {
-				for (const conda_package of vm.conda_packages) {
-					this.conda_packages.push(new CondaPackage(conda_package))
 				}
 			}
 		}
@@ -107,28 +78,5 @@ export class VirtualMachine {
 		const term_date: Date = new Date(this.still_used_confirmation_requested_date.getTime() + 1000 * 60 * 60 * 24 * 14)
 
 		return term_date.toLocaleDateString()
-	}
-
-	setErrorMsgWithTimeout(msg: string, timeout: number = 10000): void {
-		this.error_msg = msg
-		setTimeout((): void => {
-			this.error_msg = null
-		}, timeout)
-	}
-
-	setMsgWithTimeout(msg: string, timeout: number = 10000): void {
-		this.msg = msg
-		setTimeout((): void => {
-			this.msg = null
-		}, timeout)
-	}
-
-	updateClusterStatus(): void {
-		if (!this.cluster) {
-			return
-		}
-		if (this.status === VirtualMachineStates.SHUTOFF) {
-			this.cluster.status = VirtualMachineStates.SHUTOFF
-		}
 	}
 }

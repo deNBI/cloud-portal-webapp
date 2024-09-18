@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
 import moment from 'moment'
-import { Router } from '@angular/router'
 import { ApiSettings } from '../api-connector/api-settings.service'
 import { ClientService } from '../api-connector/client.service'
 import { FacilityService } from '../api-connector/facility.service'
@@ -13,7 +12,6 @@ import { ApplicationsService } from '../api-connector/applications.service'
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { environment } from '../../environments/environment'
 import { is_vo } from '../shared/globalvar'
-import { VirtualmachineService } from '../api-connector/virtualmachine.service'
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { WIKI, WIKI_FAQ, STATUS_LINK } from '../../links/links'
 import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model'
@@ -26,16 +24,7 @@ import { UserInfoComponent } from '../userinfo/userinfo.component'
 @Component({
 	selector: 'app-dashboard',
 	templateUrl: './full-layout.component.html',
-	providers: [
-		ApplicationsService,
-		VirtualmachineService,
-		VoService,
-		GroupService,
-		UserService,
-		FacilityService,
-		ClientService,
-		ApiSettings
-	]
+	providers: [ApplicationsService, VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
 })
 export class FullLayoutComponent extends ApplicationBaseClassComponent implements OnInit {
 	public year: number = new Date().getFullYear()
@@ -57,7 +46,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg'
 	kubernetes_logo: string = 'static/webapp/assets/img/kubernetes_logo.svg'
 
-	cluster_allowed: boolean = false
 	has_workshops: boolean = false
 	missing_consents: string[] = []
 	maintenanceTimeframes: MaintenanceTimeFrame[] = []
@@ -79,15 +67,12 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	STATUS_LINK: string = STATUS_LINK
 
 	constructor(
-		private voService: VoService,
 		private maintenanceService: MaintenanceService,
 		private groupService: GroupService,
 		userService: UserService,
 		facilityService: FacilityService,
 		applicationsService: ApplicationsService,
-		private virtualMachineService: VirtualmachineService,
-		private cd: ChangeDetectorRef,
-		private router: Router
+		private cd: ChangeDetectorRef
 	) {
 		super(userService, applicationsService, facilityService, cd)
 	}
@@ -120,12 +105,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		if (this.checkMaintenanceTimer) {
 			clearTimeout(this.checkMaintenanceTimer)
 		}
-	}
-
-	set_cluster_allowed(): void {
-		this.virtualMachineService.getClusterAllowed().subscribe((res: any): void => {
-			this.cluster_allowed = res['allowed']
-		})
 	}
 
 	public get_is_facility_manager(): void {
@@ -180,7 +159,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	}
 
 	ngOnInit(): void {
-		this.set_cluster_allowed()
 		this.getGroupsEnumeration()
 		this.is_vm_project_member()
 		this.is_workshop_admin()

@@ -47,14 +47,12 @@ export const routes: Routes = [
 				path: 'userinfo',
 				canActivate: [LoggedInGuard],
 
-				 
 				loadChildren: () => import('./userinfo/userinfo.module').then(m => m.UserinfoModule),
 			},
 			{
 				path: 'help',
 				canActivate: [LoggedInGuard],
 
-				 
 				loadChildren: () => import('./help/help.module').then(m => m.HelpModule),
 			},
 			{
@@ -68,12 +66,6 @@ export const routes: Routes = [
 				canActivate: [LoggedInGuard],
 
 				loadChildren: () => import('./applications/applications.module').then(m => m.ApplicationsModule),
-			},
-			{
-				path: 'virtualmachines',
-				canActivate: [LoggedInGuard],
-
-				loadChildren: () => import('./virtualmachines/vm.module').then(m => m.VmModule),
 			},
 			{
 				path: 'vo-manager',
