@@ -4,7 +4,7 @@ import { BrowserModule, Title } from '@angular/platform-browser'
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { TabsModule } from 'ngx-bootstrap/tabs'
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
-import { NgChartsModule } from 'ng2-charts'
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts'
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { PaginationModule } from 'ngx-bootstrap/pagination'
 import { ClipboardModule } from 'ngx-clipboard'
@@ -73,7 +73,6 @@ import { TitleService } from './title.service'
 		CommonModule,
 		BsDropdownModule.forRoot(),
 		TabsModule.forRoot(),
-		NgChartsModule,
 		ModalModule.forRoot(),
 		PaginationModule.forRoot(),
 		SharedModuleModule,
@@ -110,6 +109,7 @@ import { TitleService } from './title.service'
 			provide: ErrorHandler,
 			useClass: UncaughtExceptionHandler
 		},
+		provideCharts(withDefaultRegisterables()),
 		ApiSettings,
 		UserService,
 		CookieService,

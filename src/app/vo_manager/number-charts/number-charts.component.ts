@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import html2canvas from 'html2canvas'
 import * as saveSVG from 'save-svg-as-png'
 import bb, { areaSpline, bar, Chart } from 'billboard.js'
-import { jsPDF } from 'jspdf'
 import * as d3 from 'd3'
 
 import { NumbersService } from '../../api-connector/numbers.service'
@@ -21,9 +19,7 @@ export class NumberChartsComponent implements OnInit {
 	is_vo_admin: boolean = true
 	title: string = 'Cloud Numbers'
 
-	constructor(private numbersService: NumbersService) {
-		this.numbersService = numbersService
-	}
+	constructor(private numbersService: NumbersService) {}
 
 	/**
 	 * Charts
@@ -41,6 +37,9 @@ export class NumberChartsComponent implements OnInit {
 	showRamAreChart: boolean = true
 	showProjectNumbersAreaChart: boolean = true
 	showProjectNumbersBarChart: boolean = false
+	generatingNumbersCharts: boolean = true
+	generatingRamsCharts: boolean = true
+	generatingCoresCharts: boolean = true
 
 	/**
 	 * Lists for numbers of projects per project type and status.
@@ -105,27 +104,6 @@ export class NumberChartsComponent implements OnInit {
 	}
 
 	/**
-	 * Downloads the chart as a PDF-File - currently not in use
-	 */
-	downloadAsPDF(elementId: string, filename: string): void {
-		html2canvas(document.getElementById(elementId))
-			.then((canvas: HTMLCanvasElement): void => {
-				// Few necessary setting options
-				const imgWidth: number = 208
-				const imgHeight: number = (canvas.height * imgWidth) / canvas.width
-				const contentDataURL: string = canvas.toDataURL('image/png')
-
-				const pdf: jsPDF = new jsPDF('p', 'mm', 'a4') // A4 size page of PDF
-				const position: number = 0
-				pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-				pdf.save(filename.concat('.pdf'))
-			})
-			.catch((): void => {
-				console.log('failed to convert to pdf')
-			})
-	}
-
-	/**
 	 * Downloads the numbers graphic as a png.
 	 */
 	downloadAsPNG(elementId: string, filename: string): void {
@@ -141,6 +119,8 @@ export class NumberChartsComponent implements OnInit {
 	 * Draws the cores Chart into the template.
 	 */
 	drawCoresNumbersChart(): void {
+		this.generatingCoresCharts = true
+
 		this.coresAreaChart = bb.generate({
 			bindto: '#coresAreaChart',
 			size: {
@@ -228,6 +208,7 @@ export class NumberChartsComponent implements OnInit {
 				show: false
 			}
 		})
+		this.generatingCoresCharts = false
 	}
 
 	/**
@@ -235,6 +216,8 @@ export class NumberChartsComponent implements OnInit {
 	 * Draws the ram Chart into the template.
 	 */
 	drawRamNumbersChart(): void {
+		this.generatingRamsCharts = true
+
 		this.ramAreaChart = bb.generate({
 			bindto: '#ramAreaChart',
 			size: {
@@ -322,12 +305,14 @@ export class NumberChartsComponent implements OnInit {
 				show: false
 			}
 		})
+		this.generatingRamsCharts = false
 	}
 
 	/**
 	 * Draws the project numbers chart in the template.
 	 */
 	drawProjectNumbersChart(): void {
+		this.generatingNumbersCharts = true
 		this.projectNumbersAreaChart = bb.generate({
 			bindto: '#projectNumbersAreaChart',
 			size: {
@@ -431,6 +416,7 @@ export class NumberChartsComponent implements OnInit {
 				show: false
 			}
 		})
+		this.generatingNumbersCharts = false
 	}
 
 	toggleGraph(chart: string): void {

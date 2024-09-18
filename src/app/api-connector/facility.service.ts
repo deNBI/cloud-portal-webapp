@@ -10,9 +10,6 @@ import { ResourceMachine } from '../facility_manager/resources/resource-machine'
 import { ProjectMember } from '../projectmanagement/project_member.model'
 import { GPUSpecification } from '../facility_manager/resources/gpu-specification'
 import { GeneralStorageFactor } from '../facility_manager/resources/general-storage-factor'
-import { ClusterPage } from '../virtualmachines/clusters/clusterPage.model'
-import { VolumePage } from '../virtualmachines/volumes/volumePage.model'
-import { SnapshotPage } from '../virtualmachines/snapshots/snapshotPage.model'
 
 /**
  * Service which provides methods for the facilities.
@@ -78,38 +75,6 @@ export class FacilityService {
 				withCredentials: true
 			}
 		)
-	}
-
-	getClustersFacility(
-		facility_id: string,
-		page: number,
-		vm_per_site: number,
-		filter?: string,
-		filter_status?: string[]
-	): Observable<ClusterPage> {
-		let params: HttpParams = new HttpParams()
-			.set('page', page.toString())
-			.set('cluster_per_site', vm_per_site.toString())
-
-		if (filter) {
-			params = params.set('filter', filter)
-		}
-		if (filter_status) {
-			params = params.append('filter_status', JSON.stringify(filter_status))
-		}
-
-		return this.http
-			.get<ClusterPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/clusters/`, {
-				withCredentials: true,
-				params
-			})
-			.pipe(map((cluster_page: ClusterPage): ClusterPage => new ClusterPage(cluster_page)))
-	}
-
-	getComputeCenterClientLimits(facility_id): Observable<any> {
-		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/simpleVM/limits/`, {
-			withCredentials: true
-		})
 	}
 
 	getComputeCenterClientLimitsAvailable(facility_id, application_id): Observable<any> {
@@ -278,69 +243,6 @@ export class FacilityService {
 	getFacilityApplicationById(facility: number | string, id: string): Observable<Application> {
 		return this.http.get<Application>(
 			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${id}/detail/`,
-			{
-				withCredentials: true
-			}
-		)
-	}
-
-	/**
-	 * Gets all volumes from a specific facility.
-	 *
-	 * @param facility
-	 * @returns
-	 */
-	getFacilityVolumes(facility: number | string, items_per_page: number, current_page: number): Observable<VolumePage> {
-		const params: HttpParams = new HttpParams()
-			.set('items_per_page', items_per_page.toString())
-			.set('page', current_page.toString())
-
-		return this.http
-			.get<VolumePage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
-				withCredentials: true,
-				params
-			})
-			.pipe(map((volume_page: VolumePage): VolumePage => new VolumePage(volume_page)))
-	}
-
-	/**
-	 * Gets all volumes from a specific facility.
-	 *
-	 * @param facility
-	 * @param currentPage
-	 * @param snapsPerSite
-	 * @returns
-	 */
-	getFacilitySnapshots(
-		facility: number | string,
-		currentPage: number,
-		snapsPerSite: number,
-		filter?: string
-	): Observable<SnapshotPage> {
-		let params: HttpParams = new HttpParams()
-			.set('page', currentPage.toString())
-			.set('snaps_per_site', snapsPerSite.toString())
-		if (filter) {
-			params = params.set('filter', filter)
-		}
-
-		return this.http
-			.get<SnapshotPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
-				withCredentials: true,
-				params
-			})
-			.pipe(map((snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page)))
-	}
-
-	/**
-	 * Gets all facility modification applications which are waiting for conirmation.
-	 *
-	 * @param facility
-	 * @returns
-	 */
-	getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<Application[]> {
-		return this.http.get<Application[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`,
 			{
 				withCredentials: true
 			}

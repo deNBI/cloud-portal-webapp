@@ -5,7 +5,7 @@
 
 const VO_NAME: string = window['env']['VO_NAME'] || 'denbi-dev'
 const NEW_SIMPLE_VM: string = window['env']['NEW_SIMPLE_VM'] || 'https://simplevm.denbi.de'
-const MATOMO_SITE_ID = window['env']['MATOMO_SITE_ID'] || 22
+const MATOMO_SITE_ID = window['env']['MATOMO_SITE_ID'] || 26
 const MATOMO_TRACKING_URL = window['env']['MATOMO_TRACKING_URL'] || 'https://piwik.cebitec.uni-bielefeld.de/'
 
 export const environment: any = {
