@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy } from '@angular/core'
+import { Component, EventEmitter, Input, OnDestroy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { TESTIMONIAL_PAGE_LINK, WIKI_PUBLICATIONS } from '../../../../links/links'
@@ -14,6 +14,10 @@ import { GroupService } from '../../../api-connector/group.service'
 export class ExtensionEntryComponent implements OnDestroy {
 	private subscription: Subscription = new Subscription()
 	public event: EventEmitter<any> = new EventEmitter()
+	@Input() isTermination: boolean = false
+	@Input() isModification: boolean = false
+	@Input() isExtension: boolean = false
+
 	TESTIMONIAL_PAGE_LINK = TESTIMONIAL_PAGE_LINK
 
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS
@@ -27,13 +31,17 @@ export class ExtensionEntryComponent implements OnDestroy {
 	constructor(
 		public bsModalRef: BsModalRef,
 		private groupService: GroupService
-	) {
-		 
-	}
+	) {}
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe()
-		this.event.emit({ reloadDoi: false, showExtension: true })
+		if (this.isTermination) {
+			this.event.emit({ reloadDoi: false, showTermination: true, showModification: false, showExtension: false })
+		} else if (this.isModification) {
+			this.event.emit({ reloadDoi: false, showExtension: false, showModification: true, showTermination: false })
+		} else if (this.isExtension) {
+			this.event.emit({ reloadDoi: false, showExtension: true, showModification: false, showTermination: false })
+		}
 	}
 
 	isNewDoi(): boolean {

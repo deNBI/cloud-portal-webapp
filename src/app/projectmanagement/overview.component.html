@@ -306,7 +306,7 @@
 										[ngStyle]="{
 											'width.%': calculateProgressBar(
 												project_application?.DaysRunning / project_application?.lifetime_days
-											)
+											),
 										}"
 										aria-valuemax="100"
 										aria-valuemin="0"
@@ -350,7 +350,7 @@
 									Withdraw extension request
 								</button>
 								<button
-									(click)="showExtensionInformationModal()"
+									(click)="showApplicationRequestModal(ApplicationRequestType.Extension)"
 									*ngIf="
 										project_application.user_is_admin &&
 										!(
@@ -412,7 +412,7 @@
 									</span>
 								</ng-container>
 								<button
-									(click)="terminateModal.show()"
+									(click)="showApplicationRequestModal(ApplicationRequestType.Termination)"
 									*ngIf="
 										project_application.user_is_admin &&
 										(project_application | hasstatusinlist: Application_States.APPROVED) &&
@@ -535,7 +535,7 @@
 									</span>
 								</ng-container>
 								<button
-									(click)="showResourceModal()"
+									(click)="showApplicationRequestModal(ApplicationRequestType.Modification)"
 									*ngIf="
 										project_application.user_is_admin &&
 										!(
@@ -754,7 +754,7 @@
 											'width.%': calculateProgressBar(
 												project_application?.project_application_current_credits /
 													project_application?.project_application_initial_credits
-											)
+											),
 										}"
 										aria-valuemax="100"
 										aria-valuemin="0"

@@ -11,20 +11,43 @@
 		></button>
 	</div>
 	<div class="modal-body">
-		<div class="text-black-50 p-4">
-			We are very pleased that the de.NBI Cloud meets with your expectations and that you would like to extend your
-			project. As an academic cloud that provides its resources free of charge, we depend on our users.
+		<div class="custom-container">
+			@if (isModification) {
+				<p>
+					We are very pleased that the de.NBI Cloud meets with your expectations and that you would like to request
+					additional resources.
+				</p>
+			} @else if (isExtension) {
+				<p>
+					We are very pleased that the de.NBI Cloud meets with your expectations and that you would like to extend your
+					project.
+				</p>
+			} @else if (isTermination) {
+				<p>
+					We hope that your project on the de.NBI Cloud has been successful and that it has helped you achieve your
+					research goals.
+				</p>
+			}
+			<p>As an academic cloud providing free resources, we rely on our users' support.</p>
 			<hr />
-			In order to be able to continue to offer these services free of charge in the future, it is essential for us, for
-			example, to publish publications which resulted from the work in the de.NBI Cloud or are in any way connected to
-			it. Please enter the DOIs of those publications in the form below.
-			<hr />
-			We also want to promote the use of the cloud with positive experiences from users and the community in order to
-			make this service available to many more researchers. For this reason, we rely on testimonials from our users,
-			which we can use for this purpose. To submit a testimonial, please use the form below on this project overview
-			page. You can find an overview of already published testimonials <a href="{{ TESTIMONIAL_PAGE_LINK }}">here. </a>
-			<hr />
-			We really appreciate your help!
+
+			<p>To ensure the continued availability of these services, we kindly ask for your help in two ways:</p>
+			<ul>
+				<li class="list-item">
+					<strong>Publication acknowledgement</strong>: If you've published research resulting from work done in the
+					de.NBI Cloud or related to it, please enter the DOIs of those publications below. This helps us demonstrate
+					the impact of our services and secure future funding.
+					<hr />
+				</li>
+				<li class="list-item">
+					<strong>User testimonials</strong>: We'd love to hear about your positive experiences with the cloud! Your
+					testimonial will help us promote the service to other researchers and make it more widely available. Please
+					use the form on this project overview page to share your story. You can find already published testimonials
+					<a href="{{ TESTIMONIAL_PAGE_LINK }}">here</a>.
+				</li>
+			</ul>
+
+			<p><strong>We really appreciate your help!</strong></p>
 		</div>
 	</div>
 	<div class="modal-body">
