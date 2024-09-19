@@ -79,7 +79,7 @@
     "uglify-js": "3.19.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.1.4",
+    "@angular-devkit/build-angular": "^18.2.5",
     "@angular-eslint/builder": "18.3.0",
     "@angular-eslint/eslint-plugin-template": "18.3.0",
     "@angular-eslint/schematics": "18.3.0",
