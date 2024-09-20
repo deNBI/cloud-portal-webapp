@@ -85,7 +85,6 @@ export class Application {
 	totalCreditsExtensionCredits: number = 0
 	totalLifetimeExtensionCredits: number = 0
 	show_member_names: boolean
-	allow_machines_starting: boolean = false
 	project_application_member_applications: ProjectMemberApplication[]
 	project_application_manager_comment: string
 	project_application_testimonial_submitted: boolean
