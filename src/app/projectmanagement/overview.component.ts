@@ -561,25 +561,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	/**
-	 * Checks if user is able to start a machine, when the
-	 * project is a SimpleVM project.
-	 */
-	isAbleToStart(): boolean {
-		if (this.resourceDataLoaded) {
-			if (!this.project_application?.project_application_openstack_project) {
-				if (
-					this.vmsInUse < this.maximumVMs &&
-					(this.project_application.user_is_admin || this.project_application.allow_machines_starting)
-				) {
-					return true
-				}
-			}
-		}
-
-		return false
-	}
-
-	/**
 	 * If the application is an openstack application, the requested/approved resources will be set for maximum VMs.
 	 * For SimpleVM also the VMs in use are set.
 	 */
@@ -645,19 +626,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.groupService.toggleVisibility(this.project_application.project_application_perun_id).subscribe(
 			(res: any): void => {
 				this.project_application.show_member_names = res['show_member_names']
-				this.toggleLocked = false
-			},
-			() => {
-				this.toggleLocked = false
-			}
-		)
-	}
-
-	toggleStartingOfMachines(): void {
-		this.toggleLocked = true
-		this.groupService.toggleStartingMachines(this.project_application.project_application_perun_id).subscribe(
-			(res: any): void => {
-				this.project_application.allow_machines_starting = res['allow_machines_starting']
 				this.toggleLocked = false
 			},
 			() => {
