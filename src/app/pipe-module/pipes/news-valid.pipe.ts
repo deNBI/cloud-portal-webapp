@@ -7,9 +7,7 @@ import { FacilityNews } from 'app/facility_manager/newsmanagement/facility-news'
 })
 export class NewsValidationPipe implements PipeTransform {
 	transform(news: FacilityNews): boolean {
-		if (news.is_current_motd) {
-			if (news.motd?.length < 15) return false
-		}
+		if (news.motd?.length < 15) return false
 
 		return news.title?.length >= 5 && news.text?.length >= 25
 	}
@@ -41,10 +39,6 @@ export class NewsTextValidationPipe implements PipeTransform {
 })
 export class NewsMOTDValidationPipe implements PipeTransform {
 	transform(news: FacilityNews): boolean {
-		if (news.is_current_motd) {
-			if (news.motd?.length < 15) return false
-		}
-
-		return true
+		return news.motd?.length >= 15
 	}
 }
