@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnChanges, OnInit } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 import { User } from '../../application.model/user.model'
 import { ApplicationBaseClassComponent } from '../../../shared/shared_modules/baseClass/application-base-class.component'
@@ -18,7 +18,7 @@ interface FlavorDiff {
 	selector: 'app-resource-detail',
 	templateUrl: './resource-detail.component.html'
 })
-export class ResourceDetailComponent extends ApplicationBaseClassComponent implements OnInit {
+export class ResourceDetailComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
 	@Input() application: Application
 	@Input() is_vo_admin: boolean
 	@Input() current_credits: number
@@ -26,6 +26,11 @@ export class ResourceDetailComponent extends ApplicationBaseClassComponent imple
 	flavorDiffs: FlavorDiff[] = []
 
 	ngOnInit() {
+		this.getFlavorChanges()
+		this.getModificationRequestingUser()
+	}
+
+	ngOnChanges() {
 		this.getFlavorChanges()
 		this.getModificationRequestingUser()
 	}
