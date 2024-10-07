@@ -70,6 +70,7 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 		this.applicationsService.getApplication(this.application.project_application_id.toString()).subscribe(
 			(aj: Application): void => {
 				this.application = aj
+				this.applicationDetailComponent.loadData()
 			},
 			(error: any): void => {
 				console.log(error)

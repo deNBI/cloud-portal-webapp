@@ -107,12 +107,16 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 	ngOnInit(): void {
 		this.setTab(this.default_tab)
 
+		this.loadData()
+		this.is_vo_admin = is_vo
+	}
+
+	loadData() {
 		this.getPi()
 		this.getUser()
 		if (this.application.credits_allowed) {
 			this.getCurrentCredits()
 		}
-		this.is_vo_admin = is_vo
 	}
 
 	getUser() {
