@@ -41,7 +41,8 @@ import {
 	STATUS_LINK,
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
-	KUBERNETES_LINK
+	KUBERNETES_LINK,
+	CLOUD_PORTAL_REGISTER_LINK
 } from '../../links/links'
 import { Doi } from '../applications/doi/doi'
 import { ApiSettings } from '../api-connector/api-settings.service'
@@ -105,6 +106,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	dois: Doi[]
 	disabledDoiInput: boolean = false
 	invitation_link: string
+	CLOUD_PORTAL_REGISTER_LINK = CLOUD_PORTAL_REGISTER_LINK
 	project_application: Application
 	application_action: string = ''
 	application_member_name: string = ''

@@ -50,6 +50,7 @@ export const STATUS_LINK: string = 'https://status.cloud.denbi.de/status'
 export const SUPPORT_LINK: string = 'https://cloud.denbi.de/support/'
 export const ZAMMAD_HELPDESK_LINK = 'https://helpdesk.cloud.denbi.de'
 export const GDPR_LINK = 'https://gdpr.eu/article-9-processing-special-categories-of-personal-data-prohibited/'
+export const CLOUD_PORTAL_REGISTER_LINK = 'https://cloud.denbi.de/register'
 export const LIFESCIENCE_HOSTEL_SIGNUP =
 	'https://signup.aai.lifescience-ri.eu/non/registrar/?vo=lifescience_hostel&targetnew=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use&targetexisting=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use&targetextended=https%3A%2F%2Flifescience-ri.eu%2Faai%2Fhow-use'
 export const WIKI_PERSISTENT_TERMINAL_LINK = `${environment.WIKI_PRE}Tutorials/Persistent_SSH_Sessions/`
