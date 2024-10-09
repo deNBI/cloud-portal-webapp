@@ -346,22 +346,4 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 			)
 		)
 	}
-
-	isNewsTitleValid(): boolean {
-		if (!this.selectedFacilityNews) return false
-
-		return this.selectedFacilityNews.title?.length >= 5
-	}
-
-	isNewsTextValid(): boolean {
-		if (!this.selectedFacilityNews) return false
-
-		return this.selectedFacilityNews.text?.length >= 25
-	}
-
-	isNewsMOTDValid(): boolean {
-		if (!this.selectedFacilityNews) return false
-
-		return this.selectedFacilityNews.motd?.length >= 15 && this.selectedFacilityNews.motd?.length <= 100
-	}
 }
