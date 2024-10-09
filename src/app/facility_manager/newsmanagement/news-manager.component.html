@@ -5,7 +5,7 @@
 			<div>
 				<div class="form-check-inline">
 					<input
-						class="form-check-input"
+						class="form-check-input mx-1"
 						type="checkbox"
 						id="selectAll"
 						(click)="selectAllFacilities()"
@@ -15,7 +15,7 @@
 				</div>
 				<div *ngFor="let facility of managerFacilities" class="form-check-inline">
 					<input
-						class="form-check-input"
+						class="form-check-input mx-1"
 						type="checkbox"
 						id="select_{{ facility['Facility'] }}"
 						(click)="selectFacility(facility)"
