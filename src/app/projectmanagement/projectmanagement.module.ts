@@ -25,6 +25,7 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 import { AdjustLifetimeRequestComponent } from './modals/adjust-lifetime/adjust-lifetime-request.component'
 import { AdjustApplicationComponent } from './modals/adjust-application/adjust-application.component'
 import { WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component'
+import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
 
 /**
  * Projectmanagment module.
@@ -58,7 +59,8 @@ import { WithdrawModalComponent } from './modals/withdraw/withdraw-modal.compone
 		ExtensionEntryComponent,
 		AdjustLifetimeRequestComponent,
 		AdjustApplicationComponent,
-		WithdrawModalComponent
+		WithdrawModalComponent,
+		TerminationRequestComponent
 	],
 	exports: [ProjectOsDetailsComponent, ExtensionEntryComponent]
 })

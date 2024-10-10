@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, Injectable, OnInit } from '@angular/core'
 import moment from 'moment'
 import { ApiSettings } from '../api-connector/api-settings.service'
 import { ClientService } from '../api-connector/client.service'
@@ -21,6 +21,9 @@ import { UserInfoComponent } from '../userinfo/userinfo.component'
 /**
  * FullLayout component.
  */
+@Injectable({
+	providedIn: 'root'
+})
 @Component({
 	selector: 'app-dashboard',
 	templateUrl: './full-layout.component.html',

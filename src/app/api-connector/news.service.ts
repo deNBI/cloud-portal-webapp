@@ -10,7 +10,9 @@ import { News } from '../news/news.model'
 /**
  * Service which provides methods for the facilities.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class NewsService {
 	constructor(private http: HttpClient) {
 		this.http = http

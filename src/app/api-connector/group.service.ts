@@ -12,7 +12,9 @@ import { ProjectMember } from '../projectmanagement/project_member.model'
 /**
  * Service which provides Group methods.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class GroupService {
 	constructor(private http: HttpClient) {
 		this.http = http

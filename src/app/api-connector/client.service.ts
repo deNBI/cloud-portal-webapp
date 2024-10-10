@@ -9,7 +9,9 @@ import { IResponseTemplate } from './response-template'
 /**
  * Service which provides client methods.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ClientService {
 	clientURL: string = `${ApiSettings.getApiBaseURL()}clients/`
 

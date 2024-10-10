@@ -54,6 +54,7 @@ import { CreditsRequestComponent } from './modals/credits-request/credits-reques
 import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component'
 import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component'
 import { ApplicationRequestType } from '../shared/enums/application-request-type'
+import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
 
 /**
  * Projectoverview component.
@@ -68,7 +69,8 @@ import { ApplicationRequestType } from '../shared/enums/application-request-type
 		UserService,
 		GroupService,
 		ApiSettings,
-		CreditsService
+		CreditsService,
+		TerminationRequestComponent
 	]
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
@@ -154,6 +156,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		private fullLayout: FullLayoutComponent,
 		private router: Router,
 		private creditsService: CreditsService,
+		private terminationRequestComponent: TerminationRequestComponent,
 		@Inject(DOCUMENT) private document: Document,
 		cdrRef: ChangeDetectorRef
 	) {
@@ -382,10 +385,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				} else if (event.showExtension) {
 					this.showLifetimeExtensionModal()
 				} else if (event.showTermination) {
-					this.terminateModal.show()
+					this.showTerminationModal()
 				}
 			})
 		)
+	}
+
+	showTerminationModal(): void {
+		this.terminationRequestComponent.showTerminationRequestModal(this.project_application).subscribe(() => {
+			this.getApplication()
+		})
 	}
 
 	showLifetimeExtensionModal(): void {

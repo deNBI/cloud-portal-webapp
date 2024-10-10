@@ -9,7 +9,9 @@ import { BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag 
 /**
  * Service which provides image methods.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ImageService {
 	constructor(private http: HttpClient) {}
 

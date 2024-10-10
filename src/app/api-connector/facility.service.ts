@@ -14,7 +14,9 @@ import { GeneralStorageFactor } from '../facility_manager/resources/general-stor
 /**
  * Service which provides methods for the facilities.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class FacilityService {
 	constructor(private http: HttpClient) {
 		this.http = http
