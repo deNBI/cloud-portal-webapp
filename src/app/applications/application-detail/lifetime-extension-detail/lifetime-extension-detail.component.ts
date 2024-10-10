@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnChanges, OnInit } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 import { ApplicationBaseClassComponent } from '../../../shared/shared_modules/baseClass/application-base-class.component'
 import { User } from '../../application.model/user.model'
@@ -10,10 +10,14 @@ import { User } from '../../application.model/user.model'
 	selector: 'app-lifetime-extension-detail',
 	templateUrl: './lifetime-extension-detail.component.html'
 })
-export class LifetimeExtensionDetailComponent extends ApplicationBaseClassComponent implements OnInit {
+export class LifetimeExtensionDetailComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
 	@Input() application: Application
 
 	ngOnInit() {
+		this.getRequestingUser()
+	}
+
+	ngOnChanges() {
 		this.getRequestingUser()
 	}
 

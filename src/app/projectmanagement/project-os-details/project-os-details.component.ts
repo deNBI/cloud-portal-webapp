@@ -37,7 +37,7 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 	}
 
 	getProjectDetails(): void {
-		if (!this.project.project_application_perun_id) {
+		if (!this.project.project_application_perun_id || this.project.project_application_openstack_project) {
 			return
 		}
 		this.groupService.getProjectOSDetails(this.project.project_application_perun_id).subscribe((res: any): void => {
