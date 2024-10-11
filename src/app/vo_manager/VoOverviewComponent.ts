@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { Observable, Subscription, take } from 'rxjs'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import * as FileSaver from 'file-saver'
@@ -95,7 +95,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		private modalService: BsModalService,
 		private notificationModal: NotificationModalComponent,
 		private terminateProjectModalComponent: TerminateProjectModalComponent,
-		private declineProjectTerminationModalComponent: DeclineProjectTerminationModalComponent
+		private declineProjectTerminationModalComponent: DeclineProjectTerminationModalComponent,
+		private confirmationModalComponent: ConfirmationModalComponent
 	) {
 		super()
 	}
@@ -159,11 +160,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	showConfirmationModal(application: Application, action: ConfirmationActions): void {
-		const initialState = { application, action }
-		console.log(initialState)
-
-		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' })
-		this.subscribeToBsModalRef()
+		const event: EventEmitter<any> = this.confirmationModalComponent.showConfirmationModal(application, action)
+		this.subscribeToBsModalRef(event)
 	}
 
 	showMembersModal(application: Application): void {
@@ -175,9 +173,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		this.bsModalRef = this.modalService.show(MembersListModalComponent, { initialState, class: 'modal-lg' })
 	}
 
-	subscribeToBsModalRef(): void {
+	subscribeToBsModalRef(event: EventEmitter<ConfirmationActions>): void {
 		this.subscription.add(
-			this.bsModalRef.content.event.subscribe((result: any) => {
+			event.subscribe((result: any) => {
 				let action = null
 				if ('action' in result) {
 					action = result['action']
@@ -535,6 +533,10 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 			this.getProjectStatus(this.projects[indexAll])
 		}
 		this.fullLayout.getGroupsEnumeration()
+	}
+
+	showDescriptionModal(application: Application): void {
+		this.notificationModal.showInfoNotificationModal('Description', application.project_application_description)
 	}
 
 	showTerminationDeclineModal(application: Application): void {

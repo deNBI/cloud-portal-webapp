@@ -169,7 +169,7 @@
 								<div class="row">
 									<div class="col">
 										<label for="pi-checkbox">
-											<c-badge color="danger"> PI </c-badge>
+											<c-badge color="danger"> PI</c-badge>
 										</label>
 										<input
 											type="checkbox"
@@ -181,7 +181,7 @@
 
 									<div class="col">
 										<label for="admin-checkbox">
-											<c-badge color="info"> Admin </c-badge>
+											<c-badge color="info"> Admin</c-badge>
 										</label>
 										<input
 											type="checkbox"
@@ -193,7 +193,7 @@
 
 									<div class="col">
 										<label for="member-checkbox">
-											<c-badge color="warning"> Member </c-badge>
+											<c-badge color="warning"> Member</c-badge>
 										</label>
 										<input
 											type="checkbox"
@@ -256,18 +256,6 @@
 										</span>
 									</label>
 								</div>
-								<!--div class="checkbox col">
-                                    <label>
-                                        <input
-                                                type="checkbox"
-                                                (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.SUSPENDED)"
-                                                [checked]="sortProjectService.filterStatusList | inList : application_states.SUSPENDED"
-                                        />
-                                        <span style="margin-left: 5px" class="badge bg-warning"
-                                        >{{ project_states[project_states.SUSPENDED] }}
-                                        </span>
-                                    </label>
-                                </div-->
 
 								<div class="checkbox col">
 									<label>
@@ -535,25 +523,6 @@
 													>
 														<i class="fa fa-play"></i>&nbsp;Enable Project
 													</button>
-													<!--button
-                                                *ngIf="project | hasstatusinlist : project_states.ACTIVE"
-                                                style="margin-left: 5px; margin-bottom: 5px"
-                                                type="button"
-                                                class="btn btn-warning"
-                                                (click)="selectedProject = project; suspendModal.show()"
-                                        >
-                                            <i class="fa fa-pause"></i>&nbsp;Suspend Project
-                                        </button-->
-
-													<!--button
-                                                *ngIf="project | hasstatusinlist : project_states.SUSPENDED"
-                                                style="margin-left: 5px; margin-bottom: 5px"
-                                                type="button"
-                                                class="btn btn-success"
-                                                (click)="selectedProject = project; resumeModal.show()"
-                                        >
-                                            <i class="fa fa-play"></i>&nbsp;Resume Project
-                                        </button-->
 
 													<button
 														style="margin-left: 5px; margin-bottom: 5px"
@@ -877,80 +846,6 @@
 
 	<div
 		bsModal
-		#suspendModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Suspend Project {{ selectedProject?.project_application_shortname }}</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="suspendModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					Are you sure you want to suspend {{ selectedProject?.project_application_shortname }} ?
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-success col-md-4" (click)="suspendProject(selectedProject); suspendModal.hide()">
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="suspendModal.hide()">Cancel</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-
-	<div
-		bsModal
-		#resumeModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Resume Project {{ selectedProject?.project_application_shortname }}</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="resumeModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					Are you sure you want to resume {{ selectedProject?.project_application_shortname }} ?
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-success col-md-4" (click)="resumeProject(selectedProject); resumeModal.hide()">
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="resumeModal.hide()">Cancel</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-
-	<div
-		bsModal
 		#successModal="bs-modal"
 		class="modal fade"
 		tabindex="-1"
@@ -996,42 +891,6 @@
 
 	<div
 		bsModal
-		#descriptionModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="myModalLabel"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog modal-info" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Description</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="descriptionModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-
-				<div class="modal-body">
-					<p>{{ selectedProject?.project_application_description }}</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; descriptionModal.hide()">
-						Close
-					</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-
-	<div
-		bsModal
 		#infoModal="bs-modal"
 		class="modal fade"
 		tabindex="-1"
@@ -1064,7 +923,7 @@
 							</thead>
 							<tbody>
 								<td>
-									<button class="btn btn-secondary" (click)="infoModal.hide(); descriptionModal.show()">
+									<button class="btn btn-secondary" (click)="infoModal.hide(); showDescriptionModal(selectedProject)">
 										Show Description
 									</button>
 								</td>
