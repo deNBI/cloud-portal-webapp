@@ -57,6 +57,8 @@ import { ApplicationRequestType } from '../shared/enums/application-request-type
 import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
 import { ViewPublicKeyComponent } from '../shared/modal/view-public-key/view-public-key.component'
 import { LeaveProjectComponent } from './modals/leave-project/leave-project.component'
+import { NotificationModalComponent } from '../shared/modal/notification-modal'
+import { DeleteApplicationModal } from './modals/delete-member-application-modal/delete-application-modal.component'
 
 /**
  * Projectoverview component.
@@ -157,10 +159,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		private terminationRequestComponent: TerminationRequestComponent,
 		private viewPublicKeyComponent: ViewPublicKeyComponent,
 		private leaveProjectComponent: LeaveProjectComponent,
+		private deleteApplicationModal: DeleteApplicationModal,
+		notificationModal: NotificationModalComponent,
 		@Inject(DOCUMENT) private document: Document,
 		cdrRef: ChangeDetectorRef
 	) {
-		super(userService, applicationsService, facilityService, cdrRef)
+		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
 	}
 
 	calculateProgressBar(numberToRoundUp: number): string {
@@ -389,6 +393,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				}
 			})
 		)
+	}
+
+	showDeleteApplicationModal(): void {
+		this.deleteApplicationModal.showDeleteApplicationModal(this.project_application)
 	}
 
 	showLeaveTerminationModal(): void {
@@ -680,20 +688,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		}
 	}
 
-	requestProjectTermination(): void {
-		this.updateNotificationModal('Waiting', 'Termination request will be submitted...', true, 'info')
-
-		this.subscription.add(
-			this.groupService
-				.requestProjectTermination(this.project_application.project_application_perun_id)
-				.subscribe((): void => {
-					this.fullLayout.getGroupsEnumeration()
-					this.getApplication()
-					this.updateNotificationModal('Success', 'Termination was requested!', true, 'success')
-				})
-		)
-	}
-
 	rejectMemberApplication(application: number, membername: string): void {
 		this.loaded = false
 		this.application_action_done = false
@@ -967,25 +961,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	showPublicKeyModal(member: ProjectMember): void {
 		this.viewPublicKeyComponent.showViewPublicKeyModal(`${member.firstName} ${member.lastName}`, member.publicKey)
-	}
-
-	/**
-	 * Delete an application.
-	 */
-	public deleteApplication(): void {
-		this.subscription.add(
-			this.applicationsService.deleteApplication(this.project_application.project_application_id).subscribe(
-				(): void => {
-					this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success')
-					this.fullLayout.getGroupsEnumeration()
-
-					void this.router.navigate(['/userinfo'])
-				},
-				(): void => {
-					this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger')
-				}
-			)
-		)
 	}
 
 	protected readonly ApplicationRequestType = ApplicationRequestType

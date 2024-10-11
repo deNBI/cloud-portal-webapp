@@ -77,7 +77,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		applicationsService: ApplicationsService,
 		private cd: ChangeDetectorRef
 	) {
-		super(userService, applicationsService, facilityService, cd)
+		super(userService, applicationsService, facilityService, null, cd)
 	}
 
 	componentAdded(component: any): void {

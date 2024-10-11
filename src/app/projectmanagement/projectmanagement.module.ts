@@ -27,6 +27,7 @@ import { AdjustApplicationComponent } from './modals/adjust-application/adjust-a
 import { WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component'
 import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
 import { LeaveProjectComponent } from './modals/leave-project/leave-project.component'
+import { DeleteApplicationModal } from './modals/delete-member-application-modal/delete-application-modal.component'
 
 /**
  * Projectmanagment module.
@@ -62,7 +63,8 @@ import { LeaveProjectComponent } from './modals/leave-project/leave-project.comp
 		AdjustApplicationComponent,
 		WithdrawModalComponent,
 		TerminationRequestComponent,
-		LeaveProjectComponent
+		LeaveProjectComponent,
+		DeleteApplicationModal
 	],
 	exports: [ProjectOsDetailsComponent, ExtensionEntryComponent]
 })

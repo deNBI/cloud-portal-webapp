@@ -32,6 +32,7 @@ import {
 import { UserService } from '../../api-connector/user.service'
 import { Userinfo } from '../../userinfo/userinfo.model'
 import { User } from '../application.model/user.model'
+import { NotificationModalComponent } from '../../shared/modal/notification-modal'
 
 /**
  * Application formular component.
@@ -107,9 +108,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		private fullLayout: FullLayoutComponent,
 		userService: UserService,
 		applicationsService: ApplicationsService,
-		cdrRef: ChangeDetectorRef
+		cdrRef: ChangeDetectorRef,
+		notificationModal: NotificationModalComponent
 	) {
-		super(userService, applicationsService, null, cdrRef)
+		super(userService, applicationsService, null, notificationModal, cdrRef)
 	}
 
 	ngOnInit(): void {

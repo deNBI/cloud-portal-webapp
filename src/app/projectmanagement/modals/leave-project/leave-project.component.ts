@@ -7,7 +7,6 @@ import { NotificationModalComponent } from '../../../shared/modal/notification-m
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { Userinfo } from '../../../userinfo/userinfo.model'
 import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links'
-import { Router } from '@angular/router'
 
 @Injectable({
 	providedIn: 'root'
@@ -26,8 +25,7 @@ export class LeaveProjectComponent extends AbstractBaseModalComponent {
 		protected modalService: BsModalService,
 		private groupService: GroupService,
 		private fullLayout: FullLayoutComponent,
-		private notificationModalComponent: NotificationModalComponent,
-		private router: Router
+		private notificationModalComponent: NotificationModalComponent
 	) {
 		super(modalService)
 	}
@@ -65,13 +63,14 @@ export class LeaveProjectComponent extends AbstractBaseModalComponent {
 					(result: any) => {
 						switch (result.status) {
 							case 200:
+								this.fullLayout.getGroupsEnumeration()
+
 								this.notificationModalComponent.showSuccessFullNotificationModal(
 									'Success',
-									`You were removed from the project ${this.application.project_application_shortname}`
+									`You were removed from the project ${this.application.project_application_shortname}`,
+									'userinfo'
 								)
 
-								void this.router.navigate(['/userinfo'])
-								this.fullLayout.getGroupsEnumeration()
 								break
 							case 403:
 								this.notificationModalComponent.showDangerNotificationModal(

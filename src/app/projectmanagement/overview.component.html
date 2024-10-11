@@ -81,7 +81,7 @@
 					<div class="row">
 						<div class="btn-group col-12">
 							<button
-								(click)="deleteModal.show()"
+								(click)="showDeleteApplicationModal()"
 								*ngIf="
 									(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
 									(project_application | hasstatusinlist: Application_States.DECLINED)
@@ -1490,94 +1490,4 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
-
-	<div
-		#notificationModal="bs-modal"
-		aria-hidden="true"
-		aria-labelledby="Label"
-		bsModal
-		class="modal fade"
-		role="dialog"
-		tabindex="-1"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="notification_title" data-test-id="notification_title">
-						{{ notificationModalTitle }}
-					</h4>
-					<button
-						(click)="notificationModal.hide()"
-						aria-label="Close"
-						class="btn-close"
-						style="cursor: pointer"
-						type="button"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-{{ notificationModalType }}" role="alert" data-test-id="request_result_div">
-						{{ notificationModalMessage }}
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button
-						(click)="resetNotificationModal(); notificationModal.hide()"
-						*ngIf="notificationModalIsClosable === true"
-						class="btn btn-secondary"
-						data-test-id="close_notification"
-						id="close_notification"
-						type="button"
-						type="reset"
-					>
-						Close
-					</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-
-	<div
-		#deleteModal="bs-modal"
-		aria-hidden="true"
-		aria-labelledby="Label"
-		bsModal
-		class="modal fade"
-		id="remove_application_modal"
-		role="dialog"
-		tabindex="-1"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Delete Application</h4>
-					<button
-						(click)="deleteModal.hide()"
-						aria-label="Close"
-						class="btn-close"
-						style="cursor: pointer"
-						type="button"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-warning" role="alert">Are you sure you want to remove this application?</div>
-				</div>
-				<div class="modal-footer">
-					<button
-						(click)="deleteApplication(); deleteModal.hide(); notificationModal.show()"
-						class="btn btn-success col-md-4"
-						id="confirm_remove_application_button"
-					>
-						Yes
-					</button>
-					<button (click)="deleteModal.hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
 </div>

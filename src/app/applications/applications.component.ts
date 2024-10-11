@@ -87,9 +87,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		private modalService: BsModalService,
 		facilityService: FacilityService,
 		private flavorService: FlavorService,
-		cdrRef: ChangeDetectorRef
+		cdrRef: ChangeDetectorRef,
+		notificationModal: NotificationModalComponent
 	) {
-		super(userService, applicationsService, facilityService, cdrRef)
+		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
 	}
 
 	ngOnDestroy() {

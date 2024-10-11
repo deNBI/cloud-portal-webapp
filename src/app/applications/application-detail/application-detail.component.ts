@@ -8,6 +8,7 @@ import { is_vo } from '../../shared/globalvar'
 import { CreditsService } from '../../api-connector/credits.service'
 import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class'
 import { User } from '../application.model/user.model'
+import { NotificationModalComponent } from '../../shared/modal/notification-modal'
 
 /**
  * Class which displays the details of an application.
@@ -97,11 +98,10 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		applicationsService: ApplicationsService,
 		userService: UserService,
 		facilityService: FacilityService,
-		creditsService: CreditsService,
-		cdrRef: ChangeDetectorRef
+		cdrRef: ChangeDetectorRef,
+		notificationModal: NotificationModalComponent
 	) {
-		super(userService, applicationsService, facilityService, cdrRef)
-		this.creditsService = creditsService
+		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
 	}
 
 	ngOnInit(): void {
