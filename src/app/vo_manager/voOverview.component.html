@@ -561,7 +561,7 @@
 														class="btn btn-danger"
 														[id]="'show_terminate_' + project?.project_application_shortname"
 														[attr.data-test-id]="'show_terminate_' + project?.project_application_shortname"
-														(click)="selectedProject = project; terminateModal.show()"
+														(click)="showTerminationModal(project)"
 														*ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)"
 													>
 														<i class="fas fa-trash-alt"></i>&nbsp;Terminate Project
@@ -1146,51 +1146,4 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
-
-	<div
-		bsModal
-		#terminateModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Terminate Project - {{ selectedProject?.project_application_shortname }}</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="terminateModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-warning" role="alert">
-						Are you sure you want to terminate the project - {{ selectedProject?.project_application_shortname }}?
-					</div>
-					<app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
-				</div>
-				<div class="modal-footer">
-					<button
-						class="btn btn-success col-md-4"
-						id="terminate_project_btn"
-						data-test-id="approve_terminate_project_btn"
-						(click)="terminateProject(); terminateModal.hide()"
-					>
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="terminateModal.hide()">Cancel</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-
-	<!-- /.modal -->
 </div>

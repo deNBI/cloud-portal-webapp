@@ -1,0 +1,26 @@
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Terminate Project - {{ application?.project_application_shortname }}</h4>
+			<button type="button" class="btn-close" style="cursor: pointer" (click)="hide()" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<div class="alert alert-warning" role="alert">
+				Are you sure you want to terminate the project - {{ application?.project_application_shortname }}?
+			</div>
+			<app-project-os-details *ngIf="application" [project]="application"></app-project-os-details>
+		</div>
+		<div class="modal-footer">
+			<button
+				class="btn btn-success col-md-4"
+				id="terminate_project_btn"
+				data-test-id="approve_terminate_project_btn"
+				(click)="terminateProject()"
+			>
+				Yes
+			</button>
+			<button class="btn btn-danger col-md-4" type="reset" (click)="hide()">Cancel</button>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>

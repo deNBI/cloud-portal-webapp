@@ -22,6 +22,7 @@ import { ConfirmationActions } from '../shared/modal/confirmation_actions'
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component'
 import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
+import { TerminateProjectModalComponent } from './modals/terminate-project-modal/terminate-project-modal.component'
 
 /**
  * Vo Overview component.
@@ -55,10 +56,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	userElixirSearchAdmin: boolean = true
 	userElixirSearchMember: boolean = true
 	projectsLoaded: boolean = false
-	show_openstack_projects: boolean = true
-	show_simple_vm_projects: boolean = true
-	show_simple_vm: boolean = true
-	show_openstack: boolean = true
 
 	validElixirIdFilter: boolean = false
 	tsvTaskRunning: boolean = false
@@ -95,7 +92,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		private facilityService: FacilityService,
 		public sortProjectService: ProjectSortService,
 		private modalService: BsModalService,
-		private notificationModal: NotificationModalComponent
+		private notificationModal: NotificationModalComponent,
+		private terminateProjectModalComponent: TerminateProjectModalComponent
 	) {
 		super()
 	}
@@ -521,37 +519,21 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		document.body.classList.remove('modal-open')
 	}
 
-	public terminateProject(): void {
-		this.voService.terminateProject(this.selectedProject.project_application_perun_id).subscribe(
-			(): void => {
-				const indexAll: number = this.projects.indexOf(this.selectedProject, 0)
-				if (!this.selectedProject.project_application_openstack_project) {
-					this.projects.splice(indexAll, 1)
-					this.sortProjectService.applications = this.projects
-				} else {
-					this.getProjectStatus(this.projects[indexAll])
-				}
-				this.fullLayout.getGroupsEnumeration()
-				if (this.selectedProject.project_application_openstack_project) {
-					this.notificationModal.showSuccessFullNotificationModal(
-						'Success',
-						'The request to terminate the project was forwarded to the facility manager.'
-					)
-				} else {
-					this.notificationModal.showSuccessFullNotificationModal('Success', 'The  project was terminated.')
-				}
-			},
-			(error: any): void => {
-				if (error['status'] === 409) {
-					this.notificationModal.showDangerNotificationModal(
-						'Failed',
-						`The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`
-					)
-				} else {
-					this.notificationModal.showDangerNotificationModal('Failed', 'The project could not be terminated.')
-				}
-			}
-		)
+	removeProjectFromList(application: Application): void {
+		const indexAll: number = this.projects.indexOf(application, 0)
+		if (!application.project_application_openstack_project) {
+			this.projects.splice(indexAll, 1)
+			this.sortProjectService.applications = this.projects
+		} else {
+			this.getProjectStatus(this.projects[indexAll])
+		}
+		this.fullLayout.getGroupsEnumeration()
+	}
+
+	showTerminationModal(application: Application): void {
+		this.terminateProjectModalComponent.showTerminationProjectModal(application).subscribe(() => {
+			this.removeProjectFromList(application)
+		})
 	}
 
 	getProjectStatus(project: Application): void {
