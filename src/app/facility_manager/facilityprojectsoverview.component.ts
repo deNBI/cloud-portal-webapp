@@ -21,6 +21,7 @@ import { MembersListModalComponent } from '../shared/modal/members/members-list-
 import { EmailService } from '../api-connector/email.service'
 import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model'
 import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
+import { NotificationModalComponent } from '../shared/modal/notification-modal'
 
 /**
  * Facility Project overview component.
@@ -97,22 +98,13 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	total$: Observable<number>
 
 	constructor(
-		private groupService: GroupService,
 		private facilityService: FacilityService,
-		private newsService: NewsService,
 		public sortProjectService: ProjectSortService,
 		private modalService: BsModalService,
-		private emailService: EmailService
+		private emailService: EmailService,
+		private notificationModal: NotificationModalComponent
 	) {
 		super()
-	}
-
-	switchShowSimpleVmProjects(): void {
-		this.show_simple_vm_projects = !this.show_simple_vm_projects
-	}
-
-	switchOpenStackVmProjects(): void {
-		this.show_openstack_projects = !this.show_openstack_projects
 	}
 
 	setEmailSubject(): void {
@@ -178,11 +170,13 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			)
 		}
 	}
+
 	openProjectCSVMailModal(): void {
 		console.log('show')
 
 		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' })
 	}
+
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers.forEach(header => {
@@ -517,18 +511,14 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		const facilityId = this.selectedFacility['FacilityId']
 		this.facilityService.setSupportMails(facilityId, supportMails).subscribe((result: any): void => {
 			if (result.ok) {
-				this.updateNotificationModal(
+				this.notificationModal.showSuccessFullNotificationModal(
 					'Facility support mails changed',
-					'You successfully changed the facility support mails.',
-					true,
-					'success'
+					'You successfully changed the facility support mails.'
 				)
 			} else {
-				this.updateNotificationModal(
+				this.notificationModal.showDangerNotificationModal(
 					"Couldn't change facility support mails",
-					'An error occurred while trying to change the facility support mails.',
-					true,
-					'danger'
+					'An error occurred while trying to change the facility support mails.'
 				)
 			}
 		})

@@ -594,7 +594,7 @@
 														type="button"
 														class="btn btn-info"
 														[id]="'set_protected_' + project?.project_application_shortname"
-														(click)="setProtected(project, true); notificationModal.show()"
+														(click)="setProtected(project, true)"
 														*ngIf="!(project | hasstatusinlist: application_states.PROTECTED)"
 													>
 														<i class="fas fa-lock"></i>&nbsp;Set Protected
@@ -604,7 +604,7 @@
 														type="button"
 														class="btn btn-info"
 														[id]="'set_unprotected_' + project?.project_application_shortname"
-														(click)="setProtected(project, false); notificationModal.show()"
+														(click)="setProtected(project, false)"
 														*ngIf="project | hasstatusinlist: application_states.PROTECTED"
 													>
 														<i class="fas fa-lock-open"></i>&nbsp;Set Unprotected
@@ -1135,7 +1135,7 @@
 					<button
 						class="btn btn-success col-md-4"
 						id="decline_termination_project_btn"
-						(click)="declineTermination(selectedProject); declineTerminationModal.hide(); notificationModal.show()"
+						(click)="declineTermination(selectedProject); declineTerminationModal.hide()"
 					>
 						Yes
 					</button>
@@ -1179,7 +1179,7 @@
 						class="btn btn-success col-md-4"
 						id="terminate_project_btn"
 						data-test-id="approve_terminate_project_btn"
-						(click)="terminateProject(); terminateModal.hide(); notificationModal.show()"
+						(click)="terminateProject(); terminateModal.hide()"
 					>
 						Yes
 					</button>
@@ -1192,54 +1192,5 @@
 	</div>
 	<!-- /.modal -->
 
-	<div
-		bsModal
-		#notificationModal="bs-modal"
-		class="modal"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="notification_modal_title" data-test-id="notification_modal_title">
-						{{ notificationModalTitle }}
-					</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="notificationModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div
-						class="alert alert-{{ notificationModalType }}"
-						id="notification_message"
-						role="alert"
-						data-test-id="notification_message"
-					>
-						{{ notificationModalMessage }}
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button
-						id="close_notification"
-						data-test-id="close_notification_modal_btn"
-						type="button"
-						(click)="notificationModal.hide(); resetNotificationModal(); removeModalOpen()"
-						class="btn btn-secondary"
-					>
-						Close
-					</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
 	<!-- /.modal -->
 </div>

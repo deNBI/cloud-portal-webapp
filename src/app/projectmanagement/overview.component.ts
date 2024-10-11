@@ -1,13 +1,4 @@
-import {
-	ChangeDetectorRef,
-	Component,
-	ElementRef,
-	OnDestroy,
-	OnInit,
-	Renderer2,
-	ViewChild,
-	Inject
-} from '@angular/core'
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core'
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -39,10 +30,8 @@ import {
 	PUBLICATIONS_LINK,
 	SIMPLE_VM_LINK,
 	STATUS_LINK,
-	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
-	KUBERNETES_LINK,
-	CLOUD_PORTAL_REGISTER_LINK
+	KUBERNETES_LINK
 } from '../../links/links'
 import { Doi } from '../applications/doi/doi'
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class'
@@ -73,9 +62,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	modificationRequestDisabled: boolean = false
 	lifetimeExtensionDisabled: boolean = false
 	creditsExtensionDisabled: boolean = false
-	voRegistrationLink: string = environment.voRegistrationLink
 	vo_name: string = environment.voName
-	WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS
 	CREDITS_WIKI: string = CREDITS_WIKI
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
@@ -91,25 +78,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	application_id: string
 	credits: number = 0
 	errorMessage: string
-	terminate_confirmation_given: boolean = false
 	showInformationCollapse: boolean = false
 	newDoi: string
 	doiError: string
 	remove_members_clicked: boolean
 	dois: Doi[]
 	disabledDoiInput: boolean = false
-	invitation_link: string
-	CLOUD_PORTAL_REGISTER_LINK = CLOUD_PORTAL_REGISTER_LINK
+
 	project_application: Application
-	application_action: string = ''
-	application_member_name: string = ''
-	application_action_done: boolean = false
-	application_action_success: boolean
-	application_action_error_message: boolean
+
 	loaded: boolean = true
 	userinfo: Userinfo
 	allSet: boolean = false
-	renderer: Renderer2
 	supportMails: string[] = []
 	toggleLocked: boolean = false
 	resourceDataLoaded: boolean = false
@@ -395,7 +375,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	showAddMemberModal(): void {
-		this.addUserModalComponent.showAddUserModalComponent(this.project_application, this.getAddUserInvitationLink())
+		const invitationLink: string = this.getAddUserInvitationLink()
+		this.addUserModalComponent.showAddUserModalComponent(this.project_application, invitationLink)
 	}
 
 	showDeleteApplicationModal(): void {

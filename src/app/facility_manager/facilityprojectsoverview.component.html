@@ -598,7 +598,7 @@
 										'is-invalid':
 											f.controls.emailSub?.invalid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched),
 										'is-valid':
-											f.controls.emailSub?.valid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched)
+											f.controls.emailSub?.valid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched),
 									}"
 								/>
 							</div>
@@ -618,7 +618,7 @@
 									pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
 									[ngClass]="{
 										'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
-										'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched)
+										'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched),
 									}"
 								/>
 							</div>
@@ -638,7 +638,7 @@
 									#emailT="ngModel"
 									[ngClass]="{
 										'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
-										'is-valid': emailT.valid && (emailT.dirty || emailT.touched)
+										'is-valid': emailT.valid && (emailT.dirty || emailT.touched),
 									}"
 								></textarea>
 							</div>
@@ -1015,89 +1015,3 @@
 	</div>
 	<!-- /.modal-dialog -->
 </div>
-
-<div
-	bsModal
-	#notificationModal="bs-modal"
-	class="modal"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="notification_modal_title">{{ notificationModalTitle }}</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="notificationModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
-					{{ notificationModalMessage }}
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button
-					id="close_notification"
-					type="button"
-					(click)="notificationModal.hide(); resetNotificationModal()"
-					class="btn btn-secondary"
-				>
-					Close
-				</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<div
-	bsModal
-	#notificationModal="bs-modal"
-	class="modal"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">{{ notificationModalTitle }}</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="notificationModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
-					{{ notificationModalMessage }}
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button
-					id="close_notification"
-					type="button"
-					(click)="notificationModal.hide(); resetNotificationModal()"
-					class="btn btn-secondary"
-				>
-					Close
-				</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
