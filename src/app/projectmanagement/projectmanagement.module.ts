@@ -26,6 +26,7 @@ import { AdjustLifetimeRequestComponent } from './modals/adjust-lifetime/adjust-
 import { AdjustApplicationComponent } from './modals/adjust-application/adjust-application.component'
 import { WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component'
 import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
+import { LeaveProjectComponent } from './modals/leave-project/leave-project.component'
 
 /**
  * Projectmanagment module.
@@ -60,7 +61,8 @@ import { TerminationRequestComponent } from './modals/termination-request/termin
 		AdjustLifetimeRequestComponent,
 		AdjustApplicationComponent,
 		WithdrawModalComponent,
-		TerminationRequestComponent
+		TerminationRequestComponent,
+		LeaveProjectComponent
 	],
 	exports: [ProjectOsDetailsComponent, ExtensionEntryComponent]
 })

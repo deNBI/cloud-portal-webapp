@@ -56,6 +56,7 @@ import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/with
 import { ApplicationRequestType } from '../shared/enums/application-request-type'
 import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
 import { ViewPublicKeyComponent } from '../shared/modal/view-public-key/view-public-key.component'
+import { LeaveProjectComponent } from './modals/leave-project/leave-project.component'
 
 /**
  * Projectoverview component.
@@ -155,6 +156,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		private creditsService: CreditsService,
 		private terminationRequestComponent: TerminationRequestComponent,
 		private viewPublicKeyComponent: ViewPublicKeyComponent,
+		private leaveProjectComponent: LeaveProjectComponent,
 		@Inject(DOCUMENT) private document: Document,
 		cdrRef: ChangeDetectorRef
 	) {
@@ -387,6 +389,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				}
 			})
 		)
+	}
+
+	showLeaveTerminationModal(): void {
+		this.leaveProjectComponent.showLeaveProjectModal(this.project_application, this.userinfo).subscribe()
 	}
 
 	showTerminationModal(): void {
@@ -959,54 +965,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		)
 	}
 
-	/**
-	 * Leave a project
-	 *
-	 * @param memberid of the member
-	 * @param projectname of the project
-	 */
-	public leaveProject(memberid: number, projectname: string): void {
-		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
-			this.updateNotificationModal(
-				'Denied',
-				`You cannot leave projects as PI. Please contact ${CLOUD_PORTAL_SUPPORT_MAIL} for further steps.`,
-				true,
-				'danger'
-			)
-		} else {
-			this.subscription.add(
-				this.groupService
-					.leaveGroup(
-						this.project_application.project_application_perun_id,
-						memberid,
-						this.project_application.project_application_compute_center.FacilityId
-					)
-					.subscribe(
-						(result: any): void => {
-							if (result.status === 200) {
-								this.updateNotificationModal(
-									'Success',
-									`You were removed from the project ${projectname}`,
-									true,
-									'success'
-								)
-								void this.router.navigate(['/userinfo'])
-								this.fullLayout.getGroupsEnumeration()
-							} else {
-								this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger')
-							}
-						},
-						(): void => {
-							this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger')
-						}
-					)
-			)
-		}
-	}
-
 	showPublicKeyModal(member: ProjectMember): void {
-		console.log('shoe public key')
-
 		this.viewPublicKeyComponent.showViewPublicKeyModal(`${member.firstName} ${member.lastName}`, member.publicKey)
 	}
 

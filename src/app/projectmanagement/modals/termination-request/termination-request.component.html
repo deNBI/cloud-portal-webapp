@@ -2,17 +2,12 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<h4 class="modal-title">Terminate Project</h4>
-			<button
-				(click)="bsModalRef.hide()"
-				aria-label="Close"
-				class="btn-close"
-				style="cursor: pointer"
-				type="button"
-			></button>
+			<button (click)="hide()" aria-label="Close" class="btn-close" style="cursor: pointer" type="button"></button>
 		</div>
 		<div class="modal-body">
 			<div class="alert alert-warning" role="alert">
-				Are you sure you want to terminate the project: <strong> {{ application.project_application_shortname }}</strong
+				Are you sure you want to terminate the project:
+				<strong> {{ application.project_application_shortname }}</strong
 				>?
 			</div>
 			@if (application && !application?.project_application_openstack_project) {
@@ -41,7 +36,7 @@
 		</div>
 		<div class="modal-footer">
 			<button
-				(click)="bsModalRef.hide()"
+				(click)="hide()"
 				(click)="requestProjectTermination()"
 				[disabled]="!terminate_confirmation_given"
 				class="btn btn-success col-md-4"
@@ -50,7 +45,7 @@
 			>
 				Yes
 			</button>
-			<button (click)="bsModalRef.hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
+			<button (click)="hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
 		</div>
 	</div>
 	<!-- /.modal-content -->

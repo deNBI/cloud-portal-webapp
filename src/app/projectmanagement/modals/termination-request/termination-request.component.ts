@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Injectable } from '@angular/core'
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { BsModalService } from 'ngx-bootstrap/modal'
 
 import { Application } from '../../../applications/application.model/application.model'
 import { GroupService } from '../../../api-connector/group.service'
@@ -20,17 +20,15 @@ export class TerminationRequestComponent extends AbstractBaseModalComponent {
 	terminate_confirmation_given: boolean = false
 
 	constructor(
-		protected bsModalRef: BsModalRef,
 		protected modalService: BsModalService,
 		private groupService: GroupService,
 		private fullLayout: FullLayoutComponent,
 		private notificationModalComponent: NotificationModalComponent
 	) {
-		super(bsModalRef, modalService)
+		super(modalService)
 	}
 
 	showTerminationRequestModal(application: Application): EventEmitter<boolean> {
-		this.application = application
 		const initialState = {
 			application
 		}
@@ -38,8 +36,8 @@ export class TerminationRequestComponent extends AbstractBaseModalComponent {
 		return this.showBaseModal(TerminationRequestComponent, initialState)
 	}
 
-	requestProjectTermination(): void {
-		this.hide()
+	async requestProjectTermination(): Promise<void> {
+		await this.hide()
 		this.notificationModalComponent.showInfoNotificationModal('Waiting', 'Termination request will be submitted...')
 		this.groupService.requestProjectTermination(this.application.project_application_perun_id).subscribe((): void => {
 			this.fullLayout.getGroupsEnumeration()
