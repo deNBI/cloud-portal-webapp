@@ -572,7 +572,7 @@
 														class="btn btn-warning"
 														[id]="'show_decline_terminate_' + project?.project_application_id"
 														[attr.data-test-id]="'show_decline_terminate_' + project?.project_application_shortname"
-														(click)="selectedProject = project; declineTerminationModal.show()"
+														(click)="showTerminationDeclineModal(project)"
 														*ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
 													>
 														<i class="fa fa-location-arrow"></i> Decline Termination Project
@@ -584,7 +584,7 @@
 														class="btn btn-warning"
 														[id]="'processed_by_fm_' + project?.project_application_shortname"
 														[attr.data-test-id]="'processed_by_fm_' + project?.project_application_shortname"
-														(click)="selectedProject = project; terminateModal.show()"
+														(click)="showTerminationDeclineModal(project)"
 														*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
 													>
 														Processed by FM
@@ -1096,50 +1096,6 @@
 					<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; infoModal.hide()">
 						Close
 					</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-
-	<div
-		bsModal
-		#declineTerminationModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Decline Termination</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="declineTerminationModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-warning" role="alert">
-						Are you sure you want to decline the termination of the project -
-						<strong>{{ selectedProject?.project_application_shortname }}</strong
-						>?
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button
-						class="btn btn-success col-md-4"
-						id="decline_termination_project_btn"
-						(click)="declineTermination(selectedProject); declineTerminationModal.hide()"
-					>
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="declineTerminationModal.hide()">Cancel</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->

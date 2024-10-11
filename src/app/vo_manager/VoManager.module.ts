@@ -23,6 +23,7 @@ import { DatePickerComponent } from '../shared/datepicking/datepicker.component'
 import { TimepickerComponent } from '../shared/datepicking/timepicker.component'
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module'
 import { TerminateProjectModalComponent } from './modals/terminate-project-modal/terminate-project-modal.component'
+import { DeclineProjectTerminationModalComponent } from './modals/decline-project-termination-modal/decline-project-termination-modal.component'
 
 /**
  * VO Manager module.
@@ -54,7 +55,8 @@ import { TerminateProjectModalComponent } from './modals/terminate-project-modal
 		NumberChartsComponent,
 		ClientLimitsComponent,
 		MaintenanceComponent,
-		TerminateProjectModalComponent
+		TerminateProjectModalComponent,
+		DeclineProjectTerminationModalComponent
 	],
 	providers: [VoService, VoGuardService]
 })
