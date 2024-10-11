@@ -55,6 +55,7 @@ import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.co
 import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component'
 import { ApplicationRequestType } from '../shared/enums/application-request-type'
 import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
+import { ViewPublicKeyComponent } from '../shared/modal/view-public-key/view-public-key.component'
 
 /**
  * Projectoverview component.
@@ -92,10 +93,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	STATUS_LINK: string = STATUS_LINK
 	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK
 	@ViewChild('creditsChart') creditsCanvas: ElementRef
-	@ViewChild('publicKeyModal') publicKeyModal: any
-	@ViewChild('terminateModal') terminateModal: any
-	publicKeyToShow: string = ''
-	publicKeyMemberName: string = ''
 	project_id: string
 	application_id: string
 	credits: number = 0
@@ -157,6 +154,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		private router: Router,
 		private creditsService: CreditsService,
 		private terminationRequestComponent: TerminationRequestComponent,
+		private viewPublicKeyComponent: ViewPublicKeyComponent,
 		@Inject(DOCUMENT) private document: Document,
 		cdrRef: ChangeDetectorRef
 	) {
@@ -1007,9 +1005,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	showPublicKeyModal(member: ProjectMember): void {
-		this.publicKeyToShow = member.publicKey
-		this.publicKeyMemberName = `${member.firstName} ${member.lastName}`
-		this.publicKeyModal.show()
+		console.log('shoe public key')
+
+		this.viewPublicKeyComponent.showViewPublicKeyModal(`${member.firstName} ${member.lastName}`, member.publicKey)
 	}
 
 	/**

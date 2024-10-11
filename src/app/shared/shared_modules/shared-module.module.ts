@@ -18,6 +18,8 @@ import { MaintenanceNotificationComponent } from './components/maintenance-notif
 import { PipeModuleModule } from '../../pipe-module/pipe-module.module'
 import { MembersListModalComponent } from '../modal/members/members-list-modal.component'
 import { ProjectCsvTemplatedEmailModalComponent } from '../modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
+import { ViewPublicKeyComponent } from '../modal/view-public-key/view-public-key.component'
+import { ClipboardModule } from 'ngx-clipboard'
 
 /**
  * Shared module.
@@ -34,7 +36,8 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../modal/email/project-c
 		ProjectEmailModalComponent,
 		ProjectCsvTemplatedEmailModalComponent,
 		TestimonialFormComponent,
-		MaintenanceNotificationComponent
+		MaintenanceNotificationComponent,
+		ViewPublicKeyComponent
 	],
 	imports: [
 		CommonModule,
@@ -46,7 +49,8 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../modal/email/project-c
 		NgSelectModule,
 		SharedDirectivesModule,
 		ReactiveFormsModule,
-		RouterLink
+		RouterLink,
+		ClipboardModule
 	],
 	declarations: [
 		ApplicationBaseClassComponent,
@@ -59,7 +63,8 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../modal/email/project-c
 		ProjectEmailModalComponent,
 		ProjectCsvTemplatedEmailModalComponent,
 		TestimonialFormComponent,
-		MaintenanceNotificationComponent
+		MaintenanceNotificationComponent,
+		ViewPublicKeyComponent
 	]
 })
 export class SharedModuleModule {}

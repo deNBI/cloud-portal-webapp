@@ -1,0 +1,42 @@
+<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="public_key_modal" data-test-id="public_key_modal">
+				Public Key - {{ publicKeyMemberName }}
+			</h4>
+			<button (click)="hide()" aria-label="Close" class="btn-close" style="cursor: pointer" type="button"></button>
+		</div>
+		<div class="modal-body" style="word-break: break-word">
+			<div class="alert alert-info" role="alert" data-test-id="public_key_modal_id">
+				{{ publicKeyToShow }}
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button
+				cButton
+				color="dark"
+				variant="ghost"
+				size="sm"
+				class="btn btn-secondary"
+				ngxClipboard
+				[cbSuccessMsg]="'Copied Key!'"
+				[cbContent]="publicKeyToShow"
+				data-coreui-toggle="tooltip"
+				title="Copy public key to clipboard"
+			>
+				Copy Key
+			</button>
+
+			<button
+				(click)="hide()"
+				class="btn btn-secondary"
+				data-test-id="close_pubkey_notification"
+				id="close_pubkey_notification"
+			>
+				Close
+			</button>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
