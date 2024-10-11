@@ -1,0 +1,73 @@
+<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Applications for {{ application?.project_application_shortname }}</h4>
+			<button (click)="hide()" aria-label="Close" class="btn-close" style="cursor: pointer" type="button"></button>
+		</div>
+		<div class="modal-body">
+			<div *ngIf="!memberApplicationsLoaded" style="text-align: center">
+				<i
+					class="fa fa-spinner fa-spin"
+					style="font-size: 100px; margin: auto; margin-left: auto; margin-right: auto"
+				></i>
+			</div>
+
+			<div *ngIf="memberApplicationsLoaded" class="table-responsive">
+				<table class="table table-bordered table-striped table-sm">
+					<thead>
+						<th>Name</th>
+						<th>Date Submitted</th>
+						<th>Actions</th>
+					</thead>
+					<tbody *ngFor="let application of application?.project_application_member_applications">
+						<td>{{ application?.Name }}</td>
+						<td>{{ application?.DateCreated }}</td>
+
+						<td>
+							<button
+								(click)="approveMemberApplication(application.Id, application.Name)"
+								class="btn btn-outline-success"
+							>
+								<i class="fa fa-check"></i> Approve
+							</button>
+							<button
+								(click)="
+									application_action = 'rejected';
+									application_member_name = application.Name;
+									rejectMemberApplication(application.Id, application.Name)
+								"
+								class="btn btn-outline-danger"
+								style="margin-left: 10px"
+							>
+								<i class="fa fa-times"></i> Reject
+							</button>
+						</td>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="modal-footer">
+			<p *ngIf="application_action_success && application_action_done" class="alert alert-success me-auto">
+				<strong>Success:</strong> Successfully {{ application_action }} the application of
+				{{ application_member_name }}.
+			</p>
+			<p
+				*ngIf="!application_action_success && application_action_done && !application_action_error_message"
+				class="alert alert-danger me-auto"
+			>
+				<strong>Failed:</strong> The application of {{ application_member_name }} could not be
+				{{ application_action }} .
+			</p>
+			<p
+				*ngIf="!application_action_success && application_action_done && application_action_error_message"
+				class="alert alert-danger me-auto"
+			>
+				<strong>Failed:</strong> User didn't verify their email address yet. Please wait until the email is verified.
+			</p>
+			<button (click)="getUserProjectApplications()" class="btn btn-primary" type="button">Refresh</button>
+			<button (click)="hide()" class="btn btn-secondary" type="button">Close</button>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>

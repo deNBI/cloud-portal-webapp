@@ -45,7 +45,6 @@ import {
 	CLOUD_PORTAL_REGISTER_LINK
 } from '../../links/links'
 import { Doi } from '../applications/doi/doi'
-import { ApiSettings } from '../api-connector/api-settings.service'
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ProjectMember } from './project_member.model'
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component'
@@ -59,23 +58,15 @@ import { ViewPublicKeyComponent } from '../shared/modal/view-public-key/view-pub
 import { LeaveProjectComponent } from './modals/leave-project/leave-project.component'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
 import { DeleteApplicationModal } from './modals/delete-member-application-modal/delete-application-modal.component'
+import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.component'
+import { UserApplicationsModalComponent } from './modals/user-applications-modal/user-applications-modal.component'
 
 /**
  * Projectoverview component.
  */
 @Component({
 	selector: 'app-project-overview',
-	templateUrl: 'overview.component.html',
-	providers: [
-		FlavorService,
-		ApplicationsService,
-		FacilityService,
-		UserService,
-		GroupService,
-		ApiSettings,
-		CreditsService,
-		TerminationRequestComponent
-	]
+	templateUrl: 'overview.component.html'
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	bsModalRef: BsModalRef
@@ -160,6 +151,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		private viewPublicKeyComponent: ViewPublicKeyComponent,
 		private leaveProjectComponent: LeaveProjectComponent,
 		private deleteApplicationModal: DeleteApplicationModal,
+		private addUserModalComponent: AddUserModalComponent,
+		private userApplicationsModalComponent: UserApplicationsModalComponent,
 		notificationModal: NotificationModalComponent,
 		@Inject(DOCUMENT) private document: Document,
 		cdrRef: ChangeDetectorRef
@@ -395,6 +388,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		)
 	}
 
+	showUserApplicationModal(): void {
+		this.userApplicationsModalComponent.showAddUserApplicationModal(this.project_application).subscribe(() => {
+			this.getMembersOfTheProject()
+		})
+	}
+
+	showAddMemberModal(): void {
+		this.addUserModalComponent.showAddUserModalComponent(this.project_application, this.getAddUserInvitationLink())
+	}
+
 	showDeleteApplicationModal(): void {
 		this.deleteApplicationModal.showDeleteApplicationModal(this.project_application)
 	}
@@ -556,33 +559,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		}
 	}
 
-	approveMemberApplication(application: number, membername: string): void {
-		this.loaded = false
-		this.application_action_done = false
-		this.subscription.add(
-			this.groupService
-				.approveGroupApplication(Number(this.project_application.project_application_perun_id), application)
-				.subscribe((tmp_application: any): void => {
-					if (tmp_application['state'] === 'APPROVED') {
-						this.application_action_success = true
-					} else if (tmp_application['message']) {
-						this.application_action_success = false
-
-						this.application_action_error_message = tmp_application['message']
-					} else {
-						this.application_action_success = false
-					}
-
-					this.application_action = 'approved'
-					this.application_member_name = membername
-					this.application_action_done = true
-					this.getUserProjectApplications()
-					this.getMembersOfTheProject()
-					this.loaded = true
-				})
-		)
-	}
-
 	/**
 	 * If the application is an openstack application, the requested/approved resources will be set for maximum VMs.
 	 * For SimpleVM also the VMs in use are set.
@@ -686,33 +662,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.newDoi = null
 			this.toggleDoiDisabledInput()
 		}
-	}
-
-	rejectMemberApplication(application: number, membername: string): void {
-		this.loaded = false
-		this.application_action_done = false
-		this.subscription.add(
-			this.groupService
-				.rejectGroupApplication(Number(this.project_application.project_application_perun_id), application)
-				.subscribe((tmp_application: any): void => {
-					this.project_application.project_application_member_applications = []
-
-					if (tmp_application['state'] === 'REJECTED') {
-						this.application_action_success = true
-					} else if (tmp_application['message']) {
-						this.application_action_success = false
-
-						this.application_action_error_message = tmp_application['message']
-					} else {
-						this.application_action_success = false
-					}
-					this.application_action = 'rejected'
-					this.application_member_name = membername
-					this.application_action_done = true
-					this.getUserProjectApplications()
-					this.loaded = true
-				})
-		)
 	}
 
 	/**
@@ -861,9 +810,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.allSet = false
 	}
 
-	setAddUserInvitationLink(): void {
-		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.project_application_shortname}`
-		this.invitation_link = project_reg
+	getAddUserInvitationLink(): string {
+		return `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.project_application_shortname}`
 	}
 
 	copyToClipboard(text: string): void {

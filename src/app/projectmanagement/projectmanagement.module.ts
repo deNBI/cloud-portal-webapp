@@ -28,6 +28,9 @@ import { WithdrawModalComponent } from './modals/withdraw/withdraw-modal.compone
 import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
 import { LeaveProjectComponent } from './modals/leave-project/leave-project.component'
 import { DeleteApplicationModal } from './modals/delete-member-application-modal/delete-application-modal.component'
+import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.component'
+import { UserApplicationsModalComponent } from './modals/user-applications-modal/user-applications-modal.component'
+import { ClipboardModule } from 'ngx-clipboard'
 
 /**
  * Projectmanagment module.
@@ -48,7 +51,8 @@ import { DeleteApplicationModal } from './modals/delete-member-application-modal
 		NgSelectModule,
 		NgbModule,
 		BadgeModule,
-		SharedModuleModule
+		SharedModuleModule,
+		ClipboardModule
 	],
 	declarations: [
 		OverviewComponent,
@@ -64,7 +68,9 @@ import { DeleteApplicationModal } from './modals/delete-member-application-modal
 		WithdrawModalComponent,
 		TerminationRequestComponent,
 		LeaveProjectComponent,
-		DeleteApplicationModal
+		DeleteApplicationModal,
+		AddUserModalComponent,
+		UserApplicationsModalComponent
 	],
 	exports: [ProjectOsDetailsComponent, ExtensionEntryComponent]
 })
