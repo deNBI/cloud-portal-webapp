@@ -3,7 +3,12 @@
 	<button class="btn btn-close" style="cursor: pointer" (click)="hide()" aria-label="Close"></button>
 </div>
 <div class="modal-body">
-	<div class="alert alert-{{ notificationModalType }}" role="alert" id="notification_modal_message">
+	<div
+		class="alert alert-{{ notificationModalType }}"
+		role="alert"
+		id="notification_modal_message"
+		data-test-id="notification_message_type"
+	>
 		<p data-test-id="notification_modal_message" [innerHTML]="notificationModalMessage"></p>
 	</div>
 </div>
