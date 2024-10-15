@@ -1,15 +1,19 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core'
-import { BsModalRef } from 'ngx-bootstrap/modal'
+import { Component, EventEmitter, Injectable, OnDestroy, OnInit } from '@angular/core'
+import { BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../applications/application.model/application.model'
 import { ConfirmationTypes } from './confirmation_types'
 import { ConfirmationActions } from './confirmation_actions'
+import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-modal.component'
 
+@Injectable({
+	providedIn: 'root'
+})
 @Component({
 	selector: 'app-confirmation-modal',
 	templateUrl: './confirmation-modal.component.html',
 	providers: []
 })
-export class ConfirmationModalComponent implements OnDestroy, OnInit {
+export class ConfirmationModalComponent extends AbstractBaseModalComponent implements OnDestroy, OnInit {
 	protected readonly ConfirmationTypes = ConfirmationTypes
 
 	application: Application = null
@@ -19,13 +23,19 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 	action: ConfirmationActions
 	type: ConfirmationTypes
 	request_failed: boolean = false
-	public event: EventEmitter<any> = new EventEmitter<any>()
 
-	constructor(public bsModalRef: BsModalRef) {
-		 
+	constructor(protected modalService: BsModalService) {
+		super(modalService)
+	}
+
+	showConfirmationModal(application: Application, action: ConfirmationActions): EventEmitter<any> {
+		const initialState = { application, action }
+
+		return this.showBaseModal(ConfirmationModalComponent, initialState)
 	}
 
 	confirmAction(): void {
+		void this.hide()
 		const actionsMap = {
 			[ConfirmationActions.DECLINE_MODIFICATION]: { action: ConfirmationActions.DECLINE_MODIFICATION },
 			[ConfirmationActions.DECLINE_EXTENSION]: { action: ConfirmationActions.DECLINE_EXTENSION },
@@ -62,6 +72,7 @@ export class ConfirmationModalComponent implements OnDestroy, OnInit {
 	}
 
 	sendClosed(): void {
+		void this.hide()
 		this.event.emit({
 			closed: true
 		})

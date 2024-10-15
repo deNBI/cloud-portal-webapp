@@ -7,7 +7,9 @@ import { Workshop } from '../virtualmachines/workshop/workshop.model'
 import { WorkshopVM } from '../virtualmachines/workshop/workshop-vm.model'
 import { WorkshopTimeFrame } from '../virtualmachines/workshop/workshopTimeFrame.model'
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class WorkshopService {
 	constructor(private http: HttpClient) {}
 

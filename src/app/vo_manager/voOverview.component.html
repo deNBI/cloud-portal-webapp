@@ -169,7 +169,7 @@
 								<div class="row">
 									<div class="col">
 										<label for="pi-checkbox">
-											<c-badge color="danger"> PI </c-badge>
+											<c-badge color="danger"> PI</c-badge>
 										</label>
 										<input
 											type="checkbox"
@@ -181,7 +181,7 @@
 
 									<div class="col">
 										<label for="admin-checkbox">
-											<c-badge color="info"> Admin </c-badge>
+											<c-badge color="info"> Admin</c-badge>
 										</label>
 										<input
 											type="checkbox"
@@ -193,7 +193,7 @@
 
 									<div class="col">
 										<label for="member-checkbox">
-											<c-badge color="warning"> Member </c-badge>
+											<c-badge color="warning"> Member</c-badge>
 										</label>
 										<input
 											type="checkbox"
@@ -256,18 +256,6 @@
 										</span>
 									</label>
 								</div>
-								<!--div class="checkbox col">
-                                    <label>
-                                        <input
-                                                type="checkbox"
-                                                (change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.SUSPENDED)"
-                                                [checked]="sortProjectService.filterStatusList | inList : application_states.SUSPENDED"
-                                        />
-                                        <span style="margin-left: 5px" class="badge bg-warning"
-                                        >{{ project_states[project_states.SUSPENDED] }}
-                                        </span>
-                                    </label>
-                                </div-->
 
 								<div class="checkbox col">
 									<label>
@@ -535,25 +523,6 @@
 													>
 														<i class="fa fa-play"></i>&nbsp;Enable Project
 													</button>
-													<!--button
-                                                *ngIf="project | hasstatusinlist : project_states.ACTIVE"
-                                                style="margin-left: 5px; margin-bottom: 5px"
-                                                type="button"
-                                                class="btn btn-warning"
-                                                (click)="selectedProject = project; suspendModal.show()"
-                                        >
-                                            <i class="fa fa-pause"></i>&nbsp;Suspend Project
-                                        </button-->
-
-													<!--button
-                                                *ngIf="project | hasstatusinlist : project_states.SUSPENDED"
-                                                style="margin-left: 5px; margin-bottom: 5px"
-                                                type="button"
-                                                class="btn btn-success"
-                                                (click)="selectedProject = project; resumeModal.show()"
-                                        >
-                                            <i class="fa fa-play"></i>&nbsp;Resume Project
-                                        </button-->
 
 													<button
 														style="margin-left: 5px; margin-bottom: 5px"
@@ -561,7 +530,7 @@
 														class="btn btn-danger"
 														[id]="'show_terminate_' + project?.project_application_shortname"
 														[attr.data-test-id]="'show_terminate_' + project?.project_application_shortname"
-														(click)="selectedProject = project; terminateModal.show()"
+														(click)="showTerminationModal(project)"
 														*ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)"
 													>
 														<i class="fas fa-trash-alt"></i>&nbsp;Terminate Project
@@ -572,7 +541,7 @@
 														class="btn btn-warning"
 														[id]="'show_decline_terminate_' + project?.project_application_id"
 														[attr.data-test-id]="'show_decline_terminate_' + project?.project_application_shortname"
-														(click)="selectedProject = project; declineTerminationModal.show()"
+														(click)="showTerminationDeclineModal(project)"
 														*ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
 													>
 														<i class="fa fa-location-arrow"></i> Decline Termination Project
@@ -584,7 +553,7 @@
 														class="btn btn-warning"
 														[id]="'processed_by_fm_' + project?.project_application_shortname"
 														[attr.data-test-id]="'processed_by_fm_' + project?.project_application_shortname"
-														(click)="selectedProject = project; terminateModal.show()"
+														(click)="showTerminationDeclineModal(project)"
 														*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
 													>
 														Processed by FM
@@ -594,7 +563,7 @@
 														type="button"
 														class="btn btn-info"
 														[id]="'set_protected_' + project?.project_application_shortname"
-														(click)="setProtected(project, true); notificationModal.show()"
+														(click)="setProtected(project, true)"
 														*ngIf="!(project | hasstatusinlist: application_states.PROTECTED)"
 													>
 														<i class="fas fa-lock"></i>&nbsp;Set Protected
@@ -604,7 +573,7 @@
 														type="button"
 														class="btn btn-info"
 														[id]="'set_unprotected_' + project?.project_application_shortname"
-														(click)="setProtected(project, false); notificationModal.show()"
+														(click)="setProtected(project, false)"
 														*ngIf="project | hasstatusinlist: application_states.PROTECTED"
 													>
 														<i class="fas fa-lock-open"></i>&nbsp;Set Unprotected
@@ -877,80 +846,6 @@
 
 	<div
 		bsModal
-		#suspendModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Suspend Project {{ selectedProject?.project_application_shortname }}</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="suspendModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					Are you sure you want to suspend {{ selectedProject?.project_application_shortname }} ?
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-success col-md-4" (click)="suspendProject(selectedProject); suspendModal.hide()">
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="suspendModal.hide()">Cancel</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-
-	<div
-		bsModal
-		#resumeModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Resume Project {{ selectedProject?.project_application_shortname }}</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="resumeModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					Are you sure you want to resume {{ selectedProject?.project_application_shortname }} ?
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-success col-md-4" (click)="resumeProject(selectedProject); resumeModal.hide()">
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="resumeModal.hide()">Cancel</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-
-	<div
-		bsModal
 		#successModal="bs-modal"
 		class="modal fade"
 		tabindex="-1"
@@ -996,42 +891,6 @@
 
 	<div
 		bsModal
-		#descriptionModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="myModalLabel"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog modal-info" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Description</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="descriptionModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-
-				<div class="modal-body">
-					<p>{{ selectedProject?.project_application_description }}</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; descriptionModal.hide()">
-						Close
-					</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-
-	<div
-		bsModal
 		#infoModal="bs-modal"
 		class="modal fade"
 		tabindex="-1"
@@ -1064,7 +923,7 @@
 							</thead>
 							<tbody>
 								<td>
-									<button class="btn btn-secondary" (click)="infoModal.hide(); descriptionModal.show()">
+									<button class="btn btn-secondary" (click)="infoModal.hide(); showDescriptionModal(selectedProject)">
 										Show Description
 									</button>
 								</td>
@@ -1102,144 +961,4 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
-
-	<div
-		bsModal
-		#declineTerminationModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Decline Termination</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="declineTerminationModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-warning" role="alert">
-						Are you sure you want to decline the termination of the project -
-						<strong>{{ selectedProject?.project_application_shortname }}</strong
-						>?
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button
-						class="btn btn-success col-md-4"
-						id="decline_termination_project_btn"
-						(click)="declineTermination(selectedProject); declineTerminationModal.hide(); notificationModal.show()"
-					>
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="declineTerminationModal.hide()">Cancel</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-
-	<div
-		bsModal
-		#terminateModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Terminate Project - {{ selectedProject?.project_application_shortname }}</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="terminateModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-warning" role="alert">
-						Are you sure you want to terminate the project - {{ selectedProject?.project_application_shortname }}?
-					</div>
-					<app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
-				</div>
-				<div class="modal-footer">
-					<button
-						class="btn btn-success col-md-4"
-						id="terminate_project_btn"
-						data-test-id="approve_terminate_project_btn"
-						(click)="terminateProject(); terminateModal.hide(); notificationModal.show()"
-					>
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="terminateModal.hide()">Cancel</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-
-	<div
-		bsModal
-		#notificationModal="bs-modal"
-		class="modal"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="notification_modal_title" data-test-id="notification_modal_title">
-						{{ notificationModalTitle }}
-					</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="notificationModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div
-						class="alert alert-{{ notificationModalType }}"
-						id="notification_message"
-						role="alert"
-						data-test-id="notification_message"
-					>
-						{{ notificationModalMessage }}
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button
-						id="close_notification"
-						data-test-id="close_notification_modal_btn"
-						type="button"
-						(click)="notificationModal.hide(); resetNotificationModal(); removeModalOpen()"
-						class="btn btn-secondary"
-					>
-						Close
-					</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
 </div>

@@ -1,0 +1,22 @@
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Decline Termination</h4>
+			<button type="button" class="btn-close" style="cursor: pointer" (click)="hide()" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<div class="alert alert-warning" role="alert">
+				Are you sure you want to decline the termination of the project -
+				<strong>{{ application?.project_application_shortname }}</strong
+				>?
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-success col-md-4" id="decline_termination_project_btn" (click)="declineTermination()">
+				Yes
+			</button>
+			<button class="btn btn-danger col-md-4" type="reset" (click)="hide()">Cancel</button>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>

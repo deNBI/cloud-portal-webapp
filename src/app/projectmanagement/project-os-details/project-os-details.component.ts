@@ -20,6 +20,7 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 	selectedProjectVolumes: Volume[] = []
 	selectedProjectSnapshots: SnapshotModel[] = []
 	details_loaded: boolean = false
+	show_error: boolean = false
 
 	constructor(private groupService: GroupService) {
 		this.groupService = groupService
@@ -33,6 +34,7 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 
 	ngOnInit(): void {
 		this.details_loaded = false
+		this.show_error = false
 		this.getProjectDetails()
 	}
 
@@ -40,11 +42,17 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 		if (!this.project.project_application_perun_id || this.project.project_application_openstack_project) {
 			return
 		}
-		this.groupService.getProjectOSDetails(this.project.project_application_perun_id).subscribe((res: any): void => {
-			this.selectedProjectVms = res['vms']
-			this.selectedProjectVolumes = res['volumes']
-			this.selectedProjectSnapshots = res['snapshots']
-			this.details_loaded = true
-		})
+		this.groupService.getProjectOSDetails(this.project.project_application_perun_id).subscribe(
+			(res: any): void => {
+				this.selectedProjectVms = res['vms']
+				this.selectedProjectVolumes = res['volumes']
+				this.selectedProjectSnapshots = res['snapshots']
+				this.details_loaded = true
+			},
+			() => {
+				this.details_loaded = true
+				this.show_error = true
+			}
+		)
 	}
 }

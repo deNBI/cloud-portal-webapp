@@ -10,6 +10,7 @@ import { FacilityService } from '../../../api-connector/facility.service'
 import { UserService } from '../../../api-connector/user.service'
 import { FlavorTypeShortcuts } from './flavor-type-shortcuts'
 import { User } from '../../../applications/application.model/user.model'
+import { NotificationModalComponent } from '../../modal/notification-modal'
 
 /**
  * Application base component..
@@ -119,6 +120,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		protected userService: UserService,
 		protected applicationsService: ApplicationsService,
 		protected facilityService: FacilityService,
+		protected notificationModal: NotificationModalComponent,
 		private cdRef: ChangeDetectorRef
 	) {
 		super()

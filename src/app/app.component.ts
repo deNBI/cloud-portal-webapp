@@ -1,5 +1,4 @@
-import { AfterViewInit, ApplicationRef, Component, OnInit, ViewChild } from '@angular/core'
-import { ModalDirective } from 'ngx-bootstrap/modal'
+import { AfterViewInit, ApplicationRef, Component, OnInit } from '@angular/core'
 import { VoService } from './api-connector/vo.service'
 import { TitleService } from './title.service'
 
@@ -16,8 +15,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 	notificationModalMessage: string =
 		'A new update is available. Please reload the site to use the new version of the portal.'
 	notificationModalType: string = 'info'
-
-	@ViewChild('notificationModal', { static: true }) modal: ModalDirective
 
 	constructor(
 		private appRef: ApplicationRef,

@@ -1,12 +1,6 @@
 <div class="modal-header">
 	<h4 class="modal-title text-dark" data-test-id="confirmation_modal_title">{{ modalTitle }}</h4>
-	<button
-		type="button"
-		class="btn-close"
-		style="cursor: pointer"
-		(click)="bsModalRef.hide()"
-		aria-label="Close"
-	></button>
+	<button type="button" class="btn-close" style="cursor: pointer" (click)="hide()" aria-label="Close"></button>
 </div>
 <div class="modal-body">
 	<div
@@ -19,7 +13,7 @@
 				type === ConfirmationTypes.DISABLE ||
 				type === ConfirmationTypes.ENABLE ||
 				type === ConfirmationTypes.APPROVE
-			)
+			),
 		}"
 		role="alert"
 		id="confirmation_modal_message"
@@ -34,7 +28,7 @@
 		class="btn btn-secondary col-md-4"
 		type="reset"
 		data-test-id="close_confirmation_modal_btn"
-		(click)="sendClosed(); bsModalRef.hide()"
+		(click)="sendClosed()"
 	>
 		Abort & Close
 	</button>
@@ -48,10 +42,10 @@
 				type === ConfirmationTypes.DISABLE ||
 				type === ConfirmationTypes.ENABLE ||
 				type === ConfirmationTypes.APPROVE
-			)
+			),
 		}"
 		data-test-id="confirm_confirmation_modal_btn"
-		(click)="confirmAction(); bsModalRef.hide()"
+		(click)="confirmAction()"
 	>
 		Confirm {{ buttonText() }}
 	</button>

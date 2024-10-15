@@ -1,0 +1,94 @@
+<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Add member to the project {{ application?.project_application_shortname }}</h4>
+			<button (click)="hide()" aria-label="Close" class="btn-close" style="cursor: pointer" type="button"></button>
+		</div>
+		<div class="modal-body">
+			<div class="container-fluid p-4">
+				<!-- Registration Section -->
+				<section class="mb-5">
+					<div class="alert alert-primary" role="alert">
+						<h2 class="h3 mb-3">Step 1: Register for de.NBI Cloud Portal</h2>
+						<p class="text-secondary">
+							Before applying for membership, users must register for the de.NBI Cloud Portal. Share this link with
+							them:
+						</p>
+
+						<div class="registration-link">
+							<pre><strong>{{ CLOUD_PORTAL_REGISTER_LINK }}</strong></pre>
+
+							<button
+								cButton
+								color="dark"
+								variant="ghost"
+								size="sm"
+								class="btn btn-outline-secondary"
+								ngxClipboard
+								[cbSuccessMsg]="'Copied Cloud Portal Register!'"
+								[cbContent]="CLOUD_PORTAL_REGISTER_LINK"
+								data-coreui-toggle="tooltip"
+								title="Copy Cloud Register Link to clipboard"
+							>
+								Copy Key
+							</button>
+						</div>
+					</div>
+				</section>
+
+				<!-- Invitation Section -->
+				<section class="mb-5">
+					<div class="alert alert-primary" role="alert">
+						<h2 class="h3 mb-3">Step 2: Share Invitation Links</h2>
+						<p class="text-secondary">
+							After registering, share these invitation link to add users to the project. Project admins can approve
+							applications in the member applications tab.
+						</p>
+						<div class="invitation-link">
+							<pre><strong>{{ invitation_link }}</strong></pre>
+
+							<button
+								cButton
+								color="dark"
+								variant="ghost"
+								size="sm"
+								class="btn btn-outline-secondary"
+								ngxClipboard
+								[cbSuccessMsg]="'Copied invitation Link!'"
+								[cbContent]="invitation_link"
+								data-coreui-toggle="tooltip"
+								title="Copy Invitation Link to clipboard"
+							>
+								Copy Key
+							</button>
+						</div>
+					</div>
+				</section>
+
+				<!-- Additional Information -->
+				<section>
+					<div class="alert alert-primary" role="alert">
+						<h2 class="h3 mb-3">Next Steps</h2>
+						<p class="text-secondary">
+							After the user registers and applies for your group, you can approve their application. Read more about
+							the process <a href="{{ WIKI_MEMBER_MANAGEMENT }}" rel="noopener noreferrer" target="_blank">here</a>.
+						</p>
+					</div>
+				</section>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button
+				(click)="hide()"
+				class="btn btn-danger"
+				id="close_add_user_modal_btn"
+				data-test-id="close_add_user_modal_btn"
+				type="button"
+			>
+				<i class="fa fa-times"></i> Close
+			</button>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

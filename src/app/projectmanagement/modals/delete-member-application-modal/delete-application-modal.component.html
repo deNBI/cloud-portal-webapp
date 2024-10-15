@@ -1,0 +1,19 @@
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Delete Application</h4>
+			<button (click)="hide()" aria-label="Close" class="btn-close" style="cursor: pointer" type="button"></button>
+		</div>
+		<div class="modal-body">
+			<div class="alert alert-warning" role="alert">Are you sure you want to remove this application?</div>
+		</div>
+		<div class="modal-footer">
+			<button (click)="deleteApplication()" class="btn btn-success col-md-4" id="confirm_remove_application_button">
+				Yes
+			</button>
+			<button (click)="hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

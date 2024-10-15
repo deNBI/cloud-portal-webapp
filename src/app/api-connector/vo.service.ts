@@ -12,7 +12,9 @@ import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeF
 /**
  * Service which provides vo methods.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class VoService {
 	constructor(private http: HttpClient) {}
 

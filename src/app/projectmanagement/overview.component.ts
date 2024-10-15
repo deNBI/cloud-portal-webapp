@@ -1,13 +1,4 @@
-import {
-	ChangeDetectorRef,
-	Component,
-	ElementRef,
-	OnDestroy,
-	OnInit,
-	Renderer2,
-	ViewChild,
-	Inject
-} from '@angular/core'
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core'
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -39,13 +30,10 @@ import {
 	PUBLICATIONS_LINK,
 	SIMPLE_VM_LINK,
 	STATUS_LINK,
-	WIKI_MEMBER_MANAGEMENT,
 	WIKI_PUBLICATIONS,
-	KUBERNETES_LINK,
-	CLOUD_PORTAL_REGISTER_LINK
+	KUBERNETES_LINK
 } from '../../links/links'
 import { Doi } from '../applications/doi/doi'
-import { ApiSettings } from '../api-connector/api-settings.service'
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ProjectMember } from './project_member.model'
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component'
@@ -54,31 +42,27 @@ import { CreditsRequestComponent } from './modals/credits-request/credits-reques
 import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component'
 import { WITHDRAWAL_TYPES, WithdrawModalComponent } from './modals/withdraw/withdraw-modal.component'
 import { ApplicationRequestType } from '../shared/enums/application-request-type'
+import { TerminationRequestComponent } from './modals/termination-request/termination-request.component'
+import { ViewPublicKeyComponent } from '../shared/modal/view-public-key/view-public-key.component'
+import { LeaveProjectComponent } from './modals/leave-project/leave-project.component'
+import { NotificationModalComponent } from '../shared/modal/notification-modal'
+import { DeleteApplicationModal } from './modals/delete-member-application-modal/delete-application-modal.component'
+import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.component'
+import { UserApplicationsModalComponent } from './modals/user-applications-modal/user-applications-modal.component'
 
 /**
  * Projectoverview component.
  */
 @Component({
 	selector: 'app-project-overview',
-	templateUrl: 'overview.component.html',
-	providers: [
-		FlavorService,
-		ApplicationsService,
-		FacilityService,
-		UserService,
-		GroupService,
-		ApiSettings,
-		CreditsService
-	]
+	templateUrl: 'overview.component.html'
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	bsModalRef: BsModalRef
 	modificationRequestDisabled: boolean = false
 	lifetimeExtensionDisabled: boolean = false
 	creditsExtensionDisabled: boolean = false
-	voRegistrationLink: string = environment.voRegistrationLink
 	vo_name: string = environment.voName
-	WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS
 	CREDITS_WIKI: string = CREDITS_WIKI
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
@@ -90,33 +74,22 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	STATUS_LINK: string = STATUS_LINK
 	NEW_SVM_PORTAL_LINK: string = NEW_SVM_PORTAL_LINK
 	@ViewChild('creditsChart') creditsCanvas: ElementRef
-	@ViewChild('publicKeyModal') publicKeyModal: any
-	@ViewChild('terminateModal') terminateModal: any
-	publicKeyToShow: string = ''
-	publicKeyMemberName: string = ''
 	project_id: string
 	application_id: string
 	credits: number = 0
 	errorMessage: string
-	terminate_confirmation_given: boolean = false
 	showInformationCollapse: boolean = false
 	newDoi: string
 	doiError: string
 	remove_members_clicked: boolean
 	dois: Doi[]
 	disabledDoiInput: boolean = false
-	invitation_link: string
-	CLOUD_PORTAL_REGISTER_LINK = CLOUD_PORTAL_REGISTER_LINK
+
 	project_application: Application
-	application_action: string = ''
-	application_member_name: string = ''
-	application_action_done: boolean = false
-	application_action_success: boolean
-	application_action_error_message: boolean
+
 	loaded: boolean = true
 	userinfo: Userinfo
 	allSet: boolean = false
-	renderer: Renderer2
 	supportMails: string[] = []
 	toggleLocked: boolean = false
 	resourceDataLoaded: boolean = false
@@ -154,10 +127,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		private fullLayout: FullLayoutComponent,
 		private router: Router,
 		private creditsService: CreditsService,
+		private terminationRequestComponent: TerminationRequestComponent,
+		private viewPublicKeyComponent: ViewPublicKeyComponent,
+		private leaveProjectComponent: LeaveProjectComponent,
+		private deleteApplicationModal: DeleteApplicationModal,
+		private addUserModalComponent: AddUserModalComponent,
+		private userApplicationsModalComponent: UserApplicationsModalComponent,
+		notificationModal: NotificationModalComponent,
 		@Inject(DOCUMENT) private document: Document,
 		cdrRef: ChangeDetectorRef
 	) {
-		super(userService, applicationsService, facilityService, cdrRef)
+		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
 	}
 
 	calculateProgressBar(numberToRoundUp: number): string {
@@ -382,10 +362,35 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				} else if (event.showExtension) {
 					this.showLifetimeExtensionModal()
 				} else if (event.showTermination) {
-					this.terminateModal.show()
+					this.showTerminationModal()
 				}
 			})
 		)
+	}
+
+	showUserApplicationModal(): void {
+		this.userApplicationsModalComponent.showAddUserApplicationModal(this.project_application).subscribe(() => {
+			this.getMembersOfTheProject()
+		})
+	}
+
+	showAddMemberModal(): void {
+		const invitationLink: string = this.getAddUserInvitationLink()
+		this.addUserModalComponent.showAddUserModalComponent(this.project_application, invitationLink)
+	}
+
+	showDeleteApplicationModal(): void {
+		this.deleteApplicationModal.showDeleteApplicationModal(this.project_application)
+	}
+
+	showLeaveTerminationModal(): void {
+		this.leaveProjectComponent.showLeaveProjectModal(this.project_application, this.userinfo).subscribe()
+	}
+
+	showTerminationModal(): void {
+		this.terminationRequestComponent.showTerminationRequestModal(this.project_application).subscribe(() => {
+			this.getApplication()
+		})
 	}
 
 	showLifetimeExtensionModal(): void {
@@ -535,33 +540,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		}
 	}
 
-	approveMemberApplication(application: number, membername: string): void {
-		this.loaded = false
-		this.application_action_done = false
-		this.subscription.add(
-			this.groupService
-				.approveGroupApplication(Number(this.project_application.project_application_perun_id), application)
-				.subscribe((tmp_application: any): void => {
-					if (tmp_application['state'] === 'APPROVED') {
-						this.application_action_success = true
-					} else if (tmp_application['message']) {
-						this.application_action_success = false
-
-						this.application_action_error_message = tmp_application['message']
-					} else {
-						this.application_action_success = false
-					}
-
-					this.application_action = 'approved'
-					this.application_member_name = membername
-					this.application_action_done = true
-					this.getUserProjectApplications()
-					this.getMembersOfTheProject()
-					this.loaded = true
-				})
-		)
-	}
-
 	/**
 	 * If the application is an openstack application, the requested/approved resources will be set for maximum VMs.
 	 * For SimpleVM also the VMs in use are set.
@@ -665,47 +643,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.newDoi = null
 			this.toggleDoiDisabledInput()
 		}
-	}
-
-	requestProjectTermination(): void {
-		this.updateNotificationModal('Waiting', 'Termination request will be submitted...', true, 'info')
-
-		this.subscription.add(
-			this.groupService
-				.requestProjectTermination(this.project_application.project_application_perun_id)
-				.subscribe((): void => {
-					this.fullLayout.getGroupsEnumeration()
-					this.getApplication()
-					this.updateNotificationModal('Success', 'Termination was requested!', true, 'success')
-				})
-		)
-	}
-
-	rejectMemberApplication(application: number, membername: string): void {
-		this.loaded = false
-		this.application_action_done = false
-		this.subscription.add(
-			this.groupService
-				.rejectGroupApplication(Number(this.project_application.project_application_perun_id), application)
-				.subscribe((tmp_application: any): void => {
-					this.project_application.project_application_member_applications = []
-
-					if (tmp_application['state'] === 'REJECTED') {
-						this.application_action_success = true
-					} else if (tmp_application['message']) {
-						this.application_action_success = false
-
-						this.application_action_error_message = tmp_application['message']
-					} else {
-						this.application_action_success = false
-					}
-					this.application_action = 'rejected'
-					this.application_member_name = membername
-					this.application_action_done = true
-					this.getUserProjectApplications()
-					this.loaded = true
-				})
-		)
 	}
 
 	/**
@@ -854,9 +791,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.allSet = false
 	}
 
-	setAddUserInvitationLink(): void {
-		const project_reg: string = `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.project_application_shortname}`
-		this.invitation_link = project_reg
+	getAddUserInvitationLink(): string {
+		return `https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=${this.vo_name}&group=${this.project_application.project_application_shortname}`
 	}
 
 	copyToClipboard(text: string): void {
@@ -952,74 +888,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		)
 	}
 
-	/**
-	 * Leave a project
-	 *
-	 * @param memberid of the member
-	 * @param projectname of the project
-	 */
-	public leaveProject(memberid: number, projectname: string): void {
-		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
-			this.updateNotificationModal(
-				'Denied',
-				`You cannot leave projects as PI. Please contact ${CLOUD_PORTAL_SUPPORT_MAIL} for further steps.`,
-				true,
-				'danger'
-			)
-		} else {
-			this.subscription.add(
-				this.groupService
-					.leaveGroup(
-						this.project_application.project_application_perun_id,
-						memberid,
-						this.project_application.project_application_compute_center.FacilityId
-					)
-					.subscribe(
-						(result: any): void => {
-							if (result.status === 200) {
-								this.updateNotificationModal(
-									'Success',
-									`You were removed from the project ${projectname}`,
-									true,
-									'success'
-								)
-								void this.router.navigate(['/userinfo'])
-								this.fullLayout.getGroupsEnumeration()
-							} else {
-								this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger')
-							}
-						},
-						(): void => {
-							this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger')
-						}
-					)
-			)
-		}
-	}
-
 	showPublicKeyModal(member: ProjectMember): void {
-		this.publicKeyToShow = member.publicKey
-		this.publicKeyMemberName = `${member.firstName} ${member.lastName}`
-		this.publicKeyModal.show()
-	}
-
-	/**
-	 * Delete an application.
-	 */
-	public deleteApplication(): void {
-		this.subscription.add(
-			this.applicationsService.deleteApplication(this.project_application.project_application_id).subscribe(
-				(): void => {
-					this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success')
-					this.fullLayout.getGroupsEnumeration()
-
-					void this.router.navigate(['/userinfo'])
-				},
-				(): void => {
-					this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger')
-				}
-			)
-		)
+		this.viewPublicKeyComponent.showViewPublicKeyModal(`${member.firstName} ${member.lastName}`, member.publicKey)
 	}
 
 	protected readonly ApplicationRequestType = ApplicationRequestType
