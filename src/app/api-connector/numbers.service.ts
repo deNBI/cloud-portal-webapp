@@ -6,7 +6,9 @@ import { ApiSettings } from './api-settings.service'
 /**
  * Class to get numbers from the api for graphs
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class NumbersService {
 	constructor(private http: HttpClient) {
 		this.http = http

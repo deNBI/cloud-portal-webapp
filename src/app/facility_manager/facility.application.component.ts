@@ -8,6 +8,7 @@ import { Application } from '../applications/application.model/application.model
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ApplicationsService } from '../api-connector/applications.service'
 import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component'
+import { NotificationModalComponent } from '../shared/modal/notification-modal'
 
 enum TabStates {
 	'SUBMITTED' = 0,
@@ -72,9 +73,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 		userService: UserService,
 		facilityService: FacilityService,
 		applicationsService: ApplicationsService,
-		cdrRef: ChangeDetectorRef
+		cdrRef: ChangeDetectorRef,
+		notificationModal: NotificationModalComponent
 	) {
-		super(userService, applicationsService, facilityService, cdrRef)
+		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
 	}
 
 	getFacilityApplicationById(application: Application): void {

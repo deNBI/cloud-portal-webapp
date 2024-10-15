@@ -13,7 +13,9 @@ import { User } from '../applications/application.model/user.model'
 /**
  * Service which provides methods for creating application.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ApplicationsService {
 	constructor(private http: HttpClient) {
 		this.http = http

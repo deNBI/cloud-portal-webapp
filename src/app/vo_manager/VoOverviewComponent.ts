@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core'
-import { DomSanitizer } from '@angular/platform-browser'
+import { Component, EventEmitter, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { Observable, Subscription, take } from 'rxjs'
-import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal'
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import * as FileSaver from 'file-saver'
 
 import { VoService } from '../api-connector/vo.service'
@@ -21,8 +20,10 @@ import { ProjectSortService } from '../shared/shared_modules/services/project-so
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component'
 import { ConfirmationActions } from '../shared/modal/confirmation_actions'
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component'
-import { EmailService } from '../api-connector/email.service'
 import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
+import { NotificationModalComponent } from '../shared/modal/notification-modal'
+import { TerminateProjectModalComponent } from './modals/terminate-project-modal/terminate-project-modal.component'
+import { DeclineProjectTerminationModalComponent } from './modals/decline-project-termination-modal/decline-project-termination-modal.component'
 
 /**
  * Vo Overview component.
@@ -39,7 +40,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	public emailText: string
 	public emailStatus: number = 0
 
-	@ViewChild('notificationModal') notificationModal: ModalDirective
 	public emailHeader: string
 	public emailVerify: string
 	public emailType: number
@@ -57,10 +57,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	userElixirSearchAdmin: boolean = true
 	userElixirSearchMember: boolean = true
 	projectsLoaded: boolean = false
-	show_openstack_projects: boolean = true
-	show_simple_vm_projects: boolean = true
-	show_simple_vm: boolean = true
-	show_openstack: boolean = true
 
 	validElixirIdFilter: boolean = false
 	tsvTaskRunning: boolean = false
@@ -93,13 +89,14 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	constructor(
 		private fullLayout: FullLayoutComponent,
-		private sanitizer: DomSanitizer,
 		private voService: VoService,
-		private groupservice: GroupService,
 		private facilityService: FacilityService,
 		public sortProjectService: ProjectSortService,
 		private modalService: BsModalService,
-		private emailService: EmailService
+		private notificationModal: NotificationModalComponent,
+		private terminateProjectModalComponent: TerminateProjectModalComponent,
+		private declineProjectTerminationModalComponent: DeclineProjectTerminationModalComponent,
+		private confirmationModalComponent: ConfirmationModalComponent
 	) {
 		super()
 	}
@@ -163,11 +160,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	showConfirmationModal(application: Application, action: ConfirmationActions): void {
-		const initialState = { application, action }
-		console.log(initialState)
-
-		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' })
-		this.subscribeToBsModalRef()
+		const event: EventEmitter<any> = this.confirmationModalComponent.showConfirmationModal(application, action)
+		this.subscribeToBsModalRef(event)
 	}
 
 	showMembersModal(application: Application): void {
@@ -179,9 +173,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		this.bsModalRef = this.modalService.show(MembersListModalComponent, { initialState, class: 'modal-lg' })
 	}
 
-	subscribeToBsModalRef(): void {
+	subscribeToBsModalRef(event: EventEmitter<ConfirmationActions>): void {
 		this.subscription.add(
-			this.bsModalRef.content.event.subscribe((result: any) => {
+			event.subscribe((result: any) => {
 				let action = null
 				if ('action' in result) {
 					action = result['action']
@@ -501,13 +495,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		this.emailAdminsOnly = false
 	}
 
-	public resetNotificationModal(): void {
-		this.notificationModalTitle = 'Notification'
-		this.notificationModalMessage = 'Please wait...'
-		this.notificationModalIsClosable = false
-		this.notificationModalType = 'info'
-	}
-
 	/**
 	 * Get all computecenters.
 	 */
@@ -532,41 +519,36 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		document.body.classList.remove('modal-open')
 	}
 
-	public terminateProject(): void {
-		this.voService.terminateProject(this.selectedProject.project_application_perun_id).subscribe(
-			(): void => {
-				const indexAll: number = this.projects.indexOf(this.selectedProject, 0)
-				if (!this.selectedProject.project_application_openstack_project) {
-					this.projects.splice(indexAll, 1)
-					this.sortProjectService.applications = this.projects
-				} else {
-					this.getProjectStatus(this.projects[indexAll])
-				}
-				this.fullLayout.getGroupsEnumeration()
-				if (this.selectedProject.project_application_openstack_project) {
-					this.updateNotificationModal(
-						'Success',
-						'The request to terminate the project was forwarded to the facility manager.',
-						true,
-						'success'
-					)
-				} else {
-					this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success')
-				}
-			},
-			(error: any): void => {
-				if (error['status'] === 409) {
-					this.updateNotificationModal(
-						'Failed',
-						`The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
-						true,
-						'danger'
-					)
-				} else {
-					this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger')
-				}
-			}
-		)
+	updateProjectByIdx(application: Application): void {
+		const indexAll: number = this.projects.indexOf(application, 0)
+		this.getProjectStatus(this.projects[indexAll])
+	}
+
+	removeProjectFromList(application: Application): void {
+		const indexAll: number = this.projects.indexOf(application, 0)
+		if (!application.project_application_openstack_project) {
+			this.projects.splice(indexAll, 1)
+			this.sortProjectService.applications = this.projects
+		} else {
+			this.getProjectStatus(this.projects[indexAll])
+		}
+		this.fullLayout.getGroupsEnumeration()
+	}
+
+	showDescriptionModal(application: Application): void {
+		this.notificationModal.showInfoNotificationModal('Description', application.project_application_description)
+	}
+
+	showTerminationDeclineModal(application: Application): void {
+		this.declineProjectTerminationModalComponent.showTerminationProjectModal(application).subscribe(() => {
+			this.updateProjectByIdx(application)
+		})
+	}
+
+	showTerminationModal(application: Application): void {
+		this.terminateProjectModalComponent.showTerminationProjectModal(application).subscribe(() => {
+			this.removeProjectFromList(application)
+		})
 	}
 
 	getProjectStatus(project: Application): void {
@@ -578,12 +560,12 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	suspendProject(project: Application): void {
 		this.voService.removeResourceFromGroup(project.project_application_perun_id).subscribe(
 			(): void => {
-				this.updateNotificationModal('Success', 'The project got suspended successfully', true, 'success')
+				this.notificationModal.showSuccessFullNotificationModal('Success', 'The project got suspended successfully')
 				this.getProjectStatus(project)
 				project.project_application_compute_center = null
 			},
 			(): void => {
-				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger')
+				this.notificationModal.showDangerNotificationModal('Failed', 'The status change was not successful.')
 			}
 		)
 	}
@@ -591,24 +573,11 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	resumeProject(project: Application): void {
 		this.voService.resumeProject(project.project_application_perun_id).subscribe(
 			(): void => {
-				this.updateNotificationModal('Success', 'The project got resumed successfully', true, 'success')
+				this.notificationModal.showSuccessFullNotificationModal('Success', 'The project got resumed successfully')
 				this.getProjectStatus(project)
 			},
 			(): void => {
-				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger')
-			}
-		)
-	}
-
-	declineTermination(project: Application): void {
-		this.voService.declineTermination(project.project_application_perun_id).subscribe(
-			(): void => {
-				this.updateNotificationModal('Success', 'The termination was successfully declined', true, 'success')
-				const indexAll: number = this.projects.indexOf(project, 0)
-				this.getProjectStatus(this.projects[indexAll])
-			},
-			(): void => {
-				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger')
+				this.notificationModal.showDangerNotificationModal('Failed', 'The status change was not successful.')
 			}
 		)
 	}
@@ -616,20 +585,18 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	setProtected(project: Application, set: boolean): void {
 		this.voService.setProtected(project.project_application_perun_id, set).subscribe(
 			(result: any): void => {
-				this.updateNotificationModal(
+				this.notificationModal.showSuccessFullNotificationModal(
 					'Success',
 					result['result'] === 'set'
 						? 'The project was successfully set as protected.'
-						: 'The status "Protected" was removed successfully',
-					true,
-					'success'
+						: 'The status "Protected" was removed successfully'
 				)
 				const indexAll: number = this.projects.indexOf(project, 0)
 				this.getProjectStatus(this.projects[indexAll])
 			},
 			(error: any): void => {
 				if (error['status'] === 500) {
-					this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger')
+					this.notificationModal.showDangerNotificationModal('Failed', 'The status change was not successful.')
 				}
 			}
 		)
@@ -641,10 +608,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 			this.usersModalProjectName = projectname
 			this.usersModalProjectMembers = members
 		})
-	}
-
-	showMembersOfTheProject(projectid: number, projectname: string): void {
-		this.getMembersOfTheProject(projectid, projectname)
 	}
 
 	initiateTsvExport(): void {

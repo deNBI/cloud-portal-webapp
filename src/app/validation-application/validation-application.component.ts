@@ -38,7 +38,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 		private activatedRoute: ActivatedRoute,
 		private changeDetector: ChangeDetectorRef
 	) {
-		super(null, applicationsService, null, changeDetector)
+		super(null, applicationsService, null, null, changeDetector)
 	}
 
 	ngAfterViewChecked(): void {

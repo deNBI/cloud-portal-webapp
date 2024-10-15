@@ -8,7 +8,9 @@ import { BlacklistedResponse } from './response-interfaces'
 /**
  * Service which provides public key methods.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class KeyService {
 	constructor(private http: HttpClient) {}
 

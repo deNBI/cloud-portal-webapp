@@ -1,28 +1,24 @@
 import { Component, Injectable, OnDestroy } from '@angular/core'
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { BsModalService } from 'ngx-bootstrap/modal'
 import { Router } from '@angular/router'
+import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-modal.component'
 
 @Injectable({ providedIn: 'root' })
 @Component({
 	selector: 'app-notification-modal',
 	templateUrl: './notification-modal.component.html'
 })
-export class NotificationModalComponent implements OnDestroy {
+export class NotificationModalComponent extends AbstractBaseModalComponent implements OnDestroy {
 	notificationModalTitle: string
 	notificationModalType: string
 	notificationModalMessage: string
 	routerRedirectString: string
-	modalId: number | string | undefined
-
-	hide(): void {
-		this.modalService.hide(this.modalId)
-	}
 
 	constructor(
-		private router: Router,
-		private modalService: BsModalService
+		protected modalService: BsModalService,
+		private router: Router
 	) {
-		 
+		super(modalService)
 	}
 
 	showNotificationModal(
@@ -37,9 +33,9 @@ export class NotificationModalComponent implements OnDestroy {
 			notificationModalMessage,
 			routerRedirectString
 		}
-		const bsModalRef: BsModalRef = this.modalService.show(NotificationModalComponent, { initialState })
-		bsModalRef.setClass('modal-lg')
-		this.modalId = bsModalRef.id
+		console.log('Show notification')
+
+		this.showBaseModal(NotificationModalComponent, initialState)
 	}
 
 	showSuccessFullNotificationModal(

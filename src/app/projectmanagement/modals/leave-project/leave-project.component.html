@@ -1,0 +1,17 @@
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Leave Project</h4>
+			<button (click)="hide()" aria-label="Close" class="btn-close" style="cursor: pointer" type="button"></button>
+		</div>
+		<div class="modal-body">
+			<div class="alert alert-warning" role="alert">Are you sure you want to leave the project?</div>
+		</div>
+		<div class="modal-footer">
+			<button (click)="leaveProject()" class="btn btn-success col-md-4" id="confirm_leave_project_button">Yes</button>
+			<button (click)="hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

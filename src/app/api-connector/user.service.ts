@@ -9,7 +9,9 @@ import { Userinfo } from '../userinfo/userinfo.model'
 /**
  * Service which provides user methods.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class UserService {
 	constructor(private http: HttpClient) {
 		this.http = http

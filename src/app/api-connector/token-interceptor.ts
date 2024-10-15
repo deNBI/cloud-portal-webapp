@@ -7,7 +7,9 @@ import { catchError } from 'rxjs/operators'
 /**
  * Interceptor which inserts withCredentials and csrf header
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class TokenInterceptor implements HttpInterceptor {
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		const skipIntercept: boolean = req.headers.has('skip')
