@@ -119,11 +119,14 @@ export class NewsService {
 		image_url: string,
 		project_application_id: string,
 		soc_consents: SocialConsent[],
-		file: File
+		soc_photo_consents: SocialConsent[],
+		file: File,
+		contact_mail: string
 	): Observable<any> {
 		const consents_list = soc_consents.map(soc => soc.id)
+		const photo_consents_list = soc_photo_consents.map(soc => soc.id)
 		const consents = JSON.stringify(consents_list)
-
+		const photo_consents = JSON.stringify(photo_consents_list)
 		const formData: FormData = new FormData()
 		formData.append('file', file)
 		formData.append('title', title)
@@ -135,7 +138,8 @@ export class NewsService {
 		formData.append('simple_vm', JSON.stringify(simple_vm))
 		formData.append('project_application_id', project_application_id)
 		formData.append('consents', consents)
-		console.log(formData)
+		formData.append('photo_consents', photo_consents)
+		formData.append('contact_mail', contact_mail)
 
 		return this.http.post<any>(`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/`, formData, {
 			withCredentials: true
@@ -151,7 +155,8 @@ export class NewsService {
 		workgroup: string,
 		simple_vm: boolean,
 		project_application_id: string,
-		soc_consents: SocialConsent[]
+		soc_consents: SocialConsent[],
+		photo_consents: SocialConsent[]
 	): Observable<any> {
 		const consents_list = soc_consents.map(soc => soc.id)
 		const consents = JSON.stringify(consents_list)
@@ -165,7 +170,8 @@ export class NewsService {
 			workgroup,
 			simple_vm,
 			project_application_id,
-			consents
+			consents,
+			photo_consents
 		}
 
 		return this.http.post<any>(
