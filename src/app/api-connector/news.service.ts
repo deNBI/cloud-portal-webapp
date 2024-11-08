@@ -115,8 +115,6 @@ export class NewsService {
 		contributor: string,
 		institution: string,
 		workgroup: string,
-		simple_vm: boolean,
-		image_url: string,
 		project_application_id: string,
 		soc_consents: SocialConsent[],
 		soc_photo_consents: SocialConsent[],
@@ -135,7 +133,6 @@ export class NewsService {
 		formData.append('contributor', contributor)
 		formData.append('institution', institution)
 		formData.append('workgroup', workgroup)
-		formData.append('simple_vm', JSON.stringify(simple_vm))
 		formData.append('project_application_id', project_application_id)
 		formData.append('consents', consents)
 		formData.append('photo_consents', photo_consents)
@@ -153,13 +150,14 @@ export class NewsService {
 		contributor: string,
 		institution: string,
 		workgroup: string,
-		simple_vm: boolean,
 		project_application_id: string,
 		soc_consents: SocialConsent[],
-		photo_consents: SocialConsent[]
+		pho_consents: SocialConsent[]
 	): Observable<any> {
 		const consents_list = soc_consents.map(soc => soc.id)
 		const consents = JSON.stringify(consents_list)
+		const photo_consents_list = pho_consents.map(soc => soc.id)
+		const photo_consents = JSON.stringify(photo_consents_list)
 
 		const testimonialData: any = {
 			title,
@@ -168,11 +166,12 @@ export class NewsService {
 			contributor,
 			institution,
 			workgroup,
-			simple_vm,
 			project_application_id,
 			consents,
 			photo_consents
 		}
+
+		console.log(testimonialData)
 
 		return this.http.post<any>(
 			`${ApiSettings.getApiBaseURL()}wagtail-management/testimonial/autosave/`,

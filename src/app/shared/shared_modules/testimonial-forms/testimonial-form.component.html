@@ -345,8 +345,8 @@
 							type="checkbox"
 							[value]="socialPhotoConsent.id"
 							[checked]="selectedSocialPhotoConsents | socialConsentGiven: socialPhotoConsent"
-							[id]="'checkbox_' + socialPhotoConsent.id"
-							(change)="updateSelectedPhotoOptions(socialConsent)"
+							[id]="'photo_checkbox_' + socialPhotoConsent.id"
+							(change)="updateSelectedPhotoOptions(socialPhotoConsent)"
 						/>
 						<label class="form-check-label" for="checkbox_{{ socialPhotoConsent.id }}"
 							>{{ socialPhotoConsent.name }}

@@ -47,7 +47,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	selectedSocialPhotoConsents: SocialConsent[] = []
 	submissionSuccessful: boolean = false
 	autosaveTimer: ReturnType<typeof setTimeout>
-	autosaveTimeout: number = 60000
+	autosaveTimeout: number = 10000
 	userInteractedWithForm: boolean = false
 	autoSaveInProgress: boolean = false
 	showAutosaveSucess: boolean = false
@@ -202,7 +202,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.workgroup = result['workgroup']
 		this.contributor = result['contributor']
 		this.selectedSocialConsents = result['publication_channels']
-		this.selectedSocialPhotoConsents = result['photography_publication_channels']
+		this.selectedSocialPhotoConsents = result['photo_publication_channels']
 	}
 
 	stopAutosaveTimer(): void {
@@ -240,7 +240,6 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 							this.contributor,
 							this.institution,
 							this.workgroup,
-							this.simple_vm,
 							this.project_application.project_application_id.toString(),
 							this.selectedSocialConsents,
 							this.selectedSocialPhotoConsents
@@ -290,8 +289,6 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 						this.contributor,
 						this.institution,
 						this.workgroup,
-						this.simple_vm,
-						this.image_url,
 						this.project_application.project_application_id.toString(),
 						this.selectedSocialConsents,
 						this.selectedSocialPhotoConsents,
