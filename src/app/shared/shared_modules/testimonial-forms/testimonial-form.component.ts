@@ -4,7 +4,6 @@ import { ModalDirective } from 'ngx-bootstrap/modal'
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms'
 import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL, SINGLE_TESTIMONIAL_PAGE_LINK } from '../../../../links/links'
 import { NewsService } from '../../../api-connector/news.service'
-import { UserService } from 'app/api-connector/user.service'
 import { Application } from '../../../applications/application.model/application.model'
 import { SocialConsent } from './social-consent.model'
 
@@ -47,7 +46,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	selectedSocialPhotoConsents: SocialConsent[] = []
 	submissionSuccessful: boolean = false
 	autosaveTimer: ReturnType<typeof setTimeout>
-	autosaveTimeout: number = 10000
+	autosaveTimeout: number = 60000
 	userInteractedWithForm: boolean = false
 	autoSaveInProgress: boolean = false
 	showAutosaveSucess: boolean = false
@@ -56,15 +55,13 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	file: File = null
 	hideTestimonialForm: boolean = false
 
-	constructor(
-		private newsService: NewsService,
-		private userService: UserService
-	) {}
+	constructor(private newsService: NewsService) {}
 
 	ngOnInit(): void {
 		this.setInitialData()
 		this.subscription = new Subscription()
 		this.getTestimonialData()
+
 		this.newsService.getPossibleSocialConsents().subscribe((consents: SocialConsent[]) => {
 			this.possibleSocialConsents = consents
 		})
@@ -279,29 +276,25 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	sendTestimonial(): void {
 		this.testimonialSent = true
 		this.subscription.add(
-			this.userService.getPreferredMailUser().subscribe((result: any): any => {
-				const contact_mail: string = result['value']
-				this.newsService
-					.sendTestimonialDraft(
-						`${this.title} FINAL DRAFT`,
-						this.text,
-						this.excerpt,
-						this.contributor,
-						this.institution,
-						this.workgroup,
-						this.project_application.project_application_id.toString(),
-						this.selectedSocialConsents,
-						this.selectedSocialPhotoConsents,
-						this.file,
-						contact_mail
-					)
-					.subscribe((result: any): any => {
-						this.submissionSuccessful = result['created']
-						this.project_application.project_application_testimonial_submitted = true
-						this.stopAutosaveTimer()
-						this.testimonialModal.show()
-					})
-			})
+			this.newsService
+				.sendTestimonialDraft(
+					`${this.title} FINAL DRAFT`,
+					this.text,
+					this.excerpt,
+					this.contributor,
+					this.institution,
+					this.workgroup,
+					this.project_application.project_application_id.toString(),
+					this.selectedSocialConsents,
+					this.selectedSocialPhotoConsents,
+					this.file
+				)
+				.subscribe((result: any): any => {
+					this.submissionSuccessful = result['created']
+					this.project_application.project_application_testimonial_submitted = true
+					this.stopAutosaveTimer()
+					this.testimonialModal.show()
+				})
 		)
 	}
 
