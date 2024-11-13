@@ -20,9 +20,6 @@
 					</div>
 					<div *ngIf="simple_vm_project">
 						<div class="alert alert-primary">
-							This project mode is a beta version. Virtual machines might get lost or can not be started temporarily.
-						</div>
-						<div class="alert alert-primary">
 							If you would like to learn more about Simple VM,
 							<a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">Click Here!</a>
 						</div>
@@ -121,7 +118,8 @@
 												form.controls.project_application_name?.touched),
 										'is-valid':
 											form.controls.project_application_name?.valid &&
-											(form.controls.project_application_name?.dirty || form.controls.project_application_name?.touched)
+											(form.controls.project_application_name?.dirty ||
+												form.controls.project_application_name?.touched),
 									}"
 								/>
 								<span class="help-block">Name your project.</span>
@@ -168,7 +166,7 @@
 										'is-valid':
 											form.controls.project_application_shortname?.valid &&
 											(form.controls.project_application_shortname?.dirty ||
-												form.controls.project_application_shortname?.touched)
+												form.controls.project_application_shortname?.touched),
 									}"
 								/>
 
@@ -212,7 +210,7 @@
 										'is-valid':
 											form.controls.project_application_description?.valid &&
 											(form.controls.project_application_description?.dirty ||
-												form.controls.project_application_description?.touched)
+												form.controls.project_application_description?.touched),
 									}"
 								></textarea>
 								<span class="help-block">Describe what would you want to do in your project.</span>
@@ -256,7 +254,7 @@
 											'is-valid':
 												form.controls.project_application_lifetime?.valid &&
 												(form.controls.project_application_lifetime?.dirty ||
-													form.controls.project_application_lifetime?.touched)
+													form.controls.project_application_lifetime?.touched),
 										}"
 									/>
 									<div class="input-group-append"><span class="input-group-text"> months </span></div>
@@ -357,7 +355,7 @@
 											style="font-size: 25px"
 											[ngClass]="{
 												'icon-arrow-up': groupval.isOpen,
-												'icon-arrow-down': !groupval.isOpen
+												'icon-arrow-down': !groupval.isOpen,
 											}"
 										></i>
 									</div>
@@ -394,7 +392,7 @@
 														appInteger
 														[ngClass]="{
 															'is-invalid': name?.invalid,
-															'is-valid': name?.valid
+															'is-valid': name?.valid,
 														}"
 													/>
 													<div class="input-group-append">
@@ -437,7 +435,7 @@
 										class="form-control"
 										id="id_project_application_volume_counter"
 										name="project_application_volume_counter"
-                                        data-test-id="project_application_volume_counter"
+										data-test-id="project_application_volume_counter"
 										placeholder="e.g. 20"
 										type="number"
 										min="0"
@@ -447,7 +445,7 @@
 										[(ngModel)]="application.project_application_volume_counter"
 										[ngClass]="{
 											'is-invalid': form.controls.project_application_volume_counter?.invalid,
-											'is-valid': form.controls.project_application_volume_counter?.valid
+											'is-valid': form.controls.project_application_volume_counter?.valid,
 										}"
 									/>
 								</div>
@@ -462,7 +460,6 @@
 										data-balloon="Storage limit is the sum of extra storage provided by volumes."
 										data-balloon-pos="right"
 										data-balloon-length="large"
-
 										><i class="icon-question" style="cursor: pointer"></i></i></strong
 							></label>
 							<div class="col-md-8">
@@ -482,7 +479,7 @@
 										appMinAmount="1"
 										[ngClass]="{
 											'is-invalid': form.controls.project_application_volume_limit?.invalid,
-											'is-valid': form.controls.project_application_volume_limit?.valid
+											'is-valid': form.controls.project_application_volume_limit?.valid,
 										}"
 										[disabled]="form.controls.project_application_volume_counter?.value === 0"
 									/>
@@ -515,7 +512,7 @@
 										appMinAmount="0"
 										[ngClass]="{
 											'is-invalid': form.controls.project_application_object_storage?.invalid,
-											'is-valid': form.controls.project_application_object_storage?.valid
+											'is-valid': form.controls.project_application_object_storage?.valid,
 										}"
 									/>
 									<div class="input-group-append"><span class="input-group-text"> GB </span></div>
@@ -570,7 +567,7 @@
 									[(ngModel)]="application.project_application_comment"
 									[ngClass]="{
 										'is-invalid': form.controls.project_application_comment?.invalid || !checkValidityComment(),
-										'is-valid': form.controls.project_application_comment?.valid && checkValidityComment()
+										'is-valid': form.controls.project_application_comment?.valid && checkValidityComment(),
 									}"
 								></textarea>
 								<div id="project_application_comment_feedback" class="invalid-feedback" *ngIf="!checkValidityComment()">
@@ -621,7 +618,7 @@
 										'is-valid':
 											form.controls.project_application_institute?.valid &&
 											(form.controls.project_application_institute?.dirty ||
-												form.controls.project_application_institute?.touched)
+												form.controls.project_application_institute?.touched),
 									}"
 								/>
 								<span class="help-block">To which institute do you belong? (Up to 256 characters allowed)</span>
@@ -654,7 +651,7 @@
 										'is-valid':
 											form.controls.project_application_workgroup?.valid &&
 											(form.controls.project_application_workgroup?.dirty ||
-												form.controls.project_application_workgroup?.touched)
+												form.controls.project_application_workgroup?.touched),
 									}"
 								/>
 								<span class="help-block">To which workgroup do you belong? (Up to 256 characters allowed)</span>
@@ -676,7 +673,7 @@
 											application?.project_application_edam_terms?.length > 10,
 										'success-border':
 											application?.project_application_edam_terms?.length > 0 &&
-											application?.project_application_edam_terms?.length <= 10
+											application?.project_application_edam_terms?.length <= 10,
 									}"
 								>
 									<ng-select
@@ -915,7 +912,7 @@
 										[(ngModel)]="application.project_application_cloud_service_user_number"
 										[ngClass]="{
 											'is-invalid': form.controls.project_application_cloud_service_user_number?.invalid,
-											'is-valid': form.controls.project_application_cloud_service_user_number?.valid
+											'is-valid': form.controls.project_application_cloud_service_user_number?.valid,
 										}"
 									/>
 								</div>
@@ -957,7 +954,7 @@
 									minlength="2"
 									[ngClass]="{
 										'is-invalid': form.controls.project_application_horizon2020?.invalid,
-										'is-valid': form.controls.project_application_horizon2020?.valid
+										'is-valid': form.controls.project_application_horizon2020?.valid,
 									}"
 									[(ngModel)]="application.project_application_horizon2020"
 									placeholder="Name of the project"
@@ -994,7 +991,7 @@
 									minlength="2"
 									[ngClass]="{
 										'is-invalid': form.controls.project_application_elixir_project?.invalid,
-										'is-valid': form.controls.project_application_elixir_project?.valid
+										'is-valid': form.controls.project_application_elixir_project?.valid,
 									}"
 									[(ngModel)]="application.project_application_elixir_project"
 									placeholder="Name of the project"
@@ -1031,7 +1028,7 @@
 									minlength="2"
 									[ngClass]="{
 										'is-invalid': form.controls.project_application_dfg?.invalid,
-										'is-valid': form.controls.project_application_dfg?.valid
+										'is-valid': form.controls.project_application_dfg?.valid,
 									}"
 									[(ngModel)]="application.project_application_dfg"
 									placeholder="Name of the project"
@@ -1070,7 +1067,7 @@
 									minlength="2"
 									[ngClass]="{
 										'is-invalid': form.controls.project_application_bmbf_project?.invalid,
-										'is-valid': form.controls.project_application_bmbf_project?.valid
+										'is-valid': form.controls.project_application_bmbf_project?.valid,
 									}"
 									[(ngModel)]="application.project_application_bmbf_project"
 									placeholder="Name of the project"
@@ -1106,7 +1103,7 @@
 									minlength="2"
 									[ngClass]="{
 										'is-invalid': form.controls.project_application_nfdi?.invalid,
-										'is-valid': form.controls.project_application_nfdi?.valid
+										'is-valid': form.controls.project_application_nfdi?.valid,
 									}"
 									[(ngModel)]="application.project_application_nfdi"
 									placeholder="Name of the project"
@@ -1173,7 +1170,7 @@
 											style="font-size: 25px"
 											[ngClass]="{
 												'icon-arrow-up': dissemination_information_accordion.isOpen,
-												'icon-arrow-down': !dissemination_information_accordion.isOpen
+												'icon-arrow-down': !dissemination_information_accordion.isOpen,
 											}"
 										></i>
 									</div>
@@ -1497,7 +1494,7 @@
 											(form.controls.project_application_pi_link_input?.valid ||
 												application.project_application_pi_link === '') &&
 											(form.controls.project_application_pi_link_input?.dirty ||
-												form.controls.project_application_pi_link_input?.touched)
+												form.controls.project_application_pi_link_input?.touched),
 									}"
 								/>
 								<span class="help-block"> </span>Provide a link to the institute or workgroup website of the PI<br />
@@ -1546,7 +1543,7 @@
 										class="alert"
 										[ngClass]="{
 											'alert-warning': !unknownPiAffiliationsConfirmation,
-											'alert-success': unknownPiAffiliationsConfirmation
+											'alert-success': unknownPiAffiliationsConfirmation,
 										}"
 									>
 										<p>
@@ -1639,7 +1636,7 @@
 										'is-valid':
 											form.controls.project_application_pi_email?.valid &&
 											(form.controls.project_application_pi_email?.dirty ||
-												form.controls.project_application_pi_email?.touched)
+												form.controls.project_application_pi_email?.touched),
 									}"
 								/>
 								<p *ngIf="!application?.project_application_pi_approved && !is_validation">
@@ -1711,7 +1708,7 @@
 								class="col-md-8 alert"
 								[ngClass]="{
 									'alert-warning': !unknownPiAffiliationsConfirmation,
-									'alert-success': unknownPiAffiliationsConfirmation
+									'alert-success': unknownPiAffiliationsConfirmation,
 								}"
 							>
 								<p>
