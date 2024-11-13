@@ -57,7 +57,7 @@
 						type="text"
 						[ngClass]="{
 							'is-invalid': testimonialFormGroup.controls.testimonial_title?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_title?.valid
+							'is-valid': testimonialFormGroup.controls.testimonial_title?.valid,
 						}"
 					/>
 				</div>
@@ -81,7 +81,7 @@
 						rows="20"
 						[ngClass]="{
 							'is-invalid': testimonialFormGroup.controls.testimonial_text?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_text?.valid
+							'is-valid': testimonialFormGroup.controls.testimonial_text?.valid,
 						}"
 						class="form-control"
 						name="testimonial_text"
@@ -119,7 +119,7 @@
 						rows="4"
 						[ngClass]="{
 							'is-invalid': testimonialFormGroup.controls.testimonial_excerpt?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_excerpt?.valid
+							'is-valid': testimonialFormGroup.controls.testimonial_excerpt?.valid,
 						}"
 					></textarea>
 				</div>
@@ -157,7 +157,7 @@
 						required
 						[ngClass]="{
 							'is-invalid': testimonialFormGroup.controls.testimonial_contributor?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_contributor?.valid
+							'is-valid': testimonialFormGroup.controls.testimonial_contributor?.valid,
 						}"
 					/>
 				</div>
@@ -195,7 +195,7 @@
 						required
 						[ngClass]="{
 							'is-invalid': testimonialFormGroup.controls.testimonial_instituton?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_institution?.valid
+							'is-valid': testimonialFormGroup.controls.testimonial_institution?.valid,
 						}"
 					/>
 				</div>
@@ -225,7 +225,7 @@
 						required
 						[ngClass]="{
 							'is-invalid': testimonialFormGroup.controls.testimonial_workgroup?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_workgroup?.valid
+							'is-valid': testimonialFormGroup.controls.testimonial_workgroup?.valid,
 						}"
 					/>
 				</div>
@@ -272,7 +272,7 @@
 			<div class="col-md-3">
 				<label class="form-control-label">
 					<strong>
-						Publication Consent*
+						Testimonial Publication Consent*
 						<i
 							class="icon-question"
 							data-toggle="tooltip"
@@ -309,7 +309,54 @@
 				</div>
 				<div class="form-text">
 					Please indicate here on which channels/platforms we may publish your testimonial or information about your
-					testimonial. The website channels are selected by default and cannot be deselected as a channel.
+					testimonial. Please consider allowing the testimonial and testimonial information to be published on channels
+					where you do not authorize the use of the photo. The websites channel is selected by default and cannot be
+					deselected as a channel.
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-3">
+				<label class="form-control-label">
+					<strong>
+						Photography Publication Consent*
+						<i
+							class="icon-question"
+							data-toggle="tooltip"
+							title="Specifies which channels we can use to publish the submitted testimonial."
+						>
+						</i>
+					</strong>
+				</label>
+			</div>
+			<div class="col-md-9">
+				<div class="input-group">
+					<div class="form-check mx-2">
+						<input class="form-check-input" type="checkbox" disabled checked id="website_checkbox" />
+						<label class="form-check-label" for="website_checkbox"
+							>Website
+							<i class="icon-question" data-toggle="tooltip" title="Any content on the de.NBI and de.NBI Cloud Website">
+							</i
+						></label>
+					</div>
+					<div class="form-check mx-2" *ngFor="let socialPhotoConsent of possibleSocialConsents">
+						<input
+							class="form-check-input"
+							type="checkbox"
+							[value]="socialPhotoConsent.id"
+							[checked]="selectedSocialPhotoConsents | socialConsentGiven: socialPhotoConsent"
+							[id]="'photo_checkbox_' + socialPhotoConsent.id"
+							(change)="updateSelectedPhotoOptions(socialPhotoConsent)"
+						/>
+						<label class="form-check-label" for="checkbox_{{ socialPhotoConsent.id }}"
+							>{{ socialPhotoConsent.name }}
+							<i class="icon-question" data-toggle="tooltip" title="{{ socialPhotoConsent.description }}"> </i
+						></label>
+					</div>
+				</div>
+				<div class="form-text">
+					Please indicate here on which channels/platforms we may publish the photography uploaded for the testimonial.
+					The websites channel is selected by default and cannot be deselected as a channel.
 				</div>
 			</div>
 		</div>
@@ -359,6 +406,18 @@
 	</ul>
 </div>
 <div class="card-footer">
+	<div class="row my-2">
+		<div class="col-auto">
+			<div class="alert alert-info mx-auto">
+				<strong>Please consider:</strong>
+				<p>
+					By submitting the testimonial, the e-mail-adress that is stated as <i>prefered</i> in your account will be
+					stored on our servers to enable us to contact you directly if we have any questions. By submitting the
+					testimonial, you explicitly consent to this storage!
+				</p>
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-auto">
 			<div class="btn-group">

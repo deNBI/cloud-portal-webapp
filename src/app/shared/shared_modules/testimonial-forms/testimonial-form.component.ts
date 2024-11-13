@@ -43,6 +43,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	image_url: string = ''
 	possibleSocialConsents: SocialConsent[] = []
 	selectedSocialConsents: SocialConsent[] = []
+	selectedSocialPhotoConsents: SocialConsent[] = []
 	submissionSuccessful: boolean = false
 	autosaveTimer: ReturnType<typeof setTimeout>
 	autosaveTimeout: number = 60000
@@ -54,15 +55,13 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	file: File = null
 	hideTestimonialForm: boolean = false
 
-	 
-	constructor(private newsService: NewsService) {
-		 
-	}
+	constructor(private newsService: NewsService) {}
 
 	ngOnInit(): void {
 		this.setInitialData()
 		this.subscription = new Subscription()
 		this.getTestimonialData()
+
 		this.newsService.getPossibleSocialConsents().subscribe((consents: SocialConsent[]) => {
 			this.possibleSocialConsents = consents
 		})
@@ -117,6 +116,15 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 			this.selectedSocialConsents.splice(idx, 1)
 		} else {
 			this.selectedSocialConsents.push(socialConsent)
+		}
+	}
+
+	updateSelectedPhotoOptions(socialPhotoConsent: SocialConsent): void {
+		const idx: number = this.selectedSocialPhotoConsents.findIndex(consent => consent.id === socialPhotoConsent.id)
+		if (idx !== -1) {
+			this.selectedSocialPhotoConsents.splice(idx, 1)
+		} else {
+			this.selectedSocialPhotoConsents.push(socialPhotoConsent)
 		}
 	}
 
@@ -191,6 +199,7 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 		this.workgroup = result['workgroup']
 		this.contributor = result['contributor']
 		this.selectedSocialConsents = result['publication_channels']
+		this.selectedSocialPhotoConsents = result['photo_publication_channels']
 	}
 
 	stopAutosaveTimer(): void {
@@ -228,9 +237,9 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 							this.contributor,
 							this.institution,
 							this.workgroup,
-							this.simple_vm,
 							this.project_application.project_application_id.toString(),
-							this.selectedSocialConsents
+							this.selectedSocialConsents,
+							this.selectedSocialPhotoConsents
 						)
 						.subscribe(
 							(): void => {
@@ -275,10 +284,9 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 					this.contributor,
 					this.institution,
 					this.workgroup,
-					this.simple_vm,
-					this.image_url,
 					this.project_application.project_application_id.toString(),
 					this.selectedSocialConsents,
+					this.selectedSocialPhotoConsents,
 					this.file
 				)
 				.subscribe((result: any): any => {
