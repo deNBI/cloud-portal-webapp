@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnDestroy, OnInit } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../applications/application.model/application.model'
 import { ConfirmationTypes } from './confirmation_types'
@@ -13,13 +13,14 @@ import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-
 	templateUrl: './confirmation-modal.component.html',
 	providers: []
 })
-export class ConfirmationModalComponent extends AbstractBaseModalComponent implements OnDestroy, OnInit {
+export class ConfirmationModalComponent extends AbstractBaseModalComponent implements OnInit {
 	protected readonly ConfirmationTypes = ConfirmationTypes
 
 	application: Application = null
 	modalTitle: string = ''
 	modalMessage: string = ''
 	application_center: string = ''
+	additional_msg: string = ''
 	action: ConfirmationActions
 	type: ConfirmationTypes
 	request_failed: boolean = false
@@ -56,7 +57,9 @@ export class ConfirmationModalComponent extends AbstractBaseModalComponent imple
 				selectedCenter: this.application_center
 			},
 			[ConfirmationActions.DISABLE_APPLICATION]: { action: ConfirmationActions.DISABLE_APPLICATION },
-			[ConfirmationActions.ENABLE_APPLICATION]: { action: ConfirmationActions.ENABLE_APPLICATION }
+			[ConfirmationActions.ENABLE_APPLICATION]: { action: ConfirmationActions.ENABLE_APPLICATION },
+			[ConfirmationActions.REMOVE_MEMBERS]: { action: ConfirmationActions.REMOVE_MEMBERS },
+			[ConfirmationActions.REMOVE_MEMBER]: { action: ConfirmationActions.REMOVE_MEMBER }
 		}
 
 		const selectedAction = actionsMap[this.action]
@@ -92,7 +95,8 @@ export class ConfirmationModalComponent extends AbstractBaseModalComponent imple
 				return 'Declination'
 			case ConfirmationTypes.RESET_PI:
 				return 'Reset PI'
-
+			case ConfirmationTypes.REMOVE:
+				return 'Removal'
 			default:
 				break
 		}
@@ -172,6 +176,16 @@ export class ConfirmationModalComponent extends AbstractBaseModalComponent imple
 				title: 'Decline Termination',
 				type: ConfirmationTypes.DECLINE,
 				message: 'Do you really want to decline the termination of this project'
+			},
+			[ConfirmationActions.REMOVE_MEMBERS]: {
+				title: 'Remove Members',
+				type: ConfirmationTypes.REMOVE,
+				message: `Do you really want to  remove the member(s) from the project`
+			},
+			[ConfirmationActions.REMOVE_MEMBER]: {
+				title: 'Remove Member',
+				type: ConfirmationTypes.REMOVE,
+				message: `Do you really want to remove the member from the project`
 			}
 		}
 
@@ -182,9 +196,5 @@ export class ConfirmationModalComponent extends AbstractBaseModalComponent imple
 			this.type = data.type
 			this.modalMessage = data.message
 		}
-	}
-
-	ngOnDestroy(): void {
-		this.bsModalRef.hide()
 	}
 }
