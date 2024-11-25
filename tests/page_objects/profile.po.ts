@@ -29,7 +29,7 @@ export class ProfilePage {
 		console.log('Goto Profile Page');
 		await this.page.goto(`${this.baseURL}/#/userinfo`, { waitUntil: 'networkidle' });
 		console.log(this.page.url());
-		expect(this.page.url()).toContain('/userinfo');
+		await this.page.waitForSelector(Util.by_data_test_id_str("profile_information"))
 
 	}
 
