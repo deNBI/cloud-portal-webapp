@@ -50,7 +50,7 @@ export class FacilityApplicationOverviewPage {
 
 	async goto() {
 		console.log('Goto Facility Application overview');
-		await this.page.goto(`${this.baseURL}/#/facility-manager/facilityApplications`, { waitUntil: 'networkidle' });
+		await this.page.goto(`${this.baseURL}/#/facility-manager/facilityApplications`);
 		console.log(this.page.url());
 
 		expect(this.page.url()).toContain('/#/facility-manager/facilityApplications');

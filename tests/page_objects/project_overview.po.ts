@@ -63,7 +63,7 @@ export class ProjectOverViewPage {
 
 	async gotoProfilePage() {
 		console.log('Goto Profile Page')
-		await this.page.goto(`${this.baseURL}/#/userinfo`, { waitUntil: 'networkidle' })
+		await this.page.goto(`${this.baseURL}/#/userinfo`)
 		expect(this.page.url()).toContain('/userinfo')
 		await this.page.locator('text=Profile Information').waitFor()
 	}
