@@ -3,7 +3,7 @@
 	<app-news [facilities]="this.userFacilities"></app-news>
 	<app-maintenance-alert (confirmEventEmitter)="emitConfirmation()"></app-maintenance-alert>
 	<div class="card" style="">
-		<div class="card-header"><i class="fa fa-align-justify"></i> Profile Information</div>
+		<div class="card-header" data-test-id="profile_information"><i class="fa fa-align-justify"></i> Profile Information</div>
 		<div class="card-body container-fluid">
 			<div class="table-responsive">
 				<table class="table table-hover">
