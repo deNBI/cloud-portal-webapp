@@ -26,8 +26,8 @@ export class ProfilePage {
 	}
 
 	async goto() {
-		console.log('Goto Profile Page');
-		await this.page.goto(`${this.baseURL}/#/userinfo`, { waitUntil: 'networkidle' });
+		console.log(`Goto Profile Page - ${this.baseURL}/#/userinfo`);
+		await this.page.goto(`${this.baseURL}/#/userinfo`);
 		console.log(this.page.url());
 		await this.page.waitForSelector(Util.by_data_test_id_str("profile_information"))
 
