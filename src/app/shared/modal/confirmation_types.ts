@@ -5,4 +5,5 @@ export enum ConfirmationTypes {
 	DECLINE,
 	DELETE,
 	RESET_PI,
+	REMOVE,
 }
