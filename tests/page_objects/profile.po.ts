@@ -66,7 +66,9 @@ export class ProfilePage {
 		await this.page.fill(Util.by_data_test_id_str(this.ENTER_PUBLIC_KEY_AREA), this.TEST_PUBLIC_KEY);
 		console.log('Confirming effects of generating a new Key');
 
-		await this.page.locator(Util.by_data_test_id_str(this.PUBLIC_KEY_ACKNOWLEDGE_CHECKBOX)).last().click()
+		await this.page.locator(Util.by_data_test_id_str("public_key_acknowledgement_checkbox_replace")).click();
+		await this.page.locator(Util.by_data_test_id_str("public_key_acknowledgement_checkbox_replace")).click();
+
 		//	await this.page.locator(Util.by_data_test_id_str(this.GENERATE_KEY_CHECKBOX)).click();
 		console.log('Clicking on Set-Button');
 		await Promise.all([

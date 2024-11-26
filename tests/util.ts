@@ -166,6 +166,7 @@ export class Util {
 	}
 
 	static by_data_test_id_str(data_test_id: string): string {
+		console.log(`Seaching for ${data_test_id}`)
 		return `[data-test-id="${data_test_id}"]`;
 	}
 
