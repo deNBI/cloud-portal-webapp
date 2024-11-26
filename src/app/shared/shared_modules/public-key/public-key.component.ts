@@ -45,6 +45,10 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 		}
 	}
 
+	unsetAcknowledgment():void{
+		this.acknowledgement_given=false;
+	}
+
 	downloadPem(data: string): void {
 		const blob: Blob = new Blob([data], { type: 'pem' })
 		const url: string = window.URL.createObjectURL(blob)

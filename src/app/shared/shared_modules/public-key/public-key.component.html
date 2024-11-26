@@ -17,7 +17,7 @@
 					class="btn btn-primary"
 					style="float: left; margin: 2px"
 					type="button"
-					(click)="generateKeyModal.show()"
+					(click)="unsetAcknowledgment();generateKeyModal.show()"
 					id="generateSShKey"
 					data-test-id="generateSShKey"
 				>
@@ -27,7 +27,7 @@
 					class="btn btn-primary"
 					style="float: left; margin: 2px"
 					type="button"
-					(click)="public_key = ''; pubKeyModal.show()"
+					(click)="public_key = '';unsetAcknowledgment(); pubKeyModal.show()"
 					id="setPublicKeyButton"
 					data-test-id="setPublicKeyButton"
 				>
