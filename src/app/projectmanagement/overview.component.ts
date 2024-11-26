@@ -49,6 +49,8 @@ import { NotificationModalComponent } from '../shared/modal/notification-modal'
 import { DeleteApplicationModal } from './modals/delete-member-application-modal/delete-application-modal.component'
 import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.component'
 import { UserApplicationsModalComponent } from './modals/user-applications-modal/user-applications-modal.component'
+import { ConfirmationActions } from 'app/shared/modal/confirmation_actions'
+import { ConfirmationModalComponent } from 'app/shared/modal/confirmation-modal.component'
 
 /**
  * Projectoverview component.
@@ -59,6 +61,8 @@ import { UserApplicationsModalComponent } from './modals/user-applications-modal
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	bsModalRef: BsModalRef
+	protected readonly ConfirmationActions = ConfirmationActions
+
 	modificationRequestDisabled: boolean = false
 	lifetimeExtensionDisabled: boolean = false
 	creditsExtensionDisabled: boolean = false
@@ -105,7 +109,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg'
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg'
 	kubernetes_logo: string = 'static/webapp/assets/img/kubernetes_logo.svg'
-	checked_member_list: number[] = []
+	checked_member_list: ProjectMember[] = []
 	// modal variables for User list
 	public project_members: ProjectMember[] = []
 	public isLoaded: boolean = false
@@ -722,10 +726,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		if (!this.allSet) {
 			this.project_members.forEach((member: ProjectMember): void => {
 				if (
-					!this.isMemberChecked(parseInt(member.memberId.toString(), 10)) &&
-					this.userinfo.MemberId.toString() !== member.memberId.toString()
+					!this.isMemberChecked(member) &&
+					this.userinfo.MemberId.toString() !== member.memberId.toString() &&
+					!member.isPi
 				) {
-					this.checked_member_list.push(parseInt(member.memberId.toString(), 10))
+					this.checked_member_list.push(member)
 				}
 			})
 			this.allSet = true
@@ -734,18 +739,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.allSet = false
 		}
 	}
-
-	isMemberChecked(id: number): boolean {
-		return this.checked_member_list.indexOf(id) > -1
+	isMemberChecked(member: ProjectMember): boolean {
+		return this.checked_member_list.some(checked_member => checked_member.memberId === member.memberId)
+	}
+	indexOfMemberChecked(member_id): number {
+		return this.checked_member_list.findIndex(member => member.memberId === member_id)
 	}
 
 	checkIfAllMembersChecked(): void {
 		let all_set: boolean = true
 		this.project_members.forEach((member: ProjectMember): void => {
-			if (
-				!this.isMemberChecked(parseInt(member.memberId.toString(), 10)) &&
-				this.userinfo.MemberId !== member.memberId
-			) {
+			if (!this.isMemberChecked(member) && this.userinfo.MemberId !== member.memberId && !member.isPi) {
 				all_set = false
 			}
 		})
@@ -753,15 +757,65 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.allSet = all_set
 	}
 
-	checkUnCheckMember(id: number): void {
-		const indexOf: number = this.checked_member_list.indexOf(id)
+	checkUnCheckMember(member: ProjectMember): void {
+		const indexOf: number = this.indexOfMemberChecked(member.memberId)
 		if (indexOf !== -1) {
 			this.checked_member_list.splice(indexOf, 1)
 			this.allSet = false
 		} else {
-			this.checked_member_list.push(id)
+			this.checked_member_list.push(member)
 			this.checkIfAllMembersChecked()
 		}
+	}
+
+	showConfirmationModalRemoveMembers(): void {
+		const action = this.ConfirmationActions.REMOVE_MEMBERS
+		const member_names_as_string = this.checked_member_list
+			.map(member => `${member.firstName} ${member.lastName}`)
+			.join('<br>')
+		const initialState = {
+			application: this.project_application,
+			action,
+			additional_msg: member_names_as_string
+		}
+
+		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' })
+		this.subscribeToBsModalRef()
+	}
+
+	showConfirmationModalRemoveMember(member: ProjectMember): void {
+		const action = this.ConfirmationActions.REMOVE_MEMBER
+		const initialState = {
+			application: this.project_application,
+			action,
+			additional_msg: `${member.firstName} ${member.lastName}`
+		}
+
+		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' })
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe((event: any) => {
+				const action: ConfirmationActions = event.action
+				if (action === ConfirmationActions.REMOVE_MEMBER) {
+					this.removeMember(member)
+				}
+			})
+		)
+	}
+
+	subscribeToBsModalRef(): void {
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe((event: any) => {
+				const action: ConfirmationActions = event.action
+				switch (action) {
+					case ConfirmationActions.REMOVE_MEMBERS: {
+						this.removeCheckedMembers()
+						break
+					}
+					default:
+						break
+				}
+			})
+		)
 	}
 
 	removeCheckedMembers(): void {
@@ -770,16 +824,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		const members_in: ProjectMember[] = []
 
 		const observables: Observable<number>[] = this.checked_member_list.map(
-			(id: number): Observable<any> =>
+			(member: ProjectMember): Observable<any> =>
 				this.groupService.removeMember(
 					Number(this.project_application.project_application_perun_id),
-					id,
+					member.memberId,
 					this.project_application.project_application_compute_center.FacilityId
 				)
 		)
 		forkJoin(observables).subscribe((): void => {
 			this.project_members.forEach((member: ProjectMember): void => {
-				if (!this.isMemberChecked(parseInt(member.memberId.toString(), 10))) {
+				if (!this.isMemberChecked(member)) {
 					members_in.push(member)
 				}
 			})
@@ -814,14 +868,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			.toPromise()
 			.then((result: any): void => {
 				if (result.status === 200) {
-					this.updateNotificationModal('Success', `${username} promoted to Admin`, true, 'success')
+					this.notificationModal.showSuccessFullNotificationModal('Success', `${username} promoted to Admin`)
+
 					this.getMembersOfTheProject()
 				} else {
-					this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger')
+					this.notificationModal.showDangerNotificationModal('Failed', `${username} could not be promoted to Admin!`)
 				}
 			})
 			.catch((): void => {
-				this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger')
+				this.notificationModal.showDangerNotificationModal('Failed', `${username} could not be promoted to Admin!`)
 			})
 	}
 
@@ -839,14 +894,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			.toPromise()
 			.then((result: any): void => {
 				if (result.status === 200) {
-					this.updateNotificationModal('Success', `${name} was removed as Admin`, true, 'success')
+					this.notificationModal.showSuccessFullNotificationModal('Success', `${name} was removed as Admin`)
+
 					this.getMembersOfTheProject()
 				} else {
-					this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger')
+					this.notificationModal.showDangerNotificationModal('Failed', `${name} could not be removed as Admin!`)
 				}
 			})
 			.catch((): void => {
-				this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger')
+				this.notificationModal.showDangerNotificationModal('Failed', `${name} could not be removed as Admin!`)
 			})
 	}
 
@@ -854,35 +910,44 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * Remove a member from a group.
 	 *
 	 * @param memberid of the member
-	 * @param name  of the member
 	 */
-	public removeMember(memberid: number, name: string): void {
-		if (this.userinfo.MemberId.toString() === memberid.toString()) {
+	public removeMember(member: ProjectMember): void {
+		if (this.userinfo.MemberId.toString() === member.memberId.toString()) {
 			return
 		}
-		const indexOf: number = this.checked_member_list.indexOf(memberid)
+		const indexOf: number = this.indexOfMemberChecked(member.memberId)
 		if (indexOf !== -1) {
 			this.checked_member_list.splice(indexOf, 1)
 			this.allSet = false
 		}
+
 		this.subscription.add(
 			this.groupService
 				.removeMember(
 					this.project_application.project_application_perun_id,
-					memberid,
+					member.memberId,
 					this.project_application.project_application_compute_center.FacilityId
 				)
 				.subscribe(
 					(result: any): void => {
 						if (result.status === 200) {
-							this.updateNotificationModal('Success', `Member ${name}  removed from the group`, true, 'success')
+							this.notificationModal.showSuccessFullNotificationModal(
+								'Success',
+								`Member ${member.firstName} ${member.lastName}  removed from the group`
+							)
 							this.getMembersOfTheProject()
 						} else {
-							this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger')
+							this.notificationModal.showDangerNotificationModal(
+								'Failed',
+								`Member ${member.firstName} ${member.lastName}   could not be removed !`
+							)
 						}
 					},
 					(): void => {
-						this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger')
+						this.notificationModal.showDangerNotificationModal(
+							'Failed',
+							`Member ${member.firstName} ${member.lastName}   could not be removed !`
+						)
 					}
 				)
 		)

@@ -19,8 +19,13 @@
 		id="confirmation_modal_message"
 	>
 		<p data-test-id="confirmation_modal_message">
-			{{ modalMessage }} for {{ application.project_application_shortname }}?
+			{{ modalMessage }}: {{ application.project_application_shortname }}?
 		</p>
+		@if (additional_msg) {
+			<div class="alert alert-warning" role="alert">
+				<span [innerHTML]="additional_msg"></span>
+			</div>
+		}
 	</div>
 </div>
 <div class="modal-footer">

@@ -15,10 +15,10 @@ export abstract class AbstractBaseModalComponent {
 
 	async hide(): Promise<void> {
 		console.log('close modal abstract')
-		this.modalService.hide()
+		this.modalService.hide(this.modalId)
 
 		//Fix when calling hide and show form within a modal -- if it is called directly after another the new modal won't open
-		await this.sleep(200)
+		await this.sleep(300)
 	}
 
 	private async sleep(ms: number): Promise<void> {

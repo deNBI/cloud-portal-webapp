@@ -1032,7 +1032,7 @@
 						</button>
 
 						<button
-							(click)="removeCheckedMembers()"
+							(click)="showConfirmationModalRemoveMembers()"
 							[disabled]="checked_member_list.length <= 0 || remove_members_clicked"
 							class="btn btn-outline-danger"
 							style="margin-bottom: 5px"
@@ -1075,9 +1075,10 @@
 								<tr *ngFor="let member of project_members" [ngStyle]="{ color: member.isAdmin ? '#005AA9' : 'black' }">
 									<td *ngIf="project_application.user_is_admin || is_vo_admin">
 										<input
-											(change)="checkUnCheckMember(member.memberId)"
+											(change)="checkUnCheckMember(member)"
 											*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
-											[checked]="isMemberChecked(member.memberId)"
+											[checked]="isMemberChecked(member)"
+											[disabled]="member.isPi"
 											id="{{ member.userId }}"
 											name="member.userId"
 											type="checkbox"
@@ -1110,7 +1111,7 @@
 									<td *ngIf="project_application.user_is_pi || project_application.user_is_admin || is_vo_admin">
 										<div class="btn-group" role="group">
 											<button
-												(click)="promoteAdmin(member.userId, member.userName); notificationModal.show()"
+												(click)="promoteAdmin(member.userId, member.userName)"
 												*ngIf="!member.isAdmin"
 												class="btn btn-primary"
 												style="margin: 2px"
@@ -1120,7 +1121,7 @@
 											</button>
 
 											<button
-												(click)="removeAdmin(member.userId, member.userName); notificationModal.show()"
+												(click)="removeAdmin(member.userId, member.userName)"
 												*ngIf="
 													member.isAdmin && userinfo?.MemberId.toString() !== member.memberId.toString() && !member.isPi
 												"
@@ -1132,7 +1133,7 @@
 												<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
 											</button>
 											<button
-												(click)="removeMember(member.memberId, member.userName); notificationModal.show()"
+												(click)="showConfirmationModalRemoveMember(member)"
 												*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
 												[id]="'remove_member_' + member.userName"
 												[disabled]="member?.isPi"
