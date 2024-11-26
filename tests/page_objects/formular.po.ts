@@ -33,6 +33,7 @@ export class FormularPage {
 
 	async goto() {
 		console.log('Goto Type-Overview Page');
+
 		await this.page.goto(`${this.baseURL}/#/applications/type-overview`);
 		console.log(this.page.url());
 

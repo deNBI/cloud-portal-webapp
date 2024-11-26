@@ -33,6 +33,7 @@ export class VoOverviewPage {
 
 	async goto() {
 		console.log('Goto vo manager overview Page')
+
 		await this.page.goto(this.baseURL + this.VO_OVERVIEW_URL)
 		console.log(this.page.url())
 

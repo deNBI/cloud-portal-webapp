@@ -50,6 +50,7 @@ export class FacilityApplicationOverviewPage {
 
 	async goto() {
 		console.log('Goto Facility Application overview');
+
 		await this.page.goto(`${this.baseURL}/#/facility-manager/facilityApplications`);
 		console.log(this.page.url());
 

@@ -54,8 +54,12 @@ export class ApplicationOverviewPage {
 	}
 
 	async goto() {
-		console.log('Goto Application overview Page');
+		console.log(`Goto Application overview Page - ${this.baseURL}/#/applications`);
+
 		await this.page.goto(`${this.baseURL}/#/applications`);
+	await this.page.waitForURL('**/applications');
+
+
 		console.log(this.page.url());
 		expect(this.page.url()).toContain('/applications');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });

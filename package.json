@@ -87,7 +87,7 @@
         "@angular/compiler-cli": "18.2.8",
         "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.9.0",
-        "@playwright/test": "1.47.2",
+        "@playwright/test": "^1.49.0",
         "@types/jasmine": "5.1.4",
         "@types/node": "20.16.14",
         "@typescript-eslint/eslint-plugin": "^8.0.0",
