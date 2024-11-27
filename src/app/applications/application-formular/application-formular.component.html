@@ -14,7 +14,7 @@
 						<strong>Please be aware:</strong> Only applications approved by a principal investigator of a german
 						university or research facility will be accepted!
 					</div>
-					<div class="alert alert-primary" *ngIf="openstack_project">
+					<div class="alert alert-primary" *ngIf="openstack_project && !kubernetes_access">
 						If you would like to learn more about Openstack,
 						<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">Click Here! </a>
 					</div>
@@ -334,9 +334,14 @@
 										resources after the approval of the project.</strong
 									>
 									<hr />
-									You will have default access to all flavors in the standard category.<br />
-									However, your selection will determine how many machines, how many cores and how much RAM will be
-									available for your project.
+									@if (simple_vm_project) {
+										You will have default access to all flavors in the standard category.<br />
+										However, your selection will determine how many machines, how many cores and how much RAM will be
+										available for your project.
+									} @else {
+										Your selection will determine how many machines, how many cores and how much RAM will be available
+										for your project.
+									}
 									<hr />
 									Please fill in an appropriate estimation of the resources required for your project.
 									<br /><strong>Please Consider:</strong> In terms of flavors, there may be slight, location-dependent
