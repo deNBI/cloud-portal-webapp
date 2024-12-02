@@ -8,7 +8,6 @@ import { AddcloudapplicationComponent } from './application-formular/openstack-f
 import { TypeOverviewComponent } from './type-overview.component'
 import { ValidationApplicationComponent } from '../validation-application/validation-application.component'
 import { KubernetesFormularComponent } from './application-formular/kubernetes-formular/kubernetes-formular.component'
-import { VoGuardService } from '../shared/guards/vo-guard.service'
 
 const routes: Routes = [
 	{
@@ -28,7 +27,6 @@ const routes: Routes = [
 	{
 		path: 'newKubernetesApplication',
 		component: KubernetesFormularComponent,
-		canActivate: [VoGuardService],
 		data: {
 			title: 'New Kubernetes Application'
 		}
