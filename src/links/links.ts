@@ -37,6 +37,7 @@ export const SCALING_UP_WIKI: string = `${environment.SIMPLEVM_WIKI_PRE}simple_v
 export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`
 export const WIKI_PERSONAL_DATA: string = `${environment.WIKI_PRE}portal/personal_data`
 export const SURVEY_LINK: string = 'https://cloud.denbi.de/survey/index.php/252136?lang=en'
+export const TERMINATION_SURVEY_LINK: string= 'https://cloud.denbi.de/survey/index.php/823721?lang=en'
 export const CLOUD_PORTAL_SUPPORT_MAIL = 'cloud-helpdesk@denbi.de'
 export const POLICY_LINK: string = 'https://cloud.denbi.de/about/policies/'
 export const SIMPLE_VM_LINK: string = 'https://cloud.denbi.de/about/project-types/simplevm/'
