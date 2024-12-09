@@ -393,11 +393,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	showTerminationModal(): void {
-
-	this.terminationRequestComponent.showTerminationRequestModal(this.project_application).subscribe(() => {
+		this.terminationRequestComponent.showTerminationRequestModal(this.project_application).subscribe(() => {
 			this.getApplication()
 			this.notificationModal.showWarningNotificationModal(
-				"Feedback Survey",
+				'Feedback Survey',
 				`
 					<div>
 					<p>Thank you for using the de.NBI Cloud for your recent project!</p>
@@ -405,7 +404,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					<p><strong><a href="${TERMINATION_SURVEY_LINK}">Survey Link</a></strong></p>
 					</div>
 				`
-				)
+			)
 		})
 	}
 
