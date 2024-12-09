@@ -401,7 +401,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					<div>
 					<p>Thank you for using the de.NBI Cloud for your recent project!</p>
 					<p>We would appreciate your feedback to enhance our services. Please take a few moments to complete our short survey:</p>
-					<p><strong><a href="${TERMINATION_SURVEY_LINK}">Survey Link</a></strong></p>
+					<p><strong><a class="alert-link" href="${TERMINATION_SURVEY_LINK}" target="_blank">Survey Link</a></strong></p>
 					</div>
 				`
 			)
