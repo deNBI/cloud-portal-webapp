@@ -126,7 +126,7 @@
 										aria-describedby="{{ flavor.name }}_help"
 										[ngClass]="{
 											'is-invalid': name?.invalid && !adjustment,
-											'is-valid': name?.valid && !adjustment
+											'is-valid': name?.valid && !adjustment,
 										}"
 									/>
 									<div class="input-group-append">
@@ -160,7 +160,7 @@
 										aria-describedby="adjust_{{ flavor.name }}_help"
 										[ngClass]="{
 											'is-invalid': name?.invalid,
-											'is-valid': name?.valid
+											'is-valid': name?.valid,
 										}"
 									/>
 									<!-- check what checkFlavorPairs() does -->
@@ -220,7 +220,7 @@
 						appInteger
 						[ngClass]="{
 							'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_volume_counter?.valid
+							'is-valid': modificationForm.controls.project_application_renewal_volume_counter?.valid,
 						}"
 					/>
 				</div>
@@ -259,7 +259,7 @@
 						appInteger
 						[ngClass]="{
 							'is-invalid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.valid
+							'is-valid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.valid,
 						}"
 					/>
 				</div>
@@ -291,7 +291,7 @@
 					/>
 					<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 				</div>
-				<span class="help-block">Current extra storage</span>
+				<span class="help-block">Current volume storage</span>
 			</div>
 			<div class="col">
 				<div class="input-group">
@@ -310,17 +310,17 @@
 						appInteger
 						[ngClass]="{
 							'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid
+							'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid,
 						}"
 						[disabled]="modificationForm.controls.project_application_renewal_volume_counter?.value === 0"
 					/>
 					<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 				</div>
 				<label for="id_project_application_renewal_volume_limit" class="help-block" *ngIf="!adjustment"
-					>How much total extra storage do you need in the future?</label
+					>What is the total amount of volume storage, that you need in the future?</label
 				>
 				<label for="id_project_application_renewal_volume_limit" class="help-block" *ngIf="adjustment"
-					>How much total extra storage does the user want in the future?</label
+					>How much total volume storage does the user want in the future?</label
 				>
 			</div>
 		</div>
@@ -351,7 +351,7 @@
 						appInteger
 						[ngClass]="{
 							'is-invalid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.valid
+							'is-valid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.valid,
 						}"
 						[disabled]="modificationForm.controls.project_application_renewal_volume_counter_adjusted?.value === 0"
 					/>
@@ -407,7 +407,7 @@
 						required
 						[ngClass]="{
 							'is-invalid': modificationForm.controls.project_application_renewal_object_storage?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_object_storage?.valid
+							'is-valid': modificationForm.controls.project_application_renewal_object_storage?.valid,
 						}"
 					/>
 					<div class="input-group-append"><span class="input-group-text"> GB </span></div>
@@ -448,7 +448,7 @@
 						required
 						[ngClass]="{
 							'is-invalid': modificationForm.controls.project_application_renewal_object_storage_adjust?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_object_storage_adjust?.valid
+							'is-valid': modificationForm.controls.project_application_renewal_object_storage_adjust?.valid,
 						}"
 					/>
 					<div class="input-group-append"><span class="input-group-text"> GB </span></div>
@@ -553,7 +553,7 @@
 						required
 						[ngClass]="{
 							'is-invalid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.valid
+							'is-valid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.valid,
 						}"
 					/>
 				</div>
@@ -611,7 +611,7 @@
 					[ngClass]="{
 						'is-invalid':
 							modificationForm.controls.project_application_renewal_comment?.invalid || !checkValidityComment(),
-						'is-valid': modificationForm.controls.project_application_renewal_comment?.valid && checkValidityComment()
+						'is-valid': modificationForm.controls.project_application_renewal_comment?.valid && checkValidityComment(),
 					}"
 				></textarea>
 				<div id="project_application_comment_feedback" class="invalid-feedback" *ngIf="!checkValidityComment()">
