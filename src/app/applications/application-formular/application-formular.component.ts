@@ -92,6 +92,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	survey_link_visible: boolean = false
 	private nameCheckPipe = new Subject<string>();
 	shortnameChecking: boolean = false;
+	shortNameTaken: boolean = false;
 
 	MAX_LIFETIME_DEFAULT: number = 6
 	max_lifetime: number = this.MAX_LIFETIME_DEFAULT
@@ -124,7 +125,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		this.getListOfFlavors()
 		this.getListOfTypes()
 		this.is_vo_admin = is_vo
-		this.nameCheckPipe.pipe(debounceTime(300), distinctUntilChanged()).subscribe(value => {this.checkIfNameIsTaken(value)});
+		this.nameCheckPipe.pipe(debounceTime(600), distinctUntilChanged()).subscribe(value => {this.checkIfNameIsTaken(value)});
 
 		if (this.openstack_project) {
 			this.simple_vm_min_vm = true
@@ -147,7 +148,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	checkIfNameIsTaken(shortname: string): void {
 		this.shortnameChecking = true;
 		this.applicationsService.checkForTakenShortname(shortname).subscribe((result: boolean): void => {
-			console.log(result);
+			let nameExists: boolean = result['exists'];
+			this.shortnameChecking = false;
+			this.shortNameTaken = nameExists;
 		});
 		
 	}
@@ -252,8 +255,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	 */
 	public checkShortname(shortname: string): void {
 		this.invalid_shortname = !/^[a-zA-Z0-9\s]*$/.test(shortname)
-		this.shortnameChecking = true;
-		this.nameCheckPipe.next(shortname)
+		if (!this.invalid_shortname) {
+			this.shortnameChecking = true;
+			this.nameCheckPipe.next(shortname);
+		}
+		
 	}
 
 	public checkLongname(longname: string): void {
