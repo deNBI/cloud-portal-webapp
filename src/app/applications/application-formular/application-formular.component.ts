@@ -33,6 +33,9 @@ import { UserService } from '../../api-connector/user.service'
 import { Userinfo } from '../../userinfo/userinfo.model'
 import { User } from '../application.model/user.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { thresholdScott } from 'd3'
 
 /**
  * Application formular component.
@@ -87,6 +90,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	WIKI_BACKUP_LINK: string = WIKI_BACKUP_LINK
 	GDPR_LINK: string = GDPR_LINK
 	survey_link_visible: boolean = false
+	private nameCheckPipe = new Subject<string>();
+	shortnameChecking: boolean = false;
+	shortNameTaken: boolean = false;
 
 	MAX_LIFETIME_DEFAULT: number = 6
 	max_lifetime: number = this.MAX_LIFETIME_DEFAULT
@@ -119,6 +125,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		this.getListOfFlavors()
 		this.getListOfTypes()
 		this.is_vo_admin = is_vo
+		this.nameCheckPipe.pipe(debounceTime(600), distinctUntilChanged()).subscribe(value => {this.checkIfNameIsTaken(value)});
 
 		if (this.openstack_project) {
 			this.simple_vm_min_vm = true
@@ -136,6 +143,16 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		} else {
 			this.application.dissemination.setAllInformationFalse()
 		}
+	}
+
+	checkIfNameIsTaken(shortname: string): void {
+		this.shortnameChecking = true;
+		this.applicationsService.checkForTakenShortname(shortname).subscribe((result: boolean): void => {
+			let nameExists: boolean = result['exists'];
+			this.shortnameChecking = false;
+			this.shortNameTaken = nameExists;
+		});
+		
 	}
 
 	checkValidityComment(): boolean {
@@ -238,6 +255,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	 */
 	public checkShortname(shortname: string): void {
 		this.invalid_shortname = !/^[a-zA-Z0-9\s]*$/.test(shortname)
+		if (!this.invalid_shortname) {
+			this.shortnameChecking = true;
+			this.nameCheckPipe.next(shortname);
+		}
+		
 	}
 
 	public checkLongname(longname: string): void {

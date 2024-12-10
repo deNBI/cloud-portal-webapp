@@ -336,4 +336,12 @@ export class ApplicationsService {
 			withCredentials: true
 		})
 	}
+
+	checkForTakenShortname(shortname: string): Observable<any> {
+		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/shortname/`, {
+			params: { shortname: shortname },
+			withCredentials: true
+		});
+
+	}
 }
