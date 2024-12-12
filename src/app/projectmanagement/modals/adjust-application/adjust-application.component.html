@@ -27,7 +27,7 @@
 									[ngStyle]="{
 										'background-color': adjustedApplication.project_application_openstack_project
 											? '#FF0000'
-											: '#00adef'
+											: '#00adef',
 									}"
 								></span>
 							</label>
@@ -78,7 +78,7 @@
 									appInteger
 									[ngClass]="{
 										'is-invalid': resourceAdjustmentForm.controls.granted_lifetime_counter?.invalid,
-										'is-valid': resourceAdjustmentForm.controls.granted_lifetime_counter?.valid
+										'is-valid': resourceAdjustmentForm.controls.granted_lifetime_counter?.valid,
 									}"
 								/>
 							</div>
@@ -109,7 +109,7 @@
 										style="font-size: 25px"
 										[ngClass]="{
 											'icon-arrow-up': groupval.isOpen,
-											'icon-arrow-down': !groupval.isOpen
+											'icon-arrow-down': !groupval.isOpen,
 										}"
 									></i>
 								</div>
@@ -163,7 +163,7 @@
 													appIntegerOrNull
 													[ngClass]="{
 														'is-invalid': name?.invalid,
-														'is-valid': name?.valid
+														'is-valid': name?.valid,
 													}"
 												/>
 												<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
@@ -217,7 +217,7 @@
 									appInteger
 									[ngClass]="{
 										'is-invalid': resourceAdjustmentForm.controls.granted_volume_counter?.invalid,
-										'is-valid': resourceAdjustmentForm.controls.grated_volume_counter?.valid
+										'is-valid': resourceAdjustmentForm.controls.grated_volume_counter?.valid,
 									}"
 								/>
 							</div>
@@ -247,7 +247,7 @@
 								/>
 								<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 							</div>
-							<span class="help-block">Requested extra storage</span>
+							<span class="help-block">Requested volume storage</span>
 						</div>
 						<div class="col">
 							<div class="input-group">
@@ -264,13 +264,13 @@
 									appInteger
 									[ngClass]="{
 										'is-invalid': resourceAdjustmentForm.controls.granted_volume_limit?.invalid,
-										'is-valid': resourceAdjustmentForm.controls.granted_volume_limit?.valid
+										'is-valid': resourceAdjustmentForm.controls.granted_volume_limit?.valid,
 									}"
 									[disabled]="resourceAdjustmentForm.controls.granted_volume_counter?.value === 0"
 								/>
 								<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 							</div>
-							<span class="help-block">Amount of extra storage you want to grant</span>
+							<span class="help-block">Amount of volume storage you want to grant</span>
 						</div>
 					</div>
 
@@ -316,7 +316,7 @@
 									required
 									[ngClass]="{
 										'is-invalid': resourceAdjustmentForm.controls.granted_object_storage?.invalid,
-										'is-valid': resourceAdjustmentForm.controls.granted_object_storage?.valid
+										'is-valid': resourceAdjustmentForm.controls.granted_object_storage?.valid,
 									}"
 								/>
 								<div class="input-group-append"><span class="input-group-text"> GB </span></div>

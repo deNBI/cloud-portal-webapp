@@ -145,6 +145,11 @@
 										<font color="red">Umlauts and special characters are prohibited in the shortname.</font>
 									</strong>
 								</div>
+								<div *ngIf="shortNameTaken">
+									<strong>
+										<font color="red">Please choose another shortname</font>
+									</strong>
+								</div>
 								<input
 									required
 									type="text"
@@ -160,17 +165,19 @@
 									pattern="[a-zA-Z0-9]+"
 									[ngClass]="{
 										'is-invalid':
-											form.controls.project_application_shortname?.invalid &&
+											(form.controls.project_application_shortname?.invalid || shortNameTaken) &&
 											(form.controls.project_application_shortname?.dirty ||
-												form.controls.project_application_shortname?.touched),
+												form.controls.project_application_shortname?.touched)
+												,
 										'is-valid':
-											form.controls.project_application_shortname?.valid &&
+											form.controls.project_application_shortname?.valid && !shortNameTaken &&
 											(form.controls.project_application_shortname?.dirty ||
 												form.controls.project_application_shortname?.touched),
 									}"
 								/>
 
 								<span class="help-block">Enter a short name (between 5 and 15 characters).</span>
+
 							</div>
 						</div>
 
@@ -490,7 +497,7 @@
 									/>
 									<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 								</div>
-								<span class="help-block">How much total extra storage do you need for your VMs?</span>
+								<span class="help-block">How much total storage do you need for your VMs in form of Volumes?</span>
 							</div>
 						</div>
 						<div class="form-group row" *ngIf="openstack_project">
@@ -1792,6 +1799,7 @@
 							data-test-id="submit_application_btn"
 							[disabled]="
 								submitting ||
+								shortNameTaken ||
 								form.invalid ||
 								(!unknownPiAffiliationsConfirmation &&
 									!valid_pi_affiliations &&
