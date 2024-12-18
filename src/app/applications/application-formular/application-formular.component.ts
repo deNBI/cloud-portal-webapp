@@ -54,6 +54,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	@Input() application: Application
 	@Input() is_validation: boolean = false
 	@Input() hash: string
+	DEFAULT_SHORTNAME_MAX_LENGTH:number=15
+	shortNameMaxLength:number=15
 
 	userinfo: Userinfo
 	valid_pi_affiliations
@@ -145,14 +147,19 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		}
 	}
 
+	setDefaulShortnameLength():void{
+		this.shortNameMaxLength=this.DEFAULT_SHORTNAME_MAX_LENGTH
+	}
+
 	checkIfNameIsTaken(shortname: string): void {
 		this.shortnameChecking = true;
-		this.applicationsService.checkForTakenShortname(shortname).subscribe((result: boolean): void => {
+
+		this.applicationsService.checkForTakenShortname(shortname,this.application?.project_application_id).subscribe((result: boolean): void => {
 			let nameExists: boolean = result['exists'];
 			this.shortnameChecking = false;
 			this.shortNameTaken = nameExists;
 		});
-		
+
 	}
 
 	checkValidityComment(): boolean {
@@ -189,6 +196,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	initiateFormWithApplication(): void {
 		if (this.application && !this.initiated_validation && this.is_validation) {
 			this.openstack_project = this.application.project_application_openstack_project
+
+			if(this.application.project_application_shortname.length > 15){
+				this.shortNameMaxLength=this.application.project_application_shortname.length
+			}
 
 			this.simple_vm_project = !this.openstack_project
 			this.application.project_application_pi = new User()
@@ -259,7 +270,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			this.shortnameChecking = true;
 			this.nameCheckPipe.next(shortname);
 		}
-		
+
 	}
 
 	public checkLongname(longname: string): void {

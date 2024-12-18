@@ -161,7 +161,9 @@
 									#shortname
 									(keyup)="checkShortname(shortname.value)"
 									class="form-control"
-									maxlength="15"
+									min="5"
+									[maxlength]="shortNameMaxLength"
+									(ngModelChange)="setDefaulShortnameLength()"
 									[(ngModel)]="application.project_application_shortname"
 									minlength="5"
 									placeholder="e.g. ThalianaBench"
