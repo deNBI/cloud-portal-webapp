@@ -337,9 +337,14 @@ export class ApplicationsService {
 		})
 	}
 
-	checkForTakenShortname(shortname: string): Observable<any> {
+	checkForTakenShortname(shortname: string,exclude_project_id?:string|number): Observable<any> {
+
+		let params:any={ shortname: shortname }
+		if (exclude_project_id){
+			params={ shortname: shortname ,exclude_project_id:exclude_project_id}
+		}
 		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/shortname/`, {
-			params: { shortname: shortname },
+			params: params,
 			withCredentials: true
 		});
 
