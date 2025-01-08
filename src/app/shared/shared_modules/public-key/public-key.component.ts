@@ -10,6 +10,8 @@ import { AbstractBaseClass } from '../baseClass/abstract-base-class'
 import { WIKI_GENERATE_KEYS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links'
 import { NotificationModalComponent } from '../../modal/notification-modal'
 import { BlacklistedResponse } from '../../../api-connector/response-interfaces'
+import { GeneratePublicKeyModalComponent } from './generate-public-key-modal/generate-public-key-modal.component'
+import { SetPublicKeyModalComponent } from './set-public-key-modal/set-public-key-modal.component'
 
 /**
  * Public Key component.
@@ -34,7 +36,8 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 	constructor(
 		private keyService: KeyService,
 		private clipboardService: ClipboardService,
-		private modalService: BsModalService
+		private generatePublicKeyModal:GeneratePublicKeyModalComponent,
+		private setPublicKeyModalComponent:SetPublicKeyModalComponent
 	) {
 		super()
 	}
@@ -45,25 +48,30 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 		}
 	}
 
+	showSetPublicKeyModal():void{
+		this.setPublicKeyModalComponent.showSetPublicKeyModal(this.userinfo.PublicKey).subscribe(() =>{
+			console.log("event submitted")
+			this.getUserPublicKey()
+		})
+
+	}
+
+	showGeneratePublicKeyModal():void{
+		this.generatePublicKeyModal.showGeneratePublicKeyModal(this.userinfo.UserLogin).subscribe(() =>{
+			console.log("event submitted")
+			this.getUserPublicKey()
+		})
+	}
+
 	unsetAcknowledgment():void{
 		this.acknowledgement_given=false;
 	}
 
-	downloadPem(data: string): void {
-		const blob: Blob = new Blob([data], { type: 'pem' })
-		const url: string = window.URL.createObjectURL(blob)
-		saveAs(url, `${this.userinfo.UserLogin}_ecdsa`)
-	}
 
-	generateKey(): void {
-		this.keyService.generateKey().subscribe((res: any): void => {
-			this.getUserPublicKey()
-			this.downloadPem(res['private_key'])
-		})
-	}
+
 
 	isKeyBlocked(): void {
-		this.keyService.isBlocked(this.public_key.trim()).subscribe((res: BlacklistedResponse) => {
+		this.keyService.isBlocked(this.userinfo.PublicKey.trim()).subscribe((res: BlacklistedResponse) => {
 			this.blocked_key = res.blacklisted
 		})
 	}
@@ -75,41 +83,7 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 		})
 	}
 
-	validateKey(): void {
-		this.keyService.validateKey(this.public_key.trim()).subscribe(
-			(res: any) => {
-				this.validated_key = res['status'] === 'valid'
-			},
-			() => {
-				this.validated_key = false
-			}
-		)
-	}
 
-	importKey(): void {
-		const re: RegExp = /\+/gi
-
-		this.keyService.postKey(this.public_key.replace(re, '%2B').trim()).subscribe({
-			next: (): void => {
-				this.getUserPublicKey()
-				const initialState = {
-					notificationModalTitle: 'Success',
-					notificationModalType: 'info',
-					notificationModalMessage: 'The new public key got successfully set'
-				}
-				this.modalService.show(NotificationModalComponent, { initialState })
-			},
-			error: (): any => {
-				const initialState = {
-					notificationModalTitle: 'Error',
-					notificationModalType: 'danger',
-					notificationModalMessage:
-						'We were not able successfully set a new public key. Please enter a valid public key!'
-				}
-				this.modalService.show(NotificationModalComponent, { initialState })
-			}
-		})
-	}
 
 	copyToClipboard(text: string): void {
 		if (this.clipboardService.isSupported) {

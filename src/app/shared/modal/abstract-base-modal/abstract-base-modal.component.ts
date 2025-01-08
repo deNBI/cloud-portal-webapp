@@ -14,7 +14,6 @@ export abstract class AbstractBaseModalComponent {
 	}
 
 	async hide(): Promise<void> {
-		console.log('close modal abstract')
 		this.modalService.hide(this.modalId)
 
 		//Fix when calling hide and show form within a modal -- if it is called directly after another the new modal won't open
@@ -29,8 +28,7 @@ export abstract class AbstractBaseModalComponent {
 		const bsModalRef: BsModalRef = this.modalService.show(modalType, { initialState })
 		this.bsModalRef = bsModalRef
 		bsModalRef.setClass('modal-lg')
-		this.modalId = bsModalRef.id
-		console.log(`new id ${this.modalId}`)
+		this.modalId = bsModalRef.id	
 
 		return bsModalRef.content.event
 	}
