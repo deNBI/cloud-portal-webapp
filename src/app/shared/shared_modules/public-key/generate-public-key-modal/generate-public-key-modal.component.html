@@ -1,0 +1,55 @@
+
+			<div class="modal-header">
+				<h4 class="modal-title">Generate public key</h4>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="hide()"
+					data-dismiss="modal"
+					aria-label="Close"
+				></button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger">
+					Hereby a new keypair is generated, the public key will be set automatically. A download window for the
+					private key will also open.
+					<strong
+						>In order to use the new key, the permissions of the key may have to be adjusted. For this purpose call the following command:<br />
+						<code style="color: #777777">chmod 0600 nameOfTheKey</code></strong
+					>
+					<hr>
+					<strong>
+						We do not store the private key anywhere!<br />
+
+						In case you lose your private key, it is lost permanently!
+					</strong>
+					<div class="form-check">	
+						<input
+							class="form-check-input"
+							name="public_key_acknowledgement_checkbox"
+							type="checkbox"
+							id="public_key_acknowledgement_checkbox"
+							[(ngModel)]="acknowledgement_given"
+							data-test-id="public_key_acknowledgement_checkbox"
+						/>
+						<label class="form-check-label" for="public_key_acknowledgement_checkbox">
+							I hereby confirm that I am aware of the effects of generating a new SSH-key.
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button
+					[disabled]="!acknowledgement_given"
+					class="btn btn-success col-md4"
+					type="button"
+					id="set_new_ssh_key_button"
+					data-test-id="set_new_ssh_key_button"
+					(click)="generateKey(); hide()"
+				>
+					Set
+				</button>
+				<button class="btn btn-primary col-md-4" type="reset" (click)="hide()">Cancel</button>
+			</div>
