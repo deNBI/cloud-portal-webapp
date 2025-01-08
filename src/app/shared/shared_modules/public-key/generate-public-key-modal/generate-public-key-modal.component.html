@@ -1,6 +1,4 @@
 
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Generate public key</h4>
 				<button
@@ -13,19 +11,20 @@
 				></button>
 			</div>
 			<div class="modal-body">
-				<alert type="danger">
+				<div class="alert alert-danger">
 					Hereby a new keypair is generated, the public key will be set automatically. A download window for the
 					private key will also open.
 					<strong
-						>In order to use the new key, the permissions of the key may have to be adjusted. For this purpose call<br />
-						<code style="color: #777777">chmod 0600 nameOfTheKey</code>.</strong
+						>In order to use the new key, the permissions of the key may have to be adjusted. For this purpose call the following command:<br />
+						<code style="color: #777777">chmod 0600 nameOfTheKey</code></strong
 					>
-					<alert type="warning">
+					<hr>
+					<strong>
 						We do not store the private key anywhere!<br />
 
 						In case you lose your private key, it is lost permanently!
-					</alert>
-					<div class="form-check">
+					</strong>
+					<div class="form-check">	
 						<input
 							class="form-check-input"
 							name="public_key_acknowledgement_checkbox"
@@ -38,7 +37,7 @@
 							I hereby confirm that I am aware of the effects of generating a new SSH-key.
 						</label>
 					</div>
-				</alert>
+				</div>
 			</div>
 
 			<div class="modal-footer">
@@ -54,8 +53,3 @@
 				</button>
 				<button class="btn btn-primary col-md-4" type="reset" (click)="hide()">Cancel</button>
 			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-
