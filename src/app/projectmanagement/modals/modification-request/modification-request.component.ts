@@ -10,6 +10,8 @@ import { FlavorType } from '../../../virtualmachines/virtualmachinemodels/flavor
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
 import { FlavorService } from '../../../api-connector/flavor.service'
 import { CreditsService } from '../../../api-connector/credits.service'
+import { ShownFlavors } from 'app/shared/classes/shownFlavors.interface'
+import { FlavorCounterPipe } from 'app/pipe-module/pipes/flavorcounter'
 
 @Component({
 	selector: 'app-modification-request',
@@ -28,6 +30,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	expected_total_credits: number = 0
 	flavorTypes: FlavorType[] = []
 	shown_flavors: { [name: string]: Flavor[] } = {}
+	REFACTOR_flavors: ShownFlavors = {};
 	min_vm: boolean = true
 
 	min_vm_adjusted: boolean = true
@@ -64,6 +67,10 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				this.flavorTypes = result
 				for (const flavorType of this.flavorTypes) {
 					this.shown_flavors[flavorType.long_name] = []
+				}
+				for (const flavorType of this.flavorTypes) {
+					this.REFACTOR_flavors[flavorType.long_name] = {};
+		
 				}
 				this.getFlavors()
 			})
@@ -111,19 +118,33 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				.subscribe((flavors: Flavor[]): void => {
 					this.temp_project_modification.flavors = []
 					for (const flavor of flavors) {
+			
 						if (this.project.project_application_openstack_project || flavor.simple_vm) {
-							this.shown_flavors[flavor.type.long_name].push(flavor)
+							if (flavor.name in this.REFACTOR_flavors[flavor.type.long_name])
+								{
+									this.REFACTOR_flavors[flavor.type.long_name][flavor.name].push(flavor)
+								} else {
+									this.REFACTOR_flavors[flavor.type.long_name][flavor.name] = [flavor];
+								}
 						}
+						
 					}
 
 					this.checkFlavorDifferences()
+
 				})
 		)
 	}
 
+	getFlavorNamesByType(type: FlavorType): string[] {
+		let names: string[] = Object.keys(this.REFACTOR_flavors[type.long_name]);
+
+		return names;
+	}
+
 	checkFlavorDifferences(): void {
 		for (const flavor of this.project.flavors) {
-			const idx: number = this.shown_flavors[flavor.type.long_name].findIndex(
+			const idx: number = this.REFACTOR_flavors[flavor.type.long_name][flavor.name].findIndex(
 				(fl: Flavor): boolean => fl.name === flavor.name
 			)
 			// not in shown_flavors, so flavor only for project
@@ -131,16 +152,19 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				const disabled_flavor: Flavor = new Flavor(flavor)
 				disabled_flavor.setDisabled(true)
 				const mod_flavor: Flavor = new Flavor(flavor)
-				this.shown_flavors[flavor.type.long_name].push(disabled_flavor)
-				this.shown_flavors[flavor.type.long_name].push(mod_flavor)
+				this.REFACTOR_flavors[mod_flavor.type.long_name][mod_flavor.name].push(mod_flavor);
+				this.REFACTOR_flavors[disabled_flavor.type.long_name][disabled_flavor.name].push(disabled_flavor)
 				this.temp_project_modification.flavors.push(mod_flavor)
 			} else {
 				// else in shown_flavors, may be different than old one
-				this.shown_flavors[flavor.type.long_name][idx].counter = flavor.counter
+				this.REFACTOR_flavors[flavor.type.long_name][flavor.name][idx].counter = flavor.counter;
 				const mod_flavor: Flavor = new Flavor(this.shown_flavors[flavor.type.long_name][idx])
 				this.temp_project_modification.flavors.push(mod_flavor)
+				this.REFACTOR_flavors[mod_flavor.type.long_name][mod_flavor.name].splice(idx, 0, mod_flavor)
+				this.REFACTOR_flavors[mod_flavor.type.long_name][mod_flavor.name][idx].setDisabled(true);
 				this.shown_flavors[flavor.type.long_name].splice(idx, 0, flavor)
 				this.shown_flavors[flavor.type.long_name][idx].setDisabled(true)
+				console.log(this.REFACTOR_flavors);
 			}
 		}
 		this.temp_project_modification.calculateRamCores()

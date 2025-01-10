@@ -322,7 +322,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			project: this.project_application
 		}
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState })
-		this.bsModalRef.setClass('modal-lg')
+		this.bsModalRef.setClass('modal-xl')
 		this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION)
 	}
 
@@ -356,7 +356,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			[`is${type}`]: true
 		}
 
-		this.bsModalRef = this.modalService.show(ExtensionEntryComponent, { initialState, class: 'modal-lg' })
+		this.bsModalRef = this.modalService.show(ExtensionEntryComponent, { initialState, class: 'modal-xl' })
 
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((event: any): void => {

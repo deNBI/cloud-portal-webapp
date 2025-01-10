@@ -49,129 +49,174 @@
 						>
 						</i>
 					</div>
-					<div *ngFor="let flavor of shown_flavors[flavorType.long_name]; let i = index">
-						<div *ngIf="flavor.disabled" class="form-group row" style="margin-bottom: 0">
-							<label class="col-6 text-muted" for="{{ flavor.name }}_old">
-								<strong>{{ flavor.name }}</strong>
+					<div *ngFor="let flavor_name of getFlavorNamesByType(flavorType)" class="form-group row my-3">
+							
+						<div class="col-4">
+							<label class="text-muted" for ="{{flavor_name}}_old">
+								<strong>{{ flavor_name}}</strong>
 								<br />
-								Number of cores: <span id="{{ flavor.name }}_old_cores">{{ flavor.vcpus }}</span>
+								Number of cores: <span id="{{ flavor_name }}_old_cores">{{ REFACTOR_flavors[flavorType.long_name][flavor_name][0].vcpus }}</span>
 								<br />
-								RAM: <span id="{{ flavor.name }}_old_ram">{{ flavor.ram_gib }}</span> GB
+								RAM: <span id="{{ flavor_name }}_old_ram">{{ REFACTOR_flavors[flavorType.long_name][flavor_name][0].ram_gib }}</span> GB
 								<span *ngIf="project?.credits_allowed">
-									<br />
-									Credits per hour:
-									<span id="{{ flavor.name }}_old_cph">{{ flavor.credits_costs_per_hour }}</span> CCs/h
+								<br />
+								Credits per hour:
+								<span id="{{ flavor_name }}_old_cph">{{ REFACTOR_flavors[flavorType.long_name][flavor_name][0].credits_costs_per_hour }}</span> CCs/h
 								</span>
 							</label>
-							<div class="col-6">
-								<div class="input-group">
-									<input
-										class="form-control"
-										name="flavor.name + '_old'"
-										id="{{ flavor.name }}_old"
-										type="text"
-										value="{{ project | flavorCounter: flavor }}"
-										placeholder="0"
-										[disabled]="flavor.disabled || adjustment"
-										aria-describedby="{{ flavor.name }}_old_help"
-									/>
-									<div class="input-group-append">
-										<span class="input-group-text"> VMs</span>
-									</div>
-								</div>
-								<div id="{{ flavor.name }}_old_help" class="form-text text-muted">
-									Currently approved of this flavor
-								</div>
-							</div>
 						</div>
-						<div *ngIf="!flavor.disabled" class="form-group row">
-							<label class="col-6" for="{{ flavor.name }}">
-								<strong>{{ flavor.name }}</strong>
-								<br />
-								Number of cores: <span id="{{ flavor.name }}_cores">{{ flavor.vcpus }}</span>
-								<br />
-								RAM: <span id="{{ flavor.name }}_ram">{{ flavor.ram_gib }}</span> GB
-								<span id="{{ flavor.name }}_ram" *ngIf="flavor.gpu > 0"><br />Number of GPUs: {{ flavor.gpu }}</span>
-								<span *ngIf="project?.credits_allowed">
-									<br />
-									Credits per hour: <span id="{{ flavor.name }}_cph">{{ flavor.credits_costs_per_hour }}</span> CCs/h
-								</span>
-							</label>
-							<div [ngClass]="adjustment ? 'col-3' : 'col-6'">
-								<div class="input-group">
-									<input
-										class="form-control"
-										[name]="adjustment ? flavor.name + '_requested' : flavor.name"
-										id="{{ flavor.name }}"
-										type="number"
-										min="0"
-										step="1"
-										attr.data-test-id="{{ flavor.type.shortcut + '_' + i }}"
-										placeholder="e.g 1"
-										[ngModel]="
-											adjustment
-												? (project.project_modification_request | flavorCounter: flavor)
-												: (temp_project_modification | flavorCounter: flavor)
-										"
-										#name="ngModel"
-										(change)="checkFlavorPairs(flavor, $event)"
-										[attr.appMinAmount]="adjustment ? null : 0"
-										[attr.appInteger]="adjustment ? null : true"
-										value="{{
-											adjustment
-												? (project.project_modification_request | flavorCounter: flavor)
-												: (temp_project_modification | flavorCounter: flavor)
-										}}"
-										[attr.readonly]="flavor.disabled || adjustment ? true : null"
-										aria-describedby="{{ flavor.name }}_help"
-										[ngClass]="{
-											'is-invalid': name?.invalid && !adjustment,
-											'is-valid': name?.valid && !adjustment,
-										}"
-									/>
-									<div class="input-group-append">
-										<span class="input-group-text"> VMs</span>
+						<ng-container *ngFor="let flavor_instance of REFACTOR_flavors[flavorType.long_name][flavor_name]; let i = index" >
+
+
+							<ng-container *ngIf="REFACTOR_flavors[flavorType.long_name][flavor_name].length > 1; else elseFlavorBlock">
+								
+			
+								<ng-container *ngIf="flavor_instance.disabled">
+					
+									<div class="col-4">
+										<div class="input-group">
+											<input
+												class="form-control"
+												name="flavor_instance.name + '_old'"
+												id="{{ flavor_instance.name }}_old"
+												type="text"
+												value="{{ project | flavorCounter: flavor_instance }}"
+												placeholder="0"
+												[disabled]="flavor_instance.disabled || adjustment"
+												aria-describedby="{{ flavor_instance.name }}_old_help"
+											/>
+											<div class="input-group-append">
+												<span class="input-group-text"> VMs</span>
+											</div>
+										</div>
+										<div id="{{ flavor_instance.name }}_old_help" class="form-text text-muted">
+											Currently approved of this flavor
+										</div>
+									</div>
+								</ng-container>
+								<ng-container *ngIf="!flavor_instance.disabled">
+									<div class="col-4">
+										<div class="input-group">
+											<input
+												class="form-control"
+												[name]="adjustment ? flavor_instance.name + '_requested' : flavor_instance.name"
+												id="{{ flavor_instance.name }}"
+												type="number"
+												min="0"
+												step="1"
+												attr.data-test-id="{{ flavor_instance.type.shortcut + '_' + i }}"
+												placeholder="e.g 1"
+												[ngModel]="
+													adjustment
+														? (project.project_modification_request | flavorCounter: flavor_instance)
+														: (temp_project_modification | flavorCounter: flavor_instance)
+												"
+												#name="ngModel"
+												(change)="checkFlavorPairs(flavor_instance, $event)"
+												[attr.appMinAmount]="adjustment ? null : 0"
+												[attr.appInteger]="adjustment ? null : true"
+												value="{{
+													adjustment
+														? (project.project_modification_request | flavorCounter: flavor_instance)
+														: (temp_project_modification | flavorCounter: flavor_instance)
+												}}"
+												[attr.readonly]="flavor_instance.disabled || adjustment ? true : null"
+												aria-describedby="{{ flavor_instance.name }}_help"
+												[ngClass]="{
+													'is-invalid': name?.invalid && !adjustment,
+													'is-valid': name?.valid && !adjustment,
+												}"
+											/>
+										</div>
+										<div id="{{ flavor_instance.name }}_help" class="form-text text-muted" *ngIf="!adjustment">
+											Number of VMs you would like to run in the future
+										</div>
+										<div id="{{ flavor_instance.name }}_help" class="form-text text-muted" *ngIf="adjustment">
+											Number of VMs the user would like to run in the future
+										</div>
+									</div>
+								</ng-container>
+
+							</ng-container>
+							<ng-template #elseFlavorBlock>
+								<div class="col-8">
+									<div class="input-group">
+										<input
+											class="form-control"
+											[name]="adjustment ? flavor_instance.name + '_requested' : flavor_instance.name"
+											id="{{ flavor_instance.name }}"
+											type="number"
+											min="0"
+											step="1"
+											attr.data-test-id="{{ flavor_instance.type.shortcut + '_' + i }}"
+											placeholder="e.g 1"
+											[ngModel]="
+												adjustment
+													? (project.project_modification_request | flavorCounter: flavor_instance)
+													: (temp_project_modification | flavorCounter: flavor_instance)
+											"
+											#name="ngModel"
+											(change)="checkFlavorPairs(flavor_instance, $event)"
+											[attr.appMinAmount]="adjustment ? null : 0"
+											[attr.appInteger]="adjustment ? null : true"
+											value="{{
+												adjustment
+													? (project.project_modification_request | flavorCounter: flavor_instance)
+													: (temp_project_modification | flavorCounter: flavor_instance)
+											}}"
+											[attr.readonly]="flavor_instance.disabled || adjustment ? true : null"
+											aria-describedby="{{ flavor_instance.name }}_help"
+											[ngClass]="{
+												'is-invalid': name?.invalid && !adjustment,
+												'is-valid': name?.valid && !adjustment,
+											}"
+										/>
+									</div>
+									<div id="{{ flavor_instance.name }}_help" class="form-text text-muted" *ngIf="!adjustment">
+										Number of VMs you would like to run in the future
+									</div>
+									<div id="{{ flavor_instance.name }}_help" class="form-text text-muted" *ngIf="adjustment">
+										Number of VMs the user would like to run in the future
 									</div>
 								</div>
-								<div id="{{ flavor.name }}_help" class="form-text text-muted" *ngIf="!adjustment">
-									Number of VMs you would like to run in the future
-								</div>
-								<div id="{{ flavor.name }}_help" class="form-text text-muted" *ngIf="adjustment">
-									Number of VMs the user would like to run in the future
+							</ng-template>
+						</ng-container>
+
+						<!-- this is the adjustment part - this is comming afterwards ###
+						<div class="col-4" *ngIf="adjustment"></div>
+						<div class="col-8" *ngIf="adjustment">
+							<div class="input-group">
+								<input
+									class="form-control"
+									[name]="flavor.name + '_adjusted'"
+									id="{{ flavor.name }}_adjusted"
+									type="number"
+									min="0"
+									step="1"
+									attr.data-test-id="adjusted_{{ flavor.type.shortcut + '_' + i }}"
+									placeholder="e.g 1"
+									[ngModel]="adjusted_project_modification | flavorCounter: flavor"
+									#name="ngModel"
+									(change)="checkFlavorPairsAdjustment(flavor, $event)"
+									appMinAmount="0"
+									appInteger
+									value="{{ adjusted_project_modification | flavorCounter: flavor }}"
+									aria-describedby="adjust_{{ flavor.name }}_help"
+									[ngClass]="{
+										'is-invalid': name?.invalid,
+										'is-valid': name?.valid,
+									}"
+								/>
+
+								<div class="input-group-append">
+									<span class="input-group-text"> VMs</span>
 								</div>
 							</div>
-							<div class="col-3" *ngIf="adjustment">
-								<div class="input-group">
-									<input
-										class="form-control"
-										[name]="flavor.name + '_adjusted'"
-										id="{{ flavor.name }}_adjusted"
-										type="number"
-										min="0"
-										step="1"
-										attr.data-test-id="adjusted_{{ flavor.type.shortcut + '_' + i }}"
-										placeholder="e.g 1"
-										[ngModel]="adjusted_project_modification | flavorCounter: flavor"
-										#name="ngModel"
-										(change)="checkFlavorPairsAdjustment(flavor, $event)"
-										appMinAmount="0"
-										appInteger
-										value="{{ adjusted_project_modification | flavorCounter: flavor }}"
-										aria-describedby="adjust_{{ flavor.name }}_help"
-										[ngClass]="{
-											'is-invalid': name?.invalid,
-											'is-valid': name?.valid,
-										}"
-									/>
-									<!-- check what checkFlavorPairs() does -->
-									<div class="input-group-append">
-										<span class="input-group-text"> VMs</span>
-									</div>
-								</div>
-								<div id="{{ flavor.name }}_help" class="form-text text-muted">Adjusted Number of VMs</div>
-							</div>
+							<div id="{{ flavor.name }}_help" class="form-text text-muted">Adjusted Number of VMs</div>
 						</div>
+						-->
 					</div>
+					<!-- <div *ngFor="let flavor of shown_flavors[flavorType.long_name]; let i = index"> -->
 				</accordion-group>
 			</ng-container>
 		</accordion>
