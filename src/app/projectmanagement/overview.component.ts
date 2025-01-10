@@ -31,7 +31,8 @@ import {
 	SIMPLE_VM_LINK,
 	STATUS_LINK,
 	WIKI_PUBLICATIONS,
-	KUBERNETES_LINK
+	KUBERNETES_LINK,
+	TERMINATION_SURVEY_LINK
 } from '../../links/links'
 import { Doi } from '../applications/doi/doi'
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class'
@@ -394,6 +395,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	showTerminationModal(): void {
 		this.terminationRequestComponent.showTerminationRequestModal(this.project_application).subscribe(() => {
 			this.getApplication()
+			this.notificationModal.showWarningNotificationModal(
+				'Feedback Survey',
+				`
+					<div>
+					<p>Thank you for using the de.NBI Cloud for your recent project!</p>
+					<p>We would appreciate your feedback to enhance our services. Please take a few moments to complete our short survey:</p>
+					<p><strong><a class="alert-link" href="${TERMINATION_SURVEY_LINK}" target="_blank">Survey Link</a></strong></p>
+					</div>
+				`
+			)
 		})
 	}
 

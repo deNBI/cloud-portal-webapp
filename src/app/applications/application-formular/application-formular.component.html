@@ -145,6 +145,14 @@
 										<font color="red">Umlauts and special characters are prohibited in the shortname.</font>
 									</strong>
 								</div>
+								<div *ngIf="shortNameTaken">
+									<strong>
+										<font color="red"
+											>Warning: This shortname is already in use. A unique suffix will be automatically appended upon
+											submission.</font
+										>
+									</strong>
+								</div>
 								<input
 									required
 									type="text"
@@ -153,7 +161,9 @@
 									#shortname
 									(keyup)="checkShortname(shortname.value)"
 									class="form-control"
-									maxlength="15"
+									min="5"
+									[maxlength]="shortNameMaxLength"
+									(ngModelChange)="setDefaulShortnameLength()"
 									[(ngModel)]="application.project_application_shortname"
 									minlength="5"
 									placeholder="e.g. ThalianaBench"
@@ -490,7 +500,7 @@
 									/>
 									<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 								</div>
-								<span class="help-block">How much total extra storage do you need for your VMs?</span>
+								<span class="help-block">How much total storage do you need for your VMs in form of Volumes?</span>
 							</div>
 						</div>
 						<div class="form-group row" *ngIf="openstack_project">

@@ -33,6 +33,9 @@ import { UserService } from '../../api-connector/user.service'
 import { Userinfo } from '../../userinfo/userinfo.model'
 import { User } from '../application.model/user.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { thresholdScott } from 'd3'
 
 /**
  * Application formular component.
@@ -51,6 +54,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	@Input() application: Application
 	@Input() is_validation: boolean = false
 	@Input() hash: string
+	DEFAULT_SHORTNAME_MAX_LENGTH:number=15
+	shortNameMaxLength:number=15
 
 	userinfo: Userinfo
 	valid_pi_affiliations
@@ -87,6 +92,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	WIKI_BACKUP_LINK: string = WIKI_BACKUP_LINK
 	GDPR_LINK: string = GDPR_LINK
 	survey_link_visible: boolean = false
+	private nameCheckPipe = new Subject<string>();
+	shortnameChecking: boolean = false;
+	shortNameTaken: boolean = false;
 
 	MAX_LIFETIME_DEFAULT: number = 6
 	max_lifetime: number = this.MAX_LIFETIME_DEFAULT
@@ -119,6 +127,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		this.getListOfFlavors()
 		this.getListOfTypes()
 		this.is_vo_admin = is_vo
+		this.nameCheckPipe.pipe(debounceTime(600), distinctUntilChanged()).subscribe(value => {this.checkIfNameIsTaken(value)});
 
 		if (this.openstack_project) {
 			this.simple_vm_min_vm = true
@@ -136,6 +145,21 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		} else {
 			this.application.dissemination.setAllInformationFalse()
 		}
+	}
+
+	setDefaulShortnameLength():void{
+		this.shortNameMaxLength=this.DEFAULT_SHORTNAME_MAX_LENGTH
+	}
+
+	checkIfNameIsTaken(shortname: string): void {
+		this.shortnameChecking = true;
+
+		this.applicationsService.checkForTakenShortname(shortname,this.application?.project_application_id).subscribe((result: boolean): void => {
+			let nameExists: boolean = result['exists'];
+			this.shortnameChecking = false;
+			this.shortNameTaken = nameExists;
+		});
+
 	}
 
 	checkValidityComment(): boolean {
@@ -172,6 +196,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	initiateFormWithApplication(): void {
 		if (this.application && !this.initiated_validation && this.is_validation) {
 			this.openstack_project = this.application.project_application_openstack_project
+
+			if(this.application.project_application_shortname.length > 15){
+				this.shortNameMaxLength=this.application.project_application_shortname.length
+			}
 
 			this.simple_vm_project = !this.openstack_project
 			this.application.project_application_pi = new User()
@@ -238,6 +266,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	 */
 	public checkShortname(shortname: string): void {
 		this.invalid_shortname = !/^[a-zA-Z0-9\s]*$/.test(shortname)
+		if (!this.invalid_shortname) {
+			this.shortnameChecking = true;
+			this.nameCheckPipe.next(shortname);
+		}
+
 	}
 
 	public checkLongname(longname: string): void {

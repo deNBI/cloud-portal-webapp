@@ -431,7 +431,6 @@
 									Request termination
 								</button>
 								<button
-									(click)="terminateModal.show()"
 									*ngIf="
 										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
 										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
