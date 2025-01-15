@@ -25,7 +25,7 @@ COPY . .
 RUN npx ng build --configuration=custom
 
 ### STAGE 2: Setup
-FROM nginx:1.27.2-alpine
+FROM nginx:1.27.3-alpine
 
 # Copy our default nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/
