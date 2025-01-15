@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, Output } from '@angular/core';
+import { Component, EventEmitter, Injectable } from '@angular/core';
 import { KeyService } from 'app/api-connector/key.service';
 import { AbstractBaseModalComponent } from 'app/shared/modal/abstract-base-modal/abstract-base-modal.component';
 import {  BsModalService } from 'ngx-bootstrap/modal';

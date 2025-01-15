@@ -33,9 +33,8 @@ import { UserService } from '../../api-connector/user.service'
 import { Userinfo } from '../../userinfo/userinfo.model'
 import { User } from '../application.model/user.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { thresholdScott } from 'd3'
 
 /**
  * Application formular component.
