@@ -33,8 +33,8 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 	constructor(
 		private keyService: KeyService,
 		private clipboardService: ClipboardService,
-		private generatePublicKeyModal:GeneratePublicKeyModalComponent,
-		private setPublicKeyModalComponent:SetPublicKeyModalComponent
+		private generatePublicKeyModal: GeneratePublicKeyModalComponent,
+		private setPublicKeyModalComponent: SetPublicKeyModalComponent
 	) {
 		super()
 	}
@@ -45,27 +45,23 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 		}
 	}
 
-	showSetPublicKeyModal():void{
-		this.setPublicKeyModalComponent.showSetPublicKeyModal(this.userinfo.PublicKey).subscribe(() =>{
-			console.log("event submitted")
-			this.getUserPublicKey()
-		})
-
-	}
-
-	showGeneratePublicKeyModal():void{
-		this.generatePublicKeyModal.showGeneratePublicKeyModal(this.userinfo.UserLogin).subscribe(() =>{
-			console.log("event submitted")
+	showSetPublicKeyModal(): void {
+		this.setPublicKeyModalComponent.showSetPublicKeyModal(this.userinfo.PublicKey).subscribe(() => {
+			console.log('event submitted')
 			this.getUserPublicKey()
 		})
 	}
 
-	unsetAcknowledgment():void{
-		this.acknowledgement_given=false;
+	showGeneratePublicKeyModal(): void {
+		this.generatePublicKeyModal.showGeneratePublicKeyModal(this.userinfo.UserLogin).subscribe(() => {
+			console.log('event submitted')
+			this.getUserPublicKey()
+		})
 	}
 
-
-
+	unsetAcknowledgment(): void {
+		this.acknowledgement_given = false
+	}
 
 	isKeyBlocked(): void {
 		this.keyService.isBlocked(this.userinfo.PublicKey.trim()).subscribe((res: BlacklistedResponse) => {
@@ -79,8 +75,6 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 			this.currentKeyBlockedChanged.emit(this.current_key_blocked)
 		})
 	}
-
-
 
 	copyToClipboard(text: string): void {
 		if (this.clipboardService.isSupported) {
