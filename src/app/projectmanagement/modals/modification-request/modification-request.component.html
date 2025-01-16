@@ -50,29 +50,35 @@
 						</i>
 					</div>
 					<div *ngFor="let flavor_name of getFlavorNamesByType(flavorType)" class="form-group row my-4">
-							
 						<div class="col-4">
-							<label class="text-muted" for ="{{flavor_name}}_old">
-								<strong>{{ flavor_name}}</strong>
+							<label class="text-muted" for="{{ flavor_name }}_old">
+								<strong>{{ flavor_name }}</strong>
 								<br />
-								Number of cores: <span id="{{ flavor_name }}_old_cores">{{ shown_flavors[flavorType.long_name][flavor_name][0].vcpus }}</span>
+								Number of cores:
+								<span id="{{ flavor_name }}_old_cores">{{
+									shown_flavors[flavorType.long_name][flavor_name][0].vcpus
+								}}</span>
 								<br />
-								RAM: <span id="{{ flavor_name }}_old_ram">{{ shown_flavors[flavorType.long_name][flavor_name][0].ram_gib }}</span> GB
+								RAM:
+								<span id="{{ flavor_name }}_old_ram">{{
+									shown_flavors[flavorType.long_name][flavor_name][0].ram_gib
+								}}</span>
+								GB
 								<span *ngIf="project?.credits_allowed">
-								<br />
-								Credits per hour:
-								<span id="{{ flavor_name }}_old_cph">{{ shown_flavors[flavorType.long_name][flavor_name][0].credits_costs_per_hour }}</span> CCs/h
+									<br />
+									Credits per hour:
+									<span id="{{ flavor_name }}_old_cph">{{
+										shown_flavors[flavorType.long_name][flavor_name][0].credits_costs_per_hour
+									}}</span>
+									CCs/h
 								</span>
 							</label>
 						</div>
-						<ng-container *ngFor="let flavor_instance of shown_flavors[flavorType.long_name][flavor_name]; let i = index" >
-
-
+						<ng-container
+							*ngFor="let flavor_instance of shown_flavors[flavorType.long_name][flavor_name]; let i = index"
+						>
 							<ng-container *ngIf="shown_flavors[flavorType.long_name][flavor_name].length > 1; else elseFlavorBlock">
-								
-			
 								<ng-container *ngIf="flavor_instance.disabled">
-					
 									<div class="col-4">
 										<div class="input-group">
 											<input
@@ -140,7 +146,6 @@
 										</div>
 									</div>
 								</ng-container>
-
 							</ng-container>
 							<ng-template #elseFlavorBlock>
 								<div [ngClass]="adjustment ? 'col-4' : 'col-8'">
@@ -185,11 +190,10 @@
 									</div>
 								</div>
 							</ng-template>
-							
 						</ng-container>
 						<ng-container *ngIf="adjustment">
 							<div *ngIf="shown_flavors[flavorType.long_name][flavor_name].length > 1" class="col-4"></div>
-							<div [ngClass]="shown_flavors[flavorType.long_name][flavor_name].length > 1 ? 'col-8': 'col-4'">
+							<div [ngClass]="shown_flavors[flavorType.long_name][flavor_name].length > 1 ? 'col-8' : 'col-4'">
 								<div class="input-group">
 									<input
 										class="form-control"
@@ -200,19 +204,23 @@
 										step="1"
 										attr.data-test-id="adjusted_{{ flavorType.shortcut + '_' + i }}"
 										placeholder="e.g 1"
-										[ngModel]="adjusted_project_modification | flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]"
+										[ngModel]="
+											adjusted_project_modification | flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
+										"
 										#name="ngModel"
 										(change)="checkFlavorPairsAdjustment(shown_flavors[flavorType.long_name][flavor_name][0], $event)"
 										appMinAmount="0"
 										appInteger
-										value="{{ adjusted_project_modification | flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0] }}"
+										value="{{
+											adjusted_project_modification | flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
+										}}"
 										aria-describedby="adjust_{{ flavor_name }}_help"
 										[ngClass]="{
 											'is-invalid': name?.invalid,
 											'is-valid': name?.valid,
 										}"
 									/>
-	
+
 									<div class="input-group-append">
 										<span class="input-group-text"> VMs</span>
 									</div>
@@ -220,7 +228,6 @@
 								<div id="{{ flavor_name }}_help" class="form-text text-muted">Adjusted Number of VMs</div>
 							</div>
 						</ng-container>
-						
 					</div>
 				</accordion-group>
 			</ng-container>
@@ -264,6 +271,7 @@
 						min="0"
 						step="1"
 						[attr.readonly]="adjustment ? true : null"
+						[disabled]="adjustment"
 						data-test-id="modification_request_volume_counter_input"
 						[(ngModel)]="temp_project_modification.volume_counter"
 						appMinAmount="0"
@@ -362,7 +370,7 @@
 							'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
 							'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid,
 						}"
-						[disabled]="modificationForm.controls.project_application_renewal_volume_counter?.value === 0"
+						[disabled]="modificationForm.controls.project_application_renewal_volume_counter?.value === 0 || adjustment"
 					/>
 					<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 				</div>
@@ -408,7 +416,7 @@
 					<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 				</div>
 				<label for="id_project_application_renewal_volume_limit" class="help-block"
-					>How much total extra storage does the user get granted in the future?</label
+					>How much total storage does the user get granted in the future?</label
 				>
 			</div>
 		</div>
