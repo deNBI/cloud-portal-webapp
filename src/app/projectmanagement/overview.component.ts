@@ -38,6 +38,7 @@ import { Doi } from '../applications/doi/doi'
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ProjectMember } from './project_member.model'
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component'
+import { ApplicationModification } from 'app/applications/application_modification.model'
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component'
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component'
 import { ExtensionEntryComponent } from './modals/testimonial/extension-entry.component'
@@ -311,7 +312,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		)
 	}
 
-	showResourceModal(): void {
+	showResourceModal(tempModification: ApplicationModification): void {
 		if (this.modificationRequestDisabled) {
 			return
 		}
@@ -319,7 +320,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.modificationRequestDisabled = true
 
 		const initialState = {
-			project: this.project_application
+			project: this.project_application,
+			preSavedModification: tempModification
 		}
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState })
 		this.bsModalRef.setClass('modal-xl')
@@ -363,7 +365,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				if (event.reloadDoi) {
 					this.getDois()
 				} else if (event.showModification) {
-					this.showResourceModal()
+					this.showResourceModal(null);
 				} else if (event.showExtension) {
 					this.showLifetimeExtensionModal()
 				} else if (event.showTermination) {
@@ -453,6 +455,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					}
 					this.fullLayout.getGroupsEnumeration()
 					this.getApplication()
+				} else if ('backToInput' in result && 'modification' in result) {
+					this.modificationRequestDisabled = false;
+					this.showResourceModal(result['modification']);
 				} else if (type === this.ExtensionRequestType.EXTENSION) {
 					this.lifetimeExtensionDisabled = false
 				} else if (type === this.ExtensionRequestType.MODIFICATION) {

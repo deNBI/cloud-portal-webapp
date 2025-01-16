@@ -23,9 +23,11 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
 
 	project: Application
+	preSavedModification: ApplicationModification;
 	temp_project_modification: ApplicationModification
 
 	adjusted_project_modification: ApplicationModification
+	flavorRetrievalInProgress: boolean = false;
 
 	expected_total_credits: number = 0
 	flavorTypes: FlavorType[] = []
@@ -108,6 +110,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	}
 
 	getFlavors(): void {
+		this.flavorRetrievalInProgress = true;
 		this.subscription.add(
 			this.flavorService
 				.getListOfFlavorsAvailable(this.project.project_application_id.toString(), true)
@@ -125,6 +128,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 						}
 						
 					}
+					this.flavorRetrievalInProgress = false;
 
 					this.checkFlavorDifferences()
 
@@ -159,6 +163,9 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name].splice(idx, 0, mod_flavor)
 				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name][idx].setDisabled(true);
 			}
+		}
+		if (this.preSavedModification) {
+			this.temp_project_modification = new ApplicationModification(this.preSavedModification);
 		}
 		this.temp_project_modification.calculateRamCores()
 	}
@@ -320,6 +327,13 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				} else {
 					this.event.emit({ reload: true })
 				}
+			} else if ('enterData' in result) {
+				this.event.emit(
+					{
+						backToInput: true,
+						modification: this.temp_project_modification,
+					}
+				)
 			} else {
 				this.event.emit({ reload: false })
 			}
