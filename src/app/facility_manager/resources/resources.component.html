@@ -37,9 +37,9 @@
 				<button
 					style="margin: 5px"
 					class="btn btn-outline-primary"
-					(click)="setAllTabsFalse(); MACHINE_DEFINITION_TAB_ACTIVE = true; factorModal.show()"
+					(click)="setAllTabsFalse(); MACHINE_DEFINITION_TAB_ACTIVE = true; showModificationCollapse = !showModificationCollapse"
 				>
-					Modify Resources
+					{{showModificationCollapse ? 'Close' : 'Open'}} Resouce Modification
 				</button>
 				<div style="margin: 5px">
 					<select
@@ -143,149 +143,129 @@
 					</table>
 				</div>
 			</div>
-			<div>
-				<!-- <button (click)="tableToPDF()">Download PDF</button> -->
-				<button (click)="tableToCSV()">Download CSV</button>
+			<div class="card-footer">
+					<!-- <button (click)="tableToPDF()">Download PDF</button> -->
+					<button class="btn btn-primary" (click)="tableToCSV()">Download CSV</button>
+
 			</div>
+			<div class="collapse" [ngClass]="{ show: showModificationCollapse }"
+				 id="resourceModifactionCollapse">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="modal-title">Modify Facility Resources</h4>
+					</div>
+				</div>
+				
+				<div class="card-body">
+					<div class="nav-tabs-boxed">
+						<ul class="nav nav-tabs" style="overflow-x: visible !important">
+							<li class="nav-item">
+								<a
+									class="nav-link"
+									id="ram_tab"
+									[ngClass]="{ active: MACHINE_DEFINITION_TAB_ACTIVE }"
+									(click)="setTab(MACHINE_DEFINITION_TAB)"
+									>Machine Definitions <b>[{{ resourceMachines.length }}]</b></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									class="nav-link"
+									id="storage_tab"
+									[ngClass]="{ active: STORAGE_TAB_ACTIVE }"
+									(click)="setTab(STORAGE_TAB)"
+									>Storage
+									<b
+										>[{{ generalStorageFactors.length + objectStorageFactors.length + volumeStorageFactors.length }}]</b
+									></a
+								>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="gpu_tab" [ngClass]="{ active: GPU_TAB_ACTIVE }" (click)="setTab(GPU_TAB)"
+									>Graphic Processing Units<b>[{{ gpuSpecifications.length }}]</b></a
+								>
+							</li>
+						</ul>
+					</div>
+	
+					<div class="tab-content">
+						<div *ngIf="MACHINE_DEFINITION_TAB_ACTIVE && selectedFacility">
+							<app-resourcemachine-overview
+								(factorChanged)="getSelectedFacilityResources()"
+								[facility_id]="selectedFacility['FacilityId']"
+							></app-resourcemachine-overview>
+						</div>
+						<div *ngIf="STORAGE_TAB_ACTIVE && selectedFacility">
+							<div class="alert alert-primary">
+								You can <b>either</b> define general storage <b>or</b> specify object and volume storage separately.<br />
+								If one of the two is defined, the other is disabled as long as the other is defined.
+							</div>
+							<div class="nav-tabs-boxed">
+								<ul class="nav nav-tabs" style="overflow-x: visible !important">
+									<li class="nav-item">
+										<a
+											class="nav-link"
+											id="general_storage_tab"
+											[ngClass]="{
+												active: GENERAL_STORAGE_TAB_ACTIVE,
+												disabled: objectStorageFactors.length > 0 || volumeStorageFactors.length > 0
+											}"
+											(click)="setTab(GENERAL_STORAGE_TAB)"
+											>General Storage <b>[{{ generalStorageFactors.length }}]</b></a
+										>
+									</li>
+									<li class="nav-item">
+										<a
+											class="nav-link"
+											id="object_storage_tab"
+											[ngClass]="{ active: OBJECT_STORAGE_TAB_ACTIVE, disabled: generalStorageFactors.length > 0 }"
+											(click)="setTab(OBJECT_STORAGE_TAB)"
+											>Object Storage <b>[{{ objectStorageFactors.length }}]</b></a
+										>
+									</li>
+									<li class="nav-item">
+										<a
+											class="nav-link"
+											id="volume_storage_tab"
+											[ngClass]="{ active: VOLUME_STORAGE_TAB_ACTIVE, disabled: generalStorageFactors.length > 0 }"
+											(click)="setTab(VOLUME_STORAGE_TAB)"
+											>Volume Storage <b>[{{ volumeStorageFactors.length }}] </b></a
+										>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div *ngIf="GENERAL_STORAGE_TAB_ACTIVE && selectedFacility">
+										<app-generalstoragefactor-overview
+											(factorChanged)="getSelectedFacilityResources()"
+											[facility_id]="selectedFacility['FacilityId']"
+										></app-generalstoragefactor-overview>
+									</div>
+									<div *ngIf="OBJECT_STORAGE_TAB_ACTIVE && selectedFacility">
+										<app-objectstoragefactor-overview
+											(factorChanged)="getSelectedFacilityResources()"
+											[facility_id]="selectedFacility['FacilityId']"
+										></app-objectstoragefactor-overview>
+									</div>
+									<div *ngIf="VOLUME_STORAGE_TAB_ACTIVE && selectedFacility">
+										<app-volumestoragefactor-overview
+											(factorChanged)="getSelectedFacilityResources()"
+											[facility_id]="selectedFacility['FacilityId']"
+										></app-volumestoragefactor-overview>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="GPU_TAB_ACTIVE && selectedFacility">
+							<app-gpu-specification-overview
+								[facility_id]="selectedFacility['FacilityId']"
+							></app-gpu-specification-overview>
+						</div>
+					</div>
+			</div>
+			
 			<!-- DivTable.com -->
 		</div>
 		<!--/.col-->
 	</div>
 </div>
 
-<div
-	bsModal
-	#factorModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="myModalLabel"
-	aria-hidden="true"
->
-	<div class="modal-dialog modal-info modal-xl" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Resources Factors</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="factorModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-
-			<div class="modal-body">
-				<div class="nav-tabs-boxed">
-					<ul class="nav nav-tabs" style="overflow-x: visible !important">
-						<li class="nav-item">
-							<a
-								class="nav-link"
-								id="ram_tab"
-								[ngClass]="{ active: MACHINE_DEFINITION_TAB_ACTIVE }"
-								(click)="setTab(MACHINE_DEFINITION_TAB)"
-								>Machine Definitions <b>[{{ resourceMachines.length }}]</b></a
-							>
-						</li>
-						<li class="nav-item">
-							<a
-								class="nav-link"
-								id="storage_tab"
-								[ngClass]="{ active: STORAGE_TAB_ACTIVE }"
-								(click)="setTab(STORAGE_TAB)"
-								>Storage
-								<b
-									>[{{ generalStorageFactors.length + objectStorageFactors.length + volumeStorageFactors.length }}]</b
-								></a
-							>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="gpu_tab" [ngClass]="{ active: GPU_TAB_ACTIVE }" (click)="setTab(GPU_TAB)"
-								>Graphic Processing Units<b>[{{ gpuSpecifications.length }}]</b></a
-							>
-						</li>
-					</ul>
-				</div>
-
-				<div class="tab-content">
-					<div *ngIf="MACHINE_DEFINITION_TAB_ACTIVE && selectedFacility">
-						<app-resourcemachine-overview
-							(factorChanged)="getSelectedFacilityResources()"
-							[facility_id]="selectedFacility['FacilityId']"
-						></app-resourcemachine-overview>
-					</div>
-					<div *ngIf="STORAGE_TAB_ACTIVE && selectedFacility">
-						<div class="alert alert-primary">
-							You can <b>either</b> define general storage <b>or</b> specify object and volume storage separately.<br />
-							If one of the two is defined, the other is disabled as long as the other is defined.
-						</div>
-						<div class="nav-tabs-boxed">
-							<ul class="nav nav-tabs" style="overflow-x: visible !important">
-								<li class="nav-item">
-									<a
-										class="nav-link"
-										id="general_storage_tab"
-										[ngClass]="{
-											active: GENERAL_STORAGE_TAB_ACTIVE,
-											disabled: objectStorageFactors.length > 0 || volumeStorageFactors.length > 0
-										}"
-										(click)="setTab(GENERAL_STORAGE_TAB)"
-										>General Storage <b>[{{ generalStorageFactors.length }}]</b></a
-									>
-								</li>
-								<li class="nav-item">
-									<a
-										class="nav-link"
-										id="object_storage_tab"
-										[ngClass]="{ active: OBJECT_STORAGE_TAB_ACTIVE, disabled: generalStorageFactors.length > 0 }"
-										(click)="setTab(OBJECT_STORAGE_TAB)"
-										>Object Storage <b>[{{ objectStorageFactors.length }}]</b></a
-									>
-								</li>
-								<li class="nav-item">
-									<a
-										class="nav-link"
-										id="volume_storage_tab"
-										[ngClass]="{ active: VOLUME_STORAGE_TAB_ACTIVE, disabled: generalStorageFactors.length > 0 }"
-										(click)="setTab(VOLUME_STORAGE_TAB)"
-										>Volume Storage <b>[{{ volumeStorageFactors.length }}] </b></a
-									>
-								</li>
-							</ul>
-							<div class="tab-content">
-								<div *ngIf="GENERAL_STORAGE_TAB_ACTIVE && selectedFacility">
-									<app-generalstoragefactor-overview
-										(factorChanged)="getSelectedFacilityResources()"
-										[facility_id]="selectedFacility['FacilityId']"
-									></app-generalstoragefactor-overview>
-								</div>
-								<div *ngIf="OBJECT_STORAGE_TAB_ACTIVE && selectedFacility">
-									<app-objectstoragefactor-overview
-										(factorChanged)="getSelectedFacilityResources()"
-										[facility_id]="selectedFacility['FacilityId']"
-									></app-objectstoragefactor-overview>
-								</div>
-								<div *ngIf="VOLUME_STORAGE_TAB_ACTIVE && selectedFacility">
-									<app-volumestoragefactor-overview
-										(factorChanged)="getSelectedFacilityResources()"
-										[facility_id]="selectedFacility['FacilityId']"
-									></app-volumestoragefactor-overview>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div *ngIf="GPU_TAB_ACTIVE && selectedFacility">
-						<app-gpu-specification-overview
-							[facility_id]="selectedFacility['FacilityId']"
-						></app-gpu-specification-overview>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" (click)="factorModal.hide()">Close</button>
-				</div>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
