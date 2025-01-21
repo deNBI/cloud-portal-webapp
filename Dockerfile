@@ -1,7 +1,7 @@
 # STAGE 1: Build
 
 # We label our stage as 'builder'
-FROM node:20-alpine3.20 AS builder
+FROM node:22-alpine3.20 AS builder
 
 # Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
