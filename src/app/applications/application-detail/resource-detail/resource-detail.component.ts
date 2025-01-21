@@ -51,7 +51,7 @@ export class ResourceDetailComponent extends ApplicationBaseClassComponent imple
 			this.flavorDiffs.push({
 				name: flavor.name,
 				current: flavor.counter,
-				diff: 0,
+				diff: 0 - flavor.counter,
 				new: 0
 			})
 		})
