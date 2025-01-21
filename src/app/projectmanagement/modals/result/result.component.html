@@ -142,7 +142,7 @@
 	<div class="modal-footer">
 		<button
 			id="confirm_extension_btn"
-			class="btn btn-success col-md-4"
+			class="btn btn-success col-md-3"
 			type="button"
 			data-test-id="confirm_extension_request_button"
 			*ngIf="lifetimeExtension && !adjustedModification"
@@ -152,7 +152,7 @@
 		</button>
 		<button
 			id="confirm_modification_btn"
-			class="btn btn-success col-md-4"
+			class="btn btn-success col-md-3"
 			type="button"
 			data-test-id="confirm_modification_request_button"
 			*ngIf="modificationExtension && !adjustedModification"
@@ -162,7 +162,7 @@
 		</button>
 		<button
 			id="confirm_credits_btn"
-			class="btn btn-success col-md-4"
+			class="btn btn-success col-md-3"
 			type="button"
 			data-test-id="confirm_credits_request_button"
 			*ngIf="creditsExtension && !adjustedModification"
@@ -172,7 +172,7 @@
 		</button>
 		<button
 			id="confirm_adjustment_btn"
-			class="btn btn-success col-md-4"
+			class="btn btn-success col-md-3"
 			type="button"
 			data-test-id="confirm_adjustment_request_button"
 			*ngIf="adjustedModification"
@@ -181,7 +181,15 @@
 			Confirm
 		</button>
 
-		<button class="btn btn-primary col-md-4" type="reset" (click)="bsModalRef.hide()">Cancel</button>
+		<button
+			*ngIf="modificationExtension && !adjustedModification"
+			class="btn btn-primary col-md-3"
+			type="reset"
+			(click)="bsModalRef.hide(); chainDataInput()"
+		>
+			<i class="fa-solid fa-backward"></i> Back
+		</button>
+		<button class="btn btn-danger col-md-3" type="reset" (click)="bsModalRef.hide()">Cancel</button>
 	</div>
 </ng-container>
 

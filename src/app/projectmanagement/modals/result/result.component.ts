@@ -53,6 +53,10 @@ export class ResultComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	chainDataInput(): void {
+		this.event.emit({ enterData: true});
+	}
+
 	submitModificationRequest(): void {
 		this.setToResultState()
 
