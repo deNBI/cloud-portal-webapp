@@ -36,7 +36,6 @@ export class ApplicationListComponent implements OnInit, OnChanges {
 	}
 
 	setDataTestId(): void {
-		console.log('set data test id')
 		switch (this.tabState) {
 			case ApplicationTabStates.SUBMITTED: {
 				this.dataTestId = 'submitted_applications_container'

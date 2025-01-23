@@ -163,7 +163,7 @@ export class AdjustApplicationComponent implements OnInit {
 			application
 		}
 		const bsModalRef: BsModalRef = this.modalService.show(AdjustApplicationComponent, { initialState })
-		bsModalRef.setClass('modal-lg')
+		bsModalRef.setClass('modal-xl')
 		this.modalId = bsModalRef.id
 
 		return bsModalRef.content.eventSuccess
