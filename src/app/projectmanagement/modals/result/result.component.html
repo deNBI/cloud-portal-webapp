@@ -182,7 +182,7 @@
 		</button>
 
 		<button
-			*ngIf="modificationExtension && !adjustedModification"
+			*ngIf="modificationExtension"
 			class="btn btn-primary col-md-3"
 			type="reset"
 			(click)="bsModalRef.hide(); chainDataInput()"

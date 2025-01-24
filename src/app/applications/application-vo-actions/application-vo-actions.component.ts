@@ -18,6 +18,7 @@ import { ModificationRequestComponent } from '../../projectmanagement/modals/mod
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal.component'
 import { ClientLimitsComponent } from '../../vo_manager/clients/modals/client-limits..component'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
+import { ApplicationModification } from '../application_modification.model'
 
 @Component({
 	selector: 'app-application-vo-actions',
@@ -38,6 +39,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	bsModalRef: BsModalRef
 	is_vo_admin: boolean = false
 	selectedComputeCenter: ComputecenterComponent
+	modificationAdjustment: ApplicationModification;
 
 	ngOnInit() {
 		this.is_vo_admin = is_vo
@@ -94,7 +96,8 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	showModificationAdjustmentModal() {
 		const initialState = {
 			project: this.application,
-			adjustment: true
+			adjustment: true,
+			preSavedAdjustment: this.modificationAdjustment,
 		}
 
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, {
@@ -423,6 +426,10 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	subscribeToBsModalRef(): void {
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
+				if ('backToInput' in result) {
+					this.modificationAdjustment = result['adjustedModification'];
+					this.showModificationAdjustmentModal();
+				}
 				let action = null
 				if ('action' in result) {
 					action = result['action']
@@ -432,9 +439,6 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 				}
 				if (action === ConfirmationActions.APPROVE_MODIFICATION) {
 					this.approveModificationRequest()
-				}
-				if ('closed' in result) {
-					//	this.switchApproveLocked(false);
 				}
 				if (action === ConfirmationActions.DECLINE_MODIFICATION) {
 					this.declineModificationRequest()

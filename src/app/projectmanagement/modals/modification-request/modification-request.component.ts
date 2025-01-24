@@ -24,6 +24,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 
 	project: Application
 	preSavedModification: ApplicationModification;
+	preSavedAdjustment: ApplicationModification;
 	temp_project_modification: ApplicationModification
 
 	adjusted_project_modification: ApplicationModification
@@ -155,6 +156,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name].push(mod_flavor);
 				this.shown_flavors[disabled_flavor.type.long_name][disabled_flavor.name].push(disabled_flavor)
 				this.temp_project_modification.flavors.push(mod_flavor)
+				
 			} else {
 				// else in shown_flavors, may be different than old one
 				this.shown_flavors[flavor.type.long_name][flavor.name][idx].counter = flavor.counter;
@@ -162,12 +164,37 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				this.temp_project_modification.flavors.push(mod_flavor)
 				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name].splice(idx, 0, mod_flavor)
 				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name][idx].setDisabled(true);
+
 			}
 		}
+		this.buildMissingFlavorPairs();
+
 		if (this.preSavedModification) {
 			this.temp_project_modification = new ApplicationModification(this.preSavedModification);
 		}
+		if (this.preSavedAdjustment) {
+			this.adjusted_project_modification = new ApplicationModification(this.preSavedAdjustment);
+		}
 		this.temp_project_modification.calculateRamCores()
+	}
+
+	buildMissingFlavorPairs(): void {
+		let copyOfShownFlavors:  ShownFlavors = this.shown_flavors;
+
+		for (const flavorType of Object.keys(copyOfShownFlavors)) {
+			for (const flavorName of Object.keys(copyOfShownFlavors[flavorType])) {
+				let tempFlavors: Flavor[] = copyOfShownFlavors[flavorType][flavorName];
+				if (tempFlavors.length === 1) {
+					let generatedFlavor: Flavor = new Flavor(tempFlavors[0]);
+					generatedFlavor.setDisabled(!generatedFlavor.disabled);
+					if (generatedFlavor.disabled) {
+						this.shown_flavors[flavorType][flavorName].unshift(generatedFlavor);
+					} else {
+						this.shown_flavors[flavorType][flavorName].push(generatedFlavor);
+					}
+				}
+			}
+		}
 	}
 
 	checkFlavorPairs(flavor: Flavor, event: any): void {
@@ -328,12 +355,22 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 					this.event.emit({ reload: true })
 				}
 			} else if ('enterData' in result) {
-				this.event.emit(
-					{
-						backToInput: true,
-						modification: this.temp_project_modification,
-					}
-				)
+				if (adjustment) {
+					this.event.emit(
+						{
+							backToInput: true,
+							adjustedModification: this.adjusted_project_modification,
+						}
+					)
+				} else {
+					this.event.emit(
+						{
+							backToInput: true,
+							modification: this.temp_project_modification,
+						}
+					)
+				}
+				
 			} else {
 				this.event.emit({ reload: false })
 			}
