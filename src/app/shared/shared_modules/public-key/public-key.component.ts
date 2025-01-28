@@ -1,14 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { ClipboardService } from 'ngx-clipboard'
-import { saveAs } from 'file-saver'
-import { BsModalService } from 'ngx-bootstrap/modal'
 import { KeyService } from '../../../api-connector/key.service'
 import { ApiSettings } from '../../../api-connector/api-settings.service'
 import { Userinfo } from '../../../userinfo/userinfo.model'
 import { IResponseTemplate } from '../../../api-connector/response-template'
 import { AbstractBaseClass } from '../baseClass/abstract-base-class'
 import { WIKI_GENERATE_KEYS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links'
-import { NotificationModalComponent } from '../../modal/notification-modal'
 import { BlacklistedResponse } from '../../../api-connector/response-interfaces'
 import { GeneratePublicKeyModalComponent } from './generate-public-key-modal/generate-public-key-modal.component'
 import { SetPublicKeyModalComponent } from './set-public-key-modal/set-public-key-modal.component'
@@ -36,8 +33,8 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 	constructor(
 		private keyService: KeyService,
 		private clipboardService: ClipboardService,
-		private generatePublicKeyModal:GeneratePublicKeyModalComponent,
-		private setPublicKeyModalComponent:SetPublicKeyModalComponent
+		private generatePublicKeyModal: GeneratePublicKeyModalComponent,
+		private setPublicKeyModalComponent: SetPublicKeyModalComponent
 	) {
 		super()
 	}
@@ -48,27 +45,23 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 		}
 	}
 
-	showSetPublicKeyModal():void{
-		this.setPublicKeyModalComponent.showSetPublicKeyModal(this.userinfo.PublicKey).subscribe(() =>{
-			console.log("event submitted")
-			this.getUserPublicKey()
-		})
-
-	}
-
-	showGeneratePublicKeyModal():void{
-		this.generatePublicKeyModal.showGeneratePublicKeyModal(this.userinfo.UserLogin).subscribe(() =>{
-			console.log("event submitted")
+	showSetPublicKeyModal(): void {
+		this.setPublicKeyModalComponent.showSetPublicKeyModal(this.userinfo.PublicKey).subscribe(() => {
+			console.log('event submitted')
 			this.getUserPublicKey()
 		})
 	}
 
-	unsetAcknowledgment():void{
-		this.acknowledgement_given=false;
+	showGeneratePublicKeyModal(): void {
+		this.generatePublicKeyModal.showGeneratePublicKeyModal(this.userinfo.UserLogin).subscribe(() => {
+			console.log('event submitted')
+			this.getUserPublicKey()
+		})
 	}
 
-
-
+	unsetAcknowledgment(): void {
+		this.acknowledgement_given = false
+	}
 
 	isKeyBlocked(): void {
 		this.keyService.isBlocked(this.userinfo.PublicKey.trim()).subscribe((res: BlacklistedResponse) => {
@@ -82,8 +75,6 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 			this.currentKeyBlockedChanged.emit(this.current_key_blocked)
 		})
 	}
-
-
 
 	copyToClipboard(text: string): void {
 		if (this.clipboardService.isSupported) {

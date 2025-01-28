@@ -99,7 +99,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, {
 			initialState,
-			class: 'modal-lg'
+			class: 'modal-xl'
 		})
 		this.subscribeToBsModalRef()
 		// this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
