@@ -22,16 +22,16 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
 
 	project: Application
-	preSavedModification: ApplicationModification;
-	preSavedAdjustment: ApplicationModification;
+	preSavedModification: ApplicationModification
+	preSavedAdjustment: ApplicationModification
 	temp_project_modification: ApplicationModification
 
 	adjusted_project_modification: ApplicationModification
-	flavorRetrievalInProgress: boolean = false;
+	flavorRetrievalInProgress: boolean = false
 
 	expected_total_credits: number = 0
 	flavorTypes: FlavorType[] = []
-	shown_flavors:  ShownFlavors = {};
+	shown_flavors: ShownFlavors = {}
 	min_vm: boolean = true
 
 	min_vm_adjusted: boolean = true
@@ -67,8 +67,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			this.flavorService.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {
 				this.flavorTypes = result
 				for (const flavorType of this.flavorTypes) {
-					this.shown_flavors[flavorType.long_name] = {};
-		
+					this.shown_flavors[flavorType.long_name] = {}
 				}
 				this.getFlavors()
 			})
@@ -110,36 +109,32 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	}
 
 	getFlavors(): void {
-		this.flavorRetrievalInProgress = true;
+		this.flavorRetrievalInProgress = true
 		this.subscription.add(
 			this.flavorService
 				.getListOfFlavorsAvailable(this.project.project_application_id.toString(), true)
 				.subscribe((flavors: Flavor[]): void => {
 					this.temp_project_modification.flavors = []
 					for (const flavor of flavors) {
-			
 						if (this.project.project_application_openstack_project || flavor.simple_vm) {
-							if (flavor.name in this.shown_flavors[flavor.type.long_name])
-								{
-									this.shown_flavors[flavor.type.long_name][flavor.name].push(flavor)
-								} else {
-									this.shown_flavors[flavor.type.long_name][flavor.name] = [flavor];
-								}
+							if (flavor.name in this.shown_flavors[flavor.type.long_name]) {
+								this.shown_flavors[flavor.type.long_name][flavor.name].push(flavor)
+							} else {
+								this.shown_flavors[flavor.type.long_name][flavor.name] = [flavor]
+							}
 						}
-						
 					}
-					this.flavorRetrievalInProgress = false;
+					this.flavorRetrievalInProgress = false
 
 					this.checkFlavorDifferences()
-
 				})
 		)
 	}
 
 	getFlavorNamesByType(type: FlavorType): string[] {
-		let names: string[] = Object.keys(this.shown_flavors[type.long_name]);
+		const names: string[] = Object.keys(this.shown_flavors[type.long_name])
 
-		return names;
+		return names
 	}
 
 	checkFlavorDifferences(): void {
@@ -152,44 +147,42 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				const disabled_flavor: Flavor = new Flavor(flavor)
 				disabled_flavor.setDisabled(true)
 				const mod_flavor: Flavor = new Flavor(flavor)
-				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name].push(mod_flavor);
+				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name].push(mod_flavor)
 				this.shown_flavors[disabled_flavor.type.long_name][disabled_flavor.name].push(disabled_flavor)
 				this.temp_project_modification.flavors.push(mod_flavor)
-				
 			} else {
 				// else in shown_flavors, may be different than old one
-				this.shown_flavors[flavor.type.long_name][flavor.name][idx].counter = flavor.counter;
+				this.shown_flavors[flavor.type.long_name][flavor.name][idx].counter = flavor.counter
 				const mod_flavor: Flavor = new Flavor(this.shown_flavors[flavor.type.long_name][flavor.name][idx])
 				this.temp_project_modification.flavors.push(mod_flavor)
 				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name].splice(idx, 0, mod_flavor)
-				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name][idx].setDisabled(true);
-
+				this.shown_flavors[mod_flavor.type.long_name][mod_flavor.name][idx].setDisabled(true)
 			}
 		}
-		this.buildMissingFlavorPairs();
+		this.buildMissingFlavorPairs()
 
 		if (this.preSavedModification) {
-			this.temp_project_modification = new ApplicationModification(this.preSavedModification);
+			this.temp_project_modification = new ApplicationModification(this.preSavedModification)
 		}
 		if (this.preSavedAdjustment) {
-			this.adjusted_project_modification = new ApplicationModification(this.preSavedAdjustment);
+			this.adjusted_project_modification = new ApplicationModification(this.preSavedAdjustment)
 		}
 		this.temp_project_modification.calculateRamCores()
 	}
 
 	buildMissingFlavorPairs(): void {
-		let copyOfShownFlavors:  ShownFlavors = this.shown_flavors;
+		const copyOfShownFlavors: ShownFlavors = this.shown_flavors
 
 		for (const flavorType of Object.keys(copyOfShownFlavors)) {
 			for (const flavorName of Object.keys(copyOfShownFlavors[flavorType])) {
-				let tempFlavors: Flavor[] = copyOfShownFlavors[flavorType][flavorName];
+				const tempFlavors: Flavor[] = copyOfShownFlavors[flavorType][flavorName]
 				if (tempFlavors.length === 1) {
-					let generatedFlavor: Flavor = new Flavor(tempFlavors[0]);
-					generatedFlavor.setDisabled(!generatedFlavor.disabled);
+					const generatedFlavor: Flavor = new Flavor(tempFlavors[0])
+					generatedFlavor.setDisabled(!generatedFlavor.disabled)
 					if (generatedFlavor.disabled) {
-						this.shown_flavors[flavorType][flavorName].unshift(generatedFlavor);
+						this.shown_flavors[flavorType][flavorName].unshift(generatedFlavor)
 					} else {
-						this.shown_flavors[flavorType][flavorName].push(generatedFlavor);
+						this.shown_flavors[flavorType][flavorName].push(generatedFlavor)
 					}
 				}
 			}
@@ -355,21 +348,16 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 				}
 			} else if ('enterData' in result) {
 				if (adjustment) {
-					this.event.emit(
-						{
-							backToInput: true,
-							adjustedModification: this.adjusted_project_modification,
-						}
-					)
+					this.event.emit({
+						backToInput: true,
+						adjustedModification: this.adjusted_project_modification
+					})
 				} else {
-					this.event.emit(
-						{
-							backToInput: true,
-							modification: this.temp_project_modification,
-						}
-					)
+					this.event.emit({
+						backToInput: true,
+						modification: this.temp_project_modification
+					})
 				}
-				
 			} else {
 				this.event.emit({ reload: false })
 			}
