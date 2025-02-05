@@ -11,7 +11,6 @@ import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
 import { FlavorService } from '../../../api-connector/flavor.service'
 import { CreditsService } from '../../../api-connector/credits.service'
 import { ShownFlavors } from 'app/shared/classes/shownFlavors.interface'
-import { FlavorCounterPipe } from 'app/pipe-module/pipes/flavorcounter'
 
 @Component({
 	selector: 'app-modification-request',
