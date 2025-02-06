@@ -44,7 +44,7 @@ import { UncaughtExceptionHandler } from './error-handler/UncaughtExceptionHandl
 import { TitleHeadbarComponent } from './shared/title-headbar.component'
 import { VoService } from './api-connector/vo.service'
 import { TokenInterceptor } from './api-connector/token-interceptor'
-import { PipeModuleModule } from './pipe-module/pipe-module.module'
+
 import { FacilityService } from './api-connector/facility.service'
 import { TitleService } from './title.service'
 
@@ -55,39 +55,38 @@ import { TitleService } from './title.service'
     declarations: [AppComponent],
     bootstrap: [AppComponent],
     imports: [
-        NgScrollbarModule,
-        BrowserModule,
-        AppRoutingModule,
-        CommonModule,
-        BsDropdownModule.forRoot(),
-        TabsModule.forRoot(),
-        ModalModule.forRoot(),
-        PaginationModule.forRoot(),
-        SharedModuleModule,
-        Angulartics2Module.forRoot(),
-        NgSelectModule,
-        BrowserAnimationsModule,
-        ClipboardModule,
-        PipeModuleModule,
-        TimepickerModule.forRoot(),
-        BsDatepickerModule.forRoot(),
-        AlertModule,
-        MatomoModule.forRoot({
-            siteId: environment.MATOMO_SITE_ID,
-            trackerUrl: environment.MATOMO_TRACKING_URL
-        }),
-        MatomoRouterModule,
-        FullLayoutComponent,
-        AsideToggleDirective,
-        RegistrationInfoComponent,
-        ConsentInfoComponent,
-        BreadcrumbsComponent,
-        SidebarToggleDirective,
-        SidebarMinimizeDirective,
-        MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective,
-        TitleHeadbarComponent
-    ],
+    NgScrollbarModule,
+    BrowserModule,
+    AppRoutingModule,
+    CommonModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    ModalModule.forRoot(),
+    PaginationModule.forRoot(),
+    SharedModuleModule,
+    Angulartics2Module.forRoot(),
+    NgSelectModule,
+    BrowserAnimationsModule,
+    ClipboardModule,
+    TimepickerModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    AlertModule,
+    MatomoModule.forRoot({
+        siteId: environment.MATOMO_SITE_ID,
+        trackerUrl: environment.MATOMO_TRACKING_URL
+    }),
+    MatomoRouterModule,
+    FullLayoutComponent,
+    AsideToggleDirective,
+    RegistrationInfoComponent,
+    ConsentInfoComponent,
+    BreadcrumbsComponent,
+    SidebarToggleDirective,
+    SidebarMinimizeDirective,
+    MobileSidebarToggleDirective,
+    SidebarOffCanvasCloseDirective,
+    TitleHeadbarComponent
+],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

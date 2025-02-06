@@ -15,9 +15,9 @@ import { AddcloudapplicationComponent } from './application-formular/openstack-f
 import { TypeOverviewComponent } from './type-overview.component'
 import { ValidationApplicationComponent } from '../validation-application/validation-application.component'
 import { ApplicationDetailComponent } from './application-detail/application-detail.component'
-import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module'
+
 import { ApplicationFormularComponent } from './application-formular/application-formular.component'
-import { PipeModuleModule } from '../pipe-module/pipe-module.module'
+
 import { ApplicationPiDetailComponent } from './application-detail/application-pi-detail/application-pi-detail.component'
 import { InformationDetailComponent } from './application-detail/information-detail/information-detail.component'
 import { AdjustmentDetailComponent } from './application-detail/adjustment-detail/adjustment-detail.component'
@@ -25,7 +25,7 @@ import { ResourceDetailComponent } from './application-detail/resource-detail/re
 import { ModificationDetailComponent } from './application-detail/modification-detail/modification-detail.component'
 import { CreditsExtensionDetailComponent } from './application-detail/credits-extension-detail/credits-extension-detail.component'
 import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component'
-import { NewsModule } from '../news/news.module'
+
 import { SharedModuleModule } from '../shared/shared_modules/shared-module.module'
 import { KubernetesFormularComponent } from './application-formular/kubernetes-formular/kubernetes-formular.component'
 
@@ -39,40 +39,37 @@ import { ApplicationFacilityActionsComponent } from './application-facility-acti
  */
 @NgModule({
     imports: [
-        AccordionModule.forRoot(),
-        ApplicationsRoutingModule,
-        TabsModule,
-        CommonModule,
-        FormsModule,
-        ModalModule.forRoot(),
-        SharedDirectivesModule,
-        PipeModuleModule,
-        NewsModule,
-        NgSelectModule,
-        BadgeModule,
-        SharedModuleModule,
-        TableDirective,
-        TooltipModule,
-        ApplicationsComponent,
-        AddsimplevmComponent,
-        AddcloudapplicationComponent,
-        KubernetesFormularComponent,
-        TypeOverviewComponent,
-        ValidationApplicationComponent,
-        ApplicationDetailComponent,
-        ApplicationFormularComponent,
-        ApplicationPiDetailComponent,
-        InformationDetailComponent,
-        ResourceDetailComponent,
-        ModificationDetailComponent,
-        CreditsExtensionDetailComponent,
-        LifetimeExtensionDetailComponent,
-        AdjustmentDetailComponent,
-        ApplicationListComponent,
-        ApplicationCardComponent,
-        ApplicationVoActionsComponent,
-        ApplicationFacilityActionsComponent
-    ],
+    AccordionModule.forRoot(),
+    ApplicationsRoutingModule,
+    TabsModule,
+    CommonModule,
+    FormsModule,
+    ModalModule.forRoot(),
+    NgSelectModule,
+    BadgeModule,
+    SharedModuleModule,
+    TableDirective,
+    TooltipModule,
+    ApplicationsComponent,
+    AddsimplevmComponent,
+    AddcloudapplicationComponent,
+    KubernetesFormularComponent,
+    TypeOverviewComponent,
+    ValidationApplicationComponent,
+    ApplicationDetailComponent,
+    ApplicationFormularComponent,
+    ApplicationPiDetailComponent,
+    InformationDetailComponent,
+    ResourceDetailComponent,
+    ModificationDetailComponent,
+    CreditsExtensionDetailComponent,
+    LifetimeExtensionDetailComponent,
+    AdjustmentDetailComponent,
+    ApplicationListComponent,
+    ApplicationCardComponent,
+    ApplicationVoActionsComponent,
+    ApplicationFacilityActionsComponent
+],
     exports: [ApplicationDetailComponent, ApplicationListComponent]
 })
 export class ApplicationsModule {}

@@ -6,21 +6,19 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
 import { AlertModule } from 'ngx-bootstrap/alert'
 import { AccordionModule } from 'ngx-bootstrap/accordion'
 import { CreditsCalculatorComponent } from './credits-calculator.component'
-import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module'
-import { PipeModuleModule } from '../pipe-module/pipe-module.module'
+
+
 
 @NgModule({
     imports: [
-        CommonModule,
-        FormsModule,
-        SharedDirectivesModule,
-        TimepickerModule.forRoot(),
-        BsDatepickerModule.forRoot(),
-        ReactiveFormsModule,
-        PipeModuleModule,
-        AlertModule,
-        AccordionModule,
-        CreditsCalculatorComponent
-    ]
+    CommonModule,
+    FormsModule,
+    TimepickerModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    ReactiveFormsModule,
+    AlertModule,
+    AccordionModule,
+    CreditsCalculatorComponent
+]
 })
 export class CreditsCalculatorModule {}
