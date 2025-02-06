@@ -5,8 +5,8 @@ import { SocialConsent } from 'app/shared/shared_modules/testimonial-forms/socia
  * Generic Pipe to check if element is in list.
  */
 @Pipe({
-    name: 'socialConsentGiven',
-    standalone: false
+	name: 'socialConsentGiven',
+	standalone: false
 })
 export class SocialConsentGivenPipe implements PipeTransform {
 	transform(list: SocialConsent[], value: SocialConsent): boolean {

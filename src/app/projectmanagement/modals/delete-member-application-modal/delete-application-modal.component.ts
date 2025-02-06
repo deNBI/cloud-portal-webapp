@@ -11,9 +11,9 @@ import { ApplicationsService } from '../../../api-connector/applications.service
 	providedIn: 'root'
 })
 @Component({
-    selector: 'app-delete-member-application-modal',
-    templateUrl: './delete-application-modal.component.html',
-    standalone: false
+	selector: 'app-delete-member-application-modal',
+	templateUrl: './delete-application-modal.component.html',
+	standalone: false
 })
 export class DeleteApplicationModal extends AbstractBaseModalComponent {
 	application: Application

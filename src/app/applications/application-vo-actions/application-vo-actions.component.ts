@@ -21,10 +21,10 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
 import { ApplicationModification } from '../application_modification.model'
 
 @Component({
-    selector: 'app-application-vo-actions',
-    templateUrl: './application-vo-actions.component.html',
-    styleUrl: './application-vo-actions.component.scss',
-    standalone: false
+	selector: 'app-application-vo-actions',
+	templateUrl: './application-vo-actions.component.html',
+	styleUrl: './application-vo-actions.component.scss',
+	standalone: false
 })
 export class ApplicationVoActionsComponent extends AbstractBaseClass implements OnInit {
 	private subscription: Subscription = new Subscription()

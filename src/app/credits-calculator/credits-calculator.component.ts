@@ -14,11 +14,11 @@ import { Application_States } from '../shared/shared_modules/baseClass/abstract-
 import { ResourceWeight } from './resource-weights.model/resource-weights.model'
 
 @Component({
-    selector: 'app-credits-calculator',
-    templateUrl: './credits-calculator.component.html',
-    styleUrls: ['./credits-calculator.component.scss'],
-    providers: [FacilityService, FlavorService, CreditsService, GroupService],
-    standalone: false
+	selector: 'app-credits-calculator',
+	templateUrl: './credits-calculator.component.html',
+	styleUrls: ['./credits-calculator.component.scss'],
+	providers: [FacilityService, FlavorService, CreditsService, GroupService],
+	standalone: false
 })
 export class CreditsCalculatorComponent implements OnInit {
 	title: string = 'Credits Calculator'

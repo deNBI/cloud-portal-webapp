@@ -10,11 +10,11 @@ import 'svg2pdf.js'
  * Component to display graphs which illustrate numbers for VO.
  */
 @Component({
-    selector: 'app-number-charts',
-    templateUrl: './number-charts.component.html',
-    styleUrls: ['./number-charts.component.css'],
-    providers: [NumbersService],
-    standalone: false
+	selector: 'app-number-charts',
+	templateUrl: './number-charts.component.html',
+	styleUrls: ['./number-charts.component.css'],
+	providers: [NumbersService],
+	standalone: false
 })
 export class NumberChartsComponent implements OnInit {
 	is_vo_admin: boolean = true

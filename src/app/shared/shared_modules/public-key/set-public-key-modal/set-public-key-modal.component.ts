@@ -7,10 +7,10 @@ import { BsModalService } from 'ngx-bootstrap/modal'
 
 @Injectable({ providedIn: 'root' })
 @Component({
-    selector: 'app-set-public-key-modal',
-    templateUrl: './set-public-key-modal.component.html',
-    styleUrl: './set-public-key-modal.component.scss',
-    standalone: false
+	selector: 'app-set-public-key-modal',
+	templateUrl: './set-public-key-modal.component.html',
+	styleUrl: './set-public-key-modal.component.scss',
+	standalone: false
 })
 export class SetPublicKeyModalComponent extends AbstractBaseModalComponent {
 	acknowledgement_given: boolean = false

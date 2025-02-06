@@ -14,11 +14,11 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
  * Class which displays the details of an application.
  */
 @Component({
-    selector: 'app-application-detail',
-    templateUrl: './application-detail.component.html',
-    styleUrls: ['./application-detail.component.scss'],
-    providers: [FacilityService, UserService, ApplicationsService, CreditsService],
-    standalone: false
+	selector: 'app-application-detail',
+	templateUrl: './application-detail.component.html',
+	styleUrls: ['./application-detail.component.scss'],
+	providers: [FacilityService, UserService, ApplicationsService, CreditsService],
+	standalone: false
 })
 export class ApplicationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
 	PI_USER_TAB: number = 0

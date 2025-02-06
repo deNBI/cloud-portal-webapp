@@ -7,10 +7,10 @@ import { GPUSpecification } from '../gpu-specification'
  * Class for GPU-Specifications
  */
 @Component({
-    selector: 'app-gpu-specification-overview',
-    templateUrl: './gpu-specification-overview.component.html',
-    providers: [FacilityService],
-    standalone: false
+	selector: 'app-gpu-specification-overview',
+	templateUrl: './gpu-specification-overview.component.html',
+	providers: [FacilityService],
+	standalone: false
 })
 export class GPUSpecificationOverviewComponent implements OnInit {
 	gpuSpecifications: GPUSpecification[]

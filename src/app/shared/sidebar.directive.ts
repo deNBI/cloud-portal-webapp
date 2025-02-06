@@ -1,4 +1,3 @@
- 
 import { Directive, HostListener } from '@angular/core'
 
 // tslint:disable
@@ -7,8 +6,8 @@ import { Directive, HostListener } from '@angular/core'
  * Allows the sidebar to be toggled via click.
  */
 @Directive({
-    selector: '[appSidebarToggler]',
-    standalone: false
+	selector: '[appSidebarToggler]',
+	standalone: false
 })
 export class SidebarToggleDirective {
 	@HostListener('click', ['$event']) toggleOpen($event: any) {
@@ -18,8 +17,8 @@ export class SidebarToggleDirective {
 }
 
 @Directive({
-    selector: '[appSidebarMinimizer]',
-    standalone: false
+	selector: '[appSidebarMinimizer]',
+	standalone: false
 })
 export class SidebarMinimizeDirective {
 	@HostListener('click', ['$event']) toggleOpen($event: any) {
@@ -29,8 +28,8 @@ export class SidebarMinimizeDirective {
 }
 
 @Directive({
-    selector: '[appMobileSidebarToggler]',
-    standalone: false
+	selector: '[appMobileSidebarToggler]',
+	standalone: false
 })
 export class MobileSidebarToggleDirective {
 	// Check if element has class
@@ -48,8 +47,8 @@ export class MobileSidebarToggleDirective {
  * Allows the off-canvas sidebar to be closed via click.
  */
 @Directive({
-    selector: '[appSidebarClose]',
-    standalone: false
+	selector: '[appSidebarClose]',
+	standalone: false
 })
 export class SidebarOffCanvasCloseDirective {
 	// Check if element has class
@@ -64,10 +63,9 @@ export class SidebarOffCanvasCloseDirective {
 			while (newClass.indexOf(` ${elementClassName} `) >= 0) {
 				newClass = newClass.replace(` ${elementClassName} `, ' ')
 			}
-			 
+
 			elem.className = newClass.replace(/^\s+|\s+$/g, '')
 		} else {
-			 
 			elem.className += ` ${elementClassName}`
 		}
 	}

@@ -11,10 +11,10 @@ import { User } from '../application.model/user.model'
 import { ApplicationDetailComponent } from '../application-detail/application-detail.component'
 
 @Component({
-    selector: 'app-application-card',
-    templateUrl: './application-card.component.html',
-    styleUrl: './application-card.component.scss',
-    standalone: false
+	selector: 'app-application-card',
+	templateUrl: './application-card.component.html',
+	styleUrl: './application-card.component.scss',
+	standalone: false
 })
 export class ApplicationCardComponent extends AbstractBaseClass implements OnInit {
 	@Input() application: Application

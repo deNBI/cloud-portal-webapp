@@ -16,10 +16,10 @@ import { ClientLimitsComponent } from './modals/client-limits..component'
  * Client component.
  */
 @Component({
-    selector: 'app-client-overview',
-    templateUrl: 'clientOverview.html',
-    providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
-    standalone: false
+	selector: 'app-client-overview',
+	templateUrl: 'clientOverview.html',
+	providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
+	standalone: false
 })
 export class ClientOverviewComponent implements OnInit, OnDestroy {
 	title: string = 'Client Overview'

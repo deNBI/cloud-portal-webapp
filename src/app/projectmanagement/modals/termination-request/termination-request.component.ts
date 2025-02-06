@@ -11,10 +11,10 @@ import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-
 	providedIn: 'root'
 })
 @Component({
-    selector: 'app-termination-request',
-    templateUrl: './termination-request.component.html',
-    styleUrl: './termination-request.component.scss',
-    standalone: false
+	selector: 'app-termination-request',
+	templateUrl: './termination-request.component.html',
+	styleUrl: './termination-request.component.scss',
+	standalone: false
 })
 export class TerminationRequestComponent extends AbstractBaseModalComponent {
 	application: Application

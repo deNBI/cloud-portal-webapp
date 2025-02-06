@@ -25,10 +25,10 @@ import { UserInfoComponent } from '../userinfo/userinfo.component'
 	providedIn: 'root'
 })
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './full-layout.component.html',
-    providers: [ApplicationsService, VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings],
-    standalone: false
+	selector: 'app-dashboard',
+	templateUrl: './full-layout.component.html',
+	providers: [ApplicationsService, VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings],
+	standalone: false
 })
 export class FullLayoutComponent extends ApplicationBaseClassComponent implements OnInit {
 	public year: number = new Date().getFullYear()

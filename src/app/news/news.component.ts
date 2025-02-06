@@ -7,11 +7,11 @@ import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { GroupService } from '../api-connector/group.service'
 
 @Component({
-    selector: 'app-news',
-    templateUrl: './news.component.html',
-    styleUrls: ['./news.component.scss'],
-    providers: [NewsService],
-    standalone: false
+	selector: 'app-news',
+	templateUrl: './news.component.html',
+	styleUrls: ['./news.component.scss'],
+	providers: [NewsService],
+	standalone: false
 })
 export class NewsComponent implements OnInit, OnDestroy {
 	@Input() tags: string[] = []
@@ -57,9 +57,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 	constructor(
 		private news_service: NewsService,
 		private groupService: GroupService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.subscription = new Subscription()

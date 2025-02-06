@@ -4,8 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Generic Pipe to check if element is in list.
  */
 @Pipe({
-    name: 'inList',
-    standalone: false
+	name: 'inList',
+	standalone: false
 })
 export class InListPipe implements PipeTransform {
 	transform(list: any[], value: any): boolean {

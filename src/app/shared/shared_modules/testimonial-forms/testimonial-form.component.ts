@@ -8,11 +8,11 @@ import { Application } from '../../../applications/application.model/application
 import { SocialConsent } from './social-consent.model'
 
 @Component({
-    selector: 'app-testimonial-form',
-    templateUrl: './testimonial-form.component.html',
-    styleUrls: ['./testimonial-form.component.scss'],
-    providers: [NewsService],
-    standalone: false
+	selector: 'app-testimonial-form',
+	templateUrl: './testimonial-form.component.html',
+	styleUrls: ['./testimonial-form.component.scss'],
+	providers: [NewsService],
+	standalone: false
 })
 export class TestimonialFormComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()

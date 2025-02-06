@@ -3,10 +3,10 @@ import { is_vo } from '../../../../globalvar'
 import { Application } from '../../../../../applications/application.model/application.model'
 
 @Component({
-    selector: 'app-application-badges',
-    templateUrl: './application-badges.component.html',
-    styleUrls: ['./application-badges.component.scss'],
-    standalone: false
+	selector: 'app-application-badges',
+	templateUrl: './application-badges.component.html',
+	styleUrls: ['./application-badges.component.scss'],
+	standalone: false
 })
 export class ApplicationBadgesComponent {
 	@Input() application: Application

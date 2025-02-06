@@ -14,11 +14,11 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
  * Component to display graphs which illustrate numbers for VO.
  */
 @Component({
-    selector: 'app-maintenance',
-    templateUrl: './maintenance.component.html',
-    styleUrls: ['./maintenance.component.scss'],
-    providers: [WorkshopService, VoService],
-    standalone: false
+	selector: 'app-maintenance',
+	templateUrl: './maintenance.component.html',
+	styleUrls: ['./maintenance.component.scss'],
+	providers: [WorkshopService, VoService],
+	standalone: false
 })
 export class MaintenanceComponent implements OnInit {
 	is_vo_admin: boolean = false

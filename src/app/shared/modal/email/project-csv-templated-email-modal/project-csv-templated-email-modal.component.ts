@@ -7,11 +7,11 @@ import { CsvMailTemplateModel } from '../../../classes/csvMailTemplate.model'
 import { NotificationModalComponent } from '../../notification-modal'
 
 @Component({
-    selector: 'app-project-csv-templated-email-modal',
-    templateUrl: './project-csv-templated-email-modal.component.html',
-    styleUrls: ['./project-csv-templated-email.scss'],
-    providers: [EmailService],
-    standalone: false
+	selector: 'app-project-csv-templated-email-modal',
+	templateUrl: './project-csv-templated-email-modal.component.html',
+	styleUrls: ['./project-csv-templated-email.scss'],
+	providers: [EmailService],
+	standalone: false
 })
 export class ProjectCsvTemplatedEmailModalComponent implements OnInit, OnDestroy {
 	csvMailTemplate: CsvMailTemplateModel
@@ -32,9 +32,7 @@ Proj2, VM_2, Giessen`
 		public bsModalRef: BsModalRef,
 		private emailService: EmailService,
 		private notificationModal: NotificationModalComponent
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit() {
 		this.getMailTemplates()

@@ -13,10 +13,10 @@ import { ConfirmationModalComponent } from '../../shared/modal/confirmation-moda
 import { ApplicationsService } from '../../api-connector/applications.service'
 
 @Component({
-    selector: 'app-application-facility-actions',
-    templateUrl: './application-facility-actions.component.html',
-    styleUrl: './application-facility-actions.component.scss',
-    standalone: false
+	selector: 'app-application-facility-actions',
+	templateUrl: './application-facility-actions.component.html',
+	styleUrl: './application-facility-actions.component.scss',
+	standalone: false
 })
 export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	private subscription: Subscription = new Subscription()
@@ -42,8 +42,8 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	}
 
 	switchCollaps() {
-		this.isCollapsed = !this.isCollapsed;
-		this.switchCollapseEvent.emit();
+		this.isCollapsed = !this.isCollapsed
+		this.switchCollapseEvent.emit()
 	}
 
 	triggerRemoveApplication() {

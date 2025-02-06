@@ -5,8 +5,8 @@ import { filter } from 'rxjs/operators'
 
 // tslint:disable
 @Component({
-    selector: 'app-breadcrumbs',
-    template: ` <ng-template ngFor let-breadcrumb [ngForOf]="breadcrumbs" let-last="last">
+	selector: 'app-breadcrumbs',
+	template: ` <ng-template ngFor let-breadcrumb [ngForOf]="breadcrumbs" let-last="last">
 		<li
 			class="breadcrumb-item"
 			*ngIf="
@@ -19,7 +19,7 @@ import { filter } from 'rxjs/operators'
 			<span *ngIf="last" [routerLink]="breadcrumb.url">{{ breadcrumb.label.title }}</span>
 		</li>
 	</ng-template>`,
-    standalone: false
+	standalone: false
 })
 export class BreadcrumbsComponent implements OnInit {
 	breadcrumbs: object[]
@@ -40,7 +40,7 @@ export class BreadcrumbsComponent implements OnInit {
 			do {
 				const childrenRoutes = currentRoute.children
 				currentRoute = null
-				 
+
 				childrenRoutes.forEach(route => {
 					if (route.outlet === 'primary') {
 						const routeSnapshot = route.snapshot

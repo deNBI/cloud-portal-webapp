@@ -6,9 +6,9 @@ import { MaintenanceTimeFrame } from '../../vo_manager/maintenance/maintenanceTi
  * Pipe to check if the timeframe set is valid, which means that the start-time is before the end time.
  */
 @Pipe({
-    name: 'isValidTimeFrame',
-    pure: false,
-    standalone: false
+	name: 'isValidTimeFrame',
+	pure: false,
+	standalone: false
 })
 export class ValidTimeFramePipe implements PipeTransform {
 	transform(timeframe: WorkshopTimeFrame | MaintenanceTimeFrame): boolean {

@@ -1,4 +1,3 @@
- 
 import { Pipe, PipeTransform } from '@angular/core'
 import { ApplicationRessourceUsage } from '../../applications/application-ressource-usage/application-ressource-usage'
 
@@ -6,8 +5,8 @@ import { ApplicationRessourceUsage } from '../../applications/application-ressou
  * Pipe which compares status.
  */
 @Pipe({
-    name: 'noVMsPipe',
-    standalone: false
+	name: 'noVMsPipe',
+	standalone: false
 })
 export class NoVMsPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage, additional_vms: number = 0): boolean {
@@ -23,8 +22,8 @@ export class NoVMsPipe implements PipeTransform {
  * Pipe which compares status.
  */
 @Pipe({
-    name: 'noCoresPipe',
-    standalone: false
+	name: 'noCoresPipe',
+	standalone: false
 })
 export class NoCoresPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage): boolean {
@@ -36,8 +35,8 @@ export class NoCoresPipe implements PipeTransform {
  * Pipe which compares status.
  */
 @Pipe({
-    name: 'noRamPipe',
-    standalone: false
+	name: 'noRamPipe',
+	standalone: false
 })
 export class NoRamPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage): boolean {

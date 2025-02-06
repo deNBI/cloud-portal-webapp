@@ -8,10 +8,10 @@ import { Application } from '../../../applications/application.model/application
 	providedIn: 'root'
 })
 @Component({
-    selector: 'app-add-user-modal',
-    templateUrl: './add-user-modal.component.html',
-    styleUrl: './add-user-modal.component.scss',
-    standalone: false
+	selector: 'app-add-user-modal',
+	templateUrl: './add-user-modal.component.html',
+	styleUrl: './add-user-modal.component.scss',
+	standalone: false
 })
 export class AddUserModalComponent extends AbstractBaseModalComponent {
 	invitation_link: string

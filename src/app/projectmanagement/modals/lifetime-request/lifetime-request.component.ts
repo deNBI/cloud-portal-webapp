@@ -9,11 +9,11 @@ import { ResultComponent } from '../result/result.component'
 import { ApplicationsService } from '../../../api-connector/applications.service'
 
 @Component({
-    selector: 'app-lifetime-request',
-    templateUrl: './lifetime-request.component.html',
-    styleUrls: ['./lifetime-request.component.scss'],
-    providers: [CreditsService, ApplicationsService],
-    standalone: false
+	selector: 'app-lifetime-request',
+	templateUrl: './lifetime-request.component.html',
+	styleUrls: ['./lifetime-request.component.scss'],
+	providers: [CreditsService, ApplicationsService],
+	standalone: false
 })
 export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	project: Application
@@ -37,7 +37,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		public bsModalRef: BsModalRef,
 		private modalService: BsModalService,
 		private creditsService: CreditsService,
-		private applicationsService: ApplicationsService  
+		private applicationsService: ApplicationsService
 	) {}
 
 	ngOnInit(): void {

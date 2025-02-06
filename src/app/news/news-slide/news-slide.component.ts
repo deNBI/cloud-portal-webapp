@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core'
 import { News } from '../news.model'
 
 @Component({
-    selector: 'app-news-slide',
-    templateUrl: './news-slide.component.html',
-    styleUrls: ['./news-slide.component.scss'],
-    standalone: false
+	selector: 'app-news-slide',
+	templateUrl: './news-slide.component.html',
+	styleUrls: ['./news-slide.component.scss'],
+	standalone: false
 })
 export class NewsSlideComponent implements OnInit {
 	window_size: number
