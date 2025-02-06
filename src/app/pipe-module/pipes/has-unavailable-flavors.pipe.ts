@@ -5,8 +5,8 @@ import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor'
  * Pipe which checks if any of the flavors in a given list are unavailable.
  */
 @Pipe({
-    name: 'hasUnavailableFlavors',
-    pure: false
+	name: 'hasUnavailableFlavors',
+	pure: false
 })
 export class HasUnavailableFlavorsPipe implements PipeTransform {
 	transform(flavors: Flavor[]): boolean {

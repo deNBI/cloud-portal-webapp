@@ -8,23 +8,34 @@ import { VolumeStorageFactor } from './volume-storage-factor'
 import { GeneralStorageFactor } from './general-storage-factor'
 import { ResourceMachine } from './resource-machine'
 import { GPUSpecification } from './gpu-specification'
-import { NgIf, NgClass, NgFor, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ResourcemachineOverviewComponent } from './resourcemachine-overview/resourcemachine-overview.component';
-import { GeneralstoragefactorOverviewComponent } from './generalstoragefactor-overview/generalstoragefactor-overview.component';
-import { ObjectstoragefactorOverviewComponent } from './objectstoragefactor-overview/objectstoragefactor-overview.component';
-import { VolumestoragefactorOverviewComponent } from './volumestoragefactor-overview/volumestoragefactor-overview.component';
-import { GPUSpecificationOverviewComponent } from './gpu-specification-overview/gpu-specification-overview.component';
+import { NgIf, NgClass, NgFor, DatePipe } from '@angular/common'
+import { FormsModule } from '@angular/forms'
+import { ResourcemachineOverviewComponent } from './resourcemachine-overview/resourcemachine-overview.component'
+import { GeneralstoragefactorOverviewComponent } from './generalstoragefactor-overview/generalstoragefactor-overview.component'
+import { ObjectstoragefactorOverviewComponent } from './objectstoragefactor-overview/objectstoragefactor-overview.component'
+import { VolumestoragefactorOverviewComponent } from './volumestoragefactor-overview/volumestoragefactor-overview.component'
+import { GPUSpecificationOverviewComponent } from './gpu-specification-overview/gpu-specification-overview.component'
 
 /**
  * Facility resource component.
  */
 @Component({
-    selector: 'app-resources',
-    templateUrl: './resources.component.html',
-    styleUrls: ['./resources.component.scss'],
-    providers: [FacilityService],
-    imports: [NgIf, NgClass, FormsModule, NgFor, ResourcemachineOverviewComponent, GeneralstoragefactorOverviewComponent, ObjectstoragefactorOverviewComponent, VolumestoragefactorOverviewComponent, GPUSpecificationOverviewComponent, DatePipe]
+	selector: 'app-resources',
+	templateUrl: './resources.component.html',
+	styleUrls: ['./resources.component.scss'],
+	providers: [FacilityService],
+	imports: [
+		NgIf,
+		NgClass,
+		FormsModule,
+		NgFor,
+		ResourcemachineOverviewComponent,
+		GeneralstoragefactorOverviewComponent,
+		ObjectstoragefactorOverviewComponent,
+		VolumestoragefactorOverviewComponent,
+		GPUSpecificationOverviewComponent,
+		DatePipe
+	]
 })
 export class ResourcesComponent implements OnInit {
 	title: string = 'Resource Overview'
@@ -70,7 +81,7 @@ export class ResourcesComponent implements OnInit {
 	isLoaded: boolean = false
 	resources: Resources[]
 	visible_resources: Resources[]
-	showModificationCollapse: boolean = false;
+	showModificationCollapse: boolean = false
 
 	/**
 	 * Id of the table which will be converted to pdf or csv.
@@ -155,7 +166,7 @@ export class ResourcesComponent implements OnInit {
 	}
 
 	onChangeSelectedFacility(): void {
-		this.showModificationCollapse = false;
+		this.showModificationCollapse = false
 		this.setAllTabsFalse()
 		this.getSelectedFacilityResources()
 	}

@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute, NavigationEnd, RouterLink } from '@angular/router'
 
 import { filter } from 'rxjs/operators'
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { NgFor, NgIf, NgClass } from '@angular/common'
 
 // tslint:disable
 @Component({
-    selector: 'app-breadcrumbs',
-    template: ` <ng-template ngFor let-breadcrumb [ngForOf]="breadcrumbs" let-last="last">
+	selector: 'app-breadcrumbs',
+	template: ` <ng-template ngFor let-breadcrumb [ngForOf]="breadcrumbs" let-last="last">
 		<li
 			class="breadcrumb-item"
 			*ngIf="
@@ -20,7 +20,7 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
 			<span *ngIf="last" [routerLink]="breadcrumb.url">{{ breadcrumb.label.title }}</span>
 		</li>
 	</ng-template>`,
-    imports: [NgFor, NgIf, NgClass, RouterLink]
+	imports: [NgFor, NgIf, NgClass, RouterLink]
 })
 export class BreadcrumbsComponent implements OnInit {
 	breadcrumbs: object[]
@@ -41,7 +41,7 @@ export class BreadcrumbsComponent implements OnInit {
 			do {
 				const childrenRoutes = currentRoute.children
 				currentRoute = null
-				 
+
 				childrenRoutes.forEach(route => {
 					if (route.outlet === 'primary') {
 						const routeSnapshot = route.snapshot

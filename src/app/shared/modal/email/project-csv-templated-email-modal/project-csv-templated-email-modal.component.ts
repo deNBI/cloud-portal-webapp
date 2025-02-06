@@ -5,15 +5,15 @@ import { EmailService } from '../../../../api-connector/email.service'
 import { STATUS_LINK } from '../../../../../links/links'
 import { CsvMailTemplateModel } from '../../../classes/csvMailTemplate.model'
 import { NotificationModalComponent } from '../../notification-modal'
-import { NgFor, NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgFor, NgClass } from '@angular/common'
+import { FormsModule } from '@angular/forms'
 
 @Component({
-    selector: 'app-project-csv-templated-email-modal',
-    templateUrl: './project-csv-templated-email-modal.component.html',
-    styleUrls: ['./project-csv-templated-email.scss'],
-    providers: [EmailService],
-    imports: [NgFor, FormsModule, NgClass]
+	selector: 'app-project-csv-templated-email-modal',
+	templateUrl: './project-csv-templated-email-modal.component.html',
+	styleUrls: ['./project-csv-templated-email.scss'],
+	providers: [EmailService],
+	imports: [NgFor, FormsModule, NgClass]
 })
 export class ProjectCsvTemplatedEmailModalComponent implements OnInit, OnDestroy {
 	csvMailTemplate: CsvMailTemplateModel
@@ -34,9 +34,7 @@ Proj2, VM_2, Giessen`
 		public bsModalRef: BsModalRef,
 		private emailService: EmailService,
 		private notificationModal: NotificationModalComponent
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit() {
 		this.getMailTemplates()

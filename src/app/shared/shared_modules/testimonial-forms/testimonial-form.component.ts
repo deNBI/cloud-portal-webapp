@@ -6,15 +6,15 @@ import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL, SINGLE_TESTIMONIAL_PA
 import { NewsService } from '../../../api-connector/news.service'
 import { Application } from '../../../applications/application.model/application.model'
 import { SocialConsent } from './social-consent.model'
-import { NgIf, NgClass, NgFor } from '@angular/common';
-import { SocialConsentGivenPipe } from '../../../pipe-module/pipes/social-consent-given.pipe';
+import { NgIf, NgClass, NgFor } from '@angular/common'
+import { SocialConsentGivenPipe } from '../../../pipe-module/pipes/social-consent-given.pipe'
 
 @Component({
-    selector: 'app-testimonial-form',
-    templateUrl: './testimonial-form.component.html',
-    styleUrls: ['./testimonial-form.component.scss'],
-    providers: [NewsService],
-    imports: [NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, ModalModule, SocialConsentGivenPipe]
+	selector: 'app-testimonial-form',
+	templateUrl: './testimonial-form.component.html',
+	styleUrls: ['./testimonial-form.component.scss'],
+	providers: [NewsService],
+	imports: [NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, ModalModule, SocialConsentGivenPipe]
 })
 export class TestimonialFormComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()

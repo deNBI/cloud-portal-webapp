@@ -24,26 +24,54 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/pr
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
 import { TerminateProjectModalComponent } from './modals/terminate-project-modal/terminate-project-modal.component'
 import { DeclineProjectTerminationModalComponent } from './modals/decline-project-termination-modal/decline-project-termination-modal.component'
-import { TextColorDirective, TextBgColorDirective, BadgeComponent, InputGroupComponent, ButtonDirective } from '@coreui/angular';
-import { NgbPagination, NgbHighlight } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
-import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component';
-import { DatePickerComponent } from '../shared/datepicking/datepicker.component';
-import { HasStatusPipe } from '../pipe-module/pipes/has-status.pipe';
-import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe';
-import { InListPipe } from '../pipe-module/pipes/in-list.pipe';
-import { IsFutureTimePipe } from '../pipe-module/pipes/futureTime.pipe';
-import { HasStatusNotInListPipe } from '../pipe-module/pipes/has-status-not-in-list.pipe';
+import {
+	TextColorDirective,
+	TextBgColorDirective,
+	BadgeComponent,
+	InputGroupComponent,
+	ButtonDirective
+} from '@coreui/angular'
+import { NgbPagination, NgbHighlight } from '@ng-bootstrap/ng-bootstrap'
+import { FormsModule } from '@angular/forms'
+import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common'
+import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
+import { DatePickerComponent } from '../shared/datepicking/datepicker.component'
+import { HasStatusPipe } from '../pipe-module/pipes/has-status.pipe'
+import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
+import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
+import { IsFutureTimePipe } from '../pipe-module/pipes/futureTime.pipe'
+import { HasStatusNotInListPipe } from '../pipe-module/pipes/has-status-not-in-list.pipe'
 
 /**
  * Vo Overview component.
  */
 @Component({
-    selector: 'app-vo-overview',
-    templateUrl: 'voOverview.component.html',
-    providers: [VoService, GroupService, FacilityService, ProjectSortService],
-    imports: [TextColorDirective, TextBgColorDirective, BadgeComponent, NgbPagination, FormsModule, NgIf, InputGroupComponent, ButtonDirective, NgbdSortableHeaderDirective, NgFor, ApplicationBadgesComponent, NgbHighlight, ModalModule, DatePickerComponent, NgClass, AsyncPipe, HasStatusPipe, HasstatusinlistPipe, InListPipe, IsFutureTimePipe, HasStatusNotInListPipe]
+	selector: 'app-vo-overview',
+	templateUrl: 'voOverview.component.html',
+	providers: [VoService, GroupService, FacilityService, ProjectSortService],
+	imports: [
+		TextColorDirective,
+		TextBgColorDirective,
+		BadgeComponent,
+		NgbPagination,
+		FormsModule,
+		NgIf,
+		InputGroupComponent,
+		ButtonDirective,
+		NgbdSortableHeaderDirective,
+		NgFor,
+		ApplicationBadgesComponent,
+		NgbHighlight,
+		ModalModule,
+		DatePickerComponent,
+		NgClass,
+		AsyncPipe,
+		HasStatusPipe,
+		HasstatusinlistPipe,
+		InListPipe,
+		IsFutureTimePipe,
+		HasStatusNotInListPipe
+	]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
 	title: string = 'VO Overview'

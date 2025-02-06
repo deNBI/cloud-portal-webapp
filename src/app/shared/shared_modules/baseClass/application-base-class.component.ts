@@ -16,9 +16,9 @@ import { NotificationModalComponent } from '../../modal/notification-modal'
  * Application base component..
  */
 @Component({
-    selector: 'app-base',
-    template: '',
-    providers: [FacilityService, ApplicationsService, FlavorService]
+	selector: 'app-base',
+	template: '',
+	providers: [FacilityService, ApplicationsService, FlavorService]
 })
 export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	/**

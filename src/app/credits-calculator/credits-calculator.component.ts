@@ -6,24 +6,42 @@ import { FlavorService } from '../api-connector/flavor.service'
 import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor'
 import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType'
 import { CreditsService } from '../api-connector/credits.service'
-import { integerValidator, minAmountValidator, IntegerValidatorDirective, MinAmoutValidatorDirective } from '../applications/numberValidations.directive'
+import {
+	integerValidator,
+	minAmountValidator,
+	IntegerValidatorDirective,
+	MinAmoutValidatorDirective
+} from '../applications/numberValidations.directive'
 import { CREDITS_WIKI, CLOUD_PORTAL_SUPPORT_MAIL } from '../../links/links'
 import { GroupService } from '../api-connector/group.service'
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ResourceWeight } from './resource-weights.model/resource-weights.model'
-import { NgIf, NgFor, NgClass, DatePipe } from '@angular/common';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { FloorIntegerPipe } from '../pipe-module/pipes/floor-integer.pipe';
+import { NgIf, NgFor, NgClass, DatePipe } from '@angular/common'
+import { AlertModule } from 'ngx-bootstrap/alert'
+import { AccordionModule } from 'ngx-bootstrap/accordion'
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
+import { FloorIntegerPipe } from '../pipe-module/pipes/floor-integer.pipe'
 
 @Component({
-    selector: 'app-credits-calculator',
-    templateUrl: './credits-calculator.component.html',
-    styleUrls: ['./credits-calculator.component.scss'],
-    providers: [FacilityService, FlavorService, CreditsService, GroupService],
-    imports: [NgIf, AlertModule, FormsModule, NgFor, AccordionModule, NgClass, ReactiveFormsModule, BsDatepickerModule, IntegerValidatorDirective, MinAmoutValidatorDirective, DatePipe, FloorIntegerPipe]
+	selector: 'app-credits-calculator',
+	templateUrl: './credits-calculator.component.html',
+	styleUrls: ['./credits-calculator.component.scss'],
+	providers: [FacilityService, FlavorService, CreditsService, GroupService],
+	imports: [
+		NgIf,
+		AlertModule,
+		FormsModule,
+		NgFor,
+		AccordionModule,
+		NgClass,
+		ReactiveFormsModule,
+		BsDatepickerModule,
+		IntegerValidatorDirective,
+		MinAmoutValidatorDirective,
+		DatePipe,
+		FloorIntegerPipe
+	]
 })
 export class CreditsCalculatorComponent implements OnInit {
 	title: string = 'Credits Calculator'

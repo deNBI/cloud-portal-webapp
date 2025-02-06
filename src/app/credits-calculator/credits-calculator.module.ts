@@ -7,18 +7,16 @@ import { AlertModule } from 'ngx-bootstrap/alert'
 import { AccordionModule } from 'ngx-bootstrap/accordion'
 import { CreditsCalculatorComponent } from './credits-calculator.component'
 
-
-
 @NgModule({
-    imports: [
-    CommonModule,
-    FormsModule,
-    TimepickerModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-    ReactiveFormsModule,
-    AlertModule,
-    AccordionModule,
-    CreditsCalculatorComponent
-]
+	imports: [
+		CommonModule,
+		FormsModule,
+		TimepickerModule.forRoot(),
+		BsDatepickerModule.forRoot(),
+		ReactiveFormsModule,
+		AlertModule,
+		AccordionModule,
+		CreditsCalculatorComponent
+	]
 })
 export class CreditsCalculatorModule {}

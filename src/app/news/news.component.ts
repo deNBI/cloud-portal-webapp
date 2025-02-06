@@ -5,15 +5,15 @@ import { NewsService } from '../api-connector/news.service'
 import { News } from './news.model'
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { GroupService } from '../api-connector/group.service'
-import { NgIf, NgFor } from '@angular/common';
-import { NewsSlideComponent } from './news-slide/news-slide.component';
+import { NgIf, NgFor } from '@angular/common'
+import { NewsSlideComponent } from './news-slide/news-slide.component'
 
 @Component({
-    selector: 'app-news',
-    templateUrl: './news.component.html',
-    styleUrls: ['./news.component.scss'],
-    providers: [NewsService],
-    imports: [NgIf, CarouselModule, NgFor, NewsSlideComponent]
+	selector: 'app-news',
+	templateUrl: './news.component.html',
+	styleUrls: ['./news.component.scss'],
+	providers: [NewsService],
+	imports: [NgIf, CarouselModule, NgFor, NewsSlideComponent]
 })
 export class NewsComponent implements OnInit, OnDestroy {
 	@Input() tags: string[] = []
@@ -59,9 +59,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 	constructor(
 		private news_service: NewsService,
 		private groupService: GroupService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.subscription = new Subscription()

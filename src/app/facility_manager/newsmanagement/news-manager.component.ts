@@ -6,21 +6,41 @@ import { FacilityService } from '../../api-connector/facility.service'
 import { environment } from '../../../environments/environment'
 import { FacilityNews } from './facility-news'
 import { WIKI_MOTD } from '../../../links/links'
-import { NgFor, NgIf, NgStyle, NgClass, DatePipe } from '@angular/common';
-import { AlertComponent } from '@coreui/angular';
-import { FormsModule } from '@angular/forms';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { NgSelectComponent } from '@ng-select/ng-select';
-import { NewsValidationPipe, NewsMOTDValidationPipe, NewsTextValidationPipe, NewsTitleValidationPipe } from '../../pipe-module/pipes/news-valid.pipe';
+import { NgFor, NgIf, NgStyle, NgClass, DatePipe } from '@angular/common'
+import { AlertComponent } from '@coreui/angular'
+import { FormsModule } from '@angular/forms'
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
+import { NgSelectComponent } from '@ng-select/ng-select'
+import {
+	NewsValidationPipe,
+	NewsMOTDValidationPipe,
+	NewsTextValidationPipe,
+	NewsTitleValidationPipe
+} from '../../pipe-module/pipes/news-valid.pipe'
 
 /**
  * News-Manager Class to manage news in wordPress.
  */
 @Component({
-    selector: 'app-news-manager',
-    templateUrl: 'news-manager.component.html',
-    providers: [NewsService, FacilityService],
-    imports: [NgFor, AlertComponent, FormsModule, NgIf, NgStyle, NgClass, BsDatepickerModule, NgSelectComponent, ModalModule, DatePipe, NewsValidationPipe, NewsMOTDValidationPipe, NewsTextValidationPipe, NewsTitleValidationPipe]
+	selector: 'app-news-manager',
+	templateUrl: 'news-manager.component.html',
+	providers: [NewsService, FacilityService],
+	imports: [
+		NgFor,
+		AlertComponent,
+		FormsModule,
+		NgIf,
+		NgStyle,
+		NgClass,
+		BsDatepickerModule,
+		NgSelectComponent,
+		ModalModule,
+		DatePipe,
+		NewsValidationPipe,
+		NewsMOTDValidationPipe,
+		NewsTextValidationPipe,
+		NewsTitleValidationPipe
+	]
 })
 export class NewsManagerComponent implements OnInit, OnDestroy {
 	title: string = 'News Management'

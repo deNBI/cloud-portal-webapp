@@ -9,21 +9,20 @@ import { UserInfoRoutingModule } from './userinfo-routing.module'
 import { UserInfoComponent } from './userinfo.component'
 import { PublicKeyModule } from '../shared/shared_modules/public-key/public-key.module'
 
-
 /**
  * Userinfo module.
  */
 @NgModule({
-    imports: [
-    PublicKeyModule,
-    UserInfoRoutingModule,
-    TabsModule,
-    CommonModule,
-    FormsModule,
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
-    UserInfoComponent
-],
-    exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
+	imports: [
+		PublicKeyModule,
+		UserInfoRoutingModule,
+		TabsModule,
+		CommonModule,
+		FormsModule,
+		ModalModule.forRoot(),
+		AlertModule.forRoot(),
+		UserInfoComponent
+	],
+	exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
 })
 export class UserinfoModule {}
