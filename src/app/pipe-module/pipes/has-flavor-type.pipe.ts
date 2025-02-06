@@ -1,4 +1,3 @@
- 
 import { Pipe, PipeTransform } from '@angular/core'
 import { Application } from 'app/applications/application.model/application.model'
 import { FlavorTypeShortcuts } from 'app/shared/shared_modules/baseClass/flavor-type-shortcuts'
@@ -22,8 +21,8 @@ export class HasFlavorTypeOrIsNotCustomPipe implements PipeTransform {
  * Pipe which checks if status is in a list.
  */
 @Pipe({
-    name: 'statusInList',
-    standalone: false
+	name: 'statusInList',
+	standalone: false
 })
 export class StatusInListPipe implements PipeTransform {
 	transform(status: string, status_list_to_compare: string[]): boolean {

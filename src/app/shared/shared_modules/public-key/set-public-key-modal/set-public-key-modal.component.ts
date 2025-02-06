@@ -4,17 +4,17 @@ import { BlacklistedResponse } from 'app/api-connector/response-interfaces'
 import { AbstractBaseModalComponent } from 'app/shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { NotificationModalComponent } from 'app/shared/modal/notification-modal'
 import { BsModalService } from 'ngx-bootstrap/modal'
-import { NgIf, NgClass } from '@angular/common';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { FormsModule } from '@angular/forms';
-import { PublicKeyPipe } from '../../../../pipe-module/pipes/publicKey.pipe';
+import { NgIf, NgClass } from '@angular/common'
+import { AlertModule } from 'ngx-bootstrap/alert'
+import { FormsModule } from '@angular/forms'
+import { PublicKeyPipe } from '../../../../pipe-module/pipes/publicKey.pipe'
 
 @Injectable({ providedIn: 'root' })
 @Component({
-    selector: 'app-set-public-key-modal',
-    templateUrl: './set-public-key-modal.component.html',
-    styleUrl: './set-public-key-modal.component.scss',
-    imports: [NgIf, AlertModule, FormsModule, NgClass, PublicKeyPipe]
+	selector: 'app-set-public-key-modal',
+	templateUrl: './set-public-key-modal.component.html',
+	styleUrl: './set-public-key-modal.component.scss',
+	imports: [NgIf, AlertModule, FormsModule, NgClass, PublicKeyPipe]
 })
 export class SetPublicKeyModalComponent extends AbstractBaseModalComponent {
 	acknowledgement_given: boolean = false

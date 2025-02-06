@@ -9,20 +9,32 @@ import { WorkshopTimeFrame } from '../../virtualmachines/workshop/workshopTimeFr
 import { VoService } from '../../api-connector/vo.service'
 import { MaintenanceTimeFrame } from './maintenanceTimeFrame.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
-import { NgIf, NgFor, NgClass, SlicePipe, DatePipe } from '@angular/common';
-import { DatePickerComponent } from '../../shared/datepicking/datepicker.component';
-import { TimepickerComponent } from '../../shared/datepicking/timepicker.component';
-import { ValidTimeFramePipe } from '../../pipe-module/pipes/validTimeFrame.pipe';
+import { NgIf, NgFor, NgClass, SlicePipe, DatePipe } from '@angular/common'
+import { DatePickerComponent } from '../../shared/datepicking/datepicker.component'
+import { TimepickerComponent } from '../../shared/datepicking/timepicker.component'
+import { ValidTimeFramePipe } from '../../pipe-module/pipes/validTimeFrame.pipe'
 
 /**
  * Component to display graphs which illustrate numbers for VO.
  */
 @Component({
-    selector: 'app-maintenance',
-    templateUrl: './maintenance.component.html',
-    styleUrls: ['./maintenance.component.scss'],
-    providers: [WorkshopService, VoService],
-    imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, DatePickerComponent, TimepickerComponent, NgClass, ModalModule, SlicePipe, DatePipe, ValidTimeFramePipe]
+	selector: 'app-maintenance',
+	templateUrl: './maintenance.component.html',
+	styleUrls: ['./maintenance.component.scss'],
+	providers: [WorkshopService, VoService],
+	imports: [
+		NgIf,
+		NgFor,
+		FormsModule,
+		ReactiveFormsModule,
+		DatePickerComponent,
+		TimepickerComponent,
+		NgClass,
+		ModalModule,
+		SlicePipe,
+		DatePipe,
+		ValidTimeFramePipe
+	]
 })
 export class MaintenanceComponent implements OnInit {
 	is_vo_admin: boolean = false

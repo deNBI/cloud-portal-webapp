@@ -5,13 +5,13 @@ import { ClientService } from '../../../api-connector/client.service'
 import { Application } from '../../../applications/application.model/application.model'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { ConfirmationActions } from '../../../shared/modal/confirmation_actions'
-import { NgIf, NgStyle } from '@angular/common';
+import { NgIf, NgStyle } from '@angular/common'
 
 @Component({
-    selector: 'app-client-limits',
-    templateUrl: './client-limits.component.html',
-    providers: [FacilityService, ClientService],
-    imports: [NgIf, NgStyle]
+	selector: 'app-client-limits',
+	templateUrl: './client-limits.component.html',
+	providers: [FacilityService, ClientService],
+	imports: [NgIf, NgStyle]
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {
 	client: Client = null
@@ -29,12 +29,9 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 		public bsModalRef: BsModalRef,
 		private clientService: ClientService,
 		private facilityService: FacilityService
-	) {
-		 
-	}
+	) {}
 
 	getComputeCenterClientLimitsAvailable() {
-		 
 		this.facilityService
 			.getComputeCenterClientLimitsAvailable(this.compute_center_id, this.application.project_application_id.toString())
 			.subscribe(

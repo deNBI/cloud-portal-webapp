@@ -2,13 +2,13 @@ import { Component, Injectable, OnDestroy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { Router, RouterLink } from '@angular/router'
 import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-modal.component'
-import { NgIf } from '@angular/common';
+import { NgIf } from '@angular/common'
 
 @Injectable({ providedIn: 'root' })
 @Component({
-    selector: 'app-notification-modal',
-    templateUrl: './notification-modal.component.html',
-    imports: [NgIf, RouterLink]
+	selector: 'app-notification-modal',
+	templateUrl: './notification-modal.component.html',
+	imports: [NgIf, RouterLink]
 })
 export class NotificationModalComponent extends AbstractBaseModalComponent implements OnDestroy {
 	notificationModalTitle: string

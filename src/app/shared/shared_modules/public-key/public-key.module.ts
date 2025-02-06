@@ -15,15 +15,17 @@ import { SetPublicKeyModalComponent } from './set-public-key-modal/set-public-ke
  * Public key module.
  */
 @NgModule({
-    imports: [
-    TabsModule,
-    CommonModule,
-    FormsModule,
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
-    NgbModule,
-    PublicKeyComponent, GeneratePublicKeyModalComponent, SetPublicKeyModalComponent
-],
-    exports: [PublicKeyComponent, AlertModule, FormsModule, ModalModule, CommonModule, TabsModule]
+	imports: [
+		TabsModule,
+		CommonModule,
+		FormsModule,
+		ModalModule.forRoot(),
+		AlertModule.forRoot(),
+		NgbModule,
+		PublicKeyComponent,
+		GeneratePublicKeyModalComponent,
+		SetPublicKeyModalComponent
+	],
+	exports: [PublicKeyComponent, AlertModule, FormsModule, ModalModule, CommonModule, TabsModule]
 })
 export class PublicKeyModule {}

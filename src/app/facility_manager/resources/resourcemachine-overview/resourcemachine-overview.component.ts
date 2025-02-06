@@ -1,18 +1,25 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import {
+	UntypedFormBuilder,
+	UntypedFormControl,
+	UntypedFormGroup,
+	Validators,
+	FormsModule,
+	ReactiveFormsModule
+} from '@angular/forms'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { ResourceMachine } from '../resource-machine'
 import { GPUSpecification } from '../gpu-specification'
-import { NgClass, NgIf, NgFor } from '@angular/common';
+import { NgClass, NgIf, NgFor } from '@angular/common'
 
 /**
  * Class for ramfactors..
  */
 @Component({
-    selector: 'app-resourcemachine-overview',
-    templateUrl: './resourcemachine-overview.component.html',
-    providers: [FacilityService],
-    imports: [FormsModule, ReactiveFormsModule, NgClass, NgIf, NgFor]
+	selector: 'app-resourcemachine-overview',
+	templateUrl: './resourcemachine-overview.component.html',
+	providers: [FacilityService],
+	imports: [FormsModule, ReactiveFormsModule, NgClass, NgIf, NgFor]
 })
 export class ResourcemachineOverviewComponent implements OnInit {
 	factor_types: string[] = ['HIGH_MEMORY', 'GENERAL_PURPOSE', 'MIDCLASS']
@@ -234,7 +241,6 @@ export class ResourcemachineOverviewComponent implements OnInit {
 	}
 
 	listenToChangesForMachine(machine: ResourceMachine): void {
-		 
 		this.machinesFormGroups[machine.id].get(`${machine.id}_ram`).valueChanges.subscribe((val: number): void => {
 			machine.ram = val
 		})
@@ -291,7 +297,6 @@ export class ResourcemachineOverviewComponent implements OnInit {
 		this.machinesFormGroups[machine.id].get(`${machine.id}_type`).valueChanges.subscribe((val: string): void => {
 			machine.type = val
 		})
-		 
 	}
 
 	deleteResourceMachine(id: string | number): void {

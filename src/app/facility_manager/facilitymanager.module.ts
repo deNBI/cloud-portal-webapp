@@ -16,7 +16,6 @@ import { ResourcesComponent } from './resources/resources.component'
 import { ApplicationsModule } from '../applications/applications.module'
 import { NewsManagerComponent } from './newsmanagement/news-manager.component'
 
-
 import { ObjectstoragefactorOverviewComponent } from './resources/objectstoragefactor-overview/objectstoragefactor-overview.component'
 import { VolumestoragefactorOverviewComponent } from './resources/volumestoragefactor-overview/volumestoragefactor-overview.component'
 import { ResourcemachineOverviewComponent } from './resources/resourcemachine-overview/resourcemachine-overview.component'
@@ -29,36 +28,36 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
  * Facilitymanager module.
  */
 @NgModule({
-    imports: [
-    FacilitymanagerRoutingModule,
-    TabsModule,
-    FormsModule,
-    CommonModule,
-    ModalModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-    ApplicationsModule,
-    ReactiveFormsModule,
-    ProjectManagementModule,
-    NgbTypeaheadModule,
-    NgbPaginationModule,
-    NgSelectModule,
-    SharedModuleModule,
-    AlertComponent,
-    BadgeComponent,
-    TooltipModule,
-    InputGroupComponent,
-    ButtonDirective,
-    FacilityProjectsOverviewComponent,
-    ImageTagComponent,
-    FacilityApplicationComponent,
-    ResourcesComponent,
-    NewsManagerComponent,
-    GeneralstoragefactorOverviewComponent,
-    ObjectstoragefactorOverviewComponent,
-    VolumestoragefactorOverviewComponent,
-    ResourcemachineOverviewComponent,
-    GPUSpecificationOverviewComponent,
-    ResourcemachineOverviewComponent
-]
+	imports: [
+		FacilitymanagerRoutingModule,
+		TabsModule,
+		FormsModule,
+		CommonModule,
+		ModalModule.forRoot(),
+		BsDatepickerModule.forRoot(),
+		ApplicationsModule,
+		ReactiveFormsModule,
+		ProjectManagementModule,
+		NgbTypeaheadModule,
+		NgbPaginationModule,
+		NgSelectModule,
+		SharedModuleModule,
+		AlertComponent,
+		BadgeComponent,
+		TooltipModule,
+		InputGroupComponent,
+		ButtonDirective,
+		FacilityProjectsOverviewComponent,
+		ImageTagComponent,
+		FacilityApplicationComponent,
+		ResourcesComponent,
+		NewsManagerComponent,
+		GeneralstoragefactorOverviewComponent,
+		ObjectstoragefactorOverviewComponent,
+		VolumestoragefactorOverviewComponent,
+		ResourcemachineOverviewComponent,
+		GPUSpecificationOverviewComponent,
+		ResourcemachineOverviewComponent
+	]
 })
 export class FacilitymanagerModule {}

@@ -53,22 +53,37 @@ import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.co
 import { UserApplicationsModalComponent } from './modals/user-applications-modal/user-applications-modal.component'
 import { ConfirmationActions } from 'app/shared/modal/confirmation_actions'
 import { ConfirmationModalComponent } from 'app/shared/modal/confirmation-modal.component'
-import { ApplicationProgressComponent } from './application-progress/application-progress.component';
-import { ApplicationDetailComponent } from '../applications/application-detail/application-detail.component';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { FormsModule } from '@angular/forms';
-import { TextColorDirective, TextBgColorDirective, BadgeComponent } from '@coreui/angular';
-import { TestimonialFormComponent } from '../shared/shared_modules/testimonial-forms/testimonial-form.component';
-import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe';
-import { IsMigratedProjectPipe } from '../pipe-module/pipes/isMigratedProject';
+import { ApplicationProgressComponent } from './application-progress/application-progress.component'
+import { ApplicationDetailComponent } from '../applications/application-detail/application-detail.component'
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
+import { FormsModule } from '@angular/forms'
+import { TextColorDirective, TextBgColorDirective, BadgeComponent } from '@coreui/angular'
+import { TestimonialFormComponent } from '../shared/shared_modules/testimonial-forms/testimonial-form.component'
+import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
+import { IsMigratedProjectPipe } from '../pipe-module/pipes/isMigratedProject'
 
 /**
  * Projectoverview component.
  */
 @Component({
-    selector: 'app-project-overview',
-    templateUrl: 'overview.component.html',
-    imports: [NgIf, ApplicationProgressComponent, NgClass, NgFor, ApplicationDetailComponent, NgStyle, BsDropdownModule, FormsModule, TextColorDirective, TextBgColorDirective, BadgeComponent, TestimonialFormComponent, HasstatusinlistPipe, IsMigratedProjectPipe]
+	selector: 'app-project-overview',
+	templateUrl: 'overview.component.html',
+	imports: [
+		NgIf,
+		ApplicationProgressComponent,
+		NgClass,
+		NgFor,
+		ApplicationDetailComponent,
+		NgStyle,
+		BsDropdownModule,
+		FormsModule,
+		TextColorDirective,
+		TextBgColorDirective,
+		BadgeComponent,
+		TestimonialFormComponent,
+		HasstatusinlistPipe,
+		IsMigratedProjectPipe
+	]
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	bsModalRef: BsModalRef
@@ -374,7 +389,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				if (event.reloadDoi) {
 					this.getDois()
 				} else if (event.showModification) {
-					this.showResourceModal(null);
+					this.showResourceModal(null)
 				} else if (event.showExtension) {
 					this.showLifetimeExtensionModal()
 				} else if (event.showTermination) {
@@ -465,8 +480,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.fullLayout.getGroupsEnumeration()
 					this.getApplication()
 				} else if ('backToInput' in result && 'modification' in result) {
-					this.modificationRequestDisabled = false;
-					this.showResourceModal(result['modification']);
+					this.modificationRequestDisabled = false
+					this.showResourceModal(result['modification'])
 				} else if (type === this.ExtensionRequestType.EXTENSION) {
 					this.lifetimeExtensionDisabled = false
 				} else if (type === this.ExtensionRequestType.MODIFICATION) {

@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { CLOUD_PORTAL_SUPPORT_MAIL, NEW_SVM_PORTAL_LINK } from '../../../../links/links'
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf, NgFor } from '@angular/common'
 
 @Component({
-    selector: 'app-migration-information',
-    templateUrl: './migration-information.component.html',
-    styleUrls: ['./migration-information.component.scss'],
-    imports: [NgIf, NgFor]
+	selector: 'app-migration-information',
+	templateUrl: './migration-information.component.html',
+	styleUrls: ['./migration-information.component.scss'],
+	imports: [NgIf, NgFor]
 })
 export class MigrationInformationComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()
@@ -21,9 +21,7 @@ export class MigrationInformationComponent implements OnInit, OnDestroy {
 	@Input() type: string = ''
 
 	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
-	constructor() {
-		 
-	}
+	constructor() {}
 
 	ngOnInit(): void {
 		this.subscription = new Subscription()

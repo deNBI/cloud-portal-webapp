@@ -1,15 +1,15 @@
 import { Component, Input } from '@angular/core'
 import { UserService } from '../api-connector/user.service'
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common'
 
 /**
  * Title headbar component.
  */
 @Component({
-    templateUrl: 'title-headbar.component.html',
-    selector: 'app-title-headbar',
-    providers: [UserService],
-    imports: [NgClass, NgIf]
+	templateUrl: 'title-headbar.component.html',
+	selector: 'app-title-headbar',
+	providers: [UserService],
+	imports: [NgClass, NgIf]
 })
 export class TitleHeadbarComponent {
 	@Input() page_title: string

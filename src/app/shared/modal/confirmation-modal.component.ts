@@ -4,16 +4,16 @@ import { Application } from '../../applications/application.model/application.mo
 import { ConfirmationTypes } from './confirmation_types'
 import { ConfirmationActions } from './confirmation_actions'
 import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-modal.component'
-import { NgClass } from '@angular/common';
+import { NgClass } from '@angular/common'
 
 @Injectable({
 	providedIn: 'root'
 })
 @Component({
-    selector: 'app-confirmation-modal',
-    templateUrl: './confirmation-modal.component.html',
-    providers: [],
-    imports: [NgClass]
+	selector: 'app-confirmation-modal',
+	templateUrl: './confirmation-modal.component.html',
+	providers: [],
+	imports: [NgClass]
 })
 export class ConfirmationModalComponent extends AbstractBaseModalComponent implements OnInit {
 	protected readonly ConfirmationTypes = ConfirmationTypes

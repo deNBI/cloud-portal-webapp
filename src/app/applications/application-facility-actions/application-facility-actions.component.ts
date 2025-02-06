@@ -11,15 +11,15 @@ import { FacilityService } from '../../api-connector/facility.service'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal.component'
 import { ApplicationsService } from '../../api-connector/applications.service'
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { NgIf } from '@angular/common';
-import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pipe';
+import { TooltipModule } from 'ngx-bootstrap/tooltip'
+import { NgIf } from '@angular/common'
+import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pipe'
 
 @Component({
-    selector: 'app-application-facility-actions',
-    templateUrl: './application-facility-actions.component.html',
-    styleUrl: './application-facility-actions.component.scss',
-    imports: [TooltipModule, NgIf, HasstatusinlistPipe]
+	selector: 'app-application-facility-actions',
+	templateUrl: './application-facility-actions.component.html',
+	styleUrl: './application-facility-actions.component.scss',
+	imports: [TooltipModule, NgIf, HasstatusinlistPipe]
 })
 export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	private subscription: Subscription = new Subscription()
@@ -45,8 +45,8 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	}
 
 	switchCollaps() {
-		this.isCollapsed = !this.isCollapsed;
-		this.switchCollapseEvent.emit();
+		this.isCollapsed = !this.isCollapsed
+		this.switchCollapseEvent.emit()
 	}
 
 	triggerRemoveApplication() {

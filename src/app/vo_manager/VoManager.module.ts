@@ -29,31 +29,31 @@ import { DeclineProjectTerminationModalComponent } from './modals/decline-projec
  * VO Manager module.
  */
 @NgModule({
-    imports: [
-    VoManagerRoutingModule,
-    TabsModule,
-    FormsModule,
-    CommonModule,
-    ModalModule.forRoot(),
-    ProjectManagementModule,
-    NgbTypeaheadModule,
-    ReactiveFormsModule,
-    NgbPaginationModule,
-    DatePickerComponent,
-    TimepickerComponent,
-    SharedModuleModule,
-    BadgeComponent,
-    InputGroupComponent,
-    ButtonDirective,
-    VoOverviewComponent,
-    ResourcesComponent,
-    ClientOverviewComponent,
-    NumberChartsComponent,
-    ClientLimitsComponent,
-    MaintenanceComponent,
-    TerminateProjectModalComponent,
-    DeclineProjectTerminationModalComponent
-],
-    providers: [VoService, VoGuardService]
+	imports: [
+		VoManagerRoutingModule,
+		TabsModule,
+		FormsModule,
+		CommonModule,
+		ModalModule.forRoot(),
+		ProjectManagementModule,
+		NgbTypeaheadModule,
+		ReactiveFormsModule,
+		NgbPaginationModule,
+		DatePickerComponent,
+		TimepickerComponent,
+		SharedModuleModule,
+		BadgeComponent,
+		InputGroupComponent,
+		ButtonDirective,
+		VoOverviewComponent,
+		ResourcesComponent,
+		ClientOverviewComponent,
+		NumberChartsComponent,
+		ClientLimitsComponent,
+		MaintenanceComponent,
+		TerminateProjectModalComponent,
+		DeclineProjectTerminationModalComponent
+	],
+	providers: [VoService, VoGuardService]
 })
 export class VoManagerModule {}
