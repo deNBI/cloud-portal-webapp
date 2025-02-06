@@ -8,9 +8,9 @@ import { User } from '../../application.model/user.model'
  * Application modification details.
  */
 @Component({
-    selector: 'app-modification-detail',
-    templateUrl: './modification-detail.component.html',
-    standalone: false
+	selector: 'app-modification-detail',
+	templateUrl: './modification-detail.component.html',
+	standalone: false
 })
 export class ModificationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
 	@Input() application: Application

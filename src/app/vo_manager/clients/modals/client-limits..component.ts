@@ -7,10 +7,10 @@ import { FacilityService } from '../../../api-connector/facility.service'
 import { ConfirmationActions } from '../../../shared/modal/confirmation_actions'
 
 @Component({
-    selector: 'app-client-limits',
-    templateUrl: './client-limits.component.html',
-    providers: [FacilityService, ClientService],
-    standalone: false
+	selector: 'app-client-limits',
+	templateUrl: './client-limits.component.html',
+	providers: [FacilityService, ClientService],
+	standalone: false
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {
 	client: Client = null
@@ -28,12 +28,9 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 		public bsModalRef: BsModalRef,
 		private clientService: ClientService,
 		private facilityService: FacilityService
-	) {
-		 
-	}
+	) {}
 
 	getComputeCenterClientLimitsAvailable() {
-		 
 		this.facilityService
 			.getComputeCenterClientLimitsAvailable(this.compute_center_id, this.application.project_application_id.toString())
 			.subscribe(

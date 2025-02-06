@@ -11,10 +11,10 @@ import { WIKI_MOTD } from '../../../links/links'
  * News-Manager Class to manage news in wordPress.
  */
 @Component({
-    selector: 'app-news-manager',
-    templateUrl: 'news-manager.component.html',
-    providers: [NewsService, FacilityService],
-    standalone: false
+	selector: 'app-news-manager',
+	templateUrl: 'news-manager.component.html',
+	providers: [NewsService, FacilityService],
+	standalone: false
 })
 export class NewsManagerComponent implements OnInit, OnDestroy {
 	title: string = 'News Management'

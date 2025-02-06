@@ -13,11 +13,11 @@ import { GPUSpecification } from './gpu-specification'
  * Facility resource component.
  */
 @Component({
-    selector: 'app-resources',
-    templateUrl: './resources.component.html',
-    styleUrls: ['./resources.component.scss'],
-    providers: [FacilityService],
-    standalone: false
+	selector: 'app-resources',
+	templateUrl: './resources.component.html',
+	styleUrls: ['./resources.component.scss'],
+	providers: [FacilityService],
+	standalone: false
 })
 export class ResourcesComponent implements OnInit {
 	title: string = 'Resource Overview'
@@ -63,7 +63,7 @@ export class ResourcesComponent implements OnInit {
 	isLoaded: boolean = false
 	resources: Resources[]
 	visible_resources: Resources[]
-	showModificationCollapse: boolean = false;
+	showModificationCollapse: boolean = false
 
 	/**
 	 * Id of the table which will be converted to pdf or csv.
@@ -148,7 +148,7 @@ export class ResourcesComponent implements OnInit {
 	}
 
 	onChangeSelectedFacility(): void {
-		this.showModificationCollapse = false;
+		this.showModificationCollapse = false
 		this.setAllTabsFalse()
 		this.getSelectedFacilityResources()
 	}

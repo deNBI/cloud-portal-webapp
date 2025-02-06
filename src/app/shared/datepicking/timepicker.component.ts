@@ -4,9 +4,9 @@ import { JsonPipe } from '@angular/common'
 import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
-    selector: 'app-timepicker',
-    imports: [NgbTimepickerModule, FormsModule, JsonPipe],
-    templateUrl: './timepicker.component.html'
+	selector: 'app-timepicker',
+	imports: [NgbTimepickerModule, FormsModule, JsonPipe],
+	templateUrl: './timepicker.component.html'
 })
 export class TimepickerComponent {
 	@Output() readonly timeChange: EventEmitter<{ hour: number; minute: number }> = new EventEmitter<{

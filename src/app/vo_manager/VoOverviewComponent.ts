@@ -29,10 +29,10 @@ import { DeclineProjectTerminationModalComponent } from './modals/decline-projec
  * Vo Overview component.
  */
 @Component({
-    selector: 'app-vo-overview',
-    templateUrl: 'voOverview.component.html',
-    providers: [VoService, GroupService, FacilityService, ProjectSortService],
-    standalone: false
+	selector: 'app-vo-overview',
+	templateUrl: 'voOverview.component.html',
+	providers: [VoService, GroupService, FacilityService, ProjectSortService],
+	standalone: false
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
 	title: string = 'VO Overview'

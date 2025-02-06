@@ -6,11 +6,11 @@ import { STATUS_LINK } from '../../../../../links/links'
 import { NotificationModalComponent } from '../../notification-modal'
 
 @Component({
-    selector: 'app-project-email-modal',
-    templateUrl: './project-email-modal.component.html',
-    styleUrls: ['./projext-email-modal.component.scss'],
-    providers: [EmailService],
-    standalone: false
+	selector: 'app-project-email-modal',
+	templateUrl: './project-email-modal.component.html',
+	styleUrls: ['./projext-email-modal.component.scss'],
+	providers: [EmailService],
+	standalone: false
 })
 export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 	@Input() selectedProjects: Application[]
@@ -27,9 +27,7 @@ export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 		public bsModalRef: BsModalRef,
 		private emailService: EmailService,
 		private notificationModal: NotificationModalComponent
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit() {
 		this.getMailTemplates()

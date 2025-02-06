@@ -7,9 +7,9 @@ import { User } from '../../application.model/user.model'
  * Lifetime extension details.
  */
 @Component({
-    selector: 'app-lifetime-extension-detail',
-    templateUrl: './lifetime-extension-detail.component.html',
-    standalone: false
+	selector: 'app-lifetime-extension-detail',
+	templateUrl: './lifetime-extension-detail.component.html',
+	standalone: false
 })
 export class LifetimeExtensionDetailComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
 	@Input() application: Application

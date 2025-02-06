@@ -26,10 +26,10 @@ import { NotificationModalComponent } from '../shared/modal/notification-modal'
  * UserInformation component.
  */
 @Component({
-    selector: 'app-userinfo',
-    templateUrl: 'userinfo.component.html',
-    providers: [GroupService, UserService, ApiSettings, KeyService],
-    standalone: false
+	selector: 'app-userinfo',
+	templateUrl: 'userinfo.component.html',
+	providers: [GroupService, UserService, ApiSettings, KeyService],
+	standalone: false
 })
 export class UserInfoComponent implements OnInit {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL

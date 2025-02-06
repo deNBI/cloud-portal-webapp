@@ -6,10 +6,10 @@ import { FacilityService } from '../../../api-connector/facility.service'
  * Class for objectfactors.
  */
 @Component({
-    selector: 'app-objectstoragefactor-overview',
-    templateUrl: './objectstoragefactor-overview.component.html',
-    providers: [FacilityService],
-    standalone: false
+	selector: 'app-objectstoragefactor-overview',
+	templateUrl: './objectstoragefactor-overview.component.html',
+	providers: [FacilityService],
+	standalone: false
 })
 export class ObjectstoragefactorOverviewComponent implements OnInit {
 	objectStorageFactors: ObjectStorageFactor[]

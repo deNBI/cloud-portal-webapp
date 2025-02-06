@@ -2,8 +2,8 @@ import { Component, EventEmitter, Output } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 
 @Component({
-    template: '',
-    standalone: false
+	template: '',
+	standalone: false
 })
 export abstract class AbstractBaseModalComponent {
 	modalId: number | string | undefined
@@ -31,7 +31,7 @@ export abstract class AbstractBaseModalComponent {
 		const bsModalRef: BsModalRef = this.modalService.show(modalType, { initialState })
 		this.bsModalRef = bsModalRef
 		bsModalRef.setClass('modal-lg')
-		this.modalId = bsModalRef.id	
+		this.modalId = bsModalRef.id
 
 		return bsModalRef.content.event
 	}

@@ -8,11 +8,11 @@ import { UserService } from '../api-connector/user.service'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
 
 @Component({
-    selector: 'app-maintenance-alert',
-    templateUrl: './maintenance-alert.component.html',
-    styleUrls: ['./maintenance-alert.component.scss'],
-    providers: [MaintenanceService],
-    standalone: false
+	selector: 'app-maintenance-alert',
+	templateUrl: './maintenance-alert.component.html',
+	styleUrls: ['./maintenance-alert.component.scss'],
+	providers: [MaintenanceService],
+	standalone: false
 })
 export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()
@@ -27,9 +27,7 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 		private maintenanceService: MaintenanceService,
 		private userService: UserService,
 		private modalService: BsModalService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.subscription = new Subscription()

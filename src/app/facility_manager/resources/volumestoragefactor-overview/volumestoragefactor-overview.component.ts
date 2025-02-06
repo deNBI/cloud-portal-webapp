@@ -6,10 +6,10 @@ import { VolumeStorageFactor } from '../volume-storage-factor'
  * Class for ramfactors.
  */
 @Component({
-    selector: 'app-volumestoragefactor-overview',
-    templateUrl: './volumestoragefactor-overview.component.html',
-    providers: [FacilityService],
-    standalone: false
+	selector: 'app-volumestoragefactor-overview',
+	templateUrl: './volumestoragefactor-overview.component.html',
+	providers: [FacilityService],
+	standalone: false
 })
 export class VolumestoragefactorOverviewComponent implements OnInit {
 	volumeStorageFactors: VolumeStorageFactor[]

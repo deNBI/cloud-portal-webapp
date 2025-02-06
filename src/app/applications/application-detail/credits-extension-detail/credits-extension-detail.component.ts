@@ -5,9 +5,9 @@ import { Application } from '../../application.model/application.model'
  * Credits extension request.
  */
 @Component({
-    selector: 'app-credits-extension-detail',
-    templateUrl: './credits-extension-detail.component.html',
-    standalone: false
+	selector: 'app-credits-extension-detail',
+	templateUrl: './credits-extension-detail.component.html',
+	standalone: false
 })
 export class CreditsExtensionDetailComponent {
 	@Input() application: Application

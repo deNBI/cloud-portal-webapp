@@ -8,11 +8,11 @@ import { ResultComponent } from '../result/result.component'
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
 
 @Component({
-    selector: 'app-credits-request',
-    templateUrl: './credits-request.component.html',
-    styleUrls: ['./credits-request.component.scss'],
-    providers: [CreditsService],
-    standalone: false
+	selector: 'app-credits-request',
+	templateUrl: './credits-request.component.html',
+	styleUrls: ['./credits-request.component.scss'],
+	providers: [CreditsService],
+	standalone: false
 })
 export class CreditsRequestComponent implements OnInit, OnDestroy {
 	project: Application
@@ -36,9 +36,7 @@ export class CreditsRequestComponent implements OnInit, OnDestroy {
 		public bsModalRef: BsModalRef,
 		private modalService: BsModalService,
 		private creditsService: CreditsService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit(): void {
 		if (this.project.project_credit_request) {

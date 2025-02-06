@@ -5,8 +5,8 @@ import { Application } from 'app/applications/application.model/application.mode
  * Pipe which returns whether a certain project is migrated or marked for migration to SimpleVM-Platform.
  */
 @Pipe({
-    name: 'isMigratedProject',
-    standalone: false
+	name: 'isMigratedProject',
+	standalone: false
 })
 export class IsMigratedProjectPipe implements PipeTransform {
 	transform(projectApplication: Application) {

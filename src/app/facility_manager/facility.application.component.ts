@@ -22,11 +22,11 @@ enum TabStates {
  * Application component
  */
 @Component({
-    selector: 'app-facility.application',
-    templateUrl: 'facility.application.component.html',
-    styleUrls: ['facility.application.component.scss'],
-    providers: [FacilityService, UserService, GroupService, ApplicationsService, ApiSettings],
-    standalone: false
+	selector: 'app-facility.application',
+	templateUrl: 'facility.application.component.html',
+	styleUrls: ['facility.application.component.scss'],
+	providers: [FacilityService, UserService, GroupService, ApplicationsService, ApiSettings],
+	standalone: false
 })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 	numberOfExtensionRequests: number = 0

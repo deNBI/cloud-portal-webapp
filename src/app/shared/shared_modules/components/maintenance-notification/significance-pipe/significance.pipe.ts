@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core'
 import { MaintenanceTimeFrame } from '../../../../../vo_manager/maintenance/maintenanceTimeFrame.model'
 
 @Pipe({
-    name: 'significanceGiven',
-    standalone: false
+	name: 'significanceGiven',
+	standalone: false
 })
 export class SignificancePipe implements PipeTransform {
 	transform(timeframes: MaintenanceTimeFrame[]): boolean {

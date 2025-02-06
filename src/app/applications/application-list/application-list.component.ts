@@ -7,10 +7,10 @@ import { ComputecenterComponent } from '../../projectmanagement/computecenter.co
 import { is_vo } from '../../shared/globalvar'
 
 @Component({
-    selector: 'app-application-list',
-    templateUrl: './application-list.component.html',
-    styleUrl: './application-list.component.scss',
-    standalone: false
+	selector: 'app-application-list',
+	templateUrl: './application-list.component.html',
+	styleUrl: './application-list.component.scss',
+	standalone: false
 })
 export class ApplicationListComponent implements OnInit, OnChanges {
 	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter()

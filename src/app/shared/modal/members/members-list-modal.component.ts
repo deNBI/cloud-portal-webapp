@@ -7,9 +7,9 @@ import { is_vo } from '../../globalvar'
 import { FacilityService } from '../../../api-connector/facility.service'
 
 @Component({
-    selector: 'app-project-members-list',
-    templateUrl: './members-list-modal.component.html',
-    standalone: false
+	selector: 'app-project-members-list',
+	templateUrl: './members-list-modal.component.html',
+	standalone: false
 })
 export class MembersListModalComponent implements OnDestroy, OnInit {
 	// currently only for vo
@@ -22,9 +22,7 @@ export class MembersListModalComponent implements OnDestroy, OnInit {
 		public bsModalRef: BsModalRef,
 		private voService: VoService,
 		private facilityService: FacilityService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit() {
 		if (is_vo) {

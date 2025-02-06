@@ -6,10 +6,10 @@ import { saveAs } from 'file-saver'
 
 @Injectable({ providedIn: 'root' })
 @Component({
-    selector: 'app-generate-public-key-modal',
-    templateUrl: './generate-public-key-modal.component.html',
-    styleUrl: './generate-public-key-modal.component.scss',
-    standalone: false
+	selector: 'app-generate-public-key-modal',
+	templateUrl: './generate-public-key-modal.component.html',
+	styleUrl: './generate-public-key-modal.component.scss',
+	standalone: false
 })
 export class GeneratePublicKeyModalComponent extends AbstractBaseModalComponent {
 	userlogin: string

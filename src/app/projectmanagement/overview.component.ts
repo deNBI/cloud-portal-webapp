@@ -58,9 +58,9 @@ import { ConfirmationModalComponent } from 'app/shared/modal/confirmation-modal.
  * Projectoverview component.
  */
 @Component({
-    selector: 'app-project-overview',
-    templateUrl: 'overview.component.html',
-    standalone: false
+	selector: 'app-project-overview',
+	templateUrl: 'overview.component.html',
+	standalone: false
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	bsModalRef: BsModalRef
@@ -366,7 +366,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				if (event.reloadDoi) {
 					this.getDois()
 				} else if (event.showModification) {
-					this.showResourceModal(null);
+					this.showResourceModal(null)
 				} else if (event.showExtension) {
 					this.showLifetimeExtensionModal()
 				} else if (event.showTermination) {
@@ -457,8 +457,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.fullLayout.getGroupsEnumeration()
 					this.getApplication()
 				} else if ('backToInput' in result && 'modification' in result) {
-					this.modificationRequestDisabled = false;
-					this.showResourceModal(result['modification']);
+					this.modificationRequestDisabled = false
+					this.showResourceModal(result['modification'])
 				} else if (type === this.ExtensionRequestType.EXTENSION) {
 					this.lifetimeExtensionDisabled = false
 				} else if (type === this.ExtensionRequestType.MODIFICATION) {

@@ -13,11 +13,11 @@ import { CreditsService } from '../../../api-connector/credits.service'
 import { ShownFlavors } from 'app/shared/classes/shownFlavors.interface'
 
 @Component({
-    selector: 'app-modification-request',
-    templateUrl: './modification-request.component.html',
-    styleUrls: ['./modification-request.component.scss'],
-    providers: [FlavorService, CreditsService, HasFlavorTypeOrIsNotCustomPipe],
-    standalone: false
+	selector: 'app-modification-request',
+	templateUrl: './modification-request.component.html',
+	styleUrls: ['./modification-request.component.scss'],
+	providers: [FlavorService, CreditsService, HasFlavorTypeOrIsNotCustomPipe],
+	standalone: false
 })
 export class ModificationRequestComponent implements OnInit, OnDestroy {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL

@@ -10,10 +10,10 @@ import { GroupService } from '../../../api-connector/group.service'
 	providedIn: 'root'
 })
 @Component({
-    selector: 'app-user-applications-modal',
-    templateUrl: './user-applications-modal.component.html',
-    styleUrl: './user-applications-modal.component.scss',
-    standalone: false
+	selector: 'app-user-applications-modal',
+	templateUrl: './user-applications-modal.component.html',
+	styleUrl: './user-applications-modal.component.scss',
+	standalone: false
 })
 export class UserApplicationsModalComponent extends AbstractBaseModalComponent implements OnInit {
 	application: Application
