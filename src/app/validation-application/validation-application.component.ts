@@ -5,6 +5,8 @@ import { ApplicationsService } from '../api-connector/applications.service'
 import { Application } from '../applications/application.model/application.model'
 import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component'
 import { FlavorService } from '../api-connector/flavor.service'
+import { NgIf } from '@angular/common';
+import { ApplicationFormularComponent } from '../applications/application-formular/application-formular.component';
 /**
  * Application validation modal.
  */
@@ -13,7 +15,7 @@ import { FlavorService } from '../api-connector/flavor.service'
     templateUrl: './validation-application.component.html',
     styleUrls: ['./validation-application.component.scss'],
     providers: [ApplicationsService, FlavorService],
-    standalone: false
+    imports: [NgIf, ApplicationFormularComponent]
 })
 export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit, AfterViewChecked {
 	application: Application

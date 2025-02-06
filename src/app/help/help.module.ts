@@ -11,8 +11,6 @@ import { HelpComponent } from '../help/help.component'
  * Help module.
  */
 @NgModule({
-	imports: [HelpRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule.forRoot(), AlertModule.forRoot()],
-
-	declarations: [HelpComponent]
+    imports: [HelpRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule.forRoot(), AlertModule.forRoot(), HelpComponent]
 })
 export class HelpModule {}

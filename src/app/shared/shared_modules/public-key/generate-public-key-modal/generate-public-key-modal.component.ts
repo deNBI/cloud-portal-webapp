@@ -3,13 +3,14 @@ import { KeyService } from 'app/api-connector/key.service'
 import { AbstractBaseModalComponent } from 'app/shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { saveAs } from 'file-saver'
+import { FormsModule } from '@angular/forms';
 
 @Injectable({ providedIn: 'root' })
 @Component({
     selector: 'app-generate-public-key-modal',
     templateUrl: './generate-public-key-modal.component.html',
     styleUrl: './generate-public-key-modal.component.scss',
-    standalone: false
+    imports: [FormsModule]
 })
 export class GeneratePublicKeyModalComponent extends AbstractBaseModalComponent {
 	userlogin: string

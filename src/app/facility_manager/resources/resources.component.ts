@@ -8,6 +8,13 @@ import { VolumeStorageFactor } from './volume-storage-factor'
 import { GeneralStorageFactor } from './general-storage-factor'
 import { ResourceMachine } from './resource-machine'
 import { GPUSpecification } from './gpu-specification'
+import { NgIf, NgClass, NgFor, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ResourcemachineOverviewComponent } from './resourcemachine-overview/resourcemachine-overview.component';
+import { GeneralstoragefactorOverviewComponent } from './generalstoragefactor-overview/generalstoragefactor-overview.component';
+import { ObjectstoragefactorOverviewComponent } from './objectstoragefactor-overview/objectstoragefactor-overview.component';
+import { VolumestoragefactorOverviewComponent } from './volumestoragefactor-overview/volumestoragefactor-overview.component';
+import { GPUSpecificationOverviewComponent } from './gpu-specification-overview/gpu-specification-overview.component';
 
 /**
  * Facility resource component.
@@ -17,7 +24,7 @@ import { GPUSpecification } from './gpu-specification'
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.scss'],
     providers: [FacilityService],
-    standalone: false
+    imports: [NgIf, NgClass, FormsModule, NgFor, ResourcemachineOverviewComponent, GeneralstoragefactorOverviewComponent, ObjectstoragefactorOverviewComponent, VolumestoragefactorOverviewComponent, GPUSpecificationOverviewComponent, DatePipe]
 })
 export class ResourcesComponent implements OnInit {
 	title: string = 'Resource Overview'

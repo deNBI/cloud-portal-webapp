@@ -6,8 +6,7 @@ import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor'
  */
 @Pipe({
     name: 'hasUnavailableFlavors',
-    pure: false,
-    standalone: false
+    pure: false
 })
 export class HasUnavailableFlavorsPipe implements PipeTransform {
 	transform(flavors: Flavor[]): boolean {

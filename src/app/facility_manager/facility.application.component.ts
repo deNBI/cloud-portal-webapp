@@ -9,6 +9,11 @@ import { Application_States } from '../shared/shared_modules/baseClass/abstract-
 import { ApplicationsService } from '../api-connector/applications.service'
 import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ApplicationListComponent } from '../applications/application-list/application-list.component';
+import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component';
+import { ApplicationDetailComponent } from '../applications/application-detail/application-detail.component';
 
 enum TabStates {
 	'SUBMITTED' = 0,
@@ -26,7 +31,7 @@ enum TabStates {
     templateUrl: 'facility.application.component.html',
     styleUrls: ['facility.application.component.scss'],
     providers: [FacilityService, UserService, GroupService, ApplicationsService, ApiSettings],
-    standalone: false
+    imports: [NgIf, FormsModule, NgFor, NgClass, ApplicationListComponent, ApplicationBadgesComponent, ApplicationDetailComponent]
 })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 	numberOfExtensionRequests: number = 0

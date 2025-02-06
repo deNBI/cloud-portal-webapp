@@ -4,6 +4,9 @@ import { forkJoin } from 'rxjs'
 import { ImageService } from '../api-connector/image.service'
 import { BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag } from './image-tag'
 import { FacilityService } from '../api-connector/facility.service'
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 /**
  * ImageTag component.
@@ -12,7 +15,7 @@ import { FacilityService } from '../api-connector/facility.service'
     selector: 'app-image-tags',
     templateUrl: 'imageTag.component.html',
     providers: [ImageService, FacilityService],
-    standalone: false
+    imports: [NgIf, FormsModule, NgFor, NgClass, ModalModule]
 })
 export class ImageTagComponent implements OnInit {
 	title: string = 'Image Tags'

@@ -3,6 +3,7 @@ import { Application } from '../../application.model/application.model'
 import { User } from '../../application.model/user.model'
 import { ApplicationBaseClassComponent } from '../../../shared/shared_modules/baseClass/application-base-class.component'
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
+import { NgIf, NgStyle } from '@angular/common';
 
 interface FlavorDiff {
 	name: string
@@ -17,7 +18,7 @@ interface FlavorDiff {
 @Component({
     selector: 'app-resource-detail',
     templateUrl: './resource-detail.component.html',
-    standalone: false
+    imports: [NgIf, NgStyle]
 })
 export class ResourceDetailComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
 	@Input() application: Application

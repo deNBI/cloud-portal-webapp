@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injectable } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../abstract-base-modal/abstract-base-modal.component'
+import { ClipboardModule } from 'ngx-clipboard';
 
 @Injectable({
 	providedIn: 'root'
@@ -9,7 +10,7 @@ import { AbstractBaseModalComponent } from '../abstract-base-modal/abstract-base
     selector: 'app-view-public-key',
     templateUrl: './view-public-key.component.html',
     styleUrl: './view-public-key.component.scss',
-    standalone: false
+    imports: [ClipboardModule]
 })
 export class ViewPublicKeyComponent extends AbstractBaseModalComponent {
 	publicKeyMemberName: string

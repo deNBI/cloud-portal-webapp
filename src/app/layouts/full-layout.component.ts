@@ -17,6 +17,12 @@ import { WIKI, WIKI_FAQ, STATUS_LINK } from '../../links/links'
 import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model'
 import { MaintenanceService } from '../api-connector/maintenance.service'
 import { UserInfoComponent } from '../userinfo/userinfo.component'
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { TitleHeadbarComponent } from '../shared/title-headbar.component';
+import { NgScrollbar } from 'ngx-scrollbar';
+import { RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe';
 
 /**
  * FullLayout component.
@@ -28,7 +34,7 @@ import { UserInfoComponent } from '../userinfo/userinfo.component'
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
     providers: [ApplicationsService, VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings],
-    standalone: false
+    imports: [NgIf, AlertModule, TitleHeadbarComponent, NgScrollbar, NgClass, RouterLinkActive, RouterLink, NgFor, RouterOutlet, HasstatusinlistPipe]
 })
 export class FullLayoutComponent extends ApplicationBaseClassComponent implements OnInit {
 	public year: number = new Date().getFullYear()

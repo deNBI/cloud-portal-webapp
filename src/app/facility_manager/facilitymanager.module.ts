@@ -29,40 +29,38 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
  * Facilitymanager module.
  */
 @NgModule({
-	imports: [
-		FacilitymanagerRoutingModule,
-		TabsModule,
-		FormsModule,
-		CommonModule,
-		ModalModule.forRoot(),
-		BsDatepickerModule.forRoot(),
-		ApplicationsModule,
-		ReactiveFormsModule,
-		PipeModuleModule,
-		SharedDirectivesModule,
-		ProjectManagementModule,
-		NgbTypeaheadModule,
-		NgbPaginationModule,
-		NgSelectModule,
-		SharedModuleModule,
-		AlertComponent,
-		BadgeComponent,
-		TooltipModule,
-		InputGroupComponent,
-		ButtonDirective
-	],
-	declarations: [
-		FacilityProjectsOverviewComponent,
-		ImageTagComponent,
-		FacilityApplicationComponent,
-		ResourcesComponent,
-		NewsManagerComponent,
-		GeneralstoragefactorOverviewComponent,
-		ObjectstoragefactorOverviewComponent,
-		VolumestoragefactorOverviewComponent,
-		ResourcemachineOverviewComponent,
-		GPUSpecificationOverviewComponent,
-		ResourcemachineOverviewComponent
-	]
+    imports: [
+        FacilitymanagerRoutingModule,
+        TabsModule,
+        FormsModule,
+        CommonModule,
+        ModalModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        ApplicationsModule,
+        ReactiveFormsModule,
+        PipeModuleModule,
+        SharedDirectivesModule,
+        ProjectManagementModule,
+        NgbTypeaheadModule,
+        NgbPaginationModule,
+        NgSelectModule,
+        SharedModuleModule,
+        AlertComponent,
+        BadgeComponent,
+        TooltipModule,
+        InputGroupComponent,
+        ButtonDirective,
+        FacilityProjectsOverviewComponent,
+        ImageTagComponent,
+        FacilityApplicationComponent,
+        ResourcesComponent,
+        NewsManagerComponent,
+        GeneralstoragefactorOverviewComponent,
+        ObjectstoragefactorOverviewComponent,
+        VolumestoragefactorOverviewComponent,
+        ResourcemachineOverviewComponent,
+        GPUSpecificationOverviewComponent,
+        ResourcemachineOverviewComponent
+    ]
 })
 export class FacilitymanagerModule {}

@@ -25,46 +25,44 @@ import { ClipboardModule } from 'ngx-clipboard'
  * Shared module.
  */
 @NgModule({
-	exports: [
-		ApplicationBaseClassComponent,
-		NotificationModalComponent,
-		MembersListModalComponent,
-		ConfirmationModalComponent,
-		InformationToastComponent,
-		MigrationInformationComponent,
-		ApplicationBadgesComponent,
-		ProjectEmailModalComponent,
-		ProjectCsvTemplatedEmailModalComponent,
-		TestimonialFormComponent,
-		MaintenanceNotificationComponent,
-		ViewPublicKeyComponent
-	],
-	imports: [
-		CommonModule,
-		ModalModule.forRoot(),
-		ToastModule,
-		ProgressModule,
-		FormsModule,
-		PipeModuleModule,
-		NgSelectModule,
-		SharedDirectivesModule,
-		ReactiveFormsModule,
-		RouterLink,
-		ClipboardModule
-	],
-	declarations: [
-		ApplicationBaseClassComponent,
-		MembersListModalComponent,
-		NotificationModalComponent,
-		ConfirmationModalComponent,
-		InformationToastComponent,
-		MigrationInformationComponent,
-		ApplicationBadgesComponent,
-		ProjectEmailModalComponent,
-		ProjectCsvTemplatedEmailModalComponent,
-		TestimonialFormComponent,
-		MaintenanceNotificationComponent,
-		ViewPublicKeyComponent
-	]
+    exports: [
+        ApplicationBaseClassComponent,
+        NotificationModalComponent,
+        MembersListModalComponent,
+        ConfirmationModalComponent,
+        InformationToastComponent,
+        MigrationInformationComponent,
+        ApplicationBadgesComponent,
+        ProjectEmailModalComponent,
+        ProjectCsvTemplatedEmailModalComponent,
+        TestimonialFormComponent,
+        MaintenanceNotificationComponent,
+        ViewPublicKeyComponent
+    ],
+    imports: [
+        CommonModule,
+        ModalModule.forRoot(),
+        ToastModule,
+        ProgressModule,
+        FormsModule,
+        PipeModuleModule,
+        NgSelectModule,
+        SharedDirectivesModule,
+        ReactiveFormsModule,
+        RouterLink,
+        ClipboardModule,
+        ApplicationBaseClassComponent,
+        MembersListModalComponent,
+        NotificationModalComponent,
+        ConfirmationModalComponent,
+        InformationToastComponent,
+        MigrationInformationComponent,
+        ApplicationBadgesComponent,
+        ProjectEmailModalComponent,
+        ProjectCsvTemplatedEmailModalComponent,
+        TestimonialFormComponent,
+        MaintenanceNotificationComponent,
+        ViewPublicKeyComponent
+    ]
 })
 export class SharedModuleModule {}

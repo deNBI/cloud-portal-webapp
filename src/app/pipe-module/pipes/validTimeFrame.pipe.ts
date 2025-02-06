@@ -7,8 +7,7 @@ import { MaintenanceTimeFrame } from '../../vo_manager/maintenance/maintenanceTi
  */
 @Pipe({
     name: 'isValidTimeFrame',
-    pure: false,
-    standalone: false
+    pure: false
 })
 export class ValidTimeFramePipe implements PipeTransform {
 	transform(timeframe: WorkshopTimeFrame | MaintenanceTimeFrame): boolean {

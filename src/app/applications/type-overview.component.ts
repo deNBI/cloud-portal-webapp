@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 
 import { WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK } from '../../links/links'
 import { is_vo } from '../shared/globalvar'
+import { RouterLink } from '@angular/router';
 
 /**
  * The type overview of the different project classes.
@@ -10,7 +11,7 @@ import { is_vo } from '../shared/globalvar'
     selector: 'app-type-overview',
     templateUrl: './type-overview.component.html',
     styleUrls: ['./type-overview.component.css'],
-    standalone: false
+    imports: [RouterLink]
 })
 export class TypeOverviewComponent implements OnInit {
 	title: string = 'Project Type Overview'

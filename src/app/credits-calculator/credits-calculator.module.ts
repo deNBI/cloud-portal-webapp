@@ -10,17 +10,17 @@ import { SharedDirectivesModule } from '../shared/shared_modules/shared_directiv
 import { PipeModuleModule } from '../pipe-module/pipe-module.module'
 
 @NgModule({
-	declarations: [CreditsCalculatorComponent],
-	imports: [
-		CommonModule,
-		FormsModule,
-		SharedDirectivesModule,
-		TimepickerModule.forRoot(),
-		BsDatepickerModule.forRoot(),
-		ReactiveFormsModule,
-		PipeModuleModule,
-		AlertModule,
-		AccordionModule
-	]
+    imports: [
+        CommonModule,
+        FormsModule,
+        SharedDirectivesModule,
+        TimepickerModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        ReactiveFormsModule,
+        PipeModuleModule,
+        AlertModule,
+        AccordionModule,
+        CreditsCalculatorComponent
+    ]
 })
 export class CreditsCalculatorModule {}

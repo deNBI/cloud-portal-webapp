@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core'
+import { ToasterComponent, ToastComponent, ToastHeaderComponent, ToastBodyComponent, ProgressBarDirective, ProgressComponent, ProgressBarComponent } from '@coreui/angular';
 
 @Component({
     selector: 'app-information-toast',
     templateUrl: './information-toast.component.html',
     styleUrls: ['./information-toast.component.scss'],
-    standalone: false
+    imports: [ToasterComponent, ToastComponent, ToastHeaderComponent, ToastBodyComponent, ProgressBarDirective, ProgressComponent, ProgressBarComponent]
 })
 export class InformationToastComponent implements OnChanges {
 	@Input() message: string = ''

@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { ObjectStorageFactor } from '../object-storage-factor'
 import { FacilityService } from '../../../api-connector/facility.service'
+import { FormsModule } from '@angular/forms';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 /**
  * Class for objectfactors.
@@ -9,7 +11,7 @@ import { FacilityService } from '../../../api-connector/facility.service'
     selector: 'app-objectstoragefactor-overview',
     templateUrl: './objectstoragefactor-overview.component.html',
     providers: [FacilityService],
-    standalone: false
+    imports: [FormsModule, NgFor, NgClass, NgIf]
 })
 export class ObjectstoragefactorOverviewComponent implements OnInit {
 	objectStorageFactors: ObjectStorageFactor[]

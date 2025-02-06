@@ -14,8 +14,7 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links'
 @Component({
     selector: 'app-leave-project',
     templateUrl: './leave-project.component.html',
-    styleUrl: './leave-project.component.scss',
-    standalone: false
+    styleUrl: './leave-project.component.scss'
 })
 export class LeaveProjectComponent extends AbstractBaseModalComponent {
 	application: Application

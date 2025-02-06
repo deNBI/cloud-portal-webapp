@@ -6,8 +6,7 @@ import { environment } from '../environments/environment'
  */
 @Component({
     selector: 'app-registration-info',
-    templateUrl: 'registration-info.component.html',
-    standalone: false
+    templateUrl: 'registration-info.component.html'
 })
 export class RegistrationInfoComponent {
 	voRegistrationLink: string = environment.voRegistrationLink

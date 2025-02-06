@@ -1,17 +1,19 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { Subscription } from 'rxjs'
-import { OwlOptions } from 'ngx-owl-carousel-o'
+import { OwlOptions, CarouselModule } from 'ngx-owl-carousel-o'
 import { NewsService } from '../api-connector/news.service'
 import { News } from './news.model'
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { GroupService } from '../api-connector/group.service'
+import { NgIf, NgFor } from '@angular/common';
+import { NewsSlideComponent } from './news-slide/news-slide.component';
 
 @Component({
     selector: 'app-news',
     templateUrl: './news.component.html',
     styleUrls: ['./news.component.scss'],
     providers: [NewsService],
-    standalone: false
+    imports: [NgIf, CarouselModule, NgFor, NewsSlideComponent]
 })
 export class NewsComponent implements OnInit, OnDestroy {
 	@Input() tags: string[] = []

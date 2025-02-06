@@ -4,8 +4,7 @@ import { ProjectEnumeration } from '../../projectmanagement/project-enumeration'
 
 @Pipe({
     name: 'hasstatusnotinlist',
-    pure: false,
-    standalone: false
+    pure: false
 })
 export class HasStatusNotInListPipe implements PipeTransform {
 	transform(appl: Application | ProjectEnumeration, status: number): boolean {

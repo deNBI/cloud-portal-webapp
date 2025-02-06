@@ -20,10 +20,7 @@ export interface State {
 
 export const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0)
 
-@Directive({
-    selector: 'th[appSortable]',
-    standalone: false
-})
+@Directive({ selector: 'th[appSortable]' })
 export class NgbdSortableHeaderDirective {
 	@Input() appSortable: SortColumn = ''
 	@Input() direction: SortDirection = ''

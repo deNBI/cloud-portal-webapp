@@ -13,24 +13,21 @@ import { NgbdSortableHeaderDirective } from './directives/nbd-sortable-header.di
  * Shared directives module.
  */
 @NgModule({
-	imports: [],
-	declarations: [
-		MinAmoutValidatorDirective,
-		MaxAmoutValidatorDirective,
-		IntegerValidatorDirective,
-		IntegerOrNullValidatorDirective,
-		FloatOrNullValidatorDirective,
-		FloatValidatorDirective,
-		NgbdSortableHeaderDirective
-	],
-	exports: [
-		MinAmoutValidatorDirective,
-		MaxAmoutValidatorDirective,
-		IntegerValidatorDirective,
-		IntegerOrNullValidatorDirective,
-		FloatOrNullValidatorDirective,
-		FloatValidatorDirective,
-		NgbdSortableHeaderDirective
-	]
+    imports: [MinAmoutValidatorDirective,
+        MaxAmoutValidatorDirective,
+        IntegerValidatorDirective,
+        IntegerOrNullValidatorDirective,
+        FloatOrNullValidatorDirective,
+        FloatValidatorDirective,
+        NgbdSortableHeaderDirective],
+    exports: [
+        MinAmoutValidatorDirective,
+        MaxAmoutValidatorDirective,
+        IntegerValidatorDirective,
+        IntegerOrNullValidatorDirective,
+        FloatOrNullValidatorDirective,
+        FloatValidatorDirective,
+        NgbdSortableHeaderDirective
+    ]
 })
 export class SharedDirectivesModule {}

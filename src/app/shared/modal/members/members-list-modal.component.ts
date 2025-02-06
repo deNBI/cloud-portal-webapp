@@ -5,11 +5,12 @@ import { ProjectMember } from '../../../projectmanagement/project_member.model'
 import { VoService } from '../../../api-connector/vo.service'
 import { is_vo } from '../../globalvar'
 import { FacilityService } from '../../../api-connector/facility.service'
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
     selector: 'app-project-members-list',
     templateUrl: './members-list-modal.component.html',
-    standalone: false
+    imports: [NgIf, NgFor]
 })
 export class MembersListModalComponent implements OnDestroy, OnInit {
 	// currently only for vo

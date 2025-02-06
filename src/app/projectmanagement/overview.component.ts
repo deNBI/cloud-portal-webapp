@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild,
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
-import { DOCUMENT } from '@angular/common'
+import { DOCUMENT, NgIf, NgClass, NgFor, NgStyle } from '@angular/common'
 import { Chart } from 'chart.js'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 
@@ -53,6 +53,14 @@ import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.co
 import { UserApplicationsModalComponent } from './modals/user-applications-modal/user-applications-modal.component'
 import { ConfirmationActions } from 'app/shared/modal/confirmation_actions'
 import { ConfirmationModalComponent } from 'app/shared/modal/confirmation-modal.component'
+import { ApplicationProgressComponent } from './application-progress/application-progress.component';
+import { ApplicationDetailComponent } from '../applications/application-detail/application-detail.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { FormsModule } from '@angular/forms';
+import { TextColorDirective, TextBgColorDirective, BadgeComponent } from '@coreui/angular';
+import { TestimonialFormComponent } from '../shared/shared_modules/testimonial-forms/testimonial-form.component';
+import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe';
+import { IsMigratedProjectPipe } from '../pipe-module/pipes/isMigratedProject';
 
 /**
  * Projectoverview component.
@@ -60,7 +68,7 @@ import { ConfirmationModalComponent } from 'app/shared/modal/confirmation-modal.
 @Component({
     selector: 'app-project-overview',
     templateUrl: 'overview.component.html',
-    standalone: false
+    imports: [NgIf, ApplicationProgressComponent, NgClass, NgFor, ApplicationDetailComponent, NgStyle, BsDropdownModule, FormsModule, TextColorDirective, TextBgColorDirective, BadgeComponent, TestimonialFormComponent, HasstatusinlistPipe, IsMigratedProjectPipe]
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	bsModalRef: BsModalRef

@@ -9,9 +9,7 @@ import { MaintenanceAlertComponent } from '../maintenance/maintenance-alert.comp
  * Userinfo module.
  */
 @NgModule({
-	imports: [CarouselModule, CommonModule],
-
-	declarations: [NewsComponent, NewsSlideComponent, MaintenanceAlertComponent],
-	exports: [NewsComponent, MaintenanceAlertComponent]
+    imports: [CarouselModule, CommonModule, NewsComponent, NewsSlideComponent, MaintenanceAlertComponent],
+    exports: [NewsComponent, MaintenanceAlertComponent]
 })
 export class NewsModule {}

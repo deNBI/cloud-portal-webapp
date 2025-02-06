@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { GPUSpecification } from '../gpu-specification'
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 /**
  * Class for GPU-Specifications
@@ -10,7 +12,7 @@ import { GPUSpecification } from '../gpu-specification'
     selector: 'app-gpu-specification-overview',
     templateUrl: './gpu-specification-overview.component.html',
     providers: [FacilityService],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, NgClass, NgFor, TooltipModule, NgIf]
 })
 export class GPUSpecificationOverviewComponent implements OnInit {
 	gpuSpecifications: GPUSpecification[]

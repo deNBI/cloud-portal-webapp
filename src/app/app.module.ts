@@ -52,72 +52,70 @@ import { TitleService } from './title.service'
  * App module.
  */
 @NgModule({
-	declarations: [
-		AppComponent,
-		FullLayoutComponent,
-		AsideToggleDirective,
-		RegistrationInfoComponent,
-		ConsentInfoComponent,
-		BreadcrumbsComponent,
-		SidebarToggleDirective,
-		SidebarMinimizeDirective,
-		MobileSidebarToggleDirective,
-		SidebarOffCanvasCloseDirective,
-		TitleHeadbarComponent
-	],
-	bootstrap: [AppComponent],
-	imports: [
-		NgScrollbarModule,
-		BrowserModule,
-		AppRoutingModule,
-		CommonModule,
-		BsDropdownModule.forRoot(),
-		TabsModule.forRoot(),
-		ModalModule.forRoot(),
-		PaginationModule.forRoot(),
-		SharedModuleModule,
-		Angulartics2Module.forRoot(),
-		NgSelectModule,
-		BrowserAnimationsModule,
-		ClipboardModule,
-		PipeModuleModule,
-		TimepickerModule.forRoot(),
-		BsDatepickerModule.forRoot(),
-		AlertModule,
-		MatomoModule.forRoot({
-			siteId: environment.MATOMO_SITE_ID,
-			trackerUrl: environment.MATOMO_TRACKING_URL
-		}),
-		MatomoRouterModule
-	],
-	providers: [
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: AppInterceptor,
-			multi: true
-		},
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: TokenInterceptor,
-			multi: true
-		},
-		{
-			provide: LocationStrategy,
-			useClass: HashLocationStrategy
-		},
-		{
-			provide: ErrorHandler,
-			useClass: UncaughtExceptionHandler
-		},
-		provideCharts(withDefaultRegisterables()),
-		ApiSettings,
-		UserService,
-		CookieService,
-		VoService,
-		FacilityService,
-		Title,
-		TitleService,
-		provideHttpClient(withInterceptorsFromDi())
-	]
+    declarations: [AppComponent],
+    bootstrap: [AppComponent],
+    imports: [
+        NgScrollbarModule,
+        BrowserModule,
+        AppRoutingModule,
+        CommonModule,
+        BsDropdownModule.forRoot(),
+        TabsModule.forRoot(),
+        ModalModule.forRoot(),
+        PaginationModule.forRoot(),
+        SharedModuleModule,
+        Angulartics2Module.forRoot(),
+        NgSelectModule,
+        BrowserAnimationsModule,
+        ClipboardModule,
+        PipeModuleModule,
+        TimepickerModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        AlertModule,
+        MatomoModule.forRoot({
+            siteId: environment.MATOMO_SITE_ID,
+            trackerUrl: environment.MATOMO_TRACKING_URL
+        }),
+        MatomoRouterModule,
+        FullLayoutComponent,
+        AsideToggleDirective,
+        RegistrationInfoComponent,
+        ConsentInfoComponent,
+        BreadcrumbsComponent,
+        SidebarToggleDirective,
+        SidebarMinimizeDirective,
+        MobileSidebarToggleDirective,
+        SidebarOffCanvasCloseDirective,
+        TitleHeadbarComponent
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AppInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        },
+        {
+            provide: LocationStrategy,
+            useClass: HashLocationStrategy
+        },
+        {
+            provide: ErrorHandler,
+            useClass: UncaughtExceptionHandler
+        },
+        provideCharts(withDefaultRegisterables()),
+        ApiSettings,
+        UserService,
+        CookieService,
+        VoService,
+        FacilityService,
+        Title,
+        TitleService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
 })
 export class AppModule {}

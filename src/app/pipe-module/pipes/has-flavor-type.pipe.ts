@@ -8,10 +8,7 @@ import { FlavorType } from 'app/virtualmachines/virtualmachinemodels/flavorType'
 /**
  * Pipe which compares status.
  */
-@Pipe({
-    name: 'hasFlavorTypeOrIsNotCustom',
-    standalone: false
-})
+@Pipe({ name: 'hasFlavorTypeOrIsNotCustom' })
 export class HasFlavorTypeOrIsNotCustomPipe implements PipeTransform {
 	transform(project: Application, flavorType: FlavorType): boolean {
 		const hasFlavorTypeFlavor: boolean = project.flavors.some(

@@ -9,6 +9,14 @@ import { CreditsService } from '../../api-connector/credits.service'
 import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class'
 import { User } from '../application.model/user.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
+import { NgClass, NgIf } from '@angular/common';
+import { ApplicationPiDetailComponent } from './application-pi-detail/application-pi-detail.component';
+import { InformationDetailComponent } from './information-detail/information-detail.component';
+import { ResourceDetailComponent } from './resource-detail/resource-detail.component';
+import { CreditsExtensionDetailComponent } from './credits-extension-detail/credits-extension-detail.component';
+import { LifetimeExtensionDetailComponent } from './lifetime-extension-detail/lifetime-extension-detail.component';
+import { AdjustmentDetailComponent } from './adjustment-detail/adjustment-detail.component';
+import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pipe';
 
 /**
  * Class which displays the details of an application.
@@ -18,7 +26,7 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
     templateUrl: './application-detail.component.html',
     styleUrls: ['./application-detail.component.scss'],
     providers: [FacilityService, UserService, ApplicationsService, CreditsService],
-    standalone: false
+    imports: [NgClass, NgIf, ApplicationPiDetailComponent, InformationDetailComponent, ResourceDetailComponent, CreditsExtensionDetailComponent, LifetimeExtensionDetailComponent, AdjustmentDetailComponent, HasstatusinlistPipe]
 })
 export class ApplicationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
 	PI_USER_TAB: number = 0

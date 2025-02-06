@@ -7,8 +7,7 @@ import { WIKI, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, SUPPORT_LINK, ZAMMAD_HELP
 @Component({
     selector: 'app-help',
     templateUrl: './help.component.html',
-    providers: [],
-    standalone: false
+    providers: []
 })
 export class HelpComponent implements OnInit {
 	WIKI: string = WIKI

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core'
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router'
+import { Router, ActivatedRoute, NavigationEnd, RouterLink } from '@angular/router'
 
 import { filter } from 'rxjs/operators'
+import { NgFor, NgIf, NgClass } from '@angular/common';
 
 // tslint:disable
 @Component({
@@ -19,7 +20,7 @@ import { filter } from 'rxjs/operators'
 			<span *ngIf="last" [routerLink]="breadcrumb.url">{{ breadcrumb.label.title }}</span>
 		</li>
 	</ng-template>`,
-    standalone: false
+    imports: [NgFor, NgIf, NgClass, RouterLink]
 })
 export class BreadcrumbsComponent implements OnInit {
 	breadcrumbs: object[]

@@ -14,18 +14,17 @@ import { NewsModule } from '../news/news.module'
  * Userinfo module.
  */
 @NgModule({
-	imports: [
-		PublicKeyModule,
-		UserInfoRoutingModule,
-		TabsModule,
-		CommonModule,
-		FormsModule,
-		ModalModule.forRoot(),
-		AlertModule.forRoot(),
-		NewsModule
-	],
-
-	declarations: [UserInfoComponent],
-	exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
+    imports: [
+        PublicKeyModule,
+        UserInfoRoutingModule,
+        TabsModule,
+        CommonModule,
+        FormsModule,
+        ModalModule.forRoot(),
+        AlertModule.forRoot(),
+        NewsModule,
+        UserInfoComponent
+    ],
+    exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
 })
 export class UserinfoModule {}

@@ -21,6 +21,8 @@ import { CreditsService } from '../api-connector/credits.service'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
 import { ConfirmationActions } from '../shared/modal/confirmation_actions'
 import { ApplicationTabStates } from '../shared/enums/application-tab-states'
+import { NgIf, NgClass } from '@angular/common';
+import { ApplicationListComponent } from './application-list/application-list.component';
 
 /**
  * Application Overview component.
@@ -38,7 +40,7 @@ import { ApplicationTabStates } from '../shared/enums/application-tab-states'
         FlavorService,
         CreditsService
     ],
-    standalone: false
+    imports: [NgIf, NgClass, ApplicationListComponent]
 })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	title: string = 'Application Overview'

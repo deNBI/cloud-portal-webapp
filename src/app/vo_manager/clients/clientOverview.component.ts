@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Subscription } from 'rxjs'
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
 import { Client } from './client.model'
 import { ClientService } from '../../api-connector/client.service'
@@ -12,6 +12,8 @@ import { FacilityService } from '../../api-connector/facility.service'
 import { IResponseTemplate } from '../../api-connector/response-template'
 import { is_vo } from '../../shared/globalvar'
 import { ClientLimitsComponent } from './modals/client-limits..component'
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 /**
  * Client component.
  */
@@ -19,7 +21,7 @@ import { ClientLimitsComponent } from './modals/client-limits..component'
     selector: 'app-client-overview',
     templateUrl: 'clientOverview.html',
     providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
-    standalone: false
+    imports: [NgIf, NgFor, FormsModule, NgClass, ModalModule]
 })
 export class ClientOverviewComponent implements OnInit, OnDestroy {
 	title: string = 'Client Overview'

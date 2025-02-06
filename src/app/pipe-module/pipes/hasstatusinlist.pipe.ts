@@ -7,8 +7,7 @@ import { ProjectEnumeration } from '../../projectmanagement/project-enumeration'
  */
 @Pipe({
     name: 'hasstatusinlist',
-    pure: false,
-    standalone: false
+    pure: false
 })
 export class HasstatusinlistPipe implements PipeTransform {
 	transform(appl: Application | ProjectEnumeration, status: number): boolean {

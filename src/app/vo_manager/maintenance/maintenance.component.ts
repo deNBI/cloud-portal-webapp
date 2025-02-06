@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms'
-import { BsModalService } from 'ngx-bootstrap/modal'
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 import 'svg2pdf.js'
 
 import { WorkshopService } from '../../api-connector/workshop.service'
@@ -9,6 +9,10 @@ import { WorkshopTimeFrame } from '../../virtualmachines/workshop/workshopTimeFr
 import { VoService } from '../../api-connector/vo.service'
 import { MaintenanceTimeFrame } from './maintenanceTimeFrame.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
+import { NgIf, NgFor, NgClass, SlicePipe, DatePipe } from '@angular/common';
+import { DatePickerComponent } from '../../shared/datepicking/datepicker.component';
+import { TimepickerComponent } from '../../shared/datepicking/timepicker.component';
+import { ValidTimeFramePipe } from '../../pipe-module/pipes/validTimeFrame.pipe';
 
 /**
  * Component to display graphs which illustrate numbers for VO.
@@ -18,7 +22,7 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
     templateUrl: './maintenance.component.html',
     styleUrls: ['./maintenance.component.scss'],
     providers: [WorkshopService, VoService],
-    standalone: false
+    imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, DatePickerComponent, TimepickerComponent, NgClass, ModalModule, SlicePipe, DatePipe, ValidTimeFramePipe]
 })
 export class MaintenanceComponent implements OnInit {
 	is_vo_admin: boolean = false

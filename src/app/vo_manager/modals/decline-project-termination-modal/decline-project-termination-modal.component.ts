@@ -11,8 +11,7 @@ import { NotificationModalComponent } from '../../../shared/modal/notification-m
 @Component({
     selector: 'app-decline-project-termination-modal',
     templateUrl: './decline-project-termination-modal.component.html',
-    styleUrl: './decline-project-termination-modal.component.scss',
-    standalone: false
+    styleUrl: './decline-project-termination-modal.component.scss'
 })
 export class DeclineProjectTerminationModalComponent extends AbstractBaseModalComponent {
 	application: Application

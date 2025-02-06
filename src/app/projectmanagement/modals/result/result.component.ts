@@ -7,13 +7,15 @@ import { ApplicationLifetimeExtension } from '../../../applications/application_
 import { ApplicationCreditRequest } from '../../../applications/application_credit_request'
 import { ApplicationsService } from '../../../api-connector/applications.service'
 import { EdamOntologyTerm } from '../../../applications/edam-ontology-term'
+import { NgIf, NgFor } from '@angular/common';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 @Component({
     selector: 'app-result',
     templateUrl: './result.component.html',
     styleUrls: ['./result.component.scss'],
     providers: [ApplicationsService, BsModalService],
-    standalone: false
+    imports: [NgIf, NgFor, AlertModule]
 })
 export class ResultComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()

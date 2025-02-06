@@ -6,13 +6,16 @@ import { Application } from '../../../applications/application.model/application
 import { ApplicationCreditRequest } from '../../../applications/application_credit_request'
 import { ResultComponent } from '../result/result.component'
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
+import { FormsModule } from '@angular/forms';
+import { NgClass, NgIf } from '@angular/common';
+import { IntegerValidatorDirective, MinAmoutValidatorDirective } from '../../../applications/numberValidations.directive';
 
 @Component({
     selector: 'app-credits-request',
     templateUrl: './credits-request.component.html',
     styleUrls: ['./credits-request.component.scss'],
     providers: [CreditsService],
-    standalone: false
+    imports: [FormsModule, NgClass, IntegerValidatorDirective, MinAmoutValidatorDirective, NgIf]
 })
 export class CreditsRequestComponent implements OnInit, OnDestroy {
 	project: Application

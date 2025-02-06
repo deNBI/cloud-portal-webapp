@@ -5,6 +5,7 @@ import * as d3 from 'd3'
 
 import { NumbersService } from '../../api-connector/numbers.service'
 import 'svg2pdf.js'
+import { NgIf } from '@angular/common';
 
 /**
  * Component to display graphs which illustrate numbers for VO.
@@ -14,7 +15,7 @@ import 'svg2pdf.js'
     templateUrl: './number-charts.component.html',
     styleUrls: ['./number-charts.component.css'],
     providers: [NumbersService],
-    standalone: false
+    imports: [NgIf]
 })
 export class NumberChartsComponent implements OnInit {
 	is_vo_admin: boolean = true

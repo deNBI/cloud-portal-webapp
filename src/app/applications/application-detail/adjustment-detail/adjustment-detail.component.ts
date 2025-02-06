@@ -6,8 +6,7 @@ import { is_vo, elixir_id } from '../../../shared/globalvar'
  */
 @Component({
     selector: 'app-adjustment-detail',
-    templateUrl: './adjustment-detail.component.html',
-    standalone: false
+    templateUrl: './adjustment-detail.component.html'
 })
 export class AdjustmentDetailComponent implements OnInit {
 	is_vo: boolean = is_vo

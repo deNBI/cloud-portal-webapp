@@ -7,13 +7,18 @@ import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
 import { FlavorType } from '../../../virtualmachines/virtualmachinemodels/flavorType'
 import { FlavorService } from '../../../api-connector/flavor.service'
 import { FlavorTypeShortcuts } from '../../../shared/shared_modules/baseClass/flavor-type-shortcuts'
+import { NgIf, NgStyle, NgClass, NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MinAmoutValidatorDirective, IntegerValidatorDirective, IntegerOrNullValidatorDirective } from '../../../applications/numberValidations.directive';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { FlavorCounterPipe } from '../../../pipe-module/pipes/flavorcounter';
 
 @Injectable({ providedIn: 'root' })
 @Component({
     selector: 'app-application',
     templateUrl: './adjust-application.component.html',
     providers: [ApplicationsService],
-    standalone: false
+    imports: [NgIf, FormsModule, NgStyle, MinAmoutValidatorDirective, IntegerValidatorDirective, NgClass, AccordionModule, NgFor, IntegerOrNullValidatorDirective, FlavorCounterPipe]
 })
 export class AdjustApplicationComponent implements OnInit {
 	bsModalRef = BsModalRef
