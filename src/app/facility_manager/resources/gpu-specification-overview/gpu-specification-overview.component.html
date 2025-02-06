@@ -35,7 +35,7 @@
 							[ngClass]="{
 								'is-invalid':
 									newGPUFormGroup.controls['new_gpu_type'].invalid && newGPUFormGroup.controls['new_gpu_type'].dirty,
-								'is-valid': newGPUFormGroup.controls['new_gpu_type'].valid
+								'is-valid': newGPUFormGroup.controls['new_gpu_type'].valid,
 							}"
 						/>
 					</div>
@@ -54,7 +54,7 @@
 							[ngClass]="{
 								'is-invalid':
 									newGPUFormGroup.controls['new_gpu_cores'].invalid && newGPUFormGroup.controls['new_gpu_cores'].dirty,
-								'is-valid': newGPUFormGroup.controls['new_gpu_cores'].valid
+								'is-valid': newGPUFormGroup.controls['new_gpu_cores'].valid,
 							}"
 							min="0"
 							step="1"
@@ -78,7 +78,7 @@
 							[ngClass]="{
 								'is-invalid':
 									newGPUFormGroup.controls['new_gpu_ram'].invalid && newGPUFormGroup.controls['new_gpu_ram'].dirty,
-								'is-valid': newGPUFormGroup.controls['new_gpu_ram'].valid
+								'is-valid': newGPUFormGroup.controls['new_gpu_ram'].valid,
 							}"
 							min="0"
 							step="1"
@@ -114,7 +114,7 @@
 						(click)="deleteGPUSpecification(gpu.id)"
 						class="btn btn-danger"
 						[disabled]="!gpu.is_changeable"
-						*ngIf="!this.gpuSpecificationUpdateList[gpu.id]"
+						*ngIf="!gpuSpecificationUpdateList[gpu.id]"
 					>
 						Remove
 					</button>
