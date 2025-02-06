@@ -39,7 +39,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	bsModalRef: BsModalRef
 	is_vo_admin: boolean = false
 	selectedComputeCenter: ComputecenterComponent
-	modificationAdjustment: ApplicationModification;
+	modificationAdjustment: ApplicationModification
 
 	ngOnInit() {
 		this.is_vo_admin = is_vo
@@ -97,7 +97,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		const initialState = {
 			project: this.application,
 			adjustment: true,
-			preSavedAdjustment: this.modificationAdjustment,
+			preSavedAdjustment: this.modificationAdjustment
 		}
 
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, {
@@ -427,8 +427,8 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
 				if ('backToInput' in result) {
-					this.modificationAdjustment = result['adjustedModification'];
-					this.showModificationAdjustmentModal();
+					this.modificationAdjustment = result['adjustedModification']
+					this.showModificationAdjustmentModal()
 				}
 				let action = null
 				if ('action' in result) {
