@@ -1,6 +1,7 @@
 import { AfterViewInit, ApplicationRef, Component, OnInit } from '@angular/core'
 import { VoService } from './api-connector/vo.service'
 import { TitleService } from './title.service'
+import { RouterOutlet } from '@angular/router';
 
 /**
  * App component.
@@ -9,7 +10,7 @@ import { TitleService } from './title.service'
     selector: 'body',
     templateUrl: 'app.component.html',
     providers: [VoService],
-    standalone: false
+    imports: [RouterOutlet]
 })
 export class AppComponent implements AfterViewInit, OnInit {
 	notificationModalTitle: string = 'Update available'
