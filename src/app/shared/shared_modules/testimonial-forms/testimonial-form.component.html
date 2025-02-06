@@ -33,7 +33,7 @@
 		</div>
 	</div>
 </div>
-<div class="card-body" *ngIf="!testimonialSent && testimonialFormGroup && !this.hideTestimonialForm">
+<div class="card-body" *ngIf="!testimonialSent && testimonialFormGroup && !hideTestimonialForm">
 	<form id="testimonialForm" [formGroup]="testimonialFormGroup" class="form-horizontal">
 		<div class="form-group row">
 			<div class="col-md-3">
@@ -378,10 +378,7 @@
 		>.
 	</div>
 </div>
-<div
-	class="card-body"
-	*ngIf="!testimonialSent && !this.hideTestimonialForm && (testimonialFormGroup?.invalid || !this.file)"
->
+<div class="card-body" *ngIf="!testimonialSent && !hideTestimonialForm && (testimonialFormGroup?.invalid || !file)">
 	<hr />
 	<ul class="list-group list-group-flush">
 		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_title'].invalid">
@@ -402,7 +399,7 @@
 		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_workgroup'].invalid">
 			Please provide a workgroup.
 		</li>
-		<li class="list-group-item" *ngIf="!this.file">Please provide a valid image file.</li>
+		<li class="list-group-item" *ngIf="!file">Please provide a valid image file.</li>
 	</ul>
 </div>
 <div class="card-footer">
@@ -423,7 +420,7 @@
 			<div class="btn-group">
 				<button
 					class="btn btn-success"
-					[disabled]="testimonialSent || testimonialFormGroup?.invalid || !this.file"
+					[disabled]="testimonialSent || testimonialFormGroup?.invalid || !file"
 					(click)="sendTestimonial()"
 				>
 					Submit testimonial
