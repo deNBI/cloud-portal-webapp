@@ -5,9 +5,10 @@ import { UserService } from '../api-connector/user.service'
  * Title headbar component.
  */
 @Component({
-	templateUrl: 'title-headbar.component.html',
-	selector: 'app-title-headbar',
-	providers: [UserService]
+    templateUrl: 'title-headbar.component.html',
+    selector: 'app-title-headbar',
+    providers: [UserService],
+    standalone: false
 })
 export class TitleHeadbarComponent {
 	@Input() page_title: string

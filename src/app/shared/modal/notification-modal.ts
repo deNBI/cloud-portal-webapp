@@ -5,8 +5,9 @@ import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-
 
 @Injectable({ providedIn: 'root' })
 @Component({
-	selector: 'app-notification-modal',
-	templateUrl: './notification-modal.component.html'
+    selector: 'app-notification-modal',
+    templateUrl: './notification-modal.component.html',
+    standalone: false
 })
 export class NotificationModalComponent extends AbstractBaseModalComponent implements OnDestroy {
 	notificationModalTitle: string

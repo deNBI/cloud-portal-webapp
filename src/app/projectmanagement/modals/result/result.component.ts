@@ -9,10 +9,11 @@ import { ApplicationsService } from '../../../api-connector/applications.service
 import { EdamOntologyTerm } from '../../../applications/edam-ontology-term'
 
 @Component({
-	selector: 'app-result',
-	templateUrl: './result.component.html',
-	styleUrls: ['./result.component.scss'],
-	providers: [ApplicationsService, BsModalService]
+    selector: 'app-result',
+    templateUrl: './result.component.html',
+    styleUrls: ['./result.component.scss'],
+    providers: [ApplicationsService, BsModalService],
+    standalone: false
 })
 export class ResultComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()

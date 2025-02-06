@@ -9,10 +9,11 @@ import { Application } from '../../applications/application.model/application.mo
  * Project OpenStack Details Component.
  */
 @Component({
-	selector: 'app-project-os-details',
-	templateUrl: './project-os-details.component.html',
-	styleUrls: ['./project-os-details.component.css'],
-	providers: [GroupService]
+    selector: 'app-project-os-details',
+    templateUrl: './project-os-details.component.html',
+    styleUrls: ['./project-os-details.component.css'],
+    providers: [GroupService],
+    standalone: false
 })
 export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 	@Input() project: Application

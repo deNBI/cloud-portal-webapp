@@ -13,10 +13,10 @@ import { ConfirmationModalComponent } from '../../shared/modal/confirmation-moda
 import { ApplicationsService } from '../../api-connector/applications.service'
 
 @Component({
-	selector: 'app-application-facility-actions',
-
-	templateUrl: './application-facility-actions.component.html',
-	styleUrl: './application-facility-actions.component.scss'
+    selector: 'app-application-facility-actions',
+    templateUrl: './application-facility-actions.component.html',
+    styleUrl: './application-facility-actions.component.scss',
+    standalone: false
 })
 export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	private subscription: Subscription = new Subscription()

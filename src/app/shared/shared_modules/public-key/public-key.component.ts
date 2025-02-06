@@ -14,10 +14,11 @@ import { SetPublicKeyModalComponent } from './set-public-key-modal/set-public-ke
  * Public Key component.
  */
 @Component({
-	selector: '[app-public-key]',
-	templateUrl: './public-key.component.html',
-	styleUrls: ['./public-key.component.scss'],
-	providers: [ApiSettings, KeyService]
+    selector: '[app-public-key]',
+    templateUrl: './public-key.component.html',
+    styleUrls: ['./public-key.component.scss'],
+    providers: [ApiSettings, KeyService],
+    standalone: false
 })
 export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 	WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS

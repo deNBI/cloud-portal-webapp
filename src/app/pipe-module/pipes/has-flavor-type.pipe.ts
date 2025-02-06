@@ -9,7 +9,8 @@ import { FlavorType } from 'app/virtualmachines/virtualmachinemodels/flavorType'
  * Pipe which compares status.
  */
 @Pipe({
-	name: 'hasFlavorTypeOrIsNotCustom'
+    name: 'hasFlavorTypeOrIsNotCustom',
+    standalone: false
 })
 export class HasFlavorTypeOrIsNotCustomPipe implements PipeTransform {
 	transform(project: Application, flavorType: FlavorType): boolean {
@@ -24,7 +25,8 @@ export class HasFlavorTypeOrIsNotCustomPipe implements PipeTransform {
  * Pipe which checks if status is in a list.
  */
 @Pipe({
-	name: 'statusInList'
+    name: 'statusInList',
+    standalone: false
 })
 export class StatusInListPipe implements PipeTransform {
 	transform(status: string, status_list_to_compare: string[]): boolean {

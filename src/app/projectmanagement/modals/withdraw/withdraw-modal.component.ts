@@ -9,9 +9,10 @@ export enum WITHDRAWAL_TYPES {
 }
 
 @Component({
-	selector: 'app-withdrawl-modal',
-	templateUrl: './withdraw-modal.component.html',
-	providers: [ApplicationsService]
+    selector: 'app-withdrawl-modal',
+    templateUrl: './withdraw-modal.component.html',
+    providers: [ApplicationsService],
+    standalone: false
 })
 export class WithdrawModalComponent {
 	target_id: string | number

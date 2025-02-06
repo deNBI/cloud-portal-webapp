@@ -6,10 +6,11 @@ import { STATUS_LINK } from '../../../../../links/links'
 import { NotificationModalComponent } from '../../notification-modal'
 
 @Component({
-	selector: 'app-project-email-modal',
-	templateUrl: './project-email-modal.component.html',
-	styleUrls: ['./projext-email-modal.component.scss'],
-	providers: [EmailService]
+    selector: 'app-project-email-modal',
+    templateUrl: './project-email-modal.component.html',
+    styleUrls: ['./projext-email-modal.component.scss'],
+    providers: [EmailService],
+    standalone: false
 })
 export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 	@Input() selectedProjects: Application[]

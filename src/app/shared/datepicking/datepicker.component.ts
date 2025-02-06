@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms'
 import { JsonPipe } from '@angular/common'
 
 @Component({
-	selector: 'app-datepicker',
-	standalone: true,
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
-	templateUrl: './datepicker.component.html'
+    selector: 'app-datepicker',
+    imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+    templateUrl: './datepicker.component.html'
 })
 export class DatePickerComponent implements OnInit {
 	model: NgbDateStruct

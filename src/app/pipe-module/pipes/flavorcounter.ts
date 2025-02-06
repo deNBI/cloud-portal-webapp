@@ -7,7 +7,8 @@ import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor'
  * Pipe which returns counter of flavors.
  */
 @Pipe({
-	name: 'flavorCounter'
+    name: 'flavorCounter',
+    standalone: false
 })
 export class FlavorCounterPipe implements PipeTransform {
 	transform(appl: ApplicationModification | Application, flavor: Flavor): number {

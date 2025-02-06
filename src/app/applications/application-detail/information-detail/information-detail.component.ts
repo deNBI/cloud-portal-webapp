@@ -7,8 +7,9 @@ import { environment } from '../../../../environments/environment'
  * Application informations.
  */
 @Component({
-	selector: 'app-information-detail',
-	templateUrl: './information-detail.component.html'
+    selector: 'app-information-detail',
+    templateUrl: './information-detail.component.html',
+    standalone: false
 })
 export class InformationDetailComponent implements OnInit {
 	@Input() application: Application

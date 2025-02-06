@@ -9,10 +9,11 @@ import { Resources } from './resources'
  * Resource component.
  */
 @Component({
-	selector: 'app-resources',
-	templateUrl: './resources.component.html',
-	styleUrls: ['./resources.component.scss'],
-	providers: [VoService]
+    selector: 'app-resources',
+    templateUrl: './resources.component.html',
+    styleUrls: ['./resources.component.scss'],
+    providers: [VoService],
+    standalone: false
 })
 export class ResourcesComponent implements OnInit {
 	title: string = 'VO Overview: Resources'

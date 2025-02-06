@@ -5,7 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Pipe which compares status.
  */
 @Pipe({
-	name: 'hasStatus'
+    name: 'hasStatus',
+    standalone: false
 })
 export class HasStatusPipe implements PipeTransform {
 	transform(status: string | number, status_to_compare: string | number): boolean {
@@ -16,7 +17,8 @@ export class HasStatusPipe implements PipeTransform {
  * Pipe which checks if status is in a list.
  */
 @Pipe({
-	name: 'statusInList'
+    name: 'statusInList',
+    standalone: false
 })
 export class StatusInListPipe implements PipeTransform {
 	transform(status: string, status_list_to_compare: string[]): boolean {

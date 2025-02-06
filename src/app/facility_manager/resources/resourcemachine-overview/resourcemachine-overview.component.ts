@@ -8,9 +8,10 @@ import { GPUSpecification } from '../gpu-specification'
  * Class for ramfactors..
  */
 @Component({
-	selector: 'app-resourcemachine-overview',
-	templateUrl: './resourcemachine-overview.component.html',
-	providers: [FacilityService]
+    selector: 'app-resourcemachine-overview',
+    templateUrl: './resourcemachine-overview.component.html',
+    providers: [FacilityService],
+    standalone: false
 })
 export class ResourcemachineOverviewComponent implements OnInit {
 	factor_types: string[] = ['HIGH_MEMORY', 'GENERAL_PURPOSE', 'MIDCLASS']

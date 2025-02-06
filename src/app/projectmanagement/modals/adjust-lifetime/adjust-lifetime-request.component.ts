@@ -7,9 +7,10 @@ import { ApplicationsService } from '../../../api-connector/applications.service
 
 @Injectable({ providedIn: 'root' })
 @Component({
-	selector: 'app-adjust-lifetime-request',
-	templateUrl: './adjust-lifetime-request.component.html',
-	providers: [ApplicationsService]
+    selector: 'app-adjust-lifetime-request',
+    templateUrl: './adjust-lifetime-request.component.html',
+    providers: [ApplicationsService],
+    standalone: false
 })
 export class AdjustLifetimeRequestComponent implements OnInit {
 	bsModalRef = BsModalRef

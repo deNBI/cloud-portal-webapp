@@ -6,8 +6,9 @@ import { AbstractControl, NG_VALIDATORS, Validator, ValidatorFn } from '@angular
  * Number validation directive.
  */
 @Directive({
-	selector: '[appMinAmount]',
-	providers: [{ provide: NG_VALIDATORS, useExisting: MinAmoutValidatorDirective, multi: true }]
+    selector: '[appMinAmount]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: MinAmoutValidatorDirective, multi: true }],
+    standalone: false
 })
 export class MinAmoutValidatorDirective implements Validator {
 	@Input('appMinAmount') minAmount: number
@@ -33,8 +34,9 @@ export function minAmountValidator(val: number): ValidatorFn {
  * Max amount directive.
  */
 @Directive({
-	selector: '[appMaxAmount]',
-	providers: [{ provide: NG_VALIDATORS, useExisting: MaxAmoutValidatorDirective, multi: true }]
+    selector: '[appMaxAmount]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: MaxAmoutValidatorDirective, multi: true }],
+    standalone: false
 })
 export class MaxAmoutValidatorDirective implements Validator {
 	@Input('appMaxAmount') maxAmount: number
@@ -60,8 +62,9 @@ export function maxAmountValidator(val: number): ValidatorFn {
  * Integer directive.
  */
 @Directive({
-	selector: '[appInteger]',
-	providers: [{ provide: NG_VALIDATORS, useExisting: IntegerValidatorDirective, multi: true }]
+    selector: '[appInteger]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: IntegerValidatorDirective, multi: true }],
+    standalone: false
 })
 export class IntegerValidatorDirective implements Validator {
 	validate(control: AbstractControl): { [key: string]: any } | null {
@@ -109,8 +112,9 @@ export function floatOrNullValidator(): ValidatorFn {
  * Float directive.
  */
 @Directive({
-	selector: '[appFloat]',
-	providers: [{ provide: NG_VALIDATORS, useExisting: FloatValidatorDirective, multi: true }]
+    selector: '[appFloat]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: FloatValidatorDirective, multi: true }],
+    standalone: false
 })
 export class FloatValidatorDirective implements Validator {
 	validate(control: AbstractControl): { [key: string]: any } | null {
@@ -122,8 +126,9 @@ export class FloatValidatorDirective implements Validator {
  * Integer or Null directive.
  */
 @Directive({
-	selector: '[appFloatOrNull]',
-	providers: [{ provide: NG_VALIDATORS, useExisting: FloatOrNullValidatorDirective, multi: true }]
+    selector: '[appFloatOrNull]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: FloatOrNullValidatorDirective, multi: true }],
+    standalone: false
 })
 export class FloatOrNullValidatorDirective implements Validator {
 	validate(control: AbstractControl): { [key: string]: any } | null {
@@ -135,8 +140,9 @@ export class FloatOrNullValidatorDirective implements Validator {
  * Integer or Null directive.
  */
 @Directive({
-	selector: '[appIntegerOrNull]',
-	providers: [{ provide: NG_VALIDATORS, useExisting: IntegerOrNullValidatorDirective, multi: true }]
+    selector: '[appIntegerOrNull]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: IntegerOrNullValidatorDirective, multi: true }],
+    standalone: false
 })
 export class IntegerOrNullValidatorDirective implements Validator {
 	validate(control: AbstractControl): { [key: string]: any } | null {

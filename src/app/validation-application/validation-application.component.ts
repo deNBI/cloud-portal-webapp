@@ -9,10 +9,11 @@ import { FlavorService } from '../api-connector/flavor.service'
  * Application validation modal.
  */
 @Component({
-	selector: 'app-validation-application',
-	templateUrl: './validation-application.component.html',
-	styleUrls: ['./validation-application.component.scss'],
-	providers: [ApplicationsService, FlavorService]
+    selector: 'app-validation-application',
+    templateUrl: './validation-application.component.html',
+    styleUrls: ['./validation-application.component.scss'],
+    providers: [ApplicationsService, FlavorService],
+    standalone: false
 })
 export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit, AfterViewChecked {
 	application: Application

@@ -6,10 +6,11 @@ import { Doi } from '../../../applications/doi/doi'
 import { GroupService } from '../../../api-connector/group.service'
 
 @Component({
-	selector: 'app-extension-entry',
-	templateUrl: './extension-entry.component.html',
-	styleUrls: ['./extension-entry.component.scss'],
-	providers: [GroupService]
+    selector: 'app-extension-entry',
+    templateUrl: './extension-entry.component.html',
+    styleUrls: ['./extension-entry.component.scss'],
+    providers: [GroupService],
+    standalone: false
 })
 export class ExtensionEntryComponent implements OnDestroy {
 	private subscription: Subscription = new Subscription()

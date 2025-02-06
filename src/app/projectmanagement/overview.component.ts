@@ -58,8 +58,9 @@ import { ConfirmationModalComponent } from 'app/shared/modal/confirmation-modal.
  * Projectoverview component.
  */
 @Component({
-	selector: 'app-project-overview',
-	templateUrl: 'overview.component.html'
+    selector: 'app-project-overview',
+    templateUrl: 'overview.component.html',
+    standalone: false
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	bsModalRef: BsModalRef

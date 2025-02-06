@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 
-@Component({ template: '' })
+@Component({
+    template: '',
+    standalone: false
+})
 export abstract class AbstractBaseModalComponent {
 	modalId: number | string | undefined
 	@Output() event: EventEmitter<any> = new EventEmitter()

@@ -9,10 +9,11 @@ import { ResultComponent } from '../result/result.component'
 import { ApplicationsService } from '../../../api-connector/applications.service'
 
 @Component({
-	selector: 'app-lifetime-request',
-	templateUrl: './lifetime-request.component.html',
-	styleUrls: ['./lifetime-request.component.scss'],
-	providers: [CreditsService, ApplicationsService]
+    selector: 'app-lifetime-request',
+    templateUrl: './lifetime-request.component.html',
+    styleUrls: ['./lifetime-request.component.scss'],
+    providers: [CreditsService, ApplicationsService],
+    standalone: false
 })
 export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	project: Application

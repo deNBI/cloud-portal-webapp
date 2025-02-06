@@ -7,9 +7,10 @@ import { is_vo } from '../shared/globalvar'
  * The type overview of the different project classes.
  */
 @Component({
-	selector: 'app-type-overview',
-	templateUrl: './type-overview.component.html',
-	styleUrls: ['./type-overview.component.css']
+    selector: 'app-type-overview',
+    templateUrl: './type-overview.component.html',
+    styleUrls: ['./type-overview.component.css'],
+    standalone: false
 })
 export class TypeOverviewComponent implements OnInit {
 	title: string = 'Project Type Overview'

@@ -6,7 +6,8 @@ import { ApplicationRessourceUsage } from '../../applications/application-ressou
  * Pipe which compares status.
  */
 @Pipe({
-	name: 'noVMsPipe'
+    name: 'noVMsPipe',
+    standalone: false
 })
 export class NoVMsPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage, additional_vms: number = 0): boolean {
@@ -22,7 +23,8 @@ export class NoVMsPipe implements PipeTransform {
  * Pipe which compares status.
  */
 @Pipe({
-	name: 'noCoresPipe'
+    name: 'noCoresPipe',
+    standalone: false
 })
 export class NoCoresPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage): boolean {
@@ -34,7 +36,8 @@ export class NoCoresPipe implements PipeTransform {
  * Pipe which compares status.
  */
 @Pipe({
-	name: 'noRamPipe'
+    name: 'noRamPipe',
+    standalone: false
 })
 export class NoRamPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage): boolean {

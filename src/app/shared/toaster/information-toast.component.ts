@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges } from '@angular/core'
 
 @Component({
-	selector: 'app-information-toast',
-	templateUrl: './information-toast.component.html',
-	styleUrls: ['./information-toast.component.scss']
+    selector: 'app-information-toast',
+    templateUrl: './information-toast.component.html',
+    styleUrls: ['./information-toast.component.scss'],
+    standalone: false
 })
 export class InformationToastComponent implements OnChanges {
 	@Input() message: string = ''

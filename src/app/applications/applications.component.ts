@@ -26,18 +26,19 @@ import { ApplicationTabStates } from '../shared/enums/application-tab-states'
  * Application Overview component.
  */
 @Component({
-	selector: 'app-applications-list',
-	templateUrl: 'applications.component.html',
-	providers: [
-		FacilityService,
-		VoService,
-		UserService,
-		GroupService,
-		ApplicationsService,
-		ApiSettings,
-		FlavorService,
-		CreditsService
-	]
+    selector: 'app-applications-list',
+    templateUrl: 'applications.component.html',
+    providers: [
+        FacilityService,
+        VoService,
+        UserService,
+        GroupService,
+        ApplicationsService,
+        ApiSettings,
+        FlavorService,
+        CreditsService
+    ],
+    standalone: false
 })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	title: string = 'Application Overview'

@@ -6,9 +6,10 @@ import { GeneralStorageFactor } from '../general-storage-factor'
  * Class for GeneralStorageFactor.
  */
 @Component({
-	selector: 'app-generalstoragefactor-overview',
-	templateUrl: './generalstoragefactor-overview.component.html',
-	providers: [FacilityService]
+    selector: 'app-generalstoragefactor-overview',
+    templateUrl: './generalstoragefactor-overview.component.html',
+    providers: [FacilityService],
+    standalone: false
 })
 export class GeneralstoragefactorOverviewComponent implements OnInit {
 	generalStorageFactors: GeneralStorageFactor[]

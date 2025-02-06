@@ -9,9 +9,10 @@ import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-
 	providedIn: 'root'
 })
 @Component({
-	selector: 'app-confirmation-modal',
-	templateUrl: './confirmation-modal.component.html',
-	providers: []
+    selector: 'app-confirmation-modal',
+    templateUrl: './confirmation-modal.component.html',
+    providers: [],
+    standalone: false
 })
 export class ConfirmationModalComponent extends AbstractBaseModalComponent implements OnInit {
 	protected readonly ConfirmationTypes = ConfirmationTypes

@@ -9,9 +9,10 @@ import { FacilityService } from '../api-connector/facility.service'
  * ImageTag component.
  */
 @Component({
-	selector: 'app-image-tags',
-	templateUrl: 'imageTag.component.html',
-	providers: [ImageService, FacilityService]
+    selector: 'app-image-tags',
+    templateUrl: 'imageTag.component.html',
+    providers: [ImageService, FacilityService],
+    standalone: false
 })
 export class ImageTagComponent implements OnInit {
 	title: string = 'Image Tags'

@@ -6,9 +6,10 @@ import { AbstractBaseModalComponent } from '../abstract-base-modal/abstract-base
 	providedIn: 'root'
 })
 @Component({
-	selector: 'app-view-public-key',
-	templateUrl: './view-public-key.component.html',
-	styleUrl: './view-public-key.component.scss'
+    selector: 'app-view-public-key',
+    templateUrl: './view-public-key.component.html',
+    styleUrl: './view-public-key.component.scss',
+    standalone: false
 })
 export class ViewPublicKeyComponent extends AbstractBaseModalComponent {
 	publicKeyMemberName: string

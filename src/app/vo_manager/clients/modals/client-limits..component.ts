@@ -7,9 +7,10 @@ import { FacilityService } from '../../../api-connector/facility.service'
 import { ConfirmationActions } from '../../../shared/modal/confirmation_actions'
 
 @Component({
-	selector: 'app-client-limits',
-	templateUrl: './client-limits.component.html',
-	providers: [FacilityService, ClientService]
+    selector: 'app-client-limits',
+    templateUrl: './client-limits.component.html',
+    providers: [FacilityService, ClientService],
+    standalone: false
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {
 	client: Client = null

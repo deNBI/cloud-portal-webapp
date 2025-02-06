@@ -3,9 +3,10 @@ import { Subscription } from 'rxjs'
 import { CLOUD_PORTAL_SUPPORT_MAIL, NEW_SVM_PORTAL_LINK } from '../../../../links/links'
 
 @Component({
-	selector: 'app-migration-information',
-	templateUrl: './migration-information.component.html',
-	styleUrls: ['./migration-information.component.scss']
+    selector: 'app-migration-information',
+    templateUrl: './migration-information.component.html',
+    styleUrls: ['./migration-information.component.scss'],
+    standalone: false
 })
 export class MigrationInformationComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()

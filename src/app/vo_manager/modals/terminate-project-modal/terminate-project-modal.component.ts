@@ -11,10 +11,10 @@ import { NotificationModalComponent } from '../../../shared/modal/notification-m
 	providedIn: 'root'
 })
 @Component({
-	selector: 'app-terminate-project-modal',
-
-	templateUrl: './terminate-project-modal.component.html',
-	styleUrl: './terminate-project-modal.component.scss'
+    selector: 'app-terminate-project-modal',
+    templateUrl: './terminate-project-modal.component.html',
+    styleUrl: './terminate-project-modal.component.scss',
+    standalone: false
 })
 export class TerminateProjectModalComponent extends AbstractBaseModalComponent {
 	application: Application

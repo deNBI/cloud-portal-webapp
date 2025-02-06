@@ -15,8 +15,9 @@ interface FlavorDiff {
  * Application Resource Details.
  */
 @Component({
-	selector: 'app-resource-detail',
-	templateUrl: './resource-detail.component.html'
+    selector: 'app-resource-detail',
+    templateUrl: './resource-detail.component.html',
+    standalone: false
 })
 export class ResourceDetailComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
 	@Input() application: Application

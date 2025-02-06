@@ -8,10 +8,11 @@ import { ResultComponent } from '../result/result.component'
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
 
 @Component({
-	selector: 'app-credits-request',
-	templateUrl: './credits-request.component.html',
-	styleUrls: ['./credits-request.component.scss'],
-	providers: [CreditsService]
+    selector: 'app-credits-request',
+    templateUrl: './credits-request.component.html',
+    styleUrls: ['./credits-request.component.scss'],
+    providers: [CreditsService],
+    standalone: false
 })
 export class CreditsRequestComponent implements OnInit, OnDestroy {
 	project: Application

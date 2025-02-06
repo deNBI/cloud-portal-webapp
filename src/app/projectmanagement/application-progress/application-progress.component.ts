@@ -7,10 +7,11 @@ import { Application_States } from '../../shared/shared_modules/baseClass/abstra
  * Components displays progress of given application.
  */
 @Component({
-	selector: 'app-application-progress',
-	templateUrl: './application-progress.component.html',
-	styleUrls: ['./application-progress.component.scss'],
-	providers: []
+    selector: 'app-application-progress',
+    templateUrl: './application-progress.component.html',
+    styleUrls: ['./application-progress.component.scss'],
+    providers: [],
+    standalone: false
 })
 export class ApplicationProgressComponent extends ApplicationBaseClassComponent {
 	@Input() application: Application

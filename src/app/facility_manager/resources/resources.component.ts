@@ -13,10 +13,11 @@ import { GPUSpecification } from './gpu-specification'
  * Facility resource component.
  */
 @Component({
-	selector: 'app-resources',
-	templateUrl: './resources.component.html',
-	styleUrls: ['./resources.component.scss'],
-	providers: [FacilityService]
+    selector: 'app-resources',
+    templateUrl: './resources.component.html',
+    styleUrls: ['./resources.component.scss'],
+    providers: [FacilityService],
+    standalone: false
 })
 export class ResourcesComponent implements OnInit {
 	title: string = 'Resource Overview'

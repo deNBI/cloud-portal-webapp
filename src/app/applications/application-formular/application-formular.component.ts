@@ -40,10 +40,11 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
  * Application formular component.
  */
 @Component({
-	selector: 'app-application-formular',
-	templateUrl: './application-formular.component.html',
-	styleUrls: ['./application-formular.component.scss'],
-	providers: [FlavorService, ApplicationsService, CreditsService]
+    selector: 'app-application-formular',
+    templateUrl: './application-formular.component.html',
+    styleUrls: ['./application-formular.component.scss'],
+    providers: [FlavorService, ApplicationsService, CreditsService],
+    standalone: false
 })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
 	@Input() openstack_project: boolean = false

@@ -10,9 +10,10 @@ import { FlavorTypeShortcuts } from '../../../shared/shared_modules/baseClass/fl
 
 @Injectable({ providedIn: 'root' })
 @Component({
-	selector: 'app-application',
-	templateUrl: './adjust-application.component.html',
-	providers: [ApplicationsService]
+    selector: 'app-application',
+    templateUrl: './adjust-application.component.html',
+    providers: [ApplicationsService],
+    standalone: false
 })
 export class AdjustApplicationComponent implements OnInit {
 	bsModalRef = BsModalRef

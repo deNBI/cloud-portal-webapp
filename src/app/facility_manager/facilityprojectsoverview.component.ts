@@ -27,9 +27,10 @@ import { NotificationModalComponent } from '../shared/modal/notification-modal'
  * Facility Project overview component.
  */
 @Component({
-	selector: 'app-facility-projects',
-	templateUrl: 'facilityprojectsoverview.component.html',
-	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService]
+    selector: 'app-facility-projects',
+    templateUrl: 'facilityprojectsoverview.component.html',
+    providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService],
+    standalone: false
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
 	@Input() voRegistrationLink: string = environment.voRegistrationLink

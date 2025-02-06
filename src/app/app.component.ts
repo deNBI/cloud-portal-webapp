@@ -6,9 +6,10 @@ import { TitleService } from './title.service'
  * App component.
  */
 @Component({
-	selector: 'body',
-	templateUrl: 'app.component.html',
-	providers: [VoService]
+    selector: 'body',
+    templateUrl: 'app.component.html',
+    providers: [VoService],
+    standalone: false
 })
 export class AppComponent implements AfterViewInit, OnInit {
 	notificationModalTitle: string = 'Update available'

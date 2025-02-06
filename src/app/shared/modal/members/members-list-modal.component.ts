@@ -7,8 +7,9 @@ import { is_vo } from '../../globalvar'
 import { FacilityService } from '../../../api-connector/facility.service'
 
 @Component({
-	selector: 'app-project-members-list',
-	templateUrl: './members-list-modal.component.html'
+    selector: 'app-project-members-list',
+    templateUrl: './members-list-modal.component.html',
+    standalone: false
 })
 export class MembersListModalComponent implements OnDestroy, OnInit {
 	// currently only for vo

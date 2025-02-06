@@ -6,8 +6,9 @@ import { ProjectEnumeration } from '../../projectmanagement/project-enumeration'
  * Pipe which checks if status is in list.
  */
 @Pipe({
-	name: 'hasstatusinlist',
-	pure: false
+    name: 'hasstatusinlist',
+    pure: false,
+    standalone: false
 })
 export class HasstatusinlistPipe implements PipeTransform {
 	transform(appl: Application | ProjectEnumeration, status: number): boolean {
