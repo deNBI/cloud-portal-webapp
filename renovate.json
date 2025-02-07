@@ -1,67 +1,43 @@
 {
-  "extends": [
-    "config:base",
-    ":automergePatch"
-  ],
- "packageRules":[
+   "extends": ["config:recommended", ":automergePatch"],
+   "packageRules": [
       {
-         "matchPackagePatterns":[
-            "*"
-         ],
-         "matchUpdateTypes":[
-            "minor",
-            "patch"
-         ],
-         "groupName":"all non-major dependencies",
-         "groupSlug":"all-minor-patch"
+         "matchUpdateTypes": ["minor", "patch"],
+         "groupName": "all non-major dependencies",
+         "groupSlug": "all-minor-patch",
+         "matchPackageNames": ["*"]
       },
       {
-         "updateTypes":[
-            "major"
-         ],
-         "addLabels":[
-            "major"
-         ]
+         "matchUpdateTypes": ["major"],
+         "addLabels": ["major"]
       },
       {
-         "updateTypes":[
-            "minor"
-         ],
-         "addLabels":[
-            "minor"
-         ]
+         "matchUpdateTypes": ["minor"],
+         "addLabels": ["minor"]
       },
       {
-         "updateTypes":[
-            "patch"
-         ],
-         "addLabels":[
-            "patch"
-         ]
+         "matchUpdateTypes": ["patch"],
+         "addLabels": ["patch"]
       },
       {
-         "updateTypes":[
-            "pin"
-         ],
-         "addLabels":[
-            "pin"
-         ]
+         "matchUpdateTypes": ["pin"],
+         "addLabels": ["pin"]
       }
    ],
-	 "vulnerabilityAlerts": {
-    "labels": ["security"]
-  },
-	"pre-commit": {
-      "enabled":true
-    },
-  "baseBranches": ["dev"],
-  "reviewers": ["team:portal-dev"],
-  "labels": ["dependencies"],
-  "assignees": ["team:portal-dev"],
-  "branchPrefix": "deps/",
-  "bumpVersion": "minor",
-  "commitBodyTable": "true",
-	"prHourlyLimit": 0, 
-	"rebaseWhen": "behind-base-branch",
-  "commitMessagePrefix": "feat(Dependencies):"
+   "vulnerabilityAlerts": {
+      "labels": ["security"]
+   },
+   "pre-commit": {
+      "enabled": true
+   },
+   "baseBranches": ["dev"],
+   "reviewers": ["team:portal-dev"],
+   "labels": ["dependencies"],
+   "assignees": ["team:portal-dev"],
+   "branchPrefix": "deps/",
+   "bumpVersion": "minor",
+   "commitBodyTable": true,
+   "prHourlyLimit": 0,
+   "rebaseWhen": "behind-base-branch",
+   "commitMessagePrefix": "feat(Dependencies):"
 }
