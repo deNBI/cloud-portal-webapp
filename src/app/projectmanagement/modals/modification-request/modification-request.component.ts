@@ -11,12 +11,32 @@ import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
 import { FlavorService } from '../../../api-connector/flavor.service'
 import { CreditsService } from '../../../api-connector/credits.service'
 import { ShownFlavors } from 'app/shared/classes/shownFlavors.interface'
+import { FormsModule } from '@angular/forms'
+import { AccordionModule } from 'ngx-bootstrap/accordion'
+import { NgFor, NgIf, NgClass } from '@angular/common'
+import {
+	MinAmoutValidatorDirective,
+	IntegerValidatorDirective
+} from '../../../applications/numberValidations.directive'
+import { FlavorCounterPipe } from '../../../pipe-module/pipes/flavorcounter'
+import { HasFlavorTypeOrIsNotCustomPipe as HasFlavorTypeOrIsNotCustomPipe_1 } from '../../../pipe-module/pipes/has-flavor-type.pipe'
 
 @Component({
 	selector: 'app-modification-request',
 	templateUrl: './modification-request.component.html',
 	styleUrls: ['./modification-request.component.scss'],
-	providers: [FlavorService, CreditsService, HasFlavorTypeOrIsNotCustomPipe]
+	providers: [FlavorService, CreditsService, HasFlavorTypeOrIsNotCustomPipe],
+	imports: [
+		FormsModule,
+		AccordionModule,
+		NgFor,
+		NgIf,
+		NgClass,
+		MinAmoutValidatorDirective,
+		IntegerValidatorDirective,
+		FlavorCounterPipe,
+		HasFlavorTypeOrIsNotCustomPipe_1
+	]
 })
 export class ModificationRequestComponent implements OnInit, OnDestroy {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL

@@ -5,10 +5,12 @@ import { ProjectMember } from '../../../projectmanagement/project_member.model'
 import { VoService } from '../../../api-connector/vo.service'
 import { is_vo } from '../../globalvar'
 import { FacilityService } from '../../../api-connector/facility.service'
+import { NgIf, NgFor } from '@angular/common'
 
 @Component({
 	selector: 'app-project-members-list',
-	templateUrl: './members-list-modal.component.html'
+	templateUrl: './members-list-modal.component.html',
+	imports: [NgIf, NgFor]
 })
 export class MembersListModalComponent implements OnDestroy, OnInit {
 	// currently only for vo
@@ -21,9 +23,7 @@ export class MembersListModalComponent implements OnDestroy, OnInit {
 		public bsModalRef: BsModalRef,
 		private voService: VoService,
 		private facilityService: FacilityService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit() {
 		if (is_vo) {

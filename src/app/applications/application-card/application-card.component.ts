@@ -9,11 +9,20 @@ import { is_vo } from '../../shared/globalvar'
 import { ComputecenterComponent } from '../../projectmanagement/computecenter.component'
 import { User } from '../application.model/user.model'
 import { ApplicationDetailComponent } from '../application-detail/application-detail.component'
+import { ApplicationBadgesComponent } from '../../shared/shared_modules/components/applications/application-badges/application-badges.component'
+import { ApplicationVoActionsComponent } from '../application-vo-actions/application-vo-actions.component'
+import { ApplicationFacilityActionsComponent } from '../application-facility-actions/application-facility-actions.component'
 
 @Component({
 	selector: 'app-application-card',
 	templateUrl: './application-card.component.html',
-	styleUrl: './application-card.component.scss'
+	styleUrl: './application-card.component.scss',
+	imports: [
+		ApplicationBadgesComponent,
+		ApplicationVoActionsComponent,
+		ApplicationFacilityActionsComponent,
+		ApplicationDetailComponent
+	]
 })
 export class ApplicationCardComponent extends AbstractBaseClass implements OnInit {
 	@Input() application: Application

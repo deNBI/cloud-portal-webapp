@@ -13,9 +13,9 @@ import { MigrationInformationComponent } from './migration-information/migration
 import { ApplicationBadgesComponent } from './components/applications/application-badges/application-badges.component'
 import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/project-email-modal.component'
 import { TestimonialFormComponent } from './testimonial-forms/testimonial-form.component'
-import { SharedDirectivesModule } from './shared_directives.module'
+
 import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component'
-import { PipeModuleModule } from '../../pipe-module/pipe-module.module'
+
 import { MembersListModalComponent } from '../modal/members/members-list-modal.component'
 import { ProjectCsvTemplatedEmailModalComponent } from '../modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
 import { ViewPublicKeyComponent } from '../modal/view-public-key/view-public-key.component'
@@ -45,14 +45,10 @@ import { ClipboardModule } from 'ngx-clipboard'
 		ToastModule,
 		ProgressModule,
 		FormsModule,
-		PipeModuleModule,
 		NgSelectModule,
-		SharedDirectivesModule,
 		ReactiveFormsModule,
 		RouterLink,
-		ClipboardModule
-	],
-	declarations: [
+		ClipboardModule,
 		ApplicationBaseClassComponent,
 		MembersListModalComponent,
 		NotificationModalComponent,

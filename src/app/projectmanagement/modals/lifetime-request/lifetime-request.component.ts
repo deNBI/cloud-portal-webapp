@@ -7,12 +7,29 @@ import { CreditsService } from '../../../api-connector/credits.service'
 import { EdamOntologyTerm } from '../../../applications/edam-ontology-term'
 import { ResultComponent } from '../result/result.component'
 import { ApplicationsService } from '../../../api-connector/applications.service'
+import { FormsModule } from '@angular/forms'
+import { NgIf, NgClass } from '@angular/common'
+import {
+	IntegerValidatorDirective,
+	MinAmoutValidatorDirective,
+	MaxAmoutValidatorDirective
+} from '../../../applications/numberValidations.directive'
+import { NgSelectComponent } from '@ng-select/ng-select'
 
 @Component({
 	selector: 'app-lifetime-request',
 	templateUrl: './lifetime-request.component.html',
 	styleUrls: ['./lifetime-request.component.scss'],
-	providers: [CreditsService, ApplicationsService]
+	providers: [CreditsService, ApplicationsService],
+	imports: [
+		FormsModule,
+		NgIf,
+		IntegerValidatorDirective,
+		MinAmoutValidatorDirective,
+		MaxAmoutValidatorDirective,
+		NgClass,
+		NgSelectComponent
+	]
 })
 export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	project: Application
@@ -36,7 +53,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		public bsModalRef: BsModalRef,
 		private modalService: BsModalService,
 		private creditsService: CreditsService,
-		private applicationsService: ApplicationsService  
+		private applicationsService: ApplicationsService
 	) {}
 
 	ngOnInit(): void {

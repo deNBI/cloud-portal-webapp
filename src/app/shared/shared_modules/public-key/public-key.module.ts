@@ -7,7 +7,7 @@ import { ModalModule } from 'ngx-bootstrap/modal'
 import { AlertModule } from 'ngx-bootstrap/alert'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { PublicKeyComponent } from './public-key.component'
-import { PipeModuleModule } from '../../../pipe-module/pipe-module.module'
+
 import { GeneratePublicKeyModalComponent } from './generate-public-key-modal/generate-public-key-modal.component'
 import { SetPublicKeyModalComponent } from './set-public-key-modal/set-public-key-modal.component'
 
@@ -22,10 +22,10 @@ import { SetPublicKeyModalComponent } from './set-public-key-modal/set-public-ke
 		ModalModule.forRoot(),
 		AlertModule.forRoot(),
 		NgbModule,
-		PipeModuleModule
+		PublicKeyComponent,
+		GeneratePublicKeyModalComponent,
+		SetPublicKeyModalComponent
 	],
-
-	declarations: [PublicKeyComponent,GeneratePublicKeyModalComponent,SetPublicKeyModalComponent],
 	exports: [PublicKeyComponent, AlertModule, FormsModule, ModalModule, CommonModule, TabsModule]
 })
 export class PublicKeyModule {}

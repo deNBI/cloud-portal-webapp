@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { VolumeStorageFactor } from '../volume-storage-factor'
+import { FormsModule } from '@angular/forms'
+import { NgFor, NgClass, NgIf } from '@angular/common'
 
 /**
  * Class for ramfactors.
@@ -8,7 +10,8 @@ import { VolumeStorageFactor } from '../volume-storage-factor'
 @Component({
 	selector: 'app-volumestoragefactor-overview',
 	templateUrl: './volumestoragefactor-overview.component.html',
-	providers: [FacilityService]
+	providers: [FacilityService],
+	imports: [FormsModule, NgFor, NgClass, NgIf]
 })
 export class VolumestoragefactorOverviewComponent implements OnInit {
 	volumeStorageFactors: VolumeStorageFactor[]

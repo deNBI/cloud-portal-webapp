@@ -14,10 +14,10 @@ import { VoService } from '../api-connector/vo.service'
 import { ResourcesComponent } from './resources/resources.component'
 import { ProjectManagementModule } from '../projectmanagement/projectmanagement.module'
 import { ClientOverviewComponent } from './clients/clientOverview.component'
-import { PipeModuleModule } from '../pipe-module/pipe-module.module'
+
 import { NumberChartsComponent } from './number-charts/number-charts.component'
 import { ClientLimitsComponent } from './clients/modals/client-limits..component'
-import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module'
+
 import { MaintenanceComponent } from './maintenance/maintenance.component'
 import { DatePickerComponent } from '../shared/datepicking/datepicker.component'
 import { TimepickerComponent } from '../shared/datepicking/timepicker.component'
@@ -36,19 +36,15 @@ import { DeclineProjectTerminationModalComponent } from './modals/decline-projec
 		CommonModule,
 		ModalModule.forRoot(),
 		ProjectManagementModule,
-		PipeModuleModule,
 		NgbTypeaheadModule,
 		ReactiveFormsModule,
-		SharedDirectivesModule,
 		NgbPaginationModule,
 		DatePickerComponent,
 		TimepickerComponent,
 		SharedModuleModule,
 		BadgeComponent,
 		InputGroupComponent,
-		ButtonDirective
-	],
-	declarations: [
+		ButtonDirective,
 		VoOverviewComponent,
 		ResourcesComponent,
 		ClientOverviewComponent,

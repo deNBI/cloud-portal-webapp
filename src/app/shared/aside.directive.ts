@@ -3,9 +3,7 @@ import { Directive, HostListener } from '@angular/core'
 /**
  * Allows the aside to be toggled via click.
  */
-@Directive({
-	selector: '[appAsideMenuToggler]'
-})
+@Directive({ selector: '[appAsideMenuToggler]' })
 export class AsideToggleDirective {
 	@HostListener('click', ['$event']) toggleOpen($event: any) {
 		$event.preventDefault()

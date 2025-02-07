@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { Observable, take } from 'rxjs'
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
 import { ProjectMember } from '../projectmanagement/project_member.model'
 import { environment } from '../../environments/environment'
@@ -22,6 +22,21 @@ import { EmailService } from '../api-connector/email.service'
 import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model'
 import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
+import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common'
+import { FormsModule } from '@angular/forms'
+import {
+	TextColorDirective,
+	TextBgColorDirective,
+	BadgeComponent,
+	InputGroupComponent,
+	ButtonDirective
+} from '@coreui/angular'
+import { NgbPagination, NgbHighlight } from '@ng-bootstrap/ng-bootstrap'
+import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
+import { NgSelectComponent } from '@ng-select/ng-select'
+import { HasStatusPipe } from '../pipe-module/pipes/has-status.pipe'
+import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
+import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
 
 /**
  * Facility Project overview component.
@@ -29,7 +44,28 @@ import { NotificationModalComponent } from '../shared/modal/notification-modal'
 @Component({
 	selector: 'app-facility-projects',
 	templateUrl: 'facilityprojectsoverview.component.html',
-	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService]
+	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService],
+	imports: [
+		NgIf,
+		FormsModule,
+		NgFor,
+		TextColorDirective,
+		TextBgColorDirective,
+		BadgeComponent,
+		NgbPagination,
+		InputGroupComponent,
+		ButtonDirective,
+		NgbdSortableHeaderDirective,
+		ApplicationBadgesComponent,
+		NgbHighlight,
+		ModalModule,
+		NgClass,
+		NgSelectComponent,
+		AsyncPipe,
+		HasStatusPipe,
+		HasstatusinlistPipe,
+		InListPipe
+	]
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
 	@Input() voRegistrationLink: string = environment.voRegistrationLink

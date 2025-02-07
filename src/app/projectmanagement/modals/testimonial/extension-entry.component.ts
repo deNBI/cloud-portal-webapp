@@ -4,12 +4,15 @@ import { Subscription } from 'rxjs'
 import { TESTIMONIAL_PAGE_LINK, WIKI_PUBLICATIONS } from '../../../../links/links'
 import { Doi } from '../../../applications/doi/doi'
 import { GroupService } from '../../../api-connector/group.service'
+import { NgFor } from '@angular/common'
+import { FormsModule } from '@angular/forms'
 
 @Component({
 	selector: 'app-extension-entry',
 	templateUrl: './extension-entry.component.html',
 	styleUrls: ['./extension-entry.component.scss'],
-	providers: [GroupService]
+	providers: [GroupService],
+	imports: [NgFor, FormsModule]
 })
 export class ExtensionEntryComponent implements OnDestroy {
 	private subscription: Subscription = new Subscription()

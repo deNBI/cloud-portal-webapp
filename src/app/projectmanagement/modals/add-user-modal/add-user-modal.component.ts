@@ -3,6 +3,7 @@ import { CLOUD_PORTAL_REGISTER_LINK, WIKI_MEMBER_MANAGEMENT } from '../../../../
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { Application } from '../../../applications/application.model/application.model'
+import { ClipboardModule } from 'ngx-clipboard'
 
 @Injectable({
 	providedIn: 'root'
@@ -10,7 +11,8 @@ import { Application } from '../../../applications/application.model/application
 @Component({
 	selector: 'app-add-user-modal',
 	templateUrl: './add-user-modal.component.html',
-	styleUrl: './add-user-modal.component.scss'
+	styleUrl: './add-user-modal.component.scss',
+	imports: [ClipboardModule]
 })
 export class AddUserModalComponent extends AbstractBaseModalComponent {
 	invitation_link: string

@@ -6,6 +6,9 @@ import { GroupService } from '../../../api-connector/group.service'
 import { FullLayoutComponent } from '../../../layouts/full-layout.component'
 import { NotificationModalComponent } from '../../../shared/modal/notification-modal'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
+import { ProjectOsDetailsComponent } from '../../project-os-details/project-os-details.component'
+import { NgClass } from '@angular/common'
+import { FormsModule } from '@angular/forms'
 
 @Injectable({
 	providedIn: 'root'
@@ -13,7 +16,8 @@ import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-
 @Component({
 	selector: 'app-termination-request',
 	templateUrl: './termination-request.component.html',
-	styleUrl: './termination-request.component.scss'
+	styleUrl: './termination-request.component.scss',
+	imports: [ProjectOsDetailsComponent, NgClass, FormsModule]
 })
 export class TerminationRequestComponent extends AbstractBaseModalComponent {
 	application: Application
