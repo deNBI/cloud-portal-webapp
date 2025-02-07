@@ -4,6 +4,7 @@ import { Volume } from '../../virtualmachines/volumes/volume'
 import { SnapshotModel } from '../../virtualmachines/snapshots/snapshot.model'
 import { GroupService } from '../../api-connector/group.service'
 import { Application } from '../../applications/application.model/application.model'
+import { NgIf, NgFor } from '@angular/common'
 
 /**
  * Project OpenStack Details Component.
@@ -12,7 +13,8 @@ import { Application } from '../../applications/application.model/application.mo
 	selector: 'app-project-os-details',
 	templateUrl: './project-os-details.component.html',
 	styleUrls: ['./project-os-details.component.css'],
-	providers: [GroupService]
+	providers: [GroupService],
+	imports: [NgIf, NgFor]
 })
 export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 	@Input() project: Application

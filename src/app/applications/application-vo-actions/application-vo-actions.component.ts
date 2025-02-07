@@ -19,11 +19,16 @@ import { ConfirmationModalComponent } from '../../shared/modal/confirmation-moda
 import { ClientLimitsComponent } from '../../vo_manager/clients/modals/client-limits..component'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
 import { ApplicationModification } from '../application_modification.model'
+import { FormsModule } from '@angular/forms'
+import { NgClass, NgFor, NgIf } from '@angular/common'
+import { TooltipModule } from 'ngx-bootstrap/tooltip'
+import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pipe'
 
 @Component({
 	selector: 'app-application-vo-actions',
 	templateUrl: './application-vo-actions.component.html',
-	styleUrl: './application-vo-actions.component.scss'
+	styleUrl: './application-vo-actions.component.scss',
+	imports: [FormsModule, NgClass, NgFor, NgIf, TooltipModule, HasstatusinlistPipe]
 })
 export class ApplicationVoActionsComponent extends AbstractBaseClass implements OnInit {
 	private subscription: Subscription = new Subscription()
@@ -39,7 +44,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	bsModalRef: BsModalRef
 	is_vo_admin: boolean = false
 	selectedComputeCenter: ComputecenterComponent
-	modificationAdjustment: ApplicationModification;
+	modificationAdjustment: ApplicationModification
 
 	ngOnInit() {
 		this.is_vo_admin = is_vo
@@ -97,7 +102,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		const initialState = {
 			project: this.application,
 			adjustment: true,
-			preSavedAdjustment: this.modificationAdjustment,
+			preSavedAdjustment: this.modificationAdjustment
 		}
 
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, {
@@ -427,8 +432,8 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((result: any) => {
 				if ('backToInput' in result) {
-					this.modificationAdjustment = result['adjustedModification'];
-					this.showModificationAdjustmentModal();
+					this.modificationAdjustment = result['adjustedModification']
+					this.showModificationAdjustmentModal()
 				}
 				let action = null
 				if ('action' in result) {

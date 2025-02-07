@@ -4,9 +4,7 @@ import { Application } from '../../applications/application.model/application.mo
 /**
  * Pipe which checks if status is in list.
  */
-@Pipe({
-	name: 'isPiApproved'
-})
+@Pipe({ name: 'isPiApproved' })
 export class IsPiApprovedPipe implements PipeTransform {
 	transform(appl: Application): boolean {
 		if (appl === undefined) {

@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { GeneralStorageFactor } from '../general-storage-factor'
+import { FormsModule } from '@angular/forms'
+import { NgFor, NgClass, NgIf } from '@angular/common'
 
 /**
  * Class for GeneralStorageFactor.
@@ -8,7 +10,8 @@ import { GeneralStorageFactor } from '../general-storage-factor'
 @Component({
 	selector: 'app-generalstoragefactor-overview',
 	templateUrl: './generalstoragefactor-overview.component.html',
-	providers: [FacilityService]
+	providers: [FacilityService],
+	imports: [FormsModule, NgFor, NgClass, NgIf]
 })
 export class GeneralstoragefactorOverviewComponent implements OnInit {
 	generalStorageFactors: GeneralStorageFactor[]

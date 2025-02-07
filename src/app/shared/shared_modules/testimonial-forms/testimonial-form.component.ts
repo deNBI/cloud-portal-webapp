@@ -1,17 +1,20 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core'
 import { Subscription } from 'rxjs'
-import { ModalDirective } from 'ngx-bootstrap/modal'
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms'
+import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal'
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { TESTIMONIAL_PAGE_LINK, CLOUD_PORTAL_SUPPORT_MAIL, SINGLE_TESTIMONIAL_PAGE_LINK } from '../../../../links/links'
 import { NewsService } from '../../../api-connector/news.service'
 import { Application } from '../../../applications/application.model/application.model'
 import { SocialConsent } from './social-consent.model'
+import { NgIf, NgClass, NgFor } from '@angular/common'
+import { SocialConsentGivenPipe } from '../../../pipe-module/pipes/social-consent-given.pipe'
 
 @Component({
 	selector: 'app-testimonial-form',
 	templateUrl: './testimonial-form.component.html',
 	styleUrls: ['./testimonial-form.component.scss'],
-	providers: [NewsService]
+	providers: [NewsService],
+	imports: [NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, ModalModule, SocialConsentGivenPipe]
 })
 export class TestimonialFormComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core'
+import { ApplicationFormularComponent } from '../application-formular.component'
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -6,7 +7,8 @@ import { Component } from '@angular/core'
 @Component({
 	selector: 'app-addcloudapplication',
 	templateUrl: 'addcloudapplication.component.html',
-	styleUrls: ['addcloudapplication.component.css']
+	styleUrls: ['addcloudapplication.component.css'],
+	imports: [ApplicationFormularComponent]
 })
 export class AddcloudapplicationComponent {
 	openstack_application: boolean = true

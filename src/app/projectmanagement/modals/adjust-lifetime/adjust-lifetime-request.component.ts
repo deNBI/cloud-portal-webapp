@@ -4,12 +4,19 @@ import { Application } from '../../../applications/application.model/application
 import { ApplicationLifetimeExtension } from '../../../applications/application_extension.model'
 
 import { ApplicationsService } from '../../../api-connector/applications.service'
+import { FormsModule } from '@angular/forms'
+import { NgIf, NgClass } from '@angular/common'
+import {
+	MinAmoutValidatorDirective,
+	IntegerValidatorDirective
+} from '../../../applications/numberValidations.directive'
 
 @Injectable({ providedIn: 'root' })
 @Component({
 	selector: 'app-adjust-lifetime-request',
 	templateUrl: './adjust-lifetime-request.component.html',
-	providers: [ApplicationsService]
+	providers: [ApplicationsService],
+	imports: [FormsModule, NgIf, MinAmoutValidatorDirective, IntegerValidatorDirective, NgClass]
 })
 export class AdjustLifetimeRequestComponent implements OnInit {
 	bsModalRef = BsModalRef

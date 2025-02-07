@@ -181,9 +181,8 @@
 								></textarea>
 								<div class="form-row__news_motd">
 									You have written
-									{{ this.selectedFacilityNews?.motd ? this.selectedFacilityNews?.motd?.length : 0 }} characters.
-									<br />Total characters:
-									{{ this.selectedFacilityNews?.motd ? this.selectedFacilityNews?.motd?.length + 76 : 76 }}. (Due to
+									{{ selectedFacilityNews?.motd ? selectedFacilityNews?.motd?.length : 0 }} characters. <br />Total
+									characters: {{ selectedFacilityNews?.motd ? selectedFacilityNews?.motd?.length + 76 : 76 }}. (Due to
 									appendage of newslink and timestamp).
 								</div>
 								<div class="form-group">
@@ -357,7 +356,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Delete News: {{ this.selectedFacilityNews.title }} ?</h4>
+					<h4 class="modal-title">Delete News: {{ selectedFacilityNews.title }} ?</h4>
 					<button
 						type="button"
 						class="btn-close"
@@ -369,7 +368,7 @@
 				<div class="modal-body">
 					<div class="alert alert-info" role="alert">
 						<p>
-							Are you sure, that you want to delete <strong>{{ this.selectedFacilityNews.title }}</strong> ?
+							Are you sure, that you want to delete <strong>{{ selectedFacilityNews.title }}</strong> ?
 						</p>
 
 						<p><strong>Please note: this may remove the current Message of the day for multiple facilities!</strong></p>
@@ -377,13 +376,13 @@
 				</div>
 				<div class="modal-footer">
 					<!--<button type="button" class="btn btn-danger"
-									(click)="this.deleteNewsFromWordpress(); deleteModal.hide()"
+									(click)="deleteNewsFromWordpress(); deleteModal.hide()"
 									id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
 					</button> -->
 					<button
 						type="button"
 						class="btn btn-danger"
-						(click)="this.deleteNewsFromAPI(); deleteModal.hide()"
+						(click)="deleteNewsFromAPI(); deleteModal.hide()"
 						id="approve_delete_modal"
 					>
 						<i class="fas fa-trash"></i> Delete
@@ -411,7 +410,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Update News: {{ this.selectedFacilityNews.title }} ?</h4>
+					<h4 class="modal-title">Update News: {{ selectedFacilityNews.title }} ?</h4>
 					<button
 						type="button"
 						class="btn-close"
@@ -423,7 +422,7 @@
 				<div class="modal-body">
 					<div class="alert alert-info" role="alert">
 						<p>
-							Are you sure, that you want to update <strong>{{ this.selectedFacilityNews.title }}</strong> ?
+							Are you sure, that you want to update <strong>{{ selectedFacilityNews.title }}</strong> ?
 						</p>
 						<p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
 					</div>

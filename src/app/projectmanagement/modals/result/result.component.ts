@@ -7,12 +7,15 @@ import { ApplicationLifetimeExtension } from '../../../applications/application_
 import { ApplicationCreditRequest } from '../../../applications/application_credit_request'
 import { ApplicationsService } from '../../../api-connector/applications.service'
 import { EdamOntologyTerm } from '../../../applications/edam-ontology-term'
+import { NgIf, NgFor } from '@angular/common'
+import { AlertModule } from 'ngx-bootstrap/alert'
 
 @Component({
 	selector: 'app-result',
 	templateUrl: './result.component.html',
 	styleUrls: ['./result.component.scss'],
-	providers: [ApplicationsService, BsModalService]
+	providers: [ApplicationsService, BsModalService],
+	imports: [NgIf, NgFor, AlertModule]
 })
 export class ResultComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()
@@ -38,9 +41,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 		public bsModalRef: BsModalRef,
 		private modalService: BsModalService,
 		private applicationsService: ApplicationsService
-	) {
-		 
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.setToSubmitState()
@@ -54,7 +55,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 	}
 
 	chainDataInput(): void {
-		this.event.emit({ enterData: true});
+		this.event.emit({ enterData: true })
 	}
 
 	submitModificationRequest(): void {

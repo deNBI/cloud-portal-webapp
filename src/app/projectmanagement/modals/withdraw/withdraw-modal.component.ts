@@ -21,9 +21,7 @@ export class WithdrawModalComponent {
 	constructor(
 		public bsModalRef: BsModalRef,
 		private projectService: ApplicationsService
-	) {
-		 
-	}
+	) {}
 
 	withdrawTarget() {
 		switch (this.type) {

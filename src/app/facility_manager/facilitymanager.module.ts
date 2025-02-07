@@ -15,8 +15,7 @@ import { FacilityApplicationComponent } from './facility.application.component'
 import { ResourcesComponent } from './resources/resources.component'
 import { ApplicationsModule } from '../applications/applications.module'
 import { NewsManagerComponent } from './newsmanagement/news-manager.component'
-import { PipeModuleModule } from '../pipe-module/pipe-module.module'
-import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module'
+
 import { ObjectstoragefactorOverviewComponent } from './resources/objectstoragefactor-overview/objectstoragefactor-overview.component'
 import { VolumestoragefactorOverviewComponent } from './resources/volumestoragefactor-overview/volumestoragefactor-overview.component'
 import { ResourcemachineOverviewComponent } from './resources/resourcemachine-overview/resourcemachine-overview.component'
@@ -38,8 +37,6 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		BsDatepickerModule.forRoot(),
 		ApplicationsModule,
 		ReactiveFormsModule,
-		PipeModuleModule,
-		SharedDirectivesModule,
 		ProjectManagementModule,
 		NgbTypeaheadModule,
 		NgbPaginationModule,
@@ -49,9 +46,7 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		BadgeComponent,
 		TooltipModule,
 		InputGroupComponent,
-		ButtonDirective
-	],
-	declarations: [
+		ButtonDirective,
 		FacilityProjectsOverviewComponent,
 		ImageTagComponent,
 		FacilityApplicationComponent,

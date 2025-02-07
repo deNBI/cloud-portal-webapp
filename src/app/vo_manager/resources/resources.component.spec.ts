@@ -7,8 +7,8 @@ describe('ResourcesComponent', () => {
 
 	beforeEach(waitForAsync(() => {
 		void TestBed.configureTestingModule({
-			declarations: [ResourcesComponent],
-		})
+    imports: [ResourcesComponent],
+})
 			.compileComponents();
 	}));
 

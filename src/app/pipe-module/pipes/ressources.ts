@@ -5,9 +5,7 @@ import { ApplicationRessourceUsage } from '../../applications/application-ressou
 /**
  * Pipe which compares status.
  */
-@Pipe({
-	name: 'noVMsPipe'
-})
+@Pipe({ name: 'noVMsPipe' })
 export class NoVMsPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage, additional_vms: number = 0): boolean {
 		if (additional_vms > 0) {
@@ -21,9 +19,7 @@ export class NoVMsPipe implements PipeTransform {
 /**
  * Pipe which compares status.
  */
-@Pipe({
-	name: 'noCoresPipe'
-})
+@Pipe({ name: 'noCoresPipe' })
 export class NoCoresPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage): boolean {
 		return ressources.cores_used >= ressources.cores_total
@@ -33,9 +29,7 @@ export class NoCoresPipe implements PipeTransform {
 /**
  * Pipe which compares status.
  */
-@Pipe({
-	name: 'noRamPipe'
-})
+@Pipe({ name: 'noRamPipe' })
 export class NoRamPipe implements PipeTransform {
 	transform(ressources: ApplicationRessourceUsage): boolean {
 		return ressources.ram_used >= ressources.ram_total
