@@ -403,11 +403,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			(): void => {
 				this.fullLayout.getGroupsEnumeration()
 
-				this.updateNotificationModal('Success', 'The application was successfully approved.', true, 'success')
+				this.updateNotificationModal('Success', 'You have been confirmed as the PI responsible for the project and the application has been successfully confirmed by you.', true, 'success')
 				this.notificationModalStay = false
 			},
 			(): void => {
-				this.updateNotificationModal('Failed', 'The application was not successfully approved.', true, 'danger')
+				this.updateNotificationModal('Failed', 'The application and your state as the PI were not successfully confirmed.', true, 'danger')
 				this.notificationModalStay = true
 			}
 		)
