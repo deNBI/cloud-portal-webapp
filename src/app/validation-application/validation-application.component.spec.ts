@@ -10,8 +10,8 @@ describe('ValidationApplicationComponent', () => {
 
 	beforeEach(waitForAsync(() => {
 		void TestBed.configureTestingModule({
-			declarations: [ValidationApplicationComponent],
-		})
+    imports: [ValidationApplicationComponent],
+})
 			.compileComponents();
 	}));
 

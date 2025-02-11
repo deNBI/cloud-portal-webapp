@@ -10,9 +10,9 @@ import { NgSelectModule } from '@ng-select/ng-select'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { BadgeModule } from '@coreui/angular'
 import { ApplicationsModule } from '../applications/applications.module'
-import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module'
+
 import { ProjectOsDetailsComponent } from './project-os-details/project-os-details.component'
-import { PipeModuleModule } from '../pipe-module/pipe-module.module'
+
 import { ProjectManagementRoutingModule } from './projectmanagement-routing.module'
 import { OverviewComponent } from './overview.component'
 import { ApplicationProgressComponent } from './application-progress/application-progress.component'
@@ -44,17 +44,13 @@ import { ClipboardModule } from 'ngx-clipboard'
 		CommonModule,
 		ModalModule.forRoot(),
 		ApplicationsModule,
-		SharedDirectivesModule,
-		PipeModuleModule,
 		BsDropdownModule,
 		AlertModule,
 		NgSelectModule,
 		NgbModule,
 		BadgeModule,
 		SharedModuleModule,
-		ClipboardModule
-	],
-	declarations: [
+		ClipboardModule,
 		OverviewComponent,
 		ProjectOsDetailsComponent,
 		ApplicationProgressComponent,

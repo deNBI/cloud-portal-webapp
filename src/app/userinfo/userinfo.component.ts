@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit } from '@angular/core'
 import { forkJoin } from 'rxjs'
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
 import { Userinfo } from './userinfo.model'
 import { ApiSettings } from '../api-connector/api-settings.service'
@@ -21,6 +21,11 @@ import { Application } from '../applications/application.model/application.model
 import { ProjectMember } from '../projectmanagement/project_member.model'
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
+import { NgIf, NgFor, NgClass } from '@angular/common'
+import { NewsComponent } from '../news/news.component'
+import { MaintenanceAlertComponent } from '../maintenance/maintenance-alert.component'
+import { PublicKeyComponent } from '../shared/shared_modules/public-key/public-key.component'
+import { FormsModule } from '@angular/forms'
 
 /**
  * UserInformation component.
@@ -28,7 +33,17 @@ import { NotificationModalComponent } from '../shared/modal/notification-modal'
 @Component({
 	selector: 'app-userinfo',
 	templateUrl: 'userinfo.component.html',
-	providers: [GroupService, UserService, ApiSettings, KeyService]
+	providers: [GroupService, UserService, ApiSettings, KeyService],
+	imports: [
+		NgIf,
+		NewsComponent,
+		MaintenanceAlertComponent,
+		NgFor,
+		PublicKeyComponent,
+		FormsModule,
+		ModalModule,
+		NgClass
+	]
 })
 export class UserInfoComponent implements OnInit {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL

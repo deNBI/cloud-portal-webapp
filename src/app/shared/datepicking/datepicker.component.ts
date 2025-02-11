@@ -5,7 +5,6 @@ import { JsonPipe } from '@angular/common'
 
 @Component({
 	selector: 'app-datepicker',
-	standalone: true,
 	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
 	templateUrl: './datepicker.component.html'
 })

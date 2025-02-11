@@ -632,7 +632,7 @@
 								<select
 									class="form-control form-select"
 									[(ngModel)]="selectedFacility"
-									(ngModelChange)="this.adjustVerifyText()"
+									(ngModelChange)="adjustVerifyText()"
 									name="selectedFacility"
 									id="selectedFacility"
 								>
@@ -671,7 +671,7 @@
 										type="checkbox"
 										[ngModelOptions]="{ standalone: true }"
 										[(ngModel)]="emailAdminsOnly"
-										(ngModelChange)="this.adjustVerifyText()"
+										(ngModelChange)="adjustVerifyText()"
 										id="adminOnlyCheckbox"
 									/>
 									<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
@@ -686,7 +686,7 @@
 										type="checkbox"
 										[ngModelOptions]="{ standalone: true }"
 										[(ngModel)]="expiredTemplated"
-										(ngModelChange)="this.adjustVerifyText()"
+										(ngModelChange)="adjustVerifyText()"
 										id="expiredTemplateCheckbox"
 									/>
 									<label class="form-check-label" for="adminOnlyCheckbox">
@@ -777,8 +777,7 @@
 					<button
 						type="button"
 						[disabled]="
-							f.invalid ||
-							(this.expiredTemplated && this.selectedProjectType === 'EXP' && !(removalDate | isFutureTime))
+							f.invalid || (expiredTemplated && selectedProjectType === 'EXP' && !(removalDate | isFutureTime))
 						"
 						class="btn btn-primary"
 						(click)="emailModal.hide(); verifyModal.show()"

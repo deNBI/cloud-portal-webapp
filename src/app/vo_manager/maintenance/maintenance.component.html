@@ -19,10 +19,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let wstimeframe of this.workshopTimeFrames; let i = index">
+					<tr *ngFor="let wstimeframe of workshopTimeFrames; let i = index">
 						<th scope="row">{{ i + 1 }}</th>
-						<td>{{ wstimeframe.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-						<td>{{ wstimeframe.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+						<td>{{ wstimeframe.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+						<td>{{ wstimeframe.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
 						<td>{{ wstimeframe.project.project_application_shortname }}</td>
 						<td>{{ wstimeframe.workshop?.longname }}</td>
 						<td>{{ wstimeframe.description }}</td>
@@ -54,12 +54,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let mtf of this.maintenanceTimeFrames; let i = index">
+					<tr *ngFor="let mtf of maintenanceTimeFrames; let i = index">
 						<th scope="row">{{ i + 1 }}</th>
-						<td>{{ mtf.start_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
-						<td>{{ mtf.end_time | date : 'dd/MM/yy HH:mm' : 'de' }}</td>
+						<td>{{ mtf.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+						<td>{{ mtf.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
 						<td>{{ mtf.name }}</td>
-						<td>{{ mtf.message.length > 25 ? (mtf.message | slice : 0 : 25) + '...' : mtf.message }}</td>
+						<td>{{ mtf.message.length > 25 ? (mtf.message | slice: 0 : 25) + '...' : mtf.message }}</td>
 						<td>
 							<span class="badge badge-danger" *ngIf="mtf.significant"
 								><i class="fa-solid fa-circle-exclamation"></i> Yes</span
@@ -165,7 +165,7 @@
 							[ngClass]="{
 								'is-invalid':
 									(f['name_input_field'].dirty || f['name_input_field'].touched) && f['name_input_field'].invalid,
-								'is-valid': f['name_input_field'].valid
+								'is-valid': f['name_input_field'].valid,
 							}"
 						/>
 					</div>
@@ -217,18 +217,15 @@
 				<div class="col-md-4">
 					<button
 						class="btn btn-outline-primary"
-						(click)="checkData(); this.confirmModal.show()"
-						[disabled]="!(this.newMaintenanceTimeFrame | isValidTimeFrame)"
+						(click)="checkData(); confirmModal.show()"
+						[disabled]="!(newMaintenanceTimeFrame | isValidTimeFrame)"
 					>
 						Add new timeframe
 					</button>
 				</div>
 				<div
 					class="col-md-auto"
-					*ngIf="
-						!(this.newMaintenanceTimeFrame | isValidTimeFrame) ||
-						this.addTimeFrameForm.controls['name_input_field'].invalid
-					"
+					*ngIf="!(newMaintenanceTimeFrame | isValidTimeFrame) || addTimeFrameForm.controls['name_input_field'].invalid"
 				>
 					<div class="alert alert-info">
 						Please select a timeframe, where the start time is before the end time and in the future!
@@ -254,14 +251,14 @@
 				<h4 class="modal-title">Confirm new timeframe</h4>
 			</div>
 			<div class="modal-body">
-				<div *ngIf="!this.timeSpotsChecked">
+				<div *ngIf="!timeSpotsChecked">
 					<span class="spinner-border-sm"></span>
 				</div>
-				<div *ngIf="this.timeSpotsChecked">
-					<div class="alert alert-success" *ngIf="!this.timeSpotCritical">
+				<div *ngIf="timeSpotsChecked">
+					<div class="alert alert-success" *ngIf="!timeSpotCritical">
 						There are no entered timeframes which collide with this maintenance timeframe.
 					</div>
-					<div class="alert alert-warning" *ngIf="this.timeSpotCritical">
+					<div class="alert alert-warning" *ngIf="timeSpotCritical">
 						Please check the listed timeframes below. These may collide with the maintenance timeframe you want to
 						enter.
 					</div>
@@ -270,8 +267,8 @@
 						<ul class="list-group">
 							<li class="list-group-item text-center">
 								<strong
-									>{{ newMaintenanceTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : '+0100' }} -
-									{{ newMaintenanceTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : '+0100' }}</strong
+									>{{ newMaintenanceTimeFrame.start_time | date: 'dd/MM/yy HH:mm' : '+0100' }} -
+									{{ newMaintenanceTimeFrame.end_time | date: 'dd/MM/yy HH:mm' : '+0100' }}</strong
 								>
 							</li>
 						</ul>
@@ -286,12 +283,12 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor="let critTimeFrame of this.criticalTimeSpots; let i = index">
+							<tr *ngFor="let critTimeFrame of criticalTimeSpots; let i = index">
 								<th scope="row">{{ i + 1 }}</th>
 								<td>{{ critTimeFrame.workshop.longname }}</td>
 								<td>
-									{{ critTimeFrame.start_time | date : 'dd/MM/yy HH:mm' : '+0100' }} -
-									{{ critTimeFrame.end_time | date : 'dd/MM/yy HH:mm' : '+0100' }}
+									{{ critTimeFrame.start_time | date: 'dd/MM/yy HH:mm' : '+0100' }} -
+									{{ critTimeFrame.end_time | date: 'dd/MM/yy HH:mm' : '+0100' }}
 								</td>
 								<td>{{ critTimeFrame.description }}</td>
 							</tr>
@@ -302,7 +299,7 @@
 			<div class="modal-footer">
 				<div class="row">
 					<div class="col">
-						<button class="btn btn-success" (click)="confirmModal.hide(); this.createNewTimeFrame()">Confirm</button>
+						<button class="btn btn-success" (click)="confirmModal.hide(); createNewTimeFrame()">Confirm</button>
 					</div>
 					<div class="col">
 						<button class="btn btn-info" (click)="confirmModal.hide()">Close</button>

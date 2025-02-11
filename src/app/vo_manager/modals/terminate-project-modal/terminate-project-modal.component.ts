@@ -6,15 +6,17 @@ import { Application } from '../../../applications/application.model/application
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { VoService } from '../../../api-connector/vo.service'
 import { NotificationModalComponent } from '../../../shared/modal/notification-modal'
+import { NgIf } from '@angular/common'
+import { ProjectOsDetailsComponent } from '../../../projectmanagement/project-os-details/project-os-details.component'
 
 @Injectable({
 	providedIn: 'root'
 })
 @Component({
 	selector: 'app-terminate-project-modal',
-
 	templateUrl: './terminate-project-modal.component.html',
-	styleUrl: './terminate-project-modal.component.scss'
+	styleUrl: './terminate-project-modal.component.scss',
+	imports: [NgIf, ProjectOsDetailsComponent]
 })
 export class TerminateProjectModalComponent extends AbstractBaseModalComponent {
 	application: Application

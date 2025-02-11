@@ -94,15 +94,15 @@
 								Remove Application
 							</button>
 							<button
-								(click)="this.showInformationCollapse = !this.showInformationCollapse"
+								(click)="showInformationCollapse = !showInformationCollapse"
 								class="btn btn-outline-primary col-6"
 								id="submitted_show_information_btn"
 								style="margin: auto"
 								type="button"
 							>
 								<i class="fa fa-info-circle"></i>&nbsp;
-								<span *ngIf="this.showInformationCollapse">Hide information</span>
-								<span *ngIf="!this.showInformationCollapse">Show more information</span>
+								<span *ngIf="showInformationCollapse">Hide information</span>
+								<span *ngIf="!showInformationCollapse">Show more information</span>
 							</button>
 						</div>
 					</div>
@@ -856,15 +856,15 @@
 					<div class="row">
 						<div class="btn-group col-12">
 							<button
-								(click)="this.showInformationCollapse = !this.showInformationCollapse"
+								(click)="showInformationCollapse = !showInformationCollapse"
 								class="btn btn-outline-primary col-6"
 								id="show_information_btn"
 								style="margin: auto"
 								type="button"
 							>
 								<i class="fa fa-info-circle"></i>&nbsp;
-								<span *ngIf="this.showInformationCollapse">Hide information</span>
-								<span *ngIf="!this.showInformationCollapse">Show more information</span>
+								<span *ngIf="showInformationCollapse">Hide information</span>
+								<span *ngIf="!showInformationCollapse">Show more information</span>
 							</button>
 						</div>
 					</div>

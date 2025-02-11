@@ -6,9 +6,7 @@ import { Directive, HostListener } from '@angular/core'
 /**
  * Allows the sidebar to be toggled via click.
  */
-@Directive({
-	selector: '[appSidebarToggler]'
-})
+@Directive({ selector: '[appSidebarToggler]' })
 export class SidebarToggleDirective {
 	@HostListener('click', ['$event']) toggleOpen($event: any) {
 		$event.preventDefault()
@@ -16,9 +14,7 @@ export class SidebarToggleDirective {
 	}
 }
 
-@Directive({
-	selector: '[appSidebarMinimizer]'
-})
+@Directive({ selector: '[appSidebarMinimizer]' })
 export class SidebarMinimizeDirective {
 	@HostListener('click', ['$event']) toggleOpen($event: any) {
 		$event.preventDefault()
@@ -26,9 +22,7 @@ export class SidebarMinimizeDirective {
 	}
 }
 
-@Directive({
-	selector: '[appMobileSidebarToggler]'
-})
+@Directive({ selector: '[appMobileSidebarToggler]' })
 export class MobileSidebarToggleDirective {
 	// Check if element has class
 	private hasClass(target: any, elementClassName: string) {
@@ -44,9 +38,7 @@ export class MobileSidebarToggleDirective {
 /**
  * Allows the off-canvas sidebar to be closed via click.
  */
-@Directive({
-	selector: '[appSidebarClose]'
-})
+@Directive({ selector: '[appSidebarClose]' })
 export class SidebarOffCanvasCloseDirective {
 	// Check if element has class
 	private hasClass(target: any, elementClassName: string) {

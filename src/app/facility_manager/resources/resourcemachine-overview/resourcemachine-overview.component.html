@@ -8,7 +8,7 @@
 					<button
 						style="cursor: pointer"
 						(click)="addResourceMachine()"
-						[disabled]="this.newMachineFormGroup.invalid"
+						[disabled]="newMachineFormGroup.invalid"
 						class="btn btn-success"
 					>
 						Save
@@ -29,7 +29,7 @@
 								'is-invalid':
 									newMachineFormGroup.controls['new_machine_ram'].invalid &&
 									newMachineFormGroup.controls['new_machine_ram'].dirty,
-								'is-valid': newMachineFormGroup.controls['new_machine_ram'].valid
+								'is-valid': newMachineFormGroup.controls['new_machine_ram'].valid,
 							}"
 							min="0"
 						/>
@@ -50,7 +50,7 @@
 							'is-invalid':
 								newMachineFormGroup.controls['new_machine_ram_private_factor'].invalid &&
 								newMachineFormGroup.controls['new_machine_ram_private_factor'].dirty,
-							'is-valid': newMachineFormGroup.controls['new_machine_ram_private_factor'].valid
+							'is-valid': newMachineFormGroup.controls['new_machine_ram_private_factor'].valid,
 						}"
 						min="0"
 						step="0.1"
@@ -67,7 +67,7 @@
 							'is-invalid':
 								newMachineFormGroup.controls['new_machine_ram_public_factor'].invalid &&
 								newMachineFormGroup.controls['new_machine_ram_public_factor'].dirty,
-							'is-valid': newMachineFormGroup.controls['new_machine_ram_public_factor'].valid
+							'is-valid': newMachineFormGroup.controls['new_machine_ram_public_factor'].valid,
 						}"
 						min="0"
 						step="0.1"
@@ -88,7 +88,7 @@
 								'is-invalid':
 									newMachineFormGroup.controls['new_machine_cores'].invalid &&
 									newMachineFormGroup.controls['new_machine_cores'].dirty,
-								'is-valid': newMachineFormGroup.controls['new_machine_cores'].valid
+								'is-valid': newMachineFormGroup.controls['new_machine_cores'].valid,
 							}"
 							min="0"
 						/>
@@ -108,7 +108,7 @@
 							'is-invalid':
 								newMachineFormGroup.controls['new_machine_cores_private_factor'].invalid &&
 								newMachineFormGroup.controls['new_machine_cores_private_factor'].dirty,
-							'is-valid': newMachineFormGroup.controls['new_machine_cores_private_factor'].valid
+							'is-valid': newMachineFormGroup.controls['new_machine_cores_private_factor'].valid,
 						}"
 						min="0"
 						step="0.1"
@@ -125,7 +125,7 @@
 							'is-invalid':
 								newMachineFormGroup.controls['new_machine_cores_public_factor'].invalid &&
 								newMachineFormGroup.controls['new_machine_cores_public_factor'].dirty,
-							'is-valid': newMachineFormGroup.controls['new_machine_cores_public_factor'].valid
+							'is-valid': newMachineFormGroup.controls['new_machine_cores_public_factor'].valid,
 						}"
 						min="0"
 						step="0.1"
@@ -146,7 +146,7 @@
 								'is-invalid':
 									newMachineFormGroup.controls['new_machine_gpus'].invalid &&
 									newMachineFormGroup.controls['new_machine_gpus'].dirty,
-								'is-valid': newMachineFormGroup.controls['new_machine_gpus'].valid
+								'is-valid': newMachineFormGroup.controls['new_machine_gpus'].valid,
 							}"
 							min="0"
 						/>
@@ -165,7 +165,7 @@
 							<select
 								class="form-control form-select"
 								[ngModelOptions]="{ standalone: true }"
-								[(ngModel)]="this.newResourceMachine.gpu_used[i]"
+								[(ngModel)]="newResourceMachine.gpu_used[i]"
 								name="new_machine_gpu_{{ i }}"
 								ngDefaultControl
 							>
@@ -193,7 +193,7 @@
 								'is-invalid':
 									newMachineFormGroup.controls['new_machine_local_disk_storage'].invalid &&
 									newMachineFormGroup.controls['new_machine_local_disk_storage'].dirty,
-								'is-valid': newMachineFormGroup.controls['new_machine_local_disk_storage'].valid
+								'is-valid': newMachineFormGroup.controls['new_machine_local_disk_storage'].valid,
 							}"
 						/>
 						<div class="input-group-append">
@@ -223,7 +223,7 @@
 							'is-invalid':
 								newMachineFormGroup.controls['new_machine_name'].invalid &&
 								newMachineFormGroup.controls['new_machine_name'].dirty,
-							'is-valid': newMachineFormGroup.controls['new_machine_name'].valid
+							'is-valid': newMachineFormGroup.controls['new_machine_name'].valid,
 						}"
 					/>
 				</div>
@@ -252,7 +252,7 @@
 							'is-invalid':
 								newMachineFormGroup.controls['new_machine_private_count'].invalid &&
 								newMachineFormGroup.controls['new_machine_private_count'].dirty,
-							'is-valid': newMachineFormGroup.controls['new_machine_private_count'].valid
+							'is-valid': newMachineFormGroup.controls['new_machine_private_count'].valid,
 						}"
 						min="0"
 					/>
@@ -268,7 +268,7 @@
 							'is-invalid':
 								newMachineFormGroup.controls['new_machine_public_count'].invalid &&
 								newMachineFormGroup.controls['new_machine_public_count'].dirty,
-							'is-valid': newMachineFormGroup.controls['new_machine_public_count'].valid
+							'is-valid': newMachineFormGroup.controls['new_machine_public_count'].valid,
 						}"
 						min="0"
 					/>
@@ -283,7 +283,7 @@
 	id="{{ machine?.name + '_card' }}"
 	*ngFor="let machine of resourceMachines"
 	style="margin: 5px"
-	[ngClass]="this.resourceMachineUpdateList[machine.id] ? 'border-warning' : 'border-primary'"
+	[ngClass]="resourceMachineUpdateList[machine.id] ? 'border-warning' : 'border-primary'"
 >
 	<div class="card-body">
 		<h5 class="card-title">{{ machine?.name }}</h5>
@@ -297,28 +297,28 @@
 					<button
 						(click)="deleteResourceMachine(machine.id)"
 						class="btn btn-danger"
-						*ngIf="!this.resourceMachineUpdateList[machine.id]"
+						*ngIf="!resourceMachineUpdateList[machine.id]"
 					>
 						Remove
 					</button>
 					<button
 						class="btn btn-warning"
 						(click)="changeResourceMachineToUpdate(machine)"
-						*ngIf="!this.resourceMachineUpdateList[machine.id]"
+						*ngIf="!resourceMachineUpdateList[machine.id]"
 					>
 						Update
 					</button>
 					<button
 						(click)="updateResourceMachine(machine); changeResourceMachineToUpdate(machine)"
 						class="btn btn-success"
-						*ngIf="this.resourceMachineUpdateList[machine.id]"
-						[disabled]="this.machinesFormGroups[machine.id].invalid"
+						*ngIf="resourceMachineUpdateList[machine.id]"
+						[disabled]="machinesFormGroups[machine.id].invalid"
 					>
 						Save
 					</button>
 					<button
 						class="btn btn-info"
-						*ngIf="this.resourceMachineUpdateList[machine.id]"
+						*ngIf="resourceMachineUpdateList[machine.id]"
 						(click)="reloadResourceMachine(machine); changeResourceMachineToUpdate(machine)"
 					>
 						Cancel

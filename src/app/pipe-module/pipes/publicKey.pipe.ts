@@ -3,9 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core'
 /**
  * Pipe which checks for validity of ssh-key.
  */
-@Pipe({
-	name: 'isValidKeyPipe'
-})
+@Pipe({ name: 'isValidKeyPipe' })
 export class PublicKeyPipe implements PipeTransform {
 	transform(key: string): boolean {
 		if (key === undefined || key === null) {

@@ -8,7 +8,6 @@ import { AlertModule } from 'ngx-bootstrap/alert'
 import { UserInfoRoutingModule } from './userinfo-routing.module'
 import { UserInfoComponent } from './userinfo.component'
 import { PublicKeyModule } from '../shared/shared_modules/public-key/public-key.module'
-import { NewsModule } from '../news/news.module'
 
 /**
  * Userinfo module.
@@ -22,10 +21,8 @@ import { NewsModule } from '../news/news.module'
 		FormsModule,
 		ModalModule.forRoot(),
 		AlertModule.forRoot(),
-		NewsModule
+		UserInfoComponent
 	],
-
-	declarations: [UserInfoComponent],
 	exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
 })
 export class UserinfoModule {}
