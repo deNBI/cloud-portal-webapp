@@ -80,11 +80,13 @@ export class AdjustApplicationComponent implements OnInit {
 	}
 
 	getAvailableFlavors() {
-		this.flavorService.getListOfFlavorsAvailable(undefined, undefined, true).subscribe((flavList: Flavor[]): void => {
-			this.flavorList = flavList
-			this.loadedFlavors = true
-			this.loaded = this.loadedFlavorTypes && this.loadedFlavors
-		})
+		this.flavorService
+			.getListOfFlavorsAvailable(this.application.project_application_id, false, true)
+			.subscribe((flavList: Flavor[]): void => {
+				this.flavorList = flavList
+				this.loadedFlavors = true
+				this.loaded = this.loadedFlavorTypes && this.loadedFlavors
+			})
 	}
 
 	getAvailableFlavorTypes() {

@@ -42,7 +42,7 @@ export class FlavorService {
 	}
 
 	getListOfFlavorsAvailable(
-		project_id: string = '',
+		project_id: string | number = '',
 		specific: boolean = false,
 		custom: boolean = false
 	): Observable<Flavor[]> {

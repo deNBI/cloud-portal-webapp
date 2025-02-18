@@ -132,7 +132,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 		this.flavorRetrievalInProgress = true
 		this.subscription.add(
 			this.flavorService
-				.getListOfFlavorsAvailable(this.project.project_application_id.toString(), true)
+				.getListOfFlavorsAvailable(this.project.project_application_id.toString(), true, this.adjustment)
 				.subscribe((flavors: Flavor[]): void => {
 					this.temp_project_modification.flavors = []
 					for (const flavor of flavors) {
