@@ -1,3 +1,4 @@
+import { ApplicationPage } from './../shared/models/application.page'
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
 
 import { FacilityService } from '../api-connector/facility.service'
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms'
 import { ApplicationListComponent } from '../applications/application-list/application-list.component'
 import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
 import { ApplicationDetailComponent } from '../applications/application-detail/application-detail.component'
+import { BasePaginationComponent } from 'app/shared/shared_modules/components/pagination/base-pagination.component'
 
 enum TabStates {
 	'SUBMITTED' = 0,
@@ -38,7 +40,8 @@ enum TabStates {
 		NgClass,
 		ApplicationListComponent,
 		ApplicationBadgesComponent,
-		ApplicationDetailComponent
+		ApplicationDetailComponent,
+		BasePaginationComponent
 	]
 })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
@@ -73,7 +76,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	all_application_modifications: Application[] = []
 	isHistoryLoaded: boolean = false
 
-	applications_history: Application[] = []
+	applicationHistoryPage: ApplicationPage = new ApplicationPage()
 
 	allApplicationsToCheck: Application[] = []
 
@@ -97,11 +100,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 		if (application.project_application_description !== undefined) {
 			return
 		}
-		const idx: number = this.applications_history.indexOf(application)
+		const idx: number = this.applicationHistoryPage.results.indexOf(application)
 		this.facilityService
 			.getFacilityApplicationById(this.selectedFacility['FacilityId'], application.project_application_id.toString())
 			.subscribe((app: Application): void => {
-				this.applications_history[idx] = new Application(app)
+				this.applicationHistoryPage.results[idx] = new Application(app)
 			})
 	}
 
@@ -110,21 +113,20 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	 *
 	 * @param facility id of the facility
 	 */
-	getAllApplicationsHistory(facility: number): void {
+	getApplicationsHistoryPage(applicationHistoryPage = this.applicationHistoryPage): void {
+		const facility = this.selectedFacility['FacilityId']
 		this.isHistoryLoaded = false
-
-		this.applications_history = []
+		if (applicationHistoryPage) {
+			this.applicationHistoryPage = applicationHistoryPage
+		}
 
 		// todo check if user is VO Admin
-		this.facilityService.getFacilityApplicationsHistory(facility).subscribe((applications: Application[]): void => {
-			if (applications.length === 0) {
+		this.facilityService
+			.getFacilityApplicationsHistory(facility, this.applicationHistoryPage)
+			.subscribe((applicationsPage: ApplicationPage): void => {
+				this.applicationHistoryPage = applicationsPage
 				this.isHistoryLoaded = true
-			}
-			for (const application of applications) {
-				this.applications_history.push(new Application(application))
-			}
-			this.isHistoryLoaded = true
-		})
+			})
 	}
 
 	/**
@@ -136,7 +138,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 		this.isLoaded = false
 		this.allApplicationsToCheck = []
 		this.all_application_modifications = []
-		this.applications_history = []
+		this.applicationHistoryPage = new ApplicationPage()
 		this.facilityService
 			.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
 			.subscribe((res: any): void => {
@@ -149,7 +151,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 		this.changeTabState(TabStates.SUBMITTED)
 		this.isLoaded = true
 		// this.getFullApplications(this.selectedFacility ['FacilityId']);
-		this.getAllApplicationsHistory(this.selectedFacility['FacilityId'])
+		this.getApplicationsHistoryPage()
 	}
 
 	/**
@@ -249,7 +251,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 			this.isLoaded = true
 
 			// this.getFullApplications(this.selectedFacility ['FacilityId']);
-			this.getAllApplicationsHistory(this.selectedFacility['FacilityId'])
+			this.getApplicationsHistoryPage()
 		})
 	}
 }

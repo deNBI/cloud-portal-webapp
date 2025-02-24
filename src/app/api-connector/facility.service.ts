@@ -10,6 +10,7 @@ import { ResourceMachine } from '../facility_manager/resources/resource-machine'
 import { ProjectMember } from '../projectmanagement/project_member.model'
 import { GPUSpecification } from '../facility_manager/resources/gpu-specification'
 import { GeneralStorageFactor } from '../facility_manager/resources/general-storage-factor'
+import { ApplicationPage } from 'app/shared/models/application.page'
 
 /**
  * Service which provides methods for the facilities.
@@ -222,20 +223,35 @@ export class FacilityService {
 	}
 
 	/**
-	 * Gets all facility applications history.
+	 * Retrieves facility applications history.
 	 *
-	 * @param facility
-	 * @returns
+	 * @param facility Facility ID or name
+	 * @param applicationHistoryPage Page number and size for pagination (optional)
+	 * @returns Observable<ApplicationPage> Application page data
 	 */
-	getFacilityApplicationsHistory(facility: number | string): Observable<Application[]> {
-		return this.http.get<Application[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`,
-			{
-				withCredentials: true
-			}
-		)
-	}
+	getFacilityApplicationsHistory(
+		facility: number | string,
+		applicationHistoryPage: ApplicationPage = new ApplicationPage()
+	): Observable<ApplicationPage> {
+		const params = new HttpParams()
+			.set('page', applicationHistoryPage.page)
+			.set('page_size', applicationHistoryPage.page_size)
 
+		return this.http
+			.get<ApplicationPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
+				params,
+				withCredentials: true
+			})
+			.pipe(
+				map((response: ApplicationPage) => {
+					// Update the original page object with response data
+					applicationHistoryPage.count = response.count
+					applicationHistoryPage.results = response.results
+
+					return applicationHistoryPage
+				})
+			)
+	}
 	/**
 	 * Get application for facility by id.
 	 *

@@ -1,0 +1,38 @@
+<div class="d-flex align-items-center justify-content-center flex-wrap">
+	<c-row>
+		<c-col class="mb-3" [xs]="12" [md]="6">
+			<pagination
+				[totalItems]="basePage.count"
+				[itemsPerPage]="basePage.page_size"
+				(pageChanged)="submit($event)"
+				[ngModel]="basePage.page"
+				[boundaryLinks]="true"
+				[maxSize]="8"
+				[rotate]="true"
+				previousText="&lsaquo;"
+				nextText="&rsaquo;"
+				firstText="&laquo;"
+				lastText="&raquo;"
+				class="mb-3"
+			></pagination>
+		</c-col>
+
+		<c-col class="mb-3" [xs]="12" [md]="6">
+			<c-input-group>
+				<input
+					aria-describedby="page-size"
+					[(ngModel)]="basePage.page_size"
+					(ngModelChange)="perPageChange$.next($event)"
+					aria-label="Page Size"
+					cFormControl
+					step="1"
+					type="number"
+					[min]="1"
+					[max]="basePage.max_page_size"
+					placeholder="Page Size"
+				/>
+				<span cInputGroupText id="page-size">Page Size</span>
+			</c-input-group>
+		</c-col>
+	</c-row>
+</div>
