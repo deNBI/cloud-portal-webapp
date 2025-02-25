@@ -253,6 +253,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 			this.changeTabState(TabStates.SUBMITTED)
 			this.isLoaded = true
 			this.textFilter.pipe(debounceTime(600), distinctUntilChanged()).subscribe(filter => {
+				console.log('change')
+				console.log(filter)
+				console.log('###')
+
 				this.getApplicationsHistoryPage(this.applicationHistoryPage, filter)
 			})
 
