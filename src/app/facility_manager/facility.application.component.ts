@@ -16,6 +16,7 @@ import { ApplicationListComponent } from '../applications/application-list/appli
 import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
 import { ApplicationDetailComponent } from '../applications/application-detail/application-detail.component'
 import { BasePaginationComponent } from 'app/shared/shared_modules/components/pagination/base-pagination.component'
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'
 
 enum TabStates {
 	'SUBMITTED' = 0,
@@ -83,6 +84,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	tab_state: number = TabStates.SUBMITTED
 	TabStates: typeof TabStates = TabStates
 	loadingApplications: boolean = false
+	textFilter = new Subject<string>()
 
 	approveLocked: boolean = false
 
@@ -113,7 +115,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	 *
 	 * @param facility id of the facility
 	 */
-	getApplicationsHistoryPage(applicationHistoryPage = this.applicationHistoryPage): void {
+	getApplicationsHistoryPage(applicationHistoryPage = this.applicationHistoryPage, filter: string = ''): void {
 		const facility = this.selectedFacility['FacilityId']
 		this.isHistoryLoaded = false
 		if (applicationHistoryPage) {
@@ -122,7 +124,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
 		// todo check if user is VO Admin
 		this.facilityService
-			.getFacilityApplicationsHistory(facility, this.applicationHistoryPage)
+			.getFacilityApplicationsHistory(facility, this.applicationHistoryPage, filter)
 			.subscribe((applicationsPage: ApplicationPage): void => {
 				this.applicationHistoryPage = applicationsPage
 				this.isHistoryLoaded = true
@@ -137,6 +139,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	onChangeSelectedFacility(): void {
 		this.isLoaded = false
 		this.allApplicationsToCheck = []
+		this.textFilter.next('')
 		this.all_application_modifications = []
 		this.applicationHistoryPage = new ApplicationPage()
 		this.facilityService
@@ -249,6 +252,9 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 			this.getApplicationNumbers()
 			this.changeTabState(TabStates.SUBMITTED)
 			this.isLoaded = true
+			this.textFilter.pipe(debounceTime(600), distinctUntilChanged()).subscribe(filter => {
+				this.getApplicationsHistoryPage(this.applicationHistoryPage, filter)
+			})
 
 			// this.getFullApplications(this.selectedFacility ['FacilityId']);
 			this.getApplicationsHistoryPage()

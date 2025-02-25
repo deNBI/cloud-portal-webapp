@@ -231,11 +231,13 @@ export class FacilityService {
 	 */
 	getFacilityApplicationsHistory(
 		facility: number | string,
-		applicationHistoryPage: ApplicationPage = new ApplicationPage()
+		applicationHistoryPage: ApplicationPage = new ApplicationPage(),
+		textFilter?: string
 	): Observable<ApplicationPage> {
 		const params = new HttpParams()
 			.set('page', applicationHistoryPage.page)
 			.set('page_size', applicationHistoryPage.page_size)
+			.set('textFilter', textFilter)
 
 		return this.http
 			.get<ApplicationPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {

@@ -120,6 +120,7 @@
 				(pageChanged)="getApplicationsHistoryPage($event)"
 				[basePage]="applicationHistoryPage"
 			></app-pagination>
+			<input (change)="textFilter.next($event)" aria-label="Text FIlter" type="text" placeholder="Text Filter" />
 			<div class="table-responsive">
 				<table class="table table-striped table-hover">
 					<thead>
