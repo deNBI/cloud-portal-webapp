@@ -308,11 +308,13 @@
 								@if (projectsLoaded) {
 									<tr *ngFor="let project of applictions$ | async; index as i">
 										<td>
-											<input
-												type="checkbox"
-												[(ngModel)]="project.is_project_selected"
-												(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
-											/>
+											@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
+												<input
+													type="checkbox"
+													[(ngModel)]="project.is_project_selected"
+													(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
+												/>
+											}
 										</td>
 										<td>
 											<app-application-badges [application]="project"></app-application-badges>
@@ -420,15 +422,16 @@
 										</td>
 
 										<td>
-											<button
-												[disabled]="project | hasstatusinlist: application_states.TERMINATED"
-												type="button"
-												class="btn btn-secondary"
-												data-toggle="modal"
-												(click)="showMembersModal(project)"
-											>
-												<i class="fa fa-users"></i>&nbsp;Show Members
-											</button>
+											@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
+												<button
+													type="button"
+													class="btn btn-secondary"
+													data-toggle="modal"
+													(click)="showMembersModal(project)"
+												>
+													<i class="fa fa-users"></i>&nbsp;Show Members
+												</button>
+											}
 										</td>
 									</tr>
 								} @else {

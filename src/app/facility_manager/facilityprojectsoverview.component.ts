@@ -315,8 +315,10 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		this.applictions$.pipe(take(1)).subscribe(applications => {
 			// set the selected state of all projects to true
 			applications.forEach(application => {
-				application.is_project_selected = true
-				this.toggleSelectedEmailApplication(application, application.is_project_selected)
+				if (!application.hasTerminatedStatus()) {
+					application.is_project_selected = true
+					this.toggleSelectedEmailApplication(application, application.is_project_selected)
+				}
 			})
 		})
 	}
