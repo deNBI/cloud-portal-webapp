@@ -272,6 +272,18 @@
 									}}</span>
 								</label>
 							</div>
+							<div class="checkbox col">
+								<label>
+									<input
+										type="checkbox"
+										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.TERMINATED)"
+										[checked]="sortProjectService.filterStatusList | inList: application_states.TERMINATED"
+									/>
+									<span style="margin-left: 5px" class="badge bg-dark">{{
+										application_states[application_states.TERMINATED]
+									}}</span>
+								</label>
+							</div>
 						</div>
 						<table class="table table-striped">
 							<thead>
@@ -329,41 +341,51 @@
 											></ngb-highlight>
 										</td>
 										<td>
-											<span
-												*ngIf="project | hasstatusinlist: project_states.ACTIVE"
-												style="margin-left: 5px"
-												class="badge bg-success"
-												>{{ project_states[project_states.ACTIVE] }}
-											</span>
-											<span
-												*ngIf="
-													(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
-													!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
-												"
-												style="margin-left: 5px"
-												class="badge bg-danger"
-												>{{ lifetime_states[lifetime_states.EXPIRED] }}
-											</span>
-											<span
-												*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
-												style="margin-left: 5px"
-												class="badge bg-warning"
-												>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
-											>
+											@if (project | hasstatusinlist: application_states.TERMINATED) {
+												<span
+													*ngIf="project | hasstatusinlist: application_states.TERMINATED"
+													style="margin-left: 5px"
+													class="badge bg-dark"
+													>TERMINATED
+												</span>
+											} @else {
+												<span
+													*ngIf="project | hasstatusinlist: project_states.ACTIVE"
+													style="margin-left: 5px"
+													class="badge bg-success"
+													>{{ project_states[project_states.ACTIVE] }}
+												</span>
 
-											<span
-												*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
-												style="margin-left: 5px"
-												class="badge bg-info"
-												>WAIT FOR CONFIRMATION
-											</span>
+												<span
+													*ngIf="
+														(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
+														!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
+													"
+													style="margin-left: 5px"
+													class="badge bg-danger"
+													>{{ lifetime_states[lifetime_states.EXPIRED] }}
+												</span>
+												<span
+													*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
+													style="margin-left: 5px"
+													class="badge bg-warning"
+													>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
+												>
 
-											<span
-												*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
-												style="margin-left: 5px"
-												class="badge bg-dark"
-												>WAIT FOR TERMINATION BY FM
-											</span>
+												<span
+													*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
+													style="margin-left: 5px"
+													class="badge bg-info"
+													>WAIT FOR CONFIRMATION
+												</span>
+
+												<span
+													*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+													style="margin-left: 5px"
+													class="badge bg-dark"
+													>WAIT FOR TERMINATION BY FM
+												</span>
+											}
 										</td>
 										<td>
 											<ngb-highlight
@@ -399,6 +421,7 @@
 
 										<td>
 											<button
+												[disabled]="project | hasstatusinlist: application_states.TERMINATED"
 												type="button"
 												class="btn btn-secondary"
 												data-toggle="modal"

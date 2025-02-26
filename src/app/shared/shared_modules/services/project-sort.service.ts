@@ -28,7 +28,6 @@ export class ProjectSortService {
 		this.filterStatusList = [
 			Application_States.ACTIVE,
 			Application_States.SUSPENDED,
-			//	Application_States.DELETED,
 			Application_States.EXPIRED,
 			Application_States.WAIT_FOR_CONFIRMATION,
 			Application_States.TERMINATION_REQUESTED,
@@ -148,7 +147,10 @@ export class ProjectSortService {
 
 		if (this.filterStatusList) {
 			const status_match: boolean = project.project_application_statuses.some(r => this.filterStatusList.includes(r))
-			if (!status_match) {
+			const terminatedButNotFiltered: boolean =
+				project.project_application_statuses.includes(Application_States.TERMINATED) &&
+				!this.filterStatusList.includes(Application_States.TERMINATED)
+			if (!status_match || terminatedButNotFiltered) {
 				return false
 			}
 		}
