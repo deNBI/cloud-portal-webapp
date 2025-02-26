@@ -17,6 +17,8 @@ export class ProjectSortService {
 	public filterStatusList: number[] = []
 	public showSimpleVM: boolean = true
 	public showOpenStack: boolean = true
+	public showKubernetes: boolean = true
+
 	private _loading$ = new BehaviorSubject<boolean>(true)
 	private _search$ = new Subject<void>()
 	private _applications$ = new BehaviorSubject<Application[]>([])
@@ -26,7 +28,7 @@ export class ProjectSortService {
 
 	_initiateFilterStatusList(): void {
 		this.filterStatusList = [
-			Application_States.ACTIVE,
+			Application_States.APPROVED,
 			Application_States.SUSPENDED,
 			Application_States.EXPIRED,
 			Application_States.WAIT_FOR_CONFIRMATION,
@@ -140,7 +142,8 @@ export class ProjectSortService {
 		const term = text.toLowerCase()
 		if (
 			(!this.showSimpleVM && !project.project_application_openstack_project) ||
-			(!this.showOpenStack && project.project_application_openstack_project)
+			(!this.showOpenStack && project.project_application_openstack_project) ||
+			(!this.showKubernetes && project.project_application_kubernetes_access)
 		) {
 			return false
 		}

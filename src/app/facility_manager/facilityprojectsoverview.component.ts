@@ -15,7 +15,7 @@ import {
 	SortEvent
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive'
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service'
-import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class'
+import { AbstractBaseClass, Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component'
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component'
 import { EmailService } from '../api-connector/email.service'
@@ -37,6 +37,9 @@ import { NgSelectComponent } from '@ng-select/ng-select'
 import { HasStatusPipe } from '../pipe-module/pipes/has-status.pipe'
 import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
 import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
+import { ApplicationPage } from 'app/shared/models/application.page'
+import { BasePaginationComponent } from 'app/shared/shared_modules/components/pagination/base-pagination.component'
+import { ApplicationFilter } from 'app/shared/classes/application-filter'
 
 /**
  * Facility Project overview component.
@@ -64,7 +67,8 @@ import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
 		AsyncPipe,
 		HasStatusPipe,
 		HasstatusinlistPipe,
-		InListPipe
+		InListPipe,
+		BasePaginationComponent
 	]
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
@@ -77,6 +81,8 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	public memberFilter: string = ''
 	filteredMembers: object[] = []
 	selectedMember: object[] = []
+	applicationPage: ApplicationPage = new ApplicationPage()
+	applicationFilter: ApplicationFilter = new ApplicationFilter()
 
 	isLoaded: boolean = false
 	projects: Application[] = []
@@ -192,6 +198,11 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		}); * */
 	}
 
+	changeProjectStatusFilter(applicationStatus: Application_States) {
+		this.applicationFilter.addOrRemoveFromFilterStatusList(applicationStatus)
+		this.getFacilityProjects(this.selectedFacility['FacilityId'])
+	}
+
 	onCsvFileSelected(event): void {
 		const inputElement = event.target as HTMLInputElement
 		if (inputElement.files && inputElement.files.length > 0) {
@@ -221,8 +232,9 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			}
 		})
 
-		this.sortProjectService.sortColumn = column
-		this.sortProjectService.sortDirection = direction
+		this.applicationFilter.sortDirection = direction
+		this.applicationFilter.sortColumn = column
+		this.getSelectedFacilityProjects()
 	}
 
 	filterMembers(bare_searchString: string): void {
@@ -290,6 +302,8 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	 */
 	onChangeSelectedFacility(): void {
 		this.isLoaded = false
+		this.applicationPage = new ApplicationPage()
+
 		this.getFacilityProjects(this.selectedFacility['FacilityId'])
 		this.emailSubject = `[${this.selectedFacility['Facility']}]`
 	}
@@ -376,24 +390,23 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		return 'NOT_FOUND'
 	}
 
+	getSelectedFacilityProjects(): void {
+		this.getFacilityProjects(this.selectedFacility['FacilityId'])
+	}
 	getFacilityProjects(facility: string): void {
 		this.projects = []
 		this.projectsLoaded = false
 
 		// tslint:disable-next-line:max-line-length
 		this.facilityService
-			.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED)
-			.subscribe((applications: Application[]): void => {
-				for (const group of applications) {
+			.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.applicationFilter, this.applicationPage)
+			.subscribe((applicationPage: ApplicationPage): void => {
+				for (const group of applicationPage.results) {
 					if (group.project_application_lifetime > 0) {
 						group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning)
 					}
 					this.projects.push(group)
 				}
-				this.projectsCopy = this.projects
-				this.sortProjectService.applications = this.projects
-				this.applictions$ = this.sortProjectService.applications$
-				this.total$ = this.sortProjectService.total$
 				this.projectsLoaded = true
 
 				this.isLoaded = true

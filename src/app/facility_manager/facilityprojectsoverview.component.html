@@ -82,15 +82,7 @@
 
 				<div class="card-body">
 					<div class="d-flex justify-content-between p-2">
-						<ngb-pagination
-							[maxSize]="10"
-							[rotate]="true"
-							[boundaryLinks]="true"
-							[collectionSize]="(total$ | async)!"
-							[(page)]="sortProjectService.page"
-							[pageSize]="sortProjectService.pageSize"
-						>
-						</ngb-pagination>
+						<app-pagination (pageChanged)="getSelectedFacilityProjects()" [basePage]="applicationPage"></app-pagination>
 
 						<div>
 							<button type="button" class="btn btn-primary me-2" (click)="selectAllFilteredProjects()">
@@ -199,7 +191,7 @@
 								<label style="margin-top: 7px; margin-bottom: 0px !important">
 									<input
 										type="checkbox"
-										(ngModelChange)="sortProjectService.initiateSearch()"
+										(input)="getSelectedFacilityProjects()"
 										[(ngModel)]="sortProjectService.showSimpleVM"
 									/>
 									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-info-blue"
@@ -211,7 +203,7 @@
 								<label style="margin-top: 7px; margin-bottom: 0px !important">
 									<input
 										type="checkbox"
-										(ngModelChange)="sortProjectService.initiateSearch()"
+										(input)="getSelectedFacilityProjects()"
 										[(ngModel)]="sortProjectService.showOpenStack"
 									/>
 									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
@@ -220,14 +212,26 @@
 								</label>
 							</div>
 							<div class="checkbox col">
+								<label style="margin-top: 7px; margin-bottom: 0px !important">
+									<input
+										type="checkbox"
+										(input)="getSelectedFacilityProjects()"
+										[(ngModel)]="sortProjectService.showKubernetes"
+									/>
+									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
+										>Kubernetes
+									</span>
+								</label>
+							</div>
+							<div class="checkbox col">
 								<label>
 									<input
 										type="checkbox"
-										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.ACTIVE)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.ACTIVE"
+										(change)="changeProjectStatusFilter(application_states.APPROVED)"
+										[checked]="sortProjectService.filterStatusList | inList: application_states.APPROVED"
 									/>
 									<span style="margin-left: 5px" class="badge bg-success"
-										>{{ project_states[project_states.ACTIVE] }}
+										>{{ application_states[application_states.APPROVED] }}
 									</span>
 								</label>
 							</div>
@@ -236,7 +240,7 @@
 								<label>
 									<input
 										type="checkbox"
-										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRED)"
+										(change)="changeProjectStatusFilter(application_states.EXPIRED)"
 										[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRED"
 									/>
 
@@ -249,7 +253,7 @@
 								<label>
 									<input
 										type="checkbox"
-										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRES_SOON)"
+										(change)="changeProjectStatusFilter(application_states.EXPIRES_SOON)"
 										[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRES_SOON"
 									/>
 									<span style="margin-left: 5px" class="badge bg-warning">{{
@@ -262,9 +266,7 @@
 								<label>
 									<input
 										type="checkbox"
-										(change)="
-											sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_TERMINATION_FM)
-										"
+										(change)="changeProjectStatusFilter(application_states.WAIT_FOR_TERMINATION_FM)"
 										[checked]="sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_TERMINATION_FM"
 									/>
 									<span style="margin-left: 5px" class="badge bg-dark">{{
@@ -276,7 +278,7 @@
 								<label>
 									<input
 										type="checkbox"
-										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.TERMINATED)"
+										(change)="changeProjectStatusFilter(application_states.TERMINATED)"
 										[checked]="sortProjectService.filterStatusList | inList: application_states.TERMINATED"
 									/>
 									<span style="margin-left: 5px" class="badge bg-dark">{{
@@ -291,7 +293,7 @@
 									<th scope="col">Select</th>
 									<th scope="col">Type</th>
 
-									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Project ID</th>
+									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Perun ID</th>
 									<th scope="col" appSortable="project_application_shortname" (sort)="onSort($event)">Project Name</th>
 									<th scope="col" appSortable="project_application_name" (sort)="onSort($event)">Long Name</th>
 
@@ -306,7 +308,7 @@
 							</thead>
 							<tbody>
 								@if (projectsLoaded) {
-									<tr *ngFor="let project of applictions$ | async; index as i">
+									<tr *ngFor="let project of applicationPage.results">
 										<td>
 											@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
 												<input

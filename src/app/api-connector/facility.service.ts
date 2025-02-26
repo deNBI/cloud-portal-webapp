@@ -11,6 +11,7 @@ import { ProjectMember } from '../projectmanagement/project_member.model'
 import { GPUSpecification } from '../facility_manager/resources/gpu-specification'
 import { GeneralStorageFactor } from '../facility_manager/resources/general-storage-factor'
 import { ApplicationPage } from 'app/shared/models/application.page'
+import { ApplicationFilter } from 'app/shared/classes/application-filter'
 
 /**
  * Service which provides methods for the facilities.
@@ -146,28 +147,50 @@ export class FacilityService {
 	}
 
 	/**
-	 * Get allowed groups from a facility with a specific status.
+	 * Retrieves facility allowed groups with details and specific status.
 	 *
-	 * @param facility
-	 * @param status
-	 * @returns
+	 * @param {number|string} facility - Facility ID or name.
+	 * @param {number[]} status_list - List of desired application statuses.
+	 * @returns {Observable<Application[]>} Observable containing an array of applications.
 	 */
 	getFacilityAllowedGroupsWithDetailsAndSpecificStatus(
 		facility: number | string,
-		status: number
-	): Observable<Application[]> {
+		applicationFilter: ApplicationFilter,
+		applicationPage = new ApplicationPage()
+	): Observable<ApplicationPage> {
+		const params = new HttpParams()
+			.set('page', applicationPage.page)
+			.set('page_size', applicationPage.page_size)
+			.set('sortDirection', applicationFilter.sortDirection)
+			.set('sortColumn', applicationFilter.sortColumn)
+
+		const url = `${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`
+
+		// Status list is sent in the body
 		return this.http
-			.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
-				withCredentials: true,
-				params: { status: status.toString() }
-			})
+			.post<ApplicationPage>(
+				url,
+				{
+					status_list: applicationFilter.filterStatusList,
+					showSimpleVM: applicationFilter.showSimpleVM,
+					showOpenStack: applicationFilter.showOpenStack,
+					showKubernetes: applicationFilter.showKubernetes
+				},
+				{
+					params,
+					withCredentials: true
+				}
+			)
 			.pipe(
-				map((applications: Application[]): Application[] =>
-					applications.map((application: Application): Application => new Application(application))
-				)
+				map((response: ApplicationPage) => {
+					// Update the original page object with response data
+					applicationPage.count = response.count
+					applicationPage.results = response.results
+
+					return applicationPage
+				})
 			)
 	}
-
 	/**
 	 * Gets FacilityGroups by the elixirId of the member.
 	 *
