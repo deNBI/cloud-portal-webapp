@@ -118,7 +118,6 @@ export class Application {
 					(term: any): EdamOntologyTerm => new EdamOntologyTerm(null, term, null)
 				)
 			}
-			console.log(this.project_application_edam_terms)
 			if (aj.project_lifetime_request) {
 				this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request)
 				this.totalLifetimeExtensionCredits = this.calcLifetimeExtensionCredits()
