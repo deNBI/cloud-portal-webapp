@@ -4,6 +4,13 @@ import { AbstractPage } from './abstract.page'
 export class ApplicationPage extends AbstractPage<Application> {
 	results: Application[]
 
+	setResults(applications: Application[]) {
+		this.results = []
+		applications.forEach((application: Application) => {
+			this.results.push(new Application(application))
+		})
+	}
+
 	constructor(application_page?: Partial<ApplicationPage>) {
 		super()
 

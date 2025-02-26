@@ -171,10 +171,11 @@ export class FacilityService {
 			.post<ApplicationPage>(
 				url,
 				{
-					status_list: applicationFilter.filterStatusList,
+					status_list: applicationFilter.getFilterStatusList(),
 					showSimpleVM: applicationFilter.showSimpleVM,
 					showOpenStack: applicationFilter.showOpenStack,
-					showKubernetes: applicationFilter.showKubernetes
+					showKubernetes: applicationFilter.showKubernetes,
+					textFilter: applicationFilter.textFilter
 				},
 				{
 					params,
@@ -184,8 +185,9 @@ export class FacilityService {
 			.pipe(
 				map((response: ApplicationPage) => {
 					// Update the original page object with response data
+
 					applicationPage.count = response.count
-					applicationPage.results = response.results
+					applicationPage.setResults(response.results)
 
 					return applicationPage
 				})
@@ -271,7 +273,7 @@ export class FacilityService {
 				map((response: ApplicationPage) => {
 					// Update the original page object with response data
 					applicationHistoryPage.count = response.count
-					applicationHistoryPage.results = response.results
+					applicationHistoryPage.setResults(response.results)
 
 					return applicationHistoryPage
 				})

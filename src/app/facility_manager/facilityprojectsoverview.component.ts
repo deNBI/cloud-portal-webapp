@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core'
-import { Observable, take } from 'rxjs'
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
 import { ProjectMember } from '../projectmanagement/project_member.model'
@@ -15,7 +15,7 @@ import {
 	SortEvent
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive'
 import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service'
-import { AbstractBaseClass, Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
+import { AbstractBaseClass } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ProjectEmailModalComponent } from '../shared/modal/email/project-email-modal/project-email-modal.component'
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component'
 import { EmailService } from '../api-connector/email.service'
@@ -96,8 +96,8 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	userElixirSearchAdmin: boolean = true
 	userElixirSearchMember: boolean = true
 	userElixirIdFilter: string
-
 	projectsLoaded: boolean = false
+	textFilterSubject = new Subject<string>()
 
 	/**
 	 * Approved group status.
@@ -141,7 +141,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	constructor(
 		private facilityService: FacilityService,
-		public sortProjectService: ProjectSortService,
 		private modalService: BsModalService,
 		private emailService: EmailService,
 		private notificationModal: NotificationModalComponent
@@ -179,6 +178,13 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 
 	ngOnInit(): void {
+		this.textFilterSubject.pipe(debounceTime(600), distinctUntilChanged()).subscribe(filter => {
+			this.userElixirIdFilter = ''
+
+			this.applicationFilter.textFilter = filter
+			this.getSelectedFacilityProjects()
+		})
+
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result
 			this.selectedFacility = this.managerFacilities[0]
@@ -196,11 +202,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 				}
 			}
 		}); * */
-	}
-
-	changeProjectStatusFilter(applicationStatus: Application_States) {
-		this.applicationFilter.addOrRemoveFromFilterStatusList(applicationStatus)
-		this.getFacilityProjects(this.selectedFacility['FacilityId'])
 	}
 
 	onCsvFileSelected(event): void {
@@ -253,19 +254,10 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		})
 	}
 
-	checkValidElixirIdFilter(): void {
-		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')
-		if (!this.validElixirIdFilter) {
-			this.sortProjectService.applications = this.projectsCopy
-			this.applictions$ = this.sortProjectService.applications$
-			this.total$ = this.sortProjectService.total$
-			this.projectsLoaded = true
-		}
-	}
-
 	getProjectsByMemberElixirId(): void {
 		// tslint:disable-next-line:max-line-length
 		this.userElixirIdFilter = this.userElixirIdFilter.trim()
+		this.applicationFilter = new ApplicationFilter()
 		if (this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')) {
 			this.projectsLoaded = false
 
@@ -278,21 +270,15 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 					this.userElixirSearchMember
 				)
 				.subscribe((applications: Application[]): void => {
-					this.projects = applications
 					for (const group of applications) {
 						if (group.project_application_lifetime > 0) {
 							group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning)
 						}
 					}
-					this.sortProjectService.applications = this.projects
-					this.applictions$ = this.sortProjectService.applications$
-					this.total$ = this.sortProjectService.total$
+					this.applicationPage.results = applications
 					this.projectsLoaded = true
 				})
 		} else {
-			this.sortProjectService.applications = this.projectsCopy
-			this.applictions$ = this.sortProjectService.applications$
-			this.total$ = this.sortProjectService.total$
 			this.projectsLoaded = true
 		}
 	}
@@ -302,6 +288,8 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	 */
 	onChangeSelectedFacility(): void {
 		this.isLoaded = false
+		this.textFilterSubject.next('')
+
 		this.applicationPage = new ApplicationPage()
 
 		this.getFacilityProjects(this.selectedFacility['FacilityId'])
@@ -325,20 +313,16 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	selectAllFilteredProjects(): void {
 		this.selectedEmailProjects = []
 
-		// get all the applications
-		this.applictions$.pipe(take(1)).subscribe(applications => {
-			// set the selected state of all projects to true
-			applications.forEach(application => {
-				if (!application.hasTerminatedStatus()) {
-					application.is_project_selected = true
-					this.toggleSelectedEmailApplication(application, application.is_project_selected)
-				}
-			})
+		this.applicationPage.results.forEach(application => {
+			if (!application.hasTerminatedStatus()) {
+				application.is_project_selected = true
+				this.toggleSelectedEmailApplication(application, application.is_project_selected)
+			}
 		})
 	}
 
 	unselectAll(): void {
-		this.sortProjectService.applications.forEach((pr: Application) => {
+		this.applicationPage.results.forEach((pr: Application) => {
 			pr.is_project_selected = false
 			this.toggleSelectedEmailApplication(pr, pr.is_project_selected)
 		})
@@ -347,12 +331,10 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	unselectAllFilteredProjects(): void {
 		// get all the applications
-		this.applictions$.pipe(take(1)).subscribe(applications => {
-			// set the selected state of all projects to false
-			applications.forEach(application => {
-				application.is_project_selected = false
-				this.toggleSelectedEmailApplication(application, application.is_project_selected)
-			})
+		// set the selected state of all projects to false
+		this.applicationPage.results.forEach(application => {
+			application.is_project_selected = false
+			this.toggleSelectedEmailApplication(application, application.is_project_selected)
 		})
 	}
 
@@ -396,6 +378,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	getFacilityProjects(facility: string): void {
 		this.projects = []
 		this.projectsLoaded = false
+		this.userElixirIdFilter = ''
 
 		// tslint:disable-next-line:max-line-length
 		this.facilityService
