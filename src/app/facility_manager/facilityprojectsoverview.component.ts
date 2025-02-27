@@ -254,6 +254,10 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		})
 	}
 
+	checkValidElixirIdFilter(): void {
+		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')
+	}
+
 	getProjectsByMemberElixirId(): void {
 		// tslint:disable-next-line:max-line-length
 		this.userElixirIdFilter = this.userElixirIdFilter.trim()
