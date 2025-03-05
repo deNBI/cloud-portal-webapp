@@ -1,3 +1,4 @@
+import { ApplicationPage } from './../shared/models/application.page'
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
 
 import { FacilityService } from '../api-connector/facility.service'
@@ -14,6 +15,8 @@ import { FormsModule } from '@angular/forms'
 import { ApplicationListComponent } from '../applications/application-list/application-list.component'
 import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
 import { ApplicationDetailComponent } from '../applications/application-detail/application-detail.component'
+import { BasePaginationComponent } from 'app/shared/shared_modules/components/pagination/base-pagination.component'
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'
 
 enum TabStates {
 	'SUBMITTED' = 0,
@@ -38,7 +41,8 @@ enum TabStates {
 		NgClass,
 		ApplicationListComponent,
 		ApplicationBadgesComponent,
-		ApplicationDetailComponent
+		ApplicationDetailComponent,
+		BasePaginationComponent
 	]
 })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
@@ -73,13 +77,14 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	all_application_modifications: Application[] = []
 	isHistoryLoaded: boolean = false
 
-	applications_history: Application[] = []
+	applicationHistoryPage: ApplicationPage = new ApplicationPage()
 
 	allApplicationsToCheck: Application[] = []
 
 	tab_state: number = TabStates.SUBMITTED
 	TabStates: typeof TabStates = TabStates
 	loadingApplications: boolean = false
+	textFilter = new Subject<string>()
 
 	approveLocked: boolean = false
 
@@ -97,11 +102,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 		if (application.project_application_description !== undefined) {
 			return
 		}
-		const idx: number = this.applications_history.indexOf(application)
+		const idx: number = this.applicationHistoryPage.results.indexOf(application)
 		this.facilityService
 			.getFacilityApplicationById(this.selectedFacility['FacilityId'], application.project_application_id.toString())
 			.subscribe((app: Application): void => {
-				this.applications_history[idx] = new Application(app)
+				this.applicationHistoryPage.results[idx] = new Application(app)
 			})
 	}
 
@@ -110,21 +115,20 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	 *
 	 * @param facility id of the facility
 	 */
-	getAllApplicationsHistory(facility: number): void {
+	getApplicationsHistoryPage(applicationHistoryPage = this.applicationHistoryPage, filter: string = ''): void {
+		const facility = this.selectedFacility['FacilityId']
 		this.isHistoryLoaded = false
-
-		this.applications_history = []
+		if (applicationHistoryPage) {
+			this.applicationHistoryPage = applicationHistoryPage
+		}
 
 		// todo check if user is VO Admin
-		this.facilityService.getFacilityApplicationsHistory(facility).subscribe((applications: Application[]): void => {
-			if (applications.length === 0) {
+		this.facilityService
+			.getFacilityApplicationsHistory(facility, this.applicationHistoryPage, filter)
+			.subscribe((applicationsPage: ApplicationPage): void => {
+				this.applicationHistoryPage = applicationsPage
 				this.isHistoryLoaded = true
-			}
-			for (const application of applications) {
-				this.applications_history.push(new Application(application))
-			}
-			this.isHistoryLoaded = true
-		})
+			})
 	}
 
 	/**
@@ -135,8 +139,9 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	onChangeSelectedFacility(): void {
 		this.isLoaded = false
 		this.allApplicationsToCheck = []
+		this.textFilter.next('')
 		this.all_application_modifications = []
-		this.applications_history = []
+		this.applicationHistoryPage = new ApplicationPage()
 		this.facilityService
 			.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
 			.subscribe((res: any): void => {
@@ -149,7 +154,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 		this.changeTabState(TabStates.SUBMITTED)
 		this.isLoaded = true
 		// this.getFullApplications(this.selectedFacility ['FacilityId']);
-		this.getAllApplicationsHistory(this.selectedFacility['FacilityId'])
+		this.getApplicationsHistoryPage()
 	}
 
 	/**
@@ -247,9 +252,12 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 			this.getApplicationNumbers()
 			this.changeTabState(TabStates.SUBMITTED)
 			this.isLoaded = true
+			this.textFilter.pipe(debounceTime(600), distinctUntilChanged()).subscribe(filter => {
+				this.getApplicationsHistoryPage(this.applicationHistoryPage, filter)
+			})
 
 			// this.getFullApplications(this.selectedFacility ['FacilityId']);
-			this.getAllApplicationsHistory(this.selectedFacility['FacilityId'])
+			this.getApplicationsHistoryPage()
 		})
 	}
 }

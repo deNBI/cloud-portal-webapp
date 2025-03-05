@@ -82,15 +82,7 @@
 
 				<div class="card-body">
 					<div class="d-flex justify-content-between p-2">
-						<ngb-pagination
-							[maxSize]="10"
-							[rotate]="true"
-							[boundaryLinks]="true"
-							[collectionSize]="(total$ | async)!"
-							[(page)]="sortProjectService.page"
-							[pageSize]="sortProjectService.pageSize"
-						>
-						</ngb-pagination>
+						<app-pagination (pageChanged)="getSelectedFacilityProjects()" [basePage]="applicationPage"></app-pagination>
 
 						<div>
 							<button type="button" class="btn btn-primary me-2" (click)="selectAllFilteredProjects()">
@@ -103,12 +95,6 @@
 
 							<button type="button" class="btn btn-primary" (click)="unselectAll()">Unselect All</button>
 						</div>
-
-						<select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="sortProjectService.pageSize">
-							<option [ngValue]="10">10 items per page</option>
-							<option [ngValue]="25">25 items per page</option>
-							<option [ngValue]="50">50 items per page</option>
-						</select>
 					</div>
 
 					<div class="table-responsive">
@@ -121,7 +107,7 @@
 									type="text"
 									class="form-control"
 									name="searchTerm"
-									[(ngModel)]="sortProjectService.searchTerm"
+									(input)="textFilterSubject.next($event.target.value)"
 								/>
 							</div>
 							<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label"
@@ -137,7 +123,7 @@
 										class="form-control"
 										name="searchTerm"
 										[(ngModel)]="userElixirIdFilter"
-										(ngModelChange)="checkValidElixirIdFilter()"
+										(input)="checkValidElixirIdFilter()"
 									/>
 									<button
 										cButton
@@ -151,8 +137,6 @@
 										Search
 									</button>
 								</c-input-group>
-
-								<span class="col col-form-label" *ngIf="sortProjectService.loading$ | async">Loading...</span>
 
 								<div class="row">
 									<div class="col">
@@ -199,8 +183,8 @@
 								<label style="margin-top: 7px; margin-bottom: 0px !important">
 									<input
 										type="checkbox"
-										(ngModelChange)="sortProjectService.initiateSearch()"
-										[(ngModel)]="sortProjectService.showSimpleVM"
+										(change)="getSelectedFacilityProjects()"
+										[(ngModel)]="applicationFilter.showSimpleVM"
 									/>
 									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-info-blue"
 										>SimpleVM
@@ -211,8 +195,8 @@
 								<label style="margin-top: 7px; margin-bottom: 0px !important">
 									<input
 										type="checkbox"
-										(ngModelChange)="sortProjectService.initiateSearch()"
-										[(ngModel)]="sortProjectService.showOpenStack"
+										(change)="getSelectedFacilityProjects()"
+										[(ngModel)]="applicationFilter.showOpenStack"
 									/>
 									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
 										>OpenStack
@@ -220,15 +204,25 @@
 								</label>
 							</div>
 							<div class="checkbox col">
+								<label style="margin-top: 7px; margin-bottom: 0px !important">
+									<input
+										type="checkbox"
+										(change)="getSelectedFacilityProjects()"
+										[(ngModel)]="applicationFilter.showKubernetes"
+									/>
+									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
+										>Kubernetes
+									</span>
+								</label>
+							</div>
+							<div class="checkbox col">
 								<label>
 									<input
 										type="checkbox"
-										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.ACTIVE)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.ACTIVE"
+										(change)="getSelectedFacilityProjects()"
+										[(ngModel)]="applicationFilter.isApproved"
 									/>
-									<span style="margin-left: 5px" class="badge bg-success"
-										>{{ project_states[project_states.ACTIVE] }}
-									</span>
+									<span style="margin-left: 5px" class="badge bg-success">ACTIVE </span>
 								</label>
 							</div>
 
@@ -236,8 +230,8 @@
 								<label>
 									<input
 										type="checkbox"
-										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRED)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRED"
+										(change)="getSelectedFacilityProjects()"
+										[(ngModel)]="applicationFilter.isExpired"
 									/>
 
 									<span style="margin-left: 5px" class="badge bg-danger">{{
@@ -249,8 +243,8 @@
 								<label>
 									<input
 										type="checkbox"
-										(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRES_SOON)"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRES_SOON"
+										(change)="getSelectedFacilityProjects()"
+										[(ngModel)]="applicationFilter.isExpiresSoon"
 									/>
 									<span style="margin-left: 5px" class="badge bg-warning">{{
 										lifetime_states[lifetime_states.EXPIRES_SOON]
@@ -262,13 +256,23 @@
 								<label>
 									<input
 										type="checkbox"
-										(change)="
-											sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_TERMINATION_FM)
-										"
-										[checked]="sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_TERMINATION_FM"
+										(change)="getSelectedFacilityProjects()"
+										[(ngModel)]="applicationFilter.isWaitForTerminationFM"
 									/>
 									<span style="margin-left: 5px" class="badge bg-dark">{{
 										application_states[application_states.WAIT_FOR_TERMINATION_FM]
+									}}</span>
+								</label>
+							</div>
+							<div class="checkbox col">
+								<label>
+									<input
+										type="checkbox"
+										(change)="getSelectedFacilityProjects()"
+										[(ngModel)]="applicationFilter.isTerminated"
+									/>
+									<span style="margin-left: 5px" class="badge bg-dark">{{
+										application_states[application_states.TERMINATED]
 									}}</span>
 								</label>
 							</div>
@@ -279,7 +283,7 @@
 									<th scope="col">Select</th>
 									<th scope="col">Type</th>
 
-									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Project ID</th>
+									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Perun ID</th>
 									<th scope="col" appSortable="project_application_shortname" (sort)="onSort($event)">Project Name</th>
 									<th scope="col" appSortable="project_application_name" (sort)="onSort($event)">Long Name</th>
 
@@ -294,13 +298,15 @@
 							</thead>
 							<tbody>
 								@if (projectsLoaded) {
-									<tr *ngFor="let project of applictions$ | async; index as i">
+									<tr *ngFor="let project of applicationPage.results">
 										<td>
-											<input
-												type="checkbox"
-												[(ngModel)]="project.is_project_selected"
-												(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
-											/>
+											@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
+												<input
+													type="checkbox"
+													[(ngModel)]="project.is_project_selected"
+													(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
+												/>
+											}
 										</td>
 										<td>
 											<app-application-badges [application]="project"></app-application-badges>
@@ -310,83 +316,79 @@
 											<ngb-highlight
 												[result]="project.project_application_perun_id"
 												highlightClass="highlight-filter"
-												[term]="sortProjectService.searchTerm"
-												>>
+												[term]="applicationFilter.textFilter"
+											>
 											</ngb-highlight>
 										</td>
 										<td>
 											<ngb-highlight
 												[result]="project.project_application_shortname"
 												highlightClass="highlight-filter"
-												[term]="sortProjectService.searchTerm"
+												[term]="applicationFilter.textFilter"
 											></ngb-highlight>
 										</td>
 										<td>
 											<ngb-highlight
 												[result]="project.project_application_name"
 												highlightClass="highlight-filter"
-												[term]="sortProjectService.searchTerm"
+												[term]="applicationFilter.textFilter"
 											></ngb-highlight>
 										</td>
 										<td>
-											<span
-												*ngIf="project | hasstatusinlist: project_states.ACTIVE"
-												style="margin-left: 5px"
-												class="badge bg-success"
-												>{{ project_states[project_states.ACTIVE] }}
-											</span>
-											<span
-												*ngIf="
-													(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
-													!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
-												"
-												style="margin-left: 5px"
-												class="badge bg-danger"
-												>{{ lifetime_states[lifetime_states.EXPIRED] }}
-											</span>
-											<span
-												*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
-												style="margin-left: 5px"
-												class="badge bg-warning"
-												>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
-											>
+											@if (project | hasstatusinlist: application_states.TERMINATED) {
+												<span
+													*ngIf="project | hasstatusinlist: application_states.TERMINATED"
+													style="margin-left: 5px"
+													class="badge bg-dark"
+													>TERMINATED
+												</span>
+											} @else {
+												<span
+													*ngIf="project | hasstatusinlist: project_states.ACTIVE"
+													style="margin-left: 5px"
+													class="badge bg-success"
+													>{{ project_states[project_states.ACTIVE] }}
+												</span>
 
-											<span
-												*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
-												style="margin-left: 5px"
-												class="badge bg-info"
-												>WAIT FOR CONFIRMATION
-											</span>
+												<span
+													*ngIf="
+														(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
+														!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
+													"
+													style="margin-left: 5px"
+													class="badge bg-danger"
+													>{{ lifetime_states[lifetime_states.EXPIRED] }}
+												</span>
+												<span
+													*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
+													style="margin-left: 5px"
+													class="badge bg-warning"
+													>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
+												>
 
-											<span
-												*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
-												style="margin-left: 5px"
-												class="badge bg-dark"
-												>WAIT FOR TERMINATION BY FM
-											</span>
+												<span
+													*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
+													style="margin-left: 5px"
+													class="badge bg-info"
+													>WAIT FOR CONFIRMATION
+												</span>
+
+												<span
+													*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+													style="margin-left: 5px"
+													class="badge bg-dark"
+													>WAIT FOR TERMINATION BY FM
+												</span>
+											}
 										</td>
 										<td>
-											<ngb-highlight
-												[result]="project.project_application_total_ram"
-												highlightClass="highlight-filter"
-												[term]="sortProjectService.searchTerm"
-											></ngb-highlight>
+											{{ project.project_application_total_ram }}
 										</td>
 										<td>
-											<ngb-highlight
-												[result]="project.project_application_total_cores"
-												highlightClass="highlight-filter"
-												[term]="sortProjectService.searchTerm"
-												>>
-											</ngb-highlight>
+											{{ project.project_application_total_cores }}
 										</td>
 										<td>
-											<ngb-highlight
-												[result]="project.project_application_total_gpu"
-												highlightClass="highlight-filter"
-												[term]="sortProjectService.searchTerm"
-												>>
-											</ngb-highlight>
+											{{ project.project_application_total_gpu }}
 										</td>
 										<td>
 											<button
@@ -398,14 +400,16 @@
 										</td>
 
 										<td>
-											<button
-												type="button"
-												class="btn btn-secondary"
-												data-toggle="modal"
-												(click)="showMembersModal(project)"
-											>
-												<i class="fa fa-users"></i>&nbsp;Show Members
-											</button>
+											@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
+												<button
+													type="button"
+													class="btn btn-secondary"
+													data-toggle="modal"
+													(click)="showMembersModal(project)"
+												>
+													<i class="fa fa-users"></i>&nbsp;Show Members
+												</button>
+											}
 										</td>
 									</tr>
 								} @else {
