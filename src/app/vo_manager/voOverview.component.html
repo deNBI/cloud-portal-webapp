@@ -56,6 +56,13 @@
 				<i class="icon-info"></i>
 				Get JSON
 			</button>
+			<button
+				(click)="getRunningApplicationsThatNeedIntroduction()"
+				type="button"
+				class="btn btn-outline-primary"
+				style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
+			>Show Projects demanding Introduction
+			</button>
 
 			<div class="card">
 				<div class="card-header"><i class="fa fa-align-justify"></i> Projects</div>
@@ -378,7 +385,7 @@
 													[result]="project?.project_application_perun_id"
 													highlightClass="highlight-filter"
 													[term]="sortProjectService.searchTerm"
-													>>
+													>
 												</ngb-highlight>
 											</td>
 											<td>

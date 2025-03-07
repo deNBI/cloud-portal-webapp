@@ -61,7 +61,8 @@ export class Application {
 	project_application_initial_credits: number = 0
 	project_application_current_credits: number = 0
 	project_application_date_approved: string
-	project_application_openstack_basic_introduction: boolean
+	project_application_basic_introduction: boolean
+	project_application_basic_introduction_given: boolean
 	project_application_horizon2020: string
 	project_application_dfg: string
 	project_application_bmbf_project: string
