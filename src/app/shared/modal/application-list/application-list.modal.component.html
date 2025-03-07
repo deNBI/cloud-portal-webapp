@@ -1,0 +1,56 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title">Projects that demaded introduction</h4>
+		<button
+			type="button"
+			class="btn-close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			aria-label="Close"
+		></button>
+	</div>
+	<div class="modal-body">
+
+@if (applications.length <= 0) {
+    <div class="card-body" [attr.data-test-id]="dataTestId">
+        <div class="alert alert-success" role="alert">
+            <strong>No applications in need of introduction in the moment.</strong>
+        </div>
+    </div>
+} @else {
+
+    <div class="card-body" [attr.data-test-id]="dataTestId">
+        <div>
+            <table class="table table-responsive table-borderless table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Project Name</th>
+                    <th>Short Name</th>
+                    <th>Date submitted</th>
+                    @if(is_vo_admin){<th>Actions</th> }
+                </tr>
+                </thead>
+                <tbody>
+                    @for (application of applications; track application.project_application_id) {
+                       
+                        <tr>
+                            <td>
+                                <app-application-badges [application]="application"></app-application-badges>
+                            </td>
+                            <td>{{ application?.project_application_name }}</td>
+                            <td>{{ application?.project_application_shortname }}</td>
+                            <td>{{ application?.project_application_date_submitted }}</td>
+                            @if(is_vo_admin){
+                                <td><button class="btn btn-outline-primary" (click)=showProject(application)>Show application</button>
+                                }
+                        </tr>
+                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+    </div>
+</div>

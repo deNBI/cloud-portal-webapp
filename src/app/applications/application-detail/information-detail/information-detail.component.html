@@ -126,11 +126,11 @@
 				<p *ngIf="!application?.project_application_sensitive_data">No</p>
 			</td>
 		</tr>
-		<tr *ngIf="application?.project_application_openstack_project">
+		<tr >
 			<td>Training</td>
 			<td>
-				<p *ngIf="application?.project_application_openstack_basic_introduction">Yes</p>
-				<p *ngIf="!application?.project_application_openstack_basic_introduction">No</p>
+				<p *ngIf="application?.project_application_basic_introduction">Yes</p>
+				<p *ngIf="!application?.project_application_basic_introduction">No</p>
 			</td>
 		</tr>
 		<tr *ngIf="application?.project_application_hash">
