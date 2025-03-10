@@ -45,6 +45,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion'
 import { NgSelectComponent } from '@ng-select/ng-select'
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { RouterLink } from '@angular/router'
+import { DisseminationPlatform } from '../application.model/dissemination-platform'
 
 /**
  * Application formular component.
@@ -124,6 +125,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	acknowledgeModalTitle: string = 'Acknowledge'
 	acknowledgeModalType: string = 'info'
 
+	availablePlatforms: DisseminationPlatform[] = [];
+	selectedDisseminationPlatforms: DisseminationPlatform[] = [];
+
 	application_id: string | number
 	ontology_search_keyword: string = 'term'
 	@ViewChild(NgForm, { static: true }) application_form: NgForm
@@ -147,6 +151,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	ngOnInit(): void {
 		this.getUserinfo()
 		this.getListOfFlavors()
+		this.getDisseminationPlatforms()
 		this.getListOfTypes()
 		this.is_vo_admin = is_vo
 		this.nameCheckPipe.pipe(debounceTime(600), distinctUntilChanged()).subscribe(value => {
@@ -170,6 +175,27 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			this.application.dissemination.setAllInformationFalse()
 		}
 	}
+
+	getDisseminationPlatforms(): void {
+		this.applicationsService.getDisseminationPlatforms().subscribe((platforms: DisseminationPlatform[]): void => {
+			this.availablePlatforms = platforms;
+		})
+	}
+
+	isPlatformSelected(platform: DisseminationPlatform): boolean {
+		return this.application.dissemination.platforms.includes(platform);
+	}
+
+	updateSelectedPlatforms(platform: DisseminationPlatform, isSelected: boolean): void {
+		if (isSelected) {
+			if (!this.application.dissemination.platforms.includes(platform)) {
+				this.application.dissemination.platforms.push(platform);
+			}
+		  } else {
+			this.application.dissemination.platforms = this.application.dissemination.platforms.filter(p => p !== platform);
+		  }
+	
+	  }
 
 	setDefaulShortnameLength(): void {
 		this.shortNameMaxLength = this.DEFAULT_SHORTNAME_MAX_LENGTH
