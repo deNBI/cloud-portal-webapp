@@ -6,7 +6,7 @@ export class ApplicationDissemination {
 
 	platform_twitter: boolean = false;
 	platform_denbi: boolean = false;
-	platforms: DisseminationPlatform[] = [];
+	platforms: DisseminationPlatform[] | any[] = [];
 	information_title: string = '';
 	information_description: string = '';
 	information_description_allowed: boolean = false;
