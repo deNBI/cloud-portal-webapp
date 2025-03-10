@@ -270,17 +270,16 @@
 									<div class="input-group-append"><span class="input-group-text"> months </span></div>
 								</div>
 								<span class="help-block">How long would you like to run this project?</span>
-								<div class="alert alert-primary">
+								<div class="alert alert-warning my-2">
 									<p
 										*ngIf="
 											!(application?.project_application_nfdi?.length > 0) || !application?.project_application_nfdi
 										"
-									>
-										The maximum possible initial lifetime to be requested is
-										<strong>{{ max_lifetime }} months.</strong> Under certain conditions, longer initial terms can also
-										be granted, for example in the case the project is an <strong>NFDI</strong>
-										project. Please click the corresponding options in the further course of the form and enter further
-										information in the available comment and description fields if necessary.
+									>	
+									de.NBI Cloud projects have no fixed total runtime. The maximum possible initial lifetime for new projects is <strong>{{ max_lifetime }} months</strong>.
+									Under certain conditions, longer initial terms can also be granted immediately, for example for <strong>longer funded projects, like NFDI, DFG, BMBF or Horizon Europe projects</strong>.
+									Please select the corresponding options in the further course of the form and enter information about the total funded runtime of your project in the comment field further down in the project application form.
+									Please consider: After initial approval, you project's lifetime can be extended at any time when you submit a project lifetime extension request.
 									</p>
 									<p *ngIf="application?.project_application_nfdi?.length > 0">
 										As your project is an

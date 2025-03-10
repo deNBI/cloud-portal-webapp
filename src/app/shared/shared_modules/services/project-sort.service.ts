@@ -18,7 +18,6 @@ export class ProjectSortService {
 	public showSimpleVM: boolean = true
 	public showOpenStack: boolean = true
 	public showKubernetes: boolean = true
-	public showOnlyIntroductionWanted: boolean = false
 
 	private _loading$ = new BehaviorSubject<boolean>(true)
 	private _search$ = new Subject<void>()
