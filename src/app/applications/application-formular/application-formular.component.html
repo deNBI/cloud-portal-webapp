@@ -1175,7 +1175,7 @@
 							<accordion>
 								<accordion-group
 									[isOpen]="dissemination_information_open"
-									id="dissemination_information_accordion"
+									id="dissemination_inforfmation_accordion"
 									#dissemination_information_accordion
 								>
 									<div accordion-heading style="width: 100%; cursor: pointer">
@@ -1270,7 +1270,7 @@
 												/>
 											</div>
 										</div>
-										<div *ngIf="application?.dissemination.information_description_allowed" class="col-md-6">
+										<div *ngIf="application?.dissemination?.information_description_allowed" class="col-md-6">
 											<textarea
 												type="text"
 												class="form-control"
@@ -1420,7 +1420,7 @@
 													class="form-check-input"
 													id="platform_{{platform.name}}_checkbox"
 													data-test-id="platform_{{platform.name}}_checkbox"
-													[checked]="isPlatformSelected()"
+													[checked]="application.dissemination.platforms | isPlatformSelected:platform"
 													name="platform_{{platform.name}}"
 													(change)="updateSelectedPlatforms(platform, $event.target.checked)"
 													[disabled]="!platform.active"
@@ -1667,7 +1667,7 @@
 							application?.project_application_edam_terms.length === 0 ||
 							application?.project_application_edam_terms.length > 10 ||
 							(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
-							(!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)
+							(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed)
 						"
 						class="form-group row"
 					>
@@ -2115,27 +2115,27 @@
 							<tr>
 								<td>
 									Dissemination Allowed: <span *ngIf="application?.dissemination?.someAllowed()">Yes</span
-									><span *ngIf="!application?.dissemination.someAllowed()">No</span>
+									><span *ngIf="!application?.dissemination?.someAllowed()">No</span>
 								</td>
 							</tr>
-							<tr *ngIf="application?.dissemination.someAllowed()">
+							<tr *ngIf="application?.dissemination?.someAllowed()">
 								<td>
 									- for:
 									<span
 										class="badge bg-info"
 										style="margin: 2px"
-										*ngFor="let information of application?.dissemination.allowed_informations"
+										*ngFor="let information of application?.dissemination?.allowed_informations"
 										>{{ information }}</span
 									>
 								</td>
 							</tr>
-							<tr *ngIf="application?.dissemination.someAllowed()">
+							<tr *ngIf="application?.dissemination?.someAllowed()">
 								<td>
 									- on:
 									<span
 										class="badge bg-info"
 										style="margin: 2px"
-										*ngFor="let platform of application?.dissemination.allowed_platforms"
+										*ngFor="let platform of application?.dissemination?.allowed_platforms"
 										>{{ platform }}</span
 									>
 								</td>

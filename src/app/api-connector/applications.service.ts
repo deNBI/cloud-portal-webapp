@@ -210,9 +210,6 @@ export class ApplicationsService {
 	}
 
 	addNewApplication(application: Application): Observable<Application> {
-		let platforms: number[] = application.dissemination.platforms.map(platform => platform.id)
-		
-		application.dissemination.platforms = platforms;
 		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/`, application, {
 			withCredentials: true
 		})

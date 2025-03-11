@@ -6,7 +6,7 @@ export class ApplicationDissemination {
 
 	platform_twitter: boolean = false;
 	platform_denbi: boolean = false;
-	platforms: DisseminationPlatform[] | any[] = [];
+	platforms: DisseminationPlatform[] = [];
 	information_title: string = '';
 	information_description: string = '';
 	information_description_allowed: boolean = false;
@@ -29,7 +29,7 @@ export class ApplicationDissemination {
 	}
 
 	someAllowed(): boolean {
-		return this.allowed_informations.length > 0 && this.platforms.length > 0;
+		return this.platforms.length > 0;
 	}
 
 	setAllInformationFalse(): void {

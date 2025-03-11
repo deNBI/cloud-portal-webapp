@@ -46,6 +46,8 @@ import { NgSelectComponent } from '@ng-select/ng-select'
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { RouterLink } from '@angular/router'
 import { DisseminationPlatform } from '../application.model/dissemination-platform'
+import { DisseminationPlatformSelectedPipe } from 'app/pipe-module/pipes/platform-selected.pipe'
+import { ApplicationDissemination } from '../application-dissemination'
 
 /**
  * Application formular component.
@@ -66,7 +68,8 @@ import { DisseminationPlatform } from '../application.model/dissemination-platfo
 		NgFor,
 		NgSelectComponent,
 		ModalModule,
-		RouterLink
+		RouterLink,
+		DisseminationPlatformSelectedPipe,
 	]
 })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
@@ -165,6 +168,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			this.edam_ontology_terms = terms
 			this.initiateFormWithApplication()
 		})
+
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -183,6 +187,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	}
 
 	isPlatformSelected(platform: DisseminationPlatform): boolean {
+		console.log(platform);
+		console.log(this.application.dissemination.platforms)
 		return this.application.dissemination.platforms.includes(platform);
 	}
 
@@ -254,10 +260,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
 			this.simple_vm_project = !this.openstack_project
 			this.application.project_application_pi = new User()
-
+			
 			//	this.searchTermsInEdamTerms();
-
-			if (this.application.dissemination.someAllowed()) {
+			if (this.application.dissemination?.someAllowed() || this.application.project_application_report_allowed) {
 				this.project_application_report_allowed = true
 			}
 			if (this.simple_vm_project) {
@@ -269,6 +274,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			this.initiated_validation = true
 		} else {
 			this.application = new Application(null)
+			this.application.dissemination = new ApplicationDissemination();
 			this.application.project_application_openstack_project = this.openstack_project
 			this.application.project_application_kubernetes_access = this.kubernetes_access
 			if (this.openstack_project) {
