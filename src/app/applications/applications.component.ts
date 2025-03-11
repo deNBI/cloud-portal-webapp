@@ -171,7 +171,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			this.isLoaded_userApplication = true
 		}
 		for (const application of applications) {
+			console.log("before")
+			console.log(application);
 			const newApplication = new Application(application)
+			console.log("after")
+			console.log(newApplication)
 
 			this.all_applications.push(newApplication)
 		}
