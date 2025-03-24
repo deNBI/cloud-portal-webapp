@@ -48,6 +48,8 @@ import { RouterLink } from '@angular/router'
 import { DisseminationPlatform } from '../application.model/dissemination-platform'
 import { DisseminationPlatformSelectedPipe } from 'app/pipe-module/pipes/platform-selected.pipe'
 import { ApplicationDissemination } from '../application-dissemination'
+import { AllowedDisseminationInformationPipe } from 'app/pipe-module/pipes/allowed-dissemination-information.pipe'
+
 
 /**
  * Application formular component.
@@ -70,6 +72,7 @@ import { ApplicationDissemination } from '../application-dissemination'
 		ModalModule,
 		RouterLink,
 		DisseminationPlatformSelectedPipe,
+		AllowedDisseminationInformationPipe,
 	]
 })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {

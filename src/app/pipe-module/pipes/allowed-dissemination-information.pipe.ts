@@ -6,7 +6,7 @@ import { DisseminationPlatform } from 'app/applications/application.model/dissem
  * Pipe which returns counter of flavors.
  */
 @Pipe({ name: 'getAllowedInformationForDissemination' })
-export class AlloewdDisseminationInformationPipe implements PipeTransform {
+export class AllowedDisseminationInformationPipe implements PipeTransform {
 	transform(dissem: ApplicationDissemination): string {
 		let final_string: string = "";
         if (dissem.platforms.length > 0) {

@@ -2121,11 +2121,8 @@
 							<tr *ngIf="application?.dissemination?.someAllowed()">
 								<td>
 									- for:
-									<span
-										class="badge bg-info"
-										style="margin: 2px"
-										*ngFor="let information of application?.dissemination?.allowed_informations"
-										>{{ information }}</span
+									<span>		
+										{{ application?.dissemination | getAllowedInformationForDissemination }}</span
 									>
 								</td>
 							</tr>
@@ -2135,8 +2132,8 @@
 									<span
 										class="badge bg-info"
 										style="margin: 2px"
-										*ngFor="let platform of application?.dissemination?.allowed_platforms"
-										>{{ platform }}</span
+										*ngFor="let platform of application?.dissemination?.platforms"
+										>{{ platform.name }}</span
 									>
 								</td>
 							</tr>
