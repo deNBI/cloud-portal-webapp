@@ -32,7 +32,7 @@ jobs:
         run: echo "The selected tag is ${{ steps.tag.outputs.TAG }}"
       - uses: actions/setup-node@v4
         with:
-          node-version: '18.20.3'
+          node-version: '22.14.0'
       - run: git status
       - run: npm install -g yarn
       - name: Prepare
@@ -46,7 +46,7 @@ jobs:
       - name: Create Pull Request
         if: steps.git-check.outputs.modified == 'true'
         id: cpr
-        uses: peter-evans/create-pull-request@v7.0.7
+        uses: peter-evans/create-pull-request@v7.0.8
         with:
            token: ${{ secrets.GITHUB_TOKEN }}
            commit-message: fix(Linting):blacked code
