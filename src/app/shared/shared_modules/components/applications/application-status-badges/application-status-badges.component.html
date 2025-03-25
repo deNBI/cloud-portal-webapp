@@ -53,4 +53,10 @@
 		class="badge bg-dark"
 		>{{ Application_States[Application_States.TERMINATION_REQUESTED] }}
 	</span>
+	<span
+		*ngIf="application | hasstatusinlist: Application_States.PROTECTED"
+		style="margin-left: 5px"
+		class="badge bg-secondary"
+		>PROTECTED
+	</span>
 }

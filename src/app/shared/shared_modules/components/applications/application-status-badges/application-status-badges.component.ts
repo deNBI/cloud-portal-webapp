@@ -7,12 +7,11 @@ import {
 } from 'app/shared/shared_modules/baseClass/abstract-base-class'
 import { HasstatusinlistPipe } from '../../../../../pipe-module/pipes/hasstatusinlist.pipe'
 import { HasStatusPipe } from 'app/pipe-module/pipes/has-status.pipe'
-import { InListPipe } from 'app/pipe-module/pipes/in-list.pipe'
 import { NgIf } from '@angular/common'
 
 @Component({
 	selector: 'app-application-status-badges',
-	imports: [HasStatusPipe, HasstatusinlistPipe, InListPipe, NgIf],
+	imports: [HasStatusPipe, HasstatusinlistPipe, NgIf],
 	templateUrl: './application-status-badges.component.html',
 	styleUrl: './application-status-badges.component.scss'
 })
