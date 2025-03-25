@@ -35,6 +35,12 @@ export class FacilityService {
 		})
 	}
 
+	getAllProjectsThatStillDemandAnIntroductionCourse(facilityId: string): Observable<object> {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/introduction/`, {
+			withCredentials: true
+		})
+	}
+
 	/**
 	 * Sets support e-mail addresses for computecenter.
 	 */

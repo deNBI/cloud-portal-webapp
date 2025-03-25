@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 import { is_vo, elixir_id } from '../../../shared/globalvar'
 import { environment } from '../../../../environments/environment'
-import { NgFor, NgIf } from '@angular/common'
+import { NgClass, NgFor, NgIf } from '@angular/common'
+import { AllowedDisseminationInformationPipe } from 'app/pipe-module/pipes/allowed-dissemination-information.pipe'
 
 /**
  * Application informations.
@@ -10,7 +11,7 @@ import { NgFor, NgIf } from '@angular/common'
 @Component({
 	selector: 'app-information-detail',
 	templateUrl: './information-detail.component.html',
-	imports: [NgFor, NgIf]
+	imports: [NgFor, NgIf, NgClass, AllowedDisseminationInformationPipe]
 })
 export class InformationDetailComponent implements OnInit {
 	@Input() application: Application
@@ -19,5 +20,6 @@ export class InformationDetailComponent implements OnInit {
 
 	environment: any = environment
 
-	ngOnInit() {}
+	ngOnInit() {
+	}
 }

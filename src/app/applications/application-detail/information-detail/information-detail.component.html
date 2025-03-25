@@ -126,11 +126,11 @@
 				<p *ngIf="!application?.project_application_sensitive_data">No</p>
 			</td>
 		</tr>
-		<tr *ngIf="application?.project_application_openstack_project">
+		<tr >
 			<td>Training</td>
 			<td>
-				<p *ngIf="application?.project_application_openstack_basic_introduction">Yes</p>
-				<p *ngIf="!application?.project_application_openstack_basic_introduction">No</p>
+				<p *ngIf="application?.project_application_basic_introduction">Yes</p>
+				<p *ngIf="!application?.project_application_basic_introduction">No</p>
 			</td>
 		</tr>
 		<tr *ngIf="application?.project_application_hash">
@@ -164,13 +164,18 @@
 		<tr>
 			<td>Platforms</td>
 			<td id="dissemination_platforms">
-				{{ application?.dissemination?.allowed_platforms.join(', ') }}
+				<ng-container *ngFor="let platform of application.dissemination.platforms" >
+					<span class="badge m-1" [ngClass]="platform.active ? 'bg-secondary' : 'bg-danger'">
+						{{ platform.name }}
+					</span>
+				</ng-container>
+				
 			</td>
 		</tr>
 		<tr>
 			<td>Information</td>
 			<td id="dissemination_information">
-				{{ application?.dissemination?.allowed_informations.join(', ') }}
+				{{ application?.dissemination | getAllowedInformationForDissemination }}
 			</td>
 		</tr>
 	</tbody>
