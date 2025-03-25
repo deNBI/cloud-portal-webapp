@@ -1,0 +1,80 @@
+<div class="row">
+	<div class="checkbox col">
+		<label style="margin-top: 7px; margin-bottom: 0px !important">
+			<input type="checkbox" (change)="emitChangedFilterEvent()" [(ngModel)]="applicationFilter.showSimpleVM" />
+			<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-info-blue">SimpleVM </span>
+		</label>
+	</div>
+	<div class="checkbox col">
+		<label style="margin-top: 7px; margin-bottom: 0px !important">
+			<input type="checkbox" (change)="emitChangedFilterEvent()" [(ngModel)]="applicationFilter.showOpenStack" />
+			<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger">OpenStack </span>
+		</label>
+	</div>
+	<div class="checkbox col">
+		<label style="margin-top: 7px; margin-bottom: 0px !important">
+			<input type="checkbox" (change)="emitChangedFilterEvent()" [(ngModel)]="applicationFilter.showKubernetes" />
+			<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger">Kubernetes </span>
+		</label>
+	</div>
+	<div class="checkbox col">
+		<label>
+			<input type="checkbox" (change)="emitChangedFilterEvent()" [(ngModel)]="applicationFilter.isApproved" />
+			<span style="margin-left: 5px" class="badge bg-success">ACTIVE </span>
+		</label>
+	</div>
+
+	<div class="checkbox col">
+		<label>
+			<input type="checkbox" (change)="emitChangedFilterEvent()" [(ngModel)]="applicationFilter.isExpired" />
+
+			<span style="margin-left: 5px" class="badge bg-danger">{{ Lifetime_States[Lifetime_States.EXPIRED] }}</span>
+		</label>
+	</div>
+	<div class="checkbox col">
+		<label>
+			<input type="checkbox" (change)="emitChangedFilterEvent()" [(ngModel)]="applicationFilter.isExpiresSoon" />
+			<span style="margin-left: 5px" class="badge bg-warning">{{ Lifetime_States[Lifetime_States.EXPIRES_SOON] }}</span>
+		</label>
+	</div>
+	<div class="checkbox col">
+		<label>
+			<input type="checkbox" (change)="emitChangedFilterEvent()" [(ngModel)]="applicationFilter.isDisabled" />
+			<span style="margin-left: 5px" class="badge bg-danger">{{
+				Application_States[Application_States.DISABLED]
+			}}</span>
+		</label>
+	</div>
+	<div class="checkbox col">
+		<label>
+			<input
+				type="checkbox"
+				(change)="emitChangedFilterEvent()"
+				[(ngModel)]="applicationFilter.isTerminationRequested"
+			/>
+			<span style="margin-left: 5px" class="badge bg-dark">{{
+				Application_States[Application_States.TERMINATION_REQUESTED]
+			}}</span>
+		</label>
+	</div>
+	<div class="checkbox col">
+		<label>
+			<input
+				type="checkbox"
+				(change)="emitChangedFilterEvent()"
+				[(ngModel)]="applicationFilter.isWaitForTerminationFM"
+			/>
+			<span style="margin-left: 5px" class="badge bg-dark">{{
+				Application_States[Application_States.WAIT_FOR_TERMINATION_FM]
+			}}</span>
+		</label>
+	</div>
+	<div class="checkbox col">
+		<label>
+			<input type="checkbox" (change)="emitChangedFilterEvent()" [(ngModel)]="applicationFilter.isTerminated" />
+			<span style="margin-left: 5px" class="badge bg-dark">{{
+				Application_States[Application_States.TERMINATED]
+			}}</span>
+		</label>
+	</div>
+</div>

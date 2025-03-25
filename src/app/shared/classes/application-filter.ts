@@ -9,9 +9,8 @@ export class ApplicationFilter {
 	sortDirection: SortDirection
 	textFilter: string = ''
 	isApproved: boolean = true
-	isSuspended: boolean = true
 	isExpired: boolean = true
-	isWaitForConfirmation: boolean = true
+	//isWaitForConfirmation: boolean = true
 	isTerminationRequested: boolean = true
 	isExpiresSoon: boolean = true
 	isDisabled: boolean = true
@@ -21,9 +20,8 @@ export class ApplicationFilter {
 	getFilterStatusList(): number[] {
 		const statusList: number[] = []
 		if (this.isApproved) statusList.push(Application_States.APPROVED)
-		if (this.isSuspended) statusList.push(Application_States.SUSPENDED)
 		if (this.isExpired) statusList.push(Application_States.EXPIRED)
-		if (this.isWaitForConfirmation) statusList.push(Application_States.WAIT_FOR_CONFIRMATION)
+		//if (this.isWaitForConfirmation) statusList.push(Application_States.WAIT_FOR_CONFIRMATION)
 		if (this.isTerminationRequested) statusList.push(Application_States.TERMINATION_REQUESTED)
 		if (this.isExpiresSoon) statusList.push(Application_States.EXPIRES_SOON)
 		if (this.isDisabled) statusList.push(Application_States.DISABLED)

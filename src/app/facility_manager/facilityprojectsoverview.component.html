@@ -64,7 +64,7 @@
 						</c-badge>
 					</button>
 				</div>
-				
+
 				<div class="col-md-4" style="margin-bottom: 10px">
 					<select
 						[(ngModel)]="selectedFacility"
@@ -89,945 +89,815 @@
 								type="button"
 								class="btn btn-outline-primary"
 								style="margin-bottom: auto; margin-left: 5px; margin-top: auto"
-							>Show Projects demanding Introduction
+							>
+								Show Projects demanding Introduction
 							</button>
 						</div>
 						<div class="col-md-auto"></div>
-					<div class="d-flex justify-content-between p-2">
-						<app-pagination (pageChanged)="getSelectedFacilityProjects()" [basePage]="applicationPage"></app-pagination>
+						<div class="d-flex justify-content-between p-2">
+							<app-pagination
+								(pageChanged)="getSelectedFacilityProjects()"
+								[basePage]="applicationPage"
+							></app-pagination>
 
-						<div>
-							<button type="button" class="btn btn-primary me-2" (click)="selectAllFilteredProjects()">
-								Select All Filtered
-							</button>
+							<div>
+								<button type="button" class="btn btn-primary me-2" (click)="selectAllFilteredProjects()">
+									Select All Filtered
+								</button>
 
-							<button type="button" class="btn btn-primary me-2" (click)="unselectAllFilteredProjects()">
-								Unselect Filtered
-							</button>
+								<button type="button" class="btn btn-primary me-2" (click)="unselectAllFilteredProjects()">
+									Unselect Filtered
+								</button>
 
-							<button type="button" class="btn btn-primary" (click)="unselectAll()">Unselect All</button>
-						</div>
-					</div>
-
-					<div class="table-responsive">
-						<div class="mb-3 row">
-							<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
-							<div class="col-xs-3 col-sm-auto">
-								<input
-									[attr.data-test-id]="'filter_project_name'"
-									id="table-complete-search"
-									type="text"
-									class="form-control"
-									name="searchTerm"
-									(input)="textFilterSubject.next($event.target.value)"
-								/>
+								<button type="button" class="btn btn-primary" (click)="unselectAll()">Unselect All</button>
 							</div>
-							<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label"
-								>User Full Elixir Id search:</label
-							>
-							<div class="col-xs-4 col-sm-4">
-								<!-- Adjust the column size based on your layout -->
-								<c-input-group class="mb-3">
+						</div>
+
+						<div class="table-responsive">
+							<div class="mb-3 row">
+								<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+								<div class="col-xs-3 col-sm-auto">
 									<input
 										[attr.data-test-id]="'filter_project_name'"
-										id="table-user-elixir-complete-search"
+										id="table-complete-search"
 										type="text"
 										class="form-control"
 										name="searchTerm"
-										[(ngModel)]="userElixirIdFilter"
-										(input)="checkValidElixirIdFilter()"
+										(input)="textFilterSubject.next($event.target.value)"
 									/>
-									<button
-										cButton
-										color="secondary"
-										id="searchbyElixirId"
-										type="button"
-										[disabled]="!validElixirIdFilter"
-										variant="outline"
-										(click)="getProjectsByMemberElixirId()"
-									>
-										Search
-									</button>
-								</c-input-group>
-
-								<div class="row">
-									<div class="col">
-										<label for="pi-checkbox">
-											<c-badge color="danger"> PI </c-badge>
-										</label>
+								</div>
+								<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label"
+									>User Full Elixir Id search:</label
+								>
+								<div class="col-xs-4 col-sm-4">
+									<!-- Adjust the column size based on your layout -->
+									<c-input-group class="mb-3">
 										<input
-											type="checkbox"
-											id="pi-checkbox"
-											(change)="getProjectsByMemberElixirId()"
-											[(ngModel)]="userElixirSearchPI"
+											[attr.data-test-id]="'filter_project_name'"
+											id="table-user-elixir-complete-search"
+											type="text"
+											class="form-control"
+											name="searchTerm"
+											[(ngModel)]="userElixirIdFilter"
+											(input)="checkValidElixirIdFilter()"
 										/>
-									</div>
+										<button
+											cButton
+											color="secondary"
+											id="searchbyElixirId"
+											type="button"
+											[disabled]="!validElixirIdFilter"
+											variant="outline"
+											(click)="getProjectsByMemberElixirId()"
+										>
+											Search
+										</button>
+									</c-input-group>
 
-									<div class="col">
-										<label for="admin-checkbox">
-											<c-badge color="info"> Admin </c-badge>
-										</label>
-										<input
-											type="checkbox"
-											id="admin-checkbox"
-											(change)="getProjectsByMemberElixirId()"
-											[(ngModel)]="userElixirSearchAdmin"
-										/>
-									</div>
+									<div class="row">
+										<div class="col">
+											<label for="pi-checkbox">
+												<c-badge color="danger"> PI </c-badge>
+											</label>
+											<input
+												type="checkbox"
+												id="pi-checkbox"
+												(change)="getProjectsByMemberElixirId()"
+												[(ngModel)]="userElixirSearchPI"
+											/>
+										</div>
 
-									<div class="col">
-										<label for="member-checkbox">
-											<c-badge color="warning"> Member </c-badge>
-										</label>
-										<input
-											type="checkbox"
-											id="member-checkbox"
-											(change)="getProjectsByMemberElixirId()"
-											[(ngModel)]="userElixirSearchMember"
-										/>
+										<div class="col">
+											<label for="admin-checkbox">
+												<c-badge color="info"> Admin </c-badge>
+											</label>
+											<input
+												type="checkbox"
+												id="admin-checkbox"
+												(change)="getProjectsByMemberElixirId()"
+												[(ngModel)]="userElixirSearchAdmin"
+											/>
+										</div>
+
+										<div class="col">
+											<label for="member-checkbox">
+												<c-badge color="warning"> Member </c-badge>
+											</label>
+											<input
+												type="checkbox"
+												id="member-checkbox"
+												(change)="getProjectsByMemberElixirId()"
+												[(ngModel)]="userElixirSearchMember"
+											/>
+										</div>
 									</div>
 								</div>
 							</div>
+							<app-application-filter-input
+								[(applicationFilter)]="applicationFilter"
+								(filterChangedEvent)="getSelectedFacilityProjects()"
+							></app-application-filter-input>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th scope="col">Select</th>
+										<th scope="col">Type</th>
+
+										<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Perun ID</th>
+										<th scope="col" appSortable="project_application_shortname" (sort)="onSort($event)">
+											Project Name
+										</th>
+										<th scope="col" appSortable="project_application_name" (sort)="onSort($event)">Long Name</th>
+
+										<th>Status</th>
+										<th scope="col" appSortable="project_application_total_ram" (sort)="onSort($event)">Ram</th>
+										<th scope="col" appSortable="project_application_total_cores" (sort)="onSort($event)">Cores</th>
+										<th scope="col" appSortable="project_application_total_gpu" (sort)="onSort($event)">GPUs</th>
+
+										<th>Description</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									@if (projectsLoaded) {
+										<tr *ngFor="let project of applicationPage.results">
+											<td>
+												@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
+													<input
+														type="checkbox"
+														[(ngModel)]="project.is_project_selected"
+														(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
+													/>
+												}
+											</td>
+											<td>
+												<app-application-badges [application]="project"></app-application-badges>
+											</td>
+
+											<td>
+												<ngb-highlight
+													[result]="project.project_application_perun_id"
+													highlightClass="highlight-filter"
+													[term]="applicationFilter.textFilter"
+												>
+												</ngb-highlight>
+											</td>
+											<td>
+												<ngb-highlight
+													[result]="project.project_application_shortname"
+													highlightClass="highlight-filter"
+													[term]="applicationFilter.textFilter"
+												></ngb-highlight>
+											</td>
+											<td>
+												<ngb-highlight
+													[result]="project.project_application_name"
+													highlightClass="highlight-filter"
+													[term]="applicationFilter.textFilter"
+												></ngb-highlight>
+											</td>
+											<td>
+												<app-application-status-badges [application]="project"></app-application-status-badges>
+											</td>
+											<td>
+												{{ project.project_application_total_ram }}
+											</td>
+											<td>
+												{{ project.project_application_total_cores }}
+											</td>
+											<td>
+												{{ project.project_application_total_gpu }}
+											</td>
+											<td>
+												<button
+													class="btn btn-secondary"
+													(click)="getProjectLifetime(); selectedProject = project; infoModal.show()"
+												>
+													Show Details
+												</button>
+											</td>
+
+											<td>
+												@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
+													<button
+														type="button"
+														class="btn btn-secondary"
+														data-toggle="modal"
+														(click)="showMembersModal(project)"
+													>
+														<i class="fa fa-users"></i>&nbsp;Show Members
+													</button>
+												}
+											</td>
+										</tr>
+									} @else {
+										<tr>
+											<td colspan="10" style="text-align: center; vertical-align: middle">
+												<i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
 						</div>
+					</div>
+				</div>
+			</div>
+			<!--/.col-->
+		</div>
+	</div>
 
-						<div class="row">
-							<div class="checkbox col">
-								<label style="margin-top: 7px; margin-bottom: 0px !important">
-									<input
-										type="checkbox"
-										(change)="getSelectedFacilityProjects()"
-										[(ngModel)]="applicationFilter.showSimpleVM"
-									/>
-									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-info-blue"
-										>SimpleVM
-									</span>
-								</label>
+	<div
+		bsModal
+		#emailModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="Label"
+		aria-hidden="true"
+	>
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" *ngIf="selectedFacility">
+						Send email to members of {{ selectedFacility['Facility'] }}
+					</h4>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="emailModal.hide()"
+						aria-label="Close"
+					></button>
+				</div>
+				<div class="modal-body">
+					<div class="modal-body">
+						<form class="form-horizontal" id="email_form" #f="ngForm">
+							<div class="form-group row">
+								<label class="col-md-12 control-label"
+									><strong>Which project members should receive the email?</strong></label
+								>
+								<div class="col-md-12">
+									<select
+										class="form-control form-select"
+										[(ngModel)]="selectedProjectType"
+										(ngModelChange)="setEmailSubject()"
+										name="selectedProjectType"
+										id="selectedProjectType"
+									>
+										<option value="ALL" selected>All</option>
+										<option value="OVP">OpenStack</option>
+										<option value="SVP">Simple VM</option>
+										<option value="USER" selected>Specific User</option>
+										<option *ngFor="let project of projects" value="{{ project?.project_application_perun_id }}">
+											{{ project?.project_application_shortname }}
+											({{ project?.project_application_perun_id }})
+										</option>
+									</select>
+								</div>
 							</div>
-							<div class="checkbox col">
-								<label style="margin-top: 7px; margin-bottom: 0px !important">
-									<input
-										type="checkbox"
-										(change)="getSelectedFacilityProjects()"
-										[(ngModel)]="applicationFilter.showOpenStack"
-									/>
-									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
-										>OpenStack
-									</span>
-								</label>
-							</div>
-							<div class="checkbox col">
-								<label style="margin-top: 7px; margin-bottom: 0px !important">
-									<input
-										type="checkbox"
-										(change)="getSelectedFacilityProjects()"
-										[(ngModel)]="applicationFilter.showKubernetes"
-									/>
-									<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
-										>Kubernetes
-									</span>
-								</label>
-							</div>
-							<div class="checkbox col">
-								<label>
-									<input
-										type="checkbox"
-										(change)="getSelectedFacilityProjects()"
-										[(ngModel)]="applicationFilter.isApproved"
-									/>
-									<span style="margin-left: 5px" class="badge bg-success">ACTIVE </span>
-								</label>
-							</div>
-
-							<div class="checkbox col">
-								<label>
-									<input
-										type="checkbox"
-										(change)="getSelectedFacilityProjects()"
-										[(ngModel)]="applicationFilter.isExpired"
-									/>
-
-									<span style="margin-left: 5px" class="badge bg-danger">{{
-										lifetime_states[lifetime_states.EXPIRED]
-									}}</span>
-								</label>
-							</div>
-							<div class="checkbox col">
-								<label>
-									<input
-										type="checkbox"
-										(change)="getSelectedFacilityProjects()"
-										[(ngModel)]="applicationFilter.isExpiresSoon"
-									/>
-									<span style="margin-left: 5px" class="badge bg-warning">{{
-										lifetime_states[lifetime_states.EXPIRES_SOON]
-									}}</span>
-								</label>
+							<div *ngIf="selectedProjectType === 'ALL'">
+								<div class="col">
+									<label id="id_send_to_news_allowed_label" class="switch switch-label switch-outline-primary-alt">
+										<input
+											type="checkbox"
+											class="switch-input"
+											id="id_send_to_news_allowed"
+											name="send_to_news_allowed"
+											[(ngModel)]="sendNews" />
+										<span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+										<span class="switch-handle"></span
+									></label>
+									<p>Do you want this Mail also to be posted to the news-service?</p>
+								</div>
 							</div>
 
-							<div class="checkbox col">
-								<label>
-									<input
-										type="checkbox"
-										(change)="getSelectedFacilityProjects()"
-										[(ngModel)]="applicationFilter.isWaitForTerminationFM"
-									/>
-									<span style="margin-left: 5px" class="badge bg-dark">{{
-										application_states[application_states.WAIT_FOR_TERMINATION_FM]
-									}}</span>
-								</label>
+							<div *ngIf="selectedProjectType === 'USER'">
+								<div class="container-fluid" *ngIf="membersLoaded">
+									<div class="row">
+										<p style="margin-bottom: 15px">
+											Search for a user to your project by entering a part of their name, email or elixir-ID:
+										</p>
+									</div>
+									<div class="row">
+										<div class="col-md-8">
+											<input
+												style="width: 100%"
+												placeholder=""
+												id="add_member_input"
+												#searchString="ngModel"
+												[(ngModel)]="memberFilter"
+												[ngModelOptions]="{ standalone: true }"
+											/>
+										</div>
+										<div class="col-md-4">
+											<button
+												[disabled]="memberFilter?.length < 3"
+												type="button"
+												class="btn btn-primary"
+												id="search_member_btn"
+												(click)="filterMembers(memberFilter)"
+											>
+												<i class="fa fa-search"></i> Search Member
+											</button>
+										</div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-12"></div>
+									</div>
+
+									<div class="table-responsive">
+										<table *ngIf="filteredMembers?.length > 0" class="table table-bordered table-striped table-sm">
+											<thead>
+												<th></th>
+												<th>First Name</th>
+												<th>Last Name</th>
+												<th>Email</th>
+											</thead>
+											<tbody *ngFor="let member of filteredMembers">
+												<td>
+													<button
+														style="padding: 5px; margin: 5px"
+														(click)="setSelectedUserForMail(member)"
+														class="btn btn-success"
+														id="add_selected_member_for_mail_btn"
+													>
+														<i class="fa fa-plus"></i> Select
+													</button>
+												</td>
+												<td>{{ member['firstName'] }}</td>
+												<td>{{ member['lastName'] }}</td>
+												<td>{{ member['email'] }}</td>
+											</tbody>
+										</table>
+									</div>
+
+									<div class="form-group row" *ngIf="selectedMember">
+										<label class="col-md-12 control-label"><strong>Selected Users</strong></label>
+									</div>
+									<div class="table-responsive" *ngIf="selectedMember">
+										<table class="table table-bordered table-striped table-sm">
+											<tbody>
+												<tr *ngFor="let member of selectedMember">
+													<td>{{ member['lastName'].concat(', ').concat(member['firstName']) }}</td>
+													<td>{{ member['email'] }}</td>
+													<td>
+														<button
+															style="padding: 5px; margin: 5px"
+															(click)="removeSelectedUserForMail(member)"
+															class="btn btn-danger"
+															id="remove_selected_member_for_mail_button"
+														>
+															<i class="fas fa-trash-alt"></i> Remove
+														</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="container-fluid" *ngIf="!membersLoaded">
+									<div class="row">
+										<div class="alert alert-primary">Loading facility members...</div>
+									</div>
+								</div>
 							</div>
-							<div class="checkbox col">
-								<label>
+
+							<div class="form-group row">
+								<label class="col-md-12 control-label"><strong>Email subject*</strong></label>
+								<div class="col-md-12">
 									<input
-										type="checkbox"
-										(change)="getSelectedFacilityProjects()"
-										[(ngModel)]="applicationFilter.isTerminated"
+										required
+										id="emailSubject"
+										name="emailSub"
+										placeholder="Subject"
+										class="form-control"
+										type="text"
+										[(ngModel)]="emailSubject"
+										minlength="1"
+										[ngClass]="{
+											'is-invalid':
+												f.controls.emailSub?.invalid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched),
+											'is-valid':
+												f.controls.emailSub?.valid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched),
+										}"
 									/>
-									<span style="margin-left: 5px" class="badge bg-dark">{{
-										application_states[application_states.TERMINATED]
-									}}</span>
-								</label>
+								</div>
 							</div>
+
+							<div class="form-group row">
+								<label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
+								<div class="col-md-12">
+									<input
+										id="reply_to"
+										name="emailReply"
+										placeholder=""
+										class="form-control"
+										type="text"
+										[(ngModel)]="emailReply"
+										#emailRep="ngModel"
+										pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
+										[ngClass]="{
+											'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
+											'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched),
+										}"
+									/>
+								</div>
+							</div>
+							<!-- Textarea -->
+							<div class="form-group row">
+								<label class="col-md-12 control-label"><strong>Email text*</strong></label>
+								<div class="col-md-12">
+									<textarea
+										minlength="1"
+										required
+										class="form-control"
+										id="emailText"
+										name="emailText"
+										[(ngModel)]="emailText"
+										type="text"
+										#emailT="ngModel"
+										[ngClass]="{
+											'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
+											'is-valid': emailT.valid && (emailT.dirty || emailT.touched),
+										}"
+									></textarea>
+								</div>
+							</div>
+							<div *ngIf="selectedProjectType === 'ALL' && sendNews" class="form-group row">
+								<label class="col-md-12 control-label"><strong>Alternative newstext (optional)</strong></label>
+								<div class="col-md-12">
+									<textarea
+										class="form-control"
+										id="alternative_emailText"
+										name="alternative_emailText"
+										[(ngModel)]="alternative_emailText"
+										type="text"
+									></textarea>
+								</div>
+							</div>
+							<div *ngIf="selectedProjectType === 'ALL' && sendNews" class="form-group row">
+								<label class="form-check-label" for="facility_news_tags_input">Tags</label>
+								<ng-select
+									#facility_news_tags
+									id="facility_news_tags_input"
+									data-test-id="facility_news_tags_input"
+									[items]="PREDEFINED_TAGS"
+									[multiple]="true"
+									[addTag]="true"
+									[addTagText]="'Set new Tag'"
+									bindLabel="term"
+									maxSelectedItems="10"
+									placeholder="You are free to enter tags"
+									dropdownPosition="bottom"
+									[(ngModel)]="news_tags"
+									name="selected_facility_news_tags"
+								>
+								</ng-select>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							[disabled]="f.invalid || (selectedProjectType === 'USER' && selectedMember?.length === 0)"
+							class="btn btn-primary"
+							(click)="emailModal.hide(); verifyModal.show()"
+						>
+							Send email
+						</button>
+						<button type="button" class="btn btn-secondary" (click)="emailModal.hide(); resetEmailModal()">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div
+		bsModal
+		#verifyModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="Label"
+		aria-hidden="true"
+	>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Send email</h4>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="verifyModal.hide()"
+						aria-label="Close"
+					></button>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
+						Are you sure you want to send this email to
+						<span *ngIf="selectedProjectType === 'ALL'">all members of {{ selectedFacility['Facility'] }} ?</span>
+						<span *ngIf="selectedProjectType === 'USER' && selectedMember"
+							><br />
+							<span *ngFor="let member of selectedMember">
+								{{ member['lastName'].concat(', ', member['firstName'], ': ', member['email']) }}<br
+							/></span>
+						</span>
+						<span *ngIf="selectedProjectType === 'SVP'">
+							the Simple Vm members of the {{ selectedFacility['Facility'] }}?
+						</span>
+						<span *ngIf="selectedProjectType === 'OVP'">
+							the OpenStack Project members of the{{ selectedFacility['Facility'] }}?
+						</span>
+						<span
+							*ngIf="
+								selectedProjectType !== 'ALL' &&
+								selectedProjectType !== 'SVP' &&
+								selectedProjectType !== 'OVP' &&
+								selectedProjectType !== 'USER'
+							"
+						>
+							the members of the {{ getProjectNameBySelectedProjectTypeAsId() }} project?
+						</span>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-success col-md-4"
+						*ngIf="selectedProjectType !== 'USER'"
+						(click)="
+							sendMailToFacility(
+								selectedFacility['FacilityId'],
+								emailSubject,
+								emailText,
+								emailReply,
+								sendNews,
+								alternative_emailText
+							);
+							verifyModal.hide();
+							resetEmailModal();
+							successModal.show()
+						"
+					>
+						Yes
+					</button>
+					<button
+						class="btn btn-success col-md-4"
+						*ngIf="selectedProjectType === 'USER'"
+						(click)="
+							sendMailToFacility(
+								selectedFacility['FacilityId'],
+								emailSubject,
+								emailText,
+								emailReply,
+								sendNews,
+								alternative_emailText
+							);
+							verifyModal.hide();
+							resetEmailModal();
+							successModal.show()
+						"
+					>
+						Yes
+					</button>
+					<button class="btn btn-danger col-md-4" type="reset" (click)="verifyModal.hide(); emailModal.show()">
+						Cancel
+					</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div
+		bsModal
+		#successModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="Label"
+		aria-hidden="true"
+	>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" *ngIf="emailStatus === 0">Waiting</h4>
+					<h4 class="modal-title" *ngIf="emailStatus === 1">Success</h4>
+					<h4 class="modal-title" *ngIf="emailStatus === 2">Error</h4>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="successModal.hide()"
+						aria-label="Close"
+					></button>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
+						Sending the email. <i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
+					</div>
+					<div class="alert alert-success" role="alert" *ngIf="emailStatus === 1">
+						The email has been send successfully.
+					</div>
+				</div>
+				<div class="alert alert-warning" role="alert" *ngIf="emailStatus === 2">
+					When sending the email an error has occurred.
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div
+		bsModal
+		#descriptionModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="myModalLabel"
+		aria-hidden="true"
+	>
+		<div class="modal-dialog modal-info" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Description</h4>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="descriptionModal.hide()"
+						aria-label="Close"
+					></button>
+				</div>
+
+				<div class="modal-body">
+					<p>{{ selectedProject?.project_application_description }}</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; descriptionModal.hide()">
+						Close
+					</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+	<div
+		bsModal
+		#computeCenterSupportModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="myModalLabel"
+		aria-hidden="true"
+	>
+		<div class="modal-dialog modal-info" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Support email addresses</h4>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="computeCenterSupportModal.hide()"
+						aria-label="Close"
+					></button>
+				</div>
+
+				<div class="modal-body" *ngIf="selectedFacility">
+					<p>
+						Support e-mail address(es) of <strong>{{ selectedFacility['Facility'] }}</strong
+						>:
+					</p>
+					<div class="input-group mb-3">
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Enter support contact e-mail address(es)"
+							aria-label="Support contact e-mail address(es)"
+							aria-describedby="supportMailHelp"
+							id="facilitySupportMailsInput"
+							#facilitySupportMailsInput
+							[readOnly]="!supportMailEditing"
+							value="{{ facilitySupportMails }}"
+						/>
+						<div class="input-group-append">
+							<button
+								*ngIf="!supportMailEditing"
+								type="button"
+								(click)="toggleSupportMailEditing()"
+								class="btn btn-primary"
+							>
+								Edit
+							</button>
+							<button
+								*ngIf="supportMailEditing"
+								type="button"
+								(click)="
+									setFacilitySupportMails(facilitySupportMailsInput.value);
+									toggleSupportMailEditing();
+									notificationModal.show()
+								"
+								class="btn btn-primary"
+							>
+								Submit
+							</button>
 						</div>
-						<table class="table table-striped">
+					</div>
+					<small id="supportMailHelp" class="form-text text-muted">
+						Enter the e-mail addresses users can contact for support. Separate them with a comma in-between each e-mail
+						address.
+					</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" (click)="computeCenterSupportModal.hide()">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+	<div
+		bsModal
+		#infoModal="bs-modal"
+		class="modal fade"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="myModalLabel"
+		aria-hidden="true"
+	>
+		<div class="modal-dialog modal-info modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Details</h4>
+					<button
+						type="button"
+						class="btn-close"
+						style="cursor: pointer"
+						(click)="infoModal.hide()"
+						aria-label="Close"
+					></button>
+				</div>
+
+				<div class="modal-body">
+					<div *ngIf="!details_loaded" style="text-align: center">
+						<i
+							class="fa fa-spinner fa-spin"
+							style="font-size: 100px; margin: auto; margin-left: auto; margin-right: auto"
+						></i>
+					</div>
+					<div class="table-responsive">
+						<table *ngIf="details_loaded" class="table table-hover">
 							<thead>
-								<tr>
-									<th scope="col">Select</th>
-									<th scope="col">Type</th>
-
-									<th scope="col" appSortable="project_application_perun_id" (sort)="onSort($event)">Perun ID</th>
-									<th scope="col" appSortable="project_application_shortname" (sort)="onSort($event)">Project Name</th>
-									<th scope="col" appSortable="project_application_name" (sort)="onSort($event)">Long Name</th>
-
-									<th>Status</th>
-									<th scope="col" appSortable="project_application_total_ram" (sort)="onSort($event)">Ram</th>
-									<th scope="col" appSortable="project_application_total_cores" (sort)="onSort($event)">Cores</th>
-									<th scope="col" appSortable="project_application_total_gpu" (sort)="onSort($event)">GPUs</th>
-
-									<th>Description</th>
-									<th>Actions</th>
-								</tr>
+								<th>Description</th>
+								<th>Date created (d/m/y)</th>
+								<th>Expiration Date (d/m/y)</th>
+								<th>Days running</th>
+								<th>Lifetime in Days</th>
 							</thead>
 							<tbody>
-								@if (projectsLoaded) {
-									<tr *ngFor="let project of applicationPage.results">
-										<td>
-											@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
-												<input
-													type="checkbox"
-													[(ngModel)]="project.is_project_selected"
-													(change)="toggleSelectedEmailApplication(project, project.is_project_selected)"
-												/>
-											}
-										</td>
-										<td>
-											<app-application-badges [application]="project"></app-application-badges>
-										</td>
+								<td>
+									<button class="btn btn-secondary" (click)="infoModal.hide(); descriptionModal.show()">
+										Show Description
+									</button>
+								</td>
 
-										<td>
-											<ngb-highlight
-												[result]="project.project_application_perun_id"
-												highlightClass="highlight-filter"
-												[term]="applicationFilter.textFilter"
-											>
-											</ngb-highlight>
-										</td>
-										<td>
-											<ngb-highlight
-												[result]="project.project_application_shortname"
-												highlightClass="highlight-filter"
-												[term]="applicationFilter.textFilter"
-											></ngb-highlight>
-										</td>
-										<td>
-											<ngb-highlight
-												[result]="project.project_application_name"
-												highlightClass="highlight-filter"
-												[term]="applicationFilter.textFilter"
-											></ngb-highlight>
-										</td>
-										<td>
-											@if (project | hasstatusinlist: application_states.TERMINATED) {
-												<span
-													*ngIf="project | hasstatusinlist: application_states.TERMINATED"
-													style="margin-left: 5px"
-													class="badge bg-dark"
-													>TERMINATED
-												</span>
-											} @else {
-												<span
-													*ngIf="project | hasstatusinlist: project_states.ACTIVE"
-													style="margin-left: 5px"
-													class="badge bg-success"
-													>{{ project_states[project_states.ACTIVE] }}
-												</span>
-
-												<span
-													*ngIf="
-														(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
-														!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
-													"
-													style="margin-left: 5px"
-													class="badge bg-danger"
-													>{{ lifetime_states[lifetime_states.EXPIRED] }}
-												</span>
-												<span
-													*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
-													style="margin-left: 5px"
-													class="badge bg-warning"
-													>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
-												>
-
-												<span
-													*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
-													style="margin-left: 5px"
-													class="badge bg-info"
-													>WAIT FOR CONFIRMATION
-												</span>
-
-												<span
-													*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
-													style="margin-left: 5px"
-													class="badge bg-dark"
-													>WAIT FOR TERMINATION BY FM
-												</span>
-											}
-										</td>
-										<td>
-											{{ project.project_application_total_ram }}
-										</td>
-										<td>
-											{{ project.project_application_total_cores }}
-										</td>
-										<td>
-											{{ project.project_application_total_gpu }}
-										</td>
-										<td>
-											<button
-												class="btn btn-secondary"
-												(click)="getProjectLifetime(); selectedProject = project; infoModal.show()"
-											>
-												Show Details
-											</button>
-										</td>
-
-										<td>
-											@if (!(project | hasstatusinlist: application_states.TERMINATED)) {
-												<button
-													type="button"
-													class="btn btn-secondary"
-													data-toggle="modal"
-													(click)="showMembersModal(project)"
-												>
-													<i class="fa fa-users"></i>&nbsp;Show Members
-												</button>
-											}
-										</td>
-									</tr>
-								} @else {
-									<tr>
-										<td colspan="10" style="text-align: center; vertical-align: middle">
-											<i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
-										</td>
-									</tr>
-								}
+								<td>{{ selectedProject?.project_application_date_approved }}</td>
+								<td>{{ selectedProject?.date_end }}</td>
+								<td>{{ selectedProject?.DaysRunning }}</td>
+								<td>{{ selectedProject?.lifetime_days }}</td>
+								<td></td>
 							</tbody>
 						</table>
 					</div>
 				</div>
-			</div>
-		</div>
-		<!--/.col-->
-	</div>
-</div>
-
-<div
-	bsModal
-	#emailModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
->
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" *ngIf="selectedFacility">
-					Send email to members of {{ selectedFacility['Facility'] }}
-				</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="emailModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body">
-				<div class="modal-body">
-					<form class="form-horizontal" id="email_form" #f="ngForm">
-						<div class="form-group row">
-							<label class="col-md-12 control-label"
-								><strong>Which project members should receive the email?</strong></label
-							>
-							<div class="col-md-12">
-								<select
-									class="form-control form-select"
-									[(ngModel)]="selectedProjectType"
-									(ngModelChange)="setEmailSubject()"
-									name="selectedProjectType"
-									id="selectedProjectType"
-								>
-									<option value="ALL" selected>All</option>
-									<option value="OVP">OpenStack</option>
-									<option value="SVP">Simple VM</option>
-									<option value="USER" selected>Specific User</option>
-									<option *ngFor="let project of projects" value="{{ project?.project_application_perun_id }}">
-										{{ project?.project_application_shortname }}
-										({{ project?.project_application_perun_id }})
-									</option>
-								</select>
-							</div>
-						</div>
-						<div *ngIf="selectedProjectType === 'ALL'">
-							<div class="col">
-								<label id="id_send_to_news_allowed_label" class="switch switch-label switch-outline-primary-alt">
-									<input
-										type="checkbox"
-										class="switch-input"
-										id="id_send_to_news_allowed"
-										name="send_to_news_allowed"
-										[(ngModel)]="sendNews" />
-									<span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-									<span class="switch-handle"></span
-								></label>
-								<p>Do you want this Mail also to be posted to the news-service?</p>
-							</div>
-						</div>
-
-						<div *ngIf="selectedProjectType === 'USER'">
-							<div class="container-fluid" *ngIf="membersLoaded">
-								<div class="row">
-									<p style="margin-bottom: 15px">
-										Search for a user to your project by entering a part of their name, email or elixir-ID:
-									</p>
-								</div>
-								<div class="row">
-									<div class="col-md-8">
-										<input
-											style="width: 100%"
-											placeholder=""
-											id="add_member_input"
-											#searchString="ngModel"
-											[(ngModel)]="memberFilter"
-											[ngModelOptions]="{ standalone: true }"
-										/>
-									</div>
-									<div class="col-md-4">
-										<button
-											[disabled]="memberFilter?.length < 3"
-											type="button"
-											class="btn btn-primary"
-											id="search_member_btn"
-											(click)="filterMembers(memberFilter)"
-										>
-											<i class="fa fa-search"></i> Search Member
-										</button>
-									</div>
-								</div>
-								<br />
-								<div class="row">
-									<div class="col-md-12"></div>
-								</div>
-
-								<div class="table-responsive">
-									<table *ngIf="filteredMembers?.length > 0" class="table table-bordered table-striped table-sm">
-										<thead>
-											<th></th>
-											<th>First Name</th>
-											<th>Last Name</th>
-											<th>Email</th>
-										</thead>
-										<tbody *ngFor="let member of filteredMembers">
-											<td>
-												<button
-													style="padding: 5px; margin: 5px"
-													(click)="setSelectedUserForMail(member)"
-													class="btn btn-success"
-													id="add_selected_member_for_mail_btn"
-												>
-													<i class="fa fa-plus"></i> Select
-												</button>
-											</td>
-											<td>{{ member['firstName'] }}</td>
-											<td>{{ member['lastName'] }}</td>
-											<td>{{ member['email'] }}</td>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="form-group row" *ngIf="selectedMember">
-									<label class="col-md-12 control-label"><strong>Selected Users</strong></label>
-								</div>
-								<div class="table-responsive" *ngIf="selectedMember">
-									<table class="table table-bordered table-striped table-sm">
-										<tbody>
-											<tr *ngFor="let member of selectedMember">
-												<td>{{ member['lastName'].concat(', ').concat(member['firstName']) }}</td>
-												<td>{{ member['email'] }}</td>
-												<td>
-													<button
-														style="padding: 5px; margin: 5px"
-														(click)="removeSelectedUserForMail(member)"
-														class="btn btn-danger"
-														id="remove_selected_member_for_mail_button"
-													>
-														<i class="fas fa-trash-alt"></i> Remove
-													</button>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<div class="container-fluid" *ngIf="!membersLoaded">
-								<div class="row">
-									<div class="alert alert-primary">Loading facility members...</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label class="col-md-12 control-label"><strong>Email subject*</strong></label>
-							<div class="col-md-12">
-								<input
-									required
-									id="emailSubject"
-									name="emailSub"
-									placeholder="Subject"
-									class="form-control"
-									type="text"
-									[(ngModel)]="emailSubject"
-									minlength="1"
-									[ngClass]="{
-										'is-invalid':
-											f.controls.emailSub?.invalid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched),
-										'is-valid':
-											f.controls.emailSub?.valid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched),
-									}"
-								/>
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
-							<div class="col-md-12">
-								<input
-									id="reply_to"
-									name="emailReply"
-									placeholder=""
-									class="form-control"
-									type="text"
-									[(ngModel)]="emailReply"
-									#emailRep="ngModel"
-									pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
-									[ngClass]="{
-										'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
-										'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched),
-									}"
-								/>
-							</div>
-						</div>
-						<!-- Textarea -->
-						<div class="form-group row">
-							<label class="col-md-12 control-label"><strong>Email text*</strong></label>
-							<div class="col-md-12">
-								<textarea
-									minlength="1"
-									required
-									class="form-control"
-									id="emailText"
-									name="emailText"
-									[(ngModel)]="emailText"
-									type="text"
-									#emailT="ngModel"
-									[ngClass]="{
-										'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
-										'is-valid': emailT.valid && (emailT.dirty || emailT.touched),
-									}"
-								></textarea>
-							</div>
-						</div>
-						<div *ngIf="selectedProjectType === 'ALL' && sendNews" class="form-group row">
-							<label class="col-md-12 control-label"><strong>Alternative newstext (optional)</strong></label>
-							<div class="col-md-12">
-								<textarea
-									class="form-control"
-									id="alternative_emailText"
-									name="alternative_emailText"
-									[(ngModel)]="alternative_emailText"
-									type="text"
-								></textarea>
-							</div>
-						</div>
-						<div *ngIf="selectedProjectType === 'ALL' && sendNews" class="form-group row">
-							<label class="form-check-label" for="facility_news_tags_input">Tags</label>
-							<ng-select
-								#facility_news_tags
-								id="facility_news_tags_input"
-								data-test-id="facility_news_tags_input"
-								[items]="PREDEFINED_TAGS"
-								[multiple]="true"
-								[addTag]="true"
-								[addTagText]="'Set new Tag'"
-								bindLabel="term"
-								maxSelectedItems="10"
-								placeholder="You are free to enter tags"
-								dropdownPosition="bottom"
-								[(ngModel)]="news_tags"
-								name="selected_facility_news_tags"
-							>
-							</ng-select>
-						</div>
-					</form>
-				</div>
 				<div class="modal-footer">
-					<button
-						type="button"
-						[disabled]="f.invalid || (selectedProjectType === 'USER' && selectedMember?.length === 0)"
-						class="btn btn-primary"
-						(click)="emailModal.hide(); verifyModal.show()"
-					>
-						Send email
+					<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; infoModal.hide()">
+						Close
 					</button>
-					<button type="button" class="btn btn-secondary" (click)="emailModal.hide(); resetEmailModal()">Close</button>
 				</div>
 			</div>
+			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-content -->
+		<!-- /.modal-dialog -->
 	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<div
-	bsModal
-	#verifyModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Send email</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="verifyModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
-					Are you sure you want to send this email to
-					<span *ngIf="selectedProjectType === 'ALL'">all members of {{ selectedFacility['Facility'] }} ?</span>
-					<span *ngIf="selectedProjectType === 'USER' && selectedMember"
-						><br />
-						<span *ngFor="let member of selectedMember">
-							{{ member['lastName'].concat(', ', member['firstName'], ': ', member['email']) }}<br
-						/></span>
-					</span>
-					<span *ngIf="selectedProjectType === 'SVP'">
-						the Simple Vm members of the {{ selectedFacility['Facility'] }}?
-					</span>
-					<span *ngIf="selectedProjectType === 'OVP'">
-						the OpenStack Project members of the{{ selectedFacility['Facility'] }}?
-					</span>
-					<span
-						*ngIf="
-							selectedProjectType !== 'ALL' &&
-							selectedProjectType !== 'SVP' &&
-							selectedProjectType !== 'OVP' &&
-							selectedProjectType !== 'USER'
-						"
-					>
-						the members of the {{ getProjectNameBySelectedProjectTypeAsId() }} project?
-					</span>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button
-					class="btn btn-success col-md-4"
-					*ngIf="selectedProjectType !== 'USER'"
-					(click)="
-						sendMailToFacility(
-							selectedFacility['FacilityId'],
-							emailSubject,
-							emailText,
-							emailReply,
-							sendNews,
-							alternative_emailText
-						);
-						verifyModal.hide();
-						resetEmailModal();
-						successModal.show()
-					"
-				>
-					Yes
-				</button>
-				<button
-					class="btn btn-success col-md-4"
-					*ngIf="selectedProjectType === 'USER'"
-					(click)="
-						sendMailToFacility(
-							selectedFacility['FacilityId'],
-							emailSubject,
-							emailText,
-							emailReply,
-							sendNews,
-							alternative_emailText
-						);
-						verifyModal.hide();
-						resetEmailModal();
-						successModal.show()
-					"
-				>
-					Yes
-				</button>
-				<button class="btn btn-danger col-md-4" type="reset" (click)="verifyModal.hide(); emailModal.show()">
-					Cancel
-				</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<div
-	bsModal
-	#successModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="Label"
-	aria-hidden="true"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" *ngIf="emailStatus === 0">Waiting</h4>
-				<h4 class="modal-title" *ngIf="emailStatus === 1">Success</h4>
-				<h4 class="modal-title" *ngIf="emailStatus === 2">Error</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="successModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
-					Sending the email. <i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
-				</div>
-				<div class="alert alert-success" role="alert" *ngIf="emailStatus === 1">
-					The email has been send successfully.
-				</div>
-			</div>
-			<div class="alert alert-warning" role="alert" *ngIf="emailStatus === 2">
-				When sending the email an error has occurred.
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<div
-	bsModal
-	#descriptionModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="myModalLabel"
-	aria-hidden="true"
->
-	<div class="modal-dialog modal-info" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Description</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="descriptionModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-
-			<div class="modal-body">
-				<p>{{ selectedProject?.project_application_description }}</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; descriptionModal.hide()">
-					Close
-				</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-
-<div
-	bsModal
-	#computeCenterSupportModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="myModalLabel"
-	aria-hidden="true"
->
-	<div class="modal-dialog modal-info" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Support email addresses</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="computeCenterSupportModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-
-			<div class="modal-body" *ngIf="selectedFacility">
-				<p>
-					Support e-mail address(es) of <strong>{{ selectedFacility['Facility'] }}</strong
-					>:
-				</p>
-				<div class="input-group mb-3">
-					<input
-						type="text"
-						class="form-control"
-						placeholder="Enter support contact e-mail address(es)"
-						aria-label="Support contact e-mail address(es)"
-						aria-describedby="supportMailHelp"
-						id="facilitySupportMailsInput"
-						#facilitySupportMailsInput
-						[readOnly]="!supportMailEditing"
-						value="{{ facilitySupportMails }}"
-					/>
-					<div class="input-group-append">
-						<button
-							*ngIf="!supportMailEditing"
-							type="button"
-							(click)="toggleSupportMailEditing()"
-							class="btn btn-primary"
-						>
-							Edit
-						</button>
-						<button
-							*ngIf="supportMailEditing"
-							type="button"
-							(click)="
-								setFacilitySupportMails(facilitySupportMailsInput.value);
-								toggleSupportMailEditing();
-								notificationModal.show()
-							"
-							class="btn btn-primary"
-						>
-							Submit
-						</button>
-					</div>
-				</div>
-				<small id="supportMailHelp" class="form-text text-muted">
-					Enter the e-mail addresses users can contact for support. Separate them with a comma in-between each e-mail
-					address.
-				</small>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" (click)="computeCenterSupportModal.hide()">Close</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-
-<div
-	bsModal
-	#infoModal="bs-modal"
-	class="modal fade"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="myModalLabel"
-	aria-hidden="true"
->
-	<div class="modal-dialog modal-info modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Details</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="infoModal.hide()"
-					aria-label="Close"
-				></button>
-			</div>
-
-			<div class="modal-body">
-				<div *ngIf="!details_loaded" style="text-align: center">
-					<i
-						class="fa fa-spinner fa-spin"
-						style="font-size: 100px; margin: auto; margin-left: auto; margin-right: auto"
-					></i>
-				</div>
-				<div class="table-responsive">
-					<table *ngIf="details_loaded" class="table table-hover">
-						<thead>
-							<th>Description</th>
-							<th>Date created (d/m/y)</th>
-							<th>Expiration Date (d/m/y)</th>
-							<th>Days running</th>
-							<th>Lifetime in Days</th>
-						</thead>
-						<tbody>
-							<td>
-								<button class="btn btn-secondary" (click)="infoModal.hide(); descriptionModal.show()">
-									Show Description
-								</button>
-							</td>
-
-							<td>{{ selectedProject?.project_application_date_approved }}</td>
-							<td>{{ selectedProject?.date_end }}</td>
-							<td>{{ selectedProject?.DaysRunning }}</td>
-							<td>{{ selectedProject?.lifetime_days }}</td>
-							<td></td>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; infoModal.hide()">
-					Close
-				</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
 </div>

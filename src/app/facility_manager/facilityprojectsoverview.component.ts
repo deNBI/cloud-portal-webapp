@@ -41,6 +41,8 @@ import { ApplicationPage } from 'app/shared/models/application.page'
 import { BasePaginationComponent } from 'app/shared/shared_modules/components/pagination/base-pagination.component'
 import { ApplicationFilter } from 'app/shared/classes/application-filter'
 import { ApplicationListModalComponent } from 'app/shared/modal/application-list/application-list.modal.component'
+import { ApplicationFilterInputComponent } from 'app/shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
+import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
 
 /**
  * Facility Project overview component.
@@ -69,7 +71,9 @@ import { ApplicationListModalComponent } from 'app/shared/modal/application-list
 		HasStatusPipe,
 		HasstatusinlistPipe,
 		InListPipe,
-		BasePaginationComponent
+		BasePaginationComponent,
+		ApplicationFilterInputComponent,
+		ApplicationStatusBadgesComponent
 	]
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
@@ -256,15 +260,16 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 
 	getRunningApplicationsThatNeedIntroduction(): void {
-		this.facilityService.getAllProjectsThatStillDemandAnIntroductionCourse(this.selectedFacility['FacilityId']).subscribe((applications: Application[]): void =>  {
-			const initialState = {
-				applications: applications,
-			}
-		console.log(initialState);
-			this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
-		});
+		this.facilityService
+			.getAllProjectsThatStillDemandAnIntroductionCourse(this.selectedFacility['FacilityId'])
+			.subscribe((applications: Application[]): void => {
+				const initialState = {
+					applications: applications
+				}
+				console.log(initialState)
+				this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
+			})
 	}
-
 
 	checkValidElixirIdFilter(): void {
 		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')
