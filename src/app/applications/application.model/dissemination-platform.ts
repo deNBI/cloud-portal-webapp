@@ -3,8 +3,6 @@
  */
 export class DisseminationPlatform {
 	name: string
-    id: number
-    active: boolean = true
-
-
+	id: number
+	active: boolean = true
 }

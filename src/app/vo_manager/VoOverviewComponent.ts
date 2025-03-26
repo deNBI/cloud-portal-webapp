@@ -45,6 +45,7 @@ import { BasePaginationComponent } from '../shared/shared_modules/components/pag
 import { ApplicationFilterInputComponent } from '../shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
 import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
 
+
 /**
  * Vo Overview component.
  */
