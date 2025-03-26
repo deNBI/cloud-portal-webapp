@@ -38,12 +38,10 @@ export class ApplicationsService {
 		)
 	}
 
-	getDisseminationPlatforms(): Observable <DisseminationPlatform[]> {
-		return this.http.get<DisseminationPlatform[]>(`${ApiSettings.getApiBaseURL()}project_applications/dissemination/`, 
-		{
+	getDisseminationPlatforms(): Observable<DisseminationPlatform[]> {
+		return this.http.get<DisseminationPlatform[]>(`${ApiSettings.getApiBaseURL()}project_applications/dissemination/`, {
 			withCredentials: true
-		}
-		)
+		})
 	}
 
 	adjustModification(application: ApplicationModification): Observable<Application> {
