@@ -256,15 +256,16 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 
 	getRunningApplicationsThatNeedIntroduction(): void {
-		this.facilityService.getAllProjectsThatStillDemandAnIntroductionCourse(this.selectedFacility['FacilityId']).subscribe((applications: Application[]): void =>  {
-			const initialState = {
-				applications: applications,
-			}
-		console.log(initialState);
-			this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
-		});
+		this.facilityService
+			.getAllProjectsThatStillDemandAnIntroductionCourse(this.selectedFacility['FacilityId'])
+			.subscribe((applications: Application[]): void => {
+				const initialState = {
+					applications: applications
+				}
+				console.log(initialState)
+				this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
+			})
 	}
-
 
 	checkValidElixirIdFilter(): void {
 		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')

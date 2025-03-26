@@ -7,9 +7,10 @@ import { DisseminationPlatform } from 'app/applications/application.model/dissem
 @Pipe({ name: 'isPlatformSelected' })
 export class DisseminationPlatformSelectedPipe implements PipeTransform {
 	transform(platformList: DisseminationPlatform[], value: DisseminationPlatform): boolean {
-		if (!value || typeof value.id === 'undefined' ) {
-            return false;
-        } 
-        return platformList.some(plat => plat.id === value.id)
+		if (!value || typeof value.id === 'undefined') {
+			return false
+		}
+
+		return platformList.some(plat => plat.id === value.id)
 	}
 }

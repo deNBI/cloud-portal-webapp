@@ -43,7 +43,6 @@ import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
 import { IsFutureTimePipe } from '../pipe-module/pipes/futureTime.pipe'
 import { HasStatusNotInListPipe } from '../pipe-module/pipes/has-status-not-in-list.pipe'
 
-
 /**
  * Vo Overview component.
  */
@@ -527,13 +526,15 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	getRunningApplicationsThatNeedIntroduction(): void {
-		this.voService.getAllProjectsThatStillDemandAnIntroductionCourse().subscribe((applications: Application[]): void =>  {
-			const initialState = {
-				applications: applications,
-			}
-		console.log(initialState);
-			this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
-		});
+		this.voService
+			.getAllProjectsThatStillDemandAnIntroductionCourse()
+			.subscribe((applications: Application[]): void => {
+				const initialState = {
+					applications: applications
+				}
+				console.log(initialState)
+				this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
+			})
 	}
 
 	resetEmailModal(): void {
