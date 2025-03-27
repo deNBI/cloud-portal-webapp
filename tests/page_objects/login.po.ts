@@ -53,6 +53,7 @@ export class LoginPagePlaywright {
 		await this.page.waitForURL('**/userinfo');
 	}
 
+
 	async useOrcid(email: string, psw: string): Promise<any> {
 		console.log('Using Orcid Login');
 		await Util.consoleLogCurrentUrl(this.page);
@@ -100,15 +101,17 @@ export class LoginPagePlaywright {
 	async authorizeAccess(): Promise<void> {
 		console.log('Authorize');
 		try {
-			await this.page.waitForURL('**/oauth/authorize**', { timeout: 5000 });
-			await this.page.waitForSelector('[id="authorize-button"]');
-			const authorizeButton = await this.page.$('[id="authorize-button"]')
-			authorizeButton?.click();
+		  await this.page.waitForURL(`**/oauth/authorize`, { timeout: 5000 });
+		  await this.page.waitForSelector('[id="authorize-button"]');
+		  const authorizeButton = await this.page.$('[id="authorize-button"]');
+		  await authorizeButton?.click();
+		  return;
 		} catch (error) {
-			console.log(`Didn't Authorize ${error}`);
-			await Util.consoleLogCurrentUrl(this.page);
+		  console.log('Timed out waiting for authorization');
 		}
-	}
+
+		await Util.consoleLogCurrentUrl(this.page);
+	  }
 
 	async giveConsent(): Promise<void> {
 		console.log('give consent');
