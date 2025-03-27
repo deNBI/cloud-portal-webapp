@@ -61,7 +61,8 @@ export class Application {
 	project_application_initial_credits: number = 0
 	project_application_current_credits: number = 0
 	project_application_date_approved: string
-	project_application_openstack_basic_introduction: boolean
+	project_application_basic_introduction: boolean
+	project_application_basic_introduction_given: boolean
 	project_application_horizon2020: string
 	project_application_dfg: string
 	project_application_bmbf_project: string
@@ -99,12 +100,13 @@ export class Application {
 	approved_by_facility_manager = ''
 
 	constructor(aj?: Partial<Application>) {
-		this.dissemination = new ApplicationDissemination(null)
 		Object.assign(this, aj)
 		if (aj) {
 			if (aj.dissemination) {
 				this.dissemination = new ApplicationDissemination(aj.dissemination)
 				this.project_application_report_allowed = this.dissemination.someAllowed()
+			} else {
+				this.dissemination = new ApplicationDissemination(null)
 			}
 			this.setDaysRunning()
 			this.setDates()

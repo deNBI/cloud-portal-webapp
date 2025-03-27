@@ -13,7 +13,7 @@ import { MigrationInformationComponent } from './migration-information/migration
 import { ApplicationBadgesComponent } from './components/applications/application-badges/application-badges.component'
 import { ProjectEmailModalComponent } from '../modal/email/project-email-modal/project-email-modal.component'
 import { TestimonialFormComponent } from './testimonial-forms/testimonial-form.component'
-
+import { ApplicationListModalComponent } from '../modal/application-list/application-list.modal.component'
 import { MaintenanceNotificationComponent } from './components/maintenance-notification/maintenance-notification.component'
 
 import { MembersListModalComponent } from '../modal/members/members-list-modal.component'
@@ -29,6 +29,7 @@ import { ClipboardModule } from 'ngx-clipboard'
 		ApplicationBaseClassComponent,
 		NotificationModalComponent,
 		MembersListModalComponent,
+		ApplicationListModalComponent,
 		ConfirmationModalComponent,
 		InformationToastComponent,
 		MigrationInformationComponent,
@@ -51,6 +52,7 @@ import { ClipboardModule } from 'ngx-clipboard'
 		ClipboardModule,
 		ApplicationBaseClassComponent,
 		MembersListModalComponent,
+		ApplicationListModalComponent,
 		NotificationModalComponent,
 		ConfirmationModalComponent,
 		InformationToastComponent,

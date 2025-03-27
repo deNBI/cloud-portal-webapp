@@ -24,6 +24,7 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/pr
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
 import { TerminateProjectModalComponent } from './modals/terminate-project-modal/terminate-project-modal.component'
 import { DeclineProjectTerminationModalComponent } from './modals/decline-project-termination-modal/decline-project-termination-modal.component'
+import { ApplicationListModalComponent } from 'app/shared/modal/application-list/application-list.modal.component'
 import {
 	TextColorDirective,
 	TextBgColorDirective,
@@ -522,6 +523,18 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 			this.total$ = this.sortProjectService.total$
 			this.projectsLoaded = true
 		})
+	}
+
+	getRunningApplicationsThatNeedIntroduction(): void {
+		this.voService
+			.getAllProjectsThatStillDemandAnIntroductionCourse()
+			.subscribe((applications: Application[]): void => {
+				const initialState = {
+					applications: applications
+				}
+				console.log(initialState)
+				this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
+			})
 	}
 
 	resetEmailModal(): void {

@@ -64,6 +64,13 @@ export class VoService {
 		})
 	}
 
+	getAllProjectsThatStillDemandAnIntroductionCourse(): Observable<object> {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/introduction/`, {
+			withCredentials: true
+		})
+		// test request
+	}
+
 	resumeProject(groupid: number | string): Observable<object> {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, null, {
 			withCredentials: true

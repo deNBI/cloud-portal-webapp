@@ -40,6 +40,7 @@ import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
 import { ApplicationPage } from 'app/shared/models/application.page'
 import { BasePaginationComponent } from 'app/shared/shared_modules/components/pagination/base-pagination.component'
 import { ApplicationFilter } from 'app/shared/classes/application-filter'
+import { ApplicationListModalComponent } from 'app/shared/modal/application-list/application-list.modal.component'
 
 /**
  * Facility Project overview component.
@@ -252,6 +253,18 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 				this.filteredMembers.push(member)
 			}
 		})
+	}
+
+	getRunningApplicationsThatNeedIntroduction(): void {
+		this.facilityService
+			.getAllProjectsThatStillDemandAnIntroductionCourse(this.selectedFacility['FacilityId'])
+			.subscribe((applications: Application[]): void => {
+				const initialState = {
+					applications: applications
+				}
+				console.log(initialState)
+				this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
+			})
 	}
 
 	checkValidElixirIdFilter(): void {
