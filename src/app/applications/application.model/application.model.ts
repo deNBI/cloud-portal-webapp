@@ -73,7 +73,7 @@ export class Application {
 	project_application_nonsensitive_data: boolean = false
 	project_application_sensitive_data: boolean = false
 	project_application_elixir_project: string
-	dissemination: ApplicationDissemination;
+	dissemination: ApplicationDissemination
 	project_application_pi_approved: boolean
 	project_application_cloud_service: boolean
 	project_application_cloud_service_develop: boolean
@@ -100,14 +100,13 @@ export class Application {
 	approved_by_facility_manager = ''
 
 	constructor(aj?: Partial<Application>) {
-		
 		Object.assign(this, aj)
 		if (aj) {
 			if (aj.dissemination) {
 				this.dissemination = new ApplicationDissemination(aj.dissemination)
 				this.project_application_report_allowed = this.dissemination.someAllowed()
 			} else {
-				this.dissemination = new ApplicationDissemination(null)	
+				this.dissemination = new ApplicationDissemination(null)
 			}
 			this.setDaysRunning()
 			this.setDates()

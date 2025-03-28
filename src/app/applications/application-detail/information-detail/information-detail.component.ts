@@ -20,6 +20,5 @@ export class InformationDetailComponent implements OnInit {
 
 	environment: any = environment
 
-	ngOnInit() {
-	}
+	ngOnInit() {}
 }

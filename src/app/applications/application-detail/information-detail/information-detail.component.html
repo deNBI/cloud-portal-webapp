@@ -126,7 +126,7 @@
 				<p *ngIf="!application?.project_application_sensitive_data">No</p>
 			</td>
 		</tr>
-		<tr >
+		<tr>
 			<td>Training</td>
 			<td>
 				<p *ngIf="application?.project_application_basic_introduction">Yes</p>
@@ -164,12 +164,11 @@
 		<tr>
 			<td>Platforms</td>
 			<td id="dissemination_platforms">
-				<ng-container *ngFor="let platform of application.dissemination.platforms" >
+				<ng-container *ngFor="let platform of application.dissemination.platforms">
 					<span class="badge m-1" [ngClass]="platform.active ? 'bg-secondary' : 'bg-danger'">
 						{{ platform.name }}
 					</span>
 				</ng-container>
-				
 			</td>
 		</tr>
 		<tr>

@@ -21,7 +21,6 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../modal/email/project-c
 import { ViewPublicKeyComponent } from '../modal/view-public-key/view-public-key.component'
 import { ClipboardModule } from 'ngx-clipboard'
 
-
 /**
  * Shared module.
  */
