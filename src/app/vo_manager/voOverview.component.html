@@ -70,14 +70,7 @@
 
 				<div class="card-body">
 					<div class="d-flex justify-content-between p-2">
-						<ngb-pagination
-							[maxSize]="10"
-							[rotate]="true"
-							[boundaryLinks]="true"
-							[collectionSize]="(total$ | async)!"
-							[(page)]="sortProjectService.page"
-							[pageSize]="sortProjectService.pageSize"
-						></ngb-pagination>
+						<app-pagination (pageChanged)="getVoProjects()" [basePage]="applicationPage"></app-pagination>
 
 						<div>
 							<button type="button" class="btn btn-primary me-2" (click)="selectAllFilteredProjects()">
@@ -90,12 +83,6 @@
 
 							<button type="button" class="btn btn-primary" (click)="unselectAll()">Unselect All</button>
 						</div>
-
-						<select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="sortProjectService.pageSize">
-							<option [ngValue]="10">10 items per page</option>
-							<option [ngValue]="25">25 items per page</option>
-							<option [ngValue]="50">50 items per page</option>
-						</select>
 					</div>
 
 					<div>
@@ -103,15 +90,14 @@
 							<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
 							<div class="col-xs-3 col-sm-auto">
 								<input
-									id="table-complete-search"
 									[attr.data-test-id]="'filter_project_name'"
+									id="table-complete-search"
 									type="text"
 									class="form-control"
 									name="searchTerm"
-									[(ngModel)]="sortProjectService.searchTerm"
+									(input)="textFilterSubject.next($event.target.value)"
 								/>
 							</div>
-							<span class="col col-form-label" *ngIf="sortProjectService.loading$ | async">Loading...</span>
 							<div class="col">
 								<div class="float-end">
 									<button
@@ -157,7 +143,7 @@
 										class="form-control"
 										name="searchTerm"
 										[(ngModel)]="userElixirIdFilter"
-										(ngModelChange)="checkValidElixirIdFilter()"
+										(input)="checkValidElixirIdFilter()"
 									/>
 									<button
 										cButton
@@ -171,8 +157,6 @@
 										Search
 									</button>
 								</c-input-group>
-
-								<span class="col col-form-label" *ngIf="sortProjectService.loading$ | async">Loading...</span>
 
 								<div class="row">
 									<div class="col">
@@ -215,128 +199,11 @@
 								<br />
 							</div>
 
-							<div class="row">
-								<div class="checkbox col">
-									<label style="margin-top: 7px; margin-bottom: 0px !important">
-										<input
-											type="checkbox"
-											(ngModelChange)="sortProjectService.initiateSearch()"
-											[(ngModel)]="sortProjectService.showSimpleVM"
-										/>
-										<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-info-blue"
-											>SimpleVM
-										</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label style="margin-top: 7px; margin-bottom: 0px !important">
-										<input
-											type="checkbox"
-											(ngModelChange)="sortProjectService.initiateSearch()"
-											[(ngModel)]="sortProjectService.showOpenStack"
-										/>
-										<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
-											>OpenStack
-										</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.ACTIVE)"
-											[checked]="sortProjectService.filterStatusList | inList: application_states.ACTIVE"
-										/>
-										<span style="margin-left: 5px" class="badge bg-success"
-											>{{ project_states[project_states.ACTIVE] }}
-										</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.DISABLED)"
-											[checked]="sortProjectService.filterStatusList | inList: application_states.DISABLED"
-										/>
-										<span style="margin-left: 5px" class="badge bg-warning"
-											>{{ application_states[application_states.DISABLED] }}
-										</span>
-									</label>
-								</div>
+							<app-application-filter-input
+								[(applicationFilter)]="applicationFilter"
+								(filterChangedEvent)="getVoProjects()"
+							></app-application-filter-input>
 
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRED)"
-											[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRED"
-										/>
-
-										<span style="margin-left: 5px" class="badge bg-danger">{{
-											lifetime_states[lifetime_states.EXPIRED]
-										}}</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="sortProjectService.addOrRemoveFromFilterStatusList(application_states.EXPIRES_SOON)"
-											[checked]="sortProjectService.filterStatusList | inList: application_states.EXPIRES_SOON"
-										/>
-										<span style="margin-left: 5px" class="badge bg-warning">{{
-											lifetime_states[lifetime_states.EXPIRES_SOON]
-										}}</span>
-									</label>
-								</div>
-
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="
-												sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_CONFIRMATION)
-											"
-											[checked]="sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_CONFIRMATION"
-										/>
-
-										<span style="margin-left: 5px" class="badge bg-info">{{
-											application_states[application_states.WAIT_FOR_CONFIRMATION]
-										}}</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="
-												sortProjectService.addOrRemoveFromFilterStatusList(application_states.TERMINATION_REQUESTED)
-											"
-											[checked]="sortProjectService.filterStatusList | inList: application_states.TERMINATION_REQUESTED"
-										/>
-										<span style="margin-left: 5px" class="badge bg-dark">{{
-											application_states[application_states.TERMINATION_REQUESTED]
-										}}</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="
-												sortProjectService.addOrRemoveFromFilterStatusList(application_states.WAIT_FOR_TERMINATION_FM)
-											"
-											[checked]="
-												sortProjectService.filterStatusList | inList: application_states.WAIT_FOR_TERMINATION_FM
-											"
-										/>
-										<span style="margin-left: 5px" class="badge bg-dark">{{
-											application_states[application_states.WAIT_FOR_TERMINATION_FM]
-										}}</span>
-									</label>
-								</div>
-							</div>
 							<table class="table table-striped">
 								<thead>
 									<tr>
@@ -363,7 +230,7 @@
 								</thead>
 								<tbody>
 									@if (projectsLoaded) {
-										<tr *ngFor="let project of applictions$ | async; index as i">
+										<tr *ngFor="let project of applicationPage.results">
 											<td>
 												<input
 													type="checkbox"
@@ -378,13 +245,15 @@
 												<ngb-highlight
 													[result]="project?.project_application_compute_center?.Name"
 													highlightClass="highlight-filter"
-													[term]="sortProjectService.searchTerm"
+													[term]="applicationFilter.textFilter"
 												></ngb-highlight>
 											</td>
 											<td>
 												<ngb-highlight
 													[result]="project?.project_application_perun_id"
 													highlightClass="highlight-filter"
+													[term]="applicationFilter.textFilter"
+
 													[term]="sortProjectService.searchTerm"
 												>
 												</ngb-highlight>
@@ -393,7 +262,7 @@
 												<ngb-highlight
 													[result]="project.project_application_shortname"
 													highlightClass="highlight-filter"
-													[term]="sortProjectService.searchTerm"
+													[term]="applicationFilter.textFilter"
 												></ngb-highlight>
 											</td>
 
@@ -403,76 +272,20 @@
 												</button>
 											</td>
 											<td>
-												<span
-													*ngIf="project | hasstatusinlist: project_states.ACTIVE"
-													style="margin-left: 5px"
-													class="badge bg-success"
-													>{{ project_states[project_states.ACTIVE] }}
-												</span>
-												<span
-													*ngIf="project | hasstatusinlist: application_states.DISABLED"
-													style="margin-left: 5px"
-													class="badge bg-warning"
-													>{{ application_states[application_states.DISABLED] }}
-												</span>
-												<span
-													*ngIf="
-														(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
-														!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
-													"
-													style="margin-left: 5px"
-													class="badge bg-danger"
-													>{{ lifetime_states[lifetime_states.EXPIRED] }}
-												</span>
-												<span
-													*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
-													style="margin-left: 5px"
-													class="badge bg-warning"
-													>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
-												>
-												<span
-													*ngIf="project | hasstatusinlist: project_states.SUSPENDED"
-													style="margin-left: 5px"
-													class="badge bg-warning"
-													>{{ project_states[project_states.SUSPENDED] }}
-												</span>
-												<span
-													*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
-													style="margin-left: 5px"
-													class="badge bg-info"
-													>WAIT FOR CONFIRMATION
-												</span>
-												<span
-													*ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
-													style="margin-left: 5px"
-													class="badge bg-dark"
-													>TERMINATION REQUESTED
-												</span>
-												<span
-													*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
-													style="margin-left: 5px"
-													class="badge bg-dark"
-													>WAIT FOR TERMINATION BY FM
-												</span>
-												<span
-													*ngIf="project | hasstatusinlist: application_states.PROTECTED"
-													style="margin-left: 5px"
-													class="badge bg-secondary"
-													>PROTECTED
-												</span>
+												<app-application-status-badges [application]="project"></app-application-status-badges>
 											</td>
 											<td>
 												<ngb-highlight
 													[result]="project.project_application_total_ram"
 													highlightClass="highlight-filter"
-													[term]="sortProjectService.searchTerm"
+													[term]="applicationFilter.textFilter"
 												></ngb-highlight>
 											</td>
 											<td>
 												<ngb-highlight
 													[result]="project.project_application_total_cores"
 													highlightClass="highlight-filter"
-													[term]="sortProjectService.searchTerm"
+													[term]="applicationFilter.textFilter"
 													>>
 												</ngb-highlight>
 											</td>
@@ -480,7 +293,7 @@
 												<ngb-highlight
 													[result]="project.project_application_total_gpu"
 													highlightClass="highlight-filter"
-													[term]="sortProjectService.searchTerm"
+													[term]="applicationFilter.textFilter"
 													>>
 												</ngb-highlight>
 											</td>
@@ -489,14 +302,14 @@
 												<ngb-highlight
 													[result]="project.project_application_current_credits"
 													highlightClass="highlight-filter"
-													[term]="sortProjectService.searchTerm"
+													[term]="applicationFilter.textFilter"
 													>>
 												</ngb-highlight>
 												/
 												<ngb-highlight
 													[result]="project.project_application_initial_credits"
 													highlightClass="highlight-filter"
-													[term]="sortProjectService.searchTerm"
+													[term]="applicationFilter.textFilter"
 													>>
 												</ngb-highlight>
 											</td>
@@ -514,7 +327,7 @@
 													</button>
 
 													<button
-														*ngIf="project | hasstatusnotinlist: application_states.DISABLED"
+														*ngIf="project | hasstatusnotinlist: Application_States.DISABLED"
 														style="margin-left: 5px; margin-bottom: 5px"
 														type="button"
 														class="btn btn-warning"
@@ -523,7 +336,7 @@
 														<i class="fa fa-pause"></i>&nbsp;Disable Project
 													</button>
 													<button
-														*ngIf="project | hasstatusinlist: application_states.DISABLED"
+														*ngIf="project | hasstatusinlist: Application_States.DISABLED"
 														style="margin-left: 5px; margin-bottom: 5px"
 														type="button"
 														class="btn btn-warning"
@@ -539,7 +352,7 @@
 														[id]="'show_terminate_' + project?.project_application_shortname"
 														[attr.data-test-id]="'show_terminate_' + project?.project_application_shortname"
 														(click)="showTerminationModal(project)"
-														*ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)"
+														*ngIf="!(project | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)"
 													>
 														<i class="fas fa-trash-alt"></i>&nbsp;Terminate Project
 													</button>
@@ -550,7 +363,7 @@
 														[id]="'show_decline_terminate_' + project?.project_application_id"
 														[attr.data-test-id]="'show_decline_terminate_' + project?.project_application_shortname"
 														(click)="showTerminationDeclineModal(project)"
-														*ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
+														*ngIf="project | hasstatusinlist: Application_States.TERMINATION_REQUESTED"
 													>
 														<i class="fa fa-location-arrow"></i> Decline Termination Project
 													</button>
@@ -562,7 +375,7 @@
 														[id]="'processed_by_fm_' + project?.project_application_shortname"
 														[attr.data-test-id]="'processed_by_fm_' + project?.project_application_shortname"
 														(click)="showTerminationDeclineModal(project)"
-														*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+														*ngIf="project | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM"
 													>
 														Processed by FM
 													</button>
@@ -572,7 +385,7 @@
 														class="btn btn-info"
 														[id]="'set_protected_' + project?.project_application_shortname"
 														(click)="setProtected(project, true)"
-														*ngIf="!(project | hasstatusinlist: application_states.PROTECTED)"
+														*ngIf="!(project | hasstatusinlist: Application_States.PROTECTED)"
 													>
 														<i class="fas fa-lock"></i>&nbsp;Set Protected
 													</button>
@@ -582,7 +395,7 @@
 														class="btn btn-info"
 														[id]="'set_unprotected_' + project?.project_application_shortname"
 														(click)="setProtected(project, false)"
-														*ngIf="project | hasstatusinlist: application_states.PROTECTED"
+														*ngIf="project | hasstatusinlist: Application_States.PROTECTED"
 													>
 														<i class="fas fa-lock-open"></i>&nbsp;Set Unprotected
 													</button>
@@ -605,367 +418,365 @@
 			<!--/.col-->
 		</div>
 	</div>
+</div>
 
-	<div
-		bsModal
-		#emailModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">{{ emailHeader }}</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="emailModal.hide()"
-						aria-label="Close"
-					></button>
+<div
+	bsModal
+	#emailModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">{{ emailHeader }}</h4>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="emailModal.hide()"
+					aria-label="Close"
+				></button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-info">
+					Workshop projects and their members or administrators only receive mails, when they are explicitly chosen. If
+					other restrictions are selected, the mails of administrators and members of workshops are excluded from the
+					list of mails.
 				</div>
-				<div class="modal-body">
-					<div class="alert alert-info">
-						Workshop projects and their members or administrators only receive mails, when they are explicitly chosen.
-						If other restrictions are selected, the mails of administrators and members of workshops are excluded from
-						the list of mails.
+				<form class="form-horizontal" id="email_form" #f="ngForm">
+					<div class="form-group row" *ngIf="emailType === 0">
+						<label class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
+						<div class="col-md-12">
+							<select
+								class="form-control form-select"
+								[(ngModel)]="selectedFacility"
+								(ngModelChange)="adjustVerifyText()"
+								name="selectedFacility"
+								id="selectedFacility"
+							>
+								<option value="ALL">All</option>
+								<option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
+									{{ cc.Name }}
+								</option>
+							</select>
+						</div>
 					</div>
-					<form class="form-horizontal" id="email_form" #f="ngForm">
-						<div class="form-group row" *ngIf="emailType === 0">
-							<label class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
-							<div class="col-md-12">
-								<select
-									class="form-control form-select"
-									[(ngModel)]="selectedFacility"
-									(ngModelChange)="adjustVerifyText()"
-									name="selectedFacility"
-									id="selectedFacility"
-								>
-									<option value="ALL">All</option>
-									<option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
-										{{ cc.Name }}
-									</option>
-								</select>
-							</div>
-						</div>
 
-						<div class="form-group row">
-							<label class="col-md-12 control-label"><strong>Who shall receive the email?</strong></label>
-							<div class="col-md-12">
-								<select
-									class="form-control form-select"
-									[(ngModel)]="selectedProjectType"
-									(ngModelChange)="adjustVerifyText()"
-									name="selectedProjectType"
-									id="selectedProjectType"
-								>
-									<option [ngValue]="'ALL'" [defaultSelected]="true">All</option>
-									<option [ngValue]="'ALL_GM'" *ngIf="emailType === 0">All active projects</option>
-									<option [ngValue]="'EXP'" *ngIf="emailType === 0">All expired projects</option>
-									<option [ngValue]="'SVP'">Simple VM projects</option>
-									<option [ngValue]="'OVP'">OpenStack projects</option>
-									<option [ngValue]="'WSH'">Workshops</option>
-								</select>
-							</div>
+					<div class="form-group row">
+						<label class="col-md-12 control-label"><strong>Who shall receive the email?</strong></label>
+						<div class="col-md-12">
+							<select
+								class="form-control form-select"
+								[(ngModel)]="selectedProjectType"
+								(ngModelChange)="adjustVerifyText()"
+								name="selectedProjectType"
+								id="selectedProjectType"
+							>
+								<option [ngValue]="'ALL'" [defaultSelected]="true">All</option>
+								<option [ngValue]="'ALL_GM'" *ngIf="emailType === 0">All active projects</option>
+								<option [ngValue]="'EXP'" *ngIf="emailType === 0">All expired projects</option>
+								<option [ngValue]="'SVP'">Simple VM projects</option>
+								<option [ngValue]="'OVP'">OpenStack projects</option>
+								<option [ngValue]="'WSH'">Workshops</option>
+							</select>
 						</div>
-						<div class="form-group row" *ngIf="emailType === 0">
-							<div class="col-md-auto">
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										[ngModelOptions]="{ standalone: true }"
-										[(ngModel)]="emailAdminsOnly"
-										(ngModelChange)="adjustVerifyText()"
-										id="adminOnlyCheckbox"
-									/>
-									<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
-								</div>
-							</div>
-						</div>
-						<div class="form-group row" *ngIf="emailType === 0 && selectedProjectType === 'EXP'">
-							<div class="col-md-auto">
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										[ngModelOptions]="{ standalone: true }"
-										[(ngModel)]="expiredTemplated"
-										(ngModelChange)="adjustVerifyText()"
-										id="expiredTemplateCheckbox"
-									/>
-									<label class="form-check-label" for="adminOnlyCheckbox">
-										Send templated mail for expired projects
-									</label>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="expiredTemplated && selectedProjectType === 'EXP'" class="form-group row">
-							<label class="col-md-12 control-label"><strong>Set a removal date</strong></label>
-							<div class="mb-3 mx-auto">
-								<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
-							</div>
-							<div class="alert alert-danger" *ngIf="!(removalDate | isFutureTime)">
-								Please select a removal date that is in the future.
-							</div>
-						</div>
-						<div
-							*ngIf="!(expiredTemplated && selectedProjectType === 'EXP')"
-							class="form-group row"
-							[ngClass]="{
-								'has-danger': emailSub.invalid && (emailSub.dirty || emailSub.touched),
-								'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched),
-							}"
-						>
-							<label class="col-md-12 control-label"><strong>Email subject*</strong></label>
-							<div class="col-md-12">
+					</div>
+					<div class="form-group row" *ngIf="emailType === 0">
+						<div class="col-md-auto">
+							<div class="form-check">
 								<input
-									required
-									id="emailSubject"
-									name="emailSub"
-									placeholder="Subject"
-									class="form-control"
-									type="text"
-									[(ngModel)]="emailSubject"
-									minlength="1"
-									#emailSub="ngModel"
-									[ngClass]="{
-										'is-invalid': emailSub.invalid && (emailSub.dirty || emailSub.touched),
-										'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched),
-									}"
+									class="form-check-input"
+									type="checkbox"
+									[ngModelOptions]="{ standalone: true }"
+									[(ngModel)]="emailAdminsOnly"
+									(ngModelChange)="adjustVerifyText()"
+									id="adminOnlyCheckbox"
 								/>
+								<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
 							</div>
 						</div>
-
-						<div class="form-group row" *ngIf="!(expiredTemplated && selectedProjectType === 'EXP')">
-							<label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
-							<div class="col-md-12">
+					</div>
+					<div class="form-group row" *ngIf="emailType === 0 && selectedProjectType === 'EXP'">
+						<div class="col-md-auto">
+							<div class="form-check">
 								<input
-									id="reply_to"
-									name="emailReply"
-									placeholder=""
-									class="form-control"
-									type="text"
-									[(ngModel)]="emailReply"
-									#emailRep="ngModel"
-									pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
-									[ngClass]="{
-										'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
-										'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched),
-									}"
+									class="form-check-input"
+									type="checkbox"
+									[ngModelOptions]="{ standalone: true }"
+									[(ngModel)]="expiredTemplated"
+									(ngModelChange)="adjustVerifyText()"
+									id="expiredTemplateCheckbox"
 								/>
+								<label class="form-check-label" for="adminOnlyCheckbox">
+									Send templated mail for expired projects
+								</label>
 							</div>
 						</div>
-						<!-- Textarea -->
-						<div class="form-group row" *ngIf="!(expiredTemplated && selectedProjectType === 'EXP')">
-							<label class="col-md-12 control-label"><strong>Email text*</strong></label>
-							<div class="col-md-12">
-								<textarea
-									minlength="1"
-									required
-									class="form-control"
-									id="emailText"
-									name="emailText"
-									[(ngModel)]="emailText"
-									type="text"
-									#emailT="ngModel"
-									[ngClass]="{
-										'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
-										'is-valid': emailT.valid && (emailT.dirty || emailT.touched),
-									}"
-								></textarea>
-							</div>
+					</div>
+					<div *ngIf="expiredTemplated && selectedProjectType === 'EXP'" class="form-group row">
+						<label class="col-md-12 control-label"><strong>Set a removal date</strong></label>
+						<div class="mb-3 mx-auto">
+							<app-datepicker (dayChange)="dayChanged($event)"></app-datepicker>
 						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button
-						type="button"
-						[disabled]="
-							f.invalid || (expiredTemplated && selectedProjectType === 'EXP' && !(removalDate | isFutureTime))
-						"
-						class="btn btn-primary"
-						(click)="emailModal.hide(); verifyModal.show()"
+						<div class="alert alert-danger" *ngIf="!(removalDate | isFutureTime)">
+							Please select a removal date that is in the future.
+						</div>
+					</div>
+					<div
+						*ngIf="!(expiredTemplated && selectedProjectType === 'EXP')"
+						class="form-group row"
+						[ngClass]="{
+							'has-danger': emailSub.invalid && (emailSub.dirty || emailSub.touched),
+							'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched),
+						}"
 					>
-						Send email
-					</button>
-					<button type="button" class="btn btn-secondary" (click)="emailModal.hide(); resetEmailModal()">Close</button>
+						<label class="col-md-12 control-label"><strong>Email subject*</strong></label>
+						<div class="col-md-12">
+							<input
+								required
+								id="emailSubject"
+								name="emailSub"
+								placeholder="Subject"
+								class="form-control"
+								type="text"
+								[(ngModel)]="emailSubject"
+								minlength="1"
+								#emailSub="ngModel"
+								[ngClass]="{
+									'is-invalid': emailSub.invalid && (emailSub.dirty || emailSub.touched),
+									'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched),
+								}"
+							/>
+						</div>
+					</div>
+
+					<div class="form-group row" *ngIf="!(expiredTemplated && selectedProjectType === 'EXP')">
+						<label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
+						<div class="col-md-12">
+							<input
+								id="reply_to"
+								name="emailReply"
+								placeholder=""
+								class="form-control"
+								type="text"
+								[(ngModel)]="emailReply"
+								#emailRep="ngModel"
+								pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
+								[ngClass]="{
+									'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
+									'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched),
+								}"
+							/>
+						</div>
+					</div>
+					<!-- Textarea -->
+					<div class="form-group row" *ngIf="!(expiredTemplated && selectedProjectType === 'EXP')">
+						<label class="col-md-12 control-label"><strong>Email text*</strong></label>
+						<div class="col-md-12">
+							<textarea
+								minlength="1"
+								required
+								class="form-control"
+								id="emailText"
+								name="emailText"
+								[(ngModel)]="emailText"
+								type="text"
+								#emailT="ngModel"
+								[ngClass]="{
+									'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
+									'is-valid': emailT.valid && (emailT.dirty || emailT.touched),
+								}"
+							></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button
+					type="button"
+					[disabled]="f.invalid || (expiredTemplated && selectedProjectType === 'EXP' && !(removalDate | isFutureTime))"
+					class="btn btn-primary"
+					(click)="emailModal.hide(); verifyModal.show()"
+				>
+					Send email
+				</button>
+				<button type="button" class="btn btn-secondary" (click)="emailModal.hide(); resetEmailModal()">Close</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div
+	bsModal
+	#verifyModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Send email</h4>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="verifyModal.hide()"
+					aria-label="Close"
+				></button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning" role="alert">
+					{{ emailVerify }}
 				</div>
 			</div>
-			<!-- /.modal-content -->
+			<div class="modal-footer">
+				<button
+					class="btn btn-success col-md-4"
+					(click)="
+						sendEmail(emailSubject, emailText, emailReply);
+						verifyModal.hide();
+						f.reset();
+						resetEmailModal();
+						successModal.show()
+					"
+				>
+					Yes
+				</button>
+				<button class="btn btn-danger col-md-4" type="reset" (click)="verifyModal.hide(); emailModal.show()">
+					Cancel
+				</button>
+			</div>
 		</div>
-		<!-- /.modal-dialog -->
+		<!-- /.modal-content -->
 	</div>
-	<!-- /.modal -->
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
-	<div
-		bsModal
-		#verifyModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Send email</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="verifyModal.hide()"
-						aria-label="Close"
-					></button>
+<div
+	bsModal
+	#successModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="Label"
+	aria-hidden="true"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" *ngIf="emailStatus === 0">Waiting</h4>
+				<h4 class="modal-title" *ngIf="emailStatus === 1">Success</h4>
+				<h4 class="modal-title" *ngIf="emailStatus === 2">Error</h4>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="successModal.hide()"
+					aria-label="Close"
+				></button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
+					Sending the email. <i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
 				</div>
-				<div class="modal-body">
-					<div class="alert alert-warning" role="alert">
-						{{ emailVerify }}
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button
-						class="btn btn-success col-md-4"
-						(click)="
-							sendEmail(emailSubject, emailText, emailReply);
-							verifyModal.hide();
-							f.reset();
-							resetEmailModal();
-							successModal.show()
-						"
-					>
-						Yes
-					</button>
-					<button class="btn btn-danger col-md-4" type="reset" (click)="verifyModal.hide(); emailModal.show()">
-						Cancel
-					</button>
+				<div class="alert alert-success" role="alert" *ngIf="emailStatus === 1">
+					The email has been send successfully.
 				</div>
 			</div>
-			<!-- /.modal-content -->
+			<div class="alert alert-warning" role="alert" *ngIf="emailStatus === 2">
+				when sending the email an error has occurred.
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
+			</div>
 		</div>
-		<!-- /.modal-dialog -->
+		<!-- /.modal-content -->
 	</div>
-	<!-- /.modal -->
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
-	<div
-		bsModal
-		#successModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="Label"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" *ngIf="emailStatus === 0">Waiting</h4>
-					<h4 class="modal-title" *ngIf="emailStatus === 1">Success</h4>
-					<h4 class="modal-title" *ngIf="emailStatus === 2">Error</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="successModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
-						Sending the email. <i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
-					</div>
-					<div class="alert alert-success" role="alert" *ngIf="emailStatus === 1">
-						The email has been send successfully.
-					</div>
-				</div>
-				<div class="alert alert-warning" role="alert" *ngIf="emailStatus === 2">
-					when sending the email an error has occurred.
-				</div>
+<div
+	bsModal
+	#infoModal="bs-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-info modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Details</h4>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="infoModal.hide()"
+					aria-label="Close"
+				></button>
+			</div>
 
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
+			<div class="modal-body">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<th>Description</th>
+							<th>Date created (d/m/y)</th>
+							<th>Expiration Date (d/m/y)</th>
+							<th>Days running</th>
+							<th>Lifetime in Days</th>
+						</thead>
+						<tbody>
+							<td>
+								<button class="btn btn-secondary" (click)="infoModal.hide(); showDescriptionModal(selectedProject)">
+									Show Description
+								</button>
+							</td>
+
+							<td>
+								<span *ngIf="selectedProject?.project_application_date_approved">{{
+									selectedProject?.project_application_date_approved
+								}}</span>
+								<span *ngIf="!selectedProject?.project_application_date_approved">No creation date available</span>
+							</td>
+							<td>
+								<span *ngIf="selectedProject?.date_end">{{ selectedProject?.date_end }}</span>
+								<span *ngIf="!selectedProject?.date_end">No end date available</span>
+							</td>
+							<td>
+								<span *ngIf="selectedProject?.DaysRunning">{{ selectedProject?.DaysRunning }}</span>
+								<span *ngIf="!selectedProject?.DaysRunning">No runtime available</span>
+							</td>
+
+							<td>
+								<span *ngIf="selectedProject?.lifetime_days">{{ selectedProject?.lifetime_days }}</span>
+								<span *ngIf="!selectedProject?.lifetime_days">No lifetime available</span>
+							</td>
+						</tbody>
+					</table>
 				</div>
 			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-
-	<div
-		bsModal
-		#infoModal="bs-modal"
-		class="modal fade"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="myModalLabel"
-		aria-hidden="true"
-	>
-		<div class="modal-dialog modal-info modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Details</h4>
-					<button
-						type="button"
-						class="btn-close"
-						style="cursor: pointer"
-						(click)="infoModal.hide()"
-						aria-label="Close"
-					></button>
-				</div>
-
-				<div class="modal-body">
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-								<th>Description</th>
-								<th>Date created (d/m/y)</th>
-								<th>Expiration Date (d/m/y)</th>
-								<th>Days running</th>
-								<th>Lifetime in Days</th>
-							</thead>
-							<tbody>
-								<td>
-									<button class="btn btn-secondary" (click)="infoModal.hide(); showDescriptionModal(selectedProject)">
-										Show Description
-									</button>
-								</td>
-
-								<td>
-									<span *ngIf="selectedProject?.project_application_date_approved">{{
-										selectedProject?.project_application_date_approved
-									}}</span>
-									<span *ngIf="!selectedProject?.project_application_date_approved">No creation date available</span>
-								</td>
-								<td>
-									<span *ngIf="selectedProject?.date_end">{{ selectedProject?.date_end }}</span>
-									<span *ngIf="!selectedProject?.date_end">No end date available</span>
-								</td>
-								<td>
-									<span *ngIf="selectedProject?.DaysRunning">{{ selectedProject?.DaysRunning }}</span>
-									<span *ngIf="!selectedProject?.DaysRunning">No runtime available</span>
-								</td>
-
-								<td>
-									<span *ngIf="selectedProject?.lifetime_days">{{ selectedProject?.lifetime_days }}</span>
-									<span *ngIf="!selectedProject?.lifetime_days">No lifetime available</span>
-								</td>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; infoModal.hide()">
-						Close
-					</button>
-				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="selectedProject = undefined; infoModal.hide()">
+					Close
+				</button>
 			</div>
-			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-dialog -->
+		<!-- /.modal-content -->
 	</div>
+	<!-- /.modal-dialog -->
 </div>

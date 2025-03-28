@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { catchError, map } from 'rxjs/operators'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { ApiSettings } from './api-settings.service'
 import { Application } from '../applications/application.model/application.model'
@@ -189,9 +189,29 @@ export class FacilityService {
 				}
 			)
 			.pipe(
+				catchError(error => {
+					if (error.status === 404) {
+						// reset the page to 1 and try again
+						applicationPage.page = 1
+						params.set('page', applicationPage.page)
+
+						return this.http.post<ApplicationPage>(
+							url,
+							{
+								status_list: applicationFilter.getFilterStatusList(),
+								showSimpleVM: applicationFilter.showSimpleVM,
+								showOpenStack: applicationFilter.showOpenStack,
+								showKubernetes: applicationFilter.showKubernetes,
+								textFilter: applicationFilter.textFilter
+							},
+							{ params, withCredentials: true }
+						)
+					} else {
+						throw error
+					}
+				}),
 				map((response: ApplicationPage) => {
 					// Update the original page object with response data
-
 					applicationPage.count = response.count
 					applicationPage.setResults(response.results)
 

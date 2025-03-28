@@ -193,106 +193,11 @@
 									</div>
 								</div>
 							</div>
+							<app-application-filter-input
+								[(applicationFilter)]="applicationFilter"
+								(filterChangedEvent)="getSelectedFacilityProjects()"
+							></app-application-filter-input>
 
-							<div class="row">
-								<div class="checkbox col">
-									<label style="margin-top: 7px; margin-bottom: 0px !important">
-										<input
-											type="checkbox"
-											(change)="getSelectedFacilityProjects()"
-											[(ngModel)]="applicationFilter.showSimpleVM"
-										/>
-										<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-info-blue"
-											>SimpleVM
-										</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label style="margin-top: 7px; margin-bottom: 0px !important">
-										<input
-											type="checkbox"
-											(change)="getSelectedFacilityProjects()"
-											[(ngModel)]="applicationFilter.showOpenStack"
-										/>
-										<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
-											>OpenStack
-										</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label style="margin-top: 7px; margin-bottom: 0px !important">
-										<input
-											type="checkbox"
-											(change)="getSelectedFacilityProjects()"
-											[(ngModel)]="applicationFilter.showKubernetes"
-										/>
-										<span style="margin-left: 5px; bottom: 5px; position: relative" class="badge bg-danger"
-											>Kubernetes
-										</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="getSelectedFacilityProjects()"
-											[(ngModel)]="applicationFilter.isApproved"
-										/>
-										<span style="margin-left: 5px" class="badge bg-success">ACTIVE </span>
-									</label>
-								</div>
-
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="getSelectedFacilityProjects()"
-											[(ngModel)]="applicationFilter.isExpired"
-										/>
-
-										<span style="margin-left: 5px" class="badge bg-danger">{{
-											lifetime_states[lifetime_states.EXPIRED]
-										}}</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="getSelectedFacilityProjects()"
-											[(ngModel)]="applicationFilter.isExpiresSoon"
-										/>
-										<span style="margin-left: 5px" class="badge bg-warning">{{
-											lifetime_states[lifetime_states.EXPIRES_SOON]
-										}}</span>
-									</label>
-								</div>
-
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="getSelectedFacilityProjects()"
-											[(ngModel)]="applicationFilter.isWaitForTerminationFM"
-										/>
-										<span style="margin-left: 5px" class="badge bg-dark">{{
-											application_states[application_states.WAIT_FOR_TERMINATION_FM]
-										}}</span>
-									</label>
-								</div>
-								<div class="checkbox col">
-									<label>
-										<input
-											type="checkbox"
-											(change)="getSelectedFacilityProjects()"
-											[(ngModel)]="applicationFilter.isTerminated"
-										/>
-										<span style="margin-left: 5px" class="badge bg-dark">{{
-											application_states[application_states.TERMINATED]
-										}}</span>
-									</label>
-								</div>
-							</div>
 							<table class="table table-striped">
 								<thead>
 									<tr>
@@ -353,51 +258,8 @@
 												></ngb-highlight>
 											</td>
 											<td>
-												@if (project | hasstatusinlist: application_states.TERMINATED) {
-													<span
-														*ngIf="project | hasstatusinlist: application_states.TERMINATED"
-														style="margin-left: 5px"
-														class="badge bg-dark"
-														>TERMINATED
-													</span>
-												} @else {
-													<span
-														*ngIf="project | hasstatusinlist: project_states.ACTIVE"
-														style="margin-left: 5px"
-														class="badge bg-success"
-														>{{ project_states[project_states.ACTIVE] }}
-													</span>
+												<app-application-status-badges [application]="project"></app-application-status-badges>
 
-													<span
-														*ngIf="
-															(project?.lifetime_reached | hasStatus: lifetime_states.EXPIRED) &&
-															!(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)
-														"
-														style="margin-left: 5px"
-														class="badge bg-danger"
-														>{{ lifetime_states[lifetime_states.EXPIRED] }}
-													</span>
-													<span
-														*ngIf="project?.lifetime_reached | hasStatus: lifetime_states.EXPIRES_SOON"
-														style="margin-left: 5px"
-														class="badge bg-warning"
-														>{{ lifetime_states[lifetime_states.EXPIRES_SOON] }}</span
-													>
-
-													<span
-														*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION"
-														style="margin-left: 5px"
-														class="badge bg-info"
-														>WAIT FOR CONFIRMATION
-													</span>
-
-													<span
-														*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
-														style="margin-left: 5px"
-														class="badge bg-dark"
-														>WAIT FOR TERMINATION BY FM
-													</span>
-												}
 											</td>
 											<td>
 												{{ project.project_application_total_ram }}
@@ -489,7 +351,11 @@
 										<option value="OVP">OpenStack</option>
 										<option value="SVP">Simple VM</option>
 										<option value="USER" selected>Specific User</option>
-										<option *ngFor="let project of projects" value="{{ project?.project_application_perun_id }}">
+										<option
+											*ngFor="let project of applicationPage.results"
+											value="{{ project?.project_application_perun_id }}"
+										>
+
 											{{ project?.project_application_shortname }}
 											({{ project?.project_application_perun_id }})
 										</option>
