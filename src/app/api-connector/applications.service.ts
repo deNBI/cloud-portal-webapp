@@ -9,6 +9,7 @@ import { ApplicationLifetimeExtension } from '../applications/application_extens
 import { ApplicationModification } from '../applications/application_modification.model'
 import { ApplicationCreditRequest } from '../applications/application_credit_request'
 import { User } from '../applications/application.model/user.model'
+import { DisseminationPlatform } from 'app/applications/application.model/dissemination-platform'
 
 /**
  * Service which provides methods for creating application.
@@ -35,6 +36,12 @@ export class ApplicationsService {
 				withCredentials: true
 			}
 		)
+	}
+
+	getDisseminationPlatforms(): Observable<DisseminationPlatform[]> {
+		return this.http.get<DisseminationPlatform[]>(`${ApiSettings.getApiBaseURL()}project_applications/dissemination/`, {
+			withCredentials: true
+		})
 	}
 
 	adjustModification(application: ApplicationModification): Observable<Application> {

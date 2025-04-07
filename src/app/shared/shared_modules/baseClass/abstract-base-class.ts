@@ -1,12 +1,10 @@
- 
-
-enum Lifetime_States {
+export enum Lifetime_States {
 	EXPIRED = 0,
 	EXPIRES_SOON = 1,
 	VALID_LIFETIME = 2,
 }
 
-enum Project_States {
+export enum Project_States {
 	ACTIVE = 2,
 	SUSPENDED = 9,
 	WAITING = 10,
@@ -83,7 +81,6 @@ enum Vm_Statuses {
 	RESTARTING = 6,
 	'NOT FOUND' = 7,
 }
- 
 
 /**
  * Abstract class for basic things.
@@ -109,7 +106,9 @@ export abstract class AbstractBaseClass {
 	vm_statuses: typeof Vm_Statuses = Vm_Statuses
 
 	collapse_status: { [id: string]: boolean } = {}
-
+	protected readonly Project_States = Project_States
+	protected readonly Application_States = Application_States
+	protected readonly Lifetime_States = Lifetime_States
 	/**
 	 * Used in application formular and on instance detail page
 	 */

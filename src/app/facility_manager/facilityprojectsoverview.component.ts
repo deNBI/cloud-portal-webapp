@@ -40,6 +40,9 @@ import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
 import { ApplicationPage } from 'app/shared/models/application.page'
 import { BasePaginationComponent } from 'app/shared/shared_modules/components/pagination/base-pagination.component'
 import { ApplicationFilter } from 'app/shared/classes/application-filter'
+import { ApplicationListModalComponent } from 'app/shared/modal/application-list/application-list.modal.component'
+import { ApplicationFilterInputComponent } from 'app/shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
+import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
 
 /**
  * Facility Project overview component.
@@ -68,7 +71,9 @@ import { ApplicationFilter } from 'app/shared/classes/application-filter'
 		HasStatusPipe,
 		HasstatusinlistPipe,
 		InListPipe,
-		BasePaginationComponent
+		BasePaginationComponent,
+		ApplicationFilterInputComponent,
+		ApplicationStatusBadgesComponent
 	]
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
@@ -85,8 +90,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	applicationFilter: ApplicationFilter = new ApplicationFilter()
 
 	isLoaded: boolean = false
-	projects: Application[] = []
-	projectsCopy: Application[] = []
 	show_openstack_projects: boolean = true
 	show_simple_vm_projects: boolean = true
 	details_loaded: boolean = false
@@ -164,7 +167,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 				break
 			default:
 				// eslint-disable-next-line no-case-declarations
-				const pro: Application = this.projects.find(
+				const pro: Application = this.applicationPage.results.find(
 					(project: Application): boolean =>
 						project.project_application_perun_id.toString() === this.selectedProjectType.toString()
 				)
@@ -254,6 +257,18 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		})
 	}
 
+	getRunningApplicationsThatNeedIntroduction(): void {
+		this.facilityService
+			.getAllProjectsThatStillDemandAnIntroductionCourse(this.selectedFacility['FacilityId'])
+			.subscribe((applications: Application[]): void => {
+				const initialState = {
+					applications: applications
+				}
+				console.log(initialState)
+				this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
+			})
+	}
+
 	checkValidElixirIdFilter(): void {
 		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')
 	}
@@ -330,6 +345,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			pr.is_project_selected = false
 			this.toggleSelectedEmailApplication(pr, pr.is_project_selected)
 		})
+		this.selectedEmailProjects = []
 		//		this.selectedEmailProjects = []; // clear the selectedEmailProjects list
 	}
 
@@ -366,7 +382,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		if (!id) {
 			return 'NOT_FOUND'
 		}
-		const project: Application = this.projects.find(
+		const project: Application = this.applicationPage.results.find(
 			(element: Application): boolean => element.project_application_perun_id.toString() === id.toString()
 		)
 		if (project) {
@@ -380,7 +396,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		this.getFacilityProjects(this.selectedFacility['FacilityId'])
 	}
 	getFacilityProjects(facility: string): void {
-		this.projects = []
 		this.projectsLoaded = false
 		this.userElixirIdFilter = ''
 
@@ -392,7 +407,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 					if (group.project_application_lifetime > 0) {
 						group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning)
 					}
-					this.projects.push(group)
 				}
 				this.projectsLoaded = true
 

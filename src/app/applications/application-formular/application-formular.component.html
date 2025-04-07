@@ -270,17 +270,20 @@
 									<div class="input-group-append"><span class="input-group-text"> months </span></div>
 								</div>
 								<span class="help-block">How long would you like to run this project?</span>
-								<div class="alert alert-primary">
+								<div class="alert alert-warning my-2">
 									<p
 										*ngIf="
 											!(application?.project_application_nfdi?.length > 0) || !application?.project_application_nfdi
 										"
 									>
-										The maximum possible initial lifetime to be requested is
-										<strong>{{ max_lifetime }} months.</strong> Under certain conditions, longer initial terms can also
-										be granted, for example in the case the project is an <strong>NFDI</strong>
-										project. Please click the corresponding options in the further course of the form and enter further
-										information in the available comment and description fields if necessary.
+										de.NBI Cloud projects have no fixed total runtime. The maximum possible initial lifetime for new
+										projects is <strong>{{ max_lifetime }} months</strong>. Under certain conditions, longer initial
+										terms can also be granted immediately, for example for
+										<strong>longer funded projects, like NFDI, DFG, BMBF or Horizon Europe projects</strong>. Please
+										select the corresponding options in the further course of the form and enter information about the
+										total funded runtime of your project in the comment field further down in the project application
+										form. Please consider: After initial approval, you project's lifetime can be extended at any time
+										when you submit a project lifetime extension request.
 									</p>
 									<p *ngIf="application?.project_application_nfdi?.length > 0">
 										As your project is an
@@ -289,6 +292,38 @@
 									</p>
 									Please consider: After initially approved, you are able to extend your project lifetime by sending
 									extension requests.
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group row my-2">
+							<label class="col-md-4 form-control-label" for="id_project_application_basic_introduction"
+								><strong
+									>Training
+									<i
+										data-balloon="
+										Please indicate whether you want to have an introduction to the use of the cloud with this project type.
+										You will then be informed of the next date for an introductory event, or you will receive a separate introduction.
+										"
+										data-balloon-pos="right"
+									>
+										<i class="icon-question" style="cursor: pointer"></i
+									></i> </strong
+							></label>
+							<div class="col-md-8">
+								<div class="form-check">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										[ngClass]="{ 'ng-valid': application.project_application_basic_introduction }"
+										id="id_project_application_basic_introduction"
+										name="project_application_basic_introduction"
+										[(ngModel)]="application.project_application_basic_introduction"
+									/>
+									<label class="help-block"
+										>Are you interested in a short {{ openstack_project ? 'OpenStack' : 'SimpleVM' }} introduction
+										workshop? You and your project members will be notified as soon as a workshop is organized.</label
+									>
 								</div>
 							</div>
 						</div>
@@ -833,28 +868,6 @@
 						</div>
 
 						<div class="form-group row" *ngIf="openstack_project">
-							<label class="col-md-4 form-control-label" for="id_project_application_openstack_basic_introduction"
-								><strong>Training</strong></label
-							>
-							<div class="col-md-8">
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										[ngClass]="{ 'ng-valid': application.project_application_openstack_basic_introduction }"
-										id="id_project_application_openstack_basic_introduction"
-										name="project_application_openstack_basic_introduction"
-										[(ngModel)]="application.project_application_openstack_basic_introduction"
-									/>
-									<label class="help-block"
-										>Are you interested in a short OpenStack introduction workshop? You and your project members will be
-										notified as soon as a workshop is organized.</label
-									>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group row" *ngIf="openstack_project">
 							<label class="col-md-4 form-control-label" for="id_project_application_cloud_service"
 								><strong>Service</strong></label
 							>
@@ -1175,7 +1188,7 @@
 							<accordion>
 								<accordion-group
 									[isOpen]="dissemination_information_open"
-									id="dissemination_information_accordion"
+									id="dissemination_inforfmation_accordion"
 									#dissemination_information_accordion
 								>
 									<div accordion-heading style="width: 100%; cursor: pointer">
@@ -1270,7 +1283,7 @@
 												/>
 											</div>
 										</div>
-										<div *ngIf="application?.dissemination.information_description_allowed" class="col-md-6">
+										<div *ngIf="application?.dissemination?.information_description_allowed" class="col-md-6">
 											<textarea
 												type="text"
 												class="form-control"
@@ -1411,39 +1424,24 @@
 									>
 										Please select at least one Platform.
 									</div>
-									<div class="form-group row">
-										<label class="col-md-4 form-control-label">de.NBI Platforms</label>
-										<div class="col-md-4">
-											<div class="form-check">
-												<input
-													type="checkbox"
-													class="form-check-input"
-													id="platform_denbi_checkbox"
-													data-test-id="platform_denbi_checkbox"
-													[(ngModel)]="application.dissemination.platform_denbi"
-													name="platform_denbi"
-												/>
+									<ng-container *ngFor="let platform of availablePlatforms">
+										<div class="form-group row" *ngIf="platform.active">
+											<label class="col-md-4 form-control-label">{{ platform.name }}</label>
+											<div class="col-md-4">
+												<div class="form-check">
+													<input
+														type="checkbox"
+														class="form-check-input"
+														id="platform_{{ platform.name }}_checkbox"
+														data-test-id="platform_{{ platform.name }}_checkbox"
+														[checked]="application.dissemination.platforms | isPlatformSelected: platform"
+														name="platform_{{ platform.name }}"
+														(change)="updateSelectedPlatforms(platform, $event.target.checked)"
+													/>
+												</div>
 											</div>
 										</div>
-									</div>
-
-									<div class="form-group row">
-										<label class="col-md-4 form-control-label">Twitter</label>
-										<div class="col-md-4">
-											<div class="form-check">
-												<input
-													type="checkbox"
-													class="form-check-input"
-													#twitter
-													id="platform_twitter_checkbox"
-													data-test-id="platform_twitter_checkbox"
-													[(ngModel)]="application.dissemination.platform_twitter"
-													name="platform_twitter"
-													(change)="count_platform(twitter.checked)"
-												/>
-											</div>
-										</div>
-									</div>
+									</ng-container>
 								</accordion-group>
 							</accordion>
 						</div>
@@ -1682,7 +1680,7 @@
 							application?.project_application_edam_terms.length === 0 ||
 							application?.project_application_edam_terms.length > 10 ||
 							(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
-							(!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)
+							(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed)
 						"
 						class="form-group row"
 					>
@@ -2122,36 +2120,31 @@
 							<tr *ngIf="application?.project_application_openstack_project">
 								<td>
 									OpenStack Basic Introduction:
-									<span *ngIf="application?.project_application_openstack_basic_introduction">Yes</span>
-									<span *ngIf="!application?.project_application_openstack_basic_introduction">No</span>
+									<span *ngIf="application?.project_application_basic_introduction">Yes</span>
+									<span *ngIf="!application?.project_application_basic_introduction">No</span>
 								</td>
 							</tr>
 
 							<tr>
 								<td>
 									Dissemination Allowed: <span *ngIf="application?.dissemination?.someAllowed()">Yes</span
-									><span *ngIf="!application?.dissemination.someAllowed()">No</span>
+									><span *ngIf="!application?.dissemination?.someAllowed()">No</span>
 								</td>
 							</tr>
-							<tr *ngIf="application?.dissemination.someAllowed()">
+							<tr *ngIf="application?.dissemination?.someAllowed()">
 								<td>
 									- for:
-									<span
-										class="badge bg-info"
-										style="margin: 2px"
-										*ngFor="let information of application?.dissemination.allowed_informations"
-										>{{ information }}</span
-									>
+									<span> {{ application?.dissemination | getAllowedInformationForDissemination }}</span>
 								</td>
 							</tr>
-							<tr *ngIf="application?.dissemination.someAllowed()">
+							<tr *ngIf="application?.dissemination?.someAllowed()">
 								<td>
 									- on:
 									<span
 										class="badge bg-info"
 										style="margin: 2px"
-										*ngFor="let platform of application?.dissemination.allowed_platforms"
-										>{{ platform }}</span
+										*ngFor="let platform of application?.dissemination?.platforms"
+										>{{ platform.name }}</span
 									>
 								</td>
 							</tr>

@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { map } from 'rxjs/operators'
+import { catchError, map } from 'rxjs/operators'
 import { ApiSettings } from './api-settings.service'
 import { IResponseTemplate } from './response-template'
 import { Resources } from '../vo_manager/resources/resources'
 import { ProjectMember } from '../projectmanagement/project_member.model'
 import { Application } from '../applications/application.model/application.model'
 import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeFrame.model'
+import { ApplicationPage } from 'app/shared/models/application.page'
+import { ApplicationFilter } from 'app/shared/classes/application-filter'
 
 /**
  * Service which provides vo methods.
@@ -64,21 +66,75 @@ export class VoService {
 		})
 	}
 
+	getAllProjectsThatStillDemandAnIntroductionCourse(): Observable<object> {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/introduction/`, {
+			withCredentials: true
+		})
+		// test request
+	}
+
 	resumeProject(groupid: number | string): Observable<object> {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, null, {
 			withCredentials: true
 		})
 	}
 
-	getAllGroupsWithDetails(): Observable<Application[]> {
+	getAllGroupsWithDetails(
+		applicationFilter: ApplicationFilter,
+		applicationPage = new ApplicationPage()
+	): Observable<ApplicationPage> {
+		const params = new HttpParams()
+			.set('page', applicationPage.page)
+			.set('page_size', applicationPage.page_size)
+			.set('sortDirection', applicationFilter.sortDirection)
+			.set('sortColumn', applicationFilter.sortColumn)
+
+		const url = `${ApiSettings.getApiBaseURL()}vo/projects/details/`
+
 		return this.http
-			.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
-				withCredentials: true
-			})
+			.post<ApplicationPage>(
+				url,
+				{
+					status_list: applicationFilter.getFilterStatusList(),
+					showSimpleVM: applicationFilter.showSimpleVM,
+					showOpenStack: applicationFilter.showOpenStack,
+					showKubernetes: applicationFilter.showKubernetes,
+					textFilter: applicationFilter.textFilter
+				},
+				{
+					params,
+					withCredentials: true
+				}
+			)
 			.pipe(
-				map((applications: Application[]): Application[] =>
-					applications.map((application: Application): Application => new Application(application))
-				)
+				catchError(error => {
+					if (error.status === 404) {
+						// reset the page to 1 and try again
+						applicationPage.page = 1
+						params.set('page', applicationPage.page)
+
+						return this.http.post<ApplicationPage>(
+							url,
+							{
+								status_list: applicationFilter.getFilterStatusList(),
+								showSimpleVM: applicationFilter.showSimpleVM,
+								showOpenStack: applicationFilter.showOpenStack,
+								showKubernetes: applicationFilter.showKubernetes,
+								textFilter: applicationFilter.textFilter
+							},
+							{ params, withCredentials: true }
+						)
+					} else {
+						throw error
+					}
+				}),
+				map((response: ApplicationPage) => {
+					// Update the original page object with response data
+					applicationPage.count = response.count
+					applicationPage.setResults(response.results)
+
+					return applicationPage
+				})
 			)
 	}
 

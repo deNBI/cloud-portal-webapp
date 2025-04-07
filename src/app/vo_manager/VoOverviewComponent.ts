@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core'
-import { Observable, Subscription, take } from 'rxjs'
+import { debounceTime, distinctUntilChanged, Observable, Subject, Subscription } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 import * as FileSaver from 'file-saver'
 
@@ -16,7 +16,6 @@ import {
 	NgbdSortableHeaderDirective,
 	SortEvent
 } from '../shared/shared_modules/directives/nbd-sortable-header.directive'
-import { ProjectSortService } from '../shared/shared_modules/services/project-sort.service'
 import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.component'
 import { ConfirmationActions } from '../shared/modal/confirmation_actions'
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component'
@@ -24,6 +23,7 @@ import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/pr
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
 import { TerminateProjectModalComponent } from './modals/terminate-project-modal/terminate-project-modal.component'
 import { DeclineProjectTerminationModalComponent } from './modals/decline-project-termination-modal/decline-project-termination-modal.component'
+import { ApplicationListModalComponent } from 'app/shared/modal/application-list/application-list.modal.component'
 import {
 	TextColorDirective,
 	TextBgColorDirective,
@@ -31,16 +31,20 @@ import {
 	InputGroupComponent,
 	ButtonDirective
 } from '@coreui/angular'
-import { NgbPagination, NgbHighlight } from '@ng-bootstrap/ng-bootstrap'
+import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap'
 import { FormsModule } from '@angular/forms'
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common'
+import { NgIf, NgFor, NgClass } from '@angular/common'
 import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
 import { DatePickerComponent } from '../shared/datepicking/datepicker.component'
-import { HasStatusPipe } from '../pipe-module/pipes/has-status.pipe'
 import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
-import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
 import { IsFutureTimePipe } from '../pipe-module/pipes/futureTime.pipe'
 import { HasStatusNotInListPipe } from '../pipe-module/pipes/has-status-not-in-list.pipe'
+import { ApplicationPage } from 'app/shared/models/application.page'
+import { ApplicationFilter } from 'app/shared/classes/application-filter'
+import { BasePaginationComponent } from '../shared/shared_modules/components/pagination/base-pagination.component'
+import { ApplicationFilterInputComponent } from '../shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
+import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
+
 
 /**
  * Vo Overview component.
@@ -48,12 +52,11 @@ import { HasStatusNotInListPipe } from '../pipe-module/pipes/has-status-not-in-l
 @Component({
 	selector: 'app-vo-overview',
 	templateUrl: 'voOverview.component.html',
-	providers: [VoService, GroupService, FacilityService, ProjectSortService],
+	providers: [VoService, GroupService, FacilityService],
 	imports: [
 		TextColorDirective,
 		TextBgColorDirective,
 		BadgeComponent,
-		NgbPagination,
 		FormsModule,
 		NgIf,
 		InputGroupComponent,
@@ -65,12 +68,12 @@ import { HasStatusNotInListPipe } from '../pipe-module/pipes/has-status-not-in-l
 		ModalModule,
 		DatePickerComponent,
 		NgClass,
-		AsyncPipe,
-		HasStatusPipe,
 		HasstatusinlistPipe,
-		InListPipe,
 		IsFutureTimePipe,
-		HasStatusNotInListPipe
+		HasStatusNotInListPipe,
+		BasePaginationComponent,
+		ApplicationFilterInputComponent,
+		ApplicationStatusBadgesComponent
 	]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
@@ -103,22 +106,22 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	numberOfTsvs: number = 0
 	checkTSVTimer: ReturnType<typeof setTimeout>
 	checkTSVTimeout: number = 10000
-	projectsCopy: Application[] = []
 
 	selectedProjectType: string = 'ALL'
 	selectedFacility: string | number = 'ALL'
 	userElixirIdFilter: string
+	textFilterSubject = new Subject<string>()
 
 	public newsletterSubscriptionCounter: number
 	member_id: number
-	projects: Application[] = []
 
 	// modal variables for User list
 	public usersModalProjectMembers: ProjectMember[] = []
 	public usersModalProjectID: number
 	public usersModalProjectName: string
 	public managerFacilities: [string, number][]
-
+	applicationPage: ApplicationPage = new ApplicationPage()
+	applicationFilter: ApplicationFilter = new ApplicationFilter()
 	projectMailTemplates: string[] = []
 	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>
 
@@ -131,7 +134,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		private fullLayout: FullLayoutComponent,
 		private voService: VoService,
 		private facilityService: FacilityService,
-		public sortProjectService: ProjectSortService,
 		private modalService: BsModalService,
 		private notificationModal: NotificationModalComponent,
 		private terminateProjectModalComponent: TerminateProjectModalComponent,
@@ -142,6 +144,13 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	ngOnInit(): void {
+		this.textFilterSubject.pipe(debounceTime(600), distinctUntilChanged()).subscribe(filter => {
+			this.userElixirIdFilter = ''
+
+			this.applicationFilter.textFilter = filter
+			this.getVoProjects()
+		})
+
 		this.getVoProjects()
 		this.getComputeCenters()
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
@@ -189,13 +198,11 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	selectAllFilteredProjects(): void {
 		this.selectedEmailProjects = []
 
-		// get all the applications
-		this.applictions$.pipe(take(1)).subscribe(applications => {
-			// set the selected state of all projects to true
-			applications.forEach(application => {
+		this.applicationPage.results.forEach(application => {
+			if (!application.hasTerminatedStatus()) {
 				application.is_project_selected = true
-				this.toggleSelectedEmailApplication(application, application.is_project_selected)
-			})
+				this.toggleSelectedEmailApplication(application)
+			}
 		})
 	}
 
@@ -232,28 +239,27 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	unselectAll(): void {
-		this.sortProjectService.applications.forEach((pr: Application) => {
+		this.applicationPage.results.forEach((pr: Application) => {
 			pr.is_project_selected = false
-			this.toggleSelectedEmailApplication(pr, pr.is_project_selected)
+			this.toggleSelectedEmailApplication(pr)
 		})
+		this.selectedEmailProjects = []
 		//		this.selectedEmailProjects = []; // clear the selectedEmailProjects list
 	}
 
 	unselectAllFilteredProjects(): void {
 		// get all the applications
-		this.applictions$.pipe(take(1)).subscribe(applications => {
-			// set the selected state of all projects to false
-			applications.forEach(application => {
-				application.is_project_selected = false
-				this.toggleSelectedEmailApplication(application, application.is_project_selected)
-			})
+		// set the selected state of all projects to false
+		this.applicationPage.results.forEach(application => {
+			application.is_project_selected = false
+			this.toggleSelectedEmailApplication(application)
 		})
 	}
 
-	toggleSelectedEmailApplication(application: Application, isChecked: boolean): void {
+	toggleSelectedEmailApplication(application: Application): void {
 		const index = this.selectedEmailProjects.indexOf(application)
 
-		if (isChecked) {
+		if (application.is_project_selected) {
 			// checkbox was checked
 			if (index === -1) {
 				// application is not in the list, so add it
@@ -272,25 +278,19 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	disableProject(project: Application): void {
 		this.voService.setDisabledProject(project.project_application_perun_id).subscribe((upd_app: Application) => {
-			const idx = this.projects.indexOf(project)
-			this.projects[idx] = upd_app
-			this.sortProjectService.applications = this.projects
+			const idx = this.applicationPage.results.indexOf(project)
+			this.applicationPage.results[idx] = upd_app
 		})
 	}
 
 	checkValidElixirIdFilter(): void {
 		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')
-		if (!this.validElixirIdFilter) {
-			this.sortProjectService.applications = this.projectsCopy
-			this.applictions$ = this.sortProjectService.applications$
-			this.total$ = this.sortProjectService.total$
-			this.projectsLoaded = true
-		}
 	}
 
 	getProjectsByMemberElixirId(): void {
 		// tslint:disable-next-line:max-line-length
 		this.userElixirIdFilter = this.userElixirIdFilter.trim()
+		this.applicationFilter = new ApplicationFilter()
 		if (this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')) {
 			this.projectsLoaded = false
 
@@ -302,33 +302,25 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 					this.userElixirSearchMember
 				)
 				.subscribe((applications: Application[]): void => {
-					this.projects = applications
 					for (const group of applications) {
 						if (group.project_application_lifetime > 0) {
 							group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning)
 						}
 					}
-					this.sortProjectService.applications = this.projects
-					this.applictions$ = this.sortProjectService.applications$
-					this.total$ = this.sortProjectService.total$
+					this.applicationPage.results = applications
 					this.projectsLoaded = true
 				})
 		} else {
-			this.sortProjectService.applications = this.projectsCopy
-			this.applictions$ = this.sortProjectService.applications$
-			this.total$ = this.sortProjectService.total$
 			this.projectsLoaded = true
 		}
 	}
 
 	enableProject(project: Application): void {
 		this.voService.unsetDisabledProject(project.project_application_perun_id).subscribe((upd_app: Application) => {
-			const idx = this.projects.indexOf(project)
-			this.projects[idx] = upd_app
-			this.sortProjectService.applications = this.projects
+			const idx = this.applicationPage.results.indexOf(project)
+			this.applicationPage.results[idx] = upd_app
 		})
 	}
-
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers.forEach(header => {
@@ -337,8 +329,9 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 			}
 		})
 
-		this.sortProjectService.sortColumn = column
-		this.sortProjectService.sortDirection = direction
+		this.applicationFilter.sortDirection = direction
+		this.applicationFilter.sortColumn = column
+		this.getVoProjects()
 	}
 
 	getApplicationInfos(): void {
@@ -507,21 +500,31 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	getVoProjects(): void {
-		this.projects = []
-		this.voService.getAllGroupsWithDetails().subscribe((applications: Application[]): void => {
-			for (const application of applications) {
-				if (application.project_application_lifetime > 0) {
-					application.lifetime_reached = this.lifeTimeReached(application.lifetime_days, application.DaysRunning)
+		this.projectsLoaded = false
+		this.userElixirIdFilter = ''
+		this.voService
+			.getAllGroupsWithDetails(this.applicationFilter, this.applicationPage)
+			.subscribe((applicationPage: ApplicationPage): void => {
+				for (const application of applicationPage.results) {
+					if (application.project_application_lifetime > 0) {
+						application.lifetime_reached = this.lifeTimeReached(application.lifetime_days, application.DaysRunning)
+					}
 				}
-				this.projects.push(application)
-			}
-			this.projectsCopy = this.projects
 
-			this.sortProjectService.applications = this.projects
-			this.applictions$ = this.sortProjectService.applications$
-			this.total$ = this.sortProjectService.total$
-			this.projectsLoaded = true
-		})
+				this.projectsLoaded = true
+			})
+	}
+
+	getRunningApplicationsThatNeedIntroduction(): void {
+		this.voService
+			.getAllProjectsThatStillDemandAnIntroductionCourse()
+			.subscribe((applications: Application[]): void => {
+				const initialState = {
+					applications: applications
+				}
+				console.log(initialState)
+				this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
+			})
 	}
 
 	resetEmailModal(): void {
@@ -559,20 +562,17 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		document.body.classList.remove('modal-open')
 	}
 
-	updateProjectByIdx(application: Application): void {
-		const indexAll: number = this.projects.indexOf(application, 0)
-		this.getProjectStatus(this.projects[indexAll])
-	}
-
 	removeProjectFromList(application: Application): void {
-		const indexAll: number = this.projects.indexOf(application, 0)
-		if (!application.project_application_openstack_project) {
-			this.projects.splice(indexAll, 1)
-			this.sortProjectService.applications = this.projects
-		} else {
-			this.getProjectStatus(this.projects[indexAll])
+		const indexAll: number = this.applicationPage.results.indexOf(application, -1)
+		if (indexAll !== -1) {
+			this.applicationPage.results.splice(indexAll, 1)
 		}
-		this.fullLayout.getGroupsEnumeration()
+	}
+	updateProjectByIdx(application: Application): void {
+		const indexAll: number = this.applicationPage.results.indexOf(application, -1)
+		if (indexAll !== -1) {
+			this.getProjectStatus(this.applicationPage.results[indexAll])
+		}
 	}
 
 	showDescriptionModal(application: Application): void {
@@ -631,8 +631,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 						? 'The project was successfully set as protected.'
 						: 'The status "Protected" was removed successfully'
 				)
-				const indexAll: number = this.projects.indexOf(project, 0)
-				this.getProjectStatus(this.projects[indexAll])
+				const indexAll: number = this.applicationPage.results.indexOf(project, 0)
+				this.getProjectStatus(this.applicationPage.results[indexAll])
 			},
 			(error: any): void => {
 				if (error['status'] === 500) {

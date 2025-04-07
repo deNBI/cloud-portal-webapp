@@ -834,8 +834,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.bsModalRef = this.modalService.show(ConfirmationModalComponent, { initialState, class: 'modal-lg' })
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe((event: any) => {
-				const action: ConfirmationActions = event.action
-				if (action === ConfirmationActions.REMOVE_MEMBER) {
+				const eventAction: ConfirmationActions = event.action
+				if (eventAction === ConfirmationActions.REMOVE_MEMBER) {
 					this.removeMember(member)
 				}
 			})
