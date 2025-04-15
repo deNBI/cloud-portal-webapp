@@ -45,7 +45,6 @@ import { BasePaginationComponent } from '../shared/shared_modules/components/pag
 import { ApplicationFilterInputComponent } from '../shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
 import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
 
-
 /**
  * Vo Overview component.
  */
@@ -563,13 +562,20 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	removeProjectFromList(application: Application): void {
-		const indexAll: number = this.applicationPage.results.indexOf(application, -1)
+		const indexAll = this.applicationPage.results.findIndex(
+			app => app.project_application_id === application.project_application_id
+		)
+
 		if (indexAll !== -1) {
 			this.applicationPage.results.splice(indexAll, 1)
 		}
 	}
+
 	updateProjectByIdx(application: Application): void {
-		const indexAll: number = this.applicationPage.results.indexOf(application, -1)
+		const indexAll = this.applicationPage.results.findIndex(
+			app => app.project_application_id === application.project_application_id
+		)
+
 		if (indexAll !== -1) {
 			this.getProjectStatus(this.applicationPage.results[indexAll])
 		}
