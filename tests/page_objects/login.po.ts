@@ -11,6 +11,10 @@ export class LoginPagePlaywright {
 	AUTHORIZE_BTN: string = 'authorize-button';
 
 	ACCEPT_ALL_COOKIES = 'Reject Unnecessary Cookies';
+	REGISTER_TEST_COMMUNITY ='Register into Life Science Community - Test Environment'
+	OIDC_ACCESS_DENIED='https://login.elixir-czech.org/oidc/unauthorizedEnvVosGroups'
+	SUBMIT_LIFESCIENCE_TEST_URL="https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=lifescience_test"
+
 	readonly page: Page;
 	readonly baseURL: string = '';
 
@@ -76,6 +80,7 @@ export class LoginPagePlaywright {
 
 		await this.authorizeAccess();
 		await this.skipElixirTestWarning();
+		await this.skipAccessDenied()
 
 		await this.giveConsent();
 		await Util.consoleLogCurrentUrl(this.page);
@@ -97,6 +102,37 @@ export class LoginPagePlaywright {
 			await Util.consoleLogCurrentUrl(this.page);
 		}
 	}
+
+	async skipAccessDenied(): Promise<void> {
+		console.log('Checking if Access Denied');
+		try {
+			await this.page.waitForURL(this.OIDC_ACCESS_DENIED, { timeout: 5000 });
+			console.log("Loaded Access denied")
+
+			const [newPage] = await Promise.all([
+				this.page.context().waitForEvent('page'),
+				this.page.locator(`text=${this.REGISTER_TEST_COMMUNITY}`).click()
+			]);
+
+			// Wait until the new page is loaded
+			await newPage.waitForLoadState();
+
+			// Now perform action on the new page
+
+			console.log('Register lifesciecne clicked');
+
+			await newPage.waitForSelector(`text=Submit`, { timeout: 10000 }); // Wait for the button to appear
+
+			await newPage.locator(`text=Submit`).click();
+			console.log("Submitted")
+		} catch (error) {
+			console.log(`Didn't load access denied: ${error}`);
+		} finally {
+			await Util.consoleLogCurrentUrl(this.page);
+		}
+	}
+
+
 
 	async authorizeAccess(): Promise<void> {
 		console.log('Authorize');
