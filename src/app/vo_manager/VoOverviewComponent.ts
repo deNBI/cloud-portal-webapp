@@ -423,6 +423,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 				}
 				this.selectedProjectType = 'ALL'
 				this.selectedFacility = 'ALL'
+			}, (): any => {
+				this.emailStatus = 2;
 			})
 	}
 
