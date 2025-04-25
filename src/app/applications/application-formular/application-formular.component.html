@@ -1834,16 +1834,18 @@
 	role="dialog"
 	aria-labelledby="Label"
 	aria-hidden="true"
+	(onHide)="redirectToApplicationPage(application_id)"
 >
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">{{ notificationModalTitle }}</h4>
+
 				<button
 					type="button"
 					class="btn-close"
 					style="cursor: pointer"
-					(click)="notificationModal.hide()"
+					(click)="notificationModal.hide(); redirectToApplicationPage(application_id)"
 					aria-label="Close"
 				></button>
 			</div>
@@ -1872,19 +1874,15 @@
 				>
 					Close
 				</button>
-				<a
-					*ngIf="notificationModalIsClosable === true && notificationModalStay === false"
-					[routerLink]="['/project-management/' + application_id]"
+
+				<button
+					type="button"
+					id="notification_btn_redirect"
+					(click)="notificationModal.hide(); resetNotificationModal(); redirectToApplicationPage(application_id)"
+					class="btn btn-secondary"
 				>
-					<button
-						type="button"
-						id="notification_btn_redirect"
-						(click)="notificationModal.hide(); resetNotificationModal()"
-						class="btn btn-secondary"
-					>
-						Close
-					</button>
-				</a>
+					Close
+				</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
