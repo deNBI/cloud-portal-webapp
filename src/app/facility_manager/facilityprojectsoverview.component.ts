@@ -88,6 +88,9 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	selectedMember: object[] = []
 	applicationPage: ApplicationPage = new ApplicationPage()
 	applicationFilter: ApplicationFilter = new ApplicationFilter()
+	activeApplications: Application[] = []
+	filteredActiveApplications: Application[] = []
+	activeProjectsFilterTerm: string = ''
 
 	isLoaded: boolean = false
 	show_openstack_projects: boolean = true
@@ -193,6 +196,8 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			this.selectedFacility = this.managerFacilities[0]
 			this.emailSubject = `[${this.selectedFacility['Facility']}]`
 			this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
+			this.getActiveFacilityProjects(this.managerFacilities[0]['FacilityId'])
+
 			this.title = `${this.title}:${this.selectedFacility['Facility']}`
 		})
 		this.sendNews = true
@@ -311,7 +316,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 		this.applicationPage = new ApplicationPage()
 
-		this.getFacilityProjects(this.selectedFacility['FacilityId'])
+		this.getSelectedFacilityProjects()
 		this.emailSubject = `[${this.selectedFacility['Facility']}]`
 	}
 
@@ -394,6 +399,31 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	getSelectedFacilityProjects(): void {
 		this.getFacilityProjects(this.selectedFacility['FacilityId'])
+		this.getActiveFacilityProjects(this.selectedFacility['FacilityId'])
+	}
+
+	filterActiveProjectsByFilterTerm(): void {
+		if (this.activeProjectsFilterTerm) {
+			this.filteredActiveApplications = this.activeApplications.filter((application: Application) => {
+				return (
+					application.project_application_perun_id.toString() === this.activeProjectsFilterTerm ||
+					application.project_application_shortname.includes(this.activeProjectsFilterTerm) ||
+					application.project_application_name.includes(this.activeProjectsFilterTerm)
+				)
+			})
+		} else {
+			this.filteredActiveApplications = [...this.activeApplications]
+		}
+	}
+	getActiveFacilityProjects(facility_id: string): void {
+		this.activeApplications = []
+		this.activeProjectsFilterTerm = ''
+		this.facilityService
+			.getFacilityActiveProjectsNameAndIds(facility_id)
+			.subscribe((activeApplications: Application[]) => {
+				this.activeApplications = activeApplications
+				this.filterActiveProjectsByFilterTerm()
+			})
 	}
 	getFacilityProjects(facility: string): void {
 		this.projectsLoaded = false
