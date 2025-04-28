@@ -9,7 +9,6 @@
     "prepare": "husky"
   },
 	"overrides": {
-		"vite": "^6.3.0"
 	},
   "private": true,
   "dependencies": {
