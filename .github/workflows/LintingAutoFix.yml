@@ -32,7 +32,7 @@ jobs:
         run: echo "The selected tag is ${{ steps.tag.outputs.TAG }}"
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.14.0'
+          node-version: '22.15.0'
       - run: git status
       - run: npm install -g yarn
       - name: Prepare

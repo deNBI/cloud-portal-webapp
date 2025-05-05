@@ -44,7 +44,7 @@ import {
 import { AccordionModule } from 'ngx-bootstrap/accordion'
 import { NgSelectComponent } from '@ng-select/ng-select'
 import { ModalModule } from 'ngx-bootstrap/modal'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import { DisseminationPlatform } from '../application.model/dissemination-platform'
 import { DisseminationPlatformSelectedPipe } from 'app/pipe-module/pipes/platform-selected.pipe'
 import { ApplicationDissemination } from '../application-dissemination'
@@ -145,6 +145,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		private creditsService: CreditsService,
 		private flavorService: FlavorService,
 		private fullLayout: FullLayoutComponent,
+		private router: Router,
 		userService: UserService,
 		applicationsService: ApplicationsService,
 		cdrRef: ChangeDetectorRef,
@@ -204,6 +205,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		}
 	}
 
+	redirectToApplicationPage(application_id: string | number) {
+		void this.router.navigate(['/project-management', application_id])
+	}
 	setDefaulShortnameLength(): void {
 		this.shortNameMaxLength = this.DEFAULT_SHORTNAME_MAX_LENGTH
 	}
