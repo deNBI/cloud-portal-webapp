@@ -259,7 +259,6 @@
 											</td>
 											<td>
 												<app-application-status-badges [application]="project"></app-application-status-badges>
-
 											</td>
 											<td>
 												{{ project.project_application_total_ram }}
@@ -340,6 +339,14 @@
 									><strong>Which project members should receive the email?</strong></label
 								>
 								<div class="col-md-12">
+									<input
+										type="text"
+										class="form-control"
+										placeholder="Filter projects"
+										[(ngModel)]="activeProjectsFilterTerm"
+										[ngModelOptions]="{ standalone: true }"
+										(input)="filterActiveProjectsByFilterTerm()"
+									/>
 									<select
 										class="form-control form-select"
 										[(ngModel)]="selectedProjectType"
@@ -352,10 +359,9 @@
 										<option value="SVP">Simple VM</option>
 										<option value="USER" selected>Specific User</option>
 										<option
-											*ngFor="let project of applicationPage.results"
+											*ngFor="let project of filteredActiveApplications"
 											value="{{ project?.project_application_perun_id }}"
 										>
-
 											{{ project?.project_application_shortname }}
 											({{ project?.project_application_perun_id }})
 										</option>
