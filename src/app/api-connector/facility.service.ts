@@ -152,6 +152,12 @@ export class FacilityService {
 		})
 	}
 
+	getFacilityActiveProjectsNameAndIds(facility: number | string): Observable<Application[]> {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/active/`, {
+			withCredentials: true
+		})
+	}
+
 	/**
 	 * Retrieves facility allowed groups with details and specific status.
 	 *
