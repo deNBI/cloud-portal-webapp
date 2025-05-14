@@ -436,9 +436,15 @@
 									(click)="togglePersonalDataType(noDataAtAll.checked, 'no_at_all')"
 									[(ngModel)]="adjustedApplication.project_application_no_data_at_all"
 								/>
+								<span class="help-block">
+									My project will not process any human data</span
+								>
 							</div>
 						</div>
 
+					</div>
+					<div class="alert alert-danger" *ngIf="!(adjustedApplication | sufficientHumanDataInformation)">The selection is not sufficient. When stating, that data of human subjects is processed
+						in the course of this project, please also specific which type be selecting the checkboxes with the different options above!
 					</div>
 				</form>
 
@@ -466,7 +472,7 @@
 						form="resource_adjustment_form"
 						id="submitAdjustmentButton"
 						(click)="adjustApplication()"
-						[disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM"
+						[disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM || !(adjustedApplication | sufficientHumanDataInformation)"
 					>
 						<i class="far fa-dot-circle"></i>
 						Adjust
