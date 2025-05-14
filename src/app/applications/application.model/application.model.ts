@@ -72,6 +72,9 @@ export class Application {
 	project_application_no_personal_data: boolean = false
 	project_application_nonsensitive_data: boolean = false
 	project_application_sensitive_data: boolean = false
+	project_application_no_data_at_all: boolean = false
+	// we should refactor this to be a sensitiveDataObject that holds the type of information more precisely
+	// instead of having 5 different booleans --> next step
 	project_application_elixir_project: string
 	dissemination: ApplicationDissemination
 	project_application_pi_approved: boolean

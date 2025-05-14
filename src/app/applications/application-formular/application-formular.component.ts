@@ -49,6 +49,7 @@ import { DisseminationPlatform } from '../application.model/dissemination-platfo
 import { DisseminationPlatformSelectedPipe } from 'app/pipe-module/pipes/platform-selected.pipe'
 import { ApplicationDissemination } from '../application-dissemination'
 import { AllowedDisseminationInformationPipe } from 'app/pipe-module/pipes/allowed-dissemination-information.pipe'
+import { SufficientHumanDataInformationGiven } from 'app/pipe-module/pipes/sufficient-data-information.pipe'
 
 /**
  * Application formular component.
@@ -71,7 +72,8 @@ import { AllowedDisseminationInformationPipe } from 'app/pipe-module/pipes/allow
 		ModalModule,
 		RouterLink,
 		DisseminationPlatformSelectedPipe,
-		AllowedDisseminationInformationPipe
+		AllowedDisseminationInformationPipe,
+		SufficientHumanDataInformationGiven,
 	]
 })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
@@ -555,27 +557,41 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 					this.application.project_application_nonsensitive_data = false
 					this.application.project_application_sensitive_data = false
 				}
+				else {
+					this.application.project_application_no_data_at_all = false;
+				}
 				break
 			}
 			case 'no_personal_data': {
 				if (checked) {
 					this.application.project_application_nonsensitive_data = false
 					this.application.project_application_sensitive_data = false
+					this.application.project_application_no_data_at_all = false;
 				}
 				break
 			}
 			case 'nonsensitive': {
 				if (checked) {
 					this.application.project_application_no_personal_data = false
+					this.application.project_application_no_data_at_all = false;
 				}
 				break
 			}
 			case 'sensitive': {
 				if (checked) {
 					this.application.project_application_no_personal_data = false
+					this.application.project_application_no_data_at_all = false;
 				}
 				break
 			}
+			case 'no_at_all':
+				if (checked) {
+					this.application.project_application_no_data_at_all = true;
+					this.application.project_application_no_personal_data = false;
+					this.application.project_application_sensitive_data = false;
+					this.application.project_application_nonsensitive_data = false;
+					this.application.project_application_person_related_data = false;
+				}
 			default:
 				break
 		}

@@ -836,12 +836,12 @@
 										<input
 											class="form-check-input"
 											type="checkbox"
-											id="id_project_application_no_personal_data_at_all"
-											name="project_application_no_personal_data_at_all"
-											#noPersonalDataAtAll
-											data-test-id="project_application_no_personal_data_at_all"
-											(click)="togglePersonalDataType(noPersonalData.checked, 'no_personal_data')"
-											[(ngModel)]="application.project_application_no_personal_data"
+											id="id_project_application_no_data_at_all"
+											name="project_application_no_data_at_all"
+											#noDataAtAll
+											data-test-id="project_application_no_sensitive_data"
+											(click)="togglePersonalDataType(noDataAtAll.checked, 'no_at_all')"
+											[(ngModel)]="application.project_application_no_data_at_all"
 										/>
 										<span class="help-block">The project will not process any data of human subjects</span>
 									</div>
@@ -852,12 +852,16 @@
 						<div class="form-group row">
 							<label class="col-md-4"></label>
 							<div class="col-md-8">
-								<div class="alert alert-primary" role="alert" *ngIf="!personalData.checked">
-									According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
-									with the exception that an additional agreement is made with the corresponding cloud site operator. If
-									you want to process person related data please click on the checkbox!
+								<div class="alert alert-danger" *ngIf="!(application | sufficientHumanDataInformation)">The selection is not sufficient. When stating, that data of human subjects is processed
+									in the course of this project, please also specific which type be selecting the checkboxes with the different options above!
 								</div>
-								<div class="alert alert-primary" role="alert" *ngIf="personalData.checked">
+								<div class="alert alert-primary" role="alert">
+									According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
+									with the exception that an additional agreement is made with the corresponding cloud site operator.
+									<hr>
+									<p class="fw-bold">Please specify explicitly whether sensitive data will be processed or not – and if so, which data!</p>
+								</div>
+								<div class="alert alert-warning" role="alert" *ngIf="personalData.checked">
 									Options b) and c) require that an additional agreement is made with the corresponding cloud site
 									operator. They will contact you to gather the necessary details.<br />
 									Data under option c) is only permitted to be processed in the following cases:<br />
@@ -1701,11 +1705,12 @@
 							application?.project_application_edam_terms.length === 0 ||
 							application?.project_application_edam_terms.length > 10 ||
 							(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
-							(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed)
+							(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed) 
+							|| !(application | sufficientHumanDataInformation)
 						"
 						class="form-group row"
 					>
-						<div class="alert alert warning">
+						<div class="alert alert-warning">
 							Some required fields are incorrect or not filled in yet. Please check if all required (
 							<i class="fa fa-asterisk" aria-hidden="true"></i>) fields are filled in correctly.
 						</div>
@@ -1797,6 +1802,7 @@
 							<button
 								(click)="dataBackupModal.show()"
 								[disabled]="
+									!(application | sufficientHumanDataInformation) ||
 									!pi_responsibility_checked ||
 									(!unknownPiAffiliationsConfirmation && !valid_pi_affiliations) ||
 									form.invalid ||
@@ -1820,7 +1826,8 @@
 							id="submit_btn"
 							data-test-id="submit_application_btn"
 							[disabled]="
-								submitting ||
+								submitting
+								|| !(application | sufficientHumanDataInformation) ||
 								form.invalid ||
 								(!unknownPiAffiliationsConfirmation &&
 									!valid_pi_affiliations &&
