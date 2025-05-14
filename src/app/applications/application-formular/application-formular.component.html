@@ -769,10 +769,10 @@
 											(click)="togglePersonalDataType(personalData.checked, 'person_related')"
 										/>
 										<span class="help-block" *ngIf="!personalData.checked">
-											My project processes data of human subjects that are not public available
+											My project processes data of human subjects that are not publicly available
 										</span>
 										<span class="help-block" *ngIf="personalData.checked">
-											My project processes data of human subjects that are not public available containing:</span
+											My project processes data of human subjects that are not publicly available containing:</span
 										>
 									</div>
 									<div class="form-check" *ngIf="personalData.checked">
@@ -979,7 +979,7 @@
 
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_horizon_switch"
-								><strong>Horizon 2020</strong></label
+								><strong>Horizon Europe</strong></label
 							>
 							<div class="col-md-8">
 								<div class="form-check">
@@ -992,7 +992,7 @@
 										[defaultChecked]="application?.project_application_horizon2020?.length > 1"
 										(click)="toggleProjectPart(part_horizon.checked, 'horizon')"
 									/>
-									<span class="help-block">Is your project part of a Horizon 2020 project?</span>
+									<span class="help-block">Is your project part of a Horizon Europe project?</span>
 								</div>
 
 								<input
@@ -2212,7 +2212,7 @@
 											style="margin: 2px"
 											*ngIf="application?.project_application_horizon2020"
 										>
-											Horizon 2020:
+											Horizon Europe:
 											{{ application?.project_application_horizon2020 }}</span
 										>
 										<span

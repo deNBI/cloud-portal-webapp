@@ -49,7 +49,7 @@ import { DisseminationPlatform } from '../application.model/dissemination-platfo
 import { DisseminationPlatformSelectedPipe } from 'app/pipe-module/pipes/platform-selected.pipe'
 import { ApplicationDissemination } from '../application-dissemination'
 import { AllowedDisseminationInformationPipe } from 'app/pipe-module/pipes/allowed-dissemination-information.pipe'
-import { SufficientHumanDataInformationGiven } from 'app/pipe-module/pipes/sufficient-data-information.pipe'
+import { SufficientHumanDataInformationGivenPipe} from 'app/pipe-module/pipes/sufficient-data-information.pipe'
 
 /**
  * Application formular component.
@@ -73,7 +73,7 @@ import { SufficientHumanDataInformationGiven } from 'app/pipe-module/pipes/suffi
 		RouterLink,
 		DisseminationPlatformSelectedPipe,
 		AllowedDisseminationInformationPipe,
-		SufficientHumanDataInformationGiven,
+		SufficientHumanDataInformationGivenPipe,
 	]
 })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
@@ -591,6 +591,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 					this.application.project_application_sensitive_data = false;
 					this.application.project_application_nonsensitive_data = false;
 					this.application.project_application_person_related_data = false;
+					break
 				}
 			default:
 				break
