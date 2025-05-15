@@ -751,78 +751,99 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group row">
-							<label class="col-md-4 form-control-label" for="id_project_application_person_related_data"
-								><strong>Person Related Data<i class="fa fa-asterisk" aria-hidden="true"></i></strong
-							></label>
-							<div class="col-md-8">
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										id="id_project_application_person_related_data"
-										name="project_application_person_related_data"
-										data-test-id="project_application_person_related_data_switch"
-										#personalData
-										[(ngModel)]="application.project_application_person_related_data"
-										(click)="togglePersonalDataType(personalData.checked, 'person_related')"
-									/>
-									<span class="help-block" *ngIf="!personalData.checked">
-										My project processes data of human subjects that are not public available
-									</span>
-									<span class="help-block" *ngIf="personalData.checked">
-										My project processes data of human subjects that are not public available containing:</span
-									>
-								</div>
-								<div class="form-check" *ngIf="personalData.checked">
+						<div class="form-group mt-3">
+							<div class="row">
+								<label class="col-md-4 form-control-label" for="id_project_application_person_related_data">
+									<strong>Person Related Data<i class="fa fa-asterisk" aria-hidden="true"></i></strong>
+								</label>
+								<div class="col-md-8">
 									<div class="form-check">
 										<input
 											class="form-check-input"
 											type="checkbox"
-											id="id_project_application_no_personal_data"
-											name="project_application_no_personal_data"
-											#noPersonalData
-											data-test-id="project_application_no_personal_data_switch"
-											(click)="togglePersonalDataType(noPersonalData.checked, 'no_personal_data')"
-											[(ngModel)]="application.project_application_no_personal_data"
+											id="id_project_application_person_related_data"
+											name="project_application_person_related_data"
+											data-test-id="project_application_person_related_data_switch"
+											#personalData
+											[(ngModel)]="application.project_application_person_related_data"
+											(click)="togglePersonalDataType(personalData.checked, 'person_related')"
 										/>
-										<span class="help-block">a) no personal data or sufficiently anonymized data only</span>
-										<div class="alert alert-warning">
-											<strong>Please note that genomic sequences can not be anonymized!</strong>
+										<span class="help-block" *ngIf="!personalData.checked">
+											My project processes data of human subjects that are not publicly available
+										</span>
+										<span class="help-block" *ngIf="personalData.checked">
+											My project processes data of human subjects that are not publicly available containing:</span
+										>
+									</div>
+									<div class="form-check" *ngIf="personalData.checked">
+										<div class="form-check">
+											<input
+												class="form-check-input"
+												type="checkbox"
+												id="id_project_application_no_personal_data"
+												name="project_application_no_personal_data"
+												#noPersonalData
+												data-test-id="project_application_no_personal_data_switch"
+												(click)="togglePersonalDataType(noPersonalData.checked, 'no_personal_data')"
+												[(ngModel)]="application.project_application_no_personal_data"
+											/>
+											<span class="help-block">a) no personal data or sufficiently anonymized data only</span>
+											<div class="alert alert-warning">
+												<strong>Please note that genomic sequences can not be anonymized!</strong>
+											</div>
+										</div>
+										<div class="form-check">
+											<input
+												class="form-check-input"
+												type="checkbox"
+												id="id_project_application_nonsensitive_data"
+												name="project_application_nonsensitive_data"
+												#nonsensitiveData
+												data-test-id="project_application_nonsensitive_data_switch"
+												(click)="togglePersonalDataType(nonsensitiveData.checked, 'nonsensitive')"
+												[(ngModel)]="application.project_application_nonsensitive_data"
+											/>
+											<span class="help-block"
+												>b) personal data [Article 4 (1) GDPR] (e.g. name, e-mail, other online identifiers,
+												geolocation)</span
+											>
+										</div>
+										<div class="form-check">
+											<input
+												class="form-check-input"
+												type="checkbox"
+												id="id_project_application_sensitive_data"
+												name="project_application_sensitive_data"
+												#sensitiveData
+												data-test-id="project_application_sensitive_switch"
+												(click)="togglePersonalDataType(sensitiveData.checked, 'sensitive')"
+												[(ngModel)]="application.project_application_sensitive_data"
+											/>
+											<span class="help-block"
+												>c) sensitive personal data [Articles 4 (13,14,15), 9 GDPR and Recital 51] (e.g. racial or
+												ethnic origin, political opinions, religious or philosophical beliefs, genetic data, biometric
+												data, health data and other special categories of personal data)</span
+											>
 										</div>
 									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-8">
+									<!-- TODO: adjust click here and procedure of adjustment, API might also need adjustments -->
 									<div class="form-check">
 										<input
 											class="form-check-input"
 											type="checkbox"
-											id="id_project_application_nonsensitive_data"
-											name="project_application_nonsensitive_data"
-											#nonsensitiveData
-											data-test-id="project_application_nonsensitive_data_switch"
-											(click)="togglePersonalDataType(nonsensitiveData.checked, 'nonsensitive')"
-											[(ngModel)]="application.project_application_nonsensitive_data"
+											id="id_project_application_no_data_at_all"
+											name="project_application_no_data_at_all"
+											#noDataAtAll
+											data-test-id="project_application_no_sensitive_data"
+											(click)="togglePersonalDataType(noDataAtAll.checked, 'no_at_all')"
+											[(ngModel)]="application.project_application_no_data_at_all"
 										/>
-										<span class="help-block"
-											>b) personal data [Article 4 (1) GDPR] (e.g. name, e-mail, other online identifiers,
-											geolocation)</span
-										>
-									</div>
-									<div class="form-check">
-										<input
-											class="form-check-input"
-											type="checkbox"
-											id="id_project_application_sensitive_data"
-											name="project_application_sensitive_data"
-											#sensitiveData
-											data-test-id="project_application_sensitive_switch"
-											(click)="togglePersonalDataType(sensitiveData.checked, 'sensitive')"
-											[(ngModel)]="application.project_application_sensitive_data"
-										/>
-										<span class="help-block"
-											>c) sensitive personal data [Articles 4 (13,14,15), 9 GDPR and Recital 51] (e.g. racial or ethnic
-											origin, political opinions, religious or philosophical beliefs, genetic data, biometric data,
-											health data and other special categories of personal data)</span
-										>
+										<span class="help-block">The project will not process any data of human subjects</span>
 									</div>
 								</div>
 							</div>
@@ -831,12 +852,16 @@
 						<div class="form-group row">
 							<label class="col-md-4"></label>
 							<div class="col-md-8">
-								<div class="alert alert-primary" role="alert" *ngIf="!personalData.checked">
-									According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
-									with the exception that an additional agreement is made with the corresponding cloud site operator. If
-									you want to process person related data please click on the checkbox!
+								<div class="alert alert-danger" *ngIf="!(application | sufficientHumanDataInformation)">The selection is not sufficient. When stating, that data of human subjects is processed
+									in the course of this project, please also specific which type be selecting the checkboxes with the different options above!
 								</div>
-								<div class="alert alert-primary" role="alert" *ngIf="personalData.checked">
+								<div class="alert alert-primary" role="alert">
+									According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
+									with the exception that an additional agreement is made with the corresponding cloud site operator.
+									<hr>
+									<p class="fw-bold">Please specify explicitly whether sensitive data will be processed or not – and if so, which data!</p>
+								</div>
+								<div class="alert alert-warning" role="alert" *ngIf="personalData.checked">
 									Options b) and c) require that an additional agreement is made with the corresponding cloud site
 									operator. They will contact you to gather the necessary details.<br />
 									Data under option c) is only permitted to be processed in the following cases:<br />
@@ -954,7 +979,7 @@
 
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="id_project_application_horizon_switch"
-								><strong>Horizon 2020</strong></label
+								><strong>Horizon Europe</strong></label
 							>
 							<div class="col-md-8">
 								<div class="form-check">
@@ -967,7 +992,7 @@
 										[defaultChecked]="application?.project_application_horizon2020?.length > 1"
 										(click)="toggleProjectPart(part_horizon.checked, 'horizon')"
 									/>
-									<span class="help-block">Is your project part of a Horizon 2020 project?</span>
+									<span class="help-block">Is your project part of a Horizon Europe project?</span>
 								</div>
 
 								<input
@@ -1680,11 +1705,12 @@
 							application?.project_application_edam_terms.length === 0 ||
 							application?.project_application_edam_terms.length > 10 ||
 							(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
-							(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed)
+							(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed) 
+							|| !(application | sufficientHumanDataInformation)
 						"
 						class="form-group row"
 					>
-						<div class="alert alert warning">
+						<div class="alert alert-warning">
 							Some required fields are incorrect or not filled in yet. Please check if all required (
 							<i class="fa fa-asterisk" aria-hidden="true"></i>) fields are filled in correctly.
 						</div>
@@ -1776,6 +1802,7 @@
 							<button
 								(click)="dataBackupModal.show()"
 								[disabled]="
+									!(application | sufficientHumanDataInformation) ||
 									!pi_responsibility_checked ||
 									(!unknownPiAffiliationsConfirmation && !valid_pi_affiliations) ||
 									form.invalid ||
@@ -1799,7 +1826,8 @@
 							id="submit_btn"
 							data-test-id="submit_application_btn"
 							[disabled]="
-								submitting ||
+								submitting
+								|| !(application | sufficientHumanDataInformation) ||
 								form.invalid ||
 								(!unknownPiAffiliationsConfirmation &&
 									!valid_pi_affiliations &&
@@ -2184,7 +2212,7 @@
 											style="margin: 2px"
 											*ngIf="application?.project_application_horizon2020"
 										>
-											Horizon 2020:
+											Horizon Europe:
 											{{ application?.project_application_horizon2020 }}</span
 										>
 										<span

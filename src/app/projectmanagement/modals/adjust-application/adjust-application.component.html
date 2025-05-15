@@ -367,10 +367,10 @@
 									(click)="togglePersonalDataType(personalData.checked, 'person_related')"
 								/>
 								<span class="help-block" *ngIf="!personalData.checked">
-									My project processes data of human subjects</span
+									My project processes data of human subjects that are not publicly available</span
 								>
 								<span class="help-block" *ngIf="personalData.checked">
-									My project processes data of human subjects containing:</span
+									My project processes data of human subjects that are not publicly available containing:</span
 								>
 							</div>
 							<div class="form-check" *ngIf="personalData.checked">
@@ -423,6 +423,29 @@
 							</div>
 						</div>
 					</div>
+					<div class="form-group row">
+						<div class="col-md-4"></div>
+						<div class="col-md-8">
+							<div class="form-check">
+								<input
+									class="form-check-input"
+									type="checkbox"
+									id="project_application_no_data_at_all"
+									#noDataAtAll
+									data-test-id="project_application_no_sensitive_data"
+									(click)="togglePersonalDataType(noDataAtAll.checked, 'no_at_all')"
+									[(ngModel)]="adjustedApplication.project_application_no_data_at_all"
+								/>
+								<span class="help-block">
+									My project will not process any human data</span
+								>
+							</div>
+						</div>
+
+					</div>
+					<div class="alert alert-danger" *ngIf="!(adjustedApplication | sufficientHumanDataInformation)">The selection is not sufficient. When stating, that data of human subjects is processed
+						in the course of this project, please also specific which type be selecting the checkboxes with the different options above!
+					</div>
 				</form>
 
 				<div *ngIf="resourceAdjustmentForm.invalid" class="alert alert-warning" role="alert">
@@ -449,7 +472,7 @@
 						form="resource_adjustment_form"
 						id="submitAdjustmentButton"
 						(click)="adjustApplication()"
-						[disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM"
+						[disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM || !(adjustedApplication | sufficientHumanDataInformation)"
 					>
 						<i class="far fa-dot-circle"></i>
 						Adjust
