@@ -20,6 +20,7 @@ import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal.c
 import { ConfirmationActions } from '../shared/modal/confirmation_actions'
 import { MembersListModalComponent } from '../shared/modal/members/members-list-modal.component'
 import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
+import { ProjectEmailModalComponent } from 'app/shared/modal/email/project-email-modal/project-email-modal.component'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
 import { TerminateProjectModalComponent } from './modals/terminate-project-modal/terminate-project-modal.component'
 import { DeclineProjectTerminationModalComponent } from './modals/decline-project-termination-modal/decline-project-termination-modal.component'
@@ -72,7 +73,9 @@ import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/comp
 		HasStatusNotInListPipe,
 		BasePaginationComponent,
 		ApplicationFilterInputComponent,
-		ApplicationStatusBadgesComponent
+		ApplicationStatusBadgesComponent,
+		ProjectCsvTemplatedEmailModalComponent,
+		ProjectEmailModalComponent,
 	]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
@@ -269,6 +272,11 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 			// application is in the list, so remove it
 			this.selectedEmailProjects.splice(index, 1)
 		}
+	}
+
+	openProjectMailsModal(): void {
+		let initialState = { selectedProjects: this.selectedEmailProjects }
+		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' })
 	}
 
 	openProjectCSVMailModal(): void {
