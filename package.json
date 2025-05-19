@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.948.0",
+  "version": "4.949.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -85,8 +85,8 @@
     "@playwright/test": "1.52.0",
     "@types/jasmine": "5.1.7",
     "@types/node": "22.15.2",
-    "@typescript-eslint/eslint-plugin": "8.31.0",
-    "@typescript-eslint/parser": "8.31.0",
+    "@typescript-eslint/eslint-plugin": "8.32.0",
+    "@typescript-eslint/parser": "8.32.0",
     "async": "3.2.6",
     "audit-ci": "7.1.0",
     "autoprefixer": "10.4.21",
