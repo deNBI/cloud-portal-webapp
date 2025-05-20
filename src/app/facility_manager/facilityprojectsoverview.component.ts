@@ -248,7 +248,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	filterMembers(bare_searchString: string): void {
 		this.filteredMembers = []
-		const searchString: string = bare_searchString.toLowerCase()
+		const searchString: string = bare_searchString.trim().toLowerCase()
 
 		this.allFacilityMembers.forEach((member: object): void => {
 			if (
@@ -387,7 +387,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		if (!id) {
 			return 'NOT_FOUND'
 		}
-		const project: Application = this.applicationPage.results.find(
+		const project: Application = this.filteredActiveApplications.find(
 			(element: Application): boolean => element.project_application_perun_id.toString() === id.toString()
 		)
 		if (project) {
@@ -555,6 +555,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	public resetEmailModal(): void {
 		this.selectedProjectType = 'ALL'
+		this.activeProjectsFilterTerm = ''
 		this.emailSubject = `[${this.selectedFacility['Facility']}]`
 		this.emailText = null
 		this.emailReply = null
