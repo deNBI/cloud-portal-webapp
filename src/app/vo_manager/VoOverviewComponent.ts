@@ -75,7 +75,7 @@ import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/comp
 		ApplicationFilterInputComponent,
 		ApplicationStatusBadgesComponent,
 		ProjectCsvTemplatedEmailModalComponent,
-		ProjectEmailModalComponent,
+		ProjectEmailModalComponent
 	]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
@@ -275,7 +275,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	openProjectMailsModal(): void {
-		let initialState = { selectedProjects: this.selectedEmailProjects }
+		const initialState = { selectedProjects: this.selectedEmailProjects }
 		this.bsModalRef = this.modalService.show(ProjectEmailModalComponent, { initialState, class: 'modal-lg' })
 	}
 
