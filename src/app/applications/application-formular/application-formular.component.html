@@ -852,14 +852,21 @@
 						<div class="form-group row">
 							<label class="col-md-4"></label>
 							<div class="col-md-8">
-								<div class="alert alert-danger" *ngIf="!(application | sufficientHumanDataInformation)">The selection is not sufficient. When stating, that data of human subjects is processed
-									in the course of this project, please also specific which type be selecting the checkboxes with the different options above!
+								<div class="alert alert-danger" *ngIf="!(application | sufficientHumanDataInformation)">
+									The selection is not sufficient. When stating, that data of human subjects is processed in the course
+									of this project, please also specific which type be selecting the checkboxes with the different
+									options above!
 								</div>
 								<div class="alert alert-primary" role="alert">
 									According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
 									with the exception that an additional agreement is made with the corresponding cloud site operator.
-									<hr>
-									<p class="fw-bold">Please specify explicitly whether sensitive data will be processed or not – and if so, which data!</p>
+									<hr />
+									<p class="fw-bold">
+										Please specify explicitly whether sensitive data will be processed or not – and if so, which data!
+									</p>
+									<hr />
+									Find more information on personal or human data in the de.NBI Cloud useful
+									<a class="alert-link" href="{{ WIKI_PERSONAL_DATA }}" target="_blank">in our wiki</a>.
 								</div>
 								<div class="alert alert-warning" role="alert" *ngIf="personalData.checked">
 									Options b) and c) require that an additional agreement is made with the corresponding cloud site
@@ -886,8 +893,6 @@
 									4. Processing is necessary for archiving purposes in the public interest, scientific or historic
 									research purposes or statistical purposes [<a class="alert-link" href="{{ GDPR_LINK }}">Art. 9</a>
 									(2j)]<br />
-									Further information regarding the processing of sensitive data can be found on our
-									<a class="alert-link" href="{{ WIKI_PERSONAL_DATA }}">Wiki</a>.
 								</div>
 							</div>
 						</div>
@@ -1705,8 +1710,8 @@
 							application?.project_application_edam_terms.length === 0 ||
 							application?.project_application_edam_terms.length > 10 ||
 							(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
-							(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed) 
-							|| !(application | sufficientHumanDataInformation)
+							(!application?.dissemination?.isPlatformSelected() && application?.project_application_report_allowed) ||
+							!(application | sufficientHumanDataInformation)
 						"
 						class="form-group row"
 					>
@@ -1826,8 +1831,8 @@
 							id="submit_btn"
 							data-test-id="submit_application_btn"
 							[disabled]="
-								submitting
-								|| !(application | sufficientHumanDataInformation) ||
+								submitting ||
+								!(application | sufficientHumanDataInformation) ||
 								form.invalid ||
 								(!unknownPiAffiliationsConfirmation &&
 									!valid_pi_affiliations &&
