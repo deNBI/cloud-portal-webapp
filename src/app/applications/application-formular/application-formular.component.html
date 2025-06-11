@@ -716,16 +716,7 @@
 								><strong>Research Topics<i class="fa fa-asterisk" aria-hidden="true"></i> </strong
 							></label>
 							<div class="col-md-8" style="z-index: 999">
-								<div
-									[ngClass]="{
-										'danger-border':
-											application?.project_application_edam_terms?.length <= 0 ||
-											application?.project_application_edam_terms?.length > 10,
-										'success-border':
-											application?.project_application_edam_terms?.length > 0 &&
-											application?.project_application_edam_terms?.length <= 10,
-									}"
-								>
+								<div>
 									<ng-select
 										#edam_ontology
 										id="edam_input"
@@ -733,11 +724,21 @@
 										[items]="edam_ontology_terms"
 										[multiple]="true"
 										bindLabel="term"
+										class="form-control"
 										maxSelectedItems="10"
 										placeholder="Please select at least one topic"
 										dropdownPosition="bottom"
 										[(ngModel)]="application.project_application_edam_terms"
 										name="selected_edam_terms"
+										[ngClass]="{
+											'is-invalid':
+												(form.controls.selected_edam_terms?.invalid ||
+													application.project_application_edam_terms?.length == 0) &&
+												(form.controls.selected_edam_terms?.dirty || form.controls.selected_edam_terms?.touched),
+											'is-valid':
+												form.controls.selected_edam_terms?.valid &&
+												(form.controls.selected_edam_terms?.dirty || form.controls.selected_edam_terms?.touched),
+										}"
 									>
 									</ng-select>
 								</div>
