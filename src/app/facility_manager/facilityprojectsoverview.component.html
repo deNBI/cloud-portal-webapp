@@ -1,7 +1,7 @@
 <div *ngIf="!isLoaded" class="loader"></div>
 <div class="col-md-12 row" *ngIf="managerFacilities.length > 1 && !isLoaded">
 	<div class="col-md-2">
-		<button (click)="emailModal.show()" type="button " class="btn btn-outline-primary">
+		<button (click)="resetEmailModal(); emailModal.show()" type="button " class="btn btn-outline-primary">
 			<i class="icon-envelope-letter"></i>
 			Send email
 		</button>
@@ -29,7 +29,7 @@
 		<div class="col-md-12">
 			<div class="col-md-12 row">
 				<div class="col-md-2">
-					<button (click)="emailModal.show()" type="button " class="btn btn-outline-primary">
+					<button (click)="resetEmailModal(); emailModal.show()" type="button " class="btn btn-outline-primary">
 						<i class="icon-envelope-letter"></i>
 						Send email
 					</button>
@@ -522,11 +522,11 @@
 								<label class="col-md-12 control-label"><strong>Email text*</strong></label>
 								<div class="col-md-12">
 									<textarea
-										minlength="1"
 										required
 										class="form-control"
 										id="emailText"
 										name="emailText"
+										minlength="32"
 										[(ngModel)]="emailText"
 										type="text"
 										#emailT="ngModel"
@@ -615,7 +615,9 @@
 				<div class="modal-body">
 					<div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
 						Are you sure you want to send this email to
-						<span *ngIf="selectedProjectType === 'ALL'">all members of {{ selectedFacility['Facility'] }} ?</span>
+						<span *ngIf="selectedProjectType === 'ALL'">
+							<strong>all </strong> members of {{ selectedFacility['Facility'] }} ?</span
+						>
 						<span *ngIf="selectedProjectType === 'USER' && selectedMember"
 							><br />
 							<span *ngFor="let member of selectedMember">
@@ -623,10 +625,10 @@
 							/></span>
 						</span>
 						<span *ngIf="selectedProjectType === 'SVP'">
-							the Simple Vm members of the {{ selectedFacility['Facility'] }}?
+							the <strong>Simple Vm members </strong> of the {{ selectedFacility['Facility'] }}?
 						</span>
 						<span *ngIf="selectedProjectType === 'OVP'">
-							the OpenStack Project members of the{{ selectedFacility['Facility'] }}?
+							the <strong>OpenStack Project members </strong> of the{{ selectedFacility['Facility'] }}?
 						</span>
 						<span
 							*ngIf="
@@ -636,7 +638,7 @@
 								selectedProjectType !== 'USER'
 							"
 						>
-							the members of the {{ getProjectNameBySelectedProjectTypeAsId() }} project?
+							the members of the <strong>{{ getProjectNameBySelectedProjectTypeAsId() }} </strong>project?
 						</span>
 					</div>
 				</div>

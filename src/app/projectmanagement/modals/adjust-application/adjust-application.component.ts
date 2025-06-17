@@ -34,7 +34,7 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 		NgFor,
 		IntegerOrNullValidatorDirective,
 		FlavorCounterPipe,
-		SufficientHumanDataInformationGivenPipe,
+		SufficientHumanDataInformationGivenPipe
 	]
 })
 export class AdjustApplicationComponent implements OnInit {
@@ -132,9 +132,8 @@ export class AdjustApplicationComponent implements OnInit {
 					this.adjustedApplication.project_application_no_personal_data = false
 					this.adjustedApplication.project_application_nonsensitive_data = false
 					this.adjustedApplication.project_application_sensitive_data = false
-				}
-				else {
-					this.adjustedApplication.project_application_no_data_at_all = false;
+				} else {
+					this.adjustedApplication.project_application_no_data_at_all = false
 				}
 				break
 			}
@@ -142,33 +141,33 @@ export class AdjustApplicationComponent implements OnInit {
 				if (checked) {
 					this.adjustedApplication.project_application_nonsensitive_data = false
 					this.adjustedApplication.project_application_sensitive_data = false
-					this.adjustedApplication.project_application_no_data_at_all = false;
+					this.adjustedApplication.project_application_no_data_at_all = false
 				}
 				break
 			}
 			case 'nonsensitive': {
 				if (checked) {
 					this.adjustedApplication.project_application_no_personal_data = false
-					this.adjustedApplication.project_application_no_data_at_all = false;
+					this.adjustedApplication.project_application_no_data_at_all = false
 				}
 				break
 			}
 			case 'sensitive': {
 				if (checked) {
 					this.adjustedApplication.project_application_no_personal_data = false
-					this.adjustedApplication.project_application_no_data_at_all = false;
+					this.adjustedApplication.project_application_no_data_at_all = false
 				}
 				break
 			}
 			case 'no_at_all': {
 				if (checked) {
-					this.adjustedApplication.project_application_no_data_at_all = true;
-					this.adjustedApplication.project_application_no_personal_data = false;
-					this.adjustedApplication.project_application_sensitive_data = false;
-					this.adjustedApplication.project_application_nonsensitive_data = false;
-					this.adjustedApplication.project_application_person_related_data = false;
-					break
+					this.adjustedApplication.project_application_no_data_at_all = true
+					this.adjustedApplication.project_application_no_personal_data = false
+					this.adjustedApplication.project_application_sensitive_data = false
+					this.adjustedApplication.project_application_nonsensitive_data = false
+					this.adjustedApplication.project_application_person_related_data = false
 				}
+				break
 			}
 			default:
 				break
