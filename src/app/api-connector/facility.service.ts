@@ -12,6 +12,7 @@ import { GPUSpecification } from '../facility_manager/resources/gpu-specificatio
 import { GeneralStorageFactor } from '../facility_manager/resources/general-storage-factor'
 import { ApplicationPage } from 'app/shared/models/application.page'
 import { ApplicationFilter } from 'app/shared/classes/application-filter'
+import { ExtendedFacilityNews } from 'app/facility_manager/newsmanagement/facility-news'
 
 /**
  * Service which provides methods for the facilities.
@@ -702,6 +703,7 @@ export class FacilityService {
 	 * @returns
 	 */
 	sendMailToFacility(
+		extendedNews: ExtendedFacilityNews,
 		facility: string,
 		subject: string,
 		message: string,
@@ -709,9 +711,20 @@ export class FacilityService {
 		reply?: string,
 		sendNews?: any,
 		alternative_news_text?: string,
-		tags?: string
+		tags?: string[],
 	): Observable<any> {
-		const params: HttpParams = new HttpParams()
+
+		const obj: Object = {
+			'subject': subject,
+			'facility_id': facility,
+			'message': message,
+			'reply': reply,
+			'type': project_type,
+			'sendNews': sendNews,
+			'alternative_message': alternative_news_text,
+			'tags': tags,
+		}
+		/*const params: HttpParams = new HttpParams()
 			.set('subject', subject)
 			.set('facility_id', facility)
 			.set('message', message)
@@ -720,8 +733,8 @@ export class FacilityService {
 			.set('sendNews', sendNews)
 			.set('alternative_message', alternative_news_text)
 			.set('tags', tags)
-
-		return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
+		*/
+		return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, obj, {
 			withCredentials: true,
 			observe: 'response'
 		})

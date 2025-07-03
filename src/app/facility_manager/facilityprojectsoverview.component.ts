@@ -43,6 +43,7 @@ import { ApplicationFilter } from 'app/shared/classes/application-filter'
 import { ApplicationListModalComponent } from 'app/shared/modal/application-list/application-list.modal.component'
 import { ApplicationFilterInputComponent } from 'app/shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
 import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
+import { ExtendedFacilityNews } from './newsmanagement/facility-news'
 
 /**
  * Facility Project overview component.
@@ -479,6 +480,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		send?: any,
 		alternative_news_text?: string
 	): void {
+
 		this.emailStatus = 0
 		if (this.selectedProjectType === 'USER') {
 			const tempMailList: string[] = []
@@ -492,16 +494,22 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			reply = reply.trim()
 		}
 
+		const extObj: any = {'title': subject} // ...
+		const extNews: ExtendedFacilityNews = new ExtendedFacilityNews()
+
 		this.facilityService
 			.sendMailToFacility(
+				// TODO: adjust to ExtendedFacilityNews
+				
+				extNews,
 				facility,
-				encodeURIComponent(subject),
-				encodeURIComponent(message),
+				subject,
+				message,
 				this.selectedProjectType,
-				encodeURIComponent(reply),
+				reply,
 				send,
-				encodeURIComponent(alternative_news_text),
-				this.news_tags.join()
+				alternative_news_text,
+				this.news_tags,
 			)
 			.subscribe(
 				(result: any): void => {
