@@ -480,7 +480,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		send?: any,
 		alternative_news_text?: string
 	): void {
-
 		this.emailStatus = 0
 		if (this.selectedProjectType === 'USER') {
 			const tempMailList: string[] = []
@@ -494,22 +493,23 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			reply = reply.trim()
 		}
 
-		const extObj: any = {'title': subject} // ...
-		const extNews: ExtendedFacilityNews = new ExtendedFacilityNews()
+		const extObj: any = {
+			title: subject,
+			facility: facility,
+			text: message,
+			tags: this.news_tags,
+			is_current_motd: false,
+			send_news: send,
+			reply: reply,
+			type: this.selectedProjectType,
+			alternative_message: alternative_news_text
+		}
+		const extNews: ExtendedFacilityNews = new ExtendedFacilityNews(extObj)
 
 		this.facilityService
 			.sendMailToFacility(
 				// TODO: adjust to ExtendedFacilityNews
-				
-				extNews,
-				facility,
-				subject,
-				message,
-				this.selectedProjectType,
-				reply,
-				send,
-				alternative_news_text,
-				this.news_tags,
+				extNews
 			)
 			.subscribe(
 				(result: any): void => {

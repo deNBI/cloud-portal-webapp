@@ -1,5 +1,3 @@
-import { inherits } from "util"
-
 export class FacilityNews {
 	id
 	title: string
@@ -17,14 +15,13 @@ export class FacilityNews {
 }
 
 export class ExtendedFacilityNews extends FacilityNews {
-	message: string
 	reply: string
 	type: string
-	sendNews: boolean
+	send_news: boolean
+	alternative_message: string
 
 	constructor(ext?: Partial<ExtendedFacilityNews>) {
 		super()
 		Object.assign(this, ext)
 	}
-
-} 
+}

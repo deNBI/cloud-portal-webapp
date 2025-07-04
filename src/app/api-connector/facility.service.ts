@@ -702,39 +702,8 @@ export class FacilityService {
 	 * @param news_tags additional tags
 	 * @returns
 	 */
-	sendMailToFacility(
-		extendedNews: ExtendedFacilityNews,
-		facility: string,
-		subject: string,
-		message: string,
-		project_type: string,
-		reply?: string,
-		sendNews?: any,
-		alternative_news_text?: string,
-		tags?: string[],
-	): Observable<any> {
-
-		const obj: Object = {
-			'subject': subject,
-			'facility_id': facility,
-			'message': message,
-			'reply': reply,
-			'type': project_type,
-			'sendNews': sendNews,
-			'alternative_message': alternative_news_text,
-			'tags': tags,
-		}
-		/*const params: HttpParams = new HttpParams()
-			.set('subject', subject)
-			.set('facility_id', facility)
-			.set('message', message)
-			.set('reply', reply)
-			.set('type', project_type)
-			.set('sendNews', sendNews)
-			.set('alternative_message', alternative_news_text)
-			.set('tags', tags)
-		*/
-		return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, obj, {
+	sendMailToFacility(extendedNews: ExtendedFacilityNews): Observable<any> {
+		return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, extendedNews, {
 			withCredentials: true,
 			observe: 'response'
 		})
