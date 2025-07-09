@@ -43,6 +43,7 @@ import { ApplicationFilter } from 'app/shared/classes/application-filter'
 import { ApplicationListModalComponent } from 'app/shared/modal/application-list/application-list.modal.component'
 import { ApplicationFilterInputComponent } from 'app/shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
 import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
+import { ExtendedFacilityNews } from './newsmanagement/facility-news'
 
 /**
  * Facility Project overview component.
@@ -492,16 +493,23 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			reply = reply.trim()
 		}
 
+		const extObj: any = {
+			title: subject,
+			facility: facility,
+			text: message,
+			tags: this.news_tags,
+			is_current_motd: false,
+			send_news: send,
+			reply: reply,
+			type: this.selectedProjectType,
+			alternative_message: alternative_news_text
+		}
+		const extNews: ExtendedFacilityNews = new ExtendedFacilityNews(extObj)
+
 		this.facilityService
 			.sendMailToFacility(
-				facility,
-				encodeURIComponent(subject),
-				encodeURIComponent(message),
-				this.selectedProjectType,
-				encodeURIComponent(reply),
-				send,
-				encodeURIComponent(alternative_news_text),
-				this.news_tags.join()
+				// TODO: adjust to ExtendedFacilityNews
+				extNews
 			)
 			.subscribe(
 				(result: any): void => {
