@@ -335,38 +335,38 @@
 					<div class="modal-body">
 						<form class="form-horizontal" id="email_form" #f="ngForm">
 							<div class="form-group row">
-								<label class="col-md-12 control-label"
-									><strong>Which project members should receive the email?</strong></label
-								>
-								<div class="col-md-12">
-									<input
-										type="text"
-										class="form-control"
-										placeholder="Filter projects"
-										[(ngModel)]="activeProjectsFilterTerm"
-										[ngModelOptions]="{ standalone: true }"
-										(input)="filterActiveProjectsByFilterTerm()"
-									/>
-									<select
-										class="form-control form-select"
-										[(ngModel)]="selectedProjectType"
-										(ngModelChange)="setEmailSubject()"
-										name="selectedProjectType"
-										id="selectedProjectType"
-									>
-										<option value="ALL" selected>All</option>
-										<option value="OVP">OpenStack</option>
-										<option value="SVP">Simple VM</option>
-										<option value="USER" selected>Specific User</option>
-										<option
-											*ngFor="let project of filteredActiveApplications"
-											value="{{ project?.project_application_perun_id }}"
-										>
-											{{ project?.project_application_shortname }}
-											({{ project?.project_application_perun_id }})
-										</option>
-									</select>
-								</div>
+								<c-dropdown>
+									<button cButton cDropdownToggle color="secondary">
+										<strong>Which project members should receive the email?</strong>
+									</button>
+									<div class="col-md-12">
+										<div cDropdownMenu class="dropdown-menu" name="selectedProjectType" id="selectedProjectType">
+											<input
+												type="text"
+												class="form-control"
+												placeholder="Filter projects"
+												[(ngModel)]="activeProjectsFilterTerm"
+												[ngModelOptions]="{ standalone: true }"
+												(input)="filterActiveProjectsByFilterTerm()"
+												(click)="$event.stopPropagation()"
+											/>
+
+											<button cDropdownItem (click)="setSelectedProjectType('ALL')">All</button>
+											<button cDropdownItem (click)="setSelectedProjectType('OVP')">OpenStack</button>
+											<button cDropdownItem (click)="setSelectedProjectType('SVP')">Simple VM</button>
+											<button cDropdownItem (click)="setSelectedProjectType('USER')">Specific User</button>
+											@for (project of filteredActiveApplications; track $index) {
+												<button cDropdownItem (click)="setSelectedProjectType(project?.project_application_perun_id)">
+													{{ project?.project_application_shortname }}
+													({{ project?.project_application_perun_id }})
+												</button>
+											}
+										</div>
+									</div>
+								</c-dropdown>
+							</div>
+							<div>
+								<h4>Recipients: {{ recipientsInfo }}</h4>
 							</div>
 							<div *ngIf="selectedProjectType === 'ALL'">
 								<div class="col">
@@ -380,7 +380,7 @@
 										<span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
 										<span class="switch-handle"></span
 									></label>
-									<p>Do you want this Mail also to be posted to the news-service?</p>
+									Do you want this Mail also to be posted to the news-service?
 								</div>
 							</div>
 

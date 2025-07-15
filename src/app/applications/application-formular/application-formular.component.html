@@ -733,7 +733,7 @@
 										[ngClass]="{
 											'is-invalid':
 												(form.controls.selected_edam_terms?.invalid ||
-													application.project_application_edam_terms?.length == 0) &&
+													application.project_application_edam_terms?.length === 0) &&
 												(form.controls.selected_edam_terms?.dirty || form.controls.selected_edam_terms?.touched),
 											'is-valid':
 												form.controls.selected_edam_terms?.valid &&
