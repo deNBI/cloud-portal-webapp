@@ -13,3 +13,15 @@ export class FacilityNews {
 		Object.assign(this, news)
 	}
 }
+
+export class ExtendedFacilityNews extends FacilityNews {
+	reply: string
+	type: string
+	send_news: boolean
+	alternative_message: string
+
+	constructor(ext?: Partial<ExtendedFacilityNews>) {
+		super()
+		Object.assign(this, ext)
+	}
+}

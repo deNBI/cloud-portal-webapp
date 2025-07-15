@@ -29,7 +29,11 @@ import {
 	TextBgColorDirective,
 	BadgeComponent,
 	InputGroupComponent,
-	ButtonDirective
+	ButtonDirective,
+	DropdownComponent,
+	DropdownToggleDirective,
+	DropdownMenuDirective,
+	DropdownItemDirective
 } from '@coreui/angular'
 import { NgbPagination, NgbHighlight } from '@ng-bootstrap/ng-bootstrap'
 import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
@@ -43,6 +47,7 @@ import { ApplicationFilter } from 'app/shared/classes/application-filter'
 import { ApplicationListModalComponent } from 'app/shared/modal/application-list/application-list.modal.component'
 import { ApplicationFilterInputComponent } from 'app/shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
 import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
+import { ExtendedFacilityNews } from './newsmanagement/facility-news'
 
 /**
  * Facility Project overview component.
@@ -73,7 +78,12 @@ import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/comp
 		InListPipe,
 		BasePaginationComponent,
 		ApplicationFilterInputComponent,
-		ApplicationStatusBadgesComponent
+		ApplicationStatusBadgesComponent,
+		DropdownComponent,
+		ButtonDirective,
+		DropdownToggleDirective,
+		DropdownMenuDirective,
+		DropdownItemDirective
 	]
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
@@ -138,6 +148,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	projects_filtered: Application[] = []
 	facilitySupportMails: string = ''
 	supportMailEditing: boolean = false
+	recipientsInfo: string = ''
 	PREDEFINED_TAGS: string[] = ['downtime', 'openstack', 'simplevm', 'maintenance', 'update']
 
 	@ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>
@@ -152,6 +163,35 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		private notificationModal: NotificationModalComponent
 	) {
 		super()
+	}
+
+	setRecipientsString(): void {
+		switch (this.selectedProjectType) {
+			case 'ALL':
+				this.recipientsInfo = `ALL Projects`
+				break
+			case 'OVP':
+				this.recipientsInfo = `OpenStack Projects`
+				break
+			case 'SVP':
+				this.recipientsInfo = `SimpleVm Projects`
+				break
+			case 'USER':
+				this.recipientsInfo = `Specific Members`
+				break
+			default:
+				// eslint-disable-next-line no-case-declarations
+				const pro: Application = this.filteredActiveApplications.find(
+					(project: Application): boolean =>
+						project.project_application_perun_id.toString() === this.selectedProjectType.toString()
+				)
+				if (pro) {
+					this.recipientsInfo = `${pro.project_application_shortname} (${pro.project_application_perun_id})`
+				} else {
+					this.recipientsInfo = ''
+				}
+				break
+		}
 	}
 
 	setEmailSubject(): void {
@@ -170,7 +210,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 				break
 			default:
 				// eslint-disable-next-line no-case-declarations
-				const pro: Application = this.applicationPage.results.find(
+				const pro: Application = this.filteredActiveApplications.find(
 					(project: Application): boolean =>
 						project.project_application_perun_id.toString() === this.selectedProjectType.toString()
 				)
@@ -228,8 +268,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 
 	openProjectCSVMailModal(): void {
-		console.log('show')
-
 		this.bsModalRef = this.modalService.show(ProjectCsvTemplatedEmailModalComponent, { class: 'modal-lg' })
 	}
 
@@ -269,7 +307,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 				const initialState = {
 					applications: applications
 				}
-				console.log(initialState)
 				this.bsModalRef = this.modalService.show(ApplicationListModalComponent, { initialState, class: 'modal-xl' })
 			})
 	}
@@ -402,19 +439,28 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 		this.getActiveFacilityProjects(this.selectedFacility['FacilityId'])
 	}
 
+	setSelectedProjectType(type: string) {
+		this.selectedProjectType = type
+		this.setEmailSubject()
+		this.setRecipientsString()
+	}
+
 	filterActiveProjectsByFilterTerm(): void {
 		if (this.activeProjectsFilterTerm) {
 			this.filteredActiveApplications = this.activeApplications.filter((application: Application) => {
+				const filterTermLowercase = this.activeProjectsFilterTerm.toLowerCase()
+
 				return (
-					application.project_application_perun_id.toString() === this.activeProjectsFilterTerm ||
-					application.project_application_shortname.includes(this.activeProjectsFilterTerm) ||
-					application.project_application_name.includes(this.activeProjectsFilterTerm)
+					application.project_application_perun_id.toString().toLowerCase() === filterTermLowercase ||
+					application.project_application_shortname.toLowerCase().includes(filterTermLowercase) ||
+					application.project_application_name.toLowerCase().includes(filterTermLowercase)
 				)
 			})
 		} else {
 			this.filteredActiveApplications = [...this.activeApplications]
 		}
 	}
+
 	getActiveFacilityProjects(facility_id: string): void {
 		this.activeApplications = []
 		this.activeProjectsFilterTerm = ''
@@ -492,16 +538,23 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			reply = reply.trim()
 		}
 
+		const extObj: any = {
+			title: subject,
+			facility: facility,
+			text: message,
+			tags: this.news_tags,
+			is_current_motd: false,
+			send_news: send,
+			reply: reply,
+			type: this.selectedProjectType,
+			alternative_message: alternative_news_text
+		}
+		const extNews: ExtendedFacilityNews = new ExtendedFacilityNews(extObj)
+
 		this.facilityService
 			.sendMailToFacility(
-				facility,
-				encodeURIComponent(subject),
-				encodeURIComponent(message),
-				this.selectedProjectType,
-				encodeURIComponent(reply),
-				send,
-				encodeURIComponent(alternative_news_text),
-				this.news_tags.join()
+				// TODO: adjust to ExtendedFacilityNews
+				extNews
 			)
 			.subscribe(
 				(result: any): void => {
@@ -556,6 +609,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	public resetEmailModal(): void {
 		this.selectedProjectType = 'ALL'
 		this.activeProjectsFilterTerm = ''
+		this.recipientsInfo = ''
 		this.emailSubject = `[${this.selectedFacility['Facility']}]`
 		this.emailText = null
 		this.emailReply = null
