@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core'
 import { WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK } from '../../links/links'
 import { is_vo } from '../shared/globalvar'
 import { RouterLink } from '@angular/router'
+import { LandingPageService } from 'app/api-connector/landing-page.service'
 
 /**
  * The type overview of the different project classes.
@@ -11,6 +12,7 @@ import { RouterLink } from '@angular/router'
 	selector: 'app-type-overview',
 	templateUrl: './type-overview.component.html',
 	styleUrls: ['./type-overview.component.css'],
+	providers: [LandingPageService],
 	imports: [RouterLink]
 })
 export class TypeOverviewComponent implements OnInit {
@@ -39,7 +41,16 @@ export class TypeOverviewComponent implements OnInit {
 	PROJECT_TYPES_LINK: string = PROJECT_TYPES_LINK
 	OPENSTACK_LINK: string = OPENSTACK_LINK
 
+	projectTypes: any[] = []
+
+	constructor(private landingPageService: LandingPageService) {}
+
 	ngOnInit(): any {
+		this.landingPageService.getProjectTypeInformation().subscribe((projectTypes: any[]): void => {
+			this.projectTypes = projectTypes
+			console.log(this.projectTypes)
+			// adjust structure of json to be retrieved -> project-type name as keys
+		})
 		this.simpleVM_logo_link = `${this.static_img_folder}simpleVM_Logo.svg`
 		this.simpleVM_curve_logo = `${this.static_img_folder}simplevm-info-page/flatlearning.svg`
 		this.simpleVM_ease_logo = `${this.static_img_folder}simplevm-info-page/easytouse.svg`
