@@ -9,8 +9,8 @@ import { ApiSettings } from './api-settings.service'
 export class LandingPageService {
 	constructor(private http: HttpClient) {}
 
-	getProjectTypeInformation(): Observable<any[]> {
-		return this.http.get<any[]>(`${ApiSettings.getWagtailBase()}project_types_information/`, {
+	getProjectTypeInformation(): Observable<any> {
+		return this.http.get<any>(`${ApiSettings.getWagtailBase()}project_types_information/`, {
 			withCredentials: true
 		})
 
