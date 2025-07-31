@@ -45,14 +45,23 @@ export class TypeOverviewComponent implements OnInit {
 
 	projectTypes: any = {}
 	projectTypeInformationLoaded: boolean = false
+	errorOnLoad: boolean = false
 
 	constructor(private landingPageService: LandingPageService) {}
 
 	ngOnInit(): any {
-		this.landingPageService.getProjectTypeInformation().subscribe((projectTypes: any): void => {
-			this.projectTypes = this.transformURLs(projectTypes)
-			this.projectTypeInformationLoaded = true
-			console.log(this.projectTypes)
+		this.landingPageService.getProjectTypeInformation().subscribe({
+			next: (projectTypes: any): void => {
+				this.projectTypes = this.transformURLs(projectTypes)
+				this.projectTypeInformationLoaded = true
+			},
+			error: (): void => {
+				console.log('here i go')
+				this.projectTypes = {}
+				this.projectTypeInformationLoaded = true
+				this.errorOnLoad = true
+				console.log(this.errorOnLoad)
+			}
 		})
 
 		/** Fallbacks */

@@ -11,7 +11,7 @@
 			<!-- Begin Card Body -->
 			<div class="card-body">
 				<!-- Start Row with Project Types -->
-				<div class="row">
+				<div id="initialrow" class="row">
 					<!-- SimpleVM -->
 					<div class="col-lg-4 col-12">
 						<div class="text-center">
@@ -34,29 +34,18 @@
 								</figure>
 							</div>
 						</div>
-						@if (projectTypeInformationLoaded && projectTypes['SimpleVM']) {
-							<div class="feature-container">
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['SimpleVM']) {
+							<div>
 								@for (feat of projectTypes['SimpleVM'].features; track feat.feature_title) {
-									<div class="row my-3 p-1">
-										<div style="height: 40px; width: 40px" class="col-3">
+									<div class="row my-3 py-1 px-4">
+										<div style="height: 40px; width: 40px" class="col-2">
 											<img class="float-end" src="{{ feat.icon }}" style="height: 100%; width: auto" />
 										</div>
-										<div class="col-9">
+										<div class="col-10">
 											<strong>{{ feat.feature_title }}</strong> – {{ feat.description }}.
 										</div>
 									</div>
 								}
-							</div>
-							<div class="my-3 mx-2 px-3">
-								<h6>Use Cases</h6>
-								<ul class="list-group list-group-flush">
-									@for (case of projectTypes['SimpleVM'].use_cases; track case.title) {
-										<li class="list-group-item">
-											<strong>{{ case.title }}</strong
-											>: {{ case.description }}
-										</li>
-									}
-								</ul>
 							</div>
 						} @else {
 							<!-- fallback -->
@@ -114,41 +103,7 @@
 								</div>
 							</div>
 							<br />
-							<!-- Use cases -->
-							<div>
-								<div>
-									<strong>Typical use cases:</strong>
-									<ul>
-										<li>
-											<strong>Tools and Pipelines:</strong> SimpleVM is a quick way to get up and running with your
-											tools and pipelines in the cloud.
-										</li>
-										<li>
-											<strong>Remote Desktop:</strong> Launch your own Desktop or a browser-based IDE in the cloud
-											(based on Apache Guacamole, RStudio, Theia IDE, and more) and be able to run programs with
-											graphical user interfaces in addition to the command-line.
-										</li>
-									</ul>
-								</div>
-							</div>
 						}
-
-						<div class="row">
-							<div class="col text-center">
-								<div class="row justify-content-center">
-									<strong>Want to learn more about SimpleVM?</strong>
-								</div>
-								<div class="row justify-content-center p-3">
-									<a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button style="background-color: {{ simplevm_color }} !important" class="btn btn-primary">
-											Click Here!
-										</button>
-									</a>
-								</div>
-							</div>
-						</div>
-
-						<br />
 						<!-- End div SimpleVM-->
 					</div>
 
@@ -170,36 +125,25 @@
 						<div class="row justify-content-center">
 							<div style="height: 100px; width: 100px" class="img_bigger">
 								<figure>
+									r
 									<img src="{{ openstack_logo_link }}" alt="Openstack" style="max-height: 100%; width: 100%" />
 								</figure>
 							</div>
 						</div>
 
-						@if (projectTypeInformationLoaded && projectTypes['OpenStack']) {
-							<div class="feature-container">
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['OpenStack']) {
+							<div>
 								@for (feat of projectTypes['OpenStack'].features; track feat.feature_title) {
-									<div class="row my-3 p-1">
-										<div style="height: 40px; width: 40px" class="col-3">
+									<div class="row my-3 py-1 px-4">
+										<div style="height: 40px; width: 40px" class="col-2">
 											<img class="float-end" src="{{ feat.icon }}" style="height: 100%; width: auto" />
 										</div>
-										<div class="col-9">
+										<div class="col-10">
 											<strong>{{ feat.feature_title }}</strong> – {{ feat.description }}.
 										</div>
 									</div>
 								}
 							</div>
-							<div class="my-3 mx-2 px-3">
-								<h6>Use Cases</h6>
-								<ul class="list-group list-group-flush">
-									@for (case of projectTypes['OpenStack'].use_cases; track case.title) {
-										<li class="list-group-item">
-											<strong>{{ case.title }}</strong
-											>: {{ case.description }}
-										</li>
-									}
-								</ul>
-							</div>
-
 						} @else {
 							<!-- Scalability -->
 							<div class="row">
@@ -245,34 +189,8 @@
 							</div>
 							<br />
 							<!-- Use cases -->
-							<div>
-								<div>
-									<strong>Typical use cases:</strong>
-									<ul>
-										<li>
-											<strong>Distributed Workflows:</strong> Distribution of workflows on multiple virtual machines.
-										</li>
-										<li><strong>Services:</strong> The ability to offer services for other researchers.</li>
-									</ul>
-								</div>
-							</div>
 						}
 
-						<div class="row">
-							<div class="col text-center">
-								<div class="row justify-content-center p-3">
-									<strong>Want to learn more about Openstack?</strong>
-								</div>
-								<div class="row justify-content-center">
-									<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button style="background-color: {{ openstack_color }} !important" class="btn btn-primary">
-											Click Here!
-										</button>
-									</a>
-								</div>
-							</div>
-							<br />
-						</div>
 						<!-- End div OpenStack-->
 					</div>
 					<div class="col-lg-4 col-12">
@@ -289,31 +207,19 @@
 							</a>
 						</div>
 
-						@if (projectTypeInformationLoaded && projectTypes['Kubernetes']) {
-							<div class="feature-container">
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['Kubernetes']) {
+							<div>
 								@for (feat of projectTypes['Kubernetes'].features; track feat.feature_title) {
-									<div class="row my-3 p-1">
-										<div style="height: 40px; width: 40px" class="col-3">
+									<div class="row my-3 py-1 px-4">
+										<div style="height: 40px; width: 40px" class="col-2">
 											<img class="float-end" src="{{ feat.icon }}" style="height: 100%; width: auto" />
 										</div>
-										<div class="col-9">
+										<div class="col-10">
 											<strong>{{ feat.feature_title }}</strong> – {{ feat.description }}.
 										</div>
 									</div>
 								}
 							</div>
-							<div class="mx-2 px-3">
-								<h6>Use Cases</h6>
-								<ul class="list-group list-group-flush">
-									@for (case of projectTypes['Kubernetes'].use_cases; track case.title) {
-										<li class="list-group-item">
-											<strong>{{ case.title }}</strong
-											>: {{ case.description }}
-										</li>
-									}
-								</ul>
-							</div>
-
 						} @else {
 							<!-- Logo -->
 							<div class="row justify-content-center">
@@ -323,7 +229,6 @@
 									</figure>
 								</div>
 							</div>
-							<br />
 							<!-- Scalability -->
 							<div class="row">
 								<div style="height: 40px; width: 40px" class="col-3">
@@ -366,8 +271,87 @@
 									users to script actions, e.g. starting and stopping of containerized services.
 								</div>
 							</div>
-							<br />
-							<!-- Use cases -->
+						}
+						<!-- End div Kubernetes -->
+					</div>
+				</div>
+				<div id="usecaserow" class="row">
+					<div class="col-4">
+						<!-- SimpleVM -->
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['SimpleVM']) {
+							<div class="my-3 mx-2 px-5">
+								<h6>Use Cases</h6>
+								<ul class="list-group list-group-flush">
+									@for (case of projectTypes['SimpleVM'].use_cases; track case.title) {
+										<li class="list-group-item">
+											<strong>{{ case.title }}</strong
+											>: {{ case.description }}
+										</li>
+									}
+								</ul>
+							</div>
+						} @else {
+							<div>
+								<div>
+									<strong>Typical use cases:</strong>
+									<ul>
+										<li>
+											<strong>Tools and Pipelines:</strong> SimpleVM is a quick way to get up and running with your
+											tools and pipelines in the cloud.
+										</li>
+										<li>
+											<strong>Remote Desktop:</strong> Launch your own Desktop or a browser-based IDE in the cloud
+											(based on Apache Guacamole, RStudio, Theia IDE, and more) and be able to run programs with
+											graphical user interfaces in addition to the command-line.
+										</li>
+									</ul>
+								</div>
+							</div>
+						}
+					</div>
+					<!-- OpenStack-->
+					<div class="col-4">
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['OpenStack']) {
+							<div class="my-3 mx-2 px-5">
+								<h6>Use Cases</h6>
+								<ul class="list-group list-group-flush">
+									@for (case of projectTypes['OpenStack'].use_cases; track case.title) {
+										<li class="list-group-item">
+											<strong>{{ case.title }}</strong
+											>: {{ case.description }}
+										</li>
+									}
+								</ul>
+							</div>
+						} @else {
+							<div>
+								<div>
+									<strong>Typical use cases:</strong>
+									<ul>
+										<li>
+											<strong>Distributed Workflows:</strong> Distribution of workflows on multiple virtual machines.
+										</li>
+										<li><strong>Services:</strong> The ability to offer services for other researchers.</li>
+									</ul>
+								</div>
+							</div>
+						}
+					</div>
+					<!-- Kubernetes -->
+					<div class="col-4">
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['Kubernetes']) {
+							<div class="my-3 mx-2 px-5">
+								<h6>Use Cases</h6>
+								<ul class="list-group list-group-flush">
+									@for (case of projectTypes['Kubernetes'].use_cases; track case.title) {
+										<li class="list-group-item">
+											<strong>{{ case.title }}</strong
+											>: {{ case.description }}
+										</li>
+									}
+								</ul>
+							</div>
+						} @else {
 							<div>
 								<div>
 									<strong>Typical use cases:</strong>
@@ -384,24 +368,43 @@
 								</div>
 							</div>
 						}
-						<div class="row">
-							<div class="col text-center">
-								<div class="row justify-content-center">
-									<strong>Want to learn more about Kubernetes?</strong>
-								</div>
-								<div class="row justify-content-center p-3">
-									<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button style="background-color: {{ kubernetes_color }}" class="btn btn-primary">
-											Click Here!
-										</button>
-									</a>
-								</div>
-							</div>
-						</div>
-						<!-- End div Kubernetes -->
 					</div>
-
-					<!-- End Row with Project Types-->
+				</div>
+				<div id="buttonrow" class="row">
+					<div class="col-4 text-center">
+						<div class="row justify-content-center">
+							<strong>Want to learn more about SimpleVM?</strong>
+						</div>
+						<div class="row justify-content-center p-3">
+							<a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
+								<button style="background-color: {{ simplevm_color }} !important" class="btn btn-primary">
+									Click Here!
+								</button>
+							</a>
+						</div>
+					</div>
+					<div class="col-4 text-center">
+						<div class="row justify-content-center">
+							<strong>Want to learn more about Openstack?</strong>
+						</div>
+						<div class="row justify-content-center p-3">
+							<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
+								<button style="background-color: {{ openstack_color }} !important" class="btn btn-primary">
+									Click Here!
+								</button>
+							</a>
+						</div>
+					</div>
+					<div class="col-4 text-center">
+						<div class="row justify-content-center">
+							<strong>Want to learn more about Kubernetes?</strong>
+						</div>
+						<div class="row justify-content-center p-3">
+							<a href="{{ KUBERNETES_LINK }}" target="_blank" rel="noopener noreferrer">
+								<button style="background-color: {{ kubernetes_color }}" class="btn btn-primary">Click Here!</button>
+							</a>
+						</div>
+					</div>
 				</div>
 				<!-- Learn more Buttons for bigger Screens -->
 

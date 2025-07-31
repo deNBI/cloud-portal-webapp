@@ -13,7 +13,5 @@ export class LandingPageService {
 		return this.http.get<any>(`${ApiSettings.getWagtailBase()}project_types_information/`, {
 			withCredentials: true
 		})
-
-		// add pipe map and so on
 	}
 }
