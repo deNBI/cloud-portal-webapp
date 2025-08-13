@@ -11,7 +11,7 @@
 			<!-- Begin Card Body -->
 			<div class="card-body">
 				<!-- Start Row with Project Types -->
-				<div class="row">
+				<div id="initialrow" class="row">
 					<!-- SimpleVM -->
 					<div class="col-lg-4 col-12">
 						<div class="text-center">
@@ -34,93 +34,76 @@
 								</figure>
 							</div>
 						</div>
-						<br />
-						<!-- Ease of Use -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="col-3">
-								<img class="float-end" src="{{ simpleVM_ease_logo }}" alt="Ease" style="height: 100%; width: auto" />
-							</div>
-							<div class="col-9">
-								<strong>Ease of Use</strong> – SimpleVM lets you start and stop VMs with a few clicks which means that
-								there is no additional configuration necessary.
-							</div>
-						</div>
-						<br />
-						<!-- Flat Learning Curve -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="col-3">
-								<img class="float-end" src="{{ simpleVM_curve_logo }}" alt="Curve" style="height: 100%; width: auto" />
-							</div>
-							<div class="col-9">
-								<strong>Flat Learning Curve</strong> – If you want to use SimpleVM you don’t have to learn about
-								resource management, like network configurations or storage management. No background knowledge in Cloud
-								Computing is necessary.
-							</div>
-						</div>
-						<br />
-						<!-- Remote Desktop -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="col-3">
-								<img
-									class="float-end"
-									src="{{ simpleVM_remote_logo }}"
-									alt="Remote"
-									style="height: 100%; width: auto"
-								/>
-							</div>
-							<div class="col-9">
-								<strong>Remote Desktop</strong> – If you don’t want to use SimpleVM via terminal you can easily connect
-								to your VM using a Remote Desktop.
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="col-3">
-								<i class="fa fa-chalkboard-teacher" style="color: #125ca7; font-size: 40px; float: right"></i>
-							</div>
-							<div class="col-9">
-								<strong>Workshop support</strong> – Create a workshop and start multiple configured VMs for your
-								participants with just a few clicks. To learn more about our workshop support click
-								<a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">here</a>.
-							</div>
-						</div>
-						<br />
-						<!-- Use cases -->
-						<div>
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['SimpleVM']) {
 							<div>
-								<strong>Typical use cases:</strong>
-								<ul>
-									<li>
-										<strong>Tools and Pipelines:</strong> SimpleVM is a quick way to get up and running with your tools
-										and pipelines in the cloud.
-									</li>
-									<li>
-										<strong>Remote Desktop:</strong> Launch your own Desktop or a browser-based IDE in the cloud (based
-										on Apache Guacamole, RStudio, Theia IDE, and more) and be able to run programs with graphical user
-										interfaces in addition to the command-line.
-									</li>
-								</ul>
+								@for (feat of projectTypes['SimpleVM'].features; track feat.feature_title) {
+									<div class="row my-3 py-1 px-4">
+										<div style="height: 40px; width: 40px" class="col-2">
+											<img class="float-end" src="{{ feat.icon }}" style="height: 100%; width: auto" />
+										</div>
+										<div class="col-10">
+											<strong>{{ feat.feature_title }}</strong> – {{ feat.description }}.
+										</div>
+									</div>
+								}
 							</div>
-						</div>
-
-						<br />
-						<br />
-						<!-- Want to learn more with Button for smaller Screen-->
-						<div class="row d-block d-lg-none">
-							<div class="col text-center">
-								<div class="row justify-content-center">
-									<strong>Want to learn more about SimpleVM?</strong>
+						} @else {
+							<!-- fallback -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="col-3">
+									<img class="float-end" src="{{ simpleVM_ease_logo }}" alt="Ease" style="height: 100%; width: auto" />
 								</div>
-								<div class="row justify-content-center">
-									<a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button style="background-color: {{ simplevm_color }} !important" class="btn btn-primary">
-											Click Here!
-										</button>
-									</a>
+								<div class="col-9">
+									<strong>Ease of Use</strong> – SimpleVM lets you start and stop VMs with a few clicks which means that
+									there is no additional configuration necessary.
 								</div>
 							</div>
-						</div>
-						<br />
+							<br />
+							<!-- Flat Learning Curve -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="col-3">
+									<img
+										class="float-end"
+										src="{{ simpleVM_curve_logo }}"
+										alt="Curve"
+										style="height: 100%; width: auto"
+									/>
+								</div>
+								<div class="col-9">
+									<strong>Flat Learning Curve</strong> – If you want to use SimpleVM you don’t have to learn about
+									resource management, like network configurations or storage management. No background knowledge in
+									Cloud Computing is necessary.
+								</div>
+							</div>
+							<br />
+							<!-- Remote Desktop -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="col-3">
+									<img
+										class="float-end"
+										src="{{ simpleVM_remote_logo }}"
+										alt="Remote"
+										style="height: 100%; width: auto"
+									/>
+								</div>
+								<div class="col-9">
+									<strong>Remote Desktop</strong> – If you don’t want to use SimpleVM via terminal you can easily
+									connect to your VM using a Remote Desktop.
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="col-3">
+									<i class="fa fa-chalkboard-teacher" style="color: #125ca7; font-size: 40px; float: right"></i>
+								</div>
+								<div class="col-9">
+									<strong>Workshop support</strong> – Create a workshop and start multiple configured VMs for your
+									participants with just a few clicks. To learn more about our workshop support click
+									<a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">here</a>.
+								</div>
+							</div>
+							<br />
+						}
 						<!-- End div SimpleVM-->
 					</div>
 
@@ -142,79 +125,73 @@
 						<div class="row justify-content-center">
 							<div style="height: 100px; width: 100px" class="img_bigger">
 								<figure>
+									r
 									<img src="{{ openstack_logo_link }}" alt="Openstack" style="max-height: 100%; width: 100%" />
 								</figure>
 							</div>
 						</div>
-						<br />
-						<!-- Scalability -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="col-3">
-								<img class="float-end" src="{{ openstack_scale_logo }}" alt="Scale" style="height: 100%; width: auto" />
-							</div>
-							<div class="col-9">
-								<strong>Scalability</strong> – Easy scaling of virtual machines and distribution of data for efficient
-								computations.
-							</div>
-						</div>
-						<br />
-						<!-- Configurability -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="float-start col-3">
-								<img
-									class="float-end"
-									src="{{ openstack_conf_logo }}"
-									alt="Configuration"
-									style="height: 100%; width: auto"
-								/>
-							</div>
-							<div class="col-9">
-								<strong>Configurability</strong> – OpenStack allows the configuration of any resource type available,
-								such as virtual machines, network, block and object storage.
-							</div>
-						</div>
-						<br />
-						<!-- Api Access -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="float-start col-3">
-								<img class="float-end" src="{{ openstack_api_logo }}" alt="API" style="height: 100%; width: auto" />
-							</div>
-							<div class="col-9">
-								<strong>API Access</strong> – Any interaction with OpenStack can be automated via its API enabling users
-								to script actions, e.g. starting and stopping of virtual machines.
-							</div>
-						</div>
-						<br />
-						<!-- Use cases -->
-						<div>
-							<div>
-								<strong>Typical use cases:</strong>
-								<ul>
-									<li>
-										<strong>Distributed Workflows:</strong> Distribution of workflows on multiple virtual machines.
-									</li>
-									<li><strong>Services:</strong> The ability to offer services for other researchers.</li>
-								</ul>
-							</div>
-						</div>
 
-						<br />
-						<br />
-						<!-- Want to learn more with Button for smaller Screen-->
-						<div class="row d-block d-lg-none">
-							<div class="col text-center">
-								<div class="row justify-content-center">
-									<strong>Want to learn more about Openstack?</strong>
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['OpenStack']) {
+							<div>
+								@for (feat of projectTypes['OpenStack'].features; track feat.feature_title) {
+									<div class="row my-3 py-1 px-4">
+										<div style="height: 40px; width: 40px" class="col-2">
+											<img class="float-end" src="{{ feat.icon }}" style="height: 100%; width: auto" />
+										</div>
+										<div class="col-10">
+											<strong>{{ feat.feature_title }}</strong> – {{ feat.description }}.
+										</div>
+									</div>
+								}
+							</div>
+						} @else {
+							<!-- Scalability -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="col-3">
+									<img
+										class="float-end"
+										src="{{ openstack_scale_logo }}"
+										alt="Scale"
+										style="height: 100%; width: auto"
+									/>
 								</div>
-								<div class="row justify-content-center">
-									<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button style="background-color: {{ openstack_color }}" class="btn btn-primary">Click Here!</button>
-									</a>
+								<div class="col-9">
+									<strong>Scalability</strong> – Easy scaling of virtual machines and distribution of data for efficient
+									computations.
 								</div>
 							</div>
 							<br />
-						</div>
-						<!-- End div Openstack -->
+							<!-- Configurability -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="float-start col-3">
+									<img
+										class="float-end"
+										src="{{ openstack_conf_logo }}"
+										alt="Configuration"
+										style="height: 100%; width: auto"
+									/>
+								</div>
+								<div class="col-9">
+									<strong>Configurability</strong> – OpenStack allows the configuration of any resource type available,
+									such as virtual machines, network, block and object storage.
+								</div>
+							</div>
+							<br />
+							<!-- Api Access -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="float-start col-3">
+									<img class="float-end" src="{{ openstack_api_logo }}" alt="API" style="height: 100%; width: auto" />
+								</div>
+								<div class="col-9">
+									<strong>API Access</strong> – Any interaction with OpenStack can be automated via its API enabling
+									users to script actions, e.g. starting and stopping of virtual machines.
+								</div>
+							</div>
+							<br />
+							<!-- Use cases -->
+						}
+
+						<!-- End div OpenStack-->
 					</div>
 					<div class="col-lg-4 col-12">
 						<div class="text-center">
@@ -229,159 +206,221 @@
 								</button>
 							</a>
 						</div>
-						<!-- Logo -->
-						<div class="row justify-content-center">
-							<div style="height: 100px; width: 100px" class="img_bigger">
-								<figure style="margin: 5px">
-									<img src="{{ kubernetes_logo_border }}" alt="Kubernetes" />
-								</figure>
-							</div>
-						</div>
-						<br />
-						<!-- Scalability -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="col-3">
-								<img class="float-end" src="{{ openstack_scale_logo }}" alt="Scale" style="height: 100%; width: auto" />
-							</div>
-							<div class="col-9">
-								<strong>Scalability</strong> – Easy scaling of containers and distribution of data for efficient
-								computations.
-							</div>
-						</div>
-						<br />
-						<!-- Configurability -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="float-start col-3">
-								<img
-									class="float-end"
-									src="{{ openstack_conf_logo }}"
-									alt="Configuration"
-									style="height: 100%; width: auto"
-								/>
-							</div>
-							<div class="col-9">
-								<strong>Configurability</strong> – Kubernetes allows the configuration of any resource type available,
-								such as containers and network.
-							</div>
-						</div>
-						<br />
-						<!-- Api Access -->
-						<div class="row">
-							<div style="height: 40px; width: 40px" class="float-start col-3">
-								<img class="float-end" src="{{ openstack_api_logo }}" alt="API" style="height: 100%; width: auto" />
-							</div>
-							<div class="col-9">
-								<strong>API Access</strong> – Any interaction with Kubernetes can be automated via its API enabling
-								users to script actions, e.g. starting and stopping of containerized services.
-							</div>
-						</div>
-						<br />
-						<!-- Use cases -->
-						<div>
+
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['Kubernetes']) {
 							<div>
-								<strong>Typical use cases:</strong>
-								<ul>
-									<li>
-										<strong>Workflow Engines:</strong> Workflow engines like Nextflow allow you to run your analysis on
-										top of Kubernetes.
-									</li>
-									<li>
-										<strong>Services:</strong> The ability to offer stateless and stateful (databases) services for
-										other researchers.
-									</li>
+								@for (feat of projectTypes['Kubernetes'].features; track feat.feature_title) {
+									<div class="row my-3 py-1 px-4">
+										<div style="height: 40px; width: 40px" class="col-2">
+											<img class="float-end" src="{{ feat.icon }}" style="height: 100%; width: auto" />
+										</div>
+										<div class="col-10">
+											<strong>{{ feat.feature_title }}</strong> – {{ feat.description }}.
+										</div>
+									</div>
+								}
+							</div>
+						} @else {
+							<!-- Logo -->
+							<div class="row justify-content-center">
+								<div style="height: 100px; width: 100px" class="img_bigger">
+									<figure style="margin: 5px">
+										<img src="{{ kubernetes_logo_border }}" alt="Kubernetes" />
+									</figure>
+								</div>
+							</div>
+							<!-- Scalability -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="col-3">
+									<img
+										class="float-end"
+										src="{{ openstack_scale_logo }}"
+										alt="Scale"
+										style="height: 100%; width: auto"
+									/>
+								</div>
+								<div class="col-9">
+									<strong>Scalability</strong> – Easy scaling of containers and distribution of data for efficient
+									computations.
+								</div>
+							</div>
+							<br />
+							<!-- Configurability -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="float-start col-3">
+									<img
+										class="float-end"
+										src="{{ openstack_conf_logo }}"
+										alt="Configuration"
+										style="height: 100%; width: auto"
+									/>
+								</div>
+								<div class="col-9">
+									<strong>Configurability</strong> – Kubernetes allows the configuration of any resource type available,
+									such as containers and network.
+								</div>
+							</div>
+							<br />
+							<!-- Api Access -->
+							<div class="row">
+								<div style="height: 40px; width: 40px" class="float-start col-3">
+									<img class="float-end" src="{{ openstack_api_logo }}" alt="API" style="height: 100%; width: auto" />
+								</div>
+								<div class="col-9">
+									<strong>API Access</strong> – Any interaction with Kubernetes can be automated via its API enabling
+									users to script actions, e.g. starting and stopping of containerized services.
+								</div>
+							</div>
+						}
+						<!-- End div Kubernetes -->
+					</div>
+				</div>
+				<div id="usecaserow" class="row">
+					<div class="col-4">
+						<!-- SimpleVM -->
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['SimpleVM']) {
+							<div class="my-3 mx-2 px-5">
+								<h6>Use Cases</h6>
+								<ul class="list-group list-group-flush">
+									@for (case of projectTypes['SimpleVM'].use_cases; track case.title) {
+										<li class="list-group-item">
+											<strong>{{ case.title }}</strong
+											>: {{ case.description }}
+										</li>
+									}
 								</ul>
 							</div>
-						</div>
-
-						<br />
-						<br />
-						<div class="row d-block d-lg-none">
-							<!--div class="col text-center">
-									<div class="row justify-content-center">
-										<strong>Want to learn more about Kubernetes?</strong>
-									</div>
-									<div class="row justify-content-center">
-										<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
-											<button style="background-color: {{ kubernetes_color }}" class="btn btn-primary">
-												Click Here!
-											</button>
-										</a>
-									</div>
-								</!--div>
-								<br />
-							</div-->
-							<!-- End div Kubernetes -->
-						</div>
-
-						<!-- End Row with Project Types-->
+						} @else {
+							<div>
+								<div>
+									<strong>Typical use cases:</strong>
+									<ul>
+										<li>
+											<strong>Tools and Pipelines:</strong> SimpleVM is a quick way to get up and running with your
+											tools and pipelines in the cloud.
+										</li>
+										<li>
+											<strong>Remote Desktop:</strong> Launch your own Desktop or a browser-based IDE in the cloud
+											(based on Apache Guacamole, RStudio, Theia IDE, and more) and be able to run programs with
+											graphical user interfaces in addition to the command-line.
+										</li>
+									</ul>
+								</div>
+							</div>
+						}
 					</div>
-					<!-- Learn more Buttons for bigger Screens -->
-					<div class="w-100 d-none d-lg-block">
-						<div class="row">
-							<!-- Learn more about SimpleVM -->
-							<div class="col-4 text-center">
-								<div class="row justify-content-center">
-									<strong>Want to learn more about SimpleVM?</strong>
-								</div>
-								<div class="row justify-content-center">
-									<a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button style="background-color: {{ simplevm_color }} !important" class="btn btn-primary">
-											Click Here!
-										</button>
-									</a>
+					<!-- OpenStack-->
+					<div class="col-4">
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['OpenStack']) {
+							<div class="my-3 mx-2 px-5">
+								<h6>Use Cases</h6>
+								<ul class="list-group list-group-flush">
+									@for (case of projectTypes['OpenStack'].use_cases; track case.title) {
+										<li class="list-group-item">
+											<strong>{{ case.title }}</strong
+											>: {{ case.description }}
+										</li>
+									}
+								</ul>
+							</div>
+						} @else {
+							<div>
+								<div>
+									<strong>Typical use cases:</strong>
+									<ul>
+										<li>
+											<strong>Distributed Workflows:</strong> Distribution of workflows on multiple virtual machines.
+										</li>
+										<li><strong>Services:</strong> The ability to offer services for other researchers.</li>
+									</ul>
 								</div>
 							</div>
-							<!-- Learn Difference -->
-							<!-- Learn more about Openstack -->
-							<div class="col-4 text-center">
-								<div class="row justify-content-center">
-									<strong>Want to learn more about Openstack?</strong>
-								</div>
-								<div class="row justify-content-center">
-									<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button style="background-color: {{ openstack_color }} !important" class="btn btn-primary">
-											Click Here!
-										</button>
-									</a>
-								</div>
-							</div>
-							<div class="col-4 text-center">
-								<!--div class="row justify-content-center">
-									<strong>Want to learn more about Kubernetes?</strong>
-								</!--div>
-								<div-- class="row justify-content-center">
-									<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button style="background-color: {{ kubernetes_color }} !important" class="btn btn-primary">
-											Click Here!
-										</button>
-									</a>
-								</div-->
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-4"></div>
-							<div class="col-4 text-center">
-								<div class="row justify-content-center">
-									<strong>Want to learn the Difference?</strong>
-								</div>
-								<div class="row justify-content-center">
-									<a href="{{ PROJECT_TYPES_LINK }}" target="_blank" rel="noopener noreferrer">
-										<button class="btn btn-success">Click Here!</button>
-									</a>
-								</div>
-							</div>
-							<div class="col-4"></div>
-						</div>
-						<br />
-						<!-- End learn more Buttons Bigger Screen -->
+						}
 					</div>
-					<!-- End Card Body -->
+					<!-- Kubernetes -->
+					<div class="col-4">
+						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['Kubernetes']) {
+							<div class="my-3 mx-2 px-5">
+								<h6>Use Cases</h6>
+								<ul class="list-group list-group-flush">
+									@for (case of projectTypes['Kubernetes'].use_cases; track case.title) {
+										<li class="list-group-item">
+											<strong>{{ case.title }}</strong
+											>: {{ case.description }}
+										</li>
+									}
+								</ul>
+							</div>
+						} @else {
+							<div>
+								<div>
+									<strong>Typical use cases:</strong>
+									<ul>
+										<li>
+											<strong>Workflow Engines:</strong> Workflow engines like Nextflow allow you to run your analysis
+											on top of Kubernetes.
+										</li>
+										<li>
+											<strong>Services:</strong> The ability to offer stateless and stateful (databases) services for
+											other researchers.
+										</li>
+									</ul>
+								</div>
+							</div>
+						}
+					</div>
 				</div>
-				<!-- End Container -->
+				<div id="buttonrow" class="row">
+					<div class="col-4 text-center">
+						<div class="row justify-content-center">
+							<strong>Want to learn more about SimpleVM?</strong>
+						</div>
+						<div class="row justify-content-center p-3">
+							<a href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer">
+								<button style="background-color: {{ simplevm_color }} !important" class="btn btn-primary">
+									Click Here!
+								</button>
+							</a>
+						</div>
+					</div>
+					<div class="col-4 text-center">
+						<div class="row justify-content-center">
+							<strong>Want to learn more about Openstack?</strong>
+						</div>
+						<div class="row justify-content-center p-3">
+							<a href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer">
+								<button style="background-color: {{ openstack_color }} !important" class="btn btn-primary">
+									Click Here!
+								</button>
+							</a>
+						</div>
+					</div>
+					<div class="col-4 text-center">
+						<div class="row justify-content-center">
+							<strong>Want to learn more about Kubernetes?</strong>
+						</div>
+						<div class="row justify-content-center p-3">
+							<a href="{{ KUBERNETES_LINK }}" target="_blank" rel="noopener noreferrer">
+								<button style="background-color: {{ kubernetes_color }}" class="btn btn-primary">Click Here!</button>
+							</a>
+						</div>
+					</div>
+				</div>
+				<!-- Learn more Buttons for bigger Screens -->
+
+				<!-- End Card Body -->
 			</div>
-			<!-- End Card -->
+			<div class="row justify-content-center">
+				<div class="col col-auto my-2">
+					<h6>Compare all project types</h6>
+				</div>
+				<a class="btn btn-primary" href="{{ PROJECT_TYPES_LINK }}" target="_blank" rel="noopener noreferrer">
+					Go to comparison page
+				</a>
+			</div>
+			<!-- End Container -->
 		</div>
-		<!-- End fadeIn Animation -->
+		<!-- End Card -->
 	</div>
+	<!-- End fadeIn Animation -->
 </div>
