@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core'
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, Inject, DOCUMENT } from '@angular/core'
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
-import { DOCUMENT, NgIf, NgClass, NgFor, NgStyle } from '@angular/common'
+import { NgIf, NgClass, NgFor, NgStyle } from '@angular/common'
 import { Chart } from 'chart.js'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 
