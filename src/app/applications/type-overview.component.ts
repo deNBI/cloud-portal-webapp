@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 
-import { WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK } from '../../links/links'
+import { WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK, KUBERNETES_LINK } from '../../links/links'
 import { is_vo } from '../shared/globalvar'
 import { RouterLink } from '@angular/router'
+import { LandingPageService } from 'app/api-connector/landing-page.service'
+import { ApiSettings } from 'app/api-connector/api-settings.service'
 
 /**
  * The type overview of the different project classes.
@@ -11,6 +13,7 @@ import { RouterLink } from '@angular/router'
 	selector: 'app-type-overview',
 	templateUrl: './type-overview.component.html',
 	styleUrls: ['./type-overview.component.css'],
+	providers: [LandingPageService],
 	imports: [RouterLink]
 })
 export class TypeOverviewComponent implements OnInit {
@@ -38,8 +41,30 @@ export class TypeOverviewComponent implements OnInit {
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK
 	PROJECT_TYPES_LINK: string = PROJECT_TYPES_LINK
 	OPENSTACK_LINK: string = OPENSTACK_LINK
+	KUBERNETES_LINK: string = KUBERNETES_LINK
+
+	projectTypes: any = {}
+	projectTypeInformationLoaded: boolean = false
+	errorOnLoad: boolean = false
+
+	constructor(private landingPageService: LandingPageService) {}
 
 	ngOnInit(): any {
+		this.landingPageService.getProjectTypeInformation().subscribe({
+			next: (projectTypes: any): void => {
+				this.projectTypes = this.transformURLs(projectTypes)
+				this.projectTypeInformationLoaded = true
+			},
+			error: (): void => {
+				console.log('here i go')
+				this.projectTypes = {}
+				this.projectTypeInformationLoaded = true
+				this.errorOnLoad = true
+				console.log(this.errorOnLoad)
+			}
+		})
+
+		/** Fallbacks */
 		this.simpleVM_logo_link = `${this.static_img_folder}simpleVM_Logo.svg`
 		this.simpleVM_curve_logo = `${this.static_img_folder}simplevm-info-page/flatlearning.svg`
 		this.simpleVM_ease_logo = `${this.static_img_folder}simplevm-info-page/easytouse.svg`
@@ -52,5 +77,18 @@ export class TypeOverviewComponent implements OnInit {
 		this.openstack_api_logo = `${this.static_img_folder}openstack-info-page/api.svg`
 		this.openstack_conf_logo = `${this.static_img_folder}openstack-info-page/configuration.svg`
 		this.openstack_scale_logo = `${this.static_img_folder}openstack-info-page/scale.svg`
+	}
+
+	transformURLs(projectTypes: any): any {
+		const base: string = ApiSettings.getWagtailBase()
+		for (const key of Object.keys(projectTypes)) {
+			projectTypes[key].logo = `${base}${projectTypes[key].logo}`
+			projectTypes[key].href = `${base}${projectTypes[key].href}`
+			for (const idx in projectTypes[key].features) {
+				projectTypes[key].features[idx].icon = `${base}${projectTypes[key].features[idx].icon}`
+			}
+		}
+
+		return projectTypes
 	}
 }
