@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.953.0",
+  "version": "4.954.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -28,7 +28,7 @@
     "@coreui/icons-angular": "5.5.9",
     "@ng-bootstrap/ng-bootstrap": "19.0.1",
     "@ng-select/ng-select": "20.2.0",
-    "@sindresorhus/transliterate": "1.6.0",
+    "@sindresorhus/transliterate": "2.0.0",
     "@types/d3": "7.4.3",
     "@types/jquery": "3.5.33",
     "acorn": "8.15.0",
