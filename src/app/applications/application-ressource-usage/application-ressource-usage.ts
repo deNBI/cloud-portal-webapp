@@ -1,4 +1,3 @@
-
 /**
  * Ressourceusage.
  */
@@ -30,7 +29,4 @@ export class ApplicationRessourceUsage {
 		this.gpus_max = usage.gpus_max
 		this.gpus_used = usage.gpus_used
 	}
-
-
-
 }
