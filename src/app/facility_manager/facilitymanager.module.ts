@@ -9,7 +9,6 @@ import { NgSelectModule } from '@ng-select/ng-select'
 import { AlertComponent, BadgeComponent, ButtonDirective, InputGroupComponent } from '@coreui/angular'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
 import { FacilityProjectsOverviewComponent } from '../facility_manager/facilityprojectsoverview.component'
-import { ImageTagComponent } from '../facility_manager/imagetags.component'
 import { FacilitymanagerRoutingModule } from './facilitymanager-routing.module'
 import { FacilityApplicationComponent } from './facility.application.component'
 import { ResourcesComponent } from './resources/resources.component'
@@ -48,7 +47,6 @@ import { SharedModuleModule } from '../shared/shared_modules/shared-module.modul
 		InputGroupComponent,
 		ButtonDirective,
 		FacilityProjectsOverviewComponent,
-		ImageTagComponent,
 		FacilityApplicationComponent,
 		ResourcesComponent,
 		NewsManagerComponent,
