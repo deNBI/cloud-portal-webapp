@@ -227,14 +227,14 @@ export class FacilityService {
 			)
 	}
 	/**
-	 * Gets FacilityGroups by the elixirId of the member.
+	 * Gets FacilityGroups by the lifescience_id of the member.
 	 *
 	 * @param facility the facility
-	 * @param elixir_id the id of the member
+	 * @param lifescience_id the id of the member
 	 */
-	getFacilityGroupsByMemberElixirId(
+	getFacilityGroupsByMemberLifeScienceId(
 		facility: number | string,
-		elixir_id: string,
+		lifescience_id: string,
 		isPi: boolean,
 		isAdmin: boolean,
 		isMember: boolean
@@ -243,7 +243,7 @@ export class FacilityService {
 			.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
 				withCredentials: true,
 				params: {
-					elixir_id,
+					lifescience_id,
 					isPi,
 					isAdmin,
 					isMember

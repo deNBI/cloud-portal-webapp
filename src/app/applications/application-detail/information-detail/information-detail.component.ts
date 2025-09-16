@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { Application } from '../../application.model/application.model'
-import { is_vo, elixir_id } from '../../../shared/globalvar'
+import { is_vo, lifescience_id } from '../../../shared/globalvar'
 import { environment } from '../../../../environments/environment'
 import { NgClass, NgFor, NgIf } from '@angular/common'
 import { AllowedDisseminationInformationPipe } from 'app/pipe-module/pipes/allowed-dissemination-information.pipe'
@@ -16,7 +16,7 @@ import { AllowedDisseminationInformationPipe } from 'app/pipe-module/pipes/allow
 export class InformationDetailComponent implements OnInit {
 	@Input() application: Application
 	is_vo: boolean = is_vo
-	elixir_id: string = elixir_id
+	lifescience_id: string = lifescience_id
 
 	environment: any = environment
 

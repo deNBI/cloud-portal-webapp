@@ -10,7 +10,7 @@ export class ProjectMember {
 
 	isAdmin: boolean;
 	isPi: boolean;
-	elixirId: string;
+	lifescienceId: string;
 	email: string;
 	publicKeySet: boolean;
 	publicKey: string;

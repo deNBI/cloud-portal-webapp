@@ -127,28 +127,28 @@
 									/>
 								</div>
 								<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label"
-									>User Full Elixir Id search:</label
+									>User Full LifeScience Id search:</label
 								>
 								<div class="col-xs-4 col-sm-4">
 									<!-- Adjust the column size based on your layout -->
 									<c-input-group class="mb-3">
 										<input
 											[attr.data-test-id]="'filter_project_name'"
-											id="table-user-elixir-complete-search"
+											id="table-user-lifescience-complete-search"
 											type="text"
 											class="form-control"
 											name="searchTerm"
-											[(ngModel)]="userElixirIdFilter"
-											(input)="checkValidElixirIdFilter()"
+											[(ngModel)]="userLifeScienceIdFilter"
+											(input)="checkValidLifeScienceIdFilter()"
 										/>
 										<button
 											cButton
 											color="secondary"
-											id="searchbyElixirId"
+											id="searchbyLifeScienceId"
 											type="button"
-											[disabled]="!validElixirIdFilter"
+											[disabled]="!validLifeScienceIdFilter"
 											variant="outline"
-											(click)="getProjectsByMemberElixirId()"
+											(click)="getProjectsByMemberLifeScienceId()"
 										>
 											Search
 										</button>
@@ -162,8 +162,8 @@
 											<input
 												type="checkbox"
 												id="pi-checkbox"
-												(change)="getProjectsByMemberElixirId()"
-												[(ngModel)]="userElixirSearchPI"
+												(change)="getProjectsByMemberLifeScienceId()"
+												[(ngModel)]="userLifeScienceSearchPI"
 											/>
 										</div>
 
@@ -174,8 +174,8 @@
 											<input
 												type="checkbox"
 												id="admin-checkbox"
-												(change)="getProjectsByMemberElixirId()"
-												[(ngModel)]="userElixirSearchAdmin"
+												(change)="getProjectsByMemberLifeSciencerId()"
+												[(ngModel)]="userLifeScienceSearchAdmin"
 											/>
 										</div>
 
@@ -186,8 +186,8 @@
 											<input
 												type="checkbox"
 												id="member-checkbox"
-												(change)="getProjectsByMemberElixirId()"
-												[(ngModel)]="userElixirSearchMember"
+												(change)="getProjectsByMemberLifeScienceId()"
+												[(ngModel)]="userLifeScienceSearchMember"
 											/>
 										</div>
 									</div>
@@ -388,7 +388,7 @@
 								<div class="container-fluid" *ngIf="membersLoaded">
 									<div class="row">
 										<p style="margin-bottom: 15px">
-											Search for a user to your project by entering a part of their name, email or elixir-ID:
+											Search for a user to your project by entering a part of their name, email or LifeScience-Id:
 										</p>
 									</div>
 									<div class="row">
