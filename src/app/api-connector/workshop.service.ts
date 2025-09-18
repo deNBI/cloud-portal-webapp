@@ -4,7 +4,6 @@ import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { ApiSettings } from './api-settings.service'
 import { Workshop } from '../virtualmachines/workshop/workshop.model'
-import { WorkshopVM } from '../virtualmachines/workshop/workshop-vm.model'
 import { WorkshopTimeFrame } from '../virtualmachines/workshop/workshopTimeFrame.model'
 
 @Injectable({
@@ -93,15 +92,6 @@ export class WorkshopService {
 			.pipe(map((workshop_new: Workshop): Workshop => new Workshop(workshop_new)))
 	}
 
-	sendWorkshopVmEmail(workshop_id: number, openstackid: string): Observable<WorkshopVM> {
-		const params: HttpParams = new HttpParams().set('openstackid', openstackid)
-
-		return this.http
-			.post<WorkshopVM>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/email/`, params, {
-				withCredentials: true
-			})
-			.pipe(map((workshop_new: WorkshopVM): WorkshopVM => new WorkshopVM(workshop_new)))
-	}
 
 	deleteWorkshop(workshop_id: number): Observable<boolean> {
 		return this.http.delete<boolean>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/`, {

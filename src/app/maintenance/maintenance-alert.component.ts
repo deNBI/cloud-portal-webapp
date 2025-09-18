@@ -56,7 +56,7 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 	getNumberOfConfirmableTimeframes(): void {
 		this.userService.getUserInfo().subscribe(
 			(login: any): void => {
-				this.maintenanceService.getNumberOfUnconfirmedTimeFrames(login['ElixirId']).subscribe((nxt: any) => {
+				this.maintenanceService.getNumberOfUnconfirmedTimeFrames(login['LifeScienceId']).subscribe((nxt: any) => {
 					this.numberOfConfirmableTimeframes = nxt['confirmable']
 				})
 			},
@@ -70,7 +70,7 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 		this.subscription.add(
 			this.userService.getUserInfo().subscribe(
 				(login: any): void => {
-					this.maintenanceService.confirmNote(login['ElixirId'], this.maintenanceTimeFrames).subscribe(() => {
+					this.maintenanceService.confirmNote(login['LifeScienceId'], this.maintenanceTimeFrames).subscribe(() => {
 						this.confirmEventEmitter.emit()
 						this.getNumberOfConfirmableTimeframes()
 						this.showNotificationModal(

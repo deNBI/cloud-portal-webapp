@@ -1,5 +1,5 @@
 export let is_vo: boolean = false;
-export let elixir_id: string;
+export let lifescience_id: string;
 
 /**
  * Set vo.
@@ -10,9 +10,9 @@ export function setVO(vo: boolean): void {
 }
 
 /**
- * Set elixir id.
+ * Set lifescience id.
  * @param id
  */
-export function setElixirId(id: string): void {
-	elixir_id = id;
+export function setLifeScienceId(id: string): void {
+	lifescience_id = id;
 }

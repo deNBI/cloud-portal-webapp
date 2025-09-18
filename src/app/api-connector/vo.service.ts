@@ -138,8 +138,8 @@ export class VoService {
 			)
 	}
 
-	getGroupsByMemberElixirId(
-		elixir_id: string,
+	getGroupsByMemberLifeScienceId(
+		lifescience_id: string,
 		isPi: boolean,
 		isAdmin: boolean,
 		isMember: boolean
@@ -148,7 +148,7 @@ export class VoService {
 			.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/filter/`, {
 				withCredentials: true,
 				params: {
-					elixir_id,
+					lifescience_id,
 					isPi,
 					isAdmin,
 					isMember
