@@ -7,7 +7,7 @@ export class Userinfo {
 	FirstName: string;
 	LastName: string;
 	MemberId: number;
-	ElixirId: string;
+	LifeScienceId: string;
 	PublicKey: string;
 	UserLogin: string;
 	Email: string;

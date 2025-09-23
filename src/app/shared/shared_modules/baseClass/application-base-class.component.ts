@@ -223,23 +223,23 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	}
 
 	/**
-	 * Get details of member like name and email by elixir.
+	 * Get details of member like name and email by lifescience_id.
 	 *
 	 * @param application
 	 * @param collapse_id
 	 */
-	public getMemberDetailsByElixirIdIfCollapsed(application: Application, collapse_id: string): void {
+	public getMemberDetailsByLifeScienceIdIfCollapsed(application: Application, collapse_id: string): void {
 		if (!this.getCollapseStatus(collapse_id)) {
-			this.getMemberDetailsByElixirId(application)
+			this.getMemberDetailsByLifeScienceId(application)
 		}
 	}
 
-	public getMemberDetailsByElixirId(application: Application): void {
+	public getMemberDetailsByLifeScienceId(application: Application): void {
 		if (!application.project_application_user) {
 			return
 		}
 		this.userService
-			.getMemberDetailsByElixirId(application.project_application_user.elixir_id)
+			.getMemberDetailsByLifeScienceId(application.project_application_user.lifescience_id)
 			.subscribe((result: { [key: string]: string }): void => {
 				application.project_application_user.username = `${result['firstName']} ${result['lastName']}`
 

@@ -4,7 +4,7 @@
 export class User {
 	username: string;
 	user_affiliations: string[] = [];
-	elixir_id: string;
+	lifescience_id: string;
 	email: string;
 	pi_project_count_total: number = 0;
 	pi_project_count_active: number = 0;

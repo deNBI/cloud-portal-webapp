@@ -44,7 +44,7 @@ export class LeaveProjectComponent extends AbstractBaseModalComponent {
 		console.log(this.modalId)
 		await this.hide()
 
-		if (this.application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
+		if (this.application.project_application_pi.lifescience_id === this.userinfo.LifeScienceId) {
 			console.log('is pi')
 			this.notificationModalComponent.showDangerNotificationModal(
 				'Denied',

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { FacilityProjectsOverviewComponent } from '../facility_manager/facilityprojectsoverview.component'
-import { ImageTagComponent } from '../facility_manager/imagetags.component'
 import { FacilityApplicationComponent } from './facility.application.component'
 import { ResourcesComponent } from './resources/resources.component'
 import { NewsManagerComponent } from './newsmanagement/news-manager.component'
@@ -14,13 +13,7 @@ const routes: Routes = [
 			title: 'Facility Projects'
 		}
 	},
-	{
-		path: 'imageTags',
-		component: ImageTagComponent,
-		data: {
-			title: 'Image Tags'
-		}
-	},
+
 	{
 		path: 'facilityApplications',
 		component: FacilityApplicationComponent,

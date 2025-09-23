@@ -25,7 +25,7 @@ export class UserService {
 		})
 	}
 
-	getLoginElixirName(): Observable<IResponseTemplate> {
+	getLoginLifeScienceName(): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/logins/`, {
 			withCredentials: true
 		})
@@ -63,10 +63,10 @@ export class UserService {
 		})
 	}
 
-	getMemberDetailsByElixirId(elixir_id_param: string): Observable<any> {
-		const elixir_id: string = elixir_id_param.substring(0, elixir_id_param.indexOf('@'))
+	getMemberDetailsByLifeScienceId(lifescience_id_param: string): Observable<any> {
+		const lifescience_id: string = lifescience_id_param.substring(0, lifescience_id_param.indexOf('@'))
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}users/${elixir_id}/member/`, {
+		return this.http.get(`${ApiSettings.getApiBaseURL()}users/${lifescience_id}/member/`, {
 			withCredentials: true
 		})
 	}
@@ -79,8 +79,8 @@ export class UserService {
 			.pipe(map((userinfo: Userinfo): Userinfo => new Userinfo(userinfo)))
 	}
 
-	getLoggedUserElixirId(): Observable<any> {
-		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}users/current/elixir_id/`, {
+	getLoggedUserLifeScienceID(): Observable<any> {
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}users/current/lifescience_id/`, {
 			withCredentials: true
 		})
 	}

@@ -16,7 +16,6 @@ import {
 } from '../../links/links'
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { ApplicationsService } from '../api-connector/applications.service'
-import { VirtualMachine } from '../virtualmachines/virtualmachinemodels/virtualmachine'
 import { Application } from '../applications/application.model/application.model'
 import { ProjectMember } from '../projectmanagement/project_member.model'
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
@@ -95,13 +94,6 @@ export class UserInfoComponent implements OnInit {
 	 * @type {Application[]}
 	 */
 	userProjects: Application[] = []
-
-	/**
-	 * summary of vms the user has
-	 *
-	 * @type {VirtualMachine[]}
-	 */
-	userVirtualMachines: VirtualMachine[] = []
 
 	/**
 	 * If the user is part of a project.
