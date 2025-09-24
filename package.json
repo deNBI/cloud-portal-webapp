@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.956.0",
+  "version": "4.957.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -34,7 +34,7 @@
     "acorn": "8.15.0",
     "ajv-formats": "3.0.1",
     "angulartics2": "14.1.0",
-    "billboard.js": "3.16.0",
+    "billboard.js": "3.17.0",
     "bootstrap": "5.3.7",
     "canvg": "^4.0.3",
     "chart.js": "4.5.0",
