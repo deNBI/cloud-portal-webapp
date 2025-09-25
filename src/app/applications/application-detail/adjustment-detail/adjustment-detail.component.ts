@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { is_vo, elixir_id } from '../../../shared/globalvar'
+import { is_vo, lifescience_id } from '../../../shared/globalvar'
 
 /**
  * Application informations.
@@ -11,7 +11,7 @@ import { is_vo, elixir_id } from '../../../shared/globalvar'
 export class AdjustmentDetailComponent implements OnInit {
 	is_vo: boolean = is_vo
 	@Input() comment: string
-	elixir_id: string = elixir_id
+	lifescience_id: string = lifescience_id
 
 	ngOnInit() {}
 }

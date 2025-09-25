@@ -8,7 +8,7 @@ import { UserService } from './api-connector/user.service'
 import { environment } from '../environments/environment'
 import { IResponseTemplate } from './api-connector/response-template'
 import { VoService } from './api-connector/vo.service'
-import { setElixirId, setVO } from './shared/globalvar'
+import { setLifeScienceId, setVO } from './shared/globalvar'
 
 /**
  * Guard which checks if the user is member of the VO.
@@ -40,8 +40,8 @@ export class MemberGuardService {
 					this.voService.isVo().subscribe((result: IResponseTemplate): void => {
 						setVO(result.value as boolean)
 					})
-					this.userService.getLoggedUserElixirId().subscribe((result: any): void => {
-						setElixirId(result['elixir_id'])
+					this.userService.getLoggedUserLifeScienceID().subscribe((result: any): void => {
+						setLifeScienceId(result['lifescience_id'])
 					})
 
 					return this.userService.getIsCurrentUserVoMember().pipe(

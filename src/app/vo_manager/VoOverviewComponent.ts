@@ -98,12 +98,12 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	bsModalRef: BsModalRef
 	subscription: Subscription = new Subscription()
 	protected readonly ConfirmationActions = ConfirmationActions
-	userElixirSearchPI: boolean = true
-	userElixirSearchAdmin: boolean = true
-	userElixirSearchMember: boolean = true
+	userLifeScienceSearchPI: boolean = true
+	userLifeScienceSearchAdmin: boolean = true
+	userLifeScienceSearchMember: boolean = true
 	projectsLoaded: boolean = false
 
-	validElixirIdFilter: boolean = false
+	validLifeScienceIdFilter: boolean = false
 	tsvTaskRunning: boolean = false
 	numberOfTsvs: number = 0
 	checkTSVTimer: ReturnType<typeof setTimeout>
@@ -111,7 +111,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	selectedProjectType: string = 'ALL'
 	selectedFacility: string | number = 'ALL'
-	userElixirIdFilter: string
+	userLifeScienceIdFilter: string
 	textFilterSubject = new Subject<string>()
 
 	public newsletterSubscriptionCounter: number
@@ -147,7 +147,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	ngOnInit(): void {
 		this.textFilterSubject.pipe(debounceTime(600), distinctUntilChanged()).subscribe(filter => {
-			this.userElixirIdFilter = ''
+			this.userLifeScienceIdFilter = ''
 
 			this.applicationFilter.textFilter = filter
 			this.getVoProjects()
@@ -290,23 +290,23 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 		})
 	}
 
-	checkValidElixirIdFilter(): void {
-		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')
+	checkValidLifeScienceIdFilter(): void {
+		this.validLifeScienceIdFilter = this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')
 	}
 
-	getProjectsByMemberElixirId(): void {
+	getProjectsByMemberLifeScienceId(): void {
 		// tslint:disable-next-line:max-line-length
-		this.userElixirIdFilter = this.userElixirIdFilter.trim()
+		this.userLifeScienceIdFilter = this.userLifeScienceIdFilter.trim()
 		this.applicationFilter = new ApplicationFilter()
-		if (this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')) {
+		if (this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')) {
 			this.projectsLoaded = false
 
 			this.voService
-				.getGroupsByMemberElixirId(
-					this.userElixirIdFilter,
-					this.userElixirSearchPI,
-					this.userElixirSearchAdmin,
-					this.userElixirSearchMember
+				.getGroupsByMemberLifeScienceId(
+					this.userLifeScienceIdFilter,
+					this.userLifeScienceSearchPI,
+					this.userLifeScienceSearchAdmin,
+					this.userLifeScienceSearchMember
 				)
 				.subscribe((applications: Application[]): void => {
 					for (const group of applications) {
@@ -510,7 +510,7 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	getVoProjects(): void {
 		this.projectsLoaded = false
-		this.userElixirIdFilter = ''
+		this.userLifeScienceIdFilter = ''
 		this.voService
 			.getAllGroupsWithDetails(this.applicationFilter, this.applicationPage)
 			.subscribe((applicationPage: ApplicationPage): void => {

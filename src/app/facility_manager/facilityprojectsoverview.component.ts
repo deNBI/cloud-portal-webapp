@@ -108,10 +108,10 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	details_loaded: boolean = false
 	selectedEmailProjects: Application[] = []
 	bsModalRef: BsModalRef
-	userElixirSearchPI: boolean = true
-	userElixirSearchAdmin: boolean = true
-	userElixirSearchMember: boolean = true
-	userElixirIdFilter: string
+	userLifeScienceSearchPI: boolean = true
+	userLifeScienceSearchAdmin: boolean = true
+	userLifeScienceSearchMember: boolean = true
+	userLifeScienceIdFilter: string
 	projectsLoaded: boolean = false
 	textFilterSubject = new Subject<string>()
 
@@ -132,7 +132,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	public usersModalProjectName: string
 	public selectedProject: Application
 	public userSearchValue: string
-	validElixirIdFilter: boolean = false
+	validLifeScienceIdFilter: boolean = false
 
 	public emailSubject: string
 	public emailText: string
@@ -225,7 +225,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	ngOnInit(): void {
 		this.textFilterSubject.pipe(debounceTime(600), distinctUntilChanged()).subscribe(filter => {
-			this.userElixirIdFilter = ''
+			this.userLifeScienceIdFilter = ''
 
 			this.applicationFilter.textFilter = filter
 			this.getSelectedFacilityProjects()
@@ -290,7 +290,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 		this.allFacilityMembers.forEach((member: object): void => {
 			if (
-				member['elixirId'].toLowerCase().includes(searchString) ||
+				member['lifescienceId'].toLowerCase().includes(searchString) ||
 				member['email'].toLowerCase().includes(searchString) ||
 				member['firstName'].toLowerCase().includes(searchString) ||
 				member['lastName'].toLowerCase().includes(searchString)
@@ -311,24 +311,24 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 			})
 	}
 
-	checkValidElixirIdFilter(): void {
-		this.validElixirIdFilter = this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')
+	checkValidLifeScienceIdFilter(): void {
+		this.validLifeScienceIdFilter = this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')
 	}
 
-	getProjectsByMemberElixirId(): void {
+	getProjectsByMemberLifeScienceId(): void {
 		// tslint:disable-next-line:max-line-length
-		this.userElixirIdFilter = this.userElixirIdFilter.trim()
+		this.userLifeScienceIdFilter = this.userLifeScienceIdFilter.trim()
 		this.applicationFilter = new ApplicationFilter()
-		if (this.userElixirIdFilter && this.userElixirIdFilter.includes('@elixir-europe.org')) {
+		if (this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')) {
 			this.projectsLoaded = false
 
 			this.facilityService
-				.getFacilityGroupsByMemberElixirId(
+				.getFacilityGroupsByMemberLifeScienceId(
 					this.selectedFacility['FacilityId'],
-					this.userElixirIdFilter,
-					this.userElixirSearchPI,
-					this.userElixirSearchAdmin,
-					this.userElixirSearchMember
+					this.userLifeScienceIdFilter,
+					this.userLifeScienceSearchPI,
+					this.userLifeScienceSearchAdmin,
+					this.userLifeScienceSearchMember
 				)
 				.subscribe((applications: Application[]): void => {
 					for (const group of applications) {
@@ -473,7 +473,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 	getFacilityProjects(facility: string): void {
 		this.projectsLoaded = false
-		this.userElixirIdFilter = ''
+		this.userLifeScienceIdFilter = ''
 
 		// tslint:disable-next-line:max-line-length
 		this.facilityService

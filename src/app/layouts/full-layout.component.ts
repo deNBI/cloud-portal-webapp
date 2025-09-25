@@ -212,7 +212,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		})
 		this.userService.getUserInfo().subscribe(
 			(login: any): void => {
-				this.maintenanceService.getNumberOfUnconfirmedTimeFrames(login['ElixirId']).subscribe((nxt: any) => {
+				this.maintenanceService.getNumberOfUnconfirmedTimeFrames(login['LifeScienceId']).subscribe((nxt: any) => {
 					this.numberOfConfirmableTimeframes = nxt['confirmable']
 				})
 			},
@@ -223,7 +223,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	}
 
 	getLoginName(): void {
-		this.userService.getLoginElixirName().subscribe((login: IResponseTemplate): void => {
+		this.userService.getLoginLifeScienceName().subscribe((login: IResponseTemplate): void => {
 			this.login_name = login.value as string
 		})
 	}

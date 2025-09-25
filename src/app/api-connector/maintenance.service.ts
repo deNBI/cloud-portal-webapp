@@ -32,8 +32,8 @@ export class MaintenanceService {
 			)
 	}
 
-	getNumberOfUnconfirmedTimeFrames(elixir_id: string): Observable<any> {
-		const params: HttpParams = new HttpParams().set('elixir_id', elixir_id)
+	getNumberOfUnconfirmedTimeFrames(lifescience_id: string): Observable<any> {
+		const params: HttpParams = new HttpParams().set('lifescience_id', lifescience_id)
 
 		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}maintenance/confirmable/`, {
 			withCredentials: true,
@@ -41,9 +41,9 @@ export class MaintenanceService {
 		})
 	}
 
-	confirmNote(elixir_id: string, timeframes: MaintenanceTimeFrame[]): Observable<any> {
+	confirmNote(lifescience_id: string, timeframes: MaintenanceTimeFrame[]): Observable<any> {
 		const params: HttpParams = new HttpParams()
-			.set('elixir_id', elixir_id)
+			.set('elixilifescience_idr_id', lifescience_id)
 			.set('ids', JSON.stringify(timeframes.map((tf: MaintenanceTimeFrame) => tf.id)))
 
 		return this.http.get(`${ApiSettings.getApiBaseURL()}maintenance/confirm/`, {
