@@ -125,10 +125,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	resourceDataLoaded: boolean = false
 	creditHistoryLoaded: boolean = false
 	project_members_loaded: boolean = false
-	vmsInUse: number
 	maximumVMs: number
-	coresInUse: number
-	ramInUse: number
 	memberApplicationsLoaded: boolean = false
 	title: string = 'Project Overview'
 
@@ -591,22 +588,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	getUsedResources(): void {
 		this.resourceDataLoaded = false
 
-		if (!this.project_application?.project_application_openstack_project) {
-			this.subscription.add(
-				this.groupService
-					.getGroupResources(this.project_application.project_application_perun_id.toString())
-					.subscribe((res: any): void => {
-						this.vmsInUse = res['used_vms']
-						this.maximumVMs = res['number_vms']
-						this.coresInUse = res['cores_used']
-						this.ramInUse = res['ram_used']
-						this.resourceDataLoaded = true
-					})
-			)
-		} else {
-			this.maximumVMs = this.calculateNumberOfVMs(this.project_application?.flavors)
-			this.resourceDataLoaded = true
-		}
+		this.maximumVMs = this.calculateNumberOfVMs(this.project_application?.flavors)
+		this.resourceDataLoaded = true
 	}
 
 	/**

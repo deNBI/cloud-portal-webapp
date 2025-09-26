@@ -472,42 +472,7 @@
 										{{ project_application?.project_modification_request?.date_submitted }}
 									</span>
 								</strong>
-								<strong
-									*ngIf="
-										!project_application?.project_application_openstack_project &&
-										!(project_application | isMigratedProject)
-									"
-									class="text-muted"
-									>{{ vmsInUse }} of {{ maximumVMs }} VMS, {{ coresInUse }} of
-									{{ project_application?.project_application_total_cores }} VCPUs and {{ ramInUse }}
-									of
-									{{ project_application?.project_application_total_ram }} GBs RAM in use
-									<span
-										*ngIf="
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-										"
-									>
-										- Resource modification requested on
-										{{ project_application?.project_modification_request?.date_submitted }}
-									</span> </strong
-								><br />
-								<div
-									*ngIf="
-										!project_application?.project_application_openstack_project &&
-										!(project_application | isMigratedProject)
-									"
-									class="progress"
-									style="height: 2px"
-								>
-									<div
-										[ngStyle]="{ 'width.%': calculateProgressBar(vmsInUse / maximumVMs) }"
-										aria-valuemax="100"
-										aria-valuemin="0"
-										class="progress-bar bg-info"
-										role="progressbar"
-									></div>
-								</div>
+
 								<small class="text-muted" *ngIf="project_application | isMigratedProject">
 									Please consider: As the project is migrated, the amount of used resources is visible in the
 									<a [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noopener noreferrer">SimpleVM platform</a>.
@@ -998,7 +963,7 @@
 						<strong>Please note:</strong>
 						<p>
 							This project has been migrated to the new platform. The changes you make here will be synchronised.
-							However, this is not instantaneous and it may take a few moments for the changes to be propagateg to the
+							However, this is not instantaneous and it may take a few moments for the changes to be propagated to the
 							new platform.
 						</p>
 					</div>
