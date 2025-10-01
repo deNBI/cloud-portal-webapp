@@ -40,7 +40,7 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 			return
 		}
 		this.groupService.getProjectOSDetails(this.project.project_application_perun_id).subscribe(
-			(res: any): void => {
+			(): void => {
 				this.details_loaded = true
 			},
 			() => {
