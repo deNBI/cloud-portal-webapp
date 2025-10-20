@@ -82,7 +82,7 @@
     "@angular/compiler-cli": "20.3.0",
     "@eslint/eslintrc": "3.3.1",
     "@eslint/js": "9.36.0",
-    "@playwright/test": "1.55.0",
+    "@playwright/test": "1.56.1",
     "@types/jasmine": "5.1.9",
     "@types/node": "22.18.1",
     "@typescript-eslint/eslint-plugin": "8.45.0",
