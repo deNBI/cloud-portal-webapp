@@ -80,8 +80,8 @@ export class TypeOverviewComponent implements OnInit {
 	}
 
 	transformURLs(projectTypes: any): any {
-	const base: string = ApiSettings.getWagtailBase().replace(/\/$/, '')
-	for (const key of Object.keys(projectTypes)) {
+		const base: string = ApiSettings.getWagtailBase().replace(/\/$/, '')
+		for (const key of Object.keys(projectTypes)) {
 			projectTypes[key].logo = `${base}${projectTypes[key].logo}`
 			projectTypes[key].href = `${base}${projectTypes[key].href}`
 			for (const idx in projectTypes[key].features) {
