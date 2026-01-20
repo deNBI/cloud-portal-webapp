@@ -34,8 +34,9 @@
 			<ng-container *ngFor="let flavorType of flavorTypes; first as isFirst">
 				<accordion-group
 					*ngIf="
-						(project?.project_application_openstack_project || shown_flavors[flavorType.long_name]) &&
-						(project | hasFlavorTypeOrIsNotCustom: flavorType)
+						((project?.project_application_openstack_project || shown_flavors[flavorType.long_name]) &&
+							(project | hasFlavorTypeOrIsNotCustom: flavorType)) ||
+						adjustment
 					"
 					[isOpen]="isFirst"
 					#groupval
@@ -49,7 +50,7 @@
 						>
 						</i>
 					</div>
-					<div *ngIf="!flavorRetrievalInProgress; else flavorRetrievalSpinner" >
+					<div *ngIf="!flavorRetrievalInProgress; else flavorRetrievalSpinner">
 						<div *ngFor="let flavor_name of getFlavorNamesByType(flavorType)" class="form-group row my-4 py-2">
 							<div class="col-4">
 								<label class="text-muted" for="{{ flavor_name }}_old">
@@ -163,14 +164,16 @@
 											attr.data-test-id="adjusted_{{ flavorType.shortcut + '_' + i }}"
 											placeholder="e.g 1"
 											[ngModel]="
-												adjusted_project_modification | flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
+												adjusted_project_modification
+													| flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
 											"
 											#name="ngModel"
 											(change)="checkFlavorPairsAdjustment(shown_flavors[flavorType.long_name][flavor_name][0], $event)"
 											appMinAmount="0"
 											appInteger
 											value="{{
-												adjusted_project_modification | flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
+												adjusted_project_modification
+													| flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
 											}}"
 											aria-describedby="adjust_{{ flavor_name }}_help"
 											[ngClass]="{
@@ -191,7 +194,7 @@
 					<ng-template #flavorRetrievalSpinner>
 						<div class="spinner-border" role="status">
 							<span class="visually-hidden">Loading flavors..</span>
-						  </div>
+						</div>
 					</ng-template>
 				</accordion-group>
 			</ng-container>
@@ -690,7 +693,6 @@
 				>, so we may calculate and set the correct amount for your project.
 			</strong>
 		</div>
-
 	</form>
 
 	<div *ngIf="modificationForm.invalid || !min_vm" class="alert alert-warning" role="alert">
