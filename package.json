@@ -72,6 +72,14 @@
     "uglify-js": "3.19.3",
     "zone.js": "^0.16.0"
   },
+    "overrides": {
+    "ngx-bootstrap": {
+      "@angular/animations": "$@angular/animations",
+      "@angular/common": "$@angular/common",
+      "@angular/core": "$@angular/core",
+      "@angular/forms": "$@angular/forms"
+    }
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.3.8",
     "@angular-eslint/builder": "20.7.0",
