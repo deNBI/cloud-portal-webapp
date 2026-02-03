@@ -71,9 +71,7 @@ import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/comp
 		HasStatusNotInListPipe,
 		BasePaginationComponent,
 		ApplicationFilterInputComponent,
-		ApplicationStatusBadgesComponent,
-		ProjectCsvTemplatedEmailModalComponent,
-		ProjectEmailModalComponent
+		ApplicationStatusBadgesComponent
 	]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {

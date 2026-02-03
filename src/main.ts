@@ -6,7 +6,6 @@ import { AppInterceptor } from './app/app.interceptor.component'
 import { TokenInterceptor } from './app/api-connector/token-interceptor'
 import { LocationStrategy, HashLocationStrategy, CommonModule } from '@angular/common'
 import { UncaughtExceptionHandler } from './app/error-handler/UncaughtExceptionHandler.service'
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts'
 import { ApiSettings } from './app/api-connector/api-settings.service'
 import { UserService } from './app/api-connector/user.service'
 import { CookieService } from 'ngx-cookie-service'
@@ -79,7 +78,6 @@ bootstrapApplication(AppComponent, {
 			provide: ErrorHandler,
 			useClass: UncaughtExceptionHandler,
 		},
-		provideCharts(withDefaultRegisterables()),
 		ApiSettings,
 		UserService,
 		CookieService,

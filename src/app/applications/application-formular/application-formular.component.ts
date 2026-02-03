@@ -44,7 +44,7 @@ import {
 import { AccordionModule } from 'ngx-bootstrap/accordion'
 import { NgSelectComponent } from '@ng-select/ng-select'
 import { ModalModule } from 'ngx-bootstrap/modal'
-import { Router, RouterLink } from '@angular/router'
+import { Router } from '@angular/router'
 import { DisseminationPlatform } from '../application.model/dissemination-platform'
 import { DisseminationPlatformSelectedPipe } from 'app/pipe-module/pipes/platform-selected.pipe'
 import { ApplicationDissemination } from '../application-dissemination'
@@ -68,7 +68,6 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 		AccordionModule,
 		NgSelectComponent,
 		ModalModule,
-		RouterLink,
 		DisseminationPlatformSelectedPipe,
 		AllowedDisseminationInformationPipe,
 		SufficientHumanDataInformationGivenPipe
