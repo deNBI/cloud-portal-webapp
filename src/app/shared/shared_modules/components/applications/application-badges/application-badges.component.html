@@ -29,115 +29,126 @@
 	</span>
 }
 
-<span
-	*ngIf="application?.project_application_pi_approved && is_vo_admin"
-	style="margin: 2px"
-	class="badge"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="This application was approved by a PI"
->
-	<span class="icon icon-yes_pi" style="font-size: 20px">
-		<span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span>
+@if (application?.project_application_pi_approved && is_vo_admin) {
+	<span
+		style="margin: 2px"
+		class="badge"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="This application was approved by a PI"
+	>
+		<span class="icon icon-yes_pi" style="font-size: 20px">
+			<span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span>
+		</span>
 	</span>
-</span>
-<span
-	*ngIf="!application?.project_application_pi_approved && is_vo_admin"
-	style="margin: 2px"
-	class="badge"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="This application is yet not approved by a PI"
->
-	<span class="icon icon-no_pi" style="font-size: 2em">
-		<span class="path1"></span>
-		<span class="path2"></span>
-		<span class="path3"></span>
-		<span class="path4"></span>
+}
+@if (!application?.project_application_pi_approved && is_vo_admin) {
+	<span
+		style="margin: 2px"
+		class="badge"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="This application is yet not approved by a PI"
+	>
+		<span class="icon icon-no_pi" style="font-size: 2em">
+			<span class="path1"></span>
+			<span class="path2"></span>
+			<span class="path3"></span>
+			<span class="path4"></span>
+		</span>
 	</span>
-</span>
-<span
-	style="margin-left: 12px"
-	class="badge bg-warning"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="This application was migrated"
-	*ngIf="application?.migrate_to_simple_vm"
-	><span style="font-size: 17px"> <i class="fas fa-file-export"></i></span
-></span>
+}
+@if (application?.migrate_to_simple_vm) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-warning"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="This application was migrated"
+		><span style="font-size: 17px"> <i class="fas fa-file-export"></i></span
+	></span>
+}
 
-<span
-	style="margin-left: 12px"
-	class="badge bg-secondary"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="This application has an open modification request"
-	*ngIf="application?.project_modification_request"
-	><span style="font-size: 17px"> <i class="fas fa-edit"></i></span>
-</span>
+@if (application?.project_modification_request) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-secondary"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="This application has an open modification request"
+		><span style="font-size: 17px"> <i class="fas fa-edit"></i></span>
+	</span>
+}
 
-<span
-	style="margin-left: 12px"
-	class="badge bg-secondary"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="This application has an open lifetime extension request"
-	*ngIf="application?.project_lifetime_request"
-	><span style="font-size: 17px"> <i class="fas fa-clock-rotate-left"></i></span>
-</span>
+@if (application?.project_lifetime_request) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-secondary"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="This application has an open lifetime extension request"
+		><span style="font-size: 17px"> <i class="fas fa-clock-rotate-left"></i></span>
+	</span>
+}
 
-<span
-	style="margin-left: 12px"
-	class="badge bg-danger"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="This application uses sensitive data"
-	*ngIf="application?.project_application_person_related_data"
-	><span style="font-size: 17px"> <i class="fas fa-fingerprint"></i></span>
-</span>
+@if (application?.project_application_person_related_data) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-danger"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="This application uses sensitive data"
+		><span style="font-size: 17px"> <i class="fas fa-fingerprint"></i></span>
+	</span>
+}
 
-<span
-	style="margin-left: 12px"
-	class="badge bg-info"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="This application is used for a workshop"
-	*ngIf="application?.project_application_workshop"
-	><span style="font-size: 17px"> <i class="fa fa-chalkboard-teacher"></i></span>
-</span>
-<span
-	style="margin-left: 12px"
-	class="badge bg-danger"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="The application is not approved by the PI since 4 weeks."
-	*ngIf="application?.pi_approval_notification_expired && is_vo_admin"
-	><span style="font-size: 17px"> <i class="fas fa-trash"></i></span>
-</span>
-<span
-	style="margin-left: 12px"
-	class="badge bg-secondary"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="The user submitting the application got informed of the missing PI approval"
-	*ngIf="!application?.pi_approval_notification_expired && application?.pi_approval_notification_send && is_vo_admin"
-	><span style="font-size: 17px"> <i class="fas fa-envelope"></i></span>
-</span>
-<span
-	style="margin-left: 12px"
-	class="badge bg-info"
-	data-toggle="tooltip"
-	data-placement="auto"
-	title="Initials of processing vo manager: {{ application?.processing_vo_initials }}"
-	*ngIf="application?.processing_vo_initials && is_vo_admin"
-	><span style="font-size: 17px"> {{ application?.processing_vo_initials }}</span>
-</span>
-<span
-	*ngIf="application.project_application_basic_introduction"
-	style="margin-left: 12px"
-	class="badge bg-info"
-	data-toggle="toolip"
-	data-placement="auto"
-	title="A basic introduction to the project type is wanted"
-	><span stlye="font-size: 17px"><i class="fas fa-hands-helping"></i></span>
-</span>
+@if (application?.project_application_workshop) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-info"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="This application is used for a workshop"
+		><span style="font-size: 17px"> <i class="fa fa-chalkboard-teacher"></i></span>
+	</span>
+}
+@if (application?.pi_approval_notification_expired && is_vo_admin) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-danger"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="The application is not approved by the PI since 4 weeks."
+		><span style="font-size: 17px"> <i class="fas fa-trash"></i></span>
+	</span>
+}
+@if (!application?.pi_approval_notification_expired && application?.pi_approval_notification_send && is_vo_admin) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-secondary"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="The user submitting the application got informed of the missing PI approval"
+		><span style="font-size: 17px"> <i class="fas fa-envelope"></i></span>
+	</span>
+}
+@if (application?.processing_vo_initials && is_vo_admin) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-info"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="Initials of processing vo manager: {{ application?.processing_vo_initials }}"
+		><span style="font-size: 17px"> {{ application?.processing_vo_initials }}</span>
+	</span>
+}
+@if (application.project_application_basic_introduction) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-info"
+		data-toggle="toolip"
+		data-placement="auto"
+		title="A basic introduction to the project type is wanted"
+		><span stlye="font-size: 17px"><i class="fas fa-hands-helping"></i></span>
+	</span>
+}

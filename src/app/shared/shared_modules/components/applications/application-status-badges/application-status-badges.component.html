@@ -1,62 +1,40 @@
 @if (application | hasstatusinlist: Application_States.TERMINATED) {
-	<span
-		*ngIf="application | hasstatusinlist: Application_States.TERMINATED"
-		style="margin-left: 5px"
-		class="badge bg-dark"
-		>TERMINATED
-	</span>
+	@if (application | hasstatusinlist: Application_States.TERMINATED) {
+		<span style="margin-left: 5px" class="badge bg-dark">TERMINATED </span>
+	}
 } @else {
-	<span *ngIf="application | hasstatusinlist: Project_States.ACTIVE" style="margin-left: 5px" class="badge bg-success"
-		>{{ Project_States[Project_States.ACTIVE] }}
-	</span>
+	@if (application | hasstatusinlist: Project_States.ACTIVE) {
+		<span style="margin-left: 5px" class="badge bg-success">{{ Project_States[Project_States.ACTIVE] }} </span>
+	}
 
-	<span
-		*ngIf="
-			(application?.lifetime_reached | hasStatus: Lifetime_States.EXPIRED) &&
-			!(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION)
-		"
-		style="margin-left: 5px"
-		class="badge bg-danger"
-		>{{ Lifetime_States[Lifetime_States.EXPIRED] }}
-	</span>
-	<span
-		*ngIf="application?.lifetime_reached | hasStatus: Lifetime_States.EXPIRES_SOON"
-		style="margin-left: 5px"
-		class="badge bg-warning"
-		>{{ Lifetime_States[Lifetime_States.EXPIRES_SOON] }}</span
-	>
+	@if (
+		(application?.lifetime_reached | hasStatus: Lifetime_States.EXPIRED) &&
+		!(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION)
+	) {
+		<span style="margin-left: 5px" class="badge bg-danger">{{ Lifetime_States[Lifetime_States.EXPIRED] }} </span>
+	}
+	@if (application?.lifetime_reached | hasStatus: Lifetime_States.EXPIRES_SOON) {
+		<span style="margin-left: 5px" class="badge bg-warning">{{ Lifetime_States[Lifetime_States.EXPIRES_SOON] }}</span>
+	}
 
-	<span
-		*ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION"
-		style="margin-left: 5px"
-		class="badge bg-info"
-		>WAIT FOR CONFIRMATION
-	</span>
+	@if (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) {
+		<span style="margin-left: 5px" class="badge bg-info">WAIT FOR CONFIRMATION </span>
+	}
 
-	<span
-		*ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM"
-		style="margin-left: 5px"
-		class="badge bg-dark"
-		>WAIT FOR TERMINATION BY FM
-	</span>
+	@if (application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) {
+		<span style="margin-left: 5px" class="badge bg-dark">WAIT FOR TERMINATION BY FM </span>
+	}
 
-	<span
-		*ngIf="application | hasstatusinlist: Application_States.DISABLED"
-		style="margin-left: 5px"
-		class="badge bg-danger"
-		>{{ Application_States[Application_States.DISABLED] }}
-	</span>
+	@if (application | hasstatusinlist: Application_States.DISABLED) {
+		<span style="margin-left: 5px" class="badge bg-danger">{{ Application_States[Application_States.DISABLED] }} </span>
+	}
 
-	<span
-		*ngIf="application | hasstatusinlist: Application_States.TERMINATION_REQUESTED"
-		style="margin-left: 5px"
-		class="badge bg-dark"
-		>{{ Application_States[Application_States.TERMINATION_REQUESTED] }}
-	</span>
-	<span
-		*ngIf="application | hasstatusinlist: Application_States.PROTECTED"
-		style="margin-left: 5px"
-		class="badge bg-secondary"
-		>PROTECTED
-	</span>
+	@if (application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) {
+		<span style="margin-left: 5px" class="badge bg-dark"
+			>{{ Application_States[Application_States.TERMINATION_REQUESTED] }}
+		</span>
+	}
+	@if (application | hasstatusinlist: Application_States.PROTECTED) {
+		<span style="margin-left: 5px" class="badge bg-secondary">PROTECTED </span>
+	}
 }

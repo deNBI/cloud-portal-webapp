@@ -21,103 +21,104 @@
 		</li>
 
 		<li class="nav-item">
-			<a
-				class="nav-link"
-				id="credits_tab"
-				*ngIf="
-					(is_vo_admin || application?.credits_allowed) &&
-					((application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-						(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))
-				"
-				[ngClass]="{ active: CREDITS_TAB_ACTIVE }"
-				(click)="setTab(CREDITS_TAB)"
-				>Credits Extension</a
-			>
+			@if (
+				(is_vo_admin || application?.credits_allowed) &&
+				((application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+					(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))
+			) {
+				<a class="nav-link" id="credits_tab" [ngClass]="{ active: CREDITS_TAB_ACTIVE }" (click)="setTab(CREDITS_TAB)"
+					>Credits Extension</a
+				>
+			}
 		</li>
 
 		<li class="nav-item">
-			<a
-				class="nav-link"
-				id="extension_tab"
-				*ngIf="
-					(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-					(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-				"
-				[ngClass]="{ active: EXTENSION_TAB_ACTIVE }"
-				(click)="setTab(EXTENSION_TAB)"
-				>Lifetime Extension</a
-			>
+			@if (
+				(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+				(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+			) {
+				<a
+					class="nav-link"
+					id="extension_tab"
+					[ngClass]="{ active: EXTENSION_TAB_ACTIVE }"
+					(click)="setTab(EXTENSION_TAB)"
+					>Lifetime Extension</a
+				>
+			}
 		</li>
 		<li class="nav-item">
-			<a
-				class="nav-link"
-				id="comment_tab"
-				*ngIf="application?.project_application_manager_comment"
-				[ngClass]="{ active: COMMENT_TAB_ACTIVE }"
-				(click)="setTab(COMMENT_TAB)"
-				>Application Adjustment</a
-			>
+			@if (application?.project_application_manager_comment) {
+				<a class="nav-link" id="comment_tab" [ngClass]="{ active: COMMENT_TAB_ACTIVE }" (click)="setTab(COMMENT_TAB)"
+					>Application Adjustment</a
+				>
+			}
 		</li>
 		<li class="nav-item">
-			<a
-				class="nav-link"
-				id="modification_comment_tab"
-				*ngIf="application?.project_modification_request?.manager_comment"
-				[ngClass]="{ active: MODIFICATION_COMMENT_TAB_ACTIVE }"
-				(click)="setTab(MODIFICATION_COMMENT_TAB)"
-				>Modification Adjustment</a
-			>
+			@if (application?.project_modification_request?.manager_comment) {
+				<a
+					class="nav-link"
+					id="modification_comment_tab"
+					[ngClass]="{ active: MODIFICATION_COMMENT_TAB_ACTIVE }"
+					(click)="setTab(MODIFICATION_COMMENT_TAB)"
+					>Modification Adjustment</a
+				>
+			}
 		</li>
 		<li class="nav-item">
-			<a
-				class="nav-link"
-				id="lifetime_comment_tab"
-				*ngIf="application?.project_lifetime_request?.manager_comment"
-				[ngClass]="{ active: LIFETIME_COMMENT_TAB_ACTIVE }"
-				(click)="setTab(LIFETIME_COMMENT_TAB)"
-				>Lifetime Adjustment</a
-			>
+			@if (application?.project_lifetime_request?.manager_comment) {
+				<a
+					class="nav-link"
+					id="lifetime_comment_tab"
+					[ngClass]="{ active: LIFETIME_COMMENT_TAB_ACTIVE }"
+					(click)="setTab(LIFETIME_COMMENT_TAB)"
+					>Lifetime Adjustment</a
+				>
+			}
 		</li>
 	</ul>
 
 	<div class="tab-content">
-		<div *ngIf="PI_USER_TAB_ACTIVE" class="table-responsive">
-			<app-application-pi-detail [application]="application"></app-application-pi-detail>
-		</div>
-		<div *ngIf="INFORMATION_TAB_ACTIVE">
-			<app-information-detail [application]="application"></app-information-detail>
-		</div>
-		<div *ngIf="RESOURCE_TAB_ACTIVE" class="table-responsive">
-			<app-resource-detail
-				[is_vo_admin]="is_vo_admin"
-				[current_credits]="current_credits"
-				[application]="application"
-			></app-resource-detail>
-		</div>
-		<div
-			*ngIf="
-				CREDITS_TAB_ACTIVE &&
-				(is_vo_admin || application?.credits_allowed) &&
-				((application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-					(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))
-			"
-			class="table-responsive"
-		>
-			<app-credits-extension-detail
-				[is_vo_admin]="is_vo_admin"
-				[application]="application"
-			></app-credits-extension-detail>
-		</div>
-		<div
-			*ngIf="
-				EXTENSION_TAB_ACTIVE &&
-				((application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-					(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))
-			"
-			class="table-responsive"
-		>
-			<app-lifetime-extension-detail [application]="application"></app-lifetime-extension-detail>
-		</div>
+		@if (PI_USER_TAB_ACTIVE) {
+			<div class="table-responsive">
+				<app-application-pi-detail [application]="application"></app-application-pi-detail>
+			</div>
+		}
+		@if (INFORMATION_TAB_ACTIVE) {
+			<div>
+				<app-information-detail [application]="application"></app-information-detail>
+			</div>
+		}
+		@if (RESOURCE_TAB_ACTIVE) {
+			<div class="table-responsive">
+				<app-resource-detail
+					[is_vo_admin]="is_vo_admin"
+					[current_credits]="current_credits"
+					[application]="application"
+				></app-resource-detail>
+			</div>
+		}
+		@if (
+			CREDITS_TAB_ACTIVE &&
+			(is_vo_admin || application?.credits_allowed) &&
+			((application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+				(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))
+		) {
+			<div class="table-responsive">
+				<app-credits-extension-detail
+					[is_vo_admin]="is_vo_admin"
+					[application]="application"
+				></app-credits-extension-detail>
+			</div>
+		}
+		@if (
+			EXTENSION_TAB_ACTIVE &&
+			((application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+				(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))
+		) {
+			<div class="table-responsive">
+				<app-lifetime-extension-detail [application]="application"></app-lifetime-extension-detail>
+			</div>
+		}
 
 		@if (COMMENT_TAB_ACTIVE) {
 			<div class="table-responsive">

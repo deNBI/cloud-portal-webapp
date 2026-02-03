@@ -22,7 +22,7 @@ import { EmailService } from '../api-connector/email.service'
 import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model'
 import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common'
+import { NgClass, AsyncPipe } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import {
 	TextColorDirective,
@@ -57,9 +57,7 @@ import { ExtendedFacilityNews } from './newsmanagement/facility-news'
 	templateUrl: 'facilityprojectsoverview.component.html',
 	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService],
 	imports: [
-		NgIf,
 		FormsModule,
-		NgFor,
 		TextColorDirective,
 		TextBgColorDirective,
 		BadgeComponent,
@@ -312,7 +310,8 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 
 	checkValidLifeScienceIdFilter(): void {
-		this.validLifeScienceIdFilter = this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')
+		this.validLifeScienceIdFilter =
+			this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')
 	}
 
 	getProjectsByMemberLifeScienceId(): void {

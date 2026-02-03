@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
 import { GroupService } from '../../api-connector/group.service'
 import { Application } from '../../applications/application.model/application.model'
-import { NgIf, NgFor } from '@angular/common'
 
 /**
  * Project OpenStack Details Component.
@@ -11,7 +10,7 @@ import { NgIf, NgFor } from '@angular/common'
 	templateUrl: './project-os-details.component.html',
 	styleUrls: ['./project-os-details.component.css'],
 	providers: [GroupService],
-	imports: [NgIf, NgFor]
+	imports: []
 })
 export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 	@Input() project: Application

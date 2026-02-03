@@ -5,7 +5,7 @@ import { NewsService } from '../api-connector/news.service'
 import { News } from './news.model'
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { GroupService } from '../api-connector/group.service'
-import { NgIf, NgFor } from '@angular/common'
+
 import { NewsSlideComponent } from './news-slide/news-slide.component'
 
 @Component({
@@ -13,7 +13,7 @@ import { NewsSlideComponent } from './news-slide/news-slide.component'
 	templateUrl: './news.component.html',
 	styleUrls: ['./news.component.scss'],
 	providers: [NewsService],
-	imports: [NgIf, CarouselModule, NgFor, NewsSlideComponent]
+	imports: [CarouselModule, NewsSlideComponent]
 })
 export class NewsComponent implements OnInit, OnDestroy {
 	@Input() tags: string[] = []

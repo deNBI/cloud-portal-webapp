@@ -25,18 +25,19 @@
 
 				<td>{{ application?.project_modification_request?.comment }}</td>
 			</tr>
-			<tr *ngIf="application?.project_application_openstack_project && application?.project_application_cloud_service">
-				<td>Service status</td>
-
-				<td>
-					<span *ngIf="application?.project_modification_request?.cloud_service_develop" class="badge bg-success"
-						>In development</span
-					>
-					<span *ngIf="!application?.project_modification_request?.cloud_service_develop" class="badge bg-danger"
-						>Existing</span
-					>
-				</td>
-			</tr>
+			@if (application?.project_application_openstack_project && application?.project_application_cloud_service) {
+				<tr>
+					<td>Service status</td>
+					<td>
+						@if (application?.project_modification_request?.cloud_service_develop) {
+							<span class="badge bg-success">In development</span>
+						}
+						@if (!application?.project_modification_request?.cloud_service_develop) {
+							<span class="badge bg-danger">Existing</span>
+						}
+					</td>
+				</tr>
+			}
 			<tr>
 				<td>Date Submitted</td>
 
@@ -202,34 +203,39 @@
 			}
 		</tr>
 
-		<tr *ngIf="is_vo_admin">
-			<td>Initial Credits</td>
-			<td>{{ application?.project_application_initial_credits }}</td>
+		@if (is_vo_admin) {
+			<tr>
+				<td>Initial Credits</td>
+				<td>{{ application?.project_application_initial_credits }}</td>
+				@if (application.project_modification_request) {
+					<td>
+						<span
+							[ngStyle]="{
+								color: 'green',
+							}"
+						>
+							+ {{ application.project_modification_request.extra_credits }}
+						</span>
+					</td>
+					<td>
+						{{
+							application.project_modification_request.extra_credits + application.project_application_initial_credits
+						}}
+					</td>
+				}
+			</tr>
+		}
 
-			@if (application.project_modification_request) {
-				<td>
-					<span
-						[ngStyle]="{
-							color: 'green',
-						}"
-					>
-						+ {{ application.project_modification_request.extra_credits }}
-					</span>
-				</td>
-				<td>
-					{{ application.project_modification_request.extra_credits + application.project_application_initial_credits }}
-				</td>
-			}
-		</tr>
-
-		<tr *ngIf="is_vo_admin">
-			<td>Used Credits</td>
-			<td>{{ current_credits }}</td>
-			@if (application.project_modification_request) {
-				<td></td>
-				<td></td>
-			}
-		</tr>
+		@if (is_vo_admin) {
+			<tr>
+				<td>Used Credits</td>
+				<td>{{ current_credits }}</td>
+				@if (application.project_modification_request) {
+					<td></td>
+					<td></td>
+				}
+			</tr>
+		}
 
 		<tr>
 			<td>Storage Limit</td>
@@ -293,37 +299,41 @@
 				<td>{{ application.project_modification_request.volume_counter }}</td>
 			}
 		</tr>
-		<tr *ngIf="application?.project_application_openstack_project">
-			<td>ObjectStorage</td>
-			<td>{{ application?.project_application_object_storage }} GB</td>
-			@if (application.project_modification_request) {
-				<td>
-					<span
-						[ngStyle]="{
-							color:
-								application.project_modification_request.object_storage >=
+		@if (application?.project_application_openstack_project) {
+			<tr>
+				<td>ObjectStorage</td>
+				<td>{{ application?.project_application_object_storage }} GB</td>
+				@if (application.project_modification_request) {
+					<td>
+						<span
+							[ngStyle]="{
+								color:
+									application.project_modification_request.object_storage >=
+									application.project_application_object_storage
+										? 'green'
+										: 'red',
+							}"
+						>
+							{{
+								application.project_modification_request.object_storage ===
 								application.project_application_object_storage
-									? 'green'
-									: 'red',
-						}"
-					>
-						{{
-							application.project_modification_request.object_storage === application.project_application_object_storage
-								? ''
-								: application.project_modification_request.object_storage >
-									  application.project_application_object_storage
-									? '+'
-									: '-'
-						}}
-						{{
-							Math.abs(
-								application.project_modification_request.object_storage - application.project_application_object_storage
-							)
-						}}
-					</span>
-				</td>
-				<td>{{ application.project_modification_request.object_storage }}</td>
-			}
-		</tr>
+									? ''
+									: application.project_modification_request.object_storage >
+										  application.project_application_object_storage
+										? '+'
+										: '-'
+							}}
+							{{
+								Math.abs(
+									application.project_modification_request.object_storage -
+										application.project_application_object_storage
+								)
+							}}
+						</span>
+					</td>
+					<td>{{ application.project_modification_request.object_storage }}</td>
+				}
+			</tr>
+		}
 	</tbody>
 </table>

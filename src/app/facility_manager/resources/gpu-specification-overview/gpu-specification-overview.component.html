@@ -93,102 +93,105 @@
 	</div>
 </div>
 
-<div
-	class="card"
-	id="{{ gpu?.id + '_card' }}"
-	*ngFor="let gpu of gpuSpecifications"
-	style="margin: 5px"
-	[ngClass]="gpuSpecificationUpdateList[gpu.id] ? 'border-warning' : 'border-primary'"
->
-	<div class="card-body">
-		<h5 class="card-title">{{ gpu?.type }}</h5>
-		<div class="row" [formGroup]="gpuFormGroups[gpu.id]">
-			<div class="col-2" style="margin: 5px">
-				<div class="text-muted"><small>Actions</small></div>
-				<div
-					class="btn-group-vertical"
-					role="group"
-					tooltip="Only an admin from the facility which created the specification can alter it"
-				>
-					<button
-						(click)="deleteGPUSpecification(gpu.id)"
-						class="btn btn-danger"
-						[disabled]="!gpu.is_changeable"
-						*ngIf="!gpuSpecificationUpdateList[gpu.id]"
+@for (gpu of gpuSpecifications; track gpu) {
+	<div
+		class="card"
+		id="{{ gpu?.id + '_card' }}"
+		style="margin: 5px"
+		[ngClass]="gpuSpecificationUpdateList[gpu.id] ? 'border-warning' : 'border-primary'"
+	>
+		<div class="card-body">
+			<h5 class="card-title">{{ gpu?.type }}</h5>
+			<div class="row" [formGroup]="gpuFormGroups[gpu.id]">
+				<div class="col-2" style="margin: 5px">
+					<div class="text-muted"><small>Actions</small></div>
+					<div
+						class="btn-group-vertical"
+						role="group"
+						tooltip="Only an admin from the facility which created the specification can alter it"
 					>
-						Remove
-					</button>
-					<button
-						class="btn btn-warning"
-						(click)="changeGPUSpecificationToUpdate(gpu)"
-						[disabled]="!gpu.is_changeable"
-						*ngIf="!gpuSpecificationUpdateList[gpu.id]"
-					>
-						Update
-					</button>
-					<button
-						(click)="updateGPUSpecification(gpu); changeGPUSpecificationToUpdate(gpu)"
-						class="btn btn-success"
-						*ngIf="gpuSpecificationUpdateList[gpu.id]"
-					>
-						Save
-					</button>
-					<button
-						class="btn btn-info"
-						*ngIf="gpuSpecificationUpdateList[gpu.id]"
-						(click)="reloadGPUSpecification(gpu); changeGPUSpecificationToUpdate(gpu)"
-					>
-						Cancel
-					</button>
-				</div>
-			</div>
-			<div class="col-4" style="margin: 5px">
-				<div class="text-muted"><small>Type</small></div>
-				<div class="form-group row">
-					<label for="{{ gpu?.id + '_type' }}">Name</label>
-					<div class="input-group mb-3">
-						<input class="form-control" type="text" formControlName="{{ gpu?.id }}_type" id="{{ gpu?.id + '_type' }}" />
+						@if (!gpuSpecificationUpdateList[gpu.id]) {
+							<button (click)="deleteGPUSpecification(gpu.id)" class="btn btn-danger" [disabled]="!gpu.is_changeable">
+								Remove
+							</button>
+						}
+						@if (!gpuSpecificationUpdateList[gpu.id]) {
+							<button
+								class="btn btn-warning"
+								(click)="changeGPUSpecificationToUpdate(gpu)"
+								[disabled]="!gpu.is_changeable"
+							>
+								Update
+							</button>
+						}
+						@if (gpuSpecificationUpdateList[gpu.id]) {
+							<button
+								(click)="updateGPUSpecification(gpu); changeGPUSpecificationToUpdate(gpu)"
+								class="btn btn-success"
+							>
+								Save
+							</button>
+						}
+						@if (gpuSpecificationUpdateList[gpu.id]) {
+							<button class="btn btn-info" (click)="reloadGPUSpecification(gpu); changeGPUSpecificationToUpdate(gpu)">
+								Cancel
+							</button>
+						}
 					</div>
 				</div>
-			</div>
-			<div class="col-2" style="margin: 5px">
-				<div class="text-muted"><small>Cores</small></div>
-				<div class="form-group row">
-					<label for="{{ gpu?.id + '_cores' }}">Amount</label>
-					<div class="input-group mb-3">
-						<input
-							class="form-control"
-							type="number"
-							min="0"
-							step="1"
-							formControlName="{{ gpu.id }}_cores"
-							id="{{ gpu?.id + '_cores' }}"
-						/>
-						<div class="input-group-append">
-							<span class="input-group-text">cores</span>
+				<div class="col-4" style="margin: 5px">
+					<div class="text-muted"><small>Type</small></div>
+					<div class="form-group row">
+						<label for="{{ gpu?.id + '_type' }}">Name</label>
+						<div class="input-group mb-3">
+							<input
+								class="form-control"
+								type="text"
+								formControlName="{{ gpu?.id }}_type"
+								id="{{ gpu?.id + '_type' }}"
+							/>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-2" style="margin: 5px">
-				<div class="text-muted"><small>RAM</small></div>
-				<div class="form-group row">
-					<label for="{{ gpu?.id + '_ram' }}">Amount</label>
-					<div class="input-group mb-3">
-						<input
-							class="form-control"
-							type="number"
-							min="0"
-							step="1"
-							formControlName="{{ gpu.id }}_ram"
-							id="{{ gpu?.id + '_ram' }}"
-						/>
-						<div class="input-group-append">
-							<span class="input-group-text">GB</span>
+				<div class="col-2" style="margin: 5px">
+					<div class="text-muted"><small>Cores</small></div>
+					<div class="form-group row">
+						<label for="{{ gpu?.id + '_cores' }}">Amount</label>
+						<div class="input-group mb-3">
+							<input
+								class="form-control"
+								type="number"
+								min="0"
+								step="1"
+								formControlName="{{ gpu.id }}_cores"
+								id="{{ gpu?.id + '_cores' }}"
+							/>
+							<div class="input-group-append">
+								<span class="input-group-text">cores</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-2" style="margin: 5px">
+					<div class="text-muted"><small>RAM</small></div>
+					<div class="form-group row">
+						<label for="{{ gpu?.id + '_ram' }}">Amount</label>
+						<div class="input-group mb-3">
+							<input
+								class="form-control"
+								type="number"
+								min="0"
+								step="1"
+								formControlName="{{ gpu.id }}_ram"
+								id="{{ gpu?.id + '_ram' }}"
+							/>
+							<div class="input-group-append">
+								<span class="input-group-text">GB</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+}

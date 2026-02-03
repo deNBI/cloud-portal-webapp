@@ -5,13 +5,13 @@ import { ClientService } from '../../../api-connector/client.service'
 import { Application } from '../../../applications/application.model/application.model'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { ConfirmationActions } from '../../../shared/modal/confirmation_actions'
-import { NgIf, NgStyle } from '@angular/common'
+import { NgStyle } from '@angular/common'
 
 @Component({
 	selector: 'app-client-limits',
 	templateUrl: './client-limits.component.html',
 	providers: [FacilityService, ClientService],
-	imports: [NgIf, NgStyle]
+	imports: [NgStyle]
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {
 	client: Client = null

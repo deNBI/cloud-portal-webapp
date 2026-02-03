@@ -1,136 +1,147 @@
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
-		<div class="modal-header" *ngIf="limits_message">
-			<div class="alert alert-{{ message_type }}" role="alert" id="notification_message">
-				{{ limits_message }}
+		@if (limits_message) {
+			<div class="modal-header">
+				<div class="alert alert-{{ message_type }}" role="alert" id="notification_message">
+					{{ limits_message }}
+				</div>
+				<button
+					type="button"
+					class="btn-close"
+					style="cursor: pointer"
+					(click)="bsModalRef.hide()"
+					aria-label="Close"
+				></button>
 			</div>
-			<button
-				type="button"
-				class="btn-close"
-				style="cursor: pointer"
-				(click)="bsModalRef.hide()"
-				aria-label="Close"
-			></button>
-		</div>
-		<div class="modal-body" *ngIf="compute_center_id">
-			<div>
-				<div
-					*ngIf="!client && !request_failed"
-					class="spinner-border text-primary"
-					style="display: block; margin: auto"
-				></div>
-
-				<div class="table-responsive" *ngIf="client">
-					<br />
-					<p>Client: {{ client.location }}</p>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<td></td>
-								<td>Current Used Ressources</td>
-								<td>Assigned Ressources</td>
-								<td>Max Ressources</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>VMs</td>
-								<td>{{ client?.limits.currentUsedVms }}</td>
-								<td>
-									{{ client?.limits.assignedVMs }}
-									<span
-										*ngIf="client?.limits.newVms"
-										[ngStyle]="{
-											color:
-												client?.limits.assignedVMs + client?.limits.newVms <= client?.limits.maxVMs ? 'green' : 'red'
-										}"
-									>
-										+ {{ client?.limits.newVms }}</span
-									>
-								</td>
-								<td>{{ client?.limits.maxVMs }}</td>
-							</tr>
-							<tr>
-								<td>Cores</td>
-								<td>{{ client?.limits.currentUsedCores }}</td>
-								<td>
-									{{ client?.limits.assignedCores
-									}}<span
-										*ngIf="client?.limits.newCores"
-										[ngStyle]="{
-											color:
-												client?.limits.assignedCores + client?.limits.newCores <= client?.limits.maxCores
-													? 'green'
-													: 'red'
-										}"
-									>
-										+ {{ client?.limits.newCores }}</span
-									>
-								</td>
-								<td>{{ client?.limits.maxCores }}</td>
-							</tr>
-							<tr>
-								<td>Ram [GB]</td>
-								<td>{{ client?.limits.currentUsedRam }}</td>
-								<td>
-									{{ client?.limits.assignedRam
-									}}<span
-										*ngIf="client?.limits.newRam"
-										[ngStyle]="{
-											color:
-												client?.limits.assignedRam + client?.limits.newRam <= client?.limits.maxRam ? 'green' : 'red'
-										}"
-									>
-										+ {{ client?.limits.newRam }}</span
-									>
-								</td>
-								<td>{{ client?.limits.maxRam }}</td>
-							</tr>
-
-							<tr>
-								<td>Volumes</td>
-								<td>{{ client?.limits.currentUsedVolumes }}</td>
-								<td>
-									{{ client?.limits.assignedVolumes }}
-									<span
-										*ngIf="client?.limits.newVolumes"
-										[ngStyle]="{
-											color:
-												client?.limits.assignedVolumes + client?.limits.newVolumes <= client?.limits.maxVolumes
-													? 'green'
-													: 'red'
-										}"
-									>
-										+ {{ client?.limits.newVolumes }}</span
-									>
-								</td>
-								<td>{{ client?.limits.maxVolumes }}</td>
-							</tr>
-							<tr>
-								<td>Volume Storage [GB]</td>
-								<td>{{ client?.limits.currentUsedVolumeStorage }}</td>
-								<td>
-									{{ client?.limits.assignedVolumesStorage }}
-									<span
-										*ngIf="client?.limits.newVolumeLimit"
-										[ngStyle]="{
-											color:
-												client?.limits.assignedVolumesStorage + client?.limits.newVolumeLimit <=
-												client?.limits.maxVolumeLimit
-													? 'green'
-													: 'red'
-										}"
-									>
-										+ {{ client?.limits.newVolumeLimit }}</span
-									>
-								</td>
-								<td>{{ client?.limits.maxVolumeLimit }}</td>
-							</tr>
-						</tbody>
-					</table>
+		}
+		@if (compute_center_id) {
+			<div class="modal-body">
+				<div>
+					@if (!client && !request_failed) {
+						<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
+					}
+					@if (client) {
+						<div class="table-responsive">
+							<br />
+							<p>Client: {{ client.location }}</p>
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<td></td>
+										<td>Current Used Ressources</td>
+										<td>Assigned Ressources</td>
+										<td>Max Ressources</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>VMs</td>
+										<td>{{ client?.limits.currentUsedVms }}</td>
+										<td>
+											{{ client?.limits.assignedVMs }}
+											@if (client?.limits.newVms) {
+												<span
+													[ngStyle]="{
+														color:
+															client?.limits.assignedVMs + client?.limits.newVms <= client?.limits.maxVMs
+																? 'green'
+																: 'red',
+													}"
+												>
+													+ {{ client?.limits.newVms }}</span
+												>
+											}
+										</td>
+										<td>{{ client?.limits.maxVMs }}</td>
+									</tr>
+									<tr>
+										<td>Cores</td>
+										<td>{{ client?.limits.currentUsedCores }}</td>
+										<td>
+											{{ client?.limits.assignedCores }}
+											@if (client?.limits.newCores) {
+												<span
+													[ngStyle]="{
+														color:
+															client?.limits.assignedCores + client?.limits.newCores <= client?.limits.maxCores
+																? 'green'
+																: 'red',
+													}"
+												>
+													+ {{ client?.limits.newCores }}</span
+												>
+											}
+										</td>
+										<td>{{ client?.limits.maxCores }}</td>
+									</tr>
+									<tr>
+										<td>Ram [GB]</td>
+										<td>{{ client?.limits.currentUsedRam }}</td>
+										<td>
+											{{ client?.limits.assignedRam }}
+											@if (client?.limits.newRam) {
+												<span
+													[ngStyle]="{
+														color:
+															client?.limits.assignedRam + client?.limits.newRam <= client?.limits.maxRam
+																? 'green'
+																: 'red',
+													}"
+												>
+													+ {{ client?.limits.newRam }}</span
+												>
+											}
+										</td>
+										<td>{{ client?.limits.maxRam }}</td>
+									</tr>
+									<tr>
+										<td>Volumes</td>
+										<td>{{ client?.limits.currentUsedVolumes }}</td>
+										<td>
+											{{ client?.limits.assignedVolumes }}
+											@if (client?.limits.newVolumes) {
+												<span
+													[ngStyle]="{
+														color:
+															client?.limits.assignedVolumes + client?.limits.newVolumes <= client?.limits.maxVolumes
+																? 'green'
+																: 'red',
+													}"
+												>
+													+ {{ client?.limits.newVolumes }}</span
+												>
+											}
+										</td>
+										<td>{{ client?.limits.maxVolumes }}</td>
+									</tr>
+									<tr>
+										<td>Volume Storage [GB]</td>
+										<td>{{ client?.limits.currentUsedVolumeStorage }}</td>
+										<td>
+											{{ client?.limits.assignedVolumesStorage }}
+											@if (client?.limits.newVolumeLimit) {
+												<span
+													[ngStyle]="{
+														color:
+															client?.limits.assignedVolumesStorage + client?.limits.newVolumeLimit <=
+															client?.limits.maxVolumeLimit
+																? 'green'
+																: 'red',
+													}"
+												>
+													+ {{ client?.limits.newVolumeLimit }}</span
+												>
+											}
+										</td>
+										<td>{{ client?.limits.maxVolumeLimit }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					}
 				</div>
 			</div>
-		</div>
+		}
 		<div class="modal-footer">
 			<button
 				id="approve_client_limit_{{ application?.project_application_shortname }}"

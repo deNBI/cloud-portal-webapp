@@ -8,7 +8,9 @@
 			<div class="alert alert-warning" role="alert">
 				Are you sure you want to terminate the project - {{ application?.project_application_shortname }}?
 			</div>
-			<app-project-os-details *ngIf="application" [project]="application"></app-project-os-details>
+			@if (application) {
+				<app-project-os-details [project]="application"></app-project-os-details>
+			}
 		</div>
 		<div class="modal-footer">
 			<button

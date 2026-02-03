@@ -5,7 +5,7 @@ import { EmailService } from '../../../../api-connector/email.service'
 import { STATUS_LINK } from '../../../../../links/links'
 import { CsvMailTemplateModel } from '../../../classes/csvMailTemplate.model'
 import { NotificationModalComponent } from '../../notification-modal'
-import { NgFor, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 
 @Component({
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms'
 	templateUrl: './project-csv-templated-email-modal.component.html',
 	styleUrls: ['./project-csv-templated-email.scss'],
 	providers: [EmailService],
-	imports: [NgFor, FormsModule, NgClass]
+	imports: [FormsModule, NgClass]
 })
 export class ProjectCsvTemplatedEmailModalComponent implements OnInit, OnDestroy {
 	csvMailTemplate: CsvMailTemplateModel

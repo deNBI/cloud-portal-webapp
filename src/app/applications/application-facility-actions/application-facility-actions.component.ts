@@ -12,14 +12,14 @@ import { NotificationModalComponent } from '../../shared/modal/notification-moda
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal.component'
 import { ApplicationsService } from '../../api-connector/applications.service'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
-import { NgIf } from '@angular/common'
+
 import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pipe'
 
 @Component({
 	selector: 'app-application-facility-actions',
 	templateUrl: './application-facility-actions.component.html',
 	styleUrl: './application-facility-actions.component.scss',
-	imports: [TooltipModule, NgIf, HasstatusinlistPipe]
+	imports: [TooltipModule, HasstatusinlistPipe]
 })
 export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	private subscription: Subscription = new Subscription()

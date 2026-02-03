@@ -6,14 +6,14 @@ import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeF
 import { MaintenanceService } from '../api-connector/maintenance.service'
 import { UserService } from '../api-connector/user.service'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
-import { NgIf, NgClass, NgFor, DatePipe } from '@angular/common'
+import { NgClass, DatePipe } from '@angular/common'
 
 @Component({
 	selector: 'app-maintenance-alert',
 	templateUrl: './maintenance-alert.component.html',
 	styleUrls: ['./maintenance-alert.component.scss'],
 	providers: [MaintenanceService],
-	imports: [NgIf, NgClass, NgFor, DatePipe]
+	imports: [NgClass, DatePipe]
 })
 export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 	subscription: Subscription = new Subscription()

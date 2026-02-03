@@ -35,7 +35,7 @@ import { User } from '../application.model/user.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
-import { NgIf, NgClass, NgFor } from '@angular/common'
+import { NgClass } from '@angular/common'
 import {
 	MinAmoutValidatorDirective,
 	IntegerValidatorDirective,
@@ -60,14 +60,12 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 	styleUrls: ['./application-formular.component.scss'],
 	providers: [FlavorService, ApplicationsService, CreditsService],
 	imports: [
-		NgIf,
 		FormsModule,
 		NgClass,
 		MinAmoutValidatorDirective,
 		IntegerValidatorDirective,
 		MaxAmoutValidatorDirective,
 		AccordionModule,
-		NgFor,
 		NgSelectComponent,
 		ModalModule,
 		RouterLink,

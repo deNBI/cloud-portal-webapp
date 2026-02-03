@@ -9,7 +9,7 @@ import {
 } from '@angular/forms'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { GPUSpecification } from '../gpu-specification'
-import { NgClass, NgFor, NgIf } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
 
 /**
@@ -19,7 +19,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip'
 	selector: 'app-gpu-specification-overview',
 	templateUrl: './gpu-specification-overview.component.html',
 	providers: [FacilityService],
-	imports: [FormsModule, ReactiveFormsModule, NgClass, NgFor, TooltipModule, NgIf]
+	imports: [FormsModule, ReactiveFormsModule, NgClass, TooltipModule]
 })
 export class GPUSpecificationOverviewComponent implements OnInit {
 	gpuSpecifications: GPUSpecification[]
