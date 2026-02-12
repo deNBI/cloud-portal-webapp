@@ -20,7 +20,7 @@ import { ClientLimitsComponent } from '../../vo_manager/clients/modals/client-li
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
 import { ApplicationModification } from '../application_modification.model'
 import { FormsModule } from '@angular/forms'
-import { NgClass, NgFor, NgIf } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
 import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pipe'
 
@@ -28,7 +28,7 @@ import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pip
 	selector: 'app-application-vo-actions',
 	templateUrl: './application-vo-actions.component.html',
 	styleUrl: './application-vo-actions.component.scss',
-	imports: [FormsModule, NgClass, NgFor, NgIf, TooltipModule, HasstatusinlistPipe]
+	imports: [FormsModule, NgClass, TooltipModule, HasstatusinlistPipe]
 })
 export class ApplicationVoActionsComponent extends AbstractBaseClass implements OnInit {
 	private subscription: Subscription = new Subscription()

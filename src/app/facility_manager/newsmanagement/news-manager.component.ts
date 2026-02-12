@@ -6,7 +6,7 @@ import { FacilityService } from '../../api-connector/facility.service'
 import { environment } from '../../../environments/environment'
 import { FacilityNews } from './facility-news'
 import { WIKI_MOTD } from '../../../links/links'
-import { NgFor, NgIf, NgStyle, NgClass, DatePipe } from '@angular/common'
+import { NgStyle, NgClass, DatePipe } from '@angular/common'
 import { AlertComponent } from '@coreui/angular'
 import { FormsModule } from '@angular/forms'
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
@@ -26,10 +26,8 @@ import {
 	templateUrl: 'news-manager.component.html',
 	providers: [NewsService, FacilityService],
 	imports: [
-		NgFor,
 		AlertComponent,
 		FormsModule,
-		NgIf,
 		NgStyle,
 		NgClass,
 		BsDatepickerModule,

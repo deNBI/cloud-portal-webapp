@@ -33,41 +33,47 @@
 				>
 					Set Key
 				</button>
-				<button
-					class="btn btn-primary"
-					style="float: right; margin: 2px"
-					type="button"
-					(click)="copyToClipboard(userinfo?.PublicKey)"
-					*ngIf="userinfo?.PublicKey !== 'None'"
-					id="copyPublicKeyButton"
-					[closeDelay]="3000"
-					ngbTooltip="Copied!"
-					triggers="click:blur"
-				>
-					Copy Key
-				</button>
+				@if (userinfo?.PublicKey !== 'None') {
+					<button
+						class="btn btn-primary"
+						style="float: right; margin: 2px"
+						type="button"
+						(click)="copyToClipboard(userinfo?.PublicKey)"
+						id="copyPublicKeyButton"
+						[closeDelay]="3000"
+						ngbTooltip="Copied!"
+						triggers="click:blur"
+					>
+						Copy Key
+					</button>
+				}
 			</div>
 		</div>
 	</div>
 </th>
 <td class="col-9" style="width: 75%">
-	<span *ngIf="userinfo?.PublicKey === 'None'"> No public key is set</span>
-	<span *ngIf="userinfo?.PublicKey !== 'None'" style="word-wrap: break-word; max-width: 80px; white-space: normal">
-		<div style="word-break: break-all" data-test-id="user_public_key" id="user_public_key">
-			{{ userinfo?.PublicKey }}
-		</div>
-		<div *ngIf="current_key_blocked">
-			<alert type="danger">
-				<strong>Warning: </strong> Due to security concerns, your key has been blocked permanently, and you won't be
-				able to use it anymore. It's highly recommended that you change your key immediately to prevent any further
-				security breaches.
-				<p>
-					If you have questions or need help, please E-Mail us at
-					<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a>
-				</p>
-			</alert>
-		</div></span
-	>
+	@if (userinfo?.PublicKey === 'None') {
+		<span> No public key is set</span>
+	}
+	@if (userinfo?.PublicKey !== 'None') {
+		<span style="word-wrap: break-word; max-width: 80px; white-space: normal">
+			<div style="word-break: break-all" data-test-id="user_public_key" id="user_public_key">
+				{{ userinfo?.PublicKey }}
+			</div>
+			@if (current_key_blocked) {
+				<div>
+					<alert type="danger">
+						<strong>Warning: </strong> Due to security concerns, your key has been blocked permanently, and you won't be
+						able to use it anymore. It's highly recommended that you change your key immediately to prevent any further
+						security breaches.
+						<p>
+							If you have questions or need help, please E-Mail us at
+							<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a>
+						</p>
+					</alert>
+				</div>
+			}
+		</span>
+	}
 </td>
 <td></td>
-

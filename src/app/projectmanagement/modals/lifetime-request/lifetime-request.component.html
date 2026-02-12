@@ -37,13 +37,21 @@
 					/>
 				</div>
 				<div class="help-block">Current lifetime</div>
-				<div class="help-block" style="color: green" *ngIf="temp_project_extension.extra_lifetime > 0">
-					New end date:
-					<span *ngIf="isDate(new_end_date)"
-						>{{ new_end_date?.getDate() }}.{{ new_end_date?.getMonth() + 1 }} .{{ new_end_date?.getFullYear() }}</span
-					>
-					<span *ngIf="!isDate(new_end_date)">{{ new_end_date }}</span>
-				</div>
+				@if (temp_project_extension.extra_lifetime > 0) {
+					<div class="help-block" style="color: green">
+						New end date:
+						@if (isDate(new_end_date)) {
+							<span
+								>{{ new_end_date?.getDate() }}.{{ new_end_date?.getMonth() + 1 }} .{{
+									new_end_date?.getFullYear()
+								}}</span
+							>
+						}
+						@if (!isDate(new_end_date)) {
+							<span>{{ new_end_date }}</span>
+						}
+					</div>
+				}
 			</div>
 
 			<div class="col">
@@ -73,7 +81,7 @@
 							'is-valid':
 								extensionForm.controls.temp_project_extension_application_renewal_lifetime?.valid &&
 								(extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty ||
-									extensionForm.controls.temp_project_extension_application_renewal_lifetime?.touched)
+									extensionForm.controls.temp_project_extension_application_renewal_lifetime?.touched),
 						}"
 					/>
 					<div class="input-group-append">
@@ -95,35 +103,38 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group row" *ngIf="initial_number_of_edam_terms === 0">
-			<label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
-			<div class="col-md-8">
-				<div
-					[ngClass]="{
-						'danger-border': selected_ontology_terms.length <= 0 || selected_ontology_terms.length > 10,
-						'success-border': selected_ontology_terms.length > 0 && selected_ontology_terms?.length <= 10
-					}"
-				>
-					<ng-select
-						#edam_ontology
-						id="edam_input"
-						[items]="edam_ontology_terms"
-						[multiple]="true"
-						bindLabel="term"
-						maxSelectedItems="10"
-						placeholder="Please select at least one topic"
-						dropdownPosition="bottom"
-						[(ngModel)]="selected_ontology_terms"
-						name="selected_edam_terms"
+		@if (initial_number_of_edam_terms === 0) {
+			<div class="form-group row">
+				<label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
+				<div class="col-md-8">
+					<div
+						[ngClass]="{
+							'danger-border': selected_ontology_terms.length <= 0 || selected_ontology_terms.length > 10,
+							'success-border': selected_ontology_terms.length > 0 && selected_ontology_terms?.length <= 10,
+						}"
 					>
-					</ng-select>
-				</div>
-
-				<div *ngIf="selected_ontology_terms.length > 10" class="alert alert-warning" role="alert">
-					You can at most choose 10 research topics for your project.
+						<ng-select
+							#edam_ontology
+							id="edam_input"
+							[items]="edam_ontology_terms"
+							[multiple]="true"
+							bindLabel="term"
+							maxSelectedItems="10"
+							placeholder="Please select at least one topic"
+							dropdownPosition="bottom"
+							[(ngModel)]="selected_ontology_terms"
+							name="selected_edam_terms"
+						>
+						</ng-select>
+					</div>
+					@if (selected_ontology_terms.length > 10) {
+						<div class="alert alert-warning" role="alert">
+							You can at most choose 10 research topics for your project.
+						</div>
+					}
 				</div>
 			</div>
-		</div>
+		}
 
 		<div class="form-group row">
 			<label class="col-md-4 form-control-label" for="temp_project_extension_application_renewal_comment"
@@ -143,33 +154,36 @@
 			</div>
 		</div>
 
-		<div *ngIf="project?.credits_allowed" class="form-group row">
-			<label id="creditnumber_extension" class="col">
-				<strong
-					>Expected number of extra credits:
-					<span id="extension_credits">{{ temp_project_extension.extra_credits }}</span></strong
-				>
-			</label>
-		</div>
+		@if (project?.credits_allowed) {
+			<div class="form-group row">
+				<label id="creditnumber_extension" class="col">
+					<strong
+						>Expected number of extra credits:
+						<span id="extension_credits">{{ temp_project_extension.extra_credits }}</span></strong
+					>
+				</label>
+			</div>
+		}
 		<div class="alert alert-primary" role="alert">
 			This is the expected number of extra credits that you get for your project and your current resources. It accounts
 			for an increase in requested project lifetime.
 		</div>
 	</form>
 
-	<div *ngIf="extensionForm.invalid" class="alert alert-warning" role="alert">
-		<p>
-			Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled in
-			correctly.
-		</p>
-		<p *ngIf="extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid">
-			- Lifetime missing
-		</p>
-
-		<p *ngIf="project?.project_application_edam_terms.length === 0 && selected_ontology_terms.length < 1">
-			- Select at least one Research Topic
-		</p>
-	</div>
+	@if (extensionForm.invalid) {
+		<div class="alert alert-warning" role="alert">
+			<p>
+				Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled in
+				correctly.
+			</p>
+			@if (extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid) {
+				<p>- Lifetime missing</p>
+			}
+			@if (project?.project_application_edam_terms.length === 0 && selected_ontology_terms.length < 1) {
+				<p>- Select at least one Research Topic</p>
+			}
+		</div>
+	}
 
 	<div class="modal-footer">
 		<div class="label">By submitting this extension application you agree to the cloud usage policy.</div>

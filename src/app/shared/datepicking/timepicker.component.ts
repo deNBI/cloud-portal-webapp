@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { JsonPipe } from '@angular/common'
 import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
 	selector: 'app-timepicker',
-	imports: [NgbTimepickerModule, FormsModule, JsonPipe],
+	imports: [NgbTimepickerModule, FormsModule],
 	templateUrl: './timepicker.component.html'
 })
 export class TimepickerComponent {

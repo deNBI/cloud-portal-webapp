@@ -155,28 +155,34 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group row" *ngIf="newResourceMachine.gpu_slots > 0">
-					<label>Types</label>
-					<ng-container *ngFor="let gpu of newResourceMachine.gpu_used; let i = index">
-						<div class="input-group input-group-sm">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Slot {{ i + 1 }}</span>
+				@if (newResourceMachine.gpu_slots > 0) {
+					<div class="form-group row">
+						<label>Types</label>
+						@for (gpu of newResourceMachine.gpu_used; track gpu; let i = $index) {
+							<div class="input-group input-group-sm">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Slot {{ i + 1 }}</span>
+								</div>
+								<select
+									class="form-control form-select"
+									[ngModelOptions]="{ standalone: true }"
+									[(ngModel)]="newResourceMachine.gpu_used[i]"
+									name="new_machine_gpu_{{ i }}"
+									ngDefaultControl
+								>
+									<option [ngValue]="emptySpec">UNUSED</option>
+									@for (spec of gpu_types; track spec) {
+										<option [ngValue]="spec">
+											@if (spec !== null) {
+												<span>{{ spec.type + ': ' + spec.cores }}</span>
+											}
+										</option>
+									}
+								</select>
 							</div>
-							<select
-								class="form-control form-select"
-								[ngModelOptions]="{ standalone: true }"
-								[(ngModel)]="newResourceMachine.gpu_used[i]"
-								name="new_machine_gpu_{{ i }}"
-								ngDefaultControl
-							>
-								<option [ngValue]="emptySpec">UNUSED</option>
-								<option *ngFor="let spec of gpu_types" [ngValue]="spec">
-									<span *ngIf="spec !== null">{{ spec.type + ': ' + spec.cores }}</span>
-								</option>
-							</select>
-						</div>
-					</ng-container>
-				</div>
+						}
+					</div>
+				}
 			</div>
 			<div class="col-2 card card-body" style="margin: 5px">
 				<div class="text-muted"><small>Local Disk Storage</small></div>
@@ -236,9 +242,11 @@
 						ngDefaultControl
 					>
 						<option selected disabled [ngValue]="null">---</option>
-						<option *ngFor="let type of factor_types" [ngValue]="type">
-							{{ type }}
-						</option>
+						@for (type of factor_types; track type) {
+							<option [ngValue]="type">
+								{{ type }}
+							</option>
+						}
 					</select>
 				</div>
 				<div class="form-group row">
@@ -278,254 +286,256 @@
 	</div>
 </div>
 
-<div
-	class="card"
-	id="{{ machine?.name + '_card' }}"
-	*ngFor="let machine of resourceMachines"
-	style="margin: 5px"
-	[ngClass]="resourceMachineUpdateList[machine.id] ? 'border-warning' : 'border-primary'"
->
-	<div class="card-body">
-		<h5 class="card-title">{{ machine?.name }}</h5>
-		<p class="card-text">
-			<small class="text-muted">{{ machine?.compute_center?.Name }}</small>
-		</p>
-		<div class="row" [formGroup]="machinesFormGroups[machine.id]">
-			<div class="col-1" style="margin: 5px">
-				<div class="text-muted"><small>Actions</small></div>
-				<div class="btn-group-vertical" role="group">
-					<button
-						(click)="deleteResourceMachine(machine.id)"
-						class="btn btn-danger"
-						*ngIf="!resourceMachineUpdateList[machine.id]"
-					>
-						Remove
-					</button>
-					<button
-						class="btn btn-warning"
-						(click)="changeResourceMachineToUpdate(machine)"
-						*ngIf="!resourceMachineUpdateList[machine.id]"
-					>
-						Update
-					</button>
-					<button
-						(click)="updateResourceMachine(machine); changeResourceMachineToUpdate(machine)"
-						class="btn btn-success"
-						*ngIf="resourceMachineUpdateList[machine.id]"
-						[disabled]="machinesFormGroups[machine.id].invalid"
-					>
-						Save
-					</button>
-					<button
-						class="btn btn-info"
-						*ngIf="resourceMachineUpdateList[machine.id]"
-						(click)="reloadResourceMachine(machine); changeResourceMachineToUpdate(machine)"
-					>
-						Cancel
-					</button>
-				</div>
-			</div>
-			<div class="col-2 card card-body" style="margin: 5px">
-				<div class="text-muted"><small>RAM</small></div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_ram' }}">Amount</label>
-					<div class="input-group input-group-sm">
-						<input
-							class="form-control"
-							type="number"
-							min="0"
-							id="{{ machine?.name + '_ram' }}"
-							formControlName="{{ machine.id }}_ram"
-						/>
-						<div class="input-group-append">
-							<span class="input-group-text">GB</span>
-						</div>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_ram_private_factor' }}">Private Factor</label>
-					<input
-						class="form-control"
-						type="number"
-						id="{{ machine?.name + '_ram_private_factor' }}"
-						formControlName="{{ machine.id }}_ram_private_factor"
-						min="0"
-						step="0.1"
-					/>
-				</div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_ram_public_factor' }}">Public Factor</label>
-					<input
-						class="form-control"
-						type="number"
-						id="{{ machine?.name + '_ram_public_factor' }}"
-						formControlName="{{ machine.id }}_ram_public_factor"
-						min="0"
-						step="0.1"
-					/>
-				</div>
-			</div>
-			<div class="col-2 card card-body" style="margin: 5px">
-				<div class="text-muted"><small>Cores</small></div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_cores' }}">Amount</label>
-					<div class="input-group input-group-sm">
-						<input
-							class="form-control"
-							type="number"
-							formControlName="{{ machine.id }}_cores"
-							id="{{ machine?.name + '_cores' }}"
-							name="{{ machine.id }}_cores"
-							min="0"
-						/>
-						<div class="input-group-append">
-							<span class="input-group-text">cores</span>
-						</div>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_cores_private_factor' }}">Private Factor</label>
-					<input
-						class="form-control"
-						type="number"
-						formControlName="{{ machine.id }}_cores_private_factor"
-						id="{{ machine?.name + '_cores_private_factor' }}"
-						name="{{ machine.id }}_cores_private_factor"
-						min="0"
-						step="0.1"
-					/>
-				</div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_cores_public_factor' }}">Public Factor</label>
-					<input
-						class="form-control"
-						type="number"
-						id="{{ machine?.name + '_cores_public_factor' }}"
-						name="{{ machine.id }}_cores_public_factor"
-						formControlName="{{ machine.id }}_cores_public_factor"
-						min="0"
-						step="0.1"
-					/>
-				</div>
-			</div>
-			<div class="col-2 card card-body" style="margin: 5px">
-				<div class="text-muted"><small>GPU slots</small></div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_gpus' }}">Amount</label>
-					<div class="input-group input-group-sm">
-						<input
-							class="form-control"
-							type="number"
-							id="{{ machine?.name + '_gpus' }}"
-							name="{{ machine.id }}_gpus"
-							formControlName="{{ machine.id }}_gpus"
-							min="0"
-						/>
-						<div class="input-group-append">
-							<span class="input-group-text">GPUs</span>
-						</div>
-					</div>
-				</div>
-				<div class="form-group row" *ngIf="machine.gpu_slots > 0">
-					<label>Types</label>
-
-					<ng-container *ngFor="let gpu of machine.gpu_used; let i = index">
-						<div class="input-group input-group-sm">
-							<select
-								class="form-control form-select"
-								[disabled]="!resourceMachineUpdateList[machine.id]"
-								[(ngModel)]="machine.gpu_used[i]"
-								[ngModelOptions]="{ standalone: true }"
+@for (machine of resourceMachines; track machine) {
+	<div
+		class="card"
+		id="{{ machine?.name + '_card' }}"
+		style="margin: 5px"
+		[ngClass]="resourceMachineUpdateList[machine.id] ? 'border-warning' : 'border-primary'"
+	>
+		<div class="card-body">
+			<h5 class="card-title">{{ machine?.name }}</h5>
+			<p class="card-text">
+				<small class="text-muted">{{ machine?.compute_center?.Name }}</small>
+			</p>
+			<div class="row" [formGroup]="machinesFormGroups[machine.id]">
+				<div class="col-1" style="margin: 5px">
+					<div class="text-muted"><small>Actions</small></div>
+					<div class="btn-group-vertical" role="group">
+						@if (!resourceMachineUpdateList[machine.id]) {
+							<button (click)="deleteResourceMachine(machine.id)" class="btn btn-danger">Remove</button>
+						}
+						@if (!resourceMachineUpdateList[machine.id]) {
+							<button class="btn btn-warning" (click)="changeResourceMachineToUpdate(machine)">Update</button>
+						}
+						@if (resourceMachineUpdateList[machine.id]) {
+							<button
+								(click)="updateResourceMachine(machine); changeResourceMachineToUpdate(machine)"
+								class="btn btn-success"
+								[disabled]="machinesFormGroups[machine.id].invalid"
 							>
-								<option [ngValue]="machine.gpu_used[i]" selected>{{ machine.gpu_used[i].type }}</option>
-								<option [ngValue]="emptySpec">UNUSED</option>
-								<option *ngFor="let spec of gpu_types" [ngValue]="spec">
-									<span *ngIf="spec !== null">{{ spec.type + ': ' + spec.cores }}</span>
-								</option>
-							</select>
+								Save
+							</button>
+						}
+						@if (resourceMachineUpdateList[machine.id]) {
+							<button
+								class="btn btn-info"
+								(click)="reloadResourceMachine(machine); changeResourceMachineToUpdate(machine)"
+							>
+								Cancel
+							</button>
+						}
+					</div>
+				</div>
+				<div class="col-2 card card-body" style="margin: 5px">
+					<div class="text-muted"><small>RAM</small></div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_ram' }}">Amount</label>
+						<div class="input-group input-group-sm">
+							<input
+								class="form-control"
+								type="number"
+								min="0"
+								id="{{ machine?.name + '_ram' }}"
+								formControlName="{{ machine.id }}_ram"
+							/>
 							<div class="input-group-append">
-								<span class="input-group-text">Slot {{ i + 1 }}</span>
+								<span class="input-group-text">GB</span>
 							</div>
 						</div>
-					</ng-container>
-				</div>
-			</div>
-			<div class="col-2 card card-body" style="margin: 5px">
-				<div class="text-muted"><small>Local Disk Storage</small></div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_local_disk_storage' }}">Amount</label>
-					<div class="input-group input-group-sm">
+					</div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_ram_private_factor' }}">Private Factor</label>
 						<input
 							class="form-control"
 							type="number"
-							formControlName="{{ machine.id }}_local_disk_storage"
-							id="{{ machine?.name + '_local_disk_storage' }}"
-							name="{{ machine.id }}_local_disk_storage"
+							id="{{ machine?.name + '_ram_private_factor' }}"
+							formControlName="{{ machine.id }}_ram_private_factor"
 							min="0"
+							step="0.1"
 						/>
-						<div class="input-group-append">
-							<span class="input-group-text">GB</span>
-						</div>
+					</div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_ram_public_factor' }}">Public Factor</label>
+						<input
+							class="form-control"
+							type="number"
+							id="{{ machine?.name + '_ram_public_factor' }}"
+							formControlName="{{ machine.id }}_ram_public_factor"
+							min="0"
+							step="0.1"
+						/>
 					</div>
 				</div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_local_disk_encrypted' }}">Encrypted</label>
-					<input
-						type="checkbox"
-						formControlName="{{ machine.id }}_local_disk_encrypted"
-						id="{{ machine?.name + '_local_disk_encrypted' }}"
-						name="{{ machine.id }}_local_disk_encrypted"
-					/>
+				<div class="col-2 card card-body" style="margin: 5px">
+					<div class="text-muted"><small>Cores</small></div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_cores' }}">Amount</label>
+						<div class="input-group input-group-sm">
+							<input
+								class="form-control"
+								type="number"
+								formControlName="{{ machine.id }}_cores"
+								id="{{ machine?.name + '_cores' }}"
+								name="{{ machine.id }}_cores"
+								min="0"
+							/>
+							<div class="input-group-append">
+								<span class="input-group-text">cores</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_cores_private_factor' }}">Private Factor</label>
+						<input
+							class="form-control"
+							type="number"
+							formControlName="{{ machine.id }}_cores_private_factor"
+							id="{{ machine?.name + '_cores_private_factor' }}"
+							name="{{ machine.id }}_cores_private_factor"
+							min="0"
+							step="0.1"
+						/>
+					</div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_cores_public_factor' }}">Public Factor</label>
+						<input
+							class="form-control"
+							type="number"
+							id="{{ machine?.name + '_cores_public_factor' }}"
+							name="{{ machine.id }}_cores_public_factor"
+							formControlName="{{ machine.id }}_cores_public_factor"
+							min="0"
+							step="0.1"
+						/>
+					</div>
 				</div>
-			</div>
-			<div class="col-2 card card-body" style="margin: 5px">
-				<div class="text-muted"><small>Information</small></div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_name' }}">Name</label>
-					<input
-						class="form-control"
-						type="text"
-						id="{{ machine?.name + '_name' }}"
-						name="{{ machine.id }}_name"
-						formControlName="{{ machine.id }}_name"
-					/>
+				<div class="col-2 card card-body" style="margin: 5px">
+					<div class="text-muted"><small>GPU slots</small></div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_gpus' }}">Amount</label>
+						<div class="input-group input-group-sm">
+							<input
+								class="form-control"
+								type="number"
+								id="{{ machine?.name + '_gpus' }}"
+								name="{{ machine.id }}_gpus"
+								formControlName="{{ machine.id }}_gpus"
+								min="0"
+							/>
+							<div class="input-group-append">
+								<span class="input-group-text">GPUs</span>
+							</div>
+						</div>
+					</div>
+					@if (machine.gpu_slots > 0) {
+						<div class="form-group row">
+							<label>Types</label>
+							@for (gpu of machine.gpu_used; track gpu; let i = $index) {
+								<div class="input-group input-group-sm">
+									<select
+										class="form-control form-select"
+										[disabled]="!resourceMachineUpdateList[machine.id]"
+										[(ngModel)]="machine.gpu_used[i]"
+										[ngModelOptions]="{ standalone: true }"
+									>
+										<option [ngValue]="machine.gpu_used[i]" selected>{{ machine.gpu_used[i].type }}</option>
+										<option [ngValue]="emptySpec">UNUSED</option>
+										@for (spec of gpu_types; track spec) {
+											<option [ngValue]="spec">
+												@if (spec !== null) {
+													<span>{{ spec.type + ': ' + spec.cores }}</span>
+												}
+											</option>
+										}
+									</select>
+									<div class="input-group-append">
+										<span class="input-group-text">Slot {{ i + 1 }}</span>
+									</div>
+								</div>
+							}
+						</div>
+					}
 				</div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_type' }}">Machine Type</label>
-					<select
-						ngDefaultControl
-						class="form-control form-select"
-						formControlName="{{ machine?.id }}_type"
-						name="{{ machine.id }}_type"
-						selected
-						id="{{ machine?.name + '_type' }}"
-					>
-						<option *ngFor="let type of factor_types" [ngValue]="type">{{ type }}</option>
-					</select>
+				<div class="col-2 card card-body" style="margin: 5px">
+					<div class="text-muted"><small>Local Disk Storage</small></div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_local_disk_storage' }}">Amount</label>
+						<div class="input-group input-group-sm">
+							<input
+								class="form-control"
+								type="number"
+								formControlName="{{ machine.id }}_local_disk_storage"
+								id="{{ machine?.name + '_local_disk_storage' }}"
+								name="{{ machine.id }}_local_disk_storage"
+								min="0"
+							/>
+							<div class="input-group-append">
+								<span class="input-group-text">GB</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_local_disk_encrypted' }}">Encrypted</label>
+						<input
+							type="checkbox"
+							formControlName="{{ machine.id }}_local_disk_encrypted"
+							id="{{ machine?.name + '_local_disk_encrypted' }}"
+							name="{{ machine.id }}_local_disk_encrypted"
+						/>
+					</div>
 				</div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_private_count' }}">Private count</label>
-					<input
-						class="form-control"
-						type="number"
-						id="{{ machine?.name + '_private_count' }}"
-						formControlName="{{ machine.id }}_private_count"
-						name="{{ machine.id }}_private_count"
-						min="0"
-					/>
-				</div>
-				<div class="form-group row">
-					<label for="{{ machine?.name + '_public_count' }}">Public count</label>
-					<input
-						class="form-control"
-						type="number"
-						id="{{ machine?.name + '_public_count' }}"
-						formControlName="{{ machine.id }}_public_count"
-						name="{{ machine.id }}_public_count"
-						min="0"
-					/>
+				<div class="col-2 card card-body" style="margin: 5px">
+					<div class="text-muted"><small>Information</small></div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_name' }}">Name</label>
+						<input
+							class="form-control"
+							type="text"
+							id="{{ machine?.name + '_name' }}"
+							name="{{ machine.id }}_name"
+							formControlName="{{ machine.id }}_name"
+						/>
+					</div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_type' }}">Machine Type</label>
+						<select
+							ngDefaultControl
+							class="form-control form-select"
+							formControlName="{{ machine?.id }}_type"
+							name="{{ machine.id }}_type"
+							selected
+							id="{{ machine?.name + '_type' }}"
+						>
+							@for (type of factor_types; track type) {
+								<option [ngValue]="type">{{ type }}</option>
+							}
+						</select>
+					</div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_private_count' }}">Private count</label>
+						<input
+							class="form-control"
+							type="number"
+							id="{{ machine?.name + '_private_count' }}"
+							formControlName="{{ machine.id }}_private_count"
+							name="{{ machine.id }}_private_count"
+							min="0"
+						/>
+					</div>
+					<div class="form-group row">
+						<label for="{{ machine?.name + '_public_count' }}">Public count</label>
+						<input
+							class="form-control"
+							type="number"
+							id="{{ machine?.name + '_public_count' }}"
+							formControlName="{{ machine.id }}_public_count"
+							name="{{ machine.id }}_public_count"
+							min="0"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+}

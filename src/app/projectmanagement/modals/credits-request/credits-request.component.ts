@@ -7,7 +7,7 @@ import { ApplicationCreditRequest } from '../../../applications/application_cred
 import { ResultComponent } from '../result/result.component'
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
 import { FormsModule } from '@angular/forms'
-import { NgClass, NgIf } from '@angular/common'
+import { NgClass } from '@angular/common'
 import {
 	IntegerValidatorDirective,
 	MinAmoutValidatorDirective
@@ -18,7 +18,7 @@ import {
 	templateUrl: './credits-request.component.html',
 	styleUrls: ['./credits-request.component.scss'],
 	providers: [CreditsService],
-	imports: [FormsModule, NgClass, IntegerValidatorDirective, MinAmoutValidatorDirective, NgIf]
+	imports: [FormsModule, NgClass, IntegerValidatorDirective, MinAmoutValidatorDirective]
 })
 export class CreditsRequestComponent implements OnInit, OnDestroy {
 	project: Application

@@ -15,16 +15,13 @@
 				#computeCenterSelection
 			>
 				<option [ngValue]="undefined" selected>no center selected</option>
-				<ng-container *ngFor="let computeCenter of computeCenters">
-					<option
-						*ngIf="computeCenter.hasClient || application?.project_application_openstack_project"
-						label="{{ computeCenter.Name }}"
-						[ngValue]="computeCenter"
-						[id]="computeCenter.Name"
-					>
-						{{ computeCenter.Name }}
-					</option>
-				</ng-container>
+				@for (computeCenter of computeCenters; track computeCenter) {
+					@if (computeCenter.hasClient || application?.project_application_openstack_project) {
+						<option label="{{ computeCenter.Name }}" [ngValue]="computeCenter" [id]="computeCenter.Name">
+							{{ computeCenter.Name }}
+						</option>
+					}
+				}
 			</select>
 		} @else if (application?.project_application_compute_center?.Name) {
 			<span> {{ application?.project_application_compute_center?.Name }}</span>
@@ -187,22 +184,23 @@
 						(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
 						application?.project_lifetime_request
 					) {
-						<button
-							[id]="'extension_approval_' + application?.project_application_shortname"
-							[attr.data-test-id]="'extension_approval_' + application?.project_application_name"
-							*ngIf="
-								(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
-								application?.project_lifetime_request
-							"
-							style="margin: 2px"
-							(click)="showConfirmationModal(ConfirmationActions.APPROVE_EXTENSION)"
-							type="button"
-							class="btn btn-success"
-							tooltip="Approve Extension"
-						>
-							<i class="fa fa-check"></i>&nbsp;
-							<span class="d-none">Approve Extension</span>
-						</button>
+						@if (
+							(application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) &&
+							application?.project_lifetime_request
+						) {
+							<button
+								[id]="'extension_approval_' + application?.project_application_shortname"
+								[attr.data-test-id]="'extension_approval_' + application?.project_application_name"
+								style="margin: 2px"
+								(click)="showConfirmationModal(ConfirmationActions.APPROVE_EXTENSION)"
+								type="button"
+								class="btn btn-success"
+								tooltip="Approve Extension"
+							>
+								<i class="fa fa-check"></i>&nbsp;
+								<span class="d-none">Approve Extension</span>
+							</button>
+						}
 
 						<button
 							[id]="'extension_adjustment_' + application?.project_application_shortname"

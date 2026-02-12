@@ -7,7 +7,7 @@ import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
 import { FlavorType } from '../../../virtualmachines/virtualmachinemodels/flavorType'
 import { FlavorService } from '../../../api-connector/flavor.service'
 import { FlavorTypeShortcuts } from '../../../shared/shared_modules/baseClass/flavor-type-shortcuts'
-import { NgIf, NgStyle, NgClass, NgFor } from '@angular/common'
+import { NgStyle, NgClass } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import {
 	MinAmoutValidatorDirective,
@@ -24,14 +24,12 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 	templateUrl: './adjust-application.component.html',
 	providers: [ApplicationsService],
 	imports: [
-		NgIf,
 		FormsModule,
 		NgStyle,
 		MinAmoutValidatorDirective,
 		IntegerValidatorDirective,
 		NgClass,
 		AccordionModule,
-		NgFor,
 		IntegerOrNullValidatorDirective,
 		FlavorCounterPipe,
 		SufficientHumanDataInformationGivenPipe

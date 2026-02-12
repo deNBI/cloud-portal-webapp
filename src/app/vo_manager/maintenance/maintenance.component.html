@@ -2,85 +2,100 @@
 	<div class="card-header">Timeframes</div>
 	<div class="card-body">
 		<h5 class="card-title">Workshop Timeframes</h5>
-		<div *ngIf="!workshopTimeFramesLoaded">
-			<span class="spinner-border-sm"></span>
-		</div>
-		<div *ngIf="workshopTimeFramesLoaded">
-			<div class="alert alert-info">Note that only future and already running timeframes are displayed here.</div>
-			<table class="table" *ngIf="workshopTimeFrames.length > 0 && !errorWorkshopTimeFrames">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Start time</th>
-						<th scope="col">End time</th>
-						<th scope="col">Project</th>
-						<th scope="col">Workshop</th>
-						<th scope="col">Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let wstimeframe of workshopTimeFrames; let i = index">
-						<th scope="row">{{ i + 1 }}</th>
-						<td>{{ wstimeframe.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
-						<td>{{ wstimeframe.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
-						<td>{{ wstimeframe.project.project_application_shortname }}</td>
-						<td>{{ wstimeframe.workshop?.longname }}</td>
-						<td>{{ wstimeframe.description }}</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<div class="alert alert-danger" *ngIf="errorWorkshopTimeFrames">
-				An error occurred loading the entered workshop timeframes!
+		@if (!workshopTimeFramesLoaded) {
+			<div>
+				<span class="spinner-border-sm"></span>
 			</div>
-		</div>
+		}
+		@if (workshopTimeFramesLoaded) {
+			<div>
+				<div class="alert alert-info">Note that only future and already running timeframes are displayed here.</div>
+				@if (workshopTimeFrames.length > 0 && !errorWorkshopTimeFrames) {
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Start time</th>
+								<th scope="col">End time</th>
+								<th scope="col">Project</th>
+								<th scope="col">Workshop</th>
+								<th scope="col">Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							@for (wstimeframe of workshopTimeFrames; track wstimeframe; let i = $index) {
+								<tr>
+									<th scope="row">{{ i + 1 }}</th>
+									<td>{{ wstimeframe.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+									<td>{{ wstimeframe.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+									<td>{{ wstimeframe.project.project_application_shortname }}</td>
+									<td>{{ wstimeframe.workshop?.longname }}</td>
+									<td>{{ wstimeframe.description }}</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
+				@if (errorWorkshopTimeFrames) {
+					<div class="alert alert-danger">An error occurred loading the entered workshop timeframes!</div>
+				}
+			</div>
+		}
 	</div>
 	<div class="card-body">
 		<h5 class="card-title">Maintenance Timeframes</h5>
-		<div *ngIf="!maintenanceTimeFramesLoaded">
-			<span class="spinner-border-sm"></span>
-		</div>
+		@if (!maintenanceTimeFramesLoaded) {
+			<div>
+				<span class="spinner-border-sm"></span>
+			</div>
+		}
 		<div>
-			<table class="table" *ngIf="maintenanceTimeFrames.length > 0 && !errorMaintenanceTimeFrames">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Start time</th>
-						<th scope="col">End time</th>
-						<th scope="col">Name</th>
-						<th scope="col">Message</th>
-						<th scope="col">Significant</th>
-						<th scope="col">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let mtf of maintenanceTimeFrames; let i = index">
-						<th scope="row">{{ i + 1 }}</th>
-						<td>{{ mtf.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
-						<td>{{ mtf.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
-						<td>{{ mtf.name }}</td>
-						<td>{{ mtf.message.length > 25 ? (mtf.message | slice: 0 : 25) + '...' : mtf.message }}</td>
-						<td>
-							<span class="badge badge-danger" *ngIf="mtf.significant"
-								><i class="fa-solid fa-circle-exclamation"></i> Yes</span
-							>
-							<span class="badge badge-info" *ngIf="!mtf.significant"><i class="fa-solid fa-square-minus"></i> No</span>
-						</td>
-						<td>
-							<div class="btn-group">
-								<button class="btn btn-info" role="button" (click)="switchSignificance(mtf)">
-									{{ mtf.significant ? 'Remove' : 'Set' }} Significance
-								</button>
-								<button class="btn btn-danger" role="button" (click)="deleteTimeFrame(mtf)">Delete</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			@if (maintenanceTimeFrames.length > 0 && !errorMaintenanceTimeFrames) {
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Start time</th>
+							<th scope="col">End time</th>
+							<th scope="col">Name</th>
+							<th scope="col">Message</th>
+							<th scope="col">Significant</th>
+							<th scope="col">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (mtf of maintenanceTimeFrames; track mtf; let i = $index) {
+							<tr>
+								<th scope="row">{{ i + 1 }}</th>
+								<td>{{ mtf.start_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ mtf.end_time | date: 'dd/MM/yy HH:mm' : 'de' }}</td>
+								<td>{{ mtf.name }}</td>
+								<td>{{ mtf.message.length > 25 ? (mtf.message | slice: 0 : 25) + '...' : mtf.message }}</td>
+								<td>
+									@if (mtf.significant) {
+										<span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Yes</span>
+									}
+									@if (!mtf.significant) {
+										<span class="badge badge-info"><i class="fa-solid fa-square-minus"></i> No</span>
+									}
+								</td>
+								<td>
+									<div class="btn-group">
+										<button class="btn btn-info" role="button" (click)="switchSignificance(mtf)">
+											{{ mtf.significant ? 'Remove' : 'Set' }} Significance
+										</button>
+										<button class="btn btn-danger" role="button" (click)="deleteTimeFrame(mtf)">Delete</button>
+									</div>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
 		</div>
-		<div class="alert alert-danger" *ngIf="errorMaintenanceTimeFrames">
-			An error occurred loading the entered maintenance timeframes!
-		</div>
+		@if (errorMaintenanceTimeFrames) {
+			<div class="alert alert-danger">An error occurred loading the entered maintenance timeframes!</div>
+		}
 	</div>
 	<div class="card-body">
 		<h5 class="card-title">Add new maintenance timeframe</h5>
@@ -89,30 +104,30 @@
 		</div>
 		<form id="new_timeframe_form" [formGroup]="addTimeFrameForm" class="form-horizontal">
 			<!--
-			<label class="col-md-4 form-control-label" for="id_project_application_lifetime"
-								><strong
-									>Desired lifetime<i class="fa fa-asterisk" aria-hidden="true"></i>
-									<i data-balloon="Lifetime in months of your project" data-balloon-pos="right">
-										<i class="icon-question" style="cursor: pointer"></i></i></strong
-							></label>
-							<div class="col-md-8">
-								<div class="input-group">
-									<input
-										class="form-control"
-										data-test-id="project_application_lifetime_input"
-										id="id_project_application_lifetime"
-										name="project_application_lifetime"
-										placeholder="e.g 3"
-										[(ngModel)]="application.project_application_lifetime"
-										max="{{ max_lifetime }}"
-										min="1"
-										required
-										step="1"
-										type="number"
-										appMinAmount="1"
-										appMaxAmount="{{ max_lifetime }}"
-										appInteger
-										pattern="^([1-9]|1[012])$"
+        <label class="col-md-4 form-control-label" for="id_project_application_lifetime"
+          ><strong
+          >Desired lifetime<i class="fa fa-asterisk" aria-hidden="true"></i>
+          <i data-balloon="Lifetime in months of your project" data-balloon-pos="right">
+            <i class="icon-question" style="cursor: pointer"></i></i></strong
+          ></label>
+          <div class="col-md-8">
+            <div class="input-group">
+              <input
+                class="form-control"
+                data-test-id="project_application_lifetime_input"
+                id="id_project_application_lifetime"
+                name="project_application_lifetime"
+                placeholder="e.g 3"
+                [(ngModel)]="application.project_application_lifetime"
+                max="{{ max_lifetime }}"
+                min="1"
+                required
+                step="1"
+                type="number"
+                appMinAmount="1"
+                appMaxAmount="{{ max_lifetime }}"
+                appInteger
+                pattern="^([1-9]|1[012])$"
 										[ngClass]="{
 											'is-invalid':
 												form.controls.project_application_lifetime?.invalid &&
@@ -123,7 +138,7 @@
 												(form.controls.project_application_lifetime?.dirty ||
 													form.controls.project_application_lifetime?.touched)
 										}"
-									/> -->
+                /> -->
 
 			<div class="form-group row">
 				<label class="col-md-4 form-control-label" for="date_change"
@@ -223,14 +238,13 @@
 						Add new timeframe
 					</button>
 				</div>
-				<div
-					class="col-md-auto"
-					*ngIf="!(newMaintenanceTimeFrame | isValidTimeFrame) || addTimeFrameForm.controls['name_input_field'].invalid"
-				>
-					<div class="alert alert-info">
-						Please select a timeframe, where the start time is before the end time and in the future!
+				@if (!(newMaintenanceTimeFrame | isValidTimeFrame) || addTimeFrameForm.controls['name_input_field'].invalid) {
+					<div class="col-md-auto">
+						<div class="alert alert-info">
+							Please select a timeframe, where the start time is before the end time and in the future!
+						</div>
 					</div>
-				</div>
+				}
 			</div>
 		</form>
 	</div>
@@ -251,50 +265,62 @@
 				<h4 class="modal-title">Confirm new timeframe</h4>
 			</div>
 			<div class="modal-body">
-				<div *ngIf="!timeSpotsChecked">
-					<span class="spinner-border-sm"></span>
-				</div>
-				<div *ngIf="timeSpotsChecked">
-					<div class="alert alert-success" *ngIf="!timeSpotCritical">
-						There are no entered timeframes which collide with this maintenance timeframe.
-					</div>
-					<div class="alert alert-warning" *ngIf="timeSpotCritical">
-						Please check the listed timeframes below. These may collide with the maintenance timeframe you want to
-						enter.
-					</div>
+				@if (!timeSpotsChecked) {
 					<div>
-						<strong>Your timeframe</strong>
-						<ul class="list-group">
-							<li class="list-group-item text-center">
-								<strong
-									>{{ newMaintenanceTimeFrame.start_time | date: 'dd/MM/yy HH:mm' : '+0100' }} -
-									{{ newMaintenanceTimeFrame.end_time | date: 'dd/MM/yy HH:mm' : '+0100' }}</strong
-								>
-							</li>
-						</ul>
+						<span class="spinner-border-sm"></span>
 					</div>
-					<table class="table" *ngIf="timeSpotCritical">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">Workshop</th>
-								<th scope="col">Timeframe</th>
-								<th scope="col">Description</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let critTimeFrame of criticalTimeSpots; let i = index">
-								<th scope="row">{{ i + 1 }}</th>
-								<td>{{ critTimeFrame.workshop.longname }}</td>
-								<td>
-									{{ critTimeFrame.start_time | date: 'dd/MM/yy HH:mm' : '+0100' }} -
-									{{ critTimeFrame.end_time | date: 'dd/MM/yy HH:mm' : '+0100' }}
-								</td>
-								<td>{{ critTimeFrame.description }}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				}
+				@if (timeSpotsChecked) {
+					<div>
+						@if (!timeSpotCritical) {
+							<div class="alert alert-success">
+								There are no entered timeframes which collide with this maintenance timeframe.
+							</div>
+						}
+						@if (timeSpotCritical) {
+							<div class="alert alert-warning">
+								Please check the listed timeframes below. These may collide with the maintenance timeframe you want to
+								enter.
+							</div>
+						}
+						<div>
+							<strong>Your timeframe</strong>
+							<ul class="list-group">
+								<li class="list-group-item text-center">
+									<strong
+										>{{ newMaintenanceTimeFrame.start_time | date: 'dd/MM/yy HH:mm' : '+0100' }} -
+										{{ newMaintenanceTimeFrame.end_time | date: 'dd/MM/yy HH:mm' : '+0100' }}</strong
+									>
+								</li>
+							</ul>
+						</div>
+						@if (timeSpotCritical) {
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Workshop</th>
+										<th scope="col">Timeframe</th>
+										<th scope="col">Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									@for (critTimeFrame of criticalTimeSpots; track critTimeFrame; let i = $index) {
+										<tr>
+											<th scope="row">{{ i + 1 }}</th>
+											<td>{{ critTimeFrame.workshop.longname }}</td>
+											<td>
+												{{ critTimeFrame.start_time | date: 'dd/MM/yy HH:mm' : '+0100' }} -
+												{{ critTimeFrame.end_time | date: 'dd/MM/yy HH:mm' : '+0100' }}
+											</td>
+											<td>{{ critTimeFrame.description }}</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						}
+					</div>
+				}
 			</div>
 			<div class="modal-footer">
 				<div class="row">

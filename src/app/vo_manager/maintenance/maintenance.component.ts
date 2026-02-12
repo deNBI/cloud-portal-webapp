@@ -9,7 +9,7 @@ import { WorkshopTimeFrame } from '../../virtualmachines/workshop/workshopTimeFr
 import { VoService } from '../../api-connector/vo.service'
 import { MaintenanceTimeFrame } from './maintenanceTimeFrame.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
-import { NgIf, NgFor, NgClass, SlicePipe, DatePipe } from '@angular/common'
+import { NgClass, SlicePipe, DatePipe } from '@angular/common'
 import { DatePickerComponent } from '../../shared/datepicking/datepicker.component'
 import { TimepickerComponent } from '../../shared/datepicking/timepicker.component'
 import { ValidTimeFramePipe } from '../../pipe-module/pipes/validTimeFrame.pipe'
@@ -23,8 +23,6 @@ import { ValidTimeFramePipe } from '../../pipe-module/pipes/validTimeFrame.pipe'
 	styleUrls: ['./maintenance.component.scss'],
 	providers: [WorkshopService, VoService],
 	imports: [
-		NgIf,
-		NgFor,
 		FormsModule,
 		ReactiveFormsModule,
 		DatePickerComponent,

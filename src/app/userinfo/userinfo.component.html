@@ -1,135 +1,143 @@
-<div *ngIf="isLoaded === false" class="loader"></div>
-<div *ngIf="isLoaded" class="animated fadeIn">
-	<app-news [facilities]="userFacilities"></app-news>
-	<app-maintenance-alert (confirmEventEmitter)="emitConfirmation()"></app-maintenance-alert>
-	<div class="card" style="">
-		<div class="card-header" data-test-id="profile_information">
-			<i class="fa fa-align-justify"></i> Profile Information
-		</div>
-		<div class="card-body container-fluid">
-			<div class="table-responsive">
-				<table class="table table-hover">
-					<tbody>
-						<tr *ngIf="userInfo.MissingConsents.length > 0">
-							<td class="col-12">
-								<div class="alert alert-danger">
-									<p>You have pending consent approvals for the following locations:</p>
-									<ul>
-										<li *ngFor="let consent of userInfo?.MissingConsents">{{ consent }}</li>
-									</ul>
-									<p>
-										Without these approvals, you may not be able to access certain services, such as OpenStack
-										dashboards. Please review and approve any pending consents as necessary.
-									</p>
-									<p>
-										To approve your consents, please visit the following link:
-										<a href="{{ LIFESCIENCE_PROFILE_CONSENT }}" target="_blank">LifeScience Consents</a>
-									</p>
-								</div>
-							</td>
-						</tr>
-						<tr style="border-top-style: none">
-							<td class="col-3" style="border-top-style: none">
-								<strong>LifeScience Login</strong>
-								<div class="alert alert-primary" style="margin-top: 5px; margin-bottom: 0px">
-									<strong>
-										Read more about linking accounts
-										<a target="_blank" rel="noopener noreferrer" class="alert-link" href="{{ WIKI_LINK_ACCOUNTS }}"
-											>here.</a
-										>
-									</strong>
-								</div>
-							</td>
-							<td class="col-6" style="border-top-style: none">{{ userInfo?.UserLogin }}</td>
-							<td class="col-3" style="border-top-style: none">
-								<div class="btn-group-vertical">
-									<a
-										class="btn btn-primary"
-										href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}"
-										target="_blank"
-										style="margin: 2px"
-										rel="noopener noreferrer"
-										>Link accounts</a
-									>
-									<button
-										class="btn btn-danger"
-										type="button"
-										(click)="getUserSummary(); leaveVoModal.show()"
-										style="margin: 2px"
-									>
-										Leave Virtual Organisation
-									</button>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="col-3">
-								<div class="row" style="margin-bottom: 5px">
-									<strong class="col">LifeScience ID</strong>
-								</div>
-								<div class="row"></div>
-							</td>
-							<td class="col-8">{{ userInfo?.LifeScienceId }}</td>
-							<td class="col-1"></td>
-						</tr>
-						<tr>
-							<td class="col-3">
-								<div class="row" style="margin-bottom: 5px">
-									<strong class="col">Preferred Email</strong>
-								</div>
-								<div class="col-auto alert alert-info">
-									<strong>Note: </strong>please keep this mail up to date. You will receive all relevant notifications
-									and information about working in the de.NBI Cloud sent to this address.
-								</div>
-							</td>
-							<td class="col-6">
-								{{ userInfo?.Email }}
-								<div style="color: red" *ngFor="let pendingEmail of userInfo?.PendingEmails">
-									You have pending change request. Please check inbox of: {{ pendingEmail }} for validation email.
-								</div>
-							</td>
-							<td class="col-3">
-								<button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
-							</td>
-						</tr>
-
-						<tr app-public-key [userinfo]="userInfo"></tr>
-
-						<tr>
-							<td class="col-3">
-								<div class="row" style="margin-bottom: 5px">
-									<strong class="col">Newsletter</strong>
-								</div>
-								<div class="row">
-									<div class="col">
-										<label class="switch switch-label switch-outline-primary-alt">
-											<input
-												type="checkbox"
-												class="switch-input"
-												[(ngModel)]="newsletterSubscribed"
-												(change)="setNewsletterSubscription()"
-											/>
-											<span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
-											<!--<span class="switch-handle"></span>-->
-										</label>
+@if (isLoaded === false) {
+	<div class="loader"></div>
+}
+@if (isLoaded) {
+	<div class="animated fadeIn">
+		<app-news [facilities]="userFacilities"></app-news>
+		<app-maintenance-alert (confirmEventEmitter)="emitConfirmation()"></app-maintenance-alert>
+		<div class="card" style="">
+			<div class="card-header" data-test-id="profile_information">
+				<i class="fa fa-align-justify"></i> Profile Information
+			</div>
+			<div class="card-body container-fluid">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<tbody>
+							@if (userInfo.MissingConsents.length > 0) {
+								<tr>
+									<td class="col-12">
+										<div class="alert alert-danger">
+											<p>You have pending consent approvals for the following locations:</p>
+											<ul>
+												@for (consent of userInfo?.MissingConsents; track consent) {
+													<li>{{ consent }}</li>
+												}
+											</ul>
+											<p>
+												Without these approvals, you may not be able to access certain services, such as OpenStack
+												dashboards. Please review and approve any pending consents as necessary.
+											</p>
+											<p>
+												To approve your consents, please visit the following link:
+												<a href="{{ LIFESCIENCE_PROFILE_CONSENT }}" target="_blank">LifeScience Consents</a>
+											</p>
+										</div>
+									</td>
+								</tr>
+							}
+							<tr style="border-top-style: none">
+								<td class="col-3" style="border-top-style: none">
+									<strong>LifeScience Login</strong>
+									<div class="alert alert-primary" style="margin-top: 5px; margin-bottom: 0px">
+										<strong>
+											Read more about linking accounts
+											<a target="_blank" rel="noopener noreferrer" class="alert-link" href="{{ WIKI_LINK_ACCOUNTS }}"
+												>here.</a
+											>
+										</strong>
 									</div>
-								</div>
-							</td>
-							<td class="col-8">
-								Subscribe to our newsletter and get the latest news of upcoming events and current developments in
-								de.NBI Cloud Portal.
-								<p>
-									<strong>{{ dsgvo_text }}</strong>
-								</p>
-							</td>
-							<td class="col-1"></td>
-						</tr>
-					</tbody>
-				</table>
+								</td>
+								<td class="col-6" style="border-top-style: none">{{ userInfo?.UserLogin }}</td>
+								<td class="col-3" style="border-top-style: none">
+									<div class="btn-group-vertical">
+										<a
+											class="btn btn-primary"
+											href="{{ LIFESCIENCE_LINKING_ACCOUNTS }}"
+											target="_blank"
+											style="margin: 2px"
+											rel="noopener noreferrer"
+											>Link accounts</a
+										>
+										<button
+											class="btn btn-danger"
+											type="button"
+											(click)="getUserSummary(); leaveVoModal.show()"
+											style="margin: 2px"
+										>
+											Leave Virtual Organisation
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="col-3">
+									<div class="row" style="margin-bottom: 5px">
+										<strong class="col">LifeScience ID</strong>
+									</div>
+									<div class="row"></div>
+								</td>
+								<td class="col-8">{{ userInfo?.LifeScienceId }}</td>
+								<td class="col-1"></td>
+							</tr>
+							<tr>
+								<td class="col-3">
+									<div class="row" style="margin-bottom: 5px">
+										<strong class="col">Preferred Email</strong>
+									</div>
+									<div class="col-auto alert alert-info">
+										<strong>Note: </strong>please keep this mail up to date. You will receive all relevant notifications
+										and information about working in the de.NBI Cloud sent to this address.
+									</div>
+								</td>
+								<td class="col-6">
+									{{ userInfo?.Email }}
+									@for (pendingEmail of userInfo?.PendingEmails; track pendingEmail) {
+										<div style="color: red">
+											You have pending change request. Please check inbox of: {{ pendingEmail }} for validation email.
+										</div>
+									}
+								</td>
+								<td class="col-3">
+									<button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
+								</td>
+							</tr>
+							<tr app-public-key [userinfo]="userInfo"></tr>
+							<tr>
+								<td class="col-3">
+									<div class="row" style="margin-bottom: 5px">
+										<strong class="col">Newsletter</strong>
+									</div>
+									<div class="row">
+										<div class="col">
+											<label class="switch switch-label switch-outline-primary-alt">
+												<input
+													type="checkbox"
+													class="switch-input"
+													[(ngModel)]="newsletterSubscribed"
+													(change)="setNewsletterSubscription()"
+												/>
+												<span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+												<!--<span class="switch-handle"></span>-->
+											</label>
+										</div>
+									</div>
+								</td>
+								<td class="col-8">
+									Subscribe to our newsletter and get the latest news of upcoming events and current developments in
+									de.NBI Cloud Portal.
+									<p>
+										<strong>{{ dsgvo_text }}</strong>
+									</p>
+								</td>
+								<td class="col-1"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+}
 
 <div
 	bsModal
@@ -160,81 +168,110 @@
 					<strong>Note</strong>: Your LifeScienceAI account will not be deleted by leaving the virtual organisation. If
 					you wish to delete this account, please contact the corresponding support.
 				</div>
-				<div class="alert alert-danger" *ngIf="summaryError">
-					An error occurred when requesting your saved data! Please try again later. If this problem persists, please
-					contact our support!
-				</div>
-
-				<div *ngIf="!summaryLoaded" class="row">
-					<div class="spinner-grow col-md-auto mx-auto" role="status">
-						<span class="visually-hidden">Loading...</span>
+				@if (summaryError) {
+					<div class="alert alert-danger">
+						An error occurred when requesting your saved data! Please try again later. If this problem persists, please
+						contact our support!
 					</div>
-				</div>
-				<div *ngIf="summaryLoaded && !userHasNoGroups">
-					<h5>Projects</h5>
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">Name</th>
-								<th>Type</th>
-								<th>Your role</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let prj of userProjects">
-								<th scope="row">{{ prj.project_application_shortname }}</th>
-								<td>
-									<span *ngIf="prj.project_application_openstack_project" class="badge bg-warning">OpenStack</span>
-									<span *ngIf="!prj.project_application_openstack_project" class="badge bg-info-blue">SimpleVM</span>
-								</td>
-								<td>
-									<span *ngIf="!prj.user_is_admin && !prj.user_is_pi" class="badge bg-info">Member</span>
-									<span *ngIf="prj.user_is_admin" class="badge bg-success">Admin</span>
-									<span *ngIf="prj.user_is_pi" class="badge badge-danger">PI</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				}
 
-					<h5>Virtual machines</h5>
-					<div class="alert alert-warning" *ngIf="userIsOpenStackUser">
-						<strong>Note</strong>: As you are a member of an OpenStack project the following machine summary might be
-						incomplete. Please check the corresponding dashboard of your facility to see which machines are in use by
-						you.
+				@if (!summaryLoaded) {
+					<div class="row">
+						<div class="spinner-grow col-md-auto mx-auto" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</div>
 					</div>
-
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">Name</th>
-								<th>Flavor</th>
-								<th>Image</th>
-								<th>Project</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let vm of userVirtualMachines">
-								<th scope="row">{{ vm.name }}</th>
-								<td>{{ vm.flavor.name }}</td>
-								<td>{{ vm.image }}</td>
-								<td>{{ vm.project }}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				}
+				@if (summaryLoaded && !userHasNoGroups) {
+					<div>
+						<h5>Projects</h5>
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">Name</th>
+									<th>Type</th>
+									<th>Your role</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for (prj of userProjects; track prj) {
+									<tr>
+										<th scope="row">{{ prj.project_application_shortname }}</th>
+										<td>
+											@if (prj.project_application_openstack_project) {
+												<span class="badge bg-warning">OpenStack</span>
+											}
+											@if (!prj.project_application_openstack_project) {
+												<span class="badge bg-info-blue">SimpleVM</span>
+											}
+										</td>
+										<td>
+											@if (!prj.user_is_admin && !prj.user_is_pi) {
+												<span class="badge bg-info">Member</span>
+											}
+											@if (prj.user_is_admin) {
+												<span class="badge bg-success">Admin</span>
+											}
+											@if (prj.user_is_pi) {
+												<span class="badge badge-danger">PI</span>
+											}
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						<h5>Virtual machines</h5>
+						@if (userIsOpenStackUser) {
+							<div class="alert alert-warning">
+								<strong>Note</strong>: As you are a member of an OpenStack project the following machine summary might
+								be incomplete. Please check the corresponding dashboard of your facility to see which machines are in
+								use by you.
+							</div>
+						}
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">Name</th>
+									<th>Flavor</th>
+									<th>Image</th>
+									<th>Project</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for (vm of userVirtualMachines; track vm) {
+									<tr>
+										<th scope="row">{{ vm.name }}</th>
+										<td>{{ vm.flavor.name }}</td>
+										<td>{{ vm.image }}</td>
+										<td>{{ vm.project }}</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				}
 				<!-- pipes -->
-				<div class="alert alert-danger" *ngIf="userIsLoneAdmin || userIsProjectPi">
-					<p *ngIf="userIsProjectPi">
-						As you are a PI <span *ngIf="userIsLoneAdmin">and lone admin</span> of at least one cloud project, you can
-						not use this process to leave the de.NBI VO. Please contact our support
-						<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">via mail</a> to perform the necessary steps.
-					</p>
-					<p *ngIf="userIsLoneAdmin && !userIsProjectPi">
-						As you are lone administrator of at least one cloud project, you are not able to leave the virtual
-						organization using this process. Make sure that you select other persons responsible for the administration
-						of the corresponding projects!
-					</p>
-				</div>
+				@if (userIsLoneAdmin || userIsProjectPi) {
+					<div class="alert alert-danger">
+						@if (userIsProjectPi) {
+							<p>
+								As you are a PI
+								@if (userIsLoneAdmin) {
+									<span>and lone admin</span>
+								}
+								of at least one cloud project, you can not use this process to leave the de.NBI VO. Please contact our
+								support <a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">via mail</a> to perform the necessary steps.
+							</p>
+						}
+						@if (userIsLoneAdmin && !userIsProjectPi) {
+							<p>
+								As you are lone administrator of at least one cloud project, you are not able to leave the virtual
+								organization using this process. Make sure that you select other persons responsible for the
+								administration of the corresponding projects!
+							</p>
+						}
+					</div>
+				}
 			</div>
 			<div class="modal-footer">
 				<button
@@ -324,12 +361,12 @@
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-info" [ngClass]="leavingSucceeded ? 'alert-info' : 'alert-danger'">
-					<strong *ngIf="leavingSucceeded"
-						>You have leaved the de.NBI VO successfully! You will get logged out now.</strong
-					>
-					<strong *ngIf="!leavingSucceeded"
-						>An error occurred leaving the de.NBI VO! PLease contact the support!</strong
-					>
+					@if (leavingSucceeded) {
+						<strong>You have leaved the de.NBI VO successfully! You will get logged out now.</strong>
+					}
+					@if (!leavingSucceeded) {
+						<strong>An error occurred leaving the de.NBI VO! PLease contact the support!</strong>
+					}
 				</div>
 			</div>
 			<div class="modal-footer">

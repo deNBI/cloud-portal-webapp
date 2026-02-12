@@ -33,375 +33,389 @@
 		</div>
 	</div>
 </div>
-<div class="card-body" *ngIf="!testimonialSent && testimonialFormGroup && !hideTestimonialForm">
-	<form id="testimonialForm" [formGroup]="testimonialFormGroup" class="form-horizontal">
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong
-						>Title*
-						<i class="icon-question" data-toggle="tooltip" title="The title of your testimonial"> </i>
-					</strong>
-				</label>
-			</div>
-
-			<div class="col-md-9">
-				<div class="input-group">
-					<input
-						class="form-control"
-						name="testimonial_title"
-						required
-						id="testimonial_title"
-						formControlName="testimonial_title"
-						placeholder="NA"
-						type="text"
-						[ngClass]="{
-							'is-invalid': testimonialFormGroup.controls.testimonial_title?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_title?.valid,
-						}"
-					/>
+@if (!testimonialSent && testimonialFormGroup && !hideTestimonialForm) {
+	<div class="card-body">
+		<form id="testimonialForm" [formGroup]="testimonialFormGroup" class="form-horizontal">
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong
+							>Title*
+							<i class="icon-question" data-toggle="tooltip" title="The title of your testimonial"> </i>
+						</strong>
+					</label>
 				</div>
-				<div class="form-text">Please provide a title that specifies your project or work in the cloud.</div>
-			</div>
-		</div>
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong
-						>Text*
-						<i class="icon-question" data-toggle="tooltip" title="The text of your testimonial"> </i>
-					</strong>
-				</label>
-			</div>
-
-			<div class="col-md-9">
-				<div class="input-group">
-					<textarea
-						required
-						rows="20"
-						[ngClass]="{
-							'is-invalid': testimonialFormGroup.controls.testimonial_text?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_text?.valid,
-						}"
-						class="form-control"
-						name="testimonial_text"
-						formControlName="testimonial_text"
-						id="testimonial_text"
-					></textarea>
-				</div>
-				<div class="form-text">
-					Please describe what you are working on in your project and what you have used the de.NBI Cloud for (for
-					example, what are the requirements of your research or what tools you use). What benefits have you gained from
-					working within our cloud? Which functions of the cloud have been particularly helpful or made your work
-					easier?
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong
-						>Excerpt*
-						<i class="icon-question" data-toggle="tooltip" title="The excerpt of your testimonial"> </i>
-					</strong>
-				</label>
-			</div>
-
-			<div class="col-md-9">
-				<div class="input-group">
-					<textarea
-						class="form-control"
-						name="testimonial_excerpt"
-						formControlName="testimonial_excerpt"
-						id="testimonial_excerpt"
-						required
-						rows="4"
-						[ngClass]="{
-							'is-invalid': testimonialFormGroup.controls.testimonial_excerpt?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_excerpt?.valid,
-						}"
-					></textarea>
-				</div>
-				<div class="form-text">
-					Please summarise your positive experiences in the cloud in 3-4 sentences. If your main text contains such a
-					section, you can copy it into this field.
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong
-						>Contributor*
-						<i
-							class="icon-question"
-							data-toggle="tooltip"
-							title="The responsible person in whose name the testimonial is to be published."
-						>
-						</i>
-					</strong>
-				</label>
-			</div>
-
-			<div class="col-md-9">
-				<div class="input-group">
-					<input
-						class="form-control"
-						name="testimonial_contributor"
-						formControlName="testimonial_contributor"
-						id="testimonial_contributor"
-						placeholder="NA"
-						type="text"
-						required
-						[ngClass]="{
-							'is-invalid': testimonialFormGroup.controls.testimonial_contributor?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_contributor?.valid,
-						}"
-					/>
-				</div>
-				<div class="form-text">
-					Please provide the person responsible for the testimonial or the person on whose behalf the testimonial is
-					written.
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong
-						>Institute*
-						<i
-							class="icon-question"
-							data-toggle="tooltip"
-							title="The institute at which the working group is active in whose name the testimonial is to be published."
-						>
-						</i>
-					</strong>
-				</label>
-			</div>
-
-			<div class="col-md-9">
-				<div class="input-group">
-					<input
-						class="form-control"
-						name="testimonial_institution"
-						formControlName="testimonial_institution"
-						id="testimonial_institution"
-						placeholder="NA"
-						type="text"
-						required
-						[ngClass]="{
-							'is-invalid': testimonialFormGroup.controls.testimonial_instituton?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_institution?.valid,
-						}"
-					/>
-				</div>
-				<div class="form-text">Please provide the institute of your working group.</div>
-			</div>
-		</div>
-
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong
-						>Workgroup*
-						<i class="icon-question" data-toggle="tooltip" title="The working group behind the project."> </i>
-					</strong>
-				</label>
-			</div>
-
-			<div class="col-md-9">
-				<div class="input-group">
-					<input
-						class="form-control"
-						name="testimonial_workgroup"
-						formControlName="testimonial_workgroup"
-						id="testimonial_workgroup"
-						placeholder="NA"
-						type="text"
-						required
-						[ngClass]="{
-							'is-invalid': testimonialFormGroup.controls.testimonial_workgroup?.invalid,
-							'is-valid': testimonialFormGroup.controls.testimonial_workgroup?.valid,
-						}"
-					/>
-				</div>
-				<div class="form-text">Please provide your working group.</div>
-			</div>
-		</div>
-
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong
-						>Photography*
-						<i
-							class="icon-question"
-							data-toggle="tooltip"
-							title="An image of the working group, the PI or the person in whose name the testimonial is to be published."
-						>
-						</i>
-					</strong>
-				</label>
-			</div>
-
-			<div class="col-md-9">
-				<div class="input-group">
-					<div class="custom-file">
+				<div class="col-md-9">
+					<div class="input-group">
 						<input
-							type="file"
-							class="custom-file-input"
-							(change)="adjustFile($event)"
-							accept="image/png, image/jpeg"
-							lang="en"
-							id="testimonialPhotoInput"
+							class="form-control"
+							name="testimonial_title"
+							required
+							id="testimonial_title"
+							formControlName="testimonial_title"
+							placeholder="NA"
+							type="text"
+							[ngClass]="{
+								'is-invalid': testimonialFormGroup.controls.testimonial_title?.invalid,
+								'is-valid': testimonialFormGroup.controls.testimonial_title?.valid,
+							}"
 						/>
-						<label class="custom-file-label" for="testimonialPhotoInput">{{ file ? file.name : 'Choose Image' }}</label>
 					</div>
-				</div>
-				<div class="form-text">
-					At best, upload a picture of the responsible person or working group here. Please only upload pictures that
-					can be publicly used. By uploading the image, we assume that the image may be used publicly by us.
+					<div class="form-text">Please provide a title that specifies your project or work in the cloud.</div>
 				</div>
 			</div>
-		</div>
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong>
-						Testimonial Publication Consent*
-						<i
-							class="icon-question"
-							data-toggle="tooltip"
-							title="Specifies which channels we can use to publish the submitted testimonial."
-						>
-						</i>
-					</strong>
-				</label>
-			</div>
-			<div class="col-md-9">
-				<div class="input-group">
-					<div class="form-check mx-2">
-						<input class="form-check-input" type="checkbox" disabled checked id="website_checkbox" />
-						<label class="form-check-label" for="website_checkbox"
-							>Website
-							<i class="icon-question" data-toggle="tooltip" title="Any content on the de.NBI and de.NBI Cloud Website">
-							</i
-						></label>
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong
+							>Text*
+							<i class="icon-question" data-toggle="tooltip" title="The text of your testimonial"> </i>
+						</strong>
+					</label>
+				</div>
+				<div class="col-md-9">
+					<div class="input-group">
+						<textarea
+							required
+							rows="20"
+							[ngClass]="{
+								'is-invalid': testimonialFormGroup.controls.testimonial_text?.invalid,
+								'is-valid': testimonialFormGroup.controls.testimonial_text?.valid,
+							}"
+							class="form-control"
+							name="testimonial_text"
+							formControlName="testimonial_text"
+							id="testimonial_text"
+						></textarea>
 					</div>
-					<div class="form-check mx-2" *ngFor="let socialConsent of possibleSocialConsents">
+					<div class="form-text">
+						Please describe what you are working on in your project and what you have used the de.NBI Cloud for (for
+						example, what are the requirements of your research or what tools you use). What benefits have you gained
+						from working within our cloud? Which functions of the cloud have been particularly helpful or made your work
+						easier?
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong
+							>Excerpt*
+							<i class="icon-question" data-toggle="tooltip" title="The excerpt of your testimonial"> </i>
+						</strong>
+					</label>
+				</div>
+				<div class="col-md-9">
+					<div class="input-group">
+						<textarea
+							class="form-control"
+							name="testimonial_excerpt"
+							formControlName="testimonial_excerpt"
+							id="testimonial_excerpt"
+							required
+							rows="4"
+							[ngClass]="{
+								'is-invalid': testimonialFormGroup.controls.testimonial_excerpt?.invalid,
+								'is-valid': testimonialFormGroup.controls.testimonial_excerpt?.valid,
+							}"
+						></textarea>
+					</div>
+					<div class="form-text">
+						Please summarise your positive experiences in the cloud in 3-4 sentences. If your main text contains such a
+						section, you can copy it into this field.
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong
+							>Contributor*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="The responsible person in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+				<div class="col-md-9">
+					<div class="input-group">
 						<input
-							class="form-check-input"
-							type="checkbox"
-							[value]="socialConsent.id"
-							[checked]="selectedSocialConsents | socialConsentGiven: socialConsent"
-							[id]="'checkbox_' + socialConsent.id"
-							(change)="updateSelectedOptions(socialConsent)"
+							class="form-control"
+							name="testimonial_contributor"
+							formControlName="testimonial_contributor"
+							id="testimonial_contributor"
+							placeholder="NA"
+							type="text"
+							required
+							[ngClass]="{
+								'is-invalid': testimonialFormGroup.controls.testimonial_contributor?.invalid,
+								'is-valid': testimonialFormGroup.controls.testimonial_contributor?.valid,
+							}"
 						/>
-						<label class="form-check-label" for="checkbox_{{ socialConsent.id }}"
-							>{{ socialConsent.name }}
-							<i class="icon-question" data-toggle="tooltip" title="{{ socialConsent.description }}"> </i
-						></label>
+					</div>
+					<div class="form-text">
+						Please provide the person responsible for the testimonial or the person on whose behalf the testimonial is
+						written.
 					</div>
 				</div>
-				<div class="form-text">
-					Please indicate here on which channels/platforms we may publish your testimonial or information about your
-					testimonial. Please consider allowing the testimonial and testimonial information to be published on channels
-					where you do not authorize the use of the photo. The websites channel is selected by default and cannot be
-					deselected as a channel.
+			</div>
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong
+							>Institute*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="The institute at which the working group is active in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
 				</div>
-			</div>
-		</div>
-		<div class="form-group row">
-			<div class="col-md-3">
-				<label class="form-control-label">
-					<strong>
-						Photography Publication Consent*
-						<i
-							class="icon-question"
-							data-toggle="tooltip"
-							title="Specifies which channels we can use to publish the submitted testimonial."
-						>
-						</i>
-					</strong>
-				</label>
-			</div>
-			<div class="col-md-9">
-				<div class="input-group">
-					<div class="form-check mx-2">
-						<input class="form-check-input" type="checkbox" disabled checked id="website_checkbox" />
-						<label class="form-check-label" for="website_checkbox"
-							>Website
-							<i class="icon-question" data-toggle="tooltip" title="Any content on the de.NBI and de.NBI Cloud Website">
-							</i
-						></label>
-					</div>
-					<div class="form-check mx-2" *ngFor="let socialPhotoConsent of possibleSocialConsents">
+				<div class="col-md-9">
+					<div class="input-group">
 						<input
-							class="form-check-input"
-							type="checkbox"
-							[value]="socialPhotoConsent.id"
-							[checked]="selectedSocialPhotoConsents | socialConsentGiven: socialPhotoConsent"
-							[id]="'photo_checkbox_' + socialPhotoConsent.id"
-							(change)="updateSelectedPhotoOptions(socialPhotoConsent)"
+							class="form-control"
+							name="testimonial_institution"
+							formControlName="testimonial_institution"
+							id="testimonial_institution"
+							placeholder="NA"
+							type="text"
+							required
+							[ngClass]="{
+								'is-invalid': testimonialFormGroup.controls.testimonial_instituton?.invalid,
+								'is-valid': testimonialFormGroup.controls.testimonial_institution?.valid,
+							}"
 						/>
-						<label class="form-check-label" for="checkbox_{{ socialPhotoConsent.id }}"
-							>{{ socialPhotoConsent.name }}
-							<i class="icon-question" data-toggle="tooltip" title="{{ socialPhotoConsent.description }}"> </i
-						></label>
 					</div>
-				</div>
-				<div class="form-text">
-					Please indicate here on which channels/platforms we may publish the photography uploaded for the testimonial.
-					The websites channel is selected by default and cannot be deselected as a channel.
+					<div class="form-text">Please provide the institute of your working group.</div>
 				</div>
 			</div>
-		</div>
-	</form>
-</div>
-<div class="card-body" *ngIf="hideTestimonialForm">
-	<div class="alert alert-info">
-		Another user of your project is making changes to this form. To avoid inconsistencies, several people cannot work on
-		this form at the same time. If the user does not make any further changes to the entries, this form is released
-		again.
-		<strong>You may try again in a few minutes - reload the page for this.</strong>
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong
+							>Workgroup*
+							<i class="icon-question" data-toggle="tooltip" title="The working group behind the project."> </i>
+						</strong>
+					</label>
+				</div>
+				<div class="col-md-9">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="testimonial_workgroup"
+							formControlName="testimonial_workgroup"
+							id="testimonial_workgroup"
+							placeholder="NA"
+							type="text"
+							required
+							[ngClass]="{
+								'is-invalid': testimonialFormGroup.controls.testimonial_workgroup?.invalid,
+								'is-valid': testimonialFormGroup.controls.testimonial_workgroup?.valid,
+							}"
+						/>
+					</div>
+					<div class="form-text">Please provide your working group.</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong
+							>Photography*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="An image of the working group, the PI or the person in whose name the testimonial is to be published."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+				<div class="col-md-9">
+					<div class="input-group">
+						<div class="custom-file">
+							<input
+								type="file"
+								class="custom-file-input"
+								(change)="adjustFile($event)"
+								accept="image/png, image/jpeg"
+								lang="en"
+								id="testimonialPhotoInput"
+							/>
+							<label class="custom-file-label" for="testimonialPhotoInput">{{
+								file ? file.name : 'Choose Image'
+							}}</label>
+						</div>
+					</div>
+					<div class="form-text">
+						At best, upload a picture of the responsible person or working group here. Please only upload pictures that
+						can be publicly used. By uploading the image, we assume that the image may be used publicly by us.
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong>
+							Testimonial Publication Consent*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="Specifies which channels we can use to publish the submitted testimonial."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+				<div class="col-md-9">
+					<div class="input-group">
+						<div class="form-check mx-2">
+							<input class="form-check-input" type="checkbox" disabled checked id="website_checkbox" />
+							<label class="form-check-label" for="website_checkbox"
+								>Website
+								<i
+									class="icon-question"
+									data-toggle="tooltip"
+									title="Any content on the de.NBI and de.NBI Cloud Website"
+								>
+								</i
+							></label>
+						</div>
+						@for (socialConsent of possibleSocialConsents; track socialConsent) {
+							<div class="form-check mx-2">
+								<input
+									class="form-check-input"
+									type="checkbox"
+									[value]="socialConsent.id"
+									[checked]="selectedSocialConsents | socialConsentGiven: socialConsent"
+									[id]="'checkbox_' + socialConsent.id"
+									(change)="updateSelectedOptions(socialConsent)"
+								/>
+								<label class="form-check-label" for="checkbox_{{ socialConsent.id }}"
+									>{{ socialConsent.name }}
+									<i class="icon-question" data-toggle="tooltip" title="{{ socialConsent.description }}"> </i
+								></label>
+							</div>
+						}
+					</div>
+					<div class="form-text">
+						Please indicate here on which channels/platforms we may publish your testimonial or information about your
+						testimonial. Please consider allowing the testimonial and testimonial information to be published on
+						channels where you do not authorize the use of the photo. The websites channel is selected by default and
+						cannot be deselected as a channel.
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-3">
+					<label class="form-control-label">
+						<strong>
+							Photography Publication Consent*
+							<i
+								class="icon-question"
+								data-toggle="tooltip"
+								title="Specifies which channels we can use to publish the submitted testimonial."
+							>
+							</i>
+						</strong>
+					</label>
+				</div>
+				<div class="col-md-9">
+					<div class="input-group">
+						<div class="form-check mx-2">
+							<input class="form-check-input" type="checkbox" disabled checked id="website_checkbox" />
+							<label class="form-check-label" for="website_checkbox"
+								>Website
+								<i
+									class="icon-question"
+									data-toggle="tooltip"
+									title="Any content on the de.NBI and de.NBI Cloud Website"
+								>
+								</i
+							></label>
+						</div>
+						@for (socialPhotoConsent of possibleSocialConsents; track socialPhotoConsent) {
+							<div class="form-check mx-2">
+								<input
+									class="form-check-input"
+									type="checkbox"
+									[value]="socialPhotoConsent.id"
+									[checked]="selectedSocialPhotoConsents | socialConsentGiven: socialPhotoConsent"
+									[id]="'photo_checkbox_' + socialPhotoConsent.id"
+									(change)="updateSelectedPhotoOptions(socialPhotoConsent)"
+								/>
+								<label class="form-check-label" for="checkbox_{{ socialPhotoConsent.id }}"
+									>{{ socialPhotoConsent.name }}
+									<i class="icon-question" data-toggle="tooltip" title="{{ socialPhotoConsent.description }}"> </i
+								></label>
+							</div>
+						}
+					</div>
+					<div class="form-text">
+						Please indicate here on which channels/platforms we may publish the photography uploaded for the
+						testimonial. The websites channel is selected by default and cannot be deselected as a channel.
+					</div>
+				</div>
+			</div>
+		</form>
 	</div>
-</div>
-<div class="card-body" *ngIf="testimonialSent">
-	<div class="alert alert-info">
-		As a testimonial has already been submitted for your project, we ask for your understanding that you cannot submit
-		another draft here. If you would still like to submit a testimonial, please contact the helpdesk via
-		<a class="alert-link" href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
-		>.
+}
+@if (hideTestimonialForm) {
+	<div class="card-body">
+		<div class="alert alert-info">
+			Another user of your project is making changes to this form. To avoid inconsistencies, several people cannot work
+			on this form at the same time. If the user does not make any further changes to the entries, this form is released
+			again.
+			<strong>You may try again in a few minutes - reload the page for this.</strong>
+		</div>
 	</div>
-</div>
-<div class="card-body" *ngIf="!testimonialSent && !hideTestimonialForm && (testimonialFormGroup?.invalid || !file)">
-	<hr />
-	<ul class="list-group list-group-flush">
-		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_title'].invalid">
-			Please provide a title.
-		</li>
-		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_text'].invalid">
-			Please provide a longer text.
-		</li>
-		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_excerpt'].invalid">
-			Please provide an excerpt, which is at least 200 characters long but does not exceed 1000 characters.
-		</li>
-		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_contributor'].invalid">
-			Please provide a contributor.
-		</li>
-		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_institution'].invalid">
-			Please provide an institution.
-		</li>
-		<li class="list-group-item" *ngIf="testimonialFormGroup?.controls['testimonial_workgroup'].invalid">
-			Please provide a workgroup.
-		</li>
-		<li class="list-group-item" *ngIf="!file">Please provide a valid image file.</li>
-	</ul>
-</div>
+}
+@if (testimonialSent) {
+	<div class="card-body">
+		<div class="alert alert-info">
+			As a testimonial has already been submitted for your project, we ask for your understanding that you cannot submit
+			another draft here. If you would still like to submit a testimonial, please contact the helpdesk via
+			<a class="alert-link" href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+			>.
+		</div>
+	</div>
+}
+@if (!testimonialSent && !hideTestimonialForm && (testimonialFormGroup?.invalid || !file)) {
+	<div class="card-body">
+		<hr />
+		<ul class="list-group list-group-flush">
+			@if (testimonialFormGroup?.controls['testimonial_title'].invalid) {
+				<li class="list-group-item">Please provide a title.</li>
+			}
+			@if (testimonialFormGroup?.controls['testimonial_text'].invalid) {
+				<li class="list-group-item">Please provide a longer text.</li>
+			}
+			@if (testimonialFormGroup?.controls['testimonial_excerpt'].invalid) {
+				<li class="list-group-item">
+					Please provide an excerpt, which is at least 200 characters long but does not exceed 1000 characters.
+				</li>
+			}
+			@if (testimonialFormGroup?.controls['testimonial_contributor'].invalid) {
+				<li class="list-group-item">Please provide a contributor.</li>
+			}
+			@if (testimonialFormGroup?.controls['testimonial_institution'].invalid) {
+				<li class="list-group-item">Please provide an institution.</li>
+			}
+			@if (testimonialFormGroup?.controls['testimonial_workgroup'].invalid) {
+				<li class="list-group-item">Please provide a workgroup.</li>
+			}
+			@if (!file) {
+				<li class="list-group-item">Please provide a valid image file.</li>
+			}
+		</ul>
+	</div>
+}
 <div class="card-footer">
 	<div class="row my-2">
 		<div class="col-auto">
@@ -427,19 +441,23 @@
 				</button>
 			</div>
 		</div>
-		<div class="col-md-auto align-content-end mt-2" *ngIf="autoSaveInProgress">
-			<span class="badge badge-dark">
-				<div class="spinner-border spinner-border-sm text-success" role="status">
-					<span class="visually-hidden">Autosaving...</span>
-				</div>
-				<span class="p-2 mb-2">Autosaving ...</span>
-			</span>
-		</div>
-		<div class="col-md-auto align-content-end mt-2" *ngIf="showAutosaveSucess">
-			<span class="badge badge-success">
-				<span class="p-2 mb-2">Autosaving successfull</span>
-			</span>
-		</div>
+		@if (autoSaveInProgress) {
+			<div class="col-md-auto align-content-end mt-2">
+				<span class="badge badge-dark">
+					<div class="spinner-border spinner-border-sm text-success" role="status">
+						<span class="visually-hidden">Autosaving...</span>
+					</div>
+					<span class="p-2 mb-2">Autosaving ...</span>
+				</span>
+			</div>
+		}
+		@if (showAutosaveSucess) {
+			<div class="col-md-auto align-content-end mt-2">
+				<span class="badge badge-success">
+					<span class="p-2 mb-2">Autosaving successfull</span>
+				</span>
+			</div>
+		}
 	</div>
 </div>
 

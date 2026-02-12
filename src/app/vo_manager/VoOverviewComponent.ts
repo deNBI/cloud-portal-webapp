@@ -34,7 +34,7 @@ import {
 } from '@coreui/angular'
 import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap'
 import { FormsModule } from '@angular/forms'
-import { NgIf, NgFor, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
 import { DatePickerComponent } from '../shared/datepicking/datepicker.component'
 import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
@@ -58,11 +58,9 @@ import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/comp
 		TextBgColorDirective,
 		BadgeComponent,
 		FormsModule,
-		NgIf,
 		InputGroupComponent,
 		ButtonDirective,
 		NgbdSortableHeaderDirective,
-		NgFor,
 		ApplicationBadgesComponent,
 		NgbHighlight,
 		ModalModule,
@@ -73,9 +71,7 @@ import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/comp
 		HasStatusNotInListPipe,
 		BasePaginationComponent,
 		ApplicationFilterInputComponent,
-		ApplicationStatusBadgesComponent,
-		ProjectCsvTemplatedEmailModalComponent,
-		ProjectEmailModalComponent
+		ApplicationStatusBadgesComponent
 	]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
@@ -291,7 +287,8 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	}
 
 	checkValidLifeScienceIdFilter(): void {
-		this.validLifeScienceIdFilter = this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')
+		this.validLifeScienceIdFilter =
+			this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')
 	}
 
 	getProjectsByMemberLifeScienceId(): void {
@@ -423,17 +420,20 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 				removalDate,
 				encodeURIComponent(reply)
 			)
-			.subscribe((result: IResponseTemplate): void => {
-				if ((result.value as boolean) === true) {
-					this.emailStatus = 1
-				} else {
+			.subscribe(
+				(result: IResponseTemplate): void => {
+					if ((result.value as boolean) === true) {
+						this.emailStatus = 1
+					} else {
+						this.emailStatus = 2
+					}
+					this.selectedProjectType = 'ALL'
+					this.selectedFacility = 'ALL'
+				},
+				(): any => {
 					this.emailStatus = 2
 				}
-				this.selectedProjectType = 'ALL'
-				this.selectedFacility = 'ALL'
-			}, (): any => {
-				this.emailStatus = 2;
-			})
+			)
 	}
 
 	dayChanged(date: { year: number; month: number; day: number }): void {
