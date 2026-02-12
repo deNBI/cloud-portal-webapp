@@ -4,7 +4,7 @@ import { CsvOutput, download, generateCsv, mkConfig } from 'export-to-csv'
 
 import { VoService } from '../../api-connector/vo.service'
 import { Resources } from './resources'
-import { NgIf, NgFor, DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common'
 
 /**
  * Resource component.
@@ -14,7 +14,7 @@ import { NgIf, NgFor, DatePipe } from '@angular/common'
 	templateUrl: './resources.component.html',
 	styleUrls: ['./resources.component.scss'],
 	providers: [VoService],
-	imports: [NgIf, NgFor, DatePipe]
+	imports: [DatePipe]
 })
 export class ResourcesComponent implements OnInit {
 	title: string = 'VO Overview: Resources'

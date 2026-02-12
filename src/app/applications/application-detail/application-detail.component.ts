@@ -9,7 +9,7 @@ import { CreditsService } from '../../api-connector/credits.service'
 import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class'
 import { User } from '../application.model/user.model'
 import { NotificationModalComponent } from '../../shared/modal/notification-modal'
-import { NgClass, NgIf } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { ApplicationPiDetailComponent } from './application-pi-detail/application-pi-detail.component'
 import { InformationDetailComponent } from './information-detail/information-detail.component'
 import { ResourceDetailComponent } from './resource-detail/resource-detail.component'
@@ -28,7 +28,6 @@ import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pip
 	providers: [FacilityService, UserService, ApplicationsService, CreditsService],
 	imports: [
 		NgClass,
-		NgIf,
 		ApplicationPiDetailComponent,
 		InformationDetailComponent,
 		ResourceDetailComponent,

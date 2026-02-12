@@ -13,7 +13,7 @@ import { CreditsService } from '../../../api-connector/credits.service'
 import { ShownFlavors } from 'app/shared/classes/shownFlavors.interface'
 import { FormsModule } from '@angular/forms'
 import { AccordionModule } from 'ngx-bootstrap/accordion'
-import { NgFor, NgIf, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import {
 	MinAmoutValidatorDirective,
 	IntegerValidatorDirective
@@ -29,8 +29,6 @@ import { HasFlavorTypeOrIsNotCustomPipe as HasFlavorTypeOrIsNotCustomPipe_1 } fr
 	imports: [
 		FormsModule,
 		AccordionModule,
-		NgFor,
-		NgIf,
 		NgClass,
 		MinAmoutValidatorDirective,
 		IntegerValidatorDirective,

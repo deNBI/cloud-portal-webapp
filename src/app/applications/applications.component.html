@@ -1,79 +1,84 @@
-<div *ngIf="!isLoaded" class="loader" data-test-id="site-loader"></div>
-<div *ngIf="isLoaded" class="animated fadeIn">
-	<div class="card" *ngIf="is_vo_admin">
-		<div class="card-header"><i class="fa fa-align-justify"></i> Applications for review</div>
-
-		<div class="btn-group" role="group">
-			<button
-				class="btn"
-				(click)="changeTabState(ApplicationTabStates.SUBMITTED)"
-				[ngClass]="{
-					'btn-light': !(tab_state === ApplicationTabStates.SUBMITTED),
-					'btn-primary': tab_state === ApplicationTabStates.SUBMITTED
-				}"
-				id="tab_state_button_submitted_applications"
-				data-test-id="submitted_applications_tab"
-			>
-				<i class="fas fa-envelope"></i> Submitted Applications
-				<span class="badge badge-pill bg-dark">{{ numberOfProjectApplications }}</span>
-			</button>
-			<button
-				class="btn"
-				(click)="changeTabState(ApplicationTabStates.CREDITS_EXTENSION)"
-				[ngClass]="{
-					'btn-light': !(tab_state === ApplicationTabStates.CREDITS_EXTENSION),
-					'btn-primary': tab_state === ApplicationTabStates.CREDITS_EXTENSION
-				}"
-				id="tab_state_button_credit_request"
-				data-test-id="credit_requests_applications_tab"
-			>
-				<i class="fas fa-coins"></i> Credit Extension Requests
-				<span class="badge badge-pill bg-dark">{{ numberOfCreditRequests }}</span>
-			</button>
-			<button
-				class="btn"
-				(click)="changeTabState(ApplicationTabStates.LIFETIME_EXTENSION)"
-				[ngClass]="{
-					'btn-light': !(tab_state === ApplicationTabStates.LIFETIME_EXTENSION),
-					'btn-primary': tab_state === ApplicationTabStates.LIFETIME_EXTENSION
-				}"
-				id="tab_state_button_extension_request"
-				data-test-id="extension_requests_applications_tab"
-			>
-				<i class="fas fa-clock"></i> Lifetime Extension Requests
-				<span class="badge badge-pill bg-dark">{{ numberOfExtensionRequests }}</span>
-			</button>
-			<button
-				class="btn"
-				(click)="changeTabState(ApplicationTabStates.MODIFICATION_EXTENSION)"
-				[ngClass]="{
-					'btn-light': !(tab_state === ApplicationTabStates.MODIFICATION_EXTENSION),
-					'btn-primary': tab_state === ApplicationTabStates.MODIFICATION_EXTENSION
-				}"
-				id="tab_state_button_modification_request"
-				data-test-id="modification_requests_applications_tab"
-			>
-				<i class="fas fa-memory"></i> Resource Modification Requests
-				<span class="badge badge-pill bg-dark">{{ numberOfModificationRequests }}</span>
-			</button>
-		</div>
-		<div class="card-body" *ngIf="loading_applications" id="loading_applications" data-test-id="loading_applications">
-			<div class="alert alert-success">
-				<strong>Loading applications/requests ...</strong>
+@if (!isLoaded) {
+	<div class="loader" data-test-id="site-loader"></div>
+}
+@if (isLoaded) {
+	<div class="animated fadeIn">
+		@if (is_vo_admin) {
+			<div class="card">
+				<div class="card-header"><i class="fa fa-align-justify"></i> Applications for review</div>
+				<div class="btn-group" role="group">
+					<button
+						class="btn"
+						(click)="changeTabState(ApplicationTabStates.SUBMITTED)"
+						[ngClass]="{
+							'btn-light': !(tab_state === ApplicationTabStates.SUBMITTED),
+							'btn-primary': tab_state === ApplicationTabStates.SUBMITTED,
+						}"
+						id="tab_state_button_submitted_applications"
+						data-test-id="submitted_applications_tab"
+					>
+						<i class="fas fa-envelope"></i> Submitted Applications
+						<span class="badge badge-pill bg-dark">{{ numberOfProjectApplications }}</span>
+					</button>
+					<button
+						class="btn"
+						(click)="changeTabState(ApplicationTabStates.CREDITS_EXTENSION)"
+						[ngClass]="{
+							'btn-light': !(tab_state === ApplicationTabStates.CREDITS_EXTENSION),
+							'btn-primary': tab_state === ApplicationTabStates.CREDITS_EXTENSION,
+						}"
+						id="tab_state_button_credit_request"
+						data-test-id="credit_requests_applications_tab"
+					>
+						<i class="fas fa-coins"></i> Credit Extension Requests
+						<span class="badge badge-pill bg-dark">{{ numberOfCreditRequests }}</span>
+					</button>
+					<button
+						class="btn"
+						(click)="changeTabState(ApplicationTabStates.LIFETIME_EXTENSION)"
+						[ngClass]="{
+							'btn-light': !(tab_state === ApplicationTabStates.LIFETIME_EXTENSION),
+							'btn-primary': tab_state === ApplicationTabStates.LIFETIME_EXTENSION,
+						}"
+						id="tab_state_button_extension_request"
+						data-test-id="extension_requests_applications_tab"
+					>
+						<i class="fas fa-clock"></i> Lifetime Extension Requests
+						<span class="badge badge-pill bg-dark">{{ numberOfExtensionRequests }}</span>
+					</button>
+					<button
+						class="btn"
+						(click)="changeTabState(ApplicationTabStates.MODIFICATION_EXTENSION)"
+						[ngClass]="{
+							'btn-light': !(tab_state === ApplicationTabStates.MODIFICATION_EXTENSION),
+							'btn-primary': tab_state === ApplicationTabStates.MODIFICATION_EXTENSION,
+						}"
+						id="tab_state_button_modification_request"
+						data-test-id="modification_requests_applications_tab"
+					>
+						<i class="fas fa-memory"></i> Resource Modification Requests
+						<span class="badge badge-pill bg-dark">{{ numberOfModificationRequests }}</span>
+					</button>
+				</div>
+				@if (loading_applications) {
+					<div class="card-body" id="loading_applications" data-test-id="loading_applications">
+						<div class="alert alert-success">
+							<strong>Loading applications/requests ...</strong>
+						</div>
+					</div>
+				}
+				<ng-container>
+					@if (!loading_applications) {
+						<app-application-list
+							[voView]="true"
+							(reloadNumbersTrigger)="getApplicationNumbers()"
+							[applications]="all_applications"
+							[computeCenters]="computeCenters"
+							[tabState]="tab_state"
+						></app-application-list>
+					}
+				</ng-container>
 			</div>
-		</div>
-		<ng-container>
-			@if (!loading_applications) {
-
-				<app-application-list
-					[voView]="true"
-					(reloadNumbersTrigger)="getApplicationNumbers()"
-					[applications]="all_applications"
-					[computeCenters]="computeCenters"
-					[tabState]="tab_state"
-				></app-application-list>
-			}
-		</ng-container>
-
+		}
 	</div>
-</div>
+}

@@ -17,18 +17,19 @@
 					</button>
 				}
 				@if (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) {
-					<button
-						*ngIf="application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION"
-						style="margin: 2px"
-						[id]="'decline_' + application?.project_application_shortname"
-						(click)="showConfirmationModal(ConfirmationActions.DECLINE_APPLICATION)"
-						type="button"
-						class="btn btn-danger"
-						tooltip="Decline Application"
-					>
-						<i class="fa fa-times"></i>&nbsp;
-						<span class="d-none">Decline</span>
-					</button>
+					@if (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) {
+						<button
+							style="margin: 2px"
+							[id]="'decline_' + application?.project_application_shortname"
+							(click)="showConfirmationModal(ConfirmationActions.DECLINE_APPLICATION)"
+							type="button"
+							class="btn btn-danger"
+							tooltip="Decline Application"
+						>
+							<i class="fa fa-times"></i>&nbsp;
+							<span class="d-none">Decline</span>
+						</button>
+					}
 				}
 			}
 			@case (ApplicationTabStates.LIFETIME_EXTENSION) {

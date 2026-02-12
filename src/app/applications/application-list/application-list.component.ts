@@ -5,14 +5,14 @@ import { Application } from '../application.model/application.model'
 import { ApplicationTabStates } from '../../shared/enums/application-tab-states'
 import { ComputecenterComponent } from '../../projectmanagement/computecenter.component'
 import { is_vo } from '../../shared/globalvar'
-import { NgIf } from '@angular/common'
+
 import { ApplicationCardComponent } from '../application-card/application-card.component'
 
 @Component({
 	selector: 'app-application-list',
 	templateUrl: './application-list.component.html',
 	styleUrl: './application-list.component.scss',
-	imports: [NgIf, ApplicationCardComponent]
+	imports: [ApplicationCardComponent]
 })
 export class ApplicationListComponent implements OnInit, OnChanges {
 	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter()

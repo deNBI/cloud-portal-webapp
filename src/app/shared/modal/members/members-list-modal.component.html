@@ -10,40 +10,52 @@
 		></button>
 	</div>
 	<div class="modal-body">
-		<div *ngIf="members.length === 0" class="row">
-			<div class="spinner-grow col-md-auto mx-auto" role="status">
-				<span class="visually-hidden">Loading...</span>
+		@if (members.length === 0) {
+			<div class="row">
+				<div class="spinner-grow col-md-auto mx-auto" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
 			</div>
-		</div>
+		}
 		<!-- Show the table when members are loaded -->
-		<div class="table-responsive" *ngIf="members.length > 0">
-			<table class="table table-hover" style="word-wrap: break-word; table-layout: fixed">
-				<thead>
-					<tr>
-						<th>Roles</th>
-						<th>User ID</th>
-						<th>Member ID</th>
-						<th>LifeScience ID</th>
-						<th>Email</th>
-						<th>Full Name</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let member of members">
-						<td>
-							<span *ngIf="member.isAdmin" class="badge badge-pill bg-info-blue">ADMIN</span>
-							<span *ngIf="member.isPi" class="badge badge-pill bg-danger">PI</span>
-							<span *ngIf="!member.isPi && !member.isAdmin" class="badge badge-pill bg-warning">MEMBER</span>
-						</td>
-						<td>{{ member.userId }}</td>
-						<td>{{ member.memberId }}</td>
-						<td>{{ member.lifescienceId }}</td>
-						<td>{{ member.email }}</td>
-						<td>{{ member.userName }}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		@if (members.length > 0) {
+			<div class="table-responsive">
+				<table class="table table-hover" style="word-wrap: break-word; table-layout: fixed">
+					<thead>
+						<tr>
+							<th>Roles</th>
+							<th>User ID</th>
+							<th>Member ID</th>
+							<th>LifeScience ID</th>
+							<th>Email</th>
+							<th>Full Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (member of members; track member) {
+							<tr>
+								<td>
+									@if (member.isAdmin) {
+										<span class="badge badge-pill bg-info-blue">ADMIN</span>
+									}
+									@if (member.isPi) {
+										<span class="badge badge-pill bg-danger">PI</span>
+									}
+									@if (!member.isPi && !member.isAdmin) {
+										<span class="badge badge-pill bg-warning">MEMBER</span>
+									}
+								</td>
+								<td>{{ member.userId }}</td>
+								<td>{{ member.memberId }}</td>
+								<td>{{ member.lifescienceId }}</td>
+								<td>{{ member.email }}</td>
+								<td>{{ member.userName }}</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		}
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>

@@ -5,7 +5,6 @@ import { ProjectMemberApplication } from '../../project_member_application'
 import moment from 'moment/moment'
 import { Application } from '../../../applications/application.model/application.model'
 import { GroupService } from '../../../api-connector/group.service'
-import { NgIf, NgFor } from '@angular/common'
 
 @Injectable({
 	providedIn: 'root'
@@ -14,7 +13,7 @@ import { NgIf, NgFor } from '@angular/common'
 	selector: 'app-user-applications-modal',
 	templateUrl: './user-applications-modal.component.html',
 	styleUrl: './user-applications-modal.component.scss',
-	imports: [NgIf, NgFor]
+	imports: []
 })
 export class UserApplicationsModalComponent extends AbstractBaseModalComponent implements OnInit {
 	application: Application

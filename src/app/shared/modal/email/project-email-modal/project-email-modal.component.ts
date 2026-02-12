@@ -4,7 +4,7 @@ import { Application } from '../../../../applications/application.model/applicat
 import { EmailService } from '../../../../api-connector/email.service'
 import { STATUS_LINK } from '../../../../../links/links'
 import { NotificationModalComponent } from '../../notification-modal'
-import { NgFor, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 
 @Component({
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms'
 	templateUrl: './project-email-modal.component.html',
 	styleUrls: ['./projext-email-modal.component.scss'],
 	providers: [EmailService],
-	imports: [NgFor, FormsModule, NgClass]
+	imports: [FormsModule, NgClass]
 })
 export class ProjectEmailModalComponent implements OnInit, OnDestroy {
 	@Input() selectedProjects: Application[]

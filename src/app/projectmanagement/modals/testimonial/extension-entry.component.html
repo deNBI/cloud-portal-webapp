@@ -66,7 +66,7 @@
 		<div class="table-responsive">
 			<table class="table">
 				<tbody>
-					<ng-container *ngFor="let doi of dois">
+					@for (doi of dois; track doi) {
 						<tr>
 							<td>
 								<a target="_blank" rel="noopener noreferrer" [href]="'https://doi.org/' + doi.identifier">{{
@@ -79,7 +79,7 @@
 								</button>
 							</td>
 						</tr>
-					</ng-container>
+					}
 
 					<tr>
 						<td>

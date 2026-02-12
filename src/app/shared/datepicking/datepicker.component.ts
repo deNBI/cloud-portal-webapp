@@ -1,11 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core'
 import { NgbDateStruct, NgbCalendar, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap'
 import { FormsModule } from '@angular/forms'
-import { JsonPipe } from '@angular/common'
 
 @Component({
 	selector: 'app-datepicker',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbDatepickerModule, FormsModule],
 	templateUrl: './datepicker.component.html'
 })
 export class DatePickerComponent implements OnInit {

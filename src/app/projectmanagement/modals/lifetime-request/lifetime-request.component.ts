@@ -8,7 +8,7 @@ import { EdamOntologyTerm } from '../../../applications/edam-ontology-term'
 import { ResultComponent } from '../result/result.component'
 import { ApplicationsService } from '../../../api-connector/applications.service'
 import { FormsModule } from '@angular/forms'
-import { NgIf, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import {
 	IntegerValidatorDirective,
 	MinAmoutValidatorDirective,
@@ -23,7 +23,6 @@ import { NgSelectComponent } from '@ng-select/ng-select'
 	providers: [CreditsService, ApplicationsService],
 	imports: [
 		FormsModule,
-		NgIf,
 		IntegerValidatorDirective,
 		MinAmoutValidatorDirective,
 		MaxAmoutValidatorDirective,

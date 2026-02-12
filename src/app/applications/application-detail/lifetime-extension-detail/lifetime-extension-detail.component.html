@@ -19,10 +19,12 @@
 			<td>Comment</td>
 			<td>{{ application?.project_lifetime_request?.comment }}</td>
 		</tr>
-		<tr *ngIf="application?.project_lifetime_request?.manager_comment?.length > 0">
-			<td><strong>Comment by Cloud Governance</strong></td>
-			<td>{{ application?.project_lifetime_request?.manager_comment }}</td>
-		</tr>
+		@if (application?.project_lifetime_request?.manager_comment?.length > 0) {
+			<tr>
+				<td><strong>Comment by Cloud Governance</strong></td>
+				<td>{{ application?.project_lifetime_request?.manager_comment }}</td>
+			</tr>
+		}
 		<tr>
 			<td>Extra Lifetime</td>
 

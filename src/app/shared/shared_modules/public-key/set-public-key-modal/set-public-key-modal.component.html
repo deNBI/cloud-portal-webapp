@@ -1,67 +1,63 @@
+<div class="modal-header">
+	<h4 class="modal-title">Change public key</h4>
+	<button
+		type="button"
+		class="btn-close"
+		style="cursor: pointer"
+		(click)="hide()"
+		data-dismiss="modal"
+		aria-label="Close"
+	></button>
+</div>
+<div class="modal-body">
+	@if (public_key?.length === 0) {
+		<alert type="info"> <strong>Info: </strong> Please enter a valid public key! </alert>
+	}
 
-			<div class="modal-header">
-				<h4 class="modal-title">Change public key</h4>
-				<button
-					type="button"
-					class="btn-close"
-					style="cursor: pointer"
-					(click)="hide()"
-					data-dismiss="modal"
-					aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body">
-				<alert type="info" *ngIf="public_key?.length === 0">
-					<strong>Info: </strong> Please enter a valid public key!
-				</alert>
+	@if ((public_key | isValidKeyPipe) && validated_key) {
+		<alert type="success"> <strong>Info: </strong> This is a valid public key! </alert>
+	}
+	@if ((!(public_key | isValidKeyPipe) || !validated_key) && public_key?.length > 0) {
+		<alert type="danger"> <strong>Warning</strong> This is not a valid public key! </alert>
+	}
+	@if ((!(public_key | isValidKeyPipe) || blocked_key) && validated_key) {
+		<alert type="danger">
+			<strong>Warning: </strong>Due to security concerns, your key has been blocked permanently, and you won't be able
+			to use it anymore. It's highly recommended that you change your key immediately to prevent any further security
+			breaches.
+			<p>
+				If you have questions or need help, please E-Mail us at
+				<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+				>.
+			</p>
+		</alert>
+	}
+	<alert type="info"> Currently supported public key formats are RSA and ECDSA (SHA2, NIST P256, P384 or P521). </alert>
+	<textarea
+		rows="8"
+		type="text"
+		class="form-control input-lg"
+		id="public_key_enter_area"
+		data-test-id="public_key_enter_area"
+		placeholder="Please enter a new valid public key."
+		name="public_key"
+		[(ngModel)]="public_key"
+		(ngModelChange)="public_key = $event.trim(); isKeyBlocked(); validateKey()"
+		[ngClass]="(public_key | isValidKeyPipe) && validated_key ? 'is-valid' : 'is-invalid'"
+		#publickey
+	></textarea>
+</div>
 
-				<alert type="success" *ngIf="(public_key | isValidKeyPipe) && validated_key">
-					<strong>Info: </strong> This is a valid public key!
-				</alert>
-				<alert type="danger" *ngIf="(!(public_key | isValidKeyPipe) || !validated_key) && public_key?.length > 0">
-					<strong>Warning</strong> This is not a valid public key!
-				</alert>
-				<alert type="danger" *ngIf="(!(public_key | isValidKeyPipe) || blocked_key) && validated_key">
-					<strong>Warning: </strong>Due to security concerns, your key has been blocked permanently, and you won't be
-					able to use it anymore. It's highly recommended that you change your key immediately to prevent any further
-					security breaches.
-					<p>
-						If you have questions or need help, please E-Mail us at
-						<a class="alert-link" href="mailto: {{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
-						>.
-					</p>
-				</alert>
-				<alert type="info">
-					Currently supported public key formats are RSA and ECDSA (SHA2, NIST P256, P384 or P521).
-				</alert>
-				<textarea
-					rows="8"
-					type="text"
-					class="form-control input-lg"
-					id="public_key_enter_area"
-					data-test-id="public_key_enter_area"
-					placeholder="Please enter a new valid public key."
-					name="public_key"
-					[(ngModel)]="public_key"
-					(ngModelChange)="public_key = $event.trim(); isKeyBlocked(); validateKey()"
-					[ngClass]="(public_key | isValidKeyPipe) && validated_key ? 'is-valid' : 'is-invalid'"
-					#publickey
-				></textarea>
-
-
-
-			</div>
-
-			<div class="modal-footer">
-				<button
-					[disabled]="!(public_key | isValidKeyPipe) || !validated_key  || blocked_key"
-					class="btn btn-success col-md4"
-					type="button"
-					id="set_new_public_key_button"
-					data-test-id="set_new_public_key_button"
-					(click)="importKey(); hide()"
-				>
-					Set
-				</button>
-				<button class="btn btn-primary col-md-4" type="reset" (click)="hide()">Cancel</button>
-			</div>
+<div class="modal-footer">
+	<button
+		[disabled]="!(public_key | isValidKeyPipe) || !validated_key || blocked_key"
+		class="btn btn-success col-md4"
+		type="button"
+		id="set_new_public_key_button"
+		data-test-id="set_new_public_key_button"
+		(click)="importKey(); hide()"
+	>
+		Set
+	</button>
+	<button class="btn btn-primary col-md-4" type="reset" (click)="hide()">Cancel</button>
+</div>
