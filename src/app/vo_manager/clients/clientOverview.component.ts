@@ -12,7 +12,7 @@ import { FacilityService } from '../../api-connector/facility.service'
 import { IResponseTemplate } from '../../api-connector/response-template'
 import { is_vo } from '../../shared/globalvar'
 import { ClientLimitsComponent } from './modals/client-limits..component'
-import { NgIf, NgFor, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 /**
  * Client component.
@@ -21,7 +21,7 @@ import { FormsModule } from '@angular/forms'
 	selector: 'app-client-overview',
 	templateUrl: 'clientOverview.html',
 	providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
-	imports: [NgIf, NgFor, FormsModule, NgClass, ModalModule]
+	imports: [FormsModule, NgClass, ModalModule]
 })
 export class ClientOverviewComponent implements OnInit, OnDestroy {
 	title: string = 'Client Overview'

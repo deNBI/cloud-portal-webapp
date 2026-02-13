@@ -33,7 +33,7 @@
 						'is-valid':
 							f2.controls.project_application_extra_credits_comment?.valid &&
 							(f2.controls.project_application_extra_credits_comment?.dirty ||
-								f2.controls.project_application_extra_credits_comment?.touched)
+								f2.controls.project_application_extra_credits_comment?.touched),
 					}"
 				>
 				</textarea>
@@ -70,7 +70,7 @@
 							'is-valid':
 								f2.controls.project_application_extra_credits?.valid &&
 								(f2.controls.project_application_extra_credits?.dirty ||
-									f2.controls.project_application_extra_credits?.touched)
+									f2.controls.project_application_extra_credits?.touched),
 						}"
 					/>
 					<div class="input-group-append">
@@ -91,26 +91,38 @@
 				<div>
 					<strong> Runtime of exemplary VMs with the entered credits. </strong>
 				</div>
-				<div *ngIf="temp_credits_extension.extra_credits < 100">Please select more than 100 extra Credits.</div>
-				<div *ngIf="temp_credits_extension.extra_credits > 0">
-					Enough Credits to run 4 {{ smallExampleFlavor?.name }} for {{ smallExamplePossibleHours }} hours (i.e.
-					{{ smallExamplePossibleDays }}) <strong>non-stop</strong>
-				</div>
-				<div *ngIf="temp_credits_extension.extra_credits > 0">
-					Enough Credits to run 1 {{ largeExampleFlavor?.name }} for {{ largeExamplePossibleHours }} hours (i.e.
-					{{ largeExamplePossibleDays }}) <strong>non-stop</strong>
-				</div>
+				@if (temp_credits_extension.extra_credits < 100) {
+					<div>Please select more than 100 extra Credits.</div>
+				}
+				@if (temp_credits_extension.extra_credits > 0) {
+					<div>
+						Enough Credits to run 4 {{ smallExampleFlavor?.name }} for {{ smallExamplePossibleHours }} hours (i.e.
+						{{ smallExamplePossibleDays }}) <strong>non-stop</strong>
+					</div>
+				}
+				@if (temp_credits_extension.extra_credits > 0) {
+					<div>
+						Enough Credits to run 1 {{ largeExampleFlavor?.name }} for {{ largeExamplePossibleHours }} hours (i.e.
+						{{ largeExamplePossibleDays }}) <strong>non-stop</strong>
+					</div>
+				}
 			</div>
 		</div>
 	</form>
-	<div *ngIf="f2.invalid" class="alert alert-warning" role="alert">
-		<p>
-			Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled in
-			correctly.
-		</p>
-		<p *ngIf="temp_credits_extension.comment.length < 10">- No reason specified (at least 10 characters)</p>
-		<p *ngIf="temp_credits_extension.extra_credits < 1">- Number of extra credits not specified</p>
-	</div>
+	@if (f2.invalid) {
+		<div class="alert alert-warning" role="alert">
+			<p>
+				Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled in
+				correctly.
+			</p>
+			@if (temp_credits_extension.comment.length < 10) {
+				<p>- No reason specified (at least 10 characters)</p>
+			}
+			@if (temp_credits_extension.extra_credits < 1) {
+				<p>- Number of extra credits not specified</p>
+			}
+		</div>
+	}
 
 	<div class="modal-footer">
 		<div class="label">By submitting this application you agree to the cloud usage policy.</div>

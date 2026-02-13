@@ -1,13 +1,14 @@
-	<div class="modal-content">
-		<div class="modal-header">
-			<h4>Adjust application for {{ application?.project_application_shortname }}</h4>
-			<button type="button" class="btn-close" style="cursor: pointer" (click)="hide()" aria-label="Close"></button>
-		</div>
+<div class="modal-content">
+	<div class="modal-header">
+		<h4>Adjust application for {{ application?.project_application_shortname }}</h4>
+		<button type="button" class="btn-close" style="cursor: pointer" (click)="hide()" aria-label="Close"></button>
+	</div>
 
-		@if (!loaded) {
-			<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
-		} @else {
-			<div class="modal-body" *ngIf="application">
+	@if (!loaded) {
+		<div class="spinner-border text-primary" style="display: block; margin: auto"></div>
+	} @else {
+		@if (application) {
+			<div class="modal-body">
 				<form id="resource_adjustment_form" #resourceAdjustmentForm="ngForm" class="form-horizontal">
 					<div class="form-group row">
 						<label class="col-md-4 form-control-label"><strong>Project Type</strong></label>
@@ -33,7 +34,6 @@
 							<p>Is this project an openstack project (OS) or a simple vm project (SV) ?</p>
 						</div>
 					</div>
-
 					<div class="form-group row">
 						<label class="col-md-4 form-control-label" for="initially_requested_lifetime_counter"
 							><strong
@@ -59,7 +59,6 @@
 							</div>
 							<span class="help-block">Amount of requested lifetime months</span>
 						</div>
-
 						<div class="col">
 							<div class="input-group">
 								<input
@@ -84,7 +83,6 @@
 							<span class="help-block">Lifetime you want to grant</span>
 						</div>
 					</div>
-
 					<div class="form-group row">
 						<h6 class="col-md-8 form-control-label">
 							Resources*
@@ -93,86 +91,84 @@
 							></i>
 						</h6>
 					</div>
-
 					<accordion>
-						<ng-container *ngFor="let t of typeList; first as isFirst">
-							<accordion-group
-								*ngIf="application?.project_application_openstack_project || checkIfTypeGotSimpleVMFlavorOrIsCustom(t)"
-								[isOpen]="isFirst"
-								#groupval
-							>
-								<div accordion-heading style="width: 100%; cursor: pointer">
-									{{ t.long_name }}
-									<i
-										class="pull-right float-end"
-										style="font-size: 25px"
-										[ngClass]="{
-											'icon-arrow-up': groupval.isOpen,
-											'icon-arrow-down': !groupval.isOpen,
-										}"
-									></i>
-								</div>
-								<div *ngFor="let fl of flavorList" class="form-group row">
-									<div
-										*ngIf="
-											fl.type.shortcut === t.shortcut &&
-											(fl.simple_vm ||
-												application?.project_application_openstack_project ||
-												fl.type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR)
-										"
-										class="form-group row"
-									>
-										<label class="col-md-4 form-control-label"
-											><strong>{{ fl.name }}</strong
-											><br />
-											Number of cores: <span id="{{ fl.name }}_cores">{{ fl.vcpus }}</span
-											><br />
-											RAM: <span id="{{ fl.name }}_ram">{{ fl.ram_gib }}</span> GB</label
-										>
-										<div class="col">
-											<div class="input-group">
-												<input
-													class="form-control"
-													name="{{ fl.name }}_requested"
-													id="{{ fl.name }}_requested"
-													type="text"
-													value="{{ application | flavorCounter: fl }}"
-													placeholder="0"
-													disabled
-												/>
-												<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
-											</div>
-											<span class="help-block">Initially requested of this type </span>
-										</div>
-										<div class="col">
-											<div class="input-group">
-												<input
-													class="form-control"
-													(change)="calculateRamCores()"
-													id="{{ fl.name }}_granted"
-													name="{{ fl.name }}_granted"
-													type="number"
-													min="0"
-													step="1"
-													placeholder="e.g 1"
-													(ngModelChange)="onChangeFlavor(fl, $event)"
-													[ngModel]="adjustedApplication | flavorCounter: fl"
-													#name="ngModel"
-													appMinAmount="0"
-													appIntegerOrNull
-													[ngClass]="{
-														'is-invalid': name?.invalid,
-														'is-valid': name?.valid,
-													}"
-												/>
-												<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
-											</div>
-											<span class="help-block">Number of VMs you want to actually grant.</span>
-										</div>
+						@for (t of typeList; track t; let isFirst = $first) {
+							@if (application?.project_application_openstack_project || checkIfTypeGotSimpleVMFlavorOrIsCustom(t)) {
+								<accordion-group [isOpen]="isFirst" #groupval>
+									<div accordion-heading style="width: 100%; cursor: pointer">
+										{{ t.long_name }}
+										<i
+											class="pull-right float-end"
+											style="font-size: 25px"
+											[ngClass]="{
+												'icon-arrow-up': groupval.isOpen,
+												'icon-arrow-down': !groupval.isOpen,
+											}"
+										></i>
 									</div>
-								</div>
-							</accordion-group>
-						</ng-container>
+									@for (fl of flavorList; track fl) {
+										<div class="form-group row">
+											@if (
+												fl.type.shortcut === t.shortcut &&
+												(fl.simple_vm ||
+													application?.project_application_openstack_project ||
+													fl.type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR)
+											) {
+												<div class="form-group row">
+													<label class="col-md-4 form-control-label"
+														><strong>{{ fl.name }}</strong
+														><br />
+														Number of cores: <span id="{{ fl.name }}_cores">{{ fl.vcpus }}</span
+														><br />
+														RAM: <span id="{{ fl.name }}_ram">{{ fl.ram_gib }}</span> GB</label
+													>
+													<div class="col">
+														<div class="input-group">
+															<input
+																class="form-control"
+																name="{{ fl.name }}_requested"
+																id="{{ fl.name }}_requested"
+																type="text"
+																value="{{ application | flavorCounter: fl }}"
+																placeholder="0"
+																disabled
+															/>
+															<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+														</div>
+														<span class="help-block">Initially requested of this type </span>
+													</div>
+													<div class="col">
+														<div class="input-group">
+															<input
+																class="form-control"
+																(change)="calculateRamCores()"
+																id="{{ fl.name }}_granted"
+																name="{{ fl.name }}_granted"
+																type="number"
+																min="0"
+																step="1"
+																placeholder="e.g 1"
+																(ngModelChange)="onChangeFlavor(fl, $event)"
+																[ngModel]="adjustedApplication | flavorCounter: fl"
+																#name="ngModel"
+																appMinAmount="0"
+																appIntegerOrNull
+																[ngClass]="{
+																	'is-invalid': name?.invalid,
+																	'is-valid': name?.valid,
+																}"
+															/>
+															<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+														</div>
+														<span class="help-block">Number of VMs you want to actually grant.</span>
+													</div>
+												</div>
+											}
+										</div>
+									}
+								</accordion-group>
+							}
+						}
 					</accordion>
 					<div class="form-group row">
 						<label class="col-md-4 form-control-label" for="requested_volume_counter"
@@ -199,7 +195,6 @@
 							</div>
 							<span class="help-block">Requested number of storage volumes</span>
 						</div>
-
 						<div class="col">
 							<div class="input-group">
 								<input
@@ -272,58 +267,58 @@
 							<span class="help-block">Amount of volume storage you want to grant</span>
 						</div>
 					</div>
-
-					<div *ngIf="application?.project_application_openstack_project" class="form-group row">
-						<label class="col-md-4 form-control-label" for="requested_object_storage"
-							><strong>Object Storage* </strong
-							><i
-								data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
-								data-balloon-pos="down"
-								data-balloon-length="large"
-								><i class="icon-question" style="cursor: pointer"></i></i
-						></label>
-
-						<div class="col">
-							<div class="input-group">
-								<input
-									class="form-control"
-									name="requested_object_storage"
-									id="requested_object_storage"
-									placeholder="NA"
-									value="{{ application?.project_application_object_storage }}"
-									type="text"
-									disabled
-								/>
-								<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+					@if (application?.project_application_openstack_project) {
+						<div class="form-group row">
+							<label class="col-md-4 form-control-label" for="requested_object_storage"
+								><strong>Object Storage* </strong
+								><i
+									data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+									data-balloon-pos="down"
+									data-balloon-length="large"
+									><i class="icon-question" style="cursor: pointer"></i></i
+							></label>
+							<div class="col">
+								<div class="input-group">
+									<input
+										class="form-control"
+										name="requested_object_storage"
+										id="requested_object_storage"
+										placeholder="NA"
+										value="{{ application?.project_application_object_storage }}"
+										type="text"
+										disabled
+									/>
+									<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+								</div>
+								<span class="help-block">Requested Object storage</span>
 							</div>
-							<span class="help-block">Requested Object storage</span>
+							@if (adjustedApplication?.project_application_openstack_project) {
+								<div class="col">
+									<div class="input-group">
+										<input
+											class="form-control"
+											id="granted_object_storage"
+											name="granted_object_storage"
+											placeholder="e.g. 8"
+											[(ngModel)]="adjustedApplication.project_application_object_storage"
+											type="number"
+											min="0"
+											step="1"
+											appInteger
+											appMinAmount="0"
+											required
+											[ngClass]="{
+												'is-invalid': resourceAdjustmentForm.controls.granted_object_storage?.invalid,
+												'is-valid': resourceAdjustmentForm.controls.granted_object_storage?.valid,
+											}"
+										/>
+										<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+									</div>
+									<span class="help-block">How much Object Storage do you need in the future?</span>
+								</div>
+							}
 						</div>
-
-						<div *ngIf="adjustedApplication?.project_application_openstack_project" class="col">
-							<div class="input-group">
-								<input
-									class="form-control"
-									id="granted_object_storage"
-									name="granted_object_storage"
-									placeholder="e.g. 8"
-									[(ngModel)]="adjustedApplication.project_application_object_storage"
-									type="number"
-									min="0"
-									step="1"
-									appInteger
-									appMinAmount="0"
-									required
-									[ngClass]="{
-										'is-invalid': resourceAdjustmentForm.controls.granted_object_storage?.invalid,
-										'is-valid': resourceAdjustmentForm.controls.granted_object_storage?.valid,
-									}"
-								/>
-								<div class="input-group-append"><span class="input-group-text"> GB </span></div>
-							</div>
-							<span class="help-block">How much Object Storage do you need in the future?</span>
-						</div>
-					</div>
-
+					}
 					<div class="form-group row">
 						<label class="col-md-4 form-control-label" for="requested_volume_limit"
 							><strong
@@ -366,61 +361,67 @@
 									[(ngModel)]="adjustedApplication.project_application_person_related_data"
 									(click)="togglePersonalDataType(personalData.checked, 'person_related')"
 								/>
-								<span class="help-block" *ngIf="!personalData.checked">
-									My project processes data of human subjects that are not publicly available</span
-								>
-								<span class="help-block" *ngIf="personalData.checked">
-									My project processes data of human subjects that are not publicly available containing:</span
-								>
-							</div>
-							<div class="form-check" *ngIf="personalData.checked">
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										id="id_project_application_no_personal_data"
-										name="project_application_no_personal_data"
-										#noPersonalData
-										data-test-id="project_application_no_personal_data_switch"
-										(click)="togglePersonalDataType(noPersonalData.checked, 'no_personal_data')"
-										[(ngModel)]="adjustedApplication.project_application_no_personal_data"
-									/>
-									<span class="help-block">a) no personal data or sufficiently anonymized data only</span>
-								</div>
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										id="id_project_application_nonsensitive_data"
-										name="project_application_nonsensitive_data"
-										#nonsensitiveData
-										data-test-id="project_application_nonsensitive_data_switch"
-										(click)="togglePersonalDataType(nonsensitiveData.checked, 'nonsensitive')"
-										[(ngModel)]="adjustedApplication.project_application_nonsensitive_data"
-									/>
-									<span class="help-block"
-										>b) personal data [Article 4 (1) GDPR] (e.g. name, e-mail, other online identifiers,
-										geolocation)</span
+								@if (!personalData.checked) {
+									<span class="help-block">
+										My project processes data of human subjects that are not publicly available</span
 									>
-								</div>
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										id="id_project_application_sensitive_data"
-										name="project_application_sensitive_data"
-										#sensitiveData
-										data-test-id="project_application_sensitive_switch"
-										(click)="togglePersonalDataType(sensitiveData.checked, 'sensitive')"
-										[(ngModel)]="adjustedApplication.project_application_sensitive_data"
-									/>
-									<span class="help-block"
-										>c) sensitive personal data [Articles 4 (13,14,15), 9 GDPR and Recital 51] (e.g. racial or ethnic
-										origin, political opinions, religious or philosophical beliefs, genetic data, biometric data, health
-										data and other special categories of personal data)</span
+								}
+								@if (personalData.checked) {
+									<span class="help-block">
+										My project processes data of human subjects that are not publicly available containing:</span
 									>
-								</div>
+								}
 							</div>
+							@if (personalData.checked) {
+								<div class="form-check">
+									<div class="form-check">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											id="id_project_application_no_personal_data"
+											name="project_application_no_personal_data"
+											#noPersonalData
+											data-test-id="project_application_no_personal_data_switch"
+											(click)="togglePersonalDataType(noPersonalData.checked, 'no_personal_data')"
+											[(ngModel)]="adjustedApplication.project_application_no_personal_data"
+										/>
+										<span class="help-block">a) no personal data or sufficiently anonymized data only</span>
+									</div>
+									<div class="form-check">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											id="id_project_application_nonsensitive_data"
+											name="project_application_nonsensitive_data"
+											#nonsensitiveData
+											data-test-id="project_application_nonsensitive_data_switch"
+											(click)="togglePersonalDataType(nonsensitiveData.checked, 'nonsensitive')"
+											[(ngModel)]="adjustedApplication.project_application_nonsensitive_data"
+										/>
+										<span class="help-block"
+											>b) personal data [Article 4 (1) GDPR] (e.g. name, e-mail, other online identifiers,
+											geolocation)</span
+										>
+									</div>
+									<div class="form-check">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											id="id_project_application_sensitive_data"
+											name="project_application_sensitive_data"
+											#sensitiveData
+											data-test-id="project_application_sensitive_switch"
+											(click)="togglePersonalDataType(sensitiveData.checked, 'sensitive')"
+											[(ngModel)]="adjustedApplication.project_application_sensitive_data"
+										/>
+										<span class="help-block"
+											>c) sensitive personal data [Articles 4 (13,14,15), 9 GDPR and Recital 51] (e.g. racial or ethnic
+											origin, political opinions, religious or philosophical beliefs, genetic data, biometric data,
+											health data and other special categories of personal data)</span
+										>
+									</div>
+								</div>
+							}
 						</div>
 					</div>
 					<div class="form-group row">
@@ -436,31 +437,38 @@
 									(click)="togglePersonalDataType(noDataAtAll.checked, 'no_at_all')"
 									[(ngModel)]="adjustedApplication.project_application_no_data_at_all"
 								/>
-								<span class="help-block">
-									My project will not process any human data</span
-								>
+								<span class="help-block"> My project will not process any human data</span>
 							</div>
 						</div>
-
 					</div>
-					<div class="alert alert-danger" *ngIf="!(adjustedApplication | sufficientHumanDataInformation)">The selection is not sufficient. When stating, that data of human subjects is processed
-						in the course of this project, please also specific which type be selecting the checkboxes with the different options above!
-					</div>
+					@if (!(adjustedApplication | sufficientHumanDataInformation)) {
+						<div class="alert alert-danger">
+							The selection is not sufficient. When stating, that data of human subjects is processed in the course of
+							this project, please also specific which type be selecting the checkboxes with the different options
+							above!
+						</div>
+					}
 				</form>
-
-				<div *ngIf="resourceAdjustmentForm.invalid" class="alert alert-warning" role="alert">
-					<p>
-						Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled
-						in correctly.
-					</p>
-					<p *ngIf="resourceAdjustmentForm.controls.granted_volume_counter?.invalid">
-						- Number of storage volumes missing
-					</p>
-					<p *ngIf="resourceAdjustmentForm.controls.granted_volume_limit?.invalid">- Storage Limit missing</p>
-					<p *ngIf="resourceAdjustmentForm.controls.granted_object_storage?.invalid">- Object Storage missing</p>
-					<p *ngIf="!atLeastOneVM">- Please select at least one Flavor</p>
-				</div>
-
+				@if (resourceAdjustmentForm.invalid) {
+					<div class="alert alert-warning" role="alert">
+						<p>
+							Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are
+							filled in correctly.
+						</p>
+						@if (resourceAdjustmentForm.controls.granted_volume_counter?.invalid) {
+							<p>- Number of storage volumes missing</p>
+						}
+						@if (resourceAdjustmentForm.controls.granted_volume_limit?.invalid) {
+							<p>- Storage Limit missing</p>
+						}
+						@if (resourceAdjustmentForm.controls.granted_object_storage?.invalid) {
+							<p>- Object Storage missing</p>
+						}
+						@if (!atLeastOneVM) {
+							<p>- Please select at least one Flavor</p>
+						}
+					</div>
+				}
 				<div class="modal-footer">
 					<div class="label">
 						The application values will be adjusted. The adjusted values still need to be approved separately.
@@ -472,7 +480,9 @@
 						form="resource_adjustment_form"
 						id="submitAdjustmentButton"
 						(click)="adjustApplication()"
-						[disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM || !(adjustedApplication | sufficientHumanDataInformation)"
+						[disabled]="
+							resourceAdjustmentForm.invalid || !atLeastOneVM || !(adjustedApplication | sufficientHumanDataInformation)
+						"
 					>
 						<i class="far fa-dot-circle"></i>
 						Adjust
@@ -481,5 +491,6 @@
 				</div>
 			</div>
 		}
-		<!-- /.modal-content -->
-	</div>
+	}
+	<!-- /.modal-content -->
+</div>

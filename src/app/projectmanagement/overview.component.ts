@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild,
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
-import { NgIf, NgClass, NgFor, NgStyle } from '@angular/common'
+import { NgClass, NgStyle } from '@angular/common'
 import { Chart } from 'chart.js'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 
@@ -69,10 +69,8 @@ import { IsMigratedProjectPipe } from '../pipe-module/pipes/isMigratedProject'
 	selector: 'app-project-overview',
 	templateUrl: 'overview.component.html',
 	imports: [
-		NgIf,
 		ApplicationProgressComponent,
 		NgClass,
-		NgFor,
 		ApplicationDetailComponent,
 		NgStyle,
 		BsDropdownModule,

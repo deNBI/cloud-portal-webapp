@@ -10,7 +10,7 @@ import {
 import { FacilityService } from '../../../api-connector/facility.service'
 import { ResourceMachine } from '../resource-machine'
 import { GPUSpecification } from '../gpu-specification'
-import { NgClass, NgIf, NgFor } from '@angular/common'
+import { NgClass } from '@angular/common'
 
 /**
  * Class for ramfactors..
@@ -19,7 +19,7 @@ import { NgClass, NgIf, NgFor } from '@angular/common'
 	selector: 'app-resourcemachine-overview',
 	templateUrl: './resourcemachine-overview.component.html',
 	providers: [FacilityService],
-	imports: [FormsModule, ReactiveFormsModule, NgClass, NgIf, NgFor]
+	imports: [FormsModule, ReactiveFormsModule, NgClass]
 })
 export class ResourcemachineOverviewComponent implements OnInit {
 	factor_types: string[] = ['HIGH_MEMORY', 'GENERAL_PURPOSE', 'MIDCLASS']

@@ -13,18 +13,20 @@
 					/>
 					<label class="form-check-label" for="selectAll">All</label>
 				</div>
-				<div *ngFor="let facility of managerFacilities" class="form-check-inline">
-					<input
-						class="form-check-input mx-1"
-						type="checkbox"
-						id="select_{{ facility['Facility'] }}"
-						(click)="selectFacility(facility)"
-						[checked]="selectedFacilities?.indexOf(facility) !== -1"
-					/>
-					<label class="form-check-label" for="select_{{ facility['Facility'] }}"
-						>{{ facility['FacilityId'] }} : {{ facility['Facility'] }}</label
-					>
-				</div>
+				@for (facility of managerFacilities; track facility) {
+					<div class="form-check-inline">
+						<input
+							class="form-check-input mx-1"
+							type="checkbox"
+							id="select_{{ facility['Facility'] }}"
+							(click)="selectFacility(facility)"
+							[checked]="selectedFacilities?.indexOf(facility) !== -1"
+						/>
+						<label class="form-check-label" for="select_{{ facility['Facility'] }}"
+							>{{ facility['FacilityId'] }} : {{ facility['Facility'] }}</label
+						>
+					</div>
+				}
 			</div>
 			<br />
 			<div class="row">
@@ -50,75 +52,84 @@
 						</div>
 						<div class="card-body">
 							<form>
-								<div *ngIf="facilityNews?.length === 0" class="alert alert-info">
-									<span>No news available for the facilities selected.</span>
-								</div>
-								<div *ngFor="let news of facilityNews">
-									<div
-										class="card"
-										style="cursor: pointer"
-										(click)="setCurrentNews(news)"
-										[ngStyle]="{
-											'border-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#c8ced3',
-										}"
-									>
+								@if (facilityNews?.length === 0) {
+									<div class="alert alert-info">
+										<span>No news available for the facilities selected.</span>
+									</div>
+								}
+								@for (news of facilityNews; track news) {
+									<div>
 										<div
-											class="card-header text-truncate"
-											data-toggle="tooltip"
-											id="{{ news.id }}_header"
-											data-placement="auto"
-											style="color: white !important"
-											[ngStyle]="{ 'background-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef' }"
+											class="card"
+											style="cursor: pointer"
+											(click)="setCurrentNews(news)"
+											[ngStyle]="{
+												'border-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#c8ced3',
+											}"
 										>
-											<strong>{{ news.title }} </strong>
-											<span
-												*ngIf="news.is_current_motd"
-												class="badge badge-light"
-												style="margin-left: 5px"
-												[ngStyle]="{ color: news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef' }"
+											<div
+												class="card-header text-truncate"
+												data-toggle="tooltip"
+												id="{{ news.id }}_header"
+												data-placement="auto"
+												style="color: white !important"
+												[ngStyle]="{ 'background-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef' }"
 											>
-												<i style="margin-right: 2px" class="fas fa-terminal">MOTD</i></span
-											>
-										</div>
-										<div class="card-body" style="color: #58595b">
-											<div class="row">
-												<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
-													<strong>ID: </strong>{{ news.id }}
-												</div>
+												<strong>{{ news.title }} </strong>
+												@if (news.is_current_motd) {
+													<span
+														class="badge badge-light"
+														style="margin-left: 5px"
+														[ngStyle]="{ color: news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef' }"
+													>
+														<i style="margin-right: 2px" class="fas fa-terminal">MOTD</i></span
+													>
+												}
 											</div>
-											<div class="row">
-												<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
-													<strong>Text: </strong>{{ news.text }}
+											<div class="card-body" style="color: #58595b">
+												<div class="row">
+													<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
+														<strong>ID: </strong>{{ news.id }}
+													</div>
 												</div>
-											</div>
-											<div class="row">
-												<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
-													<strong>Message of the Day: </strong>{{ news.motd }}
+												<div class="row">
+													<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
+														<strong>Text: </strong>{{ news.text }}
+													</div>
 												</div>
-											</div>
-											<div class="row">
-												<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
-													<strong>Uploaded: </strong>{{ news.posted_at | date: 'YYYY-MM-dd' }}
+												<div class="row">
+													<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
+														<strong>Message of the Day: </strong>{{ news.motd }}
+													</div>
 												</div>
-											</div>
-											<div class="row">
-												<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
-													<strong>Expires at: </strong>
-													<span *ngIf="news?.expire_at">{{ news.expire_at | date: 'YYYY-MM-dd' }}</span>
-													<span *ngIf="!news?.expire_at">not set</span>
+												<div class="row">
+													<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
+														<strong>Uploaded: </strong>{{ news.posted_at | date: 'YYYY-MM-dd' }}
+													</div>
 												</div>
+												<div class="row">
+													<div class="text-truncate col" data-toggle="tooltip" data-placement="auto">
+														<strong>Expires at: </strong>
+														@if (news?.expire_at) {
+															<span>{{ news.expire_at | date: 'YYYY-MM-dd' }}</span>
+														}
+														@if (!news?.expire_at) {
+															<span>not set</span>
+														}
+													</div>
+												</div>
+												<br />
+												<!--<div class="row">
+                            <a class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"r
+                              [id]="'goToWordPressButton_' + news.id.toString()"
+                              href="{{news.url}}" target="_blank" rel="noopener noreferrer">
+                              Show in WordPress
+                            </a>
+                          </div> -->
 											</div>
-											<br />
-											<!--<div class="row">
-												<a class="fw-bold font-xs btn-block text-muted btn btn-outline-secondary"r
-													 [id]="'goToWordPressButton_' + news.id.toString()"
-													 href="{{news.url}}" target="_blank" rel="noopener noreferrer">
-													Show in WordPress
-												</a>
-											</div> -->
 										</div>
 									</div>
-								</div>
+								}
 							</form>
 						</div>
 					</div>
@@ -247,7 +258,7 @@
 
 							<label for="facility_check">Facilities:</label>
 							<div class="form-check" id="facility_check">
-								<ng-container *ngFor="let facility of managerFacilities">
+								@for (facility of managerFacilities; track facility) {
 									<div class="form-row">
 										<div class="col-6">
 											<input
@@ -274,68 +285,58 @@
 													facility['FacilityId'] === facilityToPost
 												"
 											/>
-
 											<label class="form-check-label" for="news_select_{{ facility['FacilityId'] }}_motd">
 												Set as MOTD for facility</label
 											>
 										</div>
 									</div>
-								</ng-container>
+								}
 							</div>
 							<br />
-							<div *ngIf="!facilityToPost" class="alert alert-warning">At least one facility needs to be selected.</div>
+							@if (!facilityToPost) {
+								<div class="alert alert-warning">At least one facility needs to be selected.</div>
+							}
 						</div>
-						<div class="card-body" *ngIf="!selectedFacilityNews">
-							<!-- check case here -->
-							<div class="alert alert-info">
-								This news is also published for a facility you are not the manager of, which means you are not allowed
-								to edit or delete this news. Methods to disconnect this news from your selected facilities and re-add
-								and edit this news for your selected facilities will be coming soon.
+						@if (!selectedFacilityNews) {
+							<div class="card-body">
+								<!-- check case here -->
+								<div class="alert alert-info">
+									This news is also published for a facility you are not the manager of, which means you are not allowed
+									to edit or delete this news. Methods to disconnect this news from your selected facilities and re-add
+									and edit this news for your selected facilities will be coming soon.
+								</div>
 							</div>
-						</div>
+						}
 						<div class="card-footer">
-							<button
-								class="btn btn-primary"
-								style="margin: 5px"
-								*ngIf="selectedFacilityNews.id"
-								(click)="setCurrentNews(null)"
-							>
-								New entry
-							</button>
-							<button
-								class="btn btn-warning"
-								style="margin: 5px"
-								*ngIf="!selectedFacilityNews.id"
-								(click)="setCurrentNews(null)"
-							>
-								Clear fields
-							</button>
-							<button
-								class="btn btn-success"
-								style="margin: 5px"
-								(click)="addModal.show()"
-								[disabled]="!facilityToPost || !(selectedFacilityNews | newsValid)"
-								*ngIf="selectedFacilityNews.id === null"
-							>
-								Create & Upload News
-							</button>
-							<button
-								class="btn btn-secondary"
-								style="margin: 5px"
-								[disabled]="!facilityToPost || !(selectedFacilityNews | newsValid)"
-								(click)="updateModal.show()"
-								*ngIf="selectedFacilityNews?.id"
-							>
-								Update News
-							</button>
-							<button
-								class="btn btn-danger"
-								style="margin: 5px"
-								(click)="deleteModal.show()"
-								*ngIf="selectedFacilityNews?.id"
-							>
-								Delete News
-							</button>
+							@if (selectedFacilityNews.id) {
+								<button class="btn btn-primary" style="margin: 5px" (click)="setCurrentNews(null)">New entry</button>
+							}
+							@if (!selectedFacilityNews.id) {
+								<button class="btn btn-warning" style="margin: 5px" (click)="setCurrentNews(null)">Clear fields</button>
+							}
+							@if (selectedFacilityNews.id === null) {
+								<button
+									class="btn btn-success"
+									style="margin: 5px"
+									(click)="addModal.show()"
+									[disabled]="!facilityToPost || !(selectedFacilityNews | newsValid)"
+								>
+									Create & Upload News
+								</button>
+							}
+							@if (selectedFacilityNews?.id) {
+								<button
+									class="btn btn-secondary"
+									style="margin: 5px"
+									[disabled]="!facilityToPost || !(selectedFacilityNews | newsValid)"
+									(click)="updateModal.show()"
+								>
+									Update News
+								</button>
+							}
+							@if (selectedFacilityNews?.id) {
+								<button class="btn btn-danger" style="margin: 5px" (click)="deleteModal.show()">Delete News</button>
+							}
 						</div>
 					</div>
 				</form>
@@ -376,9 +377,9 @@
 				</div>
 				<div class="modal-footer">
 					<!--<button type="button" class="btn btn-danger"
-									(click)="deleteNewsFromWordpress(); deleteModal.hide()"
-									id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
-					</button> -->
+              (click)="deleteNewsFromWordpress(); deleteModal.hide()"
+              id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
+            </button> -->
 					<button
 						type="button"
 						class="btn btn-danger"
@@ -429,9 +430,9 @@
 				</div>
 				<div class="modal-footer">
 					<!-- <button type="button" class="btn btn-primary"
-									 (click)="addNewsToWordpress(newWordpressNews, true); updateModal.hide()"
-									 id="approve_update_modal"><i class="fas fa-edit"></i> Update
-					 </button> -->
+            (click)="addNewsToWordpress(newWordpressNews, true); updateModal.hide()"
+            id="approve_update_modal"><i class="fas fa-edit"></i> Update
+          </button> -->
 					<button
 						type="button"
 						class="btn btn-primary"
@@ -523,10 +524,18 @@
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-primary" role="alert">
-						<p *ngIf="returnState === 0">The selected news got deleted!</p>
-						<p *ngIf="returnState === 1">The selected news got updated!</p>
-						<p *ngIf="returnState === 2">The news got uploaded!</p>
-						<p *ngIf="returnState === -1">An error occured: {{ error_string }}</p>
+						@if (returnState === 0) {
+							<p>The selected news got deleted!</p>
+						}
+						@if (returnState === 1) {
+							<p>The selected news got updated!</p>
+						}
+						@if (returnState === 2) {
+							<p>The news got uploaded!</p>
+						}
+						@if (returnState === -1) {
+							<p>An error occured: {{ error_string }}</p>
+						}
 					</div>
 				</div>
 				<div class="modal-footer">

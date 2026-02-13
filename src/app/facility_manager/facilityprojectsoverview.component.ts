@@ -22,7 +22,7 @@ import { EmailService } from '../api-connector/email.service'
 import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model'
 import { ProjectCsvTemplatedEmailModalComponent } from '../shared/modal/email/project-csv-templated-email-modal/project-csv-templated-email-modal.component'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import {
 	TextColorDirective,
@@ -35,12 +35,10 @@ import {
 	DropdownMenuDirective,
 	DropdownItemDirective
 } from '@coreui/angular'
-import { NgbPagination, NgbHighlight } from '@ng-bootstrap/ng-bootstrap'
+import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap'
 import { ApplicationBadgesComponent } from '../shared/shared_modules/components/applications/application-badges/application-badges.component'
 import { NgSelectComponent } from '@ng-select/ng-select'
-import { HasStatusPipe } from '../pipe-module/pipes/has-status.pipe'
 import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
-import { InListPipe } from '../pipe-module/pipes/in-list.pipe'
 import { ApplicationPage } from 'app/shared/models/application.page'
 import { BasePaginationComponent } from 'app/shared/shared_modules/components/pagination/base-pagination.component'
 import { ApplicationFilter } from 'app/shared/classes/application-filter'
@@ -57,13 +55,10 @@ import { ExtendedFacilityNews } from './newsmanagement/facility-news'
 	templateUrl: 'facilityprojectsoverview.component.html',
 	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService],
 	imports: [
-		NgIf,
 		FormsModule,
-		NgFor,
 		TextColorDirective,
 		TextBgColorDirective,
 		BadgeComponent,
-		NgbPagination,
 		InputGroupComponent,
 		ButtonDirective,
 		NgbdSortableHeaderDirective,
@@ -72,10 +67,7 @@ import { ExtendedFacilityNews } from './newsmanagement/facility-news'
 		ModalModule,
 		NgClass,
 		NgSelectComponent,
-		AsyncPipe,
-		HasStatusPipe,
 		HasstatusinlistPipe,
-		InListPipe,
 		BasePaginationComponent,
 		ApplicationFilterInputComponent,
 		ApplicationStatusBadgesComponent,
@@ -312,7 +304,8 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 	}
 
 	checkValidLifeScienceIdFilter(): void {
-		this.validLifeScienceIdFilter = this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')
+		this.validLifeScienceIdFilter =
+			this.userLifeScienceIdFilter && this.userLifeScienceIdFilter.includes('@lifescience-ri.eu')
 	}
 
 	getProjectsByMemberLifeScienceId(): void {

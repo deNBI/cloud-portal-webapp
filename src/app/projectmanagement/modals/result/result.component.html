@@ -1,4 +1,4 @@
-<ng-container *ngIf="submit">
+@if (submit) {
 	<div class="modal-header">
 		<h4 class="modal-title">{{ project?.project_application_shortname }}</h4>
 		<button
@@ -10,66 +10,89 @@
 			aria-label="Close"
 		></button>
 	</div>
-
 	<div class="modal-body">
 		<div class="alert alert-primary">
 			<strong> Please check the data you have entered and confirm your application below. </strong>
 			<br />
 			If the entered data mismatches with your requirements cancel this confirmation and take changes.
 		</div>
-		<div class="alert alert-info" *ngIf="adjustedModification">
-			<strong> Please consider: These are the values of the modification request if you confirm the adjustment </strong>
-		</div>
+		@if (adjustedModification) {
+			<div class="alert alert-info">
+				<strong>
+					Please consider: These are the values of the modification request if you confirm the adjustment
+				</strong>
+			</div>
+		}
 		<div class="table-responsive">
 			<table class="table table-striped">
 				<tbody>
-					<ng-container *ngIf="modificationExtension && !adjustedModification">
-						<tr *ngFor="let flav of extension.flavors">
-							<td>{{ flav.name + ': ' + flav.counter + ' VMs' }}</td>
-						</tr>
-						<tr *ngIf="extension.volume_counter > 0">
-							<td>Number of storage volumes: {{ extension.volume_counter }}</td>
-						</tr>
-						<tr *ngIf="extension.volume_counter > 0 && extension.volume_limit > 0">
-							<td>Amount of storage space: {{ extension.volume_limit }} GBs</td>
-						</tr>
-
-						<tr *ngIf="project.project_application_openstack_project && extension.object_storage > 0">
-							<td>Amount of object storage: {{ extension.object_storage }} GB</td>
-						</tr>
-					</ng-container>
-					<ng-container *ngIf="adjustedModification">
-						<tr *ngIf="adjustedModification.manager_comment">
-							<td>VO Comment: {{ adjustedModification.manager_comment }}</td>
-						</tr>
-						<tr *ngFor="let flav of adjustedModification.flavors">
+					@if (modificationExtension && !adjustedModification) {
+						@for (flav of extension.flavors; track flav) {
+							<tr>
+								<td>{{ flav.name + ': ' + flav.counter + ' VMs' }}</td>
+							</tr>
+						}
+						@if (extension.volume_counter > 0) {
+							<tr>
+								<td>Number of storage volumes: {{ extension.volume_counter }}</td>
+							</tr>
+						}
+						@if (extension.volume_counter > 0 && extension.volume_limit > 0) {
+							<tr>
+								<td>Amount of storage space: {{ extension.volume_limit }} GBs</td>
+							</tr>
+						}
+						@if (project.project_application_openstack_project && extension.object_storage > 0) {
+							<tr>
+								<td>Amount of object storage: {{ extension.object_storage }} GB</td>
+							</tr>
+						}
+					}
+					@if (adjustedModification) {
+						@if (adjustedModification.manager_comment) {
+							<tr>
+								<td>VO Comment: {{ adjustedModification.manager_comment }}</td>
+							</tr>
+						}
+						@for (flav of adjustedModification.flavors; track flav) {
+							<tr>
+								<td>
+									<strong>{{ flav.name + ': ' + flav.counter + ' VMs' }}</strong>
+								</td>
+							</tr>
+						}
+						@if (adjustedModification.volume_counter > 0) {
+							<tr>
+								<td>Number of storage volumes: {{ adjustedModification.volume_counter }}</td>
+							</tr>
+						}
+						@if (adjustedModification.volume_counter > 0 && adjustedModification.volume_limit > 0) {
+							<tr>
+								<td>Amount of storage space: {{ adjustedModification.volume_limit }} GBs</td>
+							</tr>
+						}
+						@if (project.project_application_openstack_project && adjustedModification.object_storage > 0) {
+							<tr>
+								<td>Amount of object storage: {{ adjustedModification.object_storage }} GB</td>
+							</tr>
+						}
+					}
+					@if (selected_ontology_terms?.length > 0) {
+						<tr>
 							<td>
-								<strong>{{ flav.name + ': ' + flav.counter + ' VMs' }}</strong>
+								Selected Terms:
+								@for (term of selected_ontology_terms; track term) {
+									<span class="badge bg-info">{{ term.term }}</span>
+								}
 							</td>
 						</tr>
-						<tr *ngIf="adjustedModification.volume_counter > 0">
-							<td>Number of storage volumes: {{ adjustedModification.volume_counter }}</td>
+					}
+					@if ((modificationExtension || lifetimeExtension || creditsExtension) && extension.comment?.length > 0) {
+						<tr>
+							<td>Comment : {{ extension.comment }}</td>
 						</tr>
-						<tr *ngIf="adjustedModification.volume_counter > 0 && adjustedModification.volume_limit > 0">
-							<td>Amount of storage space: {{ adjustedModification.volume_limit }} GBs</td>
-						</tr>
-
-						<tr *ngIf="project.project_application_openstack_project && adjustedModification.object_storage > 0">
-							<td>Amount of object storage: {{ adjustedModification.object_storage }} GB</td>
-						</tr>
-					</ng-container>
-
-					<tr *ngIf="selected_ontology_terms?.length > 0">
-						<td>
-							Selected Terms:
-							<span *ngFor="let term of selected_ontology_terms" class="badge bg-info">{{ term.term }}</span>
-						</td>
-					</tr>
-
-					<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension) && extension.comment?.length > 0">
-						<td>Comment : {{ extension.comment }}</td>
-					</tr>
-					<ng-container *ngIf="modificationExtension && !adjustedModification">
+					}
+					@if (modificationExtension && !adjustedModification) {
 						<tr>
 							<td>
 								<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
@@ -85,8 +108,8 @@
 								<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
 							</td>
 						</tr>
-					</ng-container>
-					<ng-container *ngIf="adjustedModification">
+					}
+					@if (adjustedModification) {
 						<tr>
 							<td>
 								<strong>Number of cores in total: {{ adjustedModification?.total_cores }}</strong>
@@ -106,98 +129,114 @@
 								<strong>Number of GPUs in total: {{ adjustedModification?.total_gpu }}</strong>
 							</td>
 						</tr>
-					</ng-container>
-
-					<tr *ngIf="lifetimeExtension">
-						<td>
-							<strong>Additional lifetime in months: {{ extension?.extra_lifetime }}</strong>
-						</td>
-					</tr>
-					<tr *ngIf="creditsExtension">
-						<td>Amount of requested extra credits: {{ extension?.extra_credits }}</td>
-					</tr>
-					<tr *ngIf="project?.credits_allowed && !creditsExtension">
-						<td *ngIf="modificationExtension || lifetimeExtension">
-							<strong>Approximate number of extra credits:{{ extension?.extra_credits }}</strong>
-							<br />
-							<strong>Approximate number of total credits:{{ expectedTotalCredits }}</strong>
-							<br />
-							<alert type="info" *ngIf="modificationExtension">
-								Please note, that the approximate credits amounts shown here are calculated for the currently approved
-								remaining lifetime of this project. This amount will be calculated anew at extension approval and may
-								therefore vary.
-							</alert>
-							<alert type="info" *ngIf="lifetimeExtension">
-								Please note, that the approximate credits amounts shown here are calculated for the currently approved
-								resource configuration of this project. This amount will be calculated anew at extension approval and
-								may therefore vary.
-							</alert>
-						</td>
-					</tr>
+					}
+					@if (lifetimeExtension) {
+						<tr>
+							<td>
+								<strong>Additional lifetime in months: {{ extension?.extra_lifetime }}</strong>
+							</td>
+						</tr>
+					}
+					@if (creditsExtension) {
+						<tr>
+							<td>Amount of requested extra credits: {{ extension?.extra_credits }}</td>
+						</tr>
+					}
+					@if (project?.credits_allowed && !creditsExtension) {
+						<tr>
+							@if (modificationExtension || lifetimeExtension) {
+								<td>
+									<strong>Approximate number of extra credits:{{ extension?.extra_credits }}</strong>
+									<br />
+									<strong>Approximate number of total credits:{{ expectedTotalCredits }}</strong>
+									<br />
+									@if (modificationExtension) {
+										<alert type="info">
+											Please note, that the approximate credits amounts shown here are calculated for the currently
+											approved remaining lifetime of this project. This amount will be calculated anew at extension
+											approval and may therefore vary.
+										</alert>
+									}
+									@if (lifetimeExtension) {
+										<alert type="info">
+											Please note, that the approximate credits amounts shown here are calculated for the currently
+											approved resource configuration of this project. This amount will be calculated anew at extension
+											approval and may therefore vary.
+										</alert>
+									}
+								</td>
+							}
+						</tr>
+					}
 				</tbody>
 			</table>
 		</div>
 	</div>
-
 	<div class="modal-footer">
-		<button
-			id="confirm_extension_btn"
-			class="btn btn-success col-md-3"
-			type="button"
-			data-test-id="confirm_extension_request_button"
-			*ngIf="lifetimeExtension && !adjustedModification"
-			(click)="submitLifetimeExtensionRequest()"
-		>
-			Confirm
-		</button>
-		<button
-			id="confirm_modification_btn"
-			class="btn btn-success col-md-3"
-			type="button"
-			data-test-id="confirm_modification_request_button"
-			*ngIf="modificationExtension && !adjustedModification"
-			(click)="submitModificationRequest()"
-		>
-			Confirm
-		</button>
-		<button
-			id="confirm_credits_btn"
-			class="btn btn-success col-md-3"
-			type="button"
-			data-test-id="confirm_credits_request_button"
-			*ngIf="creditsExtension && !adjustedModification"
-			(click)="submitCreditsModification()"
-		>
-			Confirm
-		</button>
-		<button
-			id="confirm_adjustment_btn"
-			class="btn btn-success col-md-3"
-			type="button"
-			data-test-id="confirm_adjustment_request_button"
-			*ngIf="adjustedModification"
-			(click)="submitModificationAdjustment()"
-		>
-			Confirm
-		</button>
-
-		<button
-			*ngIf="modificationExtension"
-			class="btn btn-primary col-md-3"
-			type="reset"
-			(click)="bsModalRef.hide(); chainDataInput()"
-		>
-			<i class="fa-solid fa-backward"></i> Back
-		</button>
+		@if (lifetimeExtension && !adjustedModification) {
+			<button
+				id="confirm_extension_btn"
+				class="btn btn-success col-md-3"
+				type="button"
+				data-test-id="confirm_extension_request_button"
+				(click)="submitLifetimeExtensionRequest()"
+			>
+				Confirm
+			</button>
+		}
+		@if (modificationExtension && !adjustedModification) {
+			<button
+				id="confirm_modification_btn"
+				class="btn btn-success col-md-3"
+				type="button"
+				data-test-id="confirm_modification_request_button"
+				(click)="submitModificationRequest()"
+			>
+				Confirm
+			</button>
+		}
+		@if (creditsExtension && !adjustedModification) {
+			<button
+				id="confirm_credits_btn"
+				class="btn btn-success col-md-3"
+				type="button"
+				data-test-id="confirm_credits_request_button"
+				(click)="submitCreditsModification()"
+			>
+				Confirm
+			</button>
+		}
+		@if (adjustedModification) {
+			<button
+				id="confirm_adjustment_btn"
+				class="btn btn-success col-md-3"
+				type="button"
+				data-test-id="confirm_adjustment_request_button"
+				(click)="submitModificationAdjustment()"
+			>
+				Confirm
+			</button>
+		}
+		@if (modificationExtension) {
+			<button class="btn btn-primary col-md-3" type="reset" (click)="bsModalRef.hide(); chainDataInput()">
+				<i class="fa-solid fa-backward"></i> Back
+			</button>
+		}
 		<button class="btn btn-danger col-md-3" type="reset" (click)="bsModalRef.hide()">Cancel</button>
 	</div>
-</ng-container>
+}
 
-<ng-container *ngIf="result">
+@if (result) {
 	<div class="modal-header">
-		<h4 class="modal-title" *ngIf="extensionStatus === 0">Waiting</h4>
-		<h4 class="modal-title" *ngIf="extensionStatus === 1">Success</h4>
-		<h4 class="modal-title" *ngIf="extensionStatus === 2">Error</h4>
+		@if (extensionStatus === 0) {
+			<h4 class="modal-title">Waiting</h4>
+		}
+		@if (extensionStatus === 1) {
+			<h4 class="modal-title">Success</h4>
+		}
+		@if (extensionStatus === 2) {
+			<h4 class="modal-title">Error</h4>
+		}
 		<button
 			type="button"
 			class="btn-close"
@@ -206,36 +245,42 @@
 			aria-label="Close"
 		></button>
 	</div>
-
 	<div class="modal-body">
-		<div class="alert alert-primary" role="alert" *ngIf="extensionStatus === 0">
-			Waiting...
-			<i class="fa fa-spinner fa-spin" style="font-size: 24px"> </i>
-		</div>
-		<div id="extension_result_submitted" class="alert alert-success" role="alert" *ngIf="extensionStatus === 1">
-			<div *ngIf="modificationExtension" data-test-id="modification_request_result_div">
-				Modification request successfully submitted!
+		@if (extensionStatus === 0) {
+			<div class="alert alert-primary" role="alert">
+				Waiting...
+				<i class="fa fa-spinner fa-spin" style="font-size: 24px"> </i>
 			</div>
-			<div *ngIf="lifetimeExtension" data-test-id="extension_request_result_div">
-				Lifetime extension request successfully submitted!
+		}
+		@if (extensionStatus === 1) {
+			<div id="extension_result_submitted" class="alert alert-success" role="alert">
+				@if (modificationExtension) {
+					<div data-test-id="modification_request_result_div">Modification request successfully submitted!</div>
+				}
+				@if (lifetimeExtension) {
+					<div data-test-id="extension_request_result_div">Lifetime extension request successfully submitted!</div>
+				}
+				@if (creditsExtension) {
+					<div data-test-id="credit_request_result_div">Credits extension request successfully submitted!</div>
+				}
 			</div>
-			<div *ngIf="creditsExtension" data-test-id="credit_request_result_div">
-				Credits extension request successfully submitted!
+		}
+		@if (extensionStatus === 5) {
+			<div id="adjustment_result_submitted" class="alert alert-success" role="alert">
+				<div data-test-id="modification_adjustment_request_result_div">
+					Modification adjustment successfully submitted!
+				</div>
 			</div>
-		</div>
-		<div id="adjustment_result_submitted" class="alert alert-success" role="alert" *ngIf="extensionStatus === 5">
-			<div data-test-id="modification_adjustment_request_result_div">
-				Modification adjustment successfully submitted!
+		}
+		@if (extensionStatus === 2) {
+			<div id="extension_result_error" class="alert alert-warning" role="alert">
+				An error occured:<br />
+				{{ errorMessage }}
 			</div>
-		</div>
-		<div id="extension_result_error" class="alert alert-warning" role="alert" *ngIf="extensionStatus === 2">
-			An error occured:<br />
-			{{ errorMessage }}
-		</div>
-
+		}
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
 		</div>
 	</div>
 	<!-- /.modal-content -->
-</ng-container>
+}

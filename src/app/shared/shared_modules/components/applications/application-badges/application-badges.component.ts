@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core'
 import { is_vo } from '../../../../globalvar'
 import { Application } from '../../../../../applications/application.model/application.model'
-import { NgIf } from '@angular/common'
 
 @Component({
 	selector: 'app-application-badges',
 	templateUrl: './application-badges.component.html',
 	styleUrls: ['./application-badges.component.scss'],
-	imports: [NgIf]
+	imports: []
 })
 export class ApplicationBadgesComponent {
 	@Input() application: Application

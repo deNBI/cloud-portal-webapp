@@ -13,7 +13,9 @@
 	<div>
 		Send Mail to:
 		<ul>
-			<li *ngFor="let pr of selectedProjects">{{ pr.project_application_shortname }}</li>
+			@for (pr of selectedProjects; track pr) {
+				<li>{{ pr.project_application_shortname }}</li>
+			}
 		</ul>
 	</div>
 
@@ -36,7 +38,7 @@
 			class="form-group row"
 			[ngClass]="{
 				'has-danger': emailSub.invalid && (emailSub.dirty || emailSub.touched),
-				'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched)
+				'has-success': emailSub.valid && (emailSub.dirty || emailSub.touched),
 			}"
 		>
 			<label class="col-md-12 control-label"><strong>Email subject*</strong></label>
@@ -53,7 +55,7 @@
 					#emailSub="ngModel"
 					[ngClass]="{
 						'is-invalid': emailSub.invalid && (emailSub.dirty || emailSub.touched),
-						'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched)
+						'is-valid': emailSub.valid && (emailSub.dirty || emailSub.touched),
 					}"
 				/>
 			</div>
@@ -73,7 +75,7 @@
 					pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
 					[ngClass]="{
 						'is-invalid': emailRep.invalid && (emailRep.dirty || emailRep.touched),
-						'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched)
+						'is-valid': emailRep.valid && (emailRep.dirty || emailRep.touched),
 					}"
 				/>
 			</div>
@@ -93,7 +95,7 @@
 					#emailT="ngModel"
 					[ngClass]="{
 						'is-invalid': emailT.invalid && (emailT.dirty || emailT.touched),
-						'is-valid': emailT.valid && (emailT.dirty || emailT.touched)
+						'is-valid': emailT.valid && (emailT.dirty || emailT.touched),
 					}"
 				></textarea>
 			</div>
@@ -103,7 +105,9 @@
 	<div class="templates-container">
 		<p>You can use the following keys as variables:</p>
 		<div class="templates-list">
-			<span *ngFor="let template of templates">{{ '{' + template + '}' }} </span>
+			@for (template of templates; track template) {
+				<span>{{ '{' + template + '}' }} </span>
+			}
 		</div>
 	</div>
 

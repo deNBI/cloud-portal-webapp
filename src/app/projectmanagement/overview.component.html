@@ -1,188 +1,25 @@
-<div *ngIf="errorMessage !== null">
-	<div class="alert alert-info">
-		{{ errorMessage }}
+@if (errorMessage !== null) {
+	<div>
+		<div class="alert alert-info">
+			{{ errorMessage }}
+		</div>
 	</div>
-</div>
+}
 
-<div *ngIf="!isLoaded && errorMessage === null" class="loader"></div>
+@if (!isLoaded && errorMessage === null) {
+	<div class="loader"></div>
+}
 
-<div *ngIf="isLoaded" class="animated fadeIn">
-	<div class="row">
-		<div
-			*ngIf="
+@if (isLoaded) {
+	<div class="animated fadeIn">
+		<div class="row">
+			@if (
 				(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
 				(project_application | hasstatusinlist: Application_States.DECLINED)
-			"
-			class="col-12"
-		>
-			<div class="card" id="submittedProjectInfoDiv">
-				<div class="card-header">
-					<h3>
-						@if (project_application?.project_application_openstack_project) {
-							@if (project_application?.project_application_kubernetes_access) {
-								<a
-									data-toggle="tooltip"
-									href="{{ KUBERNETES_LINK }}"
-									rel="noopener noreferrer"
-									style="font-size: 2em"
-									target="_blank"
-									title="This is an Kubernetes project"
-								>
-									<img class="po-logo" src="{{ kubernetes_logo }}" />
-								</a>
-							} @else {
-								<a
-									data-toggle="tooltip"
-									href="{{ OPENSTACK_LINK }}"
-									rel="noopener noreferrer"
-									style="font-size: 2em"
-									target="_blank"
-									title="This is an Openstack project"
-								>
-									<img class="po-logo" src="{{ openstack_logo }}" />
-								</a>
-							}
-						} @else {
-							<a
-								data-toggle="tooltip"
-								href="{{ SIMPLE_VM_LINK }}"
-								rel="noopener noreferrer"
-								style="font-size: 2em"
-								target="_blank"
-								title="This is a Simple VM project"
-							>
-								<img class="po-logo" src="{{ simple_vm_logo }}" />
-							</a>
-						}
-						{{ project_application?.project_application_name }}
-					</h3>
-				</div>
-
-				<div
-					*ngIf="
-						!(project_application | hasstatusinlist: Application_States.APPROVED) &&
-						!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
-						!(project_application | hasstatusinlist: Application_States.DECLINED)
-					"
-					class="card-body"
-					id="project_application_status_overview"
-				>
-					<!-- <i class="fas fa-tasks"></i> -->
-					<app-application-progress [application]="project_application"></app-application-progress>
-				</div>
-
-				<div
-					*ngIf="
-						project_application &&
-						(project_application?.user_is_pi || project_application?.user_is_admin || !project_application)
-					"
-					class="card-body"
-				>
-					<div class="row">
-						<div class="btn-group col-12">
-							<button
-								(click)="showDeleteApplicationModal()"
-								*ngIf="
-									(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
-									(project_application | hasstatusinlist: Application_States.DECLINED)
-								"
-								class="btn btn-outline-danger col-6"
-								id="remove_application_button"
-								style="margin: auto"
-								type="button"
-							>
-								Remove Application
-							</button>
-							<button
-								(click)="showInformationCollapse = !showInformationCollapse"
-								class="btn btn-outline-primary col-6"
-								id="submitted_show_information_btn"
-								style="margin: auto"
-								type="button"
-							>
-								<i class="fa fa-info-circle"></i>&nbsp;
-								<span *ngIf="showInformationCollapse">Hide information</span>
-								<span *ngIf="!showInformationCollapse">Show more information</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div [ngClass]="{ show: showInformationCollapse }" class="collapse">
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Project Name</th>
-									<th>Short Name</th>
-									<th>Lifetime</th>
-									<th>Date submitted</th>
-									<th>Status</th>
-								</tr>
-							</thead>
-							<tbody>
-								<ng-container>
-									<tr>
-										<td>
-											<span
-												*ngIf="project_application?.project_application_openstack_project"
-												data-toggle="tooltip"
-												style="font-size: 20px"
-												title="This is an Openstack project"
-											>
-											</span>
-											<span
-												*ngIf="!project_application?.project_application_openstack_project"
-												data-toggle="tooltip"
-												style="font-size: 20px"
-												title="This is a Simple VM project"
-											>
-											</span>
-											<span
-												style="margin-left: 12px"
-												class="badge badge-warning"
-												data-toggle="tooltip"
-												data-placement="auto"
-												title="This application uses sensitive data"
-												*ngIf="project_application?.project_application_person_related_data"
-												><span style="font-size: 15px"> <i class="fas fa-fingerprint"></i></span>
-											</span>
-										</td>
-										<td>{{ project_application?.project_application_name }}</td>
-										<td>{{ project_application?.project_application_shortname }}</td>
-										<td>{{ project_application?.project_application_lifetime }} months</td>
-										<td>{{ project_application?.project_application_date_submitted }}</td>
-										<td>
-											<ng-container *ngFor="let st of project_application?.project_application_statuses">
-												<span *ngIf="st !== 19" class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
-													{{ getStatusById(st) }}
-												</span>
-											</ng-container>
-										</td>
-									</tr>
-								</ng-container>
-							</tbody>
-						</table>
-						<app-application-detail [application]="project_application"></app-application-detail>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div
-			*ngIf="
-				project_application &&
-				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
-				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
-				!(project_application | hasstatusinlist: Application_States.SUBMITTED)
-			"
-			class="col-12"
-		>
-			<div class="card" id="projectInformationDiv">
-				<div class="card-header">
-					<div class="row">
-						<div class="col">
+			) {
+				<div class="col-12">
+					<div class="card" id="submittedProjectInfoDiv">
+						<div class="card-header">
 							<h3>
 								@if (project_application?.project_application_openstack_project) {
 									@if (project_application?.project_application_kubernetes_access) {
@@ -220,1051 +57,1263 @@
 										<img class="po-logo" src="{{ simple_vm_logo }}" />
 									</a>
 								}
-
-								{{ project_application?.project_application_shortname }}
+								{{ project_application?.project_application_name }}
 							</h3>
 						</div>
-						<div
-							*ngIf="
-								(project_application | hasstatusinlist: Application_States.APPROVED) ||
-								(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-								(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)
-							"
-							class="col d-flex justify-content-end"
-						>
-							<button
-								(click)="showLeaveTerminationModal()"
-								class="btn btn-danger"
-								type="button"
-								style="max-height: 40px"
-							>
-								<i class="fas fa-sign-out-alt"></i>
-								Leave Project
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div
-					*ngIf="!project_application?.project_application_statuses?.includes(Application_States.APPROVED)"
-					class="card-body"
-					id="project_application_status_overview_further"
-				>
-					<!-- <i class="fas fa-tasks"></i> -->
-
-					<app-application-progress [application]="project_application"></app-application-progress>
-				</div>
-
-				<div
-					*ngIf="project_application | hasstatusinlist: Application_States.APPROVED"
-					class="card-body"
-					id="projectMainInformationDiv"
-				>
-					<div class="row" *ngIf="project_application | hasstatusinlist: Application_States.DISABLED">
-						<div class="alert alert-danger col-6" role="alert">
-							Your project has been disabled and is currently in its final stage before termination. Your application
-							has expired and multiple reminders have been sent for you to request a lifetime extension. It's crucial
-							that you create a lifetime extension request right now if you want to keep your project. Otherwise, it
-							could be deleted anytime without another notice. For further assistance, please contact our
-							<a
-								href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}"
-								rel="noopener noreferrer"
-								style="margin-top: 15px"
-								target="_blank"
-								>helpdesk</a
-							>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-6">
-							<div
-								class="callout callout-info"
-								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
-								title="The project has been running for {{ project_application?.DaysRunning }} of a total of {{
-									project_application?.lifetime_days
-								}} granted days"
-							>
-								<small class="text-muted">Project Runtime</small><br />
-								<strong class="text-muted"
-									>{{ project_application?.project_application_date_approved }} - {{ project_application?.date_end }}
-									<span
-										*ngIf="
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-										"
-									>
-										- Extension by {{ project_application?.project_lifetime_request?.extra_lifetime }}
-										months requested on
-										{{ project_application?.project_lifetime_request?.date_submitted }}
-									</span>
-									<span
-										*ngIf="
-											(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
-										"
-									>
-										- Termination requested</span
-									> </strong
-								><br />
-								<div class="progress" style="height: 2px">
-									<div
-										[ngStyle]="{
-											'width.%': calculateProgressBar(
-												project_application?.DaysRunning / project_application?.lifetime_days
-											),
-										}"
-										aria-valuemax="100"
-										aria-valuemin="0"
-										class="progress-bar bg-info"
-										role="progressbar"
-									></div>
-								</div>
+						@if (
+							!(project_application | hasstatusinlist: Application_States.APPROVED) &&
+							!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
+							!(project_application | hasstatusinlist: Application_States.DECLINED)
+						) {
+							<div class="card-body" id="project_application_status_overview">
+								<!-- <i class="fas fa-tasks"></i> -->
+								<app-application-progress [application]="project_application"></app-application-progress>
 							</div>
-						</div>
-						<div class="col-6">
-							<div class="btn-group" style="margin-top: 15px">
-								<ng-container
-									*ngIf="
-										!project_application.user_is_admin &&
-										!(
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
-											lifetimeExtensionDisabled
-										)
-									"
-								>
-									<span
-										class="d-inline-block"
-										data-toggle="tooltip"
-										tabindex="0"
-										title="Only project administators are able to request project extensions."
-									>
-										<button class="btn btn-outline-primary" disabled>Request extension</button>
-									</span>
-								</ng-container>
-								<button
-									(click)="showWithDrawExtensionModal()"
-									*ngIf="
-										project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
-									"
-									class="btn btn-outline-warning"
-									data-test-id="show_lifetime_extension_withdraw_button"
-									id="show_lifetime_extension_withdraw_button"
-								>
-									Withdraw extension request
-								</button>
-								<button
-									(click)="showApplicationRequestModal(ApplicationRequestType.Extension)"
-									*ngIf="
-										project_application.user_is_admin &&
-										!(
-											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
-											(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
-											lifetimeExtensionDisabled
-										)
-									"
-									class="btn btn-outline-primary"
-									id="show_doi_question_modal"
-									data-test-id="open_extension_request_button"
-								>
-									Request extension
-								</button>
-								<button
-									*ngIf="
-										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
-										lifetimeExtensionDisabled
-									"
-									class="btn btn-outline-secondary"
-									disabled
-									data-toggle="tooltip"
-									id="show_doi_question_modal_disabled"
-									[title]="
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
-											? 'You are not able to request an extension, as there is an ongoing termination request'
-											: 'You are not able to request another extension, as there currently is a pending extension request for this project'
-									"
-								>
-									{{
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
-											? 'Request extension'
-											: 'Extension requested'
-									}}
-								</button>
-
-								<ng-container
-									*ngIf="
-										!project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
-										!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
-										!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
-									"
-								>
-									<span
-										class="d-inline-block"
-										data-toggle="tooltip"
-										tabindex="0"
-										title="Only project administators are able to request project terminations."
-									>
-										<button class="btn btn-outline-danger" disabled>Request termination</button>
-									</span>
-								</ng-container>
-								<button
-									(click)="showApplicationRequestModal(ApplicationRequestType.Termination)"
-									*ngIf="
-										project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
-										!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
-										!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
-									"
-									class="btn btn-outline-danger"
-									id="show_termination_modal_button"
-									data-test-id="open_termination_request_button"
-								>
-									Request termination
-								</button>
-								<button
-									*ngIf="
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
-									"
-									class="btn btn-outline-secondary"
-									disabled
-									id="show_termination_modal_button_disabled"
-								>
-									Termination Requested
-								</button>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-6">
-							<div
-								*ngIf="resourceDataLoaded"
-								class="callout"
-								[ngClass]="(project_application | isMigratedProject) ? 'callout-warning' : 'callout-info'"
-								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
-							>
-								<small class="text-muted">Computational Resources</small><br />
-								<strong
-									*ngIf="
-										project_application?.project_application_openstack_project ||
-										(project_application | isMigratedProject)
-									"
-									class="text-muted"
-									>{{ maximumVMs }} VMs with a total of {{ project_application?.project_application_total_cores }} VCPUs
-									and {{ project_application?.project_application_total_ram }} GBs of RAM
-									<span
-										*ngIf="
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-										"
-									>
-										- Resource modification requested on
-										{{ project_application?.project_modification_request?.date_submitted }}
-									</span>
-								</strong>
-
-								<small class="text-muted" *ngIf="project_application | isMigratedProject">
-									Please consider: As the project is migrated, the amount of used resources is visible in the
-									<a [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noopener noreferrer">SimpleVM platform</a>.
-								</small>
-							</div>
-						</div>
-						<div class="col-6">
-							<div class="btn-group" style="margin-top: 15px">
-								<ng-container
-									*ngIf="
-										!project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.APPROVED) &&
-										!(
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
-											(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
-											modificationRequestDisabled
-										)
-									"
-								>
-									<span
-										class="d-inline-block"
-										data-toggle="tooltip"
-										tabindex="0"
-										title="Only project administators are able to request resource modifications."
-									>
-										<button class="btn btn-outline-primary" disabled>Request resource modification</button>
-									</span>
-								</ng-container>
-								<button
-									(click)="showApplicationRequestModal(ApplicationRequestType.Modification)"
-									*ngIf="
-										project_application.user_is_admin &&
-										!(
-											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
-											(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
-											modificationRequestDisabled
-										)
-									"
-									class="btn btn-outline-primary"
-									data-test-id="open_modification_request_button"
-									id="show_modification_extension_button"
-								>
-									Request resource modification
-								</button>
-								<button
-									(click)="showWithDrawModificationModal()"
-									*ngIf="
-										project_application.user_is_admin &&
-										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
-									"
-									class="btn btn-outline-warning"
-									data-test-id="show_modification_extension_withdraw_button"
-									id="show_modification_extension_withdraw_button"
-								>
-									Withdraw resource modification
-								</button>
-								<button
-									*ngIf="
-										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
-										modificationRequestDisabled
-									"
-									class="btn btn-outline-secondary"
-									disabled
-									id="show_modification_extension_button_disabled"
-									data-toggle="tooltip"
-									[title]="
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
-											? 'You are not able to request a modification request, as there is an ongoing termination request'
-											: 'You are not able to request another modification, as there currently is a pending modification request for this project'
-									"
-								>
-									{{
-										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
-											? 'Request resource modification'
-											: 'Resource modification requested'
-									}}
-								</button>
-								<a
-									*ngIf="project_application?.project_application_openstack_project"
-									class="btn btn-outline-success"
-									href="{{ project_application?.project_application_compute_center.Login }}"
-									rel="noopener noreferrer"
-									target="_blank"
-									>Login to OpenStack</a
-								>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-6" title="Click Contact to send a mail to the facility.">
-							<div
-								class="callout callout-info"
-								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
-							>
-								<small class="text-muted">Facility</small><br />
-								<strong class="text-muted">{{ project_application?.project_application_compute_center.Name }}</strong>
-							</div>
-						</div>
-						<div class="col-6">
-							<div class="btn-group">
-								<a
-									*ngIf="
-										!project_application.project_application_openstack_project &&
-										project_application.project_application_workshop &&
-										!project_application?.user_is_admin
-									"
-									class="btn btn-outline-primary"
-									href="mailto:test@test.test"
-									rel="noopener noreferrer"
-									style="margin-top: 15px"
-									target="_blank"
-									>Contact Workshop Admin</a
-								>
-								<a
-									*ngIf="!project_application.project_application_openstack_project"
-									class="btn btn-outline-primary"
-									href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}"
-									rel="noopener noreferrer"
-									style="margin-top: 15px"
-									target="_blank"
-									>Contact Support</a
-								>
-
-								<a
-									*ngIf="supportMails?.length === 1 && project_application.project_application_openstack_project"
-									class="btn btn-outline-primary"
-									href="mailto:{{ project_application?.project_application_compute_center.Support }}"
-									rel="noopener noreferrer"
-									style="margin-top: 15px"
-									target="_blank"
-									>Contact Support</a
-								>
-
-								<div
-									*ngIf="supportMails?.length > 1 && project_application.project_application_openstack_project"
-									class="dropdown"
-									dropdown
-									style="margin-top: 15px"
-								>
-									<button
-										aria-expanded="false"
-										aria-haspopup="true"
-										class="btn btn-outline-primary dropdown-toggle"
-										data-toggle="dropdown"
-										dropdownToggle
-										id="actionDropdownMenu"
-										type="button"
-									>
-										Contact Support
-									</button>
-									<div *dropdownMenu aria-labelledby="dropdownMenu" class="dropdown-menu" id="dropdownMenu" role="menu">
-										<a
-											*ngFor="let mail of supportMails"
-											class="dropdown-item btn btn-outline-primary"
-											href="mailto:{{ mail }}"
-											rel="noopener noreferrer"
-											target="_blank"
-											>Contact {{ mail }}</a
+						}
+						@if (
+							project_application &&
+							(project_application?.user_is_pi || project_application?.user_is_admin || !project_application)
+						) {
+							<div class="card-body">
+								<div class="row">
+									<div class="btn-group col-12">
+										@if (
+											(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
+											(project_application | hasstatusinlist: Application_States.DECLINED)
+										) {
+											<button
+												(click)="showDeleteApplicationModal()"
+												class="btn btn-outline-danger col-6"
+												id="remove_application_button"
+												style="margin: auto"
+												type="button"
+											>
+												Remove Application
+											</button>
+										}
+										<button
+											(click)="showInformationCollapse = !showInformationCollapse"
+											class="btn btn-outline-primary col-6"
+											id="submitted_show_information_btn"
+											style="margin: auto"
+											type="button"
 										>
+											<i class="fa fa-info-circle"></i>&nbsp;
+											@if (showInformationCollapse) {
+												<span>Hide information</span>
+											}
+											@if (!showInformationCollapse) {
+												<span>Show more information</span>
+											}
+										</button>
 									</div>
 								</div>
-								<a
-									class="btn btn-outline-primary"
-									href="{{ STATUS_LINK }}"
-									rel="noopener noreferrer"
-									style="margin-top: 15px"
-									target="_blank"
-									>Facility Status</a
-								>
 							</div>
-						</div>
-					</div>
-					<div
-						class="row"
-						*ngIf="
-							!project_application.project_application_openstack_project &&
-							project_application.project_application_workshop &&
-							!project_application?.user_is_admin
-						"
-					>
-						<div class="alert alert-info">
-							If you experience any problems during a workshop, please contact your workshop administrator first before
-							contacting support.
-						</div>
-					</div>
-					<div *ngIf="project_application?.credits_allowed" class="row">
-						<div class="col-6">
-							<div
-								class="callout callout-info"
-								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
-							>
-								<small class="text-muted">Credits</small><br />
-								<strong class="text-muted">
-									<span
-										*ngIf="
-											project_application?.project_application_initial_credits -
-												project_application?.project_application_current_credits >
-											0
-										"
-									>
-										Used {{ project_application?.project_application_current_credits }} of
-										{{ project_application?.project_application_initial_credits }} credits <br />
-										{{
-											project_application?.project_application_initial_credits -
-												project_application?.project_application_current_credits
-										}}
-										credits left</span
-									>
-									<span
-										*ngIf="
-											project_application?.project_application_initial_credits -
-												project_application?.project_application_current_credits <=
-											0
-										"
-									>
-										Used {{ project_application?.project_application_initial_credits }} of
-										{{ project_application?.project_application_initial_credits }} credits <br />No credits left!</span
-									>
-									<span
-										*ngIf="
-											(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
-										"
-									>
-										- {{ project_application?.project_credit_request?.extra_credits }} additional credits requested on
-										{{ project_application?.project_credit_request?.date_submitted }}
-									</span>
-								</strong>
-								<br />
-								<div class="progress" style="height: 2px">
-									<div
-										[ngStyle]="{
-											'width.%': calculateProgressBar(
-												project_application?.project_application_current_credits /
-													project_application?.project_application_initial_credits
-											),
-										}"
-										aria-valuemax="100"
-										aria-valuemin="0"
-										class="progress-bar bg-info"
-										role="progressbar"
-									></div>
-								</div>
-								<br />
-								<strong class="text-muted">Why do I see this?</strong>
-								<br />
-								<div class="text-muted">
-									We selected your project as one of the few project where we track the resource usage with Cloud
-									Credits usage. You should have received an E-Mail with information about Cloud Credits, if this is not
-									the case, please message us at
-									<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
-									>. For general information about Cloud Credits please visit:<br />
-									- <a href="{{ CREDITS_WIKI }}" rel="noopener noreferrer" target="_blank">Cloud Credits Wiki page</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-6" style="margin-top: 15px">
-							<ng-container
-								*ngIf="
-									!project_application.user_is_admin &&
-									!(
-										(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
-										creditsExtensionDisabled
-									)
-								"
-							>
-								<span
-									class="d-inline-block"
-									data-toggle="tooltip"
-									tabindex="0"
-									title="Only project administators are able to request more credits."
-								>
-									<button class="btn btn-outline-success" disabled>Request more credits</button>
-								</span>
-							</ng-container>
-							<button
-								(click)="showCreditsExtensionModal()"
-								*ngIf="
-									project_application.user_is_admin &&
-									!(
-										(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
-										creditsExtensionDisabled
-									)
-								"
-								class="btn btn-outline-success"
-								id="show_credits_extension_modal"
-								type="button"
-							>
-								Request more credits
-							</button>
-							<button
-								*ngIf="
-									(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
-									(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
-									creditsExtensionDisabled
-								"
-								class="btn btn-outline-secondary"
-								disabled
-								id="show_credits_extension_modal_disabled"
-								type="button"
-							>
-								More credits requested
-							</button>
-						</div>
-						<div class="col-6">
-							<div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-primary">
-								Your approved credits are lower or equal to zero. Please submit a Credits Extension or contact us at
-								<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
-								>, so we may calculate and set the correct amount for your project.
+						}
+						<div [ngClass]="{ show: showInformationCollapse }" class="collapse">
+							<div class="table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Project Name</th>
+											<th>Short Name</th>
+											<th>Lifetime</th>
+											<th>Date submitted</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<ng-container>
+											<tr>
+												<td>
+													@if (project_application?.project_application_openstack_project) {
+														<span data-toggle="tooltip" style="font-size: 20px" title="This is an Openstack project">
+														</span>
+													}
+													@if (!project_application?.project_application_openstack_project) {
+														<span data-toggle="tooltip" style="font-size: 20px" title="This is a Simple VM project">
+														</span>
+													}
+													@if (project_application?.project_application_person_related_data) {
+														<span
+															style="margin-left: 12px"
+															class="badge badge-warning"
+															data-toggle="tooltip"
+															data-placement="auto"
+															title="This application uses sensitive data"
+															><span style="font-size: 15px"> <i class="fas fa-fingerprint"></i></span>
+														</span>
+													}
+												</td>
+												<td>{{ project_application?.project_application_name }}</td>
+												<td>{{ project_application?.project_application_shortname }}</td>
+												<td>{{ project_application?.project_application_lifetime }} months</td>
+												<td>{{ project_application?.project_application_date_submitted }}</td>
+												<td>
+													@for (st of project_application?.project_application_statuses; track st) {
+														@if (st !== 19) {
+															<span class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
+																{{ getStatusById(st) }}
+															</span>
+														}
+													}
+												</td>
+											</tr>
+										</ng-container>
+									</tbody>
+								</table>
+								<app-application-detail [application]="project_application"></app-application-detail>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div
-					class="card-body"
-					*ngIf="project_application.migrate_to_simple_vm && project_application.migrated_simple_vm_resources"
-				>
-					<div class="row">
-						<div class="alert alert-info col-8 mx-auto">
-							The project is migrated to the new SimpleVM platform. You can access the platform here:
-							<a class="alert-link" [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noreferrer noopener">{{
-								NEW_SVM_PORTAL_LINK
-							}}</a>
-						</div>
-					</div>
-				</div>
-
-				<div
-					*ngIf="
-						project_application &&
-						(project_application?.user_is_pi || project_application?.user_is_admin || !project_application)
-					"
-					class="card-body"
-				>
-					<div class="row">
-						<div class="btn-group col-12">
-							<button
-								(click)="showInformationCollapse = !showInformationCollapse"
-								class="btn btn-outline-primary col-6"
-								id="show_information_btn"
-								style="margin: auto"
-								type="button"
-							>
-								<i class="fa fa-info-circle"></i>&nbsp;
-								<span *ngIf="showInformationCollapse">Hide information</span>
-								<span *ngIf="!showInformationCollapse">Show more information</span>
-							</button>
-						</div>
-					</div>
-				</div>
-				<!-- check collapse animation possibility -->
-				<div [ngClass]="{ show: showInformationCollapse }" class="collapse">
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Project Name</th>
-									<th>Short Name</th>
-									<th>Lifetime</th>
-									<th>Date submitted</th>
-									<th>Status</th>
-								</tr>
-							</thead>
-							<tbody>
-								<ng-container>
-									<tr>
-										<td>
-											<span
-												*ngIf="project_application?.project_application_openstack_project"
+			}
+			@if (
+				project_application &&
+				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
+				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
+				!(project_application | hasstatusinlist: Application_States.SUBMITTED)
+			) {
+				<div class="col-12">
+					<div class="card" id="projectInformationDiv">
+						<div class="card-header">
+							<div class="row">
+								<div class="col">
+									<h3>
+										@if (project_application?.project_application_openstack_project) {
+											@if (project_application?.project_application_kubernetes_access) {
+												<a
+													data-toggle="tooltip"
+													href="{{ KUBERNETES_LINK }}"
+													rel="noopener noreferrer"
+													style="font-size: 2em"
+													target="_blank"
+													title="This is an Kubernetes project"
+												>
+													<img class="po-logo" src="{{ kubernetes_logo }}" />
+												</a>
+											} @else {
+												<a
+													data-toggle="tooltip"
+													href="{{ OPENSTACK_LINK }}"
+													rel="noopener noreferrer"
+													style="font-size: 2em"
+													target="_blank"
+													title="This is an Openstack project"
+												>
+													<img class="po-logo" src="{{ openstack_logo }}" />
+												</a>
+											}
+										} @else {
+											<a
 												data-toggle="tooltip"
-												style="font-size: 20px"
-												title="This is an Openstack project"
-											>
-											</span>
-											<span
-												*ngIf="!project_application?.project_application_openstack_project"
-												data-toggle="tooltip"
-												style="font-size: 20px"
+												href="{{ SIMPLE_VM_LINK }}"
+												rel="noopener noreferrer"
+												style="font-size: 2em"
+												target="_blank"
 												title="This is a Simple VM project"
 											>
-											</span>
-										</td>
-										<td>{{ project_application?.project_application_name }}</td>
-										<td>{{ project_application?.project_application_shortname }}</td>
-										<td>{{ project_application?.project_application_lifetime }} months</td>
-										<td>{{ project_application?.project_application_date_submitted }}</td>
-										<td>
-											<ng-container *ngFor="let st of project_application?.project_application_statuses">
-												<span *ngIf="st !== 19" class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
-													{{ getStatusById(st) }}
+												<img class="po-logo" src="{{ simple_vm_logo }}" />
+											</a>
+										}
+										{{ project_application?.project_application_shortname }}
+									</h3>
+								</div>
+								@if (
+									(project_application | hasstatusinlist: Application_States.APPROVED) ||
+									(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+									(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)
+								) {
+									<div class="col d-flex justify-content-end">
+										<button
+											(click)="showLeaveTerminationModal()"
+											class="btn btn-danger"
+											type="button"
+											style="max-height: 40px"
+										>
+											<i class="fas fa-sign-out-alt"></i>
+											Leave Project
+										</button>
+									</div>
+								}
+							</div>
+						</div>
+						@if (!project_application?.project_application_statuses?.includes(Application_States.APPROVED)) {
+							<div class="card-body" id="project_application_status_overview_further">
+								<!-- <i class="fas fa-tasks"></i> -->
+								<app-application-progress [application]="project_application"></app-application-progress>
+							</div>
+						}
+						@if (project_application | hasstatusinlist: Application_States.APPROVED) {
+							<div class="card-body" id="projectMainInformationDiv">
+								@if (project_application | hasstatusinlist: Application_States.DISABLED) {
+									<div class="row">
+										<div class="alert alert-danger col-6" role="alert">
+											Your project has been disabled and is currently in its final stage before termination. Your
+											application has expired and multiple reminders have been sent for you to request a lifetime
+											extension. It's crucial that you create a lifetime extension request right now if you want to keep
+											your project. Otherwise, it could be deleted anytime without another notice. For further
+											assistance, please contact our
+											<a
+												href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}"
+												rel="noopener noreferrer"
+												style="margin-top: 15px"
+												target="_blank"
+												>helpdesk</a
+											>
+										</div>
+									</div>
+								}
+								<div class="row">
+									<div class="col-6">
+										<div
+											class="callout callout-info"
+											style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+											title="The project has been running for {{ project_application?.DaysRunning }} of a total of {{
+												project_application?.lifetime_days
+											}} granted days"
+										>
+											<small class="text-muted">Project Runtime</small><br />
+											<strong class="text-muted"
+												>{{ project_application?.project_application_date_approved }} -
+												{{ project_application?.date_end }}
+												@if (
+													(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+												) {
+													<span>
+														- Extension by {{ project_application?.project_lifetime_request?.extra_lifetime }}
+														months requested on
+														{{ project_application?.project_lifetime_request?.date_submitted }}
+													</span>
+												}
+												@if (
+													(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+												) {
+													<span> - Termination requested</span>
+												}</strong
+											><br />
+											<div class="progress" style="height: 2px">
+												<div
+													[ngStyle]="{
+														'width.%': calculateProgressBar(
+															project_application?.DaysRunning / project_application?.lifetime_days
+														),
+													}"
+													aria-valuemax="100"
+													aria-valuemin="0"
+													class="progress-bar bg-info"
+													role="progressbar"
+												></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="btn-group" style="margin-top: 15px">
+											@if (
+												!project_application.user_is_admin &&
+												!(
+													(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+													lifetimeExtensionDisabled
+												)
+											) {
+												<span
+													class="d-inline-block"
+													data-toggle="tooltip"
+													tabindex="0"
+													title="Only project administators are able to request project extensions."
+												>
+													<button class="btn btn-outline-primary" disabled>Request extension</button>
 												</span>
-											</ng-container>
-										</td>
-									</tr>
-								</ng-container>
-							</tbody>
-						</table>
-						<app-application-detail [application]="project_application"></app-application-detail>
+											}
+											@if (
+												project_application.user_is_admin &&
+												(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
+											) {
+												<button
+													(click)="showWithDrawExtensionModal()"
+													class="btn btn-outline-warning"
+													data-test-id="show_lifetime_extension_withdraw_button"
+													id="show_lifetime_extension_withdraw_button"
+												>
+													Withdraw extension request
+												</button>
+											}
+											@if (
+												project_application.user_is_admin &&
+												!(
+													(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+													(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
+													lifetimeExtensionDisabled
+												)
+											) {
+												<button
+													(click)="showApplicationRequestModal(ApplicationRequestType.Extension)"
+													class="btn btn-outline-primary"
+													id="show_doi_question_modal"
+													data-test-id="open_extension_request_button"
+												>
+													Request extension
+												</button>
+											}
+											@if (
+												(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+												(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+												(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+												(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
+												lifetimeExtensionDisabled
+											) {
+												<button
+													class="btn btn-outline-secondary"
+													disabled
+													data-toggle="tooltip"
+													id="show_doi_question_modal_disabled"
+													[title]="
+														(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+														(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+															? 'You are not able to request an extension, as there is an ongoing termination request'
+															: 'You are not able to request another extension, as there currently is a pending extension request for this project'
+													"
+												>
+													{{
+														(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+														(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+															? 'Request extension'
+															: 'Extension requested'
+													}}
+												</button>
+											}
+											@if (
+												!project_application.user_is_admin &&
+												(project_application | hasstatusinlist: Application_States.APPROVED) &&
+												!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
+												!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+											) {
+												<span
+													class="d-inline-block"
+													data-toggle="tooltip"
+													tabindex="0"
+													title="Only project administators are able to request project terminations."
+												>
+													<button class="btn btn-outline-danger" disabled>Request termination</button>
+												</span>
+											}
+											@if (
+												project_application.user_is_admin &&
+												(project_application | hasstatusinlist: Application_States.APPROVED) &&
+												!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
+												!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+											) {
+												<button
+													(click)="showApplicationRequestModal(ApplicationRequestType.Termination)"
+													class="btn btn-outline-danger"
+													id="show_termination_modal_button"
+													data-test-id="open_termination_request_button"
+												>
+													Request termination
+												</button>
+											}
+											@if (
+												(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+												(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+											) {
+												<button class="btn btn-outline-secondary" disabled id="show_termination_modal_button_disabled">
+													Termination Requested
+												</button>
+											}
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										@if (resourceDataLoaded) {
+											<div
+												class="callout"
+												[ngClass]="(project_application | isMigratedProject) ? 'callout-warning' : 'callout-info'"
+												style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+											>
+												<small class="text-muted">Computational Resources</small><br />
+												@if (
+													project_application?.project_application_openstack_project ||
+													(project_application | isMigratedProject)
+												) {
+													<strong class="text-muted"
+														>{{ maximumVMs }} VMs with a total of
+														{{ project_application?.project_application_total_cores }} VCPUs and
+														{{ project_application?.project_application_total_ram }} GBs of RAM
+														@if (
+															(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+															(project_application
+																| hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+														) {
+															<span>
+																- Resource modification requested on
+																{{ project_application?.project_modification_request?.date_submitted }}
+															</span>
+														}
+													</strong>
+												}
+												@if (project_application | isMigratedProject) {
+													<small class="text-muted">
+														Please consider: As the project is migrated, the amount of used resources is visible in the
+														<a [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noopener noreferrer"
+															>SimpleVM platform</a
+														>.
+													</small>
+												}
+											</div>
+										}
+									</div>
+									<div class="col-6">
+										<div class="btn-group" style="margin-top: 15px">
+											@if (
+												!project_application.user_is_admin &&
+												(project_application | hasstatusinlist: Application_States.APPROVED) &&
+												!(
+													(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+													(project_application
+														| hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+													(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
+													modificationRequestDisabled
+												)
+											) {
+												<span
+													class="d-inline-block"
+													data-toggle="tooltip"
+													tabindex="0"
+													title="Only project administators are able to request resource modifications."
+												>
+													<button class="btn btn-outline-primary" disabled>Request resource modification</button>
+												</span>
+											}
+											@if (
+												project_application.user_is_admin &&
+												!(
+													(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+													(project_application
+														| hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+													(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
+													modificationRequestDisabled
+												)
+											) {
+												<button
+													(click)="showApplicationRequestModal(ApplicationRequestType.Modification)"
+													class="btn btn-outline-primary"
+													data-test-id="open_modification_request_button"
+													id="show_modification_extension_button"
+												>
+													Request resource modification
+												</button>
+											}
+											@if (
+												project_application.user_is_admin &&
+												(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+											) {
+												<button
+													(click)="showWithDrawModificationModal()"
+													class="btn btn-outline-warning"
+													data-test-id="show_modification_extension_withdraw_button"
+													id="show_modification_extension_withdraw_button"
+												>
+													Withdraw resource modification
+												</button>
+											}
+											@if (
+												(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+												(project_application
+													| hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+												(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+												(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM) ||
+												modificationRequestDisabled
+											) {
+												<button
+													class="btn btn-outline-secondary"
+													disabled
+													id="show_modification_extension_button_disabled"
+													data-toggle="tooltip"
+													[title]="
+														(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+														(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+															? 'You are not able to request a modification request, as there is an ongoing termination request'
+															: 'You are not able to request another modification, as there currently is a pending modification request for this project'
+													"
+												>
+													{{
+														(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+														(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+															? 'Request resource modification'
+															: 'Resource modification requested'
+													}}
+												</button>
+											}
+											@if (project_application?.project_application_openstack_project) {
+												<a
+													class="btn btn-outline-success"
+													href="{{ project_application?.project_application_compute_center.Login }}"
+													rel="noopener noreferrer"
+													target="_blank"
+													>Login to OpenStack</a
+												>
+											}
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6" title="Click Contact to send a mail to the facility.">
+										<div
+											class="callout callout-info"
+											style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+										>
+											<small class="text-muted">Facility</small><br />
+											<strong class="text-muted">{{
+												project_application?.project_application_compute_center.Name
+											}}</strong>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="btn-group">
+											@if (
+												!project_application.project_application_openstack_project &&
+												project_application.project_application_workshop &&
+												!project_application?.user_is_admin
+											) {
+												<a
+													class="btn btn-outline-primary"
+													href="mailto:test@test.test"
+													rel="noopener noreferrer"
+													style="margin-top: 15px"
+													target="_blank"
+													>Contact Workshop Admin</a
+												>
+											}
+											@if (!project_application.project_application_openstack_project) {
+												<a
+													class="btn btn-outline-primary"
+													href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}"
+													rel="noopener noreferrer"
+													style="margin-top: 15px"
+													target="_blank"
+													>Contact Support</a
+												>
+											}
+											@if (supportMails?.length === 1 && project_application.project_application_openstack_project) {
+												<a
+													class="btn btn-outline-primary"
+													href="mailto:{{ project_application?.project_application_compute_center.Support }}"
+													rel="noopener noreferrer"
+													style="margin-top: 15px"
+													target="_blank"
+													>Contact Support</a
+												>
+											}
+											@if (supportMails?.length > 1 && project_application.project_application_openstack_project) {
+												<div class="dropdown" dropdown style="margin-top: 15px">
+													<button
+														aria-expanded="false"
+														aria-haspopup="true"
+														class="btn btn-outline-primary dropdown-toggle"
+														data-toggle="dropdown"
+														dropdownToggle
+														id="actionDropdownMenu"
+														type="button"
+													>
+														Contact Support
+													</button>
+													<div
+														*dropdownMenu
+														aria-labelledby="dropdownMenu"
+														class="dropdown-menu"
+														id="dropdownMenu"
+														role="menu"
+													>
+														@for (mail of supportMails; track mail) {
+															<a
+																class="dropdown-item btn btn-outline-primary"
+																href="mailto:{{ mail }}"
+																rel="noopener noreferrer"
+																target="_blank"
+																>Contact {{ mail }}</a
+															>
+														}
+													</div>
+												</div>
+											}
+											<a
+												class="btn btn-outline-primary"
+												href="{{ STATUS_LINK }}"
+												rel="noopener noreferrer"
+												style="margin-top: 15px"
+												target="_blank"
+												>Facility Status</a
+											>
+										</div>
+									</div>
+								</div>
+								@if (
+									!project_application.project_application_openstack_project &&
+									project_application.project_application_workshop &&
+									!project_application?.user_is_admin
+								) {
+									<div class="row">
+										<div class="alert alert-info">
+											If you experience any problems during a workshop, please contact your workshop administrator first
+											before contacting support.
+										</div>
+									</div>
+								}
+								@if (project_application?.credits_allowed) {
+									<div class="row">
+										<div class="col-6">
+											<div
+												class="callout callout-info"
+												style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+											>
+												<small class="text-muted">Credits</small><br />
+												<strong class="text-muted">
+													@if (
+														project_application?.project_application_initial_credits -
+															project_application?.project_application_current_credits >
+														0
+													) {
+														<span>
+															Used {{ project_application?.project_application_current_credits }} of
+															{{ project_application?.project_application_initial_credits }} credits <br />
+															{{
+																project_application?.project_application_initial_credits -
+																	project_application?.project_application_current_credits
+															}}
+															credits left</span
+														>
+													}
+													@if (
+														project_application?.project_application_initial_credits -
+															project_application?.project_application_current_credits <=
+														0
+													) {
+														<span>
+															Used {{ project_application?.project_application_initial_credits }} of
+															{{ project_application?.project_application_initial_credits }} credits <br />No credits
+															left!</span
+														>
+													}
+													@if (
+														(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+														(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+													) {
+														<span>
+															- {{ project_application?.project_credit_request?.extra_credits }} additional credits
+															requested on
+															{{ project_application?.project_credit_request?.date_submitted }}
+														</span>
+													}
+												</strong>
+												<br />
+												<div class="progress" style="height: 2px">
+													<div
+														[ngStyle]="{
+															'width.%': calculateProgressBar(
+																project_application?.project_application_current_credits /
+																	project_application?.project_application_initial_credits
+															),
+														}"
+														aria-valuemax="100"
+														aria-valuemin="0"
+														class="progress-bar bg-info"
+														role="progressbar"
+													></div>
+												</div>
+												<br />
+												<strong class="text-muted">Why do I see this?</strong>
+												<br />
+												<div class="text-muted">
+													We selected your project as one of the few project where we track the resource usage with
+													Cloud Credits usage. You should have received an E-Mail with information about Cloud Credits,
+													if this is not the case, please message us at
+													<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+													>. For general information about Cloud Credits please visit:<br />
+													-
+													<a href="{{ CREDITS_WIKI }}" rel="noopener noreferrer" target="_blank"
+														>Cloud Credits Wiki page</a
+													>
+												</div>
+											</div>
+										</div>
+										<div class="col-6" style="margin-top: 15px">
+											@if (
+												!project_application.user_is_admin &&
+												!(
+													(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+													creditsExtensionDisabled
+												)
+											) {
+												<span
+													class="d-inline-block"
+													data-toggle="tooltip"
+													tabindex="0"
+													title="Only project administators are able to request more credits."
+												>
+													<button class="btn btn-outline-success" disabled>Request more credits</button>
+												</span>
+											}
+											@if (
+												project_application.user_is_admin &&
+												!(
+													(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+													(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+													creditsExtensionDisabled
+												)
+											) {
+												<button
+													(click)="showCreditsExtensionModal()"
+													class="btn btn-outline-success"
+													id="show_credits_extension_modal"
+													type="button"
+												>
+													Request more credits
+												</button>
+											}
+											@if (
+												(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+												(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+												creditsExtensionDisabled
+											) {
+												<button
+													class="btn btn-outline-secondary"
+													disabled
+													id="show_credits_extension_modal_disabled"
+													type="button"
+												>
+													More credits requested
+												</button>
+											}
+										</div>
+										<div class="col-6">
+											@if (project_application?.project_application_initial_credits === 0) {
+												<div class="alert alert-primary">
+													Your approved credits are lower or equal to zero. Please submit a Credits Extension or contact
+													us at
+													<a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a
+													>, so we may calculate and set the correct amount for your project.
+												</div>
+											}
+										</div>
+									</div>
+								}
+							</div>
+						}
+						@if (project_application.migrate_to_simple_vm && project_application.migrated_simple_vm_resources) {
+							<div class="card-body">
+								<div class="row">
+									<div class="alert alert-info col-8 mx-auto">
+										The project is migrated to the new SimpleVM platform. You can access the platform here:
+										<a class="alert-link" [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noreferrer noopener">{{
+											NEW_SVM_PORTAL_LINK
+										}}</a>
+									</div>
+								</div>
+							</div>
+						}
+						@if (
+							project_application &&
+							(project_application?.user_is_pi || project_application?.user_is_admin || !project_application)
+						) {
+							<div class="card-body">
+								<div class="row">
+									<div class="btn-group col-12">
+										<button
+											(click)="showInformationCollapse = !showInformationCollapse"
+											class="btn btn-outline-primary col-6"
+											id="show_information_btn"
+											style="margin: auto"
+											type="button"
+										>
+											<i class="fa fa-info-circle"></i>&nbsp;
+											@if (showInformationCollapse) {
+												<span>Hide information</span>
+											}
+											@if (!showInformationCollapse) {
+												<span>Show more information</span>
+											}
+										</button>
+									</div>
+								</div>
+							</div>
+						}
+						<!-- check collapse animation possibility -->
+						<div [ngClass]="{ show: showInformationCollapse }" class="collapse">
+							<div class="table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Project Name</th>
+											<th>Short Name</th>
+											<th>Lifetime</th>
+											<th>Date submitted</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<ng-container>
+											<tr>
+												<td>
+													@if (project_application?.project_application_openstack_project) {
+														<span data-toggle="tooltip" style="font-size: 20px" title="This is an Openstack project">
+														</span>
+													}
+													@if (!project_application?.project_application_openstack_project) {
+														<span data-toggle="tooltip" style="font-size: 20px" title="This is a Simple VM project">
+														</span>
+													}
+												</td>
+												<td>{{ project_application?.project_application_name }}</td>
+												<td>{{ project_application?.project_application_shortname }}</td>
+												<td>{{ project_application?.project_application_lifetime }} months</td>
+												<td>{{ project_application?.project_application_date_submitted }}</td>
+												<td>
+													@for (st of project_application?.project_application_statuses; track st) {
+														@if (st !== 19) {
+															<span class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
+																{{ getStatusById(st) }}
+															</span>
+														}
+													}
+												</td>
+											</tr>
+										</ng-container>
+									</tbody>
+								</table>
+								<app-application-detail [application]="project_application"></app-application-detail>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			}
+			<!--/.col-->
 		</div>
-		<!--/.col-->
-	</div>
-
-	<div class="row">
-		<div class="col">
-			<div
-				class="card"
-				id="projectSettingsCard"
-				*ngIf="
+		<div class="row">
+			<div class="col">
+				@if (
 					project_application &&
 					project_application.project_application_openstack_project &&
 					((project_application | hasstatusinlist: Application_States.APPROVED) ||
 						(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
 						(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED))
-				"
-			>
-				<div class="card-header"><i class="fas fa-cogs"></i> Project Settings</div>
-				<span *ngIf="!isLoaded" class="spinner-border text-primary" style="display: block; margin: auto"></span>
-				<div class="card-body">
-					<div class="col-12">
-						<ul class="list-group list-group-flush">
-							<li class="list-group-item">
-								<strong>Project settings</strong>
-							</li>
-							<li class="list-group-item">
-								<div class="form-check form-switch">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										id="toggle_member_name_visibility"
-										[(ngModel)]="project_application.show_member_names"
-										(click)="toggleMemberNameVisibility()"
-										[disabled]="
-											toggleLocked || !(project_application?.user_is_pi || project_application?.user_is_admin)
-										"
-									/>
-									<label class="help-block" style="vertical-align: middle" for="toggle_member_name_visibility"
-										>Project member names visible for non-administrators</label
-									>
-								</div>
-							</li>
-						</ul>
+				) {
+					<div class="card" id="projectSettingsCard">
+						<div class="card-header"><i class="fas fa-cogs"></i> Project Settings</div>
+						@if (!isLoaded) {
+							<span class="spinner-border text-primary" style="display: block; margin: auto"></span>
+						}
+						<div class="card-body">
+							<div class="col-12">
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item">
+										<strong>Project settings</strong>
+									</li>
+									<li class="list-group-item">
+										<div class="form-check form-switch">
+											<input
+												class="form-check-input"
+												type="checkbox"
+												id="toggle_member_name_visibility"
+												[(ngModel)]="project_application.show_member_names"
+												(click)="toggleMemberNameVisibility()"
+												[disabled]="
+													toggleLocked || !(project_application?.user_is_pi || project_application?.user_is_admin)
+												"
+											/>
+											<label class="help-block" style="vertical-align: middle" for="toggle_member_name_visibility"
+												>Project member names visible for non-administrators</label
+											>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
 					</div>
-				</div>
+				}
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div
-			*ngIf="
+		<div class="row">
+			@if (
 				project_application &&
 				((project_application | hasstatusinlist: Application_States.APPROVED) ||
 					(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
 					(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)) &&
 				(project_application.show_member_names || project_application.user_is_admin || is_vo_admin)
-			"
-			class="col"
-		>
-			<div class="card" id="projectMemberDiv">
-				<div class="card-header">
-					<i class="fa fa-users"></i> Project members for {{ project_application?.project_application_shortname }}
-					<span
-						*ngIf="!project_members_loaded"
-						class="spinner-border text-primary"
-						style="display: block; margin: auto"
-					></span>
+			) {
+				<div class="col">
+					<div class="card" id="projectMemberDiv">
+						<div class="card-header">
+							<i class="fa fa-users"></i> Project members for {{ project_application?.project_application_shortname }}
+							@if (!project_members_loaded) {
+								<span class="spinner-border text-primary" style="display: block; margin: auto"></span>
+							}
+						</div>
+						@if (project_members_loaded) {
+							<div class="card-body">
+								@if (project_application.migrate_to_simple_vm || project_application.migrated_simple_vm_resources) {
+									<div class="alert alert-info">
+										<strong>Please note:</strong>
+										<p>
+											This project has been migrated to the new platform. The changes you make here will be
+											synchronised. However, this is not instantaneous and it may take a few moments for the changes to
+											be propagated to the new platform.
+										</p>
+									</div>
+								}
+								@if (project_application.user_is_admin || is_vo_admin) {
+									<div class="btn-group col-12">
+										<button
+											(click)="showAddMemberModal()"
+											class="btn btn-outline-success"
+											data-test-id="add_member_btn_modal"
+											id="add_member_btn_modal"
+											style="margin-bottom: 5px"
+											type="button"
+										>
+											<i class="fa fa-plus"></i>&nbsp; Add Member
+										</button>
+										<button
+											(click)="showUserApplicationModal()"
+											class="btn btn-outline-primary"
+											style="margin-bottom: 5px"
+											type="button"
+										>
+											<i class="far fa-list-alt"></i>&nbsp; Member Applications
+											<c-badge
+												color="{{
+													project_application?.project_application_member_applications?.length > 0 ? 'success' : 'dark'
+												}}"
+											>
+												{{ project_application?.project_application_member_applications?.length }}
+											</c-badge>
+										</button>
+										<button
+											(click)="showConfirmationModalRemoveMembers()"
+											[disabled]="checked_member_list.length <= 0 || remove_members_clicked"
+											class="btn btn-outline-danger"
+											style="margin-bottom: 5px"
+											type="button"
+										>
+											<i class="fas fa-trash-alt"></i>&nbsp;Remove Members
+										</button>
+									</div>
+								}
+								@if (!project_application.user_is_admin && !is_vo_admin) {
+									<div class="col-12 alert alert-primary">
+										<span
+											><strong>Notice: </strong>Only project administrators are able to remove or add project members
+											and change the status of members.</span
+										>
+									</div>
+								}
+								<div class="table-responsive">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												@if (project_application.user_is_admin || is_vo_admin) {
+													<th>
+														<input
+															(change)="setAllMembersChecked()"
+															[checked]="allSet"
+															id="selectAll"
+															name="selectAll"
+															type="checkbox"
+														/>
+													</th>
+												}
+												<th>User ID</th>
+												<th>Member ID</th>
+												@if (
+													project_application.user_is_admin || is_vo_admin || project_application?.show_member_names
+												) {
+													<th>
+														Full Name
+														@if (!project_application?.show_member_names) {
+															<span>(hidden)</span>
+														}
+													</th>
+												}
+												@if (project_application.user_is_admin || is_vo_admin) {
+													<th>Actions</th>
+												}
+											</tr>
+										</thead>
+										<tbody>
+											@for (member of project_members; track member) {
+												<tr [ngStyle]="{ color: member.isAdmin ? '#005AA9' : 'black' }">
+													@if (project_application.user_is_admin || is_vo_admin) {
+														<td>
+															@if (userinfo?.MemberId.toString() !== member.memberId.toString()) {
+																<input
+																	(change)="checkUnCheckMember(member)"
+																	[checked]="isMemberChecked(member)"
+																	[disabled]="member.isPi"
+																	id="{{ member.userId }}"
+																	name="member.userId"
+																	type="checkbox"
+																/>
+															}
+														</td>
+													}
+													<td>{{ member.userId }}</td>
+													<td>{{ member.memberId }}</td>
+													@if (
+														project_application.user_is_admin || is_vo_admin || project_application?.show_member_names
+													) {
+														<td>
+															{{ member.userName }}
+															@if (member.isAdmin) {
+																<span class="badge badge-pill bg-info-blue">ADMIN</span>
+															}
+															@if (member.isPi) {
+																<span class="badge badge-pill bg-danger">PI</span>
+															}
+															@if (!member.isPi && !member.isAdmin) {
+																<span class="badge badge-pill bg-warning">MEMBER</span>
+															}
+														</td>
+													}
+													@if (!(project_application.user_is_pi || project_application.user_is_admin || is_vo_admin)) {
+														<td>
+															<div class="btn-group" role="group">
+																<button
+																	[disabled]="!member?.publicKey"
+																	class="btn btn-outline-secondary"
+																	style="margin: 2px"
+																	type="button"
+																	(click)="showPublicKeyModal(member)"
+																>
+																	@if (member?.publicKey) {
+																		<i class="fa fa-key" style="color: darkgreen"></i>
+																	}
+																	@if (!member?.publicKey) {
+																		<i class="fa fa-key" style="color: darkred"></i>
+																	}
+																	Public Key
+																</button>
+															</div>
+														</td>
+													}
+													@if (project_application.user_is_pi || project_application.user_is_admin || is_vo_admin) {
+														<td>
+															<div class="btn-group" role="group">
+																@if (!member.isAdmin) {
+																	<button
+																		(click)="promoteAdmin(member.userId, member.userName)"
+																		class="btn btn-primary"
+																		style="margin: 2px"
+																		type="button"
+																	>
+																		<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
+																	</button>
+																}
+																@if (
+																	member.isAdmin &&
+																	userinfo?.MemberId.toString() !== member.memberId.toString() &&
+																	!member.isPi
+																) {
+																	<button
+																		(click)="removeAdmin(member.userId, member.userName)"
+																		[disabled]="member?.isPi"
+																		class="btn btn-primary"
+																		style="margin: 2px"
+																		type="button"
+																	>
+																		<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
+																	</button>
+																}
+																@if (userinfo?.MemberId.toString() !== member.memberId.toString()) {
+																	<button
+																		(click)="showConfirmationModalRemoveMember(member)"
+																		[id]="'remove_member_' + member.userName"
+																		[disabled]="member?.isPi"
+																		class="btn btn-danger"
+																		style="margin: 2px"
+																		type="button"
+																	>
+																		<i class="fas fa-trash-alt"></i>&nbsp; Remove member
+																	</button>
+																}
+																<button
+																	[disabled]="!member?.publicKey"
+																	class="btn btn-outline-secondary"
+																	style="margin: 2px"
+																	type="button"
+																	(click)="showPublicKeyModal(member)"
+																>
+																	@if (member?.publicKey) {
+																		<i class="fa fa-key" style="color: darkgreen"></i>
+																	}
+																	@if (!member?.publicKey) {
+																		<i class="fa fa-key" style="color: darkred"></i>
+																	}
+																	Public Key
+																</button>
+															</div>
+														</td>
+													}
+												</tr>
+											}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						}
+					</div>
 				</div>
-
-				<div class="card-body" *ngIf="project_members_loaded">
-					<div
-						class="alert alert-info"
-						*ngIf="project_application.migrate_to_simple_vm || project_application.migrated_simple_vm_resources"
-					>
-						<strong>Please note:</strong>
-						<p>
-							This project has been migrated to the new platform. The changes you make here will be synchronised.
-							However, this is not instantaneous and it may take a few moments for the changes to be propagated to the
-							new platform.
-						</p>
-					</div>
-					<div *ngIf="project_application.user_is_admin || is_vo_admin" class="btn-group col-12">
-						<button
-							(click)="showAddMemberModal()"
-							class="btn btn-outline-success"
-							data-test-id="add_member_btn_modal"
-							id="add_member_btn_modal"
-							style="margin-bottom: 5px"
-							type="button"
-						>
-							<i class="fa fa-plus"></i>&nbsp; Add Member
-						</button>
-
-						<button
-							(click)="showUserApplicationModal()"
-							class="btn btn-outline-primary"
-							style="margin-bottom: 5px"
-							type="button"
-						>
-							<i class="far fa-list-alt"></i>&nbsp; Member Applications
-							<c-badge
-								color="{{
-									project_application?.project_application_member_applications?.length > 0 ? 'success' : 'dark'
-								}}"
-							>
-								{{ project_application?.project_application_member_applications?.length }}
-							</c-badge>
-						</button>
-
-						<button
-							(click)="showConfirmationModalRemoveMembers()"
-							[disabled]="checked_member_list.length <= 0 || remove_members_clicked"
-							class="btn btn-outline-danger"
-							style="margin-bottom: 5px"
-							type="button"
-						>
-							<i class="fas fa-trash-alt"></i>&nbsp;Remove Members
-						</button>
-					</div>
-
-					<div *ngIf="!project_application.user_is_admin && !is_vo_admin" class="col-12 alert alert-primary">
-						<span
-							><strong>Notice: </strong>Only project administrators are able to remove or add project members and change
-							the status of members.</span
-						>
-					</div>
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th *ngIf="project_application.user_is_admin || is_vo_admin">
-										<input
-											(change)="setAllMembersChecked()"
-											[checked]="allSet"
-											id="selectAll"
-											name="selectAll"
-											type="checkbox"
-										/>
-									</th>
-									<th>User ID</th>
-									<th>Member ID</th>
-									<th
-										*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.show_member_names"
-									>
-										Full Name <span *ngIf="!project_application?.show_member_names">(hidden)</span>
-									</th>
-									<th *ngIf="project_application.user_is_admin || is_vo_admin">Actions</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let member of project_members" [ngStyle]="{ color: member.isAdmin ? '#005AA9' : 'black' }">
-									<td *ngIf="project_application.user_is_admin || is_vo_admin">
-										<input
-											(change)="checkUnCheckMember(member)"
-											*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
-											[checked]="isMemberChecked(member)"
-											[disabled]="member.isPi"
-											id="{{ member.userId }}"
-											name="member.userId"
-											type="checkbox"
-										/>
-									</td>
-									<td>{{ member.userId }}</td>
-									<td>{{ member.memberId }}</td>
-									<td
-										*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.show_member_names"
-									>
-										{{ member.userName }}
-										<span *ngIf="member.isAdmin" class="badge badge-pill bg-info-blue">ADMIN</span>
-										<span *ngIf="member.isPi" class="badge badge-pill bg-danger">PI</span>
-										<span *ngIf="!member.isPi && !member.isAdmin" class="badge badge-pill bg-warning">MEMBER</span>
-									</td>
-									<td *ngIf="!(project_application.user_is_pi || project_application.user_is_admin || is_vo_admin)">
-										<div class="btn-group" role="group">
-											<button
-												[disabled]="!member?.publicKey"
-												class="btn btn-outline-secondary"
-												style="margin: 2px"
-												type="button"
-												(click)="showPublicKeyModal(member)"
-											>
-												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>
-												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>Public Key
-											</button>
-										</div>
-									</td>
-									<td *ngIf="project_application.user_is_pi || project_application.user_is_admin || is_vo_admin">
-										<div class="btn-group" role="group">
-											<button
-												(click)="promoteAdmin(member.userId, member.userName)"
-												*ngIf="!member.isAdmin"
-												class="btn btn-primary"
-												style="margin: 2px"
-												type="button"
-											>
-												<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
-											</button>
-
-											<button
-												(click)="removeAdmin(member.userId, member.userName)"
-												*ngIf="
-													member.isAdmin && userinfo?.MemberId.toString() !== member.memberId.toString() && !member.isPi
-												"
-												[disabled]="member?.isPi"
-												class="btn btn-primary"
-												style="margin: 2px"
-												type="button"
-											>
-												<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
-											</button>
-											<button
-												(click)="showConfirmationModalRemoveMember(member)"
-												*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
-												[id]="'remove_member_' + member.userName"
-												[disabled]="member?.isPi"
-												class="btn btn-danger"
-												style="margin: 2px"
-												type="button"
-											>
-												<i class="fas fa-trash-alt"></i>&nbsp; Remove member
-											</button>
-											<button
-												[disabled]="!member?.publicKey"
-												class="btn btn-outline-secondary"
-												style="margin: 2px"
-												type="button"
-												(click)="showPublicKeyModal(member)"
-											>
-												<i *ngIf="member?.publicKey" class="fa fa-key" style="color: darkgreen"></i>
-												<i *ngIf="!member?.publicKey" class="fa fa-key" style="color: darkred"></i>Public Key
-											</button>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+			}
 		</div>
-	</div>
-	<div class="row">
-		<div
-			*ngIf="
+		<div class="row">
+			@if (
 				project_application &&
 				(project_application?.user_is_pi || project_application?.user_is_admin) &&
 				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
 				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
 				!(project_application | hasstatusinlist: Application_States.SUBMITTED) &&
 				!(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION)
-			"
-			class="col"
-		>
-			<div class="card" id="publicInformationCard">
-				<div class="card-header"><i class="fas fa-bullhorn"></i> Public project information</div>
-
-				<div class="card-body">
-					<h5 class="card-title">
-						<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank">
-							Digital object identifier (DOI)</a
-						>
-					</h5>
-					<div *ngIf="doiError" class="alert alert-danger">{{ doiError }}</div>
-					<div class="row">
-						<div class="col-10">
-							<input
-								#doiInput
-								[(ngModel)]="newDoi"
-								[disabled]="disabledDoiInput"
-								id="doi_input_field"
-								pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+"
-								placeholder="e.g. 10.1000/182"
-								style="width: 100%"
-								type="text"
-							/>
+			) {
+				<div class="col">
+					<div class="card" id="publicInformationCard">
+						<div class="card-header"><i class="fas fa-bullhorn"></i> Public project information</div>
+						<div class="card-body">
+							<h5 class="card-title">
+								<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank">
+									Digital object identifier (DOI)</a
+								>
+							</h5>
+							@if (doiError) {
+								<div class="alert alert-danger">{{ doiError }}</div>
+							}
+							<div class="row">
+								<div class="col-10">
+									<input
+										#doiInput
+										[(ngModel)]="newDoi"
+										[disabled]="disabledDoiInput"
+										id="doi_input_field"
+										pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+"
+										placeholder="e.g. 10.1000/182"
+										style="width: 100%"
+										type="text"
+									/>
+								</div>
+								<div class="col-2">
+									<button
+										(click)="addDoi()"
+										[disabled]="!doiInput.validity.valid || disabledDoiInput"
+										class="btn btn-success"
+										id="add_doi_btn"
+										type="button"
+									>
+										<i class="fa fa-plus"></i>&nbsp;
+									</button>
+								</div>
+							</div>
+							<div class="table-responsive">
+								<table class="table">
+									<tbody>
+										@for (doi of dois; track doi) {
+											<tr>
+												<td>
+													<a [href]="'https://doi.org/' + doi.identifier" rel="noopener noreferrer" target="_blank">{{
+														doi.identifier
+													}}</a>
+												</td>
+												<td>
+													<button (click)="deleteDoi(doi)" class="btn btn-danger" type="button">
+														<i class="fas fa-trash-alt"></i>&nbsp;
+													</button>
+												</td>
+											</tr>
+										}
+										<tr>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="alert alert-info">
+								<p>
+									If you are unsure whether a DOI has already been entered (for example, in a previous or expired
+									project):
+									<strong>Duplicate entries are recognized by our system and do not pose a problem.</strong>
+									In addition to the public page, a
+									<a href="{{ PUBLIC_DOI_ENDPOINT }}" rel="noopener noreferrer" class="alert-link" target="_blank"
+										>public endpoint</a
+									>
+									is accessible, which returns all registered DOIs and the associated information.
+								</p>
+								<hr />
+								<p>
+									Please note that <strong>the publications entered on this page are listed publicly</strong>
+									on
+									<a href="{{ PUBLICATIONS_LINK }}" rel="noopener noreferrer" class="alert-link" target="_blank"
+										>this page on our website</a
+									>. We kindly ask you to list your publications which have been created during your work in the de.NBI
+									Cloud and/or this project.
+								</p>
+							</div>
 						</div>
-						<div class="col-2">
-							<button
-								(click)="addDoi()"
-								[disabled]="!doiInput.validity.valid || disabledDoiInput"
-								class="btn btn-success"
-								id="add_doi_btn"
-								type="button"
-							>
-								<i class="fa fa-plus"></i>&nbsp;
-							</button>
-						</div>
-					</div>
-					<div class="table-responsive">
-						<table class="table">
-							<tbody>
-								<ng-container *ngFor="let doi of dois">
-									<tr>
-										<td>
-											<a [href]="'https://doi.org/' + doi.identifier" rel="noopener noreferrer" target="_blank">{{
-												doi.identifier
-											}}</a>
-										</td>
-
-										<td>
-											<button (click)="deleteDoi(doi)" class="btn btn-danger" type="button">
-												<i class="fas fa-trash-alt"></i>&nbsp;
-											</button>
-										</td>
-									</tr>
-								</ng-container>
-
-								<tr>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="alert alert-info">
-						<p>
-							If you are unsure whether a DOI has already been entered (for example, in a previous or expired project):
-							<strong>Duplicate entries are recognized by our system and do not pose a problem.</strong>
-							In addition to the public page, a
-							<a href="{{ PUBLIC_DOI_ENDPOINT }}" rel="noopener noreferrer" class="alert-link" target="_blank"
-								>public endpoint</a
-							>
-							is accessible, which returns all registered DOIs and the associated information.
-						</p>
 						<hr />
-						<p>
-							Please note that <strong>the publications entered on this page are listed publicly</strong>
-							on
-							<a href="{{ PUBLICATIONS_LINK }}" rel="noopener noreferrer" class="alert-link" target="_blank"
-								>this page on our website</a
-							>. We kindly ask you to list your publications which have been created during your work in the de.NBI
-							Cloud and/or this project.
-						</p>
+						@if (project_application && isLoaded && project_application.isApproved()) {
+							<div id="testimonialForm">
+								<app-testimonial-form
+									[title]="project_application?.project_application_name"
+									[contributor]="project_application?.project_application_pi?.username"
+									[institution]="project_application?.project_application_institute"
+									[workgroup]="project_application?.project_application_workgroup"
+									[simple_vm]="!project_application?.project_application_openstack_project"
+									[project_application]="project_application"
+									[testimonialSent]="project_application.project_application_testimonial_submitted"
+								></app-testimonial-form>
+							</div>
+						}
 					</div>
 				</div>
-				<hr />
-				<div id="testimonialForm" *ngIf="project_application && isLoaded && project_application.isApproved()">
-					<app-testimonial-form
-						[title]="project_application?.project_application_name"
-						[contributor]="project_application?.project_application_pi?.username"
-						[institution]="project_application?.project_application_institute"
-						[workgroup]="project_application?.project_application_workgroup"
-						[simple_vm]="!project_application?.project_application_openstack_project"
-						[project_application]="project_application"
-						[testimonialSent]="project_application.project_application_testimonial_submitted"
-					></app-testimonial-form>
-				</div>
-			</div>
+			}
 		</div>
-	</div>
-
-	<div class="row">
-		<div
-			*ngIf="
+		<div class="row">
+			@if (
 				project_application &&
 				project_application.credits_allowed &&
 				((project_application | hasstatusinlist: Application_States.APPROVED) ||
 					(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
 					(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED))
-			"
-			class="col"
-		>
-			<div class="card" style="">
-				<div class="card-header">
-					<i class="fas fa-align-justify"></i> Credit Usage history of
-					{{ project_application?.project_application_shortname }}
-				</div>
-				<div class="card-body justify-content-center align-items-center">
-					<div class="alert alert-info">
-						In the chart below we show you up to 25 equidistant data points. This may result in an unexpected looking
-						graph.
-					</div>
-					<div *ngIf="!creditHistoryLoaded" id="overlay">
-						<div class="w-100 d-flex justify-content-center align-items-center">
-							<div class="spinner"></div>
+			) {
+				<div class="col">
+					<div class="card" style="">
+						<div class="card-header">
+							<i class="fas fa-align-justify"></i> Credit Usage history of
+							{{ project_application?.project_application_shortname }}
+						</div>
+						<div class="card-body justify-content-center align-items-center">
+							<div class="alert alert-info">
+								In the chart below we show you up to 25 equidistant data points. This may result in an unexpected
+								looking graph.
+							</div>
+							@if (!creditHistoryLoaded) {
+								<div id="overlay">
+									<div class="w-100 d-flex justify-content-center align-items-center">
+										<div class="spinner"></div>
+									</div>
+								</div>
+							}
+							<canvas #creditsChart id="creditsChart"></canvas>
 						</div>
 					</div>
-					<canvas #creditsChart id="creditsChart"></canvas>
 				</div>
-			</div>
+			}
 		</div>
 	</div>
-</div>
+}

@@ -1,5 +1,6 @@
 // Here you can add other styles
 @use "sass:math";
+@use 'ngx-scrollbar' as scrollbar;
 
 //@import "../node_modules/bootstrap/scss/bootstrap";
 
@@ -311,6 +312,15 @@ $slight_danger_persian_red: #CA3433;
 .sidebar .nav-item-maintenance .nav-link .nav-icon {
     color: $deNBI_white;
 
+}
+
+// TODO: scrollbar
+:root {
+    @include scrollbar.ng-scrollbar-overrides((
+        track-color: $deNBI_disabled,
+        thumb-color: $deNBI_lightgrey,
+        track-thickness: 4px,
+    ))
 }
 
 

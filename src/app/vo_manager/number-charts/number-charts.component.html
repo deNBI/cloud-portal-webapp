@@ -9,24 +9,23 @@
 				<div id="projectNumbersBarChart" [class.hidden]="!showProjectNumbersBarChart"></div>
 				<div id="projectNumbersAreaChart" [class.hidden]="!showProjectNumbersAreaChart"></div>
 				<div class="btn-group">
-					<button
-						class="btn btn-outline-primary"
-						*ngIf="showProjectNumbersBarChart"
-						(click)="downloadAsPNG('projectNumbersBarChart', 'projectNumbers')"
-					>
-						Download as PNG
-					</button>
-					<button
-						class="btn btn-outline-primary"
-						*ngIf="showProjectNumbersAreaChart"
-						(click)="downloadAsPNG('projectNumbersAreaChart', 'projectNumbers')"
-					>
-						Download as PNG
-					</button>
+					@if (showProjectNumbersBarChart) {
+						<button class="btn btn-outline-primary" (click)="downloadAsPNG('projectNumbersBarChart', 'projectNumbers')">
+							Download as PNG
+						</button>
+					}
+					@if (showProjectNumbersAreaChart) {
+						<button
+							class="btn btn-outline-primary"
+							(click)="downloadAsPNG('projectNumbersAreaChart', 'projectNumbers')"
+						>
+							Download as PNG
+						</button>
+					}
 					<!--<button class="btn btn-outline-primary"
-                            (click)="downloadAsPDF('projectNumbersSVG', 'projectNumbers')">
-                      Download as PDF
-                    </button>-->
+          (click)="downloadAsPDF('projectNumbersSVG', 'projectNumbers')">
+          Download as PDF
+        </button>-->
 					<button class="btn btn-outline-primary" (click)="toggleGraph('projects')">
 						{{ !showProjectNumbersAreaChart ? 'show as area chart' : 'show as bar chart' }}
 					</button>
@@ -43,24 +42,20 @@
 				<div id="ramBarChart" [class.hidden]="!showRamBarChart"></div>
 				<div id="ramAreaChart" [class.hidden]="!showRamAreChart"></div>
 				<div class="btn-group">
-					<button
-						class="btn btn-outline-primary"
-						*ngIf="showRamBarChart"
-						(click)="downloadAsPNG('ramBarChart', 'resourcesRamNumbers')"
-					>
-						Download as PNG
-					</button>
-					<button
-						class="btn btn-outline-primary"
-						*ngIf="showRamAreChart"
-						(click)="downloadAsPNG('ramAreaChart', 'resourcesRamNumbers')"
-					>
-						Download as PNG
-					</button>
+					@if (showRamBarChart) {
+						<button class="btn btn-outline-primary" (click)="downloadAsPNG('ramBarChart', 'resourcesRamNumbers')">
+							Download as PNG
+						</button>
+					}
+					@if (showRamAreChart) {
+						<button class="btn btn-outline-primary" (click)="downloadAsPNG('ramAreaChart', 'resourcesRamNumbers')">
+							Download as PNG
+						</button>
+					}
 					<!--<button class="btn btn-outline-primary"
-                            (click)="downloadAsPDF('ramNumbersSVG', 'resourcesRamNumbers')">
-                      Download as PDF
-                    </button>-->
+        (click)="downloadAsPDF('ramNumbersSVG', 'resourcesRamNumbers')">
+        Download as PDF
+      </button>-->
 					<button class="btn btn-outline-primary" (click)="toggleGraph('ram')">
 						{{ !showRamAreChart ? 'show as area chart' : 'show as bar chart' }}
 					</button>
@@ -75,24 +70,20 @@
 				<div id="coresAreaChart" [class.hidden]="!showCoresAreChart"></div>
 
 				<div class="btn-group">
-					<button
-						class="btn btn-outline-primary"
-						*ngIf="showCoresBarChart"
-						(click)="downloadAsPNG('coresBarChart', 'resourcesCoresNumbers')"
-					>
-						Download as PNG
-					</button>
-					<button
-						class="btn btn-outline-primary"
-						*ngIf="showCoresAreChart"
-						(click)="downloadAsPNG('coresAreaChart', 'resourcesCoresNumbers')"
-					>
-						Download as PNG
-					</button>
+					@if (showCoresBarChart) {
+						<button class="btn btn-outline-primary" (click)="downloadAsPNG('coresBarChart', 'resourcesCoresNumbers')">
+							Download as PNG
+						</button>
+					}
+					@if (showCoresAreChart) {
+						<button class="btn btn-outline-primary" (click)="downloadAsPNG('coresAreaChart', 'resourcesCoresNumbers')">
+							Download as PNG
+						</button>
+					}
 					<!--<button class="btn btn-outline-primary"
-                            (click)="downloadAsPDF('coresNumbersSVG', 'resourcesCoresNumbers')">
-                      Download as PDF
-                    </button>-->
+      (click)="downloadAsPDF('coresNumbersSVG', 'resourcesCoresNumbers')">
+      Download as PDF
+    </button>-->
 					<button class="btn btn-outline-primary" (click)="toggleGraph('cores')">
 						{{ !showCoresAreChart ? 'show as area chart' : 'show as bar chart' }}
 					</button>

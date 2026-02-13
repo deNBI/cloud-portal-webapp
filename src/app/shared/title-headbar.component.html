@@ -1,11 +1,11 @@
 <header class="header header-left" id="denbiBrand" [ngClass]="{ 'header-left-minimized': navbar_minimized }">
 	<a class="navbar-brand" href="#/">
-		<img *ngIf="!navbar_minimized" src="{{ brand_logo }}" />
-		<img
-			*ngIf="navbar_minimized"
-			[ngClass]="{ 'navbar-brand-minimized': navbar_minimized }"
-			src="{{ brand_logo_minimized }}"
-		/>
+		@if (!navbar_minimized) {
+			<img src="{{ brand_logo }}" />
+		}
+		@if (navbar_minimized) {
+			<img [ngClass]="{ 'navbar-brand-minimized': navbar_minimized }" src="{{ brand_logo_minimized }}" />
+		}
 	</a>
 </header>
 <header

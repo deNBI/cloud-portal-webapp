@@ -21,7 +21,7 @@ import { CreditsService } from '../api-connector/credits.service'
 import { NotificationModalComponent } from '../shared/modal/notification-modal'
 import { ConfirmationActions } from '../shared/modal/confirmation_actions'
 import { ApplicationTabStates } from '../shared/enums/application-tab-states'
-import { NgIf, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { ApplicationListComponent } from './application-list/application-list.component'
 
 /**
@@ -40,7 +40,7 @@ import { ApplicationListComponent } from './application-list/application-list.co
 		FlavorService,
 		CreditsService
 	],
-	imports: [NgIf, NgClass, ApplicationListComponent]
+	imports: [NgClass, ApplicationListComponent]
 })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 	title: string = 'Application Overview'
@@ -171,11 +171,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			this.isLoaded_userApplication = true
 		}
 		for (const application of applications) {
-			console.log('before')
-			console.log(application)
 			const newApplication = new Application(application)
-			console.log('after')
-			console.log(newApplication)
 
 			this.all_applications.push(newApplication)
 		}

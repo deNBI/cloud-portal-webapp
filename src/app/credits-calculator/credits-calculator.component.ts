@@ -17,7 +17,7 @@ import { GroupService } from '../api-connector/group.service'
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration'
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class'
 import { ResourceWeight } from './resource-weights.model/resource-weights.model'
-import { NgIf, NgFor, NgClass, DatePipe } from '@angular/common'
+import { NgClass, DatePipe } from '@angular/common'
 import { AlertModule } from 'ngx-bootstrap/alert'
 import { AccordionModule } from 'ngx-bootstrap/accordion'
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
@@ -29,10 +29,8 @@ import { FloorIntegerPipe } from '../pipe-module/pipes/floor-integer.pipe'
 	styleUrls: ['./credits-calculator.component.scss'],
 	providers: [FacilityService, FlavorService, CreditsService, GroupService],
 	imports: [
-		NgIf,
 		AlertModule,
 		FormsModule,
-		NgFor,
 		AccordionModule,
 		NgClass,
 		ReactiveFormsModule,

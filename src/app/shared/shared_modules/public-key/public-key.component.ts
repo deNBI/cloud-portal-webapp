@@ -10,7 +10,7 @@ import { BlacklistedResponse } from '../../../api-connector/response-interfaces'
 import { GeneratePublicKeyModalComponent } from './generate-public-key-modal/generate-public-key-modal.component'
 import { SetPublicKeyModalComponent } from './set-public-key-modal/set-public-key-modal.component'
 import { AlertModule } from 'ngx-bootstrap/alert'
-import { NgIf } from '@angular/common'
+
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 
 /**
@@ -21,7 +21,7 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 	templateUrl: './public-key.component.html',
 	styleUrls: ['./public-key.component.scss'],
 	providers: [ApiSettings, KeyService],
-	imports: [AlertModule, NgIf, NgbTooltip]
+	imports: [AlertModule, NgbTooltip]
 })
 export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 	WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS
