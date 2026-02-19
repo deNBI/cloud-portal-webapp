@@ -8,6 +8,8 @@
     "compodoc": "./node_modules/.bin/compodoc -p src/tsconfig.app.json",
     "prepare": "husky"
   },
+	"overrides": {
+	},
   "private": true,
   "dependencies": {
     "@angular-eslint/eslint-plugin": "21.2.0",
