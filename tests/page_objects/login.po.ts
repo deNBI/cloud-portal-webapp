@@ -12,7 +12,7 @@ export class LoginPagePlaywright {
 
 	ACCEPT_ALL_COOKIES = 'Reject Unnecessary Cookies';
 	REGISTER_TEST_COMMUNITY ='Register into Life Science Community - Test Environment'
-	OIDC_ACCESS_DENIED='https://login.elixir-czech.org/oidc/unauthorizedEnvVosGroups'
+	OIDC_ACCESS_DENIED='https://login.aai.lifescience-ri.eu/oidc/unauthorizedEnvVosGroups'
 	SUBMIT_LIFESCIENCE_TEST_URL="https://signup.aai.lifescience-ri.eu/fed/registrar/?vo=lifescience_test"
 
 	readonly page: Page;
@@ -78,7 +78,7 @@ export class LoginPagePlaywright {
 
 		await Util.consoleLogCurrentUrl(this.page);
 
-		await this.authorizeAccess();
+		//await this.authorizeAccess();
 		await this.skipElixirTestWarning();
 		await this.skipAccessDenied()
 
