@@ -84,7 +84,7 @@ export class LoginPagePlaywright {
 
 		await this.giveConsent();
 		await Util.consoleLogCurrentUrl(this.page);
-		//	await this.skipElixirTestWarning()
+		await this.skipElixirTestWarning()
 		await this.page.waitForURL(`**/userinfo`);
 		await Util.consoleLogCurrentUrl(this.page);
 	}
