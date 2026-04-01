@@ -123,7 +123,7 @@ export class LoginPagePlaywright {
 
 			await newPage.waitForSelector(`text=Submit`, { timeout: 10000 }); // Wait for the button to appear
 
-			await newPage.locator(`text=Apply for Membership`).click();
+			await newPage.getByRole('button', { name: 'Apply for Membership' }).click();
 			console.log("Submitted")
 		} catch (error) {
 			console.log(`Didn't load access denied: ${error}`);
