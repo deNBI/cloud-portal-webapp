@@ -62,7 +62,6 @@
     "ngx-owl-carousel-o": "21.0.0",
     "ngx-scrollbar": "19.1.4",
     "postcss-loader": "8.2.1",
-    "postcss-url": "^10.0.0",
     "rxjs": "7.8.2",
     "save-svg-as-png": "1.4.17",
     "slash": "^5.1.0",
