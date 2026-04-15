@@ -47,7 +47,7 @@
     "dompurify": "^3.3.1",
     "export-to-csv": "1.4.0",
     "file-saver": "2.0.5",
-    "follow-redirects": "1.15.11",
+    "follow-redirects": "1.16.0",
     "html2canvas": "1.4.1",
     "is-promise": "4.0.0",
     "jsnlog": "2.30.0",
