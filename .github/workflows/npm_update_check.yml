@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     - run: npm install
-    - uses: MeilCli/npm-update-check-action@v4
+    - uses: MeilCli/npm-update-check-action@v5
       id: outdated
 
     - name: Rocket.Chat Notification
