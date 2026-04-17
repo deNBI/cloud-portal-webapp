@@ -10,6 +10,11 @@
 		<div class="container-fluid">
 			<!-- Begin Card Body -->
 			<div class="card-body">
+				<div class="row">
+					<div class="col-auto mx-auto p-2 m-1">
+						<h5 class="text-center">Compute Projects</h5>
+					</div>
+				</div>
 				<!-- Start Row with Project Types -->
 				<div id="initialrow" class="row">
 					<!-- SimpleVM -->
@@ -205,14 +210,14 @@
 								</button>
 							</a>
 						</div>
-							<!-- Logo -->
-							<div class="row justify-content-center my-4">
-								<div style="height: 100px; width: 100px" class="img_bigger">
-									<figure style="margin: 5px">
-										<img src="{{ kubernetes_logo_border }}" alt="Kubernetes" />
-									</figure>
-								</div>
+						<!-- Logo -->
+						<div class="row justify-content-center my-4">
+							<div style="height: 100px; width: 100px" class="img_bigger">
+								<figure style="margin: 5px">
+									<img src="{{ kubernetes_logo_border }}" alt="Kubernetes" />
+								</figure>
 							</div>
+						</div>
 						@if (projectTypeInformationLoaded && !errorOnLoad && projectTypes['Kubernetes']) {
 							<div>
 								@for (feat of projectTypes['Kubernetes'].features; track feat.feature_title) {
@@ -408,6 +413,46 @@
 
 				<!-- End Card Body -->
 			</div>
+
+			@if (is_vo_admin) {
+				<div class="card-body">
+					<div class="row">
+						<div class="col-auto mx-auto p-2 m-1">
+							<h5 class="text-center">Storage Projects</h5>
+						</div>
+					</div>
+					<!-- Start Row with Project Types -->
+					<div id="storagerow" class="row">
+						<!-- Storage -->
+						<div class="col-lg-4 mx-auto col-12">
+							<div class="text-center">
+								<a [routerLink]="['/applications/newStorageApplication']">
+									<button
+										data-test-id="newStorageProjectBtn"
+										id="newStorageProjectBtn"
+										class="btn btn-outline-secondary"
+									>
+										New Storage Application
+									</button>
+								</a>
+							</div>
+							<!-- Logo -->
+							<div class="row justify-content-center my-4">
+								<div style="height: 100px; width: 100px" class="img_bigger">
+									<i class="fas fa-database" style="font-size: 100px"></i>
+								</div>
+							</div>
+							<div class="row">
+								The Storage project type allows you to get access to S3-Storage, independent of other project types you
+								are using.
+							</div>
+							<br />
+							<!-- End div Storage-->
+						</div>
+					</div>
+				</div>
+			}
+
 			<div class="row justify-content-center">
 				<div class="col col-auto my-2">
 					<h6>Compare all project types</h6>

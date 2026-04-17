@@ -76,6 +76,7 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
 	@Input() openstack_project: boolean = false
 	@Input() simple_vm_project: boolean = false
+	@Input() storage_project: boolean = false
 	@Input() kubernetes_access: boolean = false
 	@Input() title: string
 	@Input() application: Application
