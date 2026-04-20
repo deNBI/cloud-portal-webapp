@@ -471,7 +471,10 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 					this.approveCreditExtension()
 				}
 				if (action === ConfirmationActions.APPROVE_APPLICATION) {
-					if (this.application.project_application_openstack_project) {
+					if (
+						this.application.project_application_openstack_project ||
+						this.application.project_application_storage_project
+					) {
 						this.createOpenStackProjectGroup()
 					}
 				}

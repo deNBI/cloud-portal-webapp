@@ -68,7 +68,8 @@
 					</button>
 					@if (
 						(application | hasstatusinlist: Application_States.SUBMITTED) &&
-						!application?.project_application_openstack_project
+						!application?.project_application_openstack_project &&
+						!application.project_application_storage_project
 					) {
 						<button
 							style="margin: 2px"
@@ -161,8 +162,9 @@
 						</button>
 					}
 					@if (
-						(application | hasstatusinlist: Application_States.SUBMITTED) &&
-						application?.project_application_openstack_project
+						((application | hasstatusinlist: Application_States.SUBMITTED) &&
+							application?.project_application_openstack_project) ||
+						application?.project_application_storage_project
 					) {
 						<button
 							style="margin: 2px"

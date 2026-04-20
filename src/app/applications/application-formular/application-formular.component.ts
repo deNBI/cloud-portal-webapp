@@ -287,6 +287,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			}
 			this.application.project_application_volume_counter = 0
 			this.application.project_application_volume_limit = 0
+			this.application.project_application_storage_project = this.storage_project
+			this.application.project_application_number_of_buckets = 1
 		}
 		this.isLoaded = true
 	}
