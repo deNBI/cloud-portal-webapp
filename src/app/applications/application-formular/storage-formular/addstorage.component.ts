@@ -10,7 +10,6 @@ import { ApplicationFormularComponent } from '../application-formular.component'
 	imports: [ApplicationFormularComponent]
 })
 export class AddStorageComponent {
-	storage_application: boolean = true
-	simplevm_application: boolean = false
+	storage_project: boolean = true
 	title: string = 'New Storage Application'
 }

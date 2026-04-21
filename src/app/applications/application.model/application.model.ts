@@ -27,7 +27,6 @@ export class Application {
 	project_application_object_storage: number
 	// Storage Project
 	project_application_number_of_buckets: number
-	project_application_number_of_objects: number
 	//End Storage Project
 	project_application_description: string
 	project_application_comment: string

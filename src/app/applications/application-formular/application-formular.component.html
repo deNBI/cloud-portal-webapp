@@ -6,7 +6,6 @@
 	<div class="animated fadeIn">
 		<div class="row">
 			<div class="col-md-12">
-				<!--<h1>SimpleVM Application</h1>-->
 				<div class="card" style="">
 					<div class="card-header">
 						<strong>{{ title }}</strong>
@@ -571,6 +570,7 @@
 									</div>
 								</div>
 							}
+
 							@if (openstack_project || storage_project) {
 								<div class="form-group row">
 									<label class="col-md-4 form-control-label" for="id_project_application_object_storage"
@@ -625,7 +625,6 @@
 												[(ngModel)]="application.project_application_number_of_buckets"
 												min="0"
 												step="1"
-												value="1"
 												type="number"
 												appInteger
 												appMinAmount="0"
@@ -1905,7 +1904,11 @@
 											form.invalid ||
 											application?.project_application_edam_terms.length === 0 ||
 											application?.project_application_edam_terms.length > 10 ||
-											(application?.flavors.length === 0 && !application?.project_application_openstack_project) ||
+											(application?.flavors.length === 0 &&
+												!(
+													application?.project_application_openstack_project ||
+													application?.project_application_storage_project
+												)) ||
 											(!application?.dissemination?.isPlatformSelected() &&
 												application?.project_application_report_allowed)
 										"
@@ -2448,16 +2451,18 @@
 									</div>
 								</td>
 							</tr>
-							<tr>
-								<td>
-									<strong>Number of cores in total: {{ totalNumberOfCores.toString() }}</strong>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Value of RAM in total: {{ totalRAM.toString() }} GBs</strong>
-								</td>
-							</tr>
+							@if (!application?.project_application_storage_project) {
+								<tr>
+									<td>
+										<strong>Number of cores in total: {{ totalNumberOfCores.toString() }}</strong>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<strong>Value of RAM in total: {{ totalRAM.toString() }} GBs</strong>
+									</td>
+								</tr>
+							}
 							@if (
 								!application?.project_application_pi_approved &&
 								!is_validation &&

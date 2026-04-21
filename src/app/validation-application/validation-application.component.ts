@@ -22,7 +22,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 	isLoadedApplication: boolean = false
 	hash: string
 	validated: boolean = false
-	title: string
+	title: string = 'Application Validation'
 	/**
 	 * Total number of cores.
 	 *
@@ -56,6 +56,8 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 					this.application = new Application(app)
 					if (this.application.project_application_openstack_project) {
 						this.title = 'Cloud Project Application Validation'
+					} else if (this.application.project_application_storage_project) {
+						this.title = 'Storage Project Application Validation'
 					} else {
 						this.title = 'Simple VM Project Application Validation'
 					}

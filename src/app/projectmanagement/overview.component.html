@@ -216,6 +216,17 @@
 													<img class="po-logo" src="{{ openstack_logo }}" />
 												</a>
 											}
+										} @else if (project_application?.project_application_storage_project) {
+											<a
+												data-toggle="tooltip"
+												rel="noopener noreferrer"
+												style="font-size: 1.5em"
+												target="_blank"
+												class="mx-2"
+												title="This is a Storage project"
+											>
+												<i class="fas fa-database"></i>
+											</a>
 										} @else {
 											<a
 												data-toggle="tooltip"
