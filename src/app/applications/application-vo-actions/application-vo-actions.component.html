@@ -16,7 +16,13 @@
 			>
 				<option [ngValue]="undefined" selected>no center selected</option>
 				@for (computeCenter of computeCenters; track computeCenter) {
-					@if (computeCenter.hasClient || application?.project_application_openstack_project) {
+					@if (
+						(!application?.project_application_openstack_project &&
+							!application?.project_application_storage_project &&
+							computeCenter.hasClient) ||
+						application?.project_application_openstack_project ||
+						(application?.project_application_storage_project && computeCenter.isStorage)
+					) {
 						<option label="{{ computeCenter.Name }}" [ngValue]="computeCenter" [id]="computeCenter.Name">
 							{{ computeCenter.Name }}
 						</option>
