@@ -14,6 +14,7 @@ import { is_vo } from '../../shared/globalvar'
 import { ClientLimitsComponent } from './modals/client-limits..component'
 import { NgClass } from '@angular/common'
 import { FormsModule } from '@angular/forms'
+import { ComputeCenterResponse } from 'app/shared/shared_modules/interfaces/computecenter-response.interface'
 /**
  * Client component.
  */
@@ -102,13 +103,13 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 	 */
 	getComputeCenters(): void {
 		this.subscription.add(
-			this.facilityService.getComputeCenters().subscribe((result: any): void => {
+			this.facilityService.getComputeCenters().subscribe((result: ComputeCenterResponse[]): void => {
 				for (const cc of result) {
 					const compute_center: ComputecenterComponent = new ComputecenterComponent(
-						cc['compute_center_facility_id'],
-						cc['compute_center_name'],
-						cc['compute_center_login'],
-						cc['compute_center_support_mail']
+						cc.compute_center_facility_id,
+						cc.compute_center_name,
+						cc.compute_center_login,
+						cc.compute_center_support_mail
 					)
 					this.computeCenters.push(compute_center)
 				}

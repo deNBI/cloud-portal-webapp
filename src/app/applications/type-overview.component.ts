@@ -21,6 +21,7 @@ export class TypeOverviewComponent implements OnInit {
 	openstack_color: string = '#ed1944'
 	simplevm_color: string = '#00adef'
 	kubernetes_color: string = '#326ce5'
+	activeTab: string = 'compute'
 	is_vo_admin: boolean = is_vo
 
 	simpleVM_logo_link: string

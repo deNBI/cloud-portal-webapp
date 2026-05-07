@@ -30,254 +30,195 @@
 			</h6>
 		</div>
 
-		<accordion>
-			@for (flavorType of flavorTypes; track flavorType; let isFirst = $first) {
-				@if (
-					((project?.project_application_openstack_project || shown_flavors[flavorType.long_name]) &&
-						(project | hasFlavorTypeOrIsNotCustom: flavorType)) ||
-					adjustment
-				) {
-					<accordion-group [isOpen]="isFirst" #groupval>
-						<div accordion-heading style="width: 100%; cursor: pointer">
-							{{ flavorType.long_name }}
-							<i
-								class="pull-right float-end"
-								style="font-size: 25px"
-								[ngClass]="{ 'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen }"
-							>
-							</i>
-						</div>
-						@if (!flavorRetrievalInProgress) {
-							<div>
-								@for (flavor_name of getFlavorNamesByType(flavorType); track flavor_name) {
-									<div class="form-group row my-4 py-2">
-										<div class="col-4">
-											<label class="text-muted" for="{{ flavor_name }}_old">
-												<strong>{{ flavor_name }}</strong>
-												<br />
-												Number of cores:
-												<span id="{{ flavor_name }}_old_cores">{{
-													shown_flavors[flavorType.long_name][flavor_name][0].vcpus
-												}}</span>
-												<br />
-												RAM:
-												<span id="{{ flavor_name }}_old_ram">{{
-													shown_flavors[flavorType.long_name][flavor_name][0].ram_gib
-												}}</span>
-												GB
-												@if (project?.credits_allowed) {
-													<span>
-														<br />
-														Credits per hour:
-														<span id="{{ flavor_name }}_old_cph">{{
-															shown_flavors[flavorType.long_name][flavor_name][0].credits_costs_per_hour
-														}}</span>
-														CCs/h
-													</span>
-												}
-											</label>
-										</div>
-										@for (
-											flavor_instance of shown_flavors[flavorType.long_name][flavor_name];
-											track flavor_instance;
-											let i = $index
-										) {
-											<ng-container>
-												@if (flavor_instance.disabled) {
-													<div class="col-4">
-														<div class="input-group">
-															<input
-																class="form-control"
-																name="flavor_instance.name + '_old'"
-																id="{{ flavor_instance.name }}_old"
-																type="text"
-																value="{{ project | flavorCounter: flavor_instance }}"
-																placeholder="0"
-																[disabled]="flavor_instance.disabled || adjustment"
-																aria-describedby="{{ flavor_instance.name }}_old_help"
-															/>
-															<div class="input-group-append">
-																<span class="input-group-text"> VMs</span>
-															</div>
-														</div>
-														<div id="{{ flavor_instance.name }}_old_help" class="form-text text-muted">
-															Currently approved of this flavor
-														</div>
-													</div>
-												}
-												@if (!flavor_instance.disabled) {
-													<div class="col-4">
-														<div class="input-group">
-															<input
-																class="form-control"
-																[name]="adjustment ? flavor_instance.name + '_requested' : flavor_instance.name"
-																id="{{ flavor_instance.name }}"
-																type="number"
-																min="0"
-																[disabled]="adjustment"
-																step="1"
-																attr.data-test-id="{{ flavor_instance.type.shortcut + '_' + i }}"
-																placeholder="e.g 1"
-																[ngModel]="
-																	adjustment
-																		? (project.project_modification_request | flavorCounter: flavor_instance)
-																		: (temp_project_modification | flavorCounter: flavor_instance)
-																"
-																#name="ngModel"
-																(change)="checkFlavorPairs(flavor_instance, $event)"
-																[attr.appMinAmount]="adjustment ? null : 0"
-																[attr.appInteger]="adjustment ? null : true"
-																value="{{
-																	adjustment
-																		? (project.project_modification_request | flavorCounter: flavor_instance)
-																		: (temp_project_modification | flavorCounter: flavor_instance)
-																}}"
-																[attr.readonly]="flavor_instance.disabled || adjustment ? true : null"
-																aria-describedby="{{ flavor_instance.name }}_help"
-																[ngClass]="{
-																	'is-invalid': name?.invalid && !adjustment,
-																	'is-valid': name?.valid && !adjustment,
-																}"
-															/>
-															<div class="input-group-append">
-																<span class="input-group-text"> VMs</span>
-															</div>
-														</div>
-														@if (!adjustment) {
-															<div id="{{ flavor_instance.name }}_help" class="form-text text-muted">
-																Number of VMs you would like to run in the future
-															</div>
-														}
-														@if (adjustment) {
-															<div id="{{ flavor_instance.name }}_help" class="form-text text-muted">
-																Number of VMs the user would like to run in the future
-															</div>
-														}
-													</div>
-												}
-											</ng-container>
-										}
-										@if (adjustment) {
-											@if (shown_flavors[flavorType.long_name][flavor_name].length > 1) {
-												<div class="col-4"></div>
-											}
-											<div [ngClass]="shown_flavors[flavorType.long_name][flavor_name].length > 1 ? 'col-8' : 'col-4'">
-												<div class="input-group">
-													<input
-														class="form-control"
-														[name]="flavor_name + '_adjusted'"
-														id="{{ flavor_name }}_adjusted"
-														type="number"
-														min="0"
-														step="1"
-														attr.data-test-id="adjusted_{{ flavorType.shortcut + '_' + i }}"
-														placeholder="e.g 1"
-														[ngModel]="
-															adjusted_project_modification
-																| flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
-														"
-														#name="ngModel"
-														(change)="
-															checkFlavorPairsAdjustment(shown_flavors[flavorType.long_name][flavor_name][0], $event)
-														"
-														appMinAmount="0"
-														appInteger
-														value="{{
-															adjusted_project_modification
-																| flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
-														}}"
-														aria-describedby="adjust_{{ flavor_name }}_help"
-														[ngClass]="{
-															'is-invalid': name?.invalid,
-															'is-valid': name?.valid,
-														}"
-													/>
-													<div class="input-group-append">
-														<span class="input-group-text"> VMs</span>
-													</div>
-												</div>
-												<div id="{{ flavor_name }}_help" class="form-text text-muted">Adjusted Number of VMs</div>
+		@if (!project?.project_application_storage_project) {
+			<accordion>
+				@for (flavorType of flavorTypes; track flavorType; let isFirst = $first) {
+					@if (
+						((project?.project_application_openstack_project || shown_flavors[flavorType.long_name]) &&
+							(project | hasFlavorTypeOrIsNotCustom: flavorType)) ||
+						adjustment
+					) {
+						<accordion-group [isOpen]="isFirst" #groupval>
+							<div accordion-heading style="width: 100%; cursor: pointer">
+								{{ flavorType.long_name }}
+								<i
+									class="pull-right float-end"
+									style="font-size: 25px"
+									[ngClass]="{ 'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen }"
+								>
+								</i>
+							</div>
+							@if (!flavorRetrievalInProgress) {
+								<div>
+									@for (flavor_name of getFlavorNamesByType(flavorType); track flavor_name) {
+										<div class="form-group row my-4 py-2">
+											<div class="col-4">
+												<label class="text-muted" for="{{ flavor_name }}_old">
+													<strong>{{ flavor_name }}</strong>
+													<br />
+													Number of cores:
+													<span id="{{ flavor_name }}_old_cores">{{
+														shown_flavors[flavorType.long_name][flavor_name][0].vcpus
+													}}</span>
+													<br />
+													RAM:
+													<span id="{{ flavor_name }}_old_ram">{{
+														shown_flavors[flavorType.long_name][flavor_name][0].ram_gib
+													}}</span>
+													GB
+													@if (project?.credits_allowed) {
+														<span>
+															<br />
+															Credits per hour:
+															<span id="{{ flavor_name }}_old_cph">{{
+																shown_flavors[flavorType.long_name][flavor_name][0].credits_costs_per_hour
+															}}</span>
+															CCs/h
+														</span>
+													}
+												</label>
 											</div>
-										}
-									</div>
-								}
-							</div>
-						} @else {
-							<div class="spinner-border" role="status">
-								<span class="visually-hidden">Loading flavors..</span>
-							</div>
-						}
-					</accordion-group>
+											@for (
+												flavor_instance of shown_flavors[flavorType.long_name][flavor_name];
+												track flavor_instance;
+												let i = $index
+											) {
+												<ng-container>
+													@if (flavor_instance.disabled) {
+														<div class="col-4">
+															<div class="input-group">
+																<input
+																	class="form-control"
+																	name="flavor_instance.name + '_old'"
+																	id="{{ flavor_instance.name }}_old"
+																	type="text"
+																	value="{{ project | flavorCounter: flavor_instance }}"
+																	placeholder="0"
+																	[disabled]="flavor_instance.disabled || adjustment"
+																	aria-describedby="{{ flavor_instance.name }}_old_help"
+																/>
+																<div class="input-group-append">
+																	<span class="input-group-text"> VMs</span>
+																</div>
+															</div>
+															<div id="{{ flavor_instance.name }}_old_help" class="form-text text-muted">
+																Currently approved of this flavor
+															</div>
+														</div>
+													}
+													@if (!flavor_instance.disabled) {
+														<div class="col-4">
+															<div class="input-group">
+																<input
+																	class="form-control"
+																	[name]="adjustment ? flavor_instance.name + '_requested' : flavor_instance.name"
+																	id="{{ flavor_instance.name }}"
+																	type="number"
+																	min="0"
+																	[disabled]="adjustment"
+																	step="1"
+																	attr.data-test-id="{{ flavor_instance.type.shortcut + '_' + i }}"
+																	placeholder="e.g 1"
+																	[ngModel]="
+																		adjustment
+																			? (project.project_modification_request | flavorCounter: flavor_instance)
+																			: (temp_project_modification | flavorCounter: flavor_instance)
+																	"
+																	#name="ngModel"
+																	(change)="checkFlavorPairs(flavor_instance, $event)"
+																	[attr.appMinAmount]="adjustment ? null : 0"
+																	[attr.appInteger]="adjustment ? null : true"
+																	value="{{
+																		adjustment
+																			? (project.project_modification_request | flavorCounter: flavor_instance)
+																			: (temp_project_modification | flavorCounter: flavor_instance)
+																	}}"
+																	[attr.readonly]="flavor_instance.disabled || adjustment ? true : null"
+																	aria-describedby="{{ flavor_instance.name }}_help"
+																	[ngClass]="{
+																		'is-invalid': name?.invalid && !adjustment,
+																		'is-valid': name?.valid && !adjustment,
+																	}"
+																/>
+																<div class="input-group-append">
+																	<span class="input-group-text"> VMs</span>
+																</div>
+															</div>
+															@if (!adjustment) {
+																<div id="{{ flavor_instance.name }}_help" class="form-text text-muted">
+																	Number of VMs you would like to run in the future
+																</div>
+															}
+															@if (adjustment) {
+																<div id="{{ flavor_instance.name }}_help" class="form-text text-muted">
+																	Number of VMs the user would like to run in the future
+																</div>
+															}
+														</div>
+													}
+												</ng-container>
+											}
+											@if (adjustment) {
+												@if (shown_flavors[flavorType.long_name][flavor_name].length > 1) {
+													<div class="col-4"></div>
+												}
+												<div
+													[ngClass]="shown_flavors[flavorType.long_name][flavor_name].length > 1 ? 'col-8' : 'col-4'"
+												>
+													<div class="input-group">
+														<input
+															class="form-control"
+															[name]="flavor_name + '_adjusted'"
+															id="{{ flavor_name }}_adjusted"
+															type="number"
+															min="0"
+															step="1"
+															attr.data-test-id="adjusted_{{ flavorType.shortcut + '_' + i }}"
+															placeholder="e.g 1"
+															[ngModel]="
+																adjusted_project_modification
+																	| flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
+															"
+															#name="ngModel"
+															(change)="
+																checkFlavorPairsAdjustment(shown_flavors[flavorType.long_name][flavor_name][0], $event)
+															"
+															appMinAmount="0"
+															appInteger
+															value="{{
+																adjusted_project_modification
+																	| flavorCounter: shown_flavors[flavorType.long_name][flavor_name][0]
+															}}"
+															aria-describedby="adjust_{{ flavor_name }}_help"
+															[ngClass]="{
+																'is-invalid': name?.invalid,
+																'is-valid': name?.valid,
+															}"
+														/>
+														<div class="input-group-append">
+															<span class="input-group-text"> VMs</span>
+														</div>
+													</div>
+													<div id="{{ flavor_name }}_help" class="form-text text-muted">Adjusted Number of VMs</div>
+												</div>
+											}
+										</div>
+									}
+								</div>
+							} @else {
+								<div class="spinner-border" role="status">
+									<span class="visually-hidden">Loading flavors..</span>
+								</div>
+							}
+						</accordion-group>
+					}
 				}
-			}
-		</accordion>
+			</accordion>
 
-		<div class="form-group row">
-			<label class="col-md-4 form-control-label" for="project_application_volume_counter"
-				><strong
-					>Number of storage volumes*
-					<i
-						data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
-						data-balloon-pos="down"
-						data-balloon-length="large"
-						><i class="icon-question" style="cursor: pointer"></i></i></strong
-			></label>
-			<div class="col">
-				<div class="input-group">
-					<input
-						required
-						class="form-control"
-						name="project_application_volume_counter"
-						id="project_application_volume_counter"
-						placeholder="NA"
-						value="{{ project?.project_application_volume_counter }}"
-						type="text"
-						disabled
-					/>
-				</div>
-				<span class="help-block">Current number of storage volumes</span>
-			</div>
-
-			<div class="col">
-				<div class="input-group">
-					<input
-						required
-						class="form-control"
-						id="id_project_application_renewal_volume_counter"
-						name="project_application_renewal_volume_counter"
-						placeholder="e.g. 20"
-						type="number"
-						min="0"
-						step="1"
-						[attr.readonly]="adjustment ? true : null"
-						[disabled]="adjustment"
-						data-test-id="modification_request_volume_counter_input"
-						[(ngModel)]="temp_project_modification.volume_counter"
-						appMinAmount="0"
-						appInteger
-						[ngClass]="{
-							'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_volume_counter?.valid,
-						}"
-					/>
-				</div>
-				@if (!adjustment) {
-					<label for="id_project_application_renewal_volume_counter" class="help-block"
-						>How many storage volumes do you need in the future?</label
-					>
-				}
-				@if (adjustment) {
-					<label for="id_project_application_renewal_volume_counter" class="help-block"
-						>How many storage volumes does the user want in the future?</label
-					>
-				}
-			</div>
-		</div>
-		@if (adjustment) {
 			<div class="form-group row">
-				<label class="col-md-4 form-control-label" for="id_project_application_renewal_volume_counter_adjusted"
+				<label class="col-md-4 form-control-label" for="project_application_volume_counter"
 					><strong
-						>Adjusted number of storage volumes*
+						>Number of storage volumes*
 						<i
 							data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
 							data-balloon-pos="down"
@@ -289,94 +230,94 @@
 						<input
 							required
 							class="form-control"
-							id="id_project_application_renewal_volume_counter_adjusted"
-							name="project_application_renewal_volume_counter_adjusted"
+							name="project_application_volume_counter"
+							id="project_application_volume_counter"
+							placeholder="NA"
+							value="{{ project?.project_application_volume_counter }}"
+							type="text"
+							disabled
+						/>
+					</div>
+					<span class="help-block">Current number of storage volumes</span>
+				</div>
+
+				<div class="col">
+					<div class="input-group">
+						<input
+							required
+							class="form-control"
+							id="id_project_application_renewal_volume_counter"
+							name="project_application_renewal_volume_counter"
 							placeholder="e.g. 20"
 							type="number"
 							min="0"
 							step="1"
-							data-test-id="modification_request_volume_counter_input_adjusted"
-							[(ngModel)]="adjusted_project_modification.volume_counter"
+							[attr.readonly]="adjustment ? true : null"
+							[disabled]="adjustment"
+							data-test-id="modification_request_volume_counter_input"
+							[(ngModel)]="temp_project_modification.volume_counter"
 							appMinAmount="0"
 							appInteger
 							[ngClass]="{
-								'is-invalid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.invalid,
-								'is-valid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.valid,
+								'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
+								'is-valid': modificationForm.controls.project_application_renewal_volume_counter?.valid,
 							}"
 						/>
 					</div>
-					<label for="id_project_application_renewal_volume_counter" class="help-block"
-						>How many storage volumes does the user get granted in the future?</label
-					>
+					@if (!adjustment) {
+						<label for="id_project_application_renewal_volume_counter" class="help-block"
+							>How many storage volumes do you need in the future?</label
+						>
+					}
+					@if (adjustment) {
+						<label for="id_project_application_renewal_volume_counter" class="help-block"
+							>How many storage volumes does the user want in the future?</label
+						>
+					}
 				</div>
 			</div>
-		}
-		<div class="form-group row">
-			<label class="col-md-4 form-control-label" for="project_application_volume_limit"
-				><strong
-					>Storage Total Limit*
-					<i
-						data-balloon="Storage limit is the sum of extra storage provided by volumes."
-						data-balloon-pos="down"
-						data-balloon-length="medium"
-						><i class="icon-question" style="cursor: pointer"></i></i></strong
-			></label>
-			<div class="col">
-				<div class="input-group">
-					<input
-						class="form-control"
-						name="project_application_volume_limit"
-						id="project_application_volume_limit"
-						value="{{ project?.project_application_volume_limit }}"
-						placeholder="NA"
-						type="text"
-						disabled
-					/>
-					<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+			@if (adjustment) {
+				<div class="form-group row">
+					<label class="col-md-4 form-control-label" for="id_project_application_renewal_volume_counter_adjusted"
+						><strong
+							>Adjusted number of storage volumes*
+							<i
+								data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+								data-balloon-pos="down"
+								data-balloon-length="large"
+								><i class="icon-question" style="cursor: pointer"></i></i></strong
+					></label>
+					<div class="col">
+						<div class="input-group">
+							<input
+								required
+								class="form-control"
+								id="id_project_application_renewal_volume_counter_adjusted"
+								name="project_application_renewal_volume_counter_adjusted"
+								placeholder="e.g. 20"
+								type="number"
+								min="0"
+								step="1"
+								data-test-id="modification_request_volume_counter_input_adjusted"
+								[(ngModel)]="adjusted_project_modification.volume_counter"
+								appMinAmount="0"
+								appInteger
+								[ngClass]="{
+									'is-invalid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.invalid,
+									'is-valid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.valid,
+								}"
+							/>
+						</div>
+						<label for="id_project_application_renewal_volume_counter" class="help-block"
+							>How many storage volumes does the user get granted in the future?</label
+						>
+					</div>
 				</div>
-				<span class="help-block">Current volume storage</span>
-			</div>
-			<div class="col">
-				<div class="input-group">
-					<input
-						class="form-control"
-						id="id_project_application_renewal_volume_limit"
-						data-test-id="modification_request_volume_limit_input"
-						name="project_application_renewal_volume_limit"
-						placeholder="e.g. 20"
-						type="number"
-						min="1"
-						step="1"
-						[attr.readonly]="adjustment ? true : null"
-						[(ngModel)]="temp_project_modification.volume_limit"
-						appMinAmount="1"
-						appInteger
-						[ngClass]="{
-							'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
-							'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid,
-						}"
-						[disabled]="modificationForm.controls.project_application_renewal_volume_counter?.value === 0 || adjustment"
-					/>
-					<div class="input-group-append"><span class="input-group-text"> GB </span></div>
-				</div>
-				@if (!adjustment) {
-					<label for="id_project_application_renewal_volume_limit" class="help-block"
-						>What is the total amount of volume storage, that you need in the future?</label
-					>
-				}
-				@if (adjustment) {
-					<label for="id_project_application_renewal_volume_limit" class="help-block"
-						>How much total volume storage does the user want in the future?</label
-					>
-				}
-			</div>
-		</div>
-
-		@if (adjustment) {
+			}
 			<div class="form-group row">
-				<label class="col-md-4 form-control-label" for="id_project_application_renewal_volume_limit_adjusted"
+				<label class="col-md-4 form-control-label" for="project_application_volume_limit"
 					><strong
-						>Adjusted Storage Total Limit*
+						>Storage Total Limit*
 						<i
 							data-balloon="Storage limit is the sum of extra storage provided by volumes."
 							data-balloon-pos="down"
@@ -387,32 +328,97 @@
 					<div class="input-group">
 						<input
 							class="form-control"
-							id="id_project_application_renewal_volume_limit_adjusted"
-							data-test-id="modification_request_volume_limit_input_adjusted"
-							name="project_application_renewal_volume_limit_adjusted"
+							name="project_application_volume_limit"
+							id="project_application_volume_limit"
+							value="{{ project?.project_application_volume_limit }}"
+							placeholder="NA"
+							type="text"
+							disabled
+						/>
+						<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+					</div>
+					<span class="help-block">Current volume storage</span>
+				</div>
+				<div class="col">
+					<div class="input-group">
+						<input
+							class="form-control"
+							id="id_project_application_renewal_volume_limit"
+							data-test-id="modification_request_volume_limit_input"
+							name="project_application_renewal_volume_limit"
 							placeholder="e.g. 20"
 							type="number"
 							min="1"
 							step="1"
-							[(ngModel)]="adjusted_project_modification.volume_limit"
+							[attr.readonly]="adjustment ? true : null"
+							[(ngModel)]="temp_project_modification.volume_limit"
 							appMinAmount="1"
 							appInteger
 							[ngClass]="{
-								'is-invalid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.invalid,
-								'is-valid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.valid,
+								'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
+								'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid,
 							}"
-							[disabled]="modificationForm.controls.project_application_renewal_volume_counter_adjusted?.value === 0"
+							[disabled]="
+								modificationForm.controls.project_application_renewal_volume_counter?.value === 0 || adjustment
+							"
 						/>
 						<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 					</div>
-					<label for="id_project_application_renewal_volume_limit" class="help-block"
-						>How much total storage does the user get granted in the future?</label
-					>
+					@if (!adjustment) {
+						<label for="id_project_application_renewal_volume_limit" class="help-block"
+							>What is the total amount of volume storage, that you need in the future?</label
+						>
+					}
+					@if (adjustment) {
+						<label for="id_project_application_renewal_volume_limit" class="help-block"
+							>How much total volume storage does the user want in the future?</label
+						>
+					}
 				</div>
 			</div>
+
+			@if (adjustment) {
+				<div class="form-group row">
+					<label class="col-md-4 form-control-label" for="id_project_application_renewal_volume_limit_adjusted"
+						><strong
+							>Adjusted Storage Total Limit*
+							<i
+								data-balloon="Storage limit is the sum of extra storage provided by volumes."
+								data-balloon-pos="down"
+								data-balloon-length="medium"
+								><i class="icon-question" style="cursor: pointer"></i></i></strong
+					></label>
+					<div class="col">
+						<div class="input-group">
+							<input
+								class="form-control"
+								id="id_project_application_renewal_volume_limit_adjusted"
+								data-test-id="modification_request_volume_limit_input_adjusted"
+								name="project_application_renewal_volume_limit_adjusted"
+								placeholder="e.g. 20"
+								type="number"
+								min="1"
+								step="1"
+								[(ngModel)]="adjusted_project_modification.volume_limit"
+								appMinAmount="1"
+								appInteger
+								[ngClass]="{
+									'is-invalid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.invalid,
+									'is-valid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.valid,
+								}"
+								[disabled]="modificationForm.controls.project_application_renewal_volume_counter_adjusted?.value === 0"
+							/>
+							<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+						</div>
+						<label for="id_project_application_renewal_volume_limit" class="help-block"
+							>How much total storage does the user get granted in the future?</label
+						>
+					</div>
+				</div>
+			}
 		}
 
-		@if (project?.project_application_openstack_project) {
+		@if (project?.project_application_openstack_project || project?.project_application_storage_project) {
 			<div class="form-group row">
 				<label class="col-md-4 form-control-label" for="project_application_object_storage"
 					><strong>Object Storage* </strong
@@ -437,46 +443,46 @@
 					</div>
 					<span class="help-block">Current Object Storage capacity</span>
 				</div>
-				@if (project?.project_application_openstack_project) {
-					<div class="col">
-						<div class="input-group">
-							<input
-								class="form-control"
-								id="id_project_application_renewal_object_storage"
-								name="project_application_renewal_object_storage"
-								placeholder="e.g. 8"
-								data-test-id="modification_request_object_storage_input"
-								[(ngModel)]="temp_project_modification.object_storage"
-								type="number"
-								min="0"
-								step="1"
-								[attr.readonly]="adjustment ? true : null"
-								appInteger
-								appMinAmount="0"
-								required
-								[ngClass]="{
-									'is-invalid': modificationForm.controls.project_application_renewal_object_storage?.invalid,
-									'is-valid': modificationForm.controls.project_application_renewal_object_storage?.valid,
-								}"
-							/>
-							<div class="input-group-append"><span class="input-group-text"> GB </span></div>
-						</div>
-						@if (!adjustment) {
-							<label for="id_project_application_renewal_object_storage" class="help-block"
-								>How much Object Storage do you need in the future?</label
-							>
-						}
-						@if (adjustment) {
-							<label for="id_project_application_renewal_object_storage" class="help-block"
-								>How much Object Storage does the user want in the future?</label
-							>
-						}
+				<div class="col">
+					<div class="input-group">
+						<input
+							class="form-control"
+							id="id_project_application_renewal_object_storage"
+							name="project_application_renewal_object_storage"
+							placeholder="e.g. 8"
+							data-test-id="modification_request_object_storage_input"
+							[(ngModel)]="temp_project_modification.object_storage"
+							type="number"
+							min="0"
+							step="1"
+							[attr.readonly]="adjustment ? true : null"
+							appInteger
+							appMinAmount="0"
+							required
+							[ngClass]="{
+								'is-invalid': modificationForm.controls.project_application_renewal_object_storage?.invalid,
+								'is-valid': modificationForm.controls.project_application_renewal_object_storage?.valid,
+							}"
+						/>
+						<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 					</div>
-				}
+					@if (!adjustment) {
+						<label for="id_project_application_renewal_object_storage" class="help-block"
+							>How much Object Storage do you need in the future?</label
+						>
+					}
+					@if (adjustment) {
+						<label for="id_project_application_renewal_object_storage" class="help-block"
+							>How much Object Storage does the user want in the future?</label
+						>
+					}
+				</div>
 			</div>
 		}
 
-		@if (project?.project_application_openstack_project && adjustment) {
+		@if (
+			(project?.project_application_openstack_project || project?.project_application_storage_project) && adjustment
+		) {
 			<div class="form-group row">
 				<label class="col-md-4 form-control-label" for="id_project_application_renewal_object_storage_adjust"
 					><strong>Adjusted Object Storage* </strong
@@ -514,6 +520,105 @@
 				</div>
 			</div>
 		}
+
+		@if (project?.project_application_storage_project) {
+			<div class="form-group row my-2">
+				<label class="col-md-4 form-control-label" for="project_application_number_of_buckets"
+					><strong>Number of buckets* </strong
+					><i
+						data-balloon="A bucket is a top-level container or namespace to organize and storage objects within object storage. Each bucket has a unique name and serves as an fundamental unit for access control."
+						data-balloon-pos="down"
+						data-balloon-length="large"
+						><i class="icon-question" style="cursor: pointer"></i></i
+				></label>
+				<div class="col">
+					<div class="input-group">
+						<input
+							class="form-control"
+							name="project_application_number_of_buckets"
+							id="project_application_number_of_buckets"
+							placeholder="NA"
+							value="{{ project?.project_application_number_of_buckets }}"
+							type="text"
+							disabled
+						/>
+					</div>
+					<span class="help-block">Current Number of allowed buckets</span>
+				</div>
+				<div class="col">
+					<div class="input-group">
+						<input
+							class="form-control"
+							id="id_project_application_renewal_number_of_buckets"
+							name="project_application_renewal_number_of_buckets"
+							placeholder="e.g. 8"
+							data-test-id="modification_request_number_of_buckets_input"
+							[(ngModel)]="temp_project_modification.number_of_buckets"
+							type="number"
+							min="1"
+							step="1"
+							[attr.readonly]="adjustment ? true : null"
+							appInteger
+							appMinAmount="1"
+							required
+							[ngClass]="{
+								'is-invalid': modificationForm.controls.project_application_renewal_number_of_buckets?.invalid,
+								'is-valid': modificationForm.controls.project_application_renewal_number_of_buckets?.valid,
+							}"
+						/>
+					</div>
+					@if (!adjustment) {
+						<label for="id_project_application_renewal_object_storage" class="help-block"
+							>How many Buckets do you need in the future?</label
+						>
+					}
+					@if (adjustment) {
+						<label for="id_project_application_renewal_object_storage" class="help-block"
+							>How many Buckets does the user want in the future?</label
+						>
+					}
+				</div>
+			</div>
+		}
+
+		@if (project?.project_application_storage_project && adjustment) {
+			<div class="form-group row">
+				<label class="col-md-4 form-control-label" for="id_project_application_renewal_number_of_buckets_adjust"
+					><strong>Adjusted Number of Buckets* </strong
+					><i
+						data-balloon="A bucket is a top-level container or namespace to organize and storage objects within object storage. Each bucket has a unique name and serves as an fundamental unit for access control."
+						data-balloon-pos="down"
+						data-balloon-length="large"
+						><i class="icon-question" style="cursor: pointer"></i></i
+				></label>
+				<div class="col">
+					<div class="input-group">
+						<input
+							class="form-control"
+							id="id_project_application_renewal_number_of_buckets_adjust"
+							name="project_application_renewal_number_of_buckets_adjust"
+							placeholder="e.g. 8"
+							data-test-id="modification_request_number_of_buckets_input_adjust"
+							[(ngModel)]="adjusted_project_modification.number_of_buckets"
+							type="number"
+							min="1"
+							step="1"
+							appInteger
+							appMinAmount="1"
+							required
+							[ngClass]="{
+								'is-invalid': modificationForm.controls.project_application_renewal_number_of_buckets_adjust?.invalid,
+								'is-valid': modificationForm.controls.project_application_renewal_number_of_buckets_adjust?.valid,
+							}"
+						/>
+					</div>
+					<label for="id_project_application_renewal_number_of_buckets" class="help-block"
+						>How many Buckets does the user get granted in the future?</label
+					>
+				</div>
+			</div>
+		}
+
 		@if (
 			project?.project_application_openstack_project &&
 			project?.project_application_cloud_service &&
