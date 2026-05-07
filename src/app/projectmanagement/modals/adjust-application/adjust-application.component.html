@@ -10,30 +10,32 @@
 		@if (application) {
 			<div class="modal-body">
 				<form id="resource_adjustment_form" #resourceAdjustmentForm="ngForm" class="form-horizontal">
-					<div class="form-group row">
-						<label class="col-md-4 form-control-label"><strong>Project Type</strong></label>
-						<div class="col-md-8">
-							<label id="adjusted_project_type_switch" class="switch switch-label">
-								<input
-									type="checkbox"
-									class="switch-input"
-									[ngModelOptions]="{ standalone: true }"
-									[(ngModel)]="adjustedApplication.project_application_openstack_project"
-								/>
-								<span
-									class="switch-slider"
-									data-checked="OS"
-									data-unchecked="SV"
-									[ngStyle]="{
-										'background-color': adjustedApplication.project_application_openstack_project
-											? '#FF0000'
-											: '#00adef',
-									}"
-								></span>
-							</label>
-							<p>Is this project an openstack project (OS) or a simple vm project (SV) ?</p>
+					@if (!application?.project_application_storage_project) {
+						<div class="form-group row">
+							<label class="col-md-4 form-control-label"><strong>Project Type</strong></label>
+							<div class="col-md-8">
+								<label id="adjusted_project_type_switch" class="switch switch-label">
+									<input
+										type="checkbox"
+										class="switch-input"
+										[ngModelOptions]="{ standalone: true }"
+										[(ngModel)]="adjustedApplication.project_application_openstack_project"
+									/>
+									<span
+										class="switch-slider"
+										data-checked="OS"
+										data-unchecked="SV"
+										[ngStyle]="{
+											'background-color': adjustedApplication.project_application_openstack_project
+												? '#FF0000'
+												: '#00adef',
+										}"
+									></span>
+								</label>
+								<p>Is this project an openstack project (OS) or a simple vm project (SV) ?</p>
+							</div>
 						</div>
-					</div>
+					}
 					<div class="form-group row">
 						<label class="col-md-4 form-control-label" for="initially_requested_lifetime_counter"
 							><strong
@@ -91,183 +93,188 @@
 							></i>
 						</h6>
 					</div>
-					<accordion>
-						@for (t of typeList; track t; let isFirst = $first) {
-							@if (application?.project_application_openstack_project || checkIfTypeGotSimpleVMFlavorOrIsCustom(t)) {
-								<accordion-group [isOpen]="isFirst" #groupval>
-									<div accordion-heading style="width: 100%; cursor: pointer">
-										{{ t.long_name }}
-										<i
-											class="pull-right float-end"
-											style="font-size: 25px"
-											[ngClass]="{
-												'icon-arrow-up': groupval.isOpen,
-												'icon-arrow-down': !groupval.isOpen,
-											}"
-										></i>
-									</div>
-									@for (fl of flavorList; track fl) {
-										<div class="form-group row">
-											@if (
-												fl.type.shortcut === t.shortcut &&
-												(fl.simple_vm ||
-													application?.project_application_openstack_project ||
-													fl.type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR)
-											) {
-												<div class="form-group row">
-													<label class="col-md-4 form-control-label"
-														><strong>{{ fl.name }}</strong
-														><br />
-														Number of cores: <span id="{{ fl.name }}_cores">{{ fl.vcpus }}</span
-														><br />
-														RAM: <span id="{{ fl.name }}_ram">{{ fl.ram_gib }}</span> GB</label
-													>
-													<div class="col">
-														<div class="input-group">
-															<input
-																class="form-control"
-																name="{{ fl.name }}_requested"
-																id="{{ fl.name }}_requested"
-																type="text"
-																value="{{ application | flavorCounter: fl }}"
-																placeholder="0"
-																disabled
-															/>
-															<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
-														</div>
-														<span class="help-block">Initially requested of this type </span>
-													</div>
-													<div class="col">
-														<div class="input-group">
-															<input
-																class="form-control"
-																(change)="calculateRamCores()"
-																id="{{ fl.name }}_granted"
-																name="{{ fl.name }}_granted"
-																type="number"
-																min="0"
-																step="1"
-																placeholder="e.g 1"
-																(ngModelChange)="onChangeFlavor(fl, $event)"
-																[ngModel]="adjustedApplication | flavorCounter: fl"
-																#name="ngModel"
-																appMinAmount="0"
-																appIntegerOrNull
-																[ngClass]="{
-																	'is-invalid': name?.invalid,
-																	'is-valid': name?.valid,
-																}"
-															/>
-															<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
-														</div>
-														<span class="help-block">Number of VMs you want to actually grant.</span>
-													</div>
-												</div>
-											}
+					@if (!application?.project_application_storage_project) {
+						<accordion>
+							@for (t of typeList; track t; let isFirst = $first) {
+								@if (application?.project_application_openstack_project || checkIfTypeGotSimpleVMFlavorOrIsCustom(t)) {
+									<accordion-group [isOpen]="isFirst" #groupval>
+										<div accordion-heading style="width: 100%; cursor: pointer">
+											{{ t.long_name }}
+											<i
+												class="pull-right float-end"
+												style="font-size: 25px"
+												[ngClass]="{
+													'icon-arrow-up': groupval.isOpen,
+													'icon-arrow-down': !groupval.isOpen,
+												}"
+											></i>
 										</div>
-									}
-								</accordion-group>
+										@for (fl of flavorList; track fl) {
+											<div class="form-group row">
+												@if (
+													fl.type.shortcut === t.shortcut &&
+													(fl.simple_vm ||
+														application?.project_application_openstack_project ||
+														fl.type.shortcut === FlavorTypeShortcuts.CUSTOM_FLAVOR)
+												) {
+													<div class="form-group row">
+														<label class="col-md-4 form-control-label"
+															><strong>{{ fl.name }}</strong
+															><br />
+															Number of cores: <span id="{{ fl.name }}_cores">{{ fl.vcpus }}</span
+															><br />
+															RAM: <span id="{{ fl.name }}_ram">{{ fl.ram_gib }}</span> GB</label
+														>
+														<div class="col">
+															<div class="input-group">
+																<input
+																	class="form-control"
+																	name="{{ fl.name }}_requested"
+																	id="{{ fl.name }}_requested"
+																	type="text"
+																	value="{{ application | flavorCounter: fl }}"
+																	placeholder="0"
+																	disabled
+																/>
+																<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+															</div>
+															<span class="help-block">Initially requested of this type </span>
+														</div>
+														<div class="col">
+															<div class="input-group">
+																<input
+																	class="form-control"
+																	(change)="calculateRamCores()"
+																	id="{{ fl.name }}_granted"
+																	name="{{ fl.name }}_granted"
+																	type="number"
+																	min="0"
+																	step="1"
+																	placeholder="e.g 1"
+																	(ngModelChange)="onChangeFlavor(fl, $event)"
+																	[ngModel]="adjustedApplication | flavorCounter: fl"
+																	#name="ngModel"
+																	appMinAmount="0"
+																	appIntegerOrNull
+																	[ngClass]="{
+																		'is-invalid': name?.invalid,
+																		'is-valid': name?.valid,
+																	}"
+																/>
+																<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+															</div>
+															<span class="help-block">Number of VMs you want to actually grant.</span>
+														</div>
+													</div>
+												}
+											</div>
+										}
+									</accordion-group>
+								}
 							}
-						}
-					</accordion>
-					<div class="form-group row">
-						<label class="col-md-4 form-control-label" for="requested_volume_counter"
-							><strong
-								>Number of storage volumes*
-								<i
-									data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
-									data-balloon-pos="down"
-									data-balloon-length="large"
-									><i class="icon-question" style="cursor: pointer"></i></i></strong
-						></label>
-						<div class="col">
-							<div class="input-group">
-								<input
-									required
-									class="form-control"
-									name="requested_volume_counter"
-									id="requested_volume_counter"
-									placeholder="NA"
-									value="{{ application?.project_application_volume_counter }}"
-									type="text"
-									disabled
-								/>
+						</accordion>
+					}
+					@if (!application.project_application_storage_project) {
+						<div class="form-group row">
+							<label class="col-md-4 form-control-label" for="requested_volume_counter"
+								><strong
+									>Number of storage volumes*
+									<i
+										data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+										data-balloon-pos="down"
+										data-balloon-length="large"
+										><i class="icon-question" style="cursor: pointer"></i></i></strong
+							></label>
+							<div class="col">
+								<div class="input-group">
+									<input
+										required
+										class="form-control"
+										name="requested_volume_counter"
+										id="requested_volume_counter"
+										placeholder="NA"
+										value="{{ application?.project_application_volume_counter }}"
+										type="text"
+										disabled
+									/>
+								</div>
+								<span class="help-block">Requested number of storage volumes</span>
 							</div>
-							<span class="help-block">Requested number of storage volumes</span>
-						</div>
-						<div class="col">
-							<div class="input-group">
-								<input
-									required
-									class="form-control"
-									id="granted_volume_counter"
-									name="granted_volume_counter"
-									placeholder="e.g. 20"
-									type="number"
-									min="0"
-									step="1"
-									[(ngModel)]="adjustedApplication.project_application_volume_counter"
-									appMinAmount="0"
-									appInteger
-									[ngClass]="{
-										'is-invalid': resourceAdjustmentForm.controls.granted_volume_counter?.invalid,
-										'is-valid': resourceAdjustmentForm.controls.grated_volume_counter?.valid,
-									}"
-								/>
+							<div class="col">
+								<div class="input-group">
+									<input
+										required
+										class="form-control"
+										id="granted_volume_counter"
+										name="granted_volume_counter"
+										placeholder="e.g. 20"
+										type="number"
+										min="0"
+										step="1"
+										[(ngModel)]="adjustedApplication.project_application_volume_counter"
+										appMinAmount="0"
+										appInteger
+										[ngClass]="{
+											'is-invalid': resourceAdjustmentForm.controls.granted_volume_counter?.invalid,
+											'is-valid': resourceAdjustmentForm.controls.grated_volume_counter?.valid,
+										}"
+									/>
+								</div>
+								<span class="help-block">Number of storage volumes you want to grant</span>
 							</div>
-							<span class="help-block">Number of storage volumes you want to grant</span>
 						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-md-4 form-control-label" for="requested_volume_limit"
-							><strong
-								>Storage Limit*
-								<i
-									data-balloon="Storage limit is the sum of extra storage provided by volumes."
-									data-balloon-pos="down"
-									data-balloon-length="medium"
-									><i class="icon-question" style="cursor: pointer"></i></i></strong
-						></label>
-						<div class="col">
-							<div class="input-group">
-								<input
-									class="form-control"
-									name="requested_volume_limit"
-									id="requested_volume_limit"
-									value="{{ application?.project_application_volume_limit }}"
-									placeholder="NA"
-									type="text"
-									disabled
-								/>
-								<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+						<div class="form-group row">
+							<label class="col-md-4 form-control-label" for="requested_volume_limit"
+								><strong
+									>Storage Limit*
+									<i
+										data-balloon="Storage limit is the sum of extra storage provided by volumes."
+										data-balloon-pos="down"
+										data-balloon-length="medium"
+										><i class="icon-question" style="cursor: pointer"></i></i></strong
+							></label>
+							<div class="col">
+								<div class="input-group">
+									<input
+										class="form-control"
+										name="requested_volume_limit"
+										id="requested_volume_limit"
+										value="{{ application?.project_application_volume_limit }}"
+										placeholder="NA"
+										type="text"
+										disabled
+									/>
+									<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+								</div>
+								<span class="help-block">Requested volume storage</span>
 							</div>
-							<span class="help-block">Requested volume storage</span>
-						</div>
-						<div class="col">
-							<div class="input-group">
-								<input
-									class="form-control"
-									id="granted_volume_limit"
-									name="granted_volume_limit"
-									placeholder="e.g. 20"
-									type="number"
-									min="1"
-									step="1"
-									[(ngModel)]="adjustedApplication.project_application_volume_limit"
-									appMinAmount="1"
-									appInteger
-									[ngClass]="{
-										'is-invalid': resourceAdjustmentForm.controls.granted_volume_limit?.invalid,
-										'is-valid': resourceAdjustmentForm.controls.granted_volume_limit?.valid,
-									}"
-									[disabled]="resourceAdjustmentForm.controls.granted_volume_counter?.value === 0"
-								/>
-								<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+							<div class="col">
+								<div class="input-group">
+									<input
+										class="form-control"
+										id="granted_volume_limit"
+										name="granted_volume_limit"
+										placeholder="e.g. 20"
+										type="number"
+										min="1"
+										step="1"
+										[(ngModel)]="adjustedApplication.project_application_volume_limit"
+										appMinAmount="1"
+										appInteger
+										[ngClass]="{
+											'is-invalid': resourceAdjustmentForm.controls.granted_volume_limit?.invalid,
+											'is-valid': resourceAdjustmentForm.controls.granted_volume_limit?.valid,
+										}"
+										[disabled]="resourceAdjustmentForm.controls.granted_volume_counter?.value === 0"
+									/>
+									<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+								</div>
+								<span class="help-block">Amount of volume storage you want to grant</span>
 							</div>
-							<span class="help-block">Amount of volume storage you want to grant</span>
 						</div>
-					</div>
-					@if (application?.project_application_openstack_project) {
+					}
+
+					@if (application?.project_application_openstack_project || application?.project_application_storage_project) {
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label" for="requested_object_storage"
 								><strong>Object Storage* </strong
@@ -292,7 +299,10 @@
 								</div>
 								<span class="help-block">Requested Object storage</span>
 							</div>
-							@if (adjustedApplication?.project_application_openstack_project) {
+							@if (
+								adjustedApplication?.project_application_openstack_project ||
+								adjustedApplication?.project_application_storage_project
+							) {
 								<div class="col">
 									<div class="input-group">
 										<input
