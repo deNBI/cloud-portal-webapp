@@ -130,6 +130,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg'
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg'
 	kubernetes_logo: string = 'static/webapp/assets/img/kubernetes_logo.svg'
+	storage_project_class: string = 'fas-fa database'
 	checked_member_list: ProjectMember[] = []
 	// modal variables for User list
 	public project_members: ProjectMember[] = []

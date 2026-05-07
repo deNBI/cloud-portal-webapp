@@ -25,6 +25,9 @@ export class Application {
 	project_application_volume_limit: number
 	project_application_volume_counter: number
 	project_application_object_storage: number
+	// Storage Project
+	project_application_number_of_buckets: number
+	//End Storage Project
 	project_application_description: string
 	project_application_comment: string
 	project_application_date_submitted: string
@@ -35,11 +38,11 @@ export class Application {
 	project_application_statuses: number[] = []
 	project_application_compute_center: ComputecenterComponent
 	project_application_openstack_project: boolean
+	project_application_storage_project: boolean = false
 	project_application_total_gpu: number = 0
 	lifetime_extension_request_id: number | string
 	modification_extension_request_id: number | string
 	project_application_kubernetes_access: boolean = false
-
 	pi_approval_notification_send: boolean
 	pi_approval_notification_expired: boolean
 	processing_vo_initials: string

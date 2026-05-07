@@ -223,7 +223,9 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			this.temp_project_modification.flavors.push(flavor)
 		}
 		this.min_vm =
-			this.project.project_application_openstack_project || this.temp_project_modification.flavors.length > 0
+			this.project.project_application_openstack_project ||
+			this.project.project_application_storage_project ||
+			this.temp_project_modification.flavors.length > 0
 		this.temp_project_modification.calculateRamCores()
 		this.getExtraCredits()
 		this.checkExtraResourceCommentRequired()

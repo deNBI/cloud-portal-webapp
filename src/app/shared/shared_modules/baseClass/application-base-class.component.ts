@@ -11,6 +11,7 @@ import { UserService } from '../../../api-connector/user.service'
 import { FlavorTypeShortcuts } from './flavor-type-shortcuts'
 import { User } from '../../../applications/application.model/user.model'
 import { NotificationModalComponent } from '../../modal/notification-modal'
+import { ComputeCenterResponse } from '../interfaces/computecenter-response.interface'
 
 /**
  * Application base component..
@@ -130,14 +131,15 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 * Gets all available compute centers and saves them in the computeCenters attribute.
 	 */
 	getComputeCenters(): void {
-		this.facilityService.getComputeCenters().subscribe((result: [{ [key: string]: string }]): void => {
+		this.facilityService.getComputeCenters().subscribe((result: ComputeCenterResponse[]): void => {
 			for (const cc of result) {
 				const compute_center: ComputecenterComponent = new ComputecenterComponent(
-					cc['compute_center_facility_id'],
-					cc['compute_center_name'],
-					cc['compute_center_login'],
-					cc['compute_center_support_mail'],
-					cc['compute_center_client']
+					cc.compute_center_facility_id,
+					cc.compute_center_name,
+					cc.compute_center_login,
+					cc.compute_center_support_mail,
+					cc.compute_center_client,
+					cc.compute_center_storage
 				)
 				this.computeCenters.push(compute_center)
 			}

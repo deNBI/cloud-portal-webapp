@@ -76,6 +76,7 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
 	@Input() openstack_project: boolean = false
 	@Input() simple_vm_project: boolean = false
+	@Input() storage_project: boolean = false
 	@Input() kubernetes_access: boolean = false
 	@Input() title: string
 	@Input() application: Application
@@ -257,6 +258,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	initiateFormWithApplication(): void {
 		if (this.application && !this.initiated_validation && this.is_validation) {
 			this.openstack_project = this.application.project_application_openstack_project
+			this.storage_project = this.application.project_application_storage_project
 
 			if (this.application.project_application_shortname.length > 15) {
 				this.shortNameMaxLength = this.application.project_application_shortname.length
@@ -286,6 +288,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			}
 			this.application.project_application_volume_counter = 0
 			this.application.project_application_volume_limit = 0
+			this.application.project_application_storage_project = this.storage_project
+			this.application.project_application_number_of_buckets = 1
 		}
 		this.isLoaded = true
 	}
