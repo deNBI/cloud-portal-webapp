@@ -324,9 +324,60 @@
 										/>
 										<div class="input-group-append"><span class="input-group-text"> GB </span></div>
 									</div>
-									<span class="help-block">How much Object Storage do you need in the future?</span>
+									<span class="help-block">How much Object Storage will be granted to the project?</span>
 								</div>
 							}
+						</div>
+					}
+					@if (application?.project_application_storage_project) {
+						<div class="form-group row">
+							<label class="col-md-4 form-control-label" for="requested_number_of_buckets"
+								><strong>Number of Buckets* </strong
+								><i
+									data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+									data-balloon-pos="down"
+									data-balloon-length="large"
+									><i class="icon-question" style="cursor: pointer"></i></i
+							></label>
+							<div class="col">
+								<div class="input-group">
+									<input
+										class="form-control"
+										name="requested_number_of_buckets"
+										id="requested_number_of_buckets"
+										placeholder="NA"
+										value="{{ application?.project_application_number_of_buckets }}"
+										type="text"
+										disabled
+									/>
+									<div class="input-group-append"><span class="input-group-text"> GB </span></div>
+								</div>
+								<span class="help-block">Requested Number of Buckets</span>
+							</div>
+
+							<div class="col">
+								<div class="input-group">
+									<input
+										class="form-control"
+										id="granted_number_of_buckets"
+										name="granted_number_of_buckets"
+										placeholder="e.g. 8"
+										[(ngModel)]="adjustedApplication.project_application_number_of_buckets"
+										type="number"
+										min="0"
+										step="1"
+										appInteger
+										appMinAmount="0"
+										required
+										[ngClass]="{
+											'is-invalid': resourceAdjustmentForm.controls.granted_number_of_buckets?.invalid,
+											'is-valid': resourceAdjustmentForm.controls.granted_number_of_buckets?.valid,
+										}"
+									/>
+									<div class="input-group-append"><span class="input-group-text"> Buckets </span></div>
+								</div>
+								<span class="help-block">How much Bucket will be granted to the project?</span>
+							</div>
 						</div>
 					}
 					<div class="form-group row">
