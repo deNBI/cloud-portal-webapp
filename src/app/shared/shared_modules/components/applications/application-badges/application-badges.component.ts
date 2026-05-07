@@ -14,6 +14,8 @@ export class ApplicationBadgesComponent {
 	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg'
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg'
 	kubernetes_logo: string = 'static/webapp/assets/img/kubernetes_logo.svg'
+	// storage_project_logo needs to replaces with a file in the end
+	storage_logo: string = 'fas fa-database'
 
 	constructor() {
 		this.is_vo_admin = is_vo

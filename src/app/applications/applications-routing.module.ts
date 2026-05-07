@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { ApplicationsComponent } from './applications.component'
 
 import { AddsimplevmComponent } from './application-formular/simplevm-formular/addsimplevm.component'
+import { AddStorageComponent } from './application-formular/storage-formular/addstorage.component'
 import { AddcloudapplicationComponent } from './application-formular/openstack-formular/addcloudapplication.component'
 import { TypeOverviewComponent } from './type-overview.component'
 import { ValidationApplicationComponent } from '../validation-application/validation-application.component'
@@ -36,6 +37,13 @@ const routes: Routes = [
 		component: AddsimplevmComponent,
 		data: {
 			title: 'New SimpleVM Application'
+		}
+	},
+	{
+		path: 'newStorageApplication',
+		component: AddStorageComponent,
+		data: {
+			title: 'New Storage Application'
 		}
 	},
 	{
