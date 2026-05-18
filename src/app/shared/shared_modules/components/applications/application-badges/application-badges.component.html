@@ -18,6 +18,15 @@
 			/>
 		</span>
 	}
+} @else if (application?.project_application_storage_project) {
+	<span class="" data-toggle="tooltip" title="This is a Storage project">
+		<i
+			data-toggle="tooltip"
+			title="This is a Storage project"
+			class="{{ storage_logo }}"
+			style="width: 20px; margin-bottom: 10px"
+		></i>
+	</span>
 } @else {
 	<span class="" data-toggle="tooltip" title="This is a Simple VM project">
 		<img

@@ -262,7 +262,12 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		this.applicationsService.approveModificationRequest(this.application.project_application_id).subscribe(
 			(res: Response): void => {
 				this.showNotificationModal('Success', 'The resource modification request was approved!', 'success')
-				if (!this.application.project_application_openstack_project) {
+				if (
+					!(
+						this.application.project_application_openstack_project ||
+						this.application.project_application_storage_project
+					)
+				) {
 					if (res.status === HttpStatusCode.Accepted) {
 						this.triggerRemoveApplication()
 						this.triggerReloadNumbers()
@@ -360,7 +365,10 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	approveLifetimeExtension(): void {
 		this.applicationsService.approveAdditionalLifetime(this.application.project_application_id).subscribe(
 			(res: Response): void => {
-				if (this.application.project_application_openstack_project) {
+				if (
+					this.application.project_application_openstack_project ||
+					this.application.project_application_storage_project
+				) {
 					this.triggerReloadApplication()
 					this.showNotificationModal('Success', 'The request has been sent to the facility manager.', 'success')
 				} else {
@@ -471,7 +479,10 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 					this.approveCreditExtension()
 				}
 				if (action === ConfirmationActions.APPROVE_APPLICATION) {
-					if (this.application.project_application_openstack_project) {
+					if (
+						this.application.project_application_openstack_project ||
+						this.application.project_application_storage_project
+					) {
 						this.createOpenStackProjectGroup()
 					}
 				}
