@@ -59,249 +59,255 @@
 		}
 	</thead>
 	<tbody>
-		<tr>
-			<td>VMs</td>
-
-			<td>
-				{{ application?.project_application_vms_requested }}
-			</td>
-			@if (application.project_modification_request) {
-				<td>
-					<span
-						[ngStyle]="{
-							color:
-								application.project_modification_request.vms_requested >= application.project_application_vms_requested
-									? 'green'
-									: 'red',
-						}"
-					>
-						{{
-							application.project_modification_request.vms_requested === application.project_application_vms_requested
-								? ''
-								: application.project_modification_request.vms_requested > application.project_application_vms_requested
-									? '+'
-									: '-'
-						}}
-						{{
-							Math.abs(
-								application.project_modification_request.vms_requested - application.project_application_vms_requested
-							)
-						}}
-					</span>
-				</td>
-
-				<td>{{ application.project_modification_request.vms_requested }}</td>
-			}
-		</tr>
-
-		@for (flavorDiff of flavorDiffs; track flavorDiff.name) {
+		@if (!application?.project_application_storage_project) {
 			<tr>
-				<td>Flavor: {{ flavorDiff.name }}</td>
-				<td>{{ flavorDiff.current }}</td>
+				<td>VMs</td>
+
+				<td>
+					{{ application?.project_application_vms_requested }}
+				</td>
 				@if (application.project_modification_request) {
 					<td>
 						<span
 							[ngStyle]="{
-								color: flavorDiff.diff >= 0 ? 'green' : 'red',
+								color:
+									application.project_modification_request.vms_requested >=
+									application.project_application_vms_requested
+										? 'green'
+										: 'red',
 							}"
 						>
-							{{ flavorDiff.diff === 0 ? '' : flavorDiff.diff > 0 ? '+' : '-' }}
-							{{ Math.abs(flavorDiff.diff) }}
+							{{
+								application.project_modification_request.vms_requested === application.project_application_vms_requested
+									? ''
+									: application.project_modification_request.vms_requested >
+										  application.project_application_vms_requested
+										? '+'
+										: '-'
+							}}
+							{{
+								Math.abs(
+									application.project_modification_request.vms_requested - application.project_application_vms_requested
+								)
+							}}
 						</span>
 					</td>
 
-					<td>{{ flavorDiff.new }}</td>
+					<td>{{ application.project_modification_request.vms_requested }}</td>
 				}
 			</tr>
-		}
 
-		<tr>
-			<td>Total Cores</td>
-			<td>{{ application?.project_application_total_cores }}</td>
-			@if (application.project_modification_request) {
-				<td>
-					<span
-						[ngStyle]="{
-							color:
-								application.project_modification_request.total_cores >= application.project_application_total_cores
-									? 'green'
-									: 'red',
-						}"
-					>
-						{{
-							application.project_modification_request.total_cores === application.project_application_total_cores
-								? ''
-								: application.project_modification_request.total_cores > application.project_application_total_cores
-									? '+'
-									: '-'
-						}}
-						{{
-							Math.abs(
-								application.project_modification_request.total_cores - application.project_application_total_cores
-							)
-						}}
-					</span>
-				</td>
-				<td>{{ application.project_modification_request.total_cores }}</td>
-			}
-		</tr>
+			@for (flavorDiff of flavorDiffs; track flavorDiff.name) {
+				<tr>
+					<td>Flavor: {{ flavorDiff.name }}</td>
+					<td>{{ flavorDiff.current }}</td>
+					@if (application.project_modification_request) {
+						<td>
+							<span
+								[ngStyle]="{
+									color: flavorDiff.diff >= 0 ? 'green' : 'red',
+								}"
+							>
+								{{ flavorDiff.diff === 0 ? '' : flavorDiff.diff > 0 ? '+' : '-' }}
+								{{ Math.abs(flavorDiff.diff) }}
+							</span>
+						</td>
 
-		<tr>
-			<td>Total RAM</td>
-			<td>{{ application?.project_application_total_ram }} GB</td>
-			@if (application.project_modification_request) {
-				<td>
-					<span
-						[ngStyle]="{
-							color:
-								application.project_modification_request.total_ram >= application.project_application_total_ram
-									? 'green'
-									: 'red',
-						}"
-					>
-						{{
-							application.project_modification_request.total_ram === application.project_application_total_ram
-								? ''
-								: application.project_modification_request.total_ram > application.project_application_total_ram
-									? '+'
-									: '-'
-						}}
-						{{
-							Math.abs(application.project_modification_request.total_ram - application.project_application_total_ram)
-						}}
-					</span>
-				</td>
-				<td>{{ application.project_modification_request.total_ram }}</td>
+						<td>{{ flavorDiff.new }}</td>
+					}
+				</tr>
 			}
-		</tr>
-		<tr>
-			<td>Total GPUs</td>
-			<td>{{ application?.project_application_total_gpu }}</td>
-			@if (application.project_modification_request) {
-				<td>
-					<span
-						[ngStyle]="{
-							color:
-								application.project_modification_request.total_gpu >= application.project_application_total_gpu
-									? 'green'
-									: 'red',
-						}"
-					>
-						{{
-							application.project_modification_request.total_gpu === application.project_application_total_gpu
-								? ''
-								: application.project_modification_request.total_gpu > application.project_application_total_gpu
-									? '+'
-									: '-'
-						}}
-						{{
-							Math.abs(application.project_modification_request.total_gpu - application.project_application_total_gpu)
-						}}
-					</span>
-				</td>
-				<td>{{ application.project_modification_request.total_gpu }}</td>
-			}
-		</tr>
 
-		@if (is_vo_admin) {
 			<tr>
-				<td>Initial Credits</td>
-				<td>{{ application?.project_application_initial_credits }}</td>
+				<td>Total Cores</td>
+				<td>{{ application?.project_application_total_cores }}</td>
 				@if (application.project_modification_request) {
 					<td>
 						<span
 							[ngStyle]="{
-								color: 'green',
+								color:
+									application.project_modification_request.total_cores >= application.project_application_total_cores
+										? 'green'
+										: 'red',
 							}"
 						>
-							+ {{ application.project_modification_request.extra_credits }}
+							{{
+								application.project_modification_request.total_cores === application.project_application_total_cores
+									? ''
+									: application.project_modification_request.total_cores > application.project_application_total_cores
+										? '+'
+										: '-'
+							}}
+							{{
+								Math.abs(
+									application.project_modification_request.total_cores - application.project_application_total_cores
+								)
+							}}
 						</span>
 					</td>
-					<td>
-						{{
-							application.project_modification_request.extra_credits + application.project_application_initial_credits
-						}}
-					</td>
+					<td>{{ application.project_modification_request.total_cores }}</td>
 				}
 			</tr>
-		}
 
-		@if (is_vo_admin) {
 			<tr>
-				<td>Used Credits</td>
-				<td>{{ current_credits }}</td>
+				<td>Total RAM</td>
+				<td>{{ application?.project_application_total_ram }} GB</td>
 				@if (application.project_modification_request) {
-					<td></td>
-					<td></td>
+					<td>
+						<span
+							[ngStyle]="{
+								color:
+									application.project_modification_request.total_ram >= application.project_application_total_ram
+										? 'green'
+										: 'red',
+							}"
+						>
+							{{
+								application.project_modification_request.total_ram === application.project_application_total_ram
+									? ''
+									: application.project_modification_request.total_ram > application.project_application_total_ram
+										? '+'
+										: '-'
+							}}
+							{{
+								Math.abs(application.project_modification_request.total_ram - application.project_application_total_ram)
+							}}
+						</span>
+					</td>
+					<td>{{ application.project_modification_request.total_ram }}</td>
 				}
 			</tr>
-		}
+			<tr>
+				<td>Total GPUs</td>
+				<td>{{ application?.project_application_total_gpu }}</td>
+				@if (application.project_modification_request) {
+					<td>
+						<span
+							[ngStyle]="{
+								color:
+									application.project_modification_request.total_gpu >= application.project_application_total_gpu
+										? 'green'
+										: 'red',
+							}"
+						>
+							{{
+								application.project_modification_request.total_gpu === application.project_application_total_gpu
+									? ''
+									: application.project_modification_request.total_gpu > application.project_application_total_gpu
+										? '+'
+										: '-'
+							}}
+							{{
+								Math.abs(application.project_modification_request.total_gpu - application.project_application_total_gpu)
+							}}
+						</span>
+					</td>
+					<td>{{ application.project_modification_request.total_gpu }}</td>
+				}
+			</tr>
 
-		<tr>
-			<td>Storage Limit</td>
-			<td>{{ application?.project_application_volume_limit }} GB</td>
-			@if (application.project_modification_request) {
-				<td>
-					<span
-						[ngStyle]="{
-							color:
-								application.project_modification_request.volume_limit >= application.project_application_volume_limit
-									? 'green'
-									: 'red',
-						}"
-					>
-						{{
-							application.project_modification_request.volume_limit === application.project_application_volume_limit
-								? ''
-								: application.project_modification_request.volume_limit > application.project_application_volume_limit
-									? '+'
-									: '-'
-						}}
-						{{
-							Math.abs(
-								application.project_modification_request.volume_limit - application.project_application_volume_limit
-							)
-						}}
-					</span>
-				</td>
-				<td>{{ application.project_modification_request.volume_limit }}</td>
+			@if (is_vo_admin) {
+				<tr>
+					<td>Initial Credits</td>
+					<td>{{ application?.project_application_initial_credits }}</td>
+					@if (application.project_modification_request) {
+						<td>
+							<span
+								[ngStyle]="{
+									color: 'green',
+								}"
+							>
+								+ {{ application.project_modification_request.extra_credits }}
+							</span>
+						</td>
+						<td>
+							{{
+								application.project_modification_request.extra_credits + application.project_application_initial_credits
+							}}
+						</td>
+					}
+				</tr>
 			}
-		</tr>
-		<tr>
-			<td>Volume Counter</td>
-			<td>{{ application?.project_application_volume_counter }} volumes</td>
-			@if (application.project_modification_request) {
-				<td>
-					<span
-						[ngStyle]="{
-							color:
-								application.project_modification_request.volume_counter >=
+
+			@if (is_vo_admin) {
+				<tr>
+					<td>Used Credits</td>
+					<td>{{ current_credits }}</td>
+					@if (application.project_modification_request) {
+						<td></td>
+						<td></td>
+					}
+				</tr>
+			}
+
+			<tr>
+				<td>Storage Limit</td>
+				<td>{{ application?.project_application_volume_limit }} GB</td>
+				@if (application.project_modification_request) {
+					<td>
+						<span
+							[ngStyle]="{
+								color:
+									application.project_modification_request.volume_limit >= application.project_application_volume_limit
+										? 'green'
+										: 'red',
+							}"
+						>
+							{{
+								application.project_modification_request.volume_limit === application.project_application_volume_limit
+									? ''
+									: application.project_modification_request.volume_limit > application.project_application_volume_limit
+										? '+'
+										: '-'
+							}}
+							{{
+								Math.abs(
+									application.project_modification_request.volume_limit - application.project_application_volume_limit
+								)
+							}}
+						</span>
+					</td>
+					<td>{{ application.project_modification_request.volume_limit }}</td>
+				}
+			</tr>
+			<tr>
+				<td>Volume Counter</td>
+				<td>{{ application?.project_application_volume_counter }} volumes</td>
+				@if (application.project_modification_request) {
+					<td>
+						<span
+							[ngStyle]="{
+								color:
+									application.project_modification_request.volume_counter >=
+									application.project_application_volume_counter
+										? 'green'
+										: 'red',
+							}"
+						>
+							{{
+								application.project_modification_request.volume_counter ===
 								application.project_application_volume_counter
-									? 'green'
-									: 'red',
-						}"
-					>
-						{{
-							application.project_modification_request.volume_counter === application.project_application_volume_counter
-								? ''
-								: application.project_modification_request.volume_counter >
-									  application.project_application_volume_counter
-									? '+'
-									: '-'
-						}}
-						{{
-							Math.abs(
-								application.project_modification_request.volume_counter - application.project_application_volume_counter
-							)
-						}}
-					</span>
-				</td>
-				<td>{{ application.project_modification_request.volume_counter }}</td>
-			}
-		</tr>
-		@if (application?.project_application_openstack_project) {
+									? ''
+									: application.project_modification_request.volume_counter >
+										  application.project_application_volume_counter
+										? '+'
+										: '-'
+							}}
+							{{
+								Math.abs(
+									application.project_modification_request.volume_counter -
+										application.project_application_volume_counter
+								)
+							}}
+						</span>
+					</td>
+					<td>{{ application.project_modification_request.volume_counter }}</td>
+				}
+			</tr>
+		}
+		@if (application?.project_application_openstack_project || application?.project_application_storage_project) {
 			<tr>
-				<td>ObjectStorage</td>
+				<td>Object Storage</td>
 				<td>{{ application?.project_application_object_storage }} GB</td>
 				@if (application.project_modification_request) {
 					<td>
@@ -332,6 +338,42 @@
 						</span>
 					</td>
 					<td>{{ application.project_modification_request.object_storage }}</td>
+				}
+			</tr>
+		}
+		@if (application?.project_application_storage_project) {
+			<tr>
+				<td>S3 Buckets</td>
+				<td>{{ application?.project_application_number_of_buckets }}</td>
+				@if (application.project_modification_request) {
+					<td>
+						<span
+							[ngStyle]="{
+								color:
+									application.project_modification_request.number_of_buckets >=
+									application.project_application_number_of_buckets
+										? 'green'
+										: 'red',
+							}"
+						>
+							{{
+								application.project_modification_request.number_of_buckets ===
+								application.project_application_number_of_buckets
+									? ''
+									: application.project_modification_request.number_of_buckets >
+										  application.project_application_number_of_buckets
+										? '+'
+										: '-'
+							}}
+							{{
+								Math.abs(
+									application.project_modification_request.number_of_buckets -
+										application.project_application_number_of_buckets
+								)
+							}}
+						</span>
+					</td>
+					<td>{{ application.project_modification_request.number_of_buckets }}</td>
 				}
 			</tr>
 		}

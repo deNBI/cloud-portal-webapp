@@ -138,6 +138,8 @@
 											src="{{ openstack_logo }}"
 										/>
 									}
+								} @else if (application?.is_storage) {
+									<i class="fas fa-database"></i>
 								} @else {
 									@if (!application?.is_open_stack) {
 										<img
@@ -303,6 +305,8 @@
 												src="{{ openstack_logo }}"
 											/>
 										}
+									} @else if (application?.is_storage) {
+										<i class="fas fa-database nav-icon fas-icon"></i>
 									} @else {
 										@if (!application?.is_open_stack) {
 											<img
