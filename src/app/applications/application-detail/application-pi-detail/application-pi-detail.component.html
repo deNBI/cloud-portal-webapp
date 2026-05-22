@@ -20,31 +20,56 @@
 			<tr id="id_pi_row">
 				<td>PI Name</td>
 				<td>
-					@if (application.project_application_pi?.username) {
-						{{ application?.project_application_pi?.username }}
-						@if (application?.project_application_pi?.pi_project_count_total > 0) {
-							<span
-								data-toggle="tooltip"
-								title="This user acts as the Principal Investigator for {{
-									application?.project_application_pi?.pi_project_count_active
-								}} active project(s)"
-							>
-								<c-badge color="success">
-									{{ application?.project_application_pi?.pi_project_count_active }}</c-badge
-								></span
-							>/
-							<span
-								data-toggle="tooltip"
-								title="This user acts as the Principal Investigator for {{
-									application?.project_application_pi?.pi_project_count_total
-								}} total project(s) (including this one)."
-							>
-								<c-badge color="info"> {{ application?.project_application_pi?.pi_project_count_total }}</c-badge></span
-							>
+					<div class="row px-3 py-1">
+						@if (application.project_application_pi?.username) {
+							{{ application?.project_application_pi?.username }}
+							@if (application?.project_application_pi?.pi_project_count_total > 0) {
+								<div class="col">
+									<span
+										data-toggle="tooltip"
+										title="This user acts as the Principal Investigator for {{
+											application?.project_application_pi?.pi_project_count_active
+										}} active project(s)"
+									>
+										<c-badge color="success">
+											{{ application?.project_application_pi?.pi_project_count_active }}</c-badge
+										></span
+									>/
+									<span
+										data-toggle="tooltip"
+										title="This user acts as the Principal Investigator for {{
+											application?.project_application_pi?.pi_project_count_total
+										}} total project(s) (including this one)."
+									>
+										<c-badge color="info">
+											{{ application?.project_application_pi?.pi_project_count_total }}</c-badge
+										></span
+									>
+								</div>
+							}
+
+							<div class="col">
+								@if (application?.pi_verified) {
+									<c-badge class="py-2" color="info" size="lg"
+										><span class="fs-6"
+											><i class="fas fa-check-circle"></i> Verified by: {{ application?.pi_verified_by_initials }}</span
+										></c-badge
+									>
+								}
+							</div>
+							<div class="col">
+								@if (!application?.pi_verified) {
+									<button class="btn btn-primary" (click)="togglePIVerification()">Set PI verified</button>
+								} @else {
+									<button class="btn btn-danger btn-sm text-white" (click)="togglePIVerification()">
+										Unset PI verification
+									</button>
+								}
+							</div>
+						} @else if (application.project_application_pi_approved) {
+							<span class="spinner-border text-info"></span>
 						}
-					} @else if (application.project_application_pi_approved) {
-						<span class="spinner-border text-info"></span>
-					}
+					</div>
 				</td>
 			</tr>
 		}

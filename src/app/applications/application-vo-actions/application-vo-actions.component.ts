@@ -143,7 +143,7 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 	unsetProcessingVoManager(application: Application): void {
 		if (this.is_vo_admin) {
 			this.voService.unsetProcessingVoManager(application.project_application_id).subscribe(() => {
-				application.processing_vo_initials = null
+				application.processing_vo_initials = ''
 			})
 		}
 	}

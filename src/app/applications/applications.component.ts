@@ -89,6 +89,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		private groupservice: GroupService,
 		private modalService: BsModalService,
 		facilityService: FacilityService,
+		private voService: VoService,
 		private flavorService: FlavorService,
 		cdrRef: ChangeDetectorRef,
 		notificationModal: NotificationModalComponent
@@ -118,7 +119,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			this.isLoaded = true
 		}
 	}
-
+	f
 	/**
 	 * Getting the current numbers of all Application-Request types from the API
 	 */
@@ -136,6 +137,20 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		if (!this.loading_applications) {
 			this.tab_state = state
 			this.getApplicationsByTabState()
+		}
+	}
+
+	onPIVerificationChange(verificationState: [boolean, Application]) {
+		if (!verificationState[0]) {
+			this.voService.unsetPIVerification(verificationState[1].project_application_id).subscribe(() => {
+				verificationState[1].pi_verified = false
+				verificationState[1].pi_verified_by_initials = ''
+			})
+		} else {
+			this.voService.setCurrentUserHasVerifiedPI(verificationState[1].project_application_id).subscribe((res: any) => {
+				verificationState[1].pi_verified_by_initials = res['verified_by_initials']
+				verificationState[1].pi_verified = true
+			})
 		}
 	}
 

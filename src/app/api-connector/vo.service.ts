@@ -289,6 +289,18 @@ export class VoService {
 		})
 	}
 
+	unsetPIVerification(application_id: number | string): Observable<any> {
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${application_id}/pi_verification/`, {
+			withCredentials: true
+		})
+	}
+
+	setCurrentUserHasVerifiedPI(application_id: number | string): Observable<any> {
+		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${application_id}/pi_verification/`, null, {
+			withCredentials: true
+		})
+	}
+
 	unsetProcessingVoManager(application_id: number | string): Observable<any> {
 		return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${application_id}/vo_manager/`, {
 			withCredentials: true

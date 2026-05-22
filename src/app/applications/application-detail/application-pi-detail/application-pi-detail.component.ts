@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, Output, EventEmitter } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 
 import { TextColorDirective, TextBgColorDirective, BadgeComponent } from '@coreui/angular'
@@ -13,4 +13,9 @@ import { TextColorDirective, TextBgColorDirective, BadgeComponent } from '@coreu
 })
 export class ApplicationPiDetailComponent {
 	@Input() application: Application
+	@Output() piVerificationChange = new EventEmitter<boolean>()
+
+	togglePIVerification() {
+		this.piVerificationChange.emit(!this.application.pi_verified)
+	}
 }

@@ -81,6 +81,8 @@ export class Application {
 	project_application_elixir_project: string
 	dissemination: ApplicationDissemination
 	project_application_pi_approved: boolean
+	pi_verified: boolean
+	pi_verified_by_initials: string
 	project_application_cloud_service: boolean
 	project_application_cloud_service_develop: boolean
 	project_application_cloud_service_user_number: number

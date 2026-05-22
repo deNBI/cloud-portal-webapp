@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, Input, Output, OnInit, EventEmitter } from '@angular/core'
 import { Application } from '../application.model/application.model'
 import { ApplicationBaseClassComponent } from '../../shared/shared_modules/baseClass/application-base-class.component'
 import { ApplicationsService } from '../../api-connector/applications.service'
@@ -58,6 +58,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 	LIFETIME_COMMENT_TAB_ACTIVE: boolean = false
 	@Input() application: Application
 	@Input() default_tab: number = this.PI_USER_TAB
+	@Output() propagatePIVerificationChange = new EventEmitter<boolean>()
 
 	creditsService: CreditsService
 	is_vo_admin: boolean = false
@@ -161,5 +162,9 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 				this.current_credits = credits
 			})
 			.catch((err: Error): void => console.log(err.message))
+	}
+
+	onPIVerificationChange(verificationState: boolean) {
+		this.propagatePIVerificationChange.emit(verificationState)
 	}
 }

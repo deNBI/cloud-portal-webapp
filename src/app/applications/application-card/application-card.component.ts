@@ -29,6 +29,7 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED
 	@Input() computeCenters: ComputecenterComponent[] = []
 	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter()
+	@Output() propagatePIVerificationChanged: EventEmitter<[boolean, Application]> = new EventEmitter()
 	@Output() removeApplicationTrigger: EventEmitter<number | string> = new EventEmitter()
 	@Input() facilityView: boolean = false
 	@Input() voView: boolean = false
@@ -40,6 +41,10 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 	ngOnInit() {
 		this.is_vo_admin = is_vo
 		this.getAndSetPiAndUserApplication()
+	}
+
+	onPIVerificationChange(verificationState: boolean) {
+		this.propagatePIVerificationChanged.emit([verificationState, this.application])
 	}
 
 	getAndSetPiAndUserApplication() {
