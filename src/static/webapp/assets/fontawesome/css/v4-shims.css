@@ -1,10 +1,10 @@
 /*!
- * Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- * Copyright 2023 Fonticons, Inc.
+ * Copyright 2024 Fonticons, Inc.
  */
-.fa.fa-glass:before {
-	content: '\f000';
+.fa.fa-glass {
+	--fa: '\f000';
 }
 
 .fa.fa-envelope-o {
@@ -12,8 +12,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-envelope-o:before {
-	content: '\f0e0';
+.fa.fa-envelope-o {
+	--fa: '\f0e0';
 }
 
 .fa.fa-star-o {
@@ -21,20 +21,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-star-o:before {
-	content: '\f005';
+.fa.fa-star-o {
+	--fa: '\f005';
 }
 
-.fa.fa-remove:before {
-	content: '\f00d';
+.fa.fa-remove {
+	--fa: '\f00d';
 }
 
-.fa.fa-close:before {
-	content: '\f00d';
+.fa.fa-close {
+	--fa: '\f00d';
 }
 
-.fa.fa-gear:before {
-	content: '\f013';
+.fa.fa-gear {
+	--fa: '\f013';
 }
 
 .fa.fa-trash-o {
@@ -42,12 +42,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-trash-o:before {
-	content: '\f2ed';
+.fa.fa-trash-o {
+	--fa: '\f2ed';
 }
 
-.fa.fa-home:before {
-	content: '\f015';
+.fa.fa-home {
+	--fa: '\f015';
 }
 
 .fa.fa-file-o {
@@ -55,8 +55,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-o:before {
-	content: '\f15b';
+.fa.fa-file-o {
+	--fa: '\f15b';
 }
 
 .fa.fa-clock-o {
@@ -64,8 +64,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-clock-o:before {
-	content: '\f017';
+.fa.fa-clock-o {
+	--fa: '\f017';
 }
 
 .fa.fa-arrow-circle-o-down {
@@ -73,8 +73,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-arrow-circle-o-down:before {
-	content: '\f358';
+.fa.fa-arrow-circle-o-down {
+	--fa: '\f358';
 }
 
 .fa.fa-arrow-circle-o-up {
@@ -82,8 +82,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-arrow-circle-o-up:before {
-	content: '\f35b';
+.fa.fa-arrow-circle-o-up {
+	--fa: '\f35b';
 }
 
 .fa.fa-play-circle-o {
@@ -91,20 +91,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-play-circle-o:before {
-	content: '\f144';
+.fa.fa-play-circle-o {
+	--fa: '\f144';
 }
 
-.fa.fa-repeat:before {
-	content: '\f01e';
+.fa.fa-repeat {
+	--fa: '\f01e';
 }
 
-.fa.fa-rotate-right:before {
-	content: '\f01e';
+.fa.fa-rotate-right {
+	--fa: '\f01e';
 }
 
-.fa.fa-refresh:before {
-	content: '\f021';
+.fa.fa-refresh {
+	--fa: '\f021';
 }
 
 .fa.fa-list-alt {
@@ -112,16 +112,16 @@
 	font-weight: 400;
 }
 
-.fa.fa-list-alt:before {
-	content: '\f022';
+.fa.fa-list-alt {
+	--fa: '\f022';
 }
 
-.fa.fa-dedent:before {
-	content: '\f03b';
+.fa.fa-dedent {
+	--fa: '\f03b';
 }
 
-.fa.fa-video-camera:before {
-	content: '\f03d';
+.fa.fa-video-camera {
+	--fa: '\f03d';
 }
 
 .fa.fa-picture-o {
@@ -129,8 +129,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-picture-o:before {
-	content: '\f03e';
+.fa.fa-picture-o {
+	--fa: '\f03e';
 }
 
 .fa.fa-photo {
@@ -138,8 +138,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-photo:before {
-	content: '\f03e';
+.fa.fa-photo {
+	--fa: '\f03e';
 }
 
 .fa.fa-image {
@@ -147,12 +147,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-image:before {
-	content: '\f03e';
+.fa.fa-image {
+	--fa: '\f03e';
 }
 
-.fa.fa-map-marker:before {
-	content: '\f3c5';
+.fa.fa-map-marker {
+	--fa: '\f3c5';
 }
 
 .fa.fa-pencil-square-o {
@@ -160,8 +160,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-pencil-square-o:before {
-	content: '\f044';
+.fa.fa-pencil-square-o {
+	--fa: '\f044';
 }
 
 .fa.fa-edit {
@@ -169,12 +169,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-edit:before {
-	content: '\f044';
+.fa.fa-edit {
+	--fa: '\f044';
 }
 
-.fa.fa-share-square-o:before {
-	content: '\f14d';
+.fa.fa-share-square-o {
+	--fa: '\f14d';
 }
 
 .fa.fa-check-square-o {
@@ -182,12 +182,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-check-square-o:before {
-	content: '\f14a';
+.fa.fa-check-square-o {
+	--fa: '\f14a';
 }
 
-.fa.fa-arrows:before {
-	content: '\f0b2';
+.fa.fa-arrows {
+	--fa: '\f0b2';
 }
 
 .fa.fa-times-circle-o {
@@ -195,8 +195,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-times-circle-o:before {
-	content: '\f057';
+.fa.fa-times-circle-o {
+	--fa: '\f057';
 }
 
 .fa.fa-check-circle-o {
@@ -204,20 +204,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-check-circle-o:before {
-	content: '\f058';
+.fa.fa-check-circle-o {
+	--fa: '\f058';
 }
 
-.fa.fa-mail-forward:before {
-	content: '\f064';
+.fa.fa-mail-forward {
+	--fa: '\f064';
 }
 
-.fa.fa-expand:before {
-	content: '\f424';
+.fa.fa-expand {
+	--fa: '\f424';
 }
 
-.fa.fa-compress:before {
-	content: '\f422';
+.fa.fa-compress {
+	--fa: '\f422';
 }
 
 .fa.fa-eye {
@@ -230,28 +230,28 @@
 	font-weight: 400;
 }
 
-.fa.fa-warning:before {
-	content: '\f071';
+.fa.fa-warning {
+	--fa: '\f071';
 }
 
-.fa.fa-calendar:before {
-	content: '\f073';
+.fa.fa-calendar {
+	--fa: '\f073';
 }
 
-.fa.fa-arrows-v:before {
-	content: '\f338';
+.fa.fa-arrows-v {
+	--fa: '\f338';
 }
 
-.fa.fa-arrows-h:before {
-	content: '\f337';
+.fa.fa-arrows-h {
+	--fa: '\f337';
 }
 
-.fa.fa-bar-chart:before {
-	content: '\e0e3';
+.fa.fa-bar-chart {
+	--fa: '\e0e3';
 }
 
-.fa.fa-bar-chart-o:before {
-	content: '\e0e3';
+.fa.fa-bar-chart-o {
+	--fa: '\e0e3';
 }
 
 .fa.fa-twitter-square {
@@ -259,8 +259,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-twitter-square:before {
-	content: '\f081';
+.fa.fa-twitter-square {
+	--fa: '\f081';
 }
 
 .fa.fa-facebook-square {
@@ -268,12 +268,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-facebook-square:before {
-	content: '\f082';
+.fa.fa-facebook-square {
+	--fa: '\f082';
 }
 
-.fa.fa-gears:before {
-	content: '\f085';
+.fa.fa-gears {
+	--fa: '\f085';
 }
 
 .fa.fa-thumbs-o-up {
@@ -281,8 +281,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-thumbs-o-up:before {
-	content: '\f164';
+.fa.fa-thumbs-o-up {
+	--fa: '\f164';
 }
 
 .fa.fa-thumbs-o-down {
@@ -290,8 +290,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-thumbs-o-down:before {
-	content: '\f165';
+.fa.fa-thumbs-o-down {
+	--fa: '\f165';
 }
 
 .fa.fa-heart-o {
@@ -299,12 +299,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-heart-o:before {
-	content: '\f004';
+.fa.fa-heart-o {
+	--fa: '\f004';
 }
 
-.fa.fa-sign-out:before {
-	content: '\f2f5';
+.fa.fa-sign-out {
+	--fa: '\f2f5';
 }
 
 .fa.fa-linkedin-square {
@@ -312,20 +312,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-linkedin-square:before {
-	content: '\f08c';
+.fa.fa-linkedin-square {
+	--fa: '\f08c';
 }
 
-.fa.fa-thumb-tack:before {
-	content: '\f08d';
+.fa.fa-thumb-tack {
+	--fa: '\f08d';
 }
 
-.fa.fa-external-link:before {
-	content: '\f35d';
+.fa.fa-external-link {
+	--fa: '\f35d';
 }
 
-.fa.fa-sign-in:before {
-	content: '\f2f6';
+.fa.fa-sign-in {
+	--fa: '\f2f6';
 }
 
 .fa.fa-github-square {
@@ -333,8 +333,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-github-square:before {
-	content: '\f092';
+.fa.fa-github-square {
+	--fa: '\f092';
 }
 
 .fa.fa-lemon-o {
@@ -342,8 +342,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-lemon-o:before {
-	content: '\f094';
+.fa.fa-lemon-o {
+	--fa: '\f094';
 }
 
 .fa.fa-square-o {
@@ -351,8 +351,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-square-o:before {
-	content: '\f0c8';
+.fa.fa-square-o {
+	--fa: '\f0c8';
 }
 
 .fa.fa-bookmark-o {
@@ -360,8 +360,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-bookmark-o:before {
-	content: '\f02e';
+.fa.fa-bookmark-o {
+	--fa: '\f02e';
 }
 
 .fa.fa-twitter {
@@ -374,8 +374,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-facebook:before {
-	content: '\f39e';
+.fa.fa-facebook {
+	--fa: '\f39e';
 }
 
 .fa.fa-facebook-f {
@@ -383,8 +383,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-facebook-f:before {
-	content: '\f39e';
+.fa.fa-facebook-f {
+	--fa: '\f39e';
 }
 
 .fa.fa-github {
@@ -397,8 +397,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-feed:before {
-	content: '\f09e';
+.fa.fa-feed {
+	--fa: '\f09e';
 }
 
 .fa.fa-hdd-o {
@@ -406,8 +406,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hdd-o:before {
-	content: '\f0a0';
+.fa.fa-hdd-o {
+	--fa: '\f0a0';
 }
 
 .fa.fa-hand-o-right {
@@ -415,8 +415,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-o-right:before {
-	content: '\f0a4';
+.fa.fa-hand-o-right {
+	--fa: '\f0a4';
 }
 
 .fa.fa-hand-o-left {
@@ -424,8 +424,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-o-left:before {
-	content: '\f0a5';
+.fa.fa-hand-o-left {
+	--fa: '\f0a5';
 }
 
 .fa.fa-hand-o-up {
@@ -433,8 +433,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-o-up:before {
-	content: '\f0a6';
+.fa.fa-hand-o-up {
+	--fa: '\f0a6';
 }
 
 .fa.fa-hand-o-down {
@@ -442,32 +442,32 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-o-down:before {
-	content: '\f0a7';
+.fa.fa-hand-o-down {
+	--fa: '\f0a7';
 }
 
-.fa.fa-globe:before {
-	content: '\f57d';
+.fa.fa-globe {
+	--fa: '\f57d';
 }
 
-.fa.fa-tasks:before {
-	content: '\f828';
+.fa.fa-tasks {
+	--fa: '\f828';
 }
 
-.fa.fa-arrows-alt:before {
-	content: '\f31e';
+.fa.fa-arrows-alt {
+	--fa: '\f31e';
 }
 
-.fa.fa-group:before {
-	content: '\f0c0';
+.fa.fa-group {
+	--fa: '\f0c0';
 }
 
-.fa.fa-chain:before {
-	content: '\f0c1';
+.fa.fa-chain {
+	--fa: '\f0c1';
 }
 
-.fa.fa-cut:before {
-	content: '\f0c4';
+.fa.fa-cut {
+	--fa: '\f0c4';
 }
 
 .fa.fa-files-o {
@@ -475,8 +475,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-files-o:before {
-	content: '\f0c5';
+.fa.fa-files-o {
+	--fa: '\f0c5';
 }
 
 .fa.fa-floppy-o {
@@ -484,8 +484,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-floppy-o:before {
-	content: '\f0c7';
+.fa.fa-floppy-o {
+	--fa: '\f0c7';
 }
 
 .fa.fa-save {
@@ -493,20 +493,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-save:before {
-	content: '\f0c7';
+.fa.fa-save {
+	--fa: '\f0c7';
 }
 
-.fa.fa-navicon:before {
-	content: '\f0c9';
+.fa.fa-navicon {
+	--fa: '\f0c9';
 }
 
-.fa.fa-reorder:before {
-	content: '\f0c9';
+.fa.fa-reorder {
+	--fa: '\f0c9';
 }
 
-.fa.fa-magic:before {
-	content: '\e2ca';
+.fa.fa-magic {
+	--fa: '\e2ca';
 }
 
 .fa.fa-pinterest {
@@ -519,8 +519,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-pinterest-square:before {
-	content: '\f0d3';
+.fa.fa-pinterest-square {
+	--fa: '\f0d3';
 }
 
 .fa.fa-google-plus-square {
@@ -528,8 +528,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-google-plus-square:before {
-	content: '\f0d4';
+.fa.fa-google-plus-square {
+	--fa: '\f0d4';
 }
 
 .fa.fa-google-plus {
@@ -537,24 +537,24 @@
 	font-weight: 400;
 }
 
-.fa.fa-google-plus:before {
-	content: '\f0d5';
+.fa.fa-google-plus {
+	--fa: '\f0d5';
 }
 
-.fa.fa-money:before {
-	content: '\f3d1';
+.fa.fa-money {
+	--fa: '\f3d1';
 }
 
-.fa.fa-unsorted:before {
-	content: '\f0dc';
+.fa.fa-unsorted {
+	--fa: '\f0dc';
 }
 
-.fa.fa-sort-desc:before {
-	content: '\f0dd';
+.fa.fa-sort-desc {
+	--fa: '\f0dd';
 }
 
-.fa.fa-sort-asc:before {
-	content: '\f0de';
+.fa.fa-sort-asc {
+	--fa: '\f0de';
 }
 
 .fa.fa-linkedin {
@@ -562,24 +562,24 @@
 	font-weight: 400;
 }
 
-.fa.fa-linkedin:before {
-	content: '\f0e1';
+.fa.fa-linkedin {
+	--fa: '\f0e1';
 }
 
-.fa.fa-rotate-left:before {
-	content: '\f0e2';
+.fa.fa-rotate-left {
+	--fa: '\f0e2';
 }
 
-.fa.fa-legal:before {
-	content: '\f0e3';
+.fa.fa-legal {
+	--fa: '\f0e3';
 }
 
-.fa.fa-tachometer:before {
-	content: '\f625';
+.fa.fa-tachometer {
+	--fa: '\f625';
 }
 
-.fa.fa-dashboard:before {
-	content: '\f625';
+.fa.fa-dashboard {
+	--fa: '\f625';
 }
 
 .fa.fa-comment-o {
@@ -587,8 +587,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-comment-o:before {
-	content: '\f075';
+.fa.fa-comment-o {
+	--fa: '\f075';
 }
 
 .fa.fa-comments-o {
@@ -596,16 +596,16 @@
 	font-weight: 400;
 }
 
-.fa.fa-comments-o:before {
-	content: '\f086';
+.fa.fa-comments-o {
+	--fa: '\f086';
 }
 
-.fa.fa-flash:before {
-	content: '\f0e7';
+.fa.fa-flash {
+	--fa: '\f0e7';
 }
 
-.fa.fa-clipboard:before {
-	content: '\f0ea';
+.fa.fa-clipboard {
+	--fa: '\f0ea';
 }
 
 .fa.fa-lightbulb-o {
@@ -613,20 +613,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-lightbulb-o:before {
-	content: '\f0eb';
+.fa.fa-lightbulb-o {
+	--fa: '\f0eb';
 }
 
-.fa.fa-exchange:before {
-	content: '\f362';
+.fa.fa-exchange {
+	--fa: '\f362';
 }
 
-.fa.fa-cloud-download:before {
-	content: '\f0ed';
+.fa.fa-cloud-download {
+	--fa: '\f0ed';
 }
 
-.fa.fa-cloud-upload:before {
-	content: '\f0ee';
+.fa.fa-cloud-upload {
+	--fa: '\f0ee';
 }
 
 .fa.fa-bell-o {
@@ -634,12 +634,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-bell-o:before {
-	content: '\f0f3';
+.fa.fa-bell-o {
+	--fa: '\f0f3';
 }
 
-.fa.fa-cutlery:before {
-	content: '\f2e7';
+.fa.fa-cutlery {
+	--fa: '\f2e7';
 }
 
 .fa.fa-file-text-o {
@@ -647,8 +647,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-text-o:before {
-	content: '\f15c';
+.fa.fa-file-text-o {
+	--fa: '\f15c';
 }
 
 .fa.fa-building-o {
@@ -656,8 +656,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-building-o:before {
-	content: '\f1ad';
+.fa.fa-building-o {
+	--fa: '\f1ad';
 }
 
 .fa.fa-hospital-o {
@@ -665,20 +665,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-hospital-o:before {
-	content: '\f0f8';
+.fa.fa-hospital-o {
+	--fa: '\f0f8';
 }
 
-.fa.fa-tablet:before {
-	content: '\f3fa';
+.fa.fa-tablet {
+	--fa: '\f3fa';
 }
 
-.fa.fa-mobile:before {
-	content: '\f3cd';
+.fa.fa-mobile {
+	--fa: '\f3cd';
 }
 
-.fa.fa-mobile-phone:before {
-	content: '\f3cd';
+.fa.fa-mobile-phone {
+	--fa: '\f3cd';
 }
 
 .fa.fa-circle-o {
@@ -686,12 +686,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-circle-o:before {
-	content: '\f111';
+.fa.fa-circle-o {
+	--fa: '\f111';
 }
 
-.fa.fa-mail-reply:before {
-	content: '\f3e5';
+.fa.fa-mail-reply {
+	--fa: '\f3e5';
 }
 
 .fa.fa-github-alt {
@@ -704,8 +704,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-folder-o:before {
-	content: '\f07b';
+.fa.fa-folder-o {
+	--fa: '\f07b';
 }
 
 .fa.fa-folder-open-o {
@@ -713,8 +713,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-folder-open-o:before {
-	content: '\f07c';
+.fa.fa-folder-open-o {
+	--fa: '\f07c';
 }
 
 .fa.fa-smile-o {
@@ -722,8 +722,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-smile-o:before {
-	content: '\f118';
+.fa.fa-smile-o {
+	--fa: '\f118';
 }
 
 .fa.fa-frown-o {
@@ -731,8 +731,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-frown-o:before {
-	content: '\f119';
+.fa.fa-frown-o {
+	--fa: '\f119';
 }
 
 .fa.fa-meh-o {
@@ -740,8 +740,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-meh-o:before {
-	content: '\f11a';
+.fa.fa-meh-o {
+	--fa: '\f11a';
 }
 
 .fa.fa-keyboard-o {
@@ -749,8 +749,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-keyboard-o:before {
-	content: '\f11c';
+.fa.fa-keyboard-o {
+	--fa: '\f11c';
 }
 
 .fa.fa-flag-o {
@@ -758,12 +758,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-flag-o:before {
-	content: '\f024';
+.fa.fa-flag-o {
+	--fa: '\f024';
 }
 
-.fa.fa-mail-reply-all:before {
-	content: '\f122';
+.fa.fa-mail-reply-all {
+	--fa: '\f122';
 }
 
 .fa.fa-star-half-o {
@@ -771,8 +771,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-star-half-o:before {
-	content: '\f5c0';
+.fa.fa-star-half-o {
+	--fa: '\f5c0';
 }
 
 .fa.fa-star-half-empty {
@@ -780,8 +780,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-star-half-empty:before {
-	content: '\f5c0';
+.fa.fa-star-half-empty {
+	--fa: '\f5c0';
 }
 
 .fa.fa-star-half-full {
@@ -789,20 +789,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-star-half-full:before {
-	content: '\f5c0';
+.fa.fa-star-half-full {
+	--fa: '\f5c0';
 }
 
-.fa.fa-code-fork:before {
-	content: '\f126';
+.fa.fa-code-fork {
+	--fa: '\f126';
 }
 
-.fa.fa-chain-broken:before {
-	content: '\f127';
+.fa.fa-chain-broken {
+	--fa: '\f127';
 }
 
-.fa.fa-unlink:before {
-	content: '\f127';
+.fa.fa-unlink {
+	--fa: '\f127';
 }
 
 .fa.fa-calendar-o {
@@ -810,8 +810,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-calendar-o:before {
-	content: '\f133';
+.fa.fa-calendar-o {
+	--fa: '\f133';
 }
 
 .fa.fa-maxcdn {
@@ -829,8 +829,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-unlock-alt:before {
-	content: '\f09c';
+.fa.fa-unlock-alt {
+	--fa: '\f09c';
 }
 
 .fa.fa-minus-square-o {
@@ -838,24 +838,24 @@
 	font-weight: 400;
 }
 
-.fa.fa-minus-square-o:before {
-	content: '\f146';
+.fa.fa-minus-square-o {
+	--fa: '\f146';
 }
 
-.fa.fa-level-up:before {
-	content: '\f3bf';
+.fa.fa-level-up {
+	--fa: '\f3bf';
 }
 
-.fa.fa-level-down:before {
-	content: '\f3be';
+.fa.fa-level-down {
+	--fa: '\f3be';
 }
 
-.fa.fa-pencil-square:before {
-	content: '\f14b';
+.fa.fa-pencil-square {
+	--fa: '\f14b';
 }
 
-.fa.fa-external-link-square:before {
-	content: '\f360';
+.fa.fa-external-link-square {
+	--fa: '\f360';
 }
 
 .fa.fa-compass {
@@ -868,8 +868,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-caret-square-o-down:before {
-	content: '\f150';
+.fa.fa-caret-square-o-down {
+	--fa: '\f150';
 }
 
 .fa.fa-toggle-down {
@@ -877,8 +877,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-toggle-down:before {
-	content: '\f150';
+.fa.fa-toggle-down {
+	--fa: '\f150';
 }
 
 .fa.fa-caret-square-o-up {
@@ -886,8 +886,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-caret-square-o-up:before {
-	content: '\f151';
+.fa.fa-caret-square-o-up {
+	--fa: '\f151';
 }
 
 .fa.fa-toggle-up {
@@ -895,8 +895,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-toggle-up:before {
-	content: '\f151';
+.fa.fa-toggle-up {
+	--fa: '\f151';
 }
 
 .fa.fa-caret-square-o-right {
@@ -904,8 +904,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-caret-square-o-right:before {
-	content: '\f152';
+.fa.fa-caret-square-o-right {
+	--fa: '\f152';
 }
 
 .fa.fa-toggle-right {
@@ -913,72 +913,72 @@
 	font-weight: 400;
 }
 
-.fa.fa-toggle-right:before {
-	content: '\f152';
+.fa.fa-toggle-right {
+	--fa: '\f152';
 }
 
-.fa.fa-eur:before {
-	content: '\f153';
+.fa.fa-eur {
+	--fa: '\f153';
 }
 
-.fa.fa-euro:before {
-	content: '\f153';
+.fa.fa-euro {
+	--fa: '\f153';
 }
 
-.fa.fa-gbp:before {
-	content: '\f154';
+.fa.fa-gbp {
+	--fa: '\f154';
 }
 
-.fa.fa-usd:before {
-	content: '\24';
+.fa.fa-usd {
+	--fa: '\24';
 }
 
-.fa.fa-dollar:before {
-	content: '\24';
+.fa.fa-dollar {
+	--fa: '\24';
 }
 
-.fa.fa-inr:before {
-	content: '\e1bc';
+.fa.fa-inr {
+	--fa: '\e1bc';
 }
 
-.fa.fa-rupee:before {
-	content: '\e1bc';
+.fa.fa-rupee {
+	--fa: '\e1bc';
 }
 
-.fa.fa-jpy:before {
-	content: '\f157';
+.fa.fa-jpy {
+	--fa: '\f157';
 }
 
-.fa.fa-cny:before {
-	content: '\f157';
+.fa.fa-cny {
+	--fa: '\f157';
 }
 
-.fa.fa-rmb:before {
-	content: '\f157';
+.fa.fa-rmb {
+	--fa: '\f157';
 }
 
-.fa.fa-yen:before {
-	content: '\f157';
+.fa.fa-yen {
+	--fa: '\f157';
 }
 
-.fa.fa-rub:before {
-	content: '\f158';
+.fa.fa-rub {
+	--fa: '\f158';
 }
 
-.fa.fa-ruble:before {
-	content: '\f158';
+.fa.fa-ruble {
+	--fa: '\f158';
 }
 
-.fa.fa-rouble:before {
-	content: '\f158';
+.fa.fa-rouble {
+	--fa: '\f158';
 }
 
-.fa.fa-krw:before {
-	content: '\f159';
+.fa.fa-krw {
+	--fa: '\f159';
 }
 
-.fa.fa-won:before {
-	content: '\f159';
+.fa.fa-won {
+	--fa: '\f159';
 }
 
 .fa.fa-btc {
@@ -991,36 +991,36 @@
 	font-weight: 400;
 }
 
-.fa.fa-bitcoin:before {
-	content: '\f15a';
+.fa.fa-bitcoin {
+	--fa: '\f15a';
 }
 
-.fa.fa-file-text:before {
-	content: '\f15c';
+.fa.fa-file-text {
+	--fa: '\f15c';
 }
 
-.fa.fa-sort-alpha-asc:before {
-	content: '\f15d';
+.fa.fa-sort-alpha-asc {
+	--fa: '\f15d';
 }
 
-.fa.fa-sort-alpha-desc:before {
-	content: '\f881';
+.fa.fa-sort-alpha-desc {
+	--fa: '\f881';
 }
 
-.fa.fa-sort-amount-asc:before {
-	content: '\f884';
+.fa.fa-sort-amount-asc {
+	--fa: '\f884';
 }
 
-.fa.fa-sort-amount-desc:before {
-	content: '\f160';
+.fa.fa-sort-amount-desc {
+	--fa: '\f160';
 }
 
-.fa.fa-sort-numeric-asc:before {
-	content: '\f162';
+.fa.fa-sort-numeric-asc {
+	--fa: '\f162';
 }
 
-.fa.fa-sort-numeric-desc:before {
-	content: '\f886';
+.fa.fa-sort-numeric-desc {
+	--fa: '\f886';
 }
 
 .fa.fa-youtube-square {
@@ -1028,8 +1028,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-youtube-square:before {
-	content: '\f431';
+.fa.fa-youtube-square {
+	--fa: '\f431';
 }
 
 .fa.fa-youtube {
@@ -1047,8 +1047,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-xing-square:before {
-	content: '\f169';
+.fa.fa-xing-square {
+	--fa: '\f169';
 }
 
 .fa.fa-youtube-play {
@@ -1056,8 +1056,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-youtube-play:before {
-	content: '\f167';
+.fa.fa-youtube-play {
+	--fa: '\f167';
 }
 
 .fa.fa-dropbox {
@@ -1095,8 +1095,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-bitbucket-square:before {
-	content: '\f171';
+.fa.fa-bitbucket-square {
+	--fa: '\f171';
 }
 
 .fa.fa-tumblr {
@@ -1109,24 +1109,24 @@
 	font-weight: 400;
 }
 
-.fa.fa-tumblr-square:before {
-	content: '\f174';
+.fa.fa-tumblr-square {
+	--fa: '\f174';
 }
 
-.fa.fa-long-arrow-down:before {
-	content: '\f309';
+.fa.fa-long-arrow-down {
+	--fa: '\f309';
 }
 
-.fa.fa-long-arrow-up:before {
-	content: '\f30c';
+.fa.fa-long-arrow-up {
+	--fa: '\f30c';
 }
 
-.fa.fa-long-arrow-left:before {
-	content: '\f30a';
+.fa.fa-long-arrow-left {
+	--fa: '\f30a';
 }
 
-.fa.fa-long-arrow-right:before {
-	content: '\f30b';
+.fa.fa-long-arrow-right {
+	--fa: '\f30b';
 }
 
 .fa.fa-apple {
@@ -1179,8 +1179,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-gittip:before {
-	content: '\f184';
+.fa.fa-gittip {
+	--fa: '\f184';
 }
 
 .fa.fa-sun-o {
@@ -1188,8 +1188,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-sun-o:before {
-	content: '\f185';
+.fa.fa-sun-o {
+	--fa: '\f185';
 }
 
 .fa.fa-moon-o {
@@ -1197,8 +1197,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-moon-o:before {
-	content: '\f186';
+.fa.fa-moon-o {
+	--fa: '\f186';
 }
 
 .fa.fa-vk {
@@ -1231,8 +1231,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-arrow-circle-o-right:before {
-	content: '\f35a';
+.fa.fa-arrow-circle-o-right {
+	--fa: '\f35a';
 }
 
 .fa.fa-arrow-circle-o-left {
@@ -1240,8 +1240,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-arrow-circle-o-left:before {
-	content: '\f359';
+.fa.fa-arrow-circle-o-left {
+	--fa: '\f359';
 }
 
 .fa.fa-caret-square-o-left {
@@ -1249,8 +1249,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-caret-square-o-left:before {
-	content: '\f191';
+.fa.fa-caret-square-o-left {
+	--fa: '\f191';
 }
 
 .fa.fa-toggle-left {
@@ -1258,8 +1258,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-toggle-left:before {
-	content: '\f191';
+.fa.fa-toggle-left {
+	--fa: '\f191';
 }
 
 .fa.fa-dot-circle-o {
@@ -1267,8 +1267,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-dot-circle-o:before {
-	content: '\f192';
+.fa.fa-dot-circle-o {
+	--fa: '\f192';
 }
 
 .fa.fa-vimeo-square {
@@ -1276,16 +1276,16 @@
 	font-weight: 400;
 }
 
-.fa.fa-vimeo-square:before {
-	content: '\f194';
+.fa.fa-vimeo-square {
+	--fa: '\f194';
 }
 
-.fa.fa-try:before {
-	content: '\e2bb';
+.fa.fa-try {
+	--fa: '\e2bb';
 }
 
-.fa.fa-turkish-lira:before {
-	content: '\e2bb';
+.fa.fa-turkish-lira {
+	--fa: '\e2bb';
 }
 
 .fa.fa-plus-square-o {
@@ -1293,8 +1293,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-plus-square-o:before {
-	content: '\f0fe';
+.fa.fa-plus-square-o {
+	--fa: '\f0fe';
 }
 
 .fa.fa-slack {
@@ -1312,16 +1312,16 @@
 	font-weight: 400;
 }
 
-.fa.fa-institution:before {
-	content: '\f19c';
+.fa.fa-institution {
+	--fa: '\f19c';
 }
 
-.fa.fa-bank:before {
-	content: '\f19c';
+.fa.fa-bank {
+	--fa: '\f19c';
 }
 
-.fa.fa-mortar-board:before {
-	content: '\f19d';
+.fa.fa-mortar-board {
+	--fa: '\f19d';
 }
 
 .fa.fa-yahoo {
@@ -1344,8 +1344,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-reddit-square:before {
-	content: '\f1a2';
+.fa.fa-reddit-square {
+	--fa: '\f1a2';
 }
 
 .fa.fa-stumbleupon-circle {
@@ -1398,8 +1398,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-behance-square:before {
-	content: '\f1b5';
+.fa.fa-behance-square {
+	--fa: '\f1b5';
 }
 
 .fa.fa-steam {
@@ -1412,16 +1412,16 @@
 	font-weight: 400;
 }
 
-.fa.fa-steam-square:before {
-	content: '\f1b7';
+.fa.fa-steam-square {
+	--fa: '\f1b7';
 }
 
-.fa.fa-automobile:before {
-	content: '\f1b9';
+.fa.fa-automobile {
+	--fa: '\f1b9';
 }
 
-.fa.fa-cab:before {
-	content: '\f1ba';
+.fa.fa-cab {
+	--fa: '\f1ba';
 }
 
 .fa.fa-spotify {
@@ -1444,8 +1444,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-pdf-o:before {
-	content: '\f1c1';
+.fa.fa-file-pdf-o {
+	--fa: '\f1c1';
 }
 
 .fa.fa-file-word-o {
@@ -1453,8 +1453,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-word-o:before {
-	content: '\f1c2';
+.fa.fa-file-word-o {
+	--fa: '\f1c2';
 }
 
 .fa.fa-file-excel-o {
@@ -1462,8 +1462,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-excel-o:before {
-	content: '\f1c3';
+.fa.fa-file-excel-o {
+	--fa: '\f1c3';
 }
 
 .fa.fa-file-powerpoint-o {
@@ -1471,8 +1471,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-powerpoint-o:before {
-	content: '\f1c4';
+.fa.fa-file-powerpoint-o {
+	--fa: '\f1c4';
 }
 
 .fa.fa-file-image-o {
@@ -1480,8 +1480,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-image-o:before {
-	content: '\f1c5';
+.fa.fa-file-image-o {
+	--fa: '\f1c5';
 }
 
 .fa.fa-file-photo-o {
@@ -1489,8 +1489,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-photo-o:before {
-	content: '\f1c5';
+.fa.fa-file-photo-o {
+	--fa: '\f1c5';
 }
 
 .fa.fa-file-picture-o {
@@ -1498,8 +1498,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-picture-o:before {
-	content: '\f1c5';
+.fa.fa-file-picture-o {
+	--fa: '\f1c5';
 }
 
 .fa.fa-file-archive-o {
@@ -1507,8 +1507,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-archive-o:before {
-	content: '\f1c6';
+.fa.fa-file-archive-o {
+	--fa: '\f1c6';
 }
 
 .fa.fa-file-zip-o {
@@ -1516,8 +1516,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-zip-o:before {
-	content: '\f1c6';
+.fa.fa-file-zip-o {
+	--fa: '\f1c6';
 }
 
 .fa.fa-file-audio-o {
@@ -1525,8 +1525,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-audio-o:before {
-	content: '\f1c7';
+.fa.fa-file-audio-o {
+	--fa: '\f1c7';
 }
 
 .fa.fa-file-sound-o {
@@ -1534,8 +1534,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-sound-o:before {
-	content: '\f1c7';
+.fa.fa-file-sound-o {
+	--fa: '\f1c7';
 }
 
 .fa.fa-file-video-o {
@@ -1543,8 +1543,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-video-o:before {
-	content: '\f1c8';
+.fa.fa-file-video-o {
+	--fa: '\f1c8';
 }
 
 .fa.fa-file-movie-o {
@@ -1552,8 +1552,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-movie-o:before {
-	content: '\f1c8';
+.fa.fa-file-movie-o {
+	--fa: '\f1c8';
 }
 
 .fa.fa-file-code-o {
@@ -1561,8 +1561,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-file-code-o:before {
-	content: '\f1c9';
+.fa.fa-file-code-o {
+	--fa: '\f1c9';
 }
 
 .fa.fa-vine {
@@ -1580,24 +1580,24 @@
 	font-weight: 400;
 }
 
-.fa.fa-life-bouy:before {
-	content: '\f1cd';
+.fa.fa-life-bouy {
+	--fa: '\f1cd';
 }
 
-.fa.fa-life-buoy:before {
-	content: '\f1cd';
+.fa.fa-life-buoy {
+	--fa: '\f1cd';
 }
 
-.fa.fa-life-saver:before {
-	content: '\f1cd';
+.fa.fa-life-saver {
+	--fa: '\f1cd';
 }
 
-.fa.fa-support:before {
-	content: '\f1cd';
+.fa.fa-support {
+	--fa: '\f1cd';
 }
 
-.fa.fa-circle-o-notch:before {
-	content: '\f1ce';
+.fa.fa-circle-o-notch {
+	--fa: '\f1ce';
 }
 
 .fa.fa-rebel {
@@ -1610,8 +1610,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-ra:before {
-	content: '\f1d0';
+.fa.fa-ra {
+	--fa: '\f1d0';
 }
 
 .fa.fa-resistance {
@@ -1619,8 +1619,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-resistance:before {
-	content: '\f1d0';
+.fa.fa-resistance {
+	--fa: '\f1d0';
 }
 
 .fa.fa-empire {
@@ -1633,8 +1633,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-ge:before {
-	content: '\f1d1';
+.fa.fa-ge {
+	--fa: '\f1d1';
 }
 
 .fa.fa-git-square {
@@ -1642,8 +1642,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-git-square:before {
-	content: '\f1d2';
+.fa.fa-git-square {
+	--fa: '\f1d2';
 }
 
 .fa.fa-git {
@@ -1661,8 +1661,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-y-combinator-square:before {
-	content: '\f1d4';
+.fa.fa-y-combinator-square {
+	--fa: '\f1d4';
 }
 
 .fa.fa-yc-square {
@@ -1670,8 +1670,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-yc-square:before {
-	content: '\f1d4';
+.fa.fa-yc-square {
+	--fa: '\f1d4';
 }
 
 .fa.fa-tencent-weibo {
@@ -1694,12 +1694,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-wechat:before {
-	content: '\f1d7';
+.fa.fa-wechat {
+	--fa: '\f1d7';
 }
 
-.fa.fa-send:before {
-	content: '\f1d8';
+.fa.fa-send {
+	--fa: '\f1d8';
 }
 
 .fa.fa-paper-plane-o {
@@ -1707,8 +1707,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-paper-plane-o:before {
-	content: '\f1d8';
+.fa.fa-paper-plane-o {
+	--fa: '\f1d8';
 }
 
 .fa.fa-send-o {
@@ -1716,8 +1716,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-send-o:before {
-	content: '\f1d8';
+.fa.fa-send-o {
+	--fa: '\f1d8';
 }
 
 .fa.fa-circle-thin {
@@ -1725,12 +1725,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-circle-thin:before {
-	content: '\f111';
+.fa.fa-circle-thin {
+	--fa: '\f111';
 }
 
-.fa.fa-header:before {
-	content: '\f1dc';
+.fa.fa-header {
+	--fa: '\f1dc';
 }
 
 .fa.fa-futbol-o {
@@ -1738,8 +1738,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-futbol-o:before {
-	content: '\f1e3';
+.fa.fa-futbol-o {
+	--fa: '\f1e3';
 }
 
 .fa.fa-soccer-ball-o {
@@ -1747,8 +1747,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-soccer-ball-o:before {
-	content: '\f1e3';
+.fa.fa-soccer-ball-o {
+	--fa: '\f1e3';
 }
 
 .fa.fa-slideshare {
@@ -1771,8 +1771,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-newspaper-o:before {
-	content: '\f1ea';
+.fa.fa-newspaper-o {
+	--fa: '\f1ea';
 }
 
 .fa.fa-paypal {
@@ -1820,12 +1820,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-bell-slash-o:before {
-	content: '\f1f6';
+.fa.fa-bell-slash-o {
+	--fa: '\f1f6';
 }
 
-.fa.fa-trash:before {
-	content: '\f2ed';
+.fa.fa-trash {
+	--fa: '\f2ed';
 }
 
 .fa.fa-copyright {
@@ -1833,20 +1833,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-eyedropper:before {
-	content: '\f1fb';
+.fa.fa-eyedropper {
+	--fa: '\f1fb';
 }
 
-.fa.fa-area-chart:before {
-	content: '\f1fe';
+.fa.fa-area-chart {
+	--fa: '\f1fe';
 }
 
-.fa.fa-pie-chart:before {
-	content: '\f200';
+.fa.fa-pie-chart {
+	--fa: '\f200';
 }
 
-.fa.fa-line-chart:before {
-	content: '\f201';
+.fa.fa-line-chart {
+	--fa: '\f201';
 }
 
 .fa.fa-lastfm {
@@ -1859,8 +1859,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-lastfm-square:before {
-	content: '\f203';
+.fa.fa-lastfm-square {
+	--fa: '\f203';
 }
 
 .fa.fa-ioxhost {
@@ -1878,20 +1878,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-cc:before {
-	content: '\f20a';
+.fa.fa-cc {
+	--fa: '\f20a';
 }
 
-.fa.fa-ils:before {
-	content: '\f20b';
+.fa.fa-ils {
+	--fa: '\f20b';
 }
 
-.fa.fa-shekel:before {
-	content: '\f20b';
+.fa.fa-shekel {
+	--fa: '\f20b';
 }
 
-.fa.fa-sheqel:before {
-	content: '\f20b';
+.fa.fa-sheqel {
+	--fa: '\f20b';
 }
 
 .fa.fa-buysellads {
@@ -1944,20 +1944,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-diamond:before {
-	content: '\f3a5';
+.fa.fa-diamond {
+	--fa: '\f3a5';
 }
 
-.fa.fa-transgender:before {
-	content: '\f224';
+.fa.fa-transgender {
+	--fa: '\f224';
 }
 
-.fa.fa-intersex:before {
-	content: '\f224';
+.fa.fa-intersex {
+	--fa: '\f224';
 }
 
-.fa.fa-transgender-alt:before {
-	content: '\f225';
+.fa.fa-transgender-alt {
+	--fa: '\f225';
 }
 
 .fa.fa-facebook-official {
@@ -1965,8 +1965,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-facebook-official:before {
-	content: '\f09a';
+.fa.fa-facebook-official {
+	--fa: '\f09a';
 }
 
 .fa.fa-pinterest-p {
@@ -1979,8 +1979,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hotel:before {
-	content: '\f236';
+.fa.fa-hotel {
+	--fa: '\f236';
 }
 
 .fa.fa-viacoin {
@@ -2003,8 +2003,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-yc:before {
-	content: '\f23b';
+.fa.fa-yc {
+	--fa: '\f23b';
 }
 
 .fa.fa-optin-monster {
@@ -2022,28 +2022,28 @@
 	font-weight: 400;
 }
 
-.fa.fa-battery-4:before {
-	content: '\f240';
+.fa.fa-battery-4 {
+	--fa: '\f240';
 }
 
-.fa.fa-battery:before {
-	content: '\f240';
+.fa.fa-battery {
+	--fa: '\f240';
 }
 
-.fa.fa-battery-3:before {
-	content: '\f241';
+.fa.fa-battery-3 {
+	--fa: '\f241';
 }
 
-.fa.fa-battery-2:before {
-	content: '\f242';
+.fa.fa-battery-2 {
+	--fa: '\f242';
 }
 
-.fa.fa-battery-1:before {
-	content: '\f243';
+.fa.fa-battery-1 {
+	--fa: '\f243';
 }
 
-.fa.fa-battery-0:before {
-	content: '\f244';
+.fa.fa-battery-0 {
+	--fa: '\f244';
 }
 
 .fa.fa-object-group {
@@ -2061,8 +2061,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-sticky-note-o:before {
-	content: '\f249';
+.fa.fa-sticky-note-o {
+	--fa: '\f249';
 }
 
 .fa.fa-cc-jcb {
@@ -2080,20 +2080,20 @@
 	font-weight: 400;
 }
 
-.fa.fa-hourglass-o:before {
-	content: '\f254';
+.fa.fa-hourglass-o {
+	--fa: '\f254';
 }
 
-.fa.fa-hourglass-1:before {
-	content: '\f251';
+.fa.fa-hourglass-1 {
+	--fa: '\f251';
 }
 
-.fa.fa-hourglass-2:before {
-	content: '\f252';
+.fa.fa-hourglass-2 {
+	--fa: '\f252';
 }
 
-.fa.fa-hourglass-3:before {
-	content: '\f253';
+.fa.fa-hourglass-3 {
+	--fa: '\f253';
 }
 
 .fa.fa-hand-rock-o {
@@ -2101,8 +2101,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-rock-o:before {
-	content: '\f255';
+.fa.fa-hand-rock-o {
+	--fa: '\f255';
 }
 
 .fa.fa-hand-grab-o {
@@ -2110,8 +2110,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-grab-o:before {
-	content: '\f255';
+.fa.fa-hand-grab-o {
+	--fa: '\f255';
 }
 
 .fa.fa-hand-paper-o {
@@ -2119,8 +2119,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-paper-o:before {
-	content: '\f256';
+.fa.fa-hand-paper-o {
+	--fa: '\f256';
 }
 
 .fa.fa-hand-stop-o {
@@ -2128,8 +2128,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-stop-o:before {
-	content: '\f256';
+.fa.fa-hand-stop-o {
+	--fa: '\f256';
 }
 
 .fa.fa-hand-scissors-o {
@@ -2137,8 +2137,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-scissors-o:before {
-	content: '\f257';
+.fa.fa-hand-scissors-o {
+	--fa: '\f257';
 }
 
 .fa.fa-hand-lizard-o {
@@ -2146,8 +2146,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-lizard-o:before {
-	content: '\f258';
+.fa.fa-hand-lizard-o {
+	--fa: '\f258';
 }
 
 .fa.fa-hand-spock-o {
@@ -2155,8 +2155,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-spock-o:before {
-	content: '\f259';
+.fa.fa-hand-spock-o {
+	--fa: '\f259';
 }
 
 .fa.fa-hand-pointer-o {
@@ -2164,8 +2164,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-pointer-o:before {
-	content: '\f25a';
+.fa.fa-hand-pointer-o {
+	--fa: '\f25a';
 }
 
 .fa.fa-hand-peace-o {
@@ -2173,8 +2173,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-hand-peace-o:before {
-	content: '\f25b';
+.fa.fa-hand-peace-o {
+	--fa: '\f25b';
 }
 
 .fa.fa-registered {
@@ -2207,8 +2207,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-odnoklassniki-square:before {
-	content: '\f264';
+.fa.fa-odnoklassniki-square {
+	--fa: '\f264';
 }
 
 .fa.fa-get-pocket {
@@ -2246,8 +2246,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-television:before {
-	content: '\f26c';
+.fa.fa-television {
+	--fa: '\f26c';
 }
 
 .fa.fa-contao {
@@ -2270,8 +2270,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-calendar-plus-o:before {
-	content: '\f271';
+.fa.fa-calendar-plus-o {
+	--fa: '\f271';
 }
 
 .fa.fa-calendar-minus-o {
@@ -2279,8 +2279,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-calendar-minus-o:before {
-	content: '\f272';
+.fa.fa-calendar-minus-o {
+	--fa: '\f272';
 }
 
 .fa.fa-calendar-times-o {
@@ -2288,8 +2288,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-calendar-times-o:before {
-	content: '\f273';
+.fa.fa-calendar-times-o {
+	--fa: '\f273';
 }
 
 .fa.fa-calendar-check-o {
@@ -2297,8 +2297,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-calendar-check-o:before {
-	content: '\f274';
+.fa.fa-calendar-check-o {
+	--fa: '\f274';
 }
 
 .fa.fa-map-o {
@@ -2306,12 +2306,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-map-o:before {
-	content: '\f279';
+.fa.fa-map-o {
+	--fa: '\f279';
 }
 
-.fa.fa-commenting:before {
-	content: '\f4ad';
+.fa.fa-commenting {
+	--fa: '\f4ad';
 }
 
 .fa.fa-commenting-o {
@@ -2319,8 +2319,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-commenting-o:before {
-	content: '\f4ad';
+.fa.fa-commenting-o {
+	--fa: '\f4ad';
 }
 
 .fa.fa-houzz {
@@ -2333,8 +2333,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-vimeo:before {
-	content: '\f27d';
+.fa.fa-vimeo {
+	--fa: '\f27d';
 }
 
 .fa.fa-black-tie {
@@ -2357,8 +2357,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-credit-card-alt:before {
-	content: '\f09d';
+.fa.fa-credit-card-alt {
+	--fa: '\f09d';
 }
 
 .fa.fa-codiepie {
@@ -2401,8 +2401,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-pause-circle-o:before {
-	content: '\f28b';
+.fa.fa-pause-circle-o {
+	--fa: '\f28b';
 }
 
 .fa.fa-stop-circle-o {
@@ -2410,8 +2410,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-stop-circle-o:before {
-	content: '\f28d';
+.fa.fa-stop-circle-o {
+	--fa: '\f28d';
 }
 
 .fa.fa-bluetooth {
@@ -2449,8 +2449,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-wheelchair-alt:before {
-	content: '\f368';
+.fa.fa-wheelchair-alt {
+	--fa: '\f368';
 }
 
 .fa.fa-question-circle-o {
@@ -2458,24 +2458,24 @@
 	font-weight: 400;
 }
 
-.fa.fa-question-circle-o:before {
-	content: '\f059';
+.fa.fa-question-circle-o {
+	--fa: '\f059';
 }
 
-.fa.fa-volume-control-phone:before {
-	content: '\f2a0';
+.fa.fa-volume-control-phone {
+	--fa: '\f2a0';
 }
 
-.fa.fa-asl-interpreting:before {
-	content: '\f2a3';
+.fa.fa-asl-interpreting {
+	--fa: '\f2a3';
 }
 
-.fa.fa-deafness:before {
-	content: '\f2a4';
+.fa.fa-deafness {
+	--fa: '\f2a4';
 }
 
-.fa.fa-hard-of-hearing:before {
-	content: '\f2a4';
+.fa.fa-hard-of-hearing {
+	--fa: '\f2a4';
 }
 
 .fa.fa-glide {
@@ -2488,8 +2488,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-signing:before {
-	content: '\f2a7';
+.fa.fa-signing {
+	--fa: '\f2a7';
 }
 
 .fa.fa-viadeo {
@@ -2502,8 +2502,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-viadeo-square:before {
-	content: '\f2aa';
+.fa.fa-viadeo-square {
+	--fa: '\f2aa';
 }
 
 .fa.fa-snapchat {
@@ -2516,8 +2516,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-snapchat-ghost:before {
-	content: '\f2ab';
+.fa.fa-snapchat-ghost {
+	--fa: '\f2ab';
 }
 
 .fa.fa-snapchat-square {
@@ -2525,8 +2525,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-snapchat-square:before {
-	content: '\f2ad';
+.fa.fa-snapchat-square {
+	--fa: '\f2ad';
 }
 
 .fa.fa-pied-piper {
@@ -2554,8 +2554,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-google-plus-official:before {
-	content: '\f2b3';
+.fa.fa-google-plus-official {
+	--fa: '\f2b3';
 }
 
 .fa.fa-google-plus-circle {
@@ -2563,8 +2563,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-google-plus-circle:before {
-	content: '\f2b3';
+.fa.fa-google-plus-circle {
+	--fa: '\f2b3';
 }
 
 .fa.fa-font-awesome {
@@ -2577,8 +2577,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-fa:before {
-	content: '\f2b4';
+.fa.fa-fa {
+	--fa: '\f2b4';
 }
 
 .fa.fa-handshake-o {
@@ -2586,8 +2586,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-handshake-o:before {
-	content: '\f2b5';
+.fa.fa-handshake-o {
+	--fa: '\f2b5';
 }
 
 .fa.fa-envelope-open-o {
@@ -2595,8 +2595,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-envelope-open-o:before {
-	content: '\f2b6';
+.fa.fa-envelope-open-o {
+	--fa: '\f2b6';
 }
 
 .fa.fa-linode {
@@ -2609,12 +2609,12 @@
 	font-weight: 400;
 }
 
-.fa.fa-address-book-o:before {
-	content: '\f2b9';
+.fa.fa-address-book-o {
+	--fa: '\f2b9';
 }
 
-.fa.fa-vcard:before {
-	content: '\f2bb';
+.fa.fa-vcard {
+	--fa: '\f2bb';
 }
 
 .fa.fa-address-card-o {
@@ -2622,8 +2622,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-address-card-o:before {
-	content: '\f2bb';
+.fa.fa-address-card-o {
+	--fa: '\f2bb';
 }
 
 .fa.fa-vcard-o {
@@ -2631,8 +2631,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-vcard-o:before {
-	content: '\f2bb';
+.fa.fa-vcard-o {
+	--fa: '\f2bb';
 }
 
 .fa.fa-user-circle-o {
@@ -2640,8 +2640,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-user-circle-o:before {
-	content: '\f2bd';
+.fa.fa-user-circle-o {
+	--fa: '\f2bd';
 }
 
 .fa.fa-user-o {
@@ -2649,8 +2649,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-user-o:before {
-	content: '\f007';
+.fa.fa-user-o {
+	--fa: '\f007';
 }
 
 .fa.fa-id-badge {
@@ -2658,8 +2658,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-drivers-license:before {
-	content: '\f2c2';
+.fa.fa-drivers-license {
+	--fa: '\f2c2';
 }
 
 .fa.fa-id-card-o {
@@ -2667,8 +2667,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-id-card-o:before {
-	content: '\f2c2';
+.fa.fa-id-card-o {
+	--fa: '\f2c2';
 }
 
 .fa.fa-drivers-license-o {
@@ -2676,8 +2676,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-drivers-license-o:before {
-	content: '\f2c2';
+.fa.fa-drivers-license-o {
+	--fa: '\f2c2';
 }
 
 .fa.fa-quora {
@@ -2695,36 +2695,36 @@
 	font-weight: 400;
 }
 
-.fa.fa-thermometer-4:before {
-	content: '\f2c7';
+.fa.fa-thermometer-4 {
+	--fa: '\f2c7';
 }
 
-.fa.fa-thermometer:before {
-	content: '\f2c7';
+.fa.fa-thermometer {
+	--fa: '\f2c7';
 }
 
-.fa.fa-thermometer-3:before {
-	content: '\f2c8';
+.fa.fa-thermometer-3 {
+	--fa: '\f2c8';
 }
 
-.fa.fa-thermometer-2:before {
-	content: '\f2c9';
+.fa.fa-thermometer-2 {
+	--fa: '\f2c9';
 }
 
-.fa.fa-thermometer-1:before {
-	content: '\f2ca';
+.fa.fa-thermometer-1 {
+	--fa: '\f2ca';
 }
 
-.fa.fa-thermometer-0:before {
-	content: '\f2cb';
+.fa.fa-thermometer-0 {
+	--fa: '\f2cb';
 }
 
-.fa.fa-bathtub:before {
-	content: '\f2cd';
+.fa.fa-bathtub {
+	--fa: '\f2cd';
 }
 
-.fa.fa-s15:before {
-	content: '\f2cd';
+.fa.fa-s15 {
+	--fa: '\f2cd';
 }
 
 .fa.fa-window-maximize {
@@ -2737,8 +2737,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-times-rectangle:before {
-	content: '\f410';
+.fa.fa-times-rectangle {
+	--fa: '\f410';
 }
 
 .fa.fa-window-close-o {
@@ -2746,8 +2746,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-window-close-o:before {
-	content: '\f410';
+.fa.fa-window-close-o {
+	--fa: '\f410';
 }
 
 .fa.fa-times-rectangle-o {
@@ -2755,8 +2755,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-times-rectangle-o:before {
-	content: '\f410';
+.fa.fa-times-rectangle-o {
+	--fa: '\f410';
 }
 
 .fa.fa-bandcamp {
@@ -2789,8 +2789,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-eercast:before {
-	content: '\f2da';
+.fa.fa-eercast {
+	--fa: '\f2da';
 }
 
 .fa.fa-snowflake-o {
@@ -2798,8 +2798,8 @@
 	font-weight: 400;
 }
 
-.fa.fa-snowflake-o:before {
-	content: '\f2dc';
+.fa.fa-snowflake-o {
+	--fa: '\f2dc';
 }
 
 .fa.fa-superpowers {
