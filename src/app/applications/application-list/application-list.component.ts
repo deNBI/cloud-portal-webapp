@@ -16,6 +16,7 @@ import { ApplicationCardComponent } from '../application-card/application-card.c
 })
 export class ApplicationListComponent implements OnInit, OnChanges {
 	@Output() reloadNumbersTrigger: EventEmitter<void> = new EventEmitter()
+	@Output() propagatePIVerificationChange: EventEmitter<[boolean, Application]> = new EventEmitter()
 
 	@Input() applications: Application[] = []
 	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED
@@ -69,6 +70,10 @@ export class ApplicationListComponent implements OnInit, OnChanges {
 	triggerReloadNumbers() {
 		console.log('trigger reload 2')
 		this.reloadNumbersTrigger.emit()
+	}
+
+	onPIVerificationChange(verificationState: [boolean, Application]) {
+		this.propagatePIVerificationChange.emit(verificationState)
 	}
 
 	removeApplicationFromList(application_id: string | number) {

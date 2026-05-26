@@ -27,6 +27,7 @@
 						<app-application-card
 							class="table-line"
 							[application]="application"
+							(propagatePIVerificationChanged)="onPIVerificationChange($event)"
 							[facilityView]="facilityView"
 							[voView]="voView"
 							(reloadNumbersTrigger)="triggerReloadNumbers()"
