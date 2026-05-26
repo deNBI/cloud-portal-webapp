@@ -47,25 +47,27 @@
 									>
 								</div>
 							}
-
-							<div class="col">
-								@if (application?.pi_verified) {
-									<c-badge class="py-2" color="info" size="lg"
-										><span class="fs-6"
-											><i class="fas fa-check-circle"></i> Verified by: {{ application?.pi_verified_by_initials }}</span
-										></c-badge
-									>
-								}
-							</div>
-							<div class="col">
-								@if (!application?.pi_verified) {
-									<button class="btn btn-primary" (click)="togglePIVerification()">Set PI verified</button>
-								} @else {
-									<button class="btn btn-danger btn-sm text-white" (click)="togglePIVerification()">
-										Unset PI verification
-									</button>
-								}
-							</div>
+							@if (is_vo_admin) {
+								<div class="col">
+									@if (application?.pi_verified) {
+										<c-badge class="py-2" color="info" size="lg"
+											><span class="fs-6"
+												><i class="fas fa-check-circle"></i> Verified by:
+												{{ application?.pi_verified_by_initials }}</span
+											></c-badge
+										>
+									}
+								</div>
+								<div class="col">
+									@if (!application?.pi_verified) {
+										<button class="btn btn-primary" (click)="togglePIVerification()">Set PI verified</button>
+									} @else {
+										<button class="btn btn-danger btn-sm text-white" (click)="togglePIVerification()">
+											Unset PI verification
+										</button>
+									}
+								</div>
+							}
 						} @else if (application.project_application_pi_approved) {
 							<span class="spinner-border text-info"></span>
 						}
