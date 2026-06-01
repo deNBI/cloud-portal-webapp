@@ -45,6 +45,17 @@
 											<img class="po-logo" src="{{ openstack_logo }}" />
 										</a>
 									}
+								} @else if (project_application?.project_application_storage_project) {
+									<a
+										data-toggle="tooltip"
+										rel="noopener noreferrer"
+										style="font-size: 1.5em"
+										target="_blank"
+										class="mx-2"
+										title="This is a Storage project"
+									>
+										<i class="fas fa-database"></i>
+									</a>
 								} @else {
 									<a
 										data-toggle="tooltip"
@@ -205,6 +216,17 @@
 													<img class="po-logo" src="{{ openstack_logo }}" />
 												</a>
 											}
+										} @else if (project_application?.project_application_storage_project) {
+											<a
+												data-toggle="tooltip"
+												rel="noopener noreferrer"
+												style="font-size: 1.5em"
+												target="_blank"
+												class="mx-2"
+												title="This is a Storage project"
+											>
+												<i class="fas fa-database"></i>
+											</a>
 										} @else {
 											<a
 												data-toggle="tooltip"
@@ -440,7 +462,8 @@
 												<small class="text-muted">Computational Resources</small><br />
 												@if (
 													project_application?.project_application_openstack_project ||
-													(project_application | isMigratedProject)
+													((project_application | isMigratedProject) &&
+														!project_application?.project_application_storage_project)
 												) {
 													<strong class="text-muted"
 														>{{ maximumVMs }} VMs with a total of
@@ -457,14 +480,30 @@
 															</span>
 														}
 													</strong>
-												}
-												@if (project_application | isMigratedProject) {
-													<small class="text-muted">
-														Please consider: As the project is migrated, the amount of used resources is visible in the
-														<a [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noopener noreferrer"
-															>SimpleVM platform</a
-														>.
-													</small>
+													@if (project_application | isMigratedProject) {
+														<small class="text-muted">
+															Please consider: As the project is migrated, the amount of used resources is visible in
+															the
+															<a [href]="NEW_SVM_PORTAL_LINK" target="_blank" rel="noopener noreferrer"
+																>SimpleVM platform</a
+															>.
+														</small>
+													}
+												} @else if (project_application?.project_application_storage_project) {
+													<strong class="text-muted">
+														{{ project_application.project_application_object_storage }} GBs of S3 with a maximum of
+														{{ project_application.project_application_number_of_buckets }} buckets
+														@if (
+															(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+															(project_application
+																| hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+														) {
+															<span>
+																- Resource modification requested on
+																{{ project_application?.project_modification_request?.date_submitted }}
+															</span>
+														}
+													</strong>
 												}
 											</div>
 										}

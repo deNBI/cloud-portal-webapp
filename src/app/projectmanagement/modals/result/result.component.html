@@ -42,9 +42,17 @@
 								<td>Amount of storage space: {{ extension.volume_limit }} GBs</td>
 							</tr>
 						}
-						@if (project.project_application_openstack_project && extension.object_storage > 0) {
+						@if (
+							(project.project_application_openstack_project || project.project_application_storage_project) &&
+							extension.object_storage > 0
+						) {
 							<tr>
 								<td>Amount of object storage: {{ extension.object_storage }} GB</td>
+							</tr>
+						}
+						@if (project.project_application_storage_project) {
+							<tr>
+								<td>Amount of buckets: {{ extension.number_of_buckets }}</td>
 							</tr>
 						}
 					}
@@ -71,9 +79,17 @@
 								<td>Amount of storage space: {{ adjustedModification.volume_limit }} GBs</td>
 							</tr>
 						}
-						@if (project.project_application_openstack_project && adjustedModification.object_storage > 0) {
+						@if (
+							(project.project_application_openstack_project || project.project_application_storage_project) &&
+							adjustedModification.object_storage > 0
+						) {
 							<tr>
 								<td>Amount of object storage: {{ adjustedModification.object_storage }} GB</td>
+							</tr>
+						}
+						@if (project.project_application_storage_project) {
+							<tr>
+								<td>Amount of buckets: {{ adjustedModification.number_of_buckets }}</td>
 							</tr>
 						}
 					}
@@ -92,43 +108,45 @@
 							<td>Comment : {{ extension.comment }}</td>
 						</tr>
 					}
-					@if (modificationExtension && !adjustedModification) {
-						<tr>
-							<td>
-								<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
-							</td>
-						</tr>
-					}
-					@if (adjustedModification) {
-						<tr>
-							<td>
-								<strong>Number of cores in total: {{ adjustedModification?.total_cores }}</strong>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<strong
-									>Value of RAM in total:
-									{{ adjustedModification?.total_ram }}
-									GBs</strong
-								>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<strong>Number of GPUs in total: {{ adjustedModification?.total_gpu }}</strong>
-							</td>
-						</tr>
+					@if (!project.project_application_storage_project) {
+						@if (modificationExtension && !adjustedModification) {
+							<tr>
+								<td>
+									<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
+								</td>
+							</tr>
+						}
+						@if (adjustedModification) {
+							<tr>
+								<td>
+									<strong>Number of cores in total: {{ adjustedModification?.total_cores }}</strong>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong
+										>Value of RAM in total:
+										{{ adjustedModification?.total_ram }}
+										GBs</strong
+									>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong>Number of GPUs in total: {{ adjustedModification?.total_gpu }}</strong>
+								</td>
+							</tr>
+						}
 					}
 					@if (lifetimeExtension) {
 						<tr>

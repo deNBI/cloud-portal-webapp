@@ -45,6 +45,7 @@ import { ApplicationFilter } from 'app/shared/classes/application-filter'
 import { BasePaginationComponent } from '../shared/shared_modules/components/pagination/base-pagination.component'
 import { ApplicationFilterInputComponent } from '../shared/shared_modules/components/applications/application-filter-input/application-filter-input.component'
 import { ApplicationStatusBadgesComponent } from 'app/shared/shared_modules/components/applications/application-status-badges/application-status-badges.component'
+import { ComputeCenterResponse } from 'app/shared/shared_modules/interfaces/computecenter-response.interface'
 
 /**
  * Vo Overview component.
@@ -551,12 +552,12 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 	 * Get all computecenters.
 	 */
 	getComputeCenters(): void {
-		this.facilityService.getComputeCenters().subscribe((result: any): void => {
+		this.facilityService.getComputeCenters().subscribe((result: ComputeCenterResponse[]): void => {
 			for (const cc of result) {
 				const compute_center: ComputecenterComponent = new ComputecenterComponent(
-					cc['compute_center_facility_id'],
-					cc['compute_center_name'],
-					cc['compute_center_login'],
+					cc.compute_center_facility_id,
+					cc.compute_center_name,
+					cc.compute_center_login,
 					cc['compute_center_support_mail']
 				)
 				this.computecenters.push(compute_center)
