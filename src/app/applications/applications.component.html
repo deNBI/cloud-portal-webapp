@@ -73,6 +73,7 @@
 							[voView]="true"
 							(reloadNumbersTrigger)="getApplicationNumbers()"
 							[applications]="all_applications"
+							(propagatePIVerificationChange)="onPIVerificationChange($event)"
 							[computeCenters]="computeCenters"
 							[tabState]="tab_state"
 						></app-application-list>
