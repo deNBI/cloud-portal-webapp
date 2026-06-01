@@ -1,0 +1,2 @@
+export ANTHROPIC_API_KEY=sk-ldaslkwlakdlasa
+export POSTGRES_GLOBAL_PASSWORD=anoh6poMiech8zi

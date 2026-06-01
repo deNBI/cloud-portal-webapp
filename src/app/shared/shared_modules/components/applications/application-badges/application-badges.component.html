@@ -51,6 +51,7 @@
 		</span>
 	</span>
 }
+
 @if (!application?.project_application_pi_approved && is_vo_admin) {
 	<span
 		style="margin: 2px"
@@ -67,15 +68,18 @@
 		</span>
 	</span>
 }
-@if (application?.migrate_to_simple_vm) {
+@if (is_vo_admin) {
 	<span
-		style="margin-left: 12px"
-		class="badge bg-warning"
+		class="badge mx-3 p-2"
+		title="PI Verification Status"
 		data-toggle="tooltip"
 		data-placement="auto"
-		title="This application was migrated"
-		><span style="font-size: 17px"> <i class="fas fa-file-export"></i></span
-	></span>
+		style="font-size: 11px"
+		[ngClass]="application?.pi_verified ? 'bg-success' : 'bg-danger'"
+	>
+		<i class="fa-solid" [ngClass]="application?.pi_verified ? 'fa-user-check' : 'fa-ban'"></i>
+		{{ application?.pi_verified ? 'PI Verified' : 'PI Not Verified' }}
+	</span>
 }
 
 @if (application?.project_modification_request) {

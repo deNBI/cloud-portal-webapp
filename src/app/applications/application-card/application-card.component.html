@@ -44,6 +44,7 @@
 			[class.collapse_no_margin]="isCollapsed"
 			[class.collapse]="isCollapsed"
 			[application]="application"
+			(propagatePIVerificationChange)="onPIVerificationChange($event)"
 		></app-application-detail>
 	}
 </td>

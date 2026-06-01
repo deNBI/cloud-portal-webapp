@@ -80,7 +80,10 @@
 	<div class="tab-content">
 		@if (PI_USER_TAB_ACTIVE) {
 			<div class="table-responsive">
-				<app-application-pi-detail [application]="application"></app-application-pi-detail>
+				<app-application-pi-detail
+					[application]="application"
+					(piVerificationChange)="onPIVerificationChange($event)"
+				></app-application-pi-detail>
 			</div>
 		}
 		@if (INFORMATION_TAB_ACTIVE) {
