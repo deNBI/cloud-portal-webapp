@@ -44,7 +44,7 @@
     "cli-color": "2.0.4",
     "core-js": "3.49.0",
     "css-loader": "7.1.4",
-    "cssnano": "7.1.4",
+    "cssnano": "8.0.2",
     "d3": "7.9.0",
     "dompurify": "^3.3.1",
     "export-to-csv": "1.4.0",
