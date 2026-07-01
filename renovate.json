@@ -1,5 +1,6 @@
 {
    "extends": ["config:recommended"],
+	 "osvVulnerabilityAlerts": true,
    "packageRules": [
       {
          "matchUpdateTypes": ["minor", "patch"],
