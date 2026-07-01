@@ -11,8 +11,8 @@ import { CreditsCalculatorComponent } from './credits-calculator.component'
 	imports: [
 		CommonModule,
 		FormsModule,
-		TimepickerModule.forRoot(),
-		BsDatepickerModule.forRoot(),
+		TimepickerModule,
+		BsDatepickerModule,
 		ReactiveFormsModule,
 		AlertModule,
 		AccordionModule,

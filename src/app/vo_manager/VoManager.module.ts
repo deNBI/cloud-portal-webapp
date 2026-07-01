@@ -34,7 +34,7 @@ import { DeclineProjectTerminationModalComponent } from './modals/decline-projec
 		TabsModule,
 		FormsModule,
 		CommonModule,
-		ModalModule.forRoot(),
+		ModalModule,
 		ProjectManagementModule,
 		NgbTypeaheadModule,
 		ReactiveFormsModule,

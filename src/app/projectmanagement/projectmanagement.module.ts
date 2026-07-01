@@ -37,12 +37,12 @@ import { ClipboardModule } from 'ngx-clipboard'
  */
 @NgModule({
 	imports: [
-		AccordionModule.forRoot(),
+		AccordionModule,
 		ProjectManagementRoutingModule,
 		TabsModule,
 		FormsModule,
 		CommonModule,
-		ModalModule.forRoot(),
+		ModalModule,
 		ApplicationsModule,
 		BsDropdownModule,
 		AlertModule,

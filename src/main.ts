@@ -11,7 +11,7 @@ import { UserService } from './app/api-connector/user.service'
 import { CookieService } from 'ngx-cookie-service'
 import { VoService } from './app/api-connector/vo.service'
 import { FacilityService } from './app/api-connector/facility.service'
-import { Title, BrowserModule, bootstrapApplication } from '@angular/platform-browser'
+import { BrowserModule, Title, bootstrapApplication } from '@angular/platform-browser'
 import { TitleService } from './app/title.service'
 import { NgScrollbarModule } from 'ngx-scrollbar'
 import { AppRoutingModule } from './app/app.routing'
@@ -43,16 +43,16 @@ bootstrapApplication(AppComponent, {
 			BrowserModule,
 			AppRoutingModule,
 			CommonModule,
-			BsDropdownModule.forRoot(),
-			TabsModule.forRoot(),
-			ModalModule.forRoot(),
-			PaginationModule.forRoot(),
+			BsDropdownModule,
+			TabsModule,
+			ModalModule,
+			PaginationModule,
 			SharedModuleModule,
-			Angulartics2Module.forRoot(),
+			Angulartics2Module,
 			NgSelectModule,
 			ClipboardModule,
-			TimepickerModule.forRoot(),
-			BsDatepickerModule.forRoot(),
+			TimepickerModule,
+			BsDatepickerModule,
 			AlertModule,
 			MatomoModule.forRoot({
 				siteId: environment.MATOMO_SITE_ID,
