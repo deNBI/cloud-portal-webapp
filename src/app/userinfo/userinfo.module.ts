@@ -19,8 +19,8 @@ import { PublicKeyModule } from '../shared/shared_modules/public-key/public-key.
 		TabsModule,
 		CommonModule,
 		FormsModule,
-		ModalModule.forRoot(),
-		AlertModule.forRoot(),
+		ModalModule,
+		AlertModule,
 		UserInfoComponent
 	],
 	exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]

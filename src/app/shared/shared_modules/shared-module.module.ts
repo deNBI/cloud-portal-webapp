@@ -42,7 +42,7 @@ import { ClipboardModule } from 'ngx-clipboard'
 	],
 	imports: [
 		CommonModule,
-		ModalModule.forRoot(),
+		ModalModule,
 		ToastModule,
 		ProgressModule,
 		FormsModule,
