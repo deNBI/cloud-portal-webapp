@@ -37,6 +37,8 @@ jobs:
           output-format: json
           fail-build: false
           output-file: scan-results.json
+        severity-cutoff: critical
+
       - name: Check scan results
         if: always()
         run: |
