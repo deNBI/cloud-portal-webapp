@@ -1,7 +1,8 @@
 # STAGE 1: Build
 
 # We label our stage as 'builder'
-FROM node:24-alpine3.20 AS builder
+FROM node:24.18.0-alpine3.24 AS builder
+
 
 # Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
@@ -25,7 +26,7 @@ COPY . .
 RUN npx ng build --configuration=custom
 
 ### STAGE 2: Setup
-FROM nginx:1.31.2-alpine
+FROM nginx:stable-alpine3.23-slim
 
 # Copy our default nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/
