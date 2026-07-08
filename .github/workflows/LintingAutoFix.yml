@@ -15,10 +15,10 @@ jobs:
     timeout-minutes: 6
     steps:
       - name: Workflow run cleanup action
-        uses: rokroskar/workflow-run-cleanup-action@v0.3.3
+        uses: rokroskar/workflow-run-cleanup-action@ee1451b869ba1e381729b3d40489997021f0d562 # v0.3.3
         env:
                 GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Extract branch name
@@ -30,7 +30,7 @@ jobs:
         id: tag
       - name: Get tag
         run: echo "The selected tag is ${{ steps.tag.outputs.TAG }}"
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: '24.18.0'
       - run: git status
@@ -46,7 +46,7 @@ jobs:
       - name: Create Pull Request
         if: steps.git-check.outputs.modified == 'true'
         id: cpr
-        uses: peter-evans/create-pull-request@v8.1.1
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
            token: ${{ secrets.GITHUB_TOKEN }}
            commit-message: fix(Linting):blacked code
