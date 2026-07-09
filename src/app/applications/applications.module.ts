@@ -39,12 +39,12 @@ import { ApplicationFacilityActionsComponent } from './application-facility-acti
  */
 @NgModule({
 	imports: [
-		AccordionModule.forRoot(),
+		AccordionModule,
 		ApplicationsRoutingModule,
 		TabsModule,
 		CommonModule,
 		FormsModule,
-		ModalModule.forRoot(),
+		ModalModule,
 		NgSelectModule,
 		BadgeModule,
 		SharedModuleModule,
