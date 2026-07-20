@@ -8,13 +8,13 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
     - run: npm install
-    - uses: MeilCli/npm-update-check-action@v5.0.50
+    - uses: MeilCli/npm-update-check-action@d3ff23f17989668b3156b43c709938efc1f47b1d # v5.0.50
       id: outdated
 
     - name: Rocket.Chat Notification
-      uses: RocketChat/Rocket.Chat.GitHub.Action.Notification@master
+      uses: RocketChat/Rocket.Chat.GitHub.Action.Notification@2966f5f2e0313a94f965a51c08700cfecf0b6572 # master
       if:  steps.outdated.outputs.has_npm_update == 'false'
       with:
           type: "failure"
