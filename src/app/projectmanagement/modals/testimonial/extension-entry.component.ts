@@ -6,6 +6,7 @@ import { Doi } from '../../../applications/doi/doi'
 import { GroupService } from '../../../api-connector/group.service'
 
 import { FormsModule } from '@angular/forms'
+import { HttpErrorResponse } from '@angular/common/http'
 
 @Component({
 	selector: 'app-extension-entry',
@@ -63,6 +64,7 @@ export class ExtensionEntryComponent implements OnDestroy {
 
 	addDoi(): void {
 		this.toggleDisabledInput()
+
 		if (this.isNewDoi()) {
 			this.subscription.add(
 				this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
@@ -70,10 +72,19 @@ export class ExtensionEntryComponent implements OnDestroy {
 						this.doiError = null
 						this.newDoi = null
 						this.dois = dois
-						this.event.emit({ reloadDoi: true })
 					},
-					(): void => {
-						this.doiError = `DOI ${this.newDoi} was already added by another Project!`
+					(error: HttpErrorResponse): void => {
+						switch (error.status) {
+							case 400:
+								this.doiError = `DOI ${this.newDoi} is not a valid DOI.`
+								break
+							case 409:
+								this.doiError = `DOI ${this.newDoi} was already added by another Project!`
+								break
+							default:
+								this.doiError = 'An unexpected error occurred while adding the DOI.'
+						}
+
 						this.toggleDisabledInput()
 					},
 					(): void => {
