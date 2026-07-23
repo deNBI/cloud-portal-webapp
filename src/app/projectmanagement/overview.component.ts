@@ -61,6 +61,7 @@ import { TextColorDirective, TextBgColorDirective, BadgeComponent } from '@coreu
 import { TestimonialFormComponent } from '../shared/shared_modules/testimonial-forms/testimonial-form.component'
 import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
 import { IsMigratedProjectPipe } from '../pipe-module/pipes/isMigratedProject'
+import { HttpErrorResponse } from '@angular/common/http'
 
 /**
  * Projectoverview component.
@@ -646,6 +647,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	addDoi(): void {
 		this.toggleDoiDisabledInput()
+
 		if (this.isNewDoi()) {
 			this.subscription.add(
 				this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
@@ -654,8 +656,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						this.newDoi = null
 						this.dois = dois
 					},
-					(): void => {
-						this.doiError = `DOI ${this.newDoi} was already added by another Project!`
+					(error: HttpErrorResponse): void => {
+						switch (error.status) {
+							case 400:
+								this.doiError = `DOI ${this.newDoi} is not a valid DOI.`
+								break
+							case 409:
+								this.doiError = `DOI ${this.newDoi} was already added by another Project!`
+								break
+							default:
+								this.doiError = 'An unexpected error occurred while adding the DOI.'
+						}
+
 						this.toggleDoiDisabledInput()
 					},
 					(): void => {
@@ -845,13 +857,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 		const members_in: ProjectMember[] = []
 
-		const observables: Observable<number>[] = this.checked_member_list.map(
-			(member: ProjectMember): Observable<any> =>
-				this.groupService.removeMember(
-					Number(this.project_application.project_application_perun_id),
-					member.memberId,
-					this.project_application.project_application_compute_center.FacilityId
-				)
+		const observables: Observable<number>[] = this.checked_member_list.map((member: ProjectMember): Observable<any> =>
+			this.groupService.removeMember(
+				Number(this.project_application.project_application_perun_id),
+				member.memberId,
+				this.project_application.project_application_compute_center.FacilityId
+			)
 		)
 		forkJoin(observables).subscribe((): void => {
 			this.project_members.forEach((member: ProjectMember): void => {

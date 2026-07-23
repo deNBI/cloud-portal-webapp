@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Workflow run cleanup action
-      uses: rokroskar/workflow-run-cleanup-action@v0.3.3
+      uses: rokroskar/workflow-run-cleanup-action@ee1451b869ba1e381729b3d40489997021f0d562 # v0.3.3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/checkout@master
+    - uses: actions/checkout@61b9e3751b92087fd0b06925ba6dd6314e06f089 # master
       with:
         repository: deNBI/cloud-portal-webapp
         ref: ${{ github.event.inputs.branch }}
@@ -31,7 +31,7 @@ jobs:
     - name: Print Env
       run: cat src/environments/environment.kubernetes.ts
     - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@8217e91c0369a5342a4ef2d612de87492410a666 # master
       env:
           ANGULAR_MODE: kubernetes
       with:
