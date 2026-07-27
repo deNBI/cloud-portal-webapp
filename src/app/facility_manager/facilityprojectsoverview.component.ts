@@ -232,6 +232,8 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 			this.title = `${this.title}:${this.selectedFacility['Facility']}`
 		})
+		this.selectedProjectType = 'ALL'
+
 		this.sendNews = true
 
 		/** needs refactoring in case we introduce tags to wagtail
