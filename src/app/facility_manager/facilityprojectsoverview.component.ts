@@ -232,7 +232,7 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 			this.title = `${this.title}:${this.selectedFacility['Facility']}`
 		})
-		this.selectedProjectType = 'ALL'
+		this.setRecipientsString()
 
 		this.sendNews = true
 
