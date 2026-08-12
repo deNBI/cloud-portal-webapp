@@ -159,9 +159,19 @@
 	<span
 		style="margin-left: 12px"
 		class="badge bg-info"
-		data-toggle="toolip"
+		data-toggle="tooltip"
 		data-placement="auto"
 		title="A basic introduction to the project type is wanted"
-		><span stlye="font-size: 17px"><i class="fas fa-hands-helping"></i></span>
+		><span style="font-size: 17px"><i class="fas fa-hands-helping"></i></span>
+	</span>
+}
+@if (application.project_application_total_gpu > 0 && is_vo_admin) {
+	<span
+		style="margin-left: 12px"
+		class="badge bg-info"
+		data-toggle="tooltip"
+		data-placement="auto"
+		title="GPU resources are requested"
+		><span style="font-size: 17px"><i class="fas fa-server"></i></span>
 	</span>
 }
