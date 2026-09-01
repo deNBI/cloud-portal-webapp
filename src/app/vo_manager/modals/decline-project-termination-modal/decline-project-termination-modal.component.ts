@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { Application } from '../../../applications/application.model/application.model'
@@ -11,6 +11,7 @@ import { NotificationModalComponent } from '../../../shared/modal/notification-m
 @Component({
 	selector: 'app-decline-project-termination-modal',
 	templateUrl: './decline-project-termination-modal.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrl: './decline-project-termination-modal.component.scss'
 })
 export class DeclineProjectTerminationModalComponent extends AbstractBaseModalComponent {

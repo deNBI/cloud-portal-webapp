@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { ClipboardService } from 'ngx-clipboard'
 import { KeyService } from '../../../api-connector/key.service'
 import { ApiSettings } from '../../../api-connector/api-settings.service'
@@ -21,6 +21,7 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 	templateUrl: './public-key.component.html',
 	styleUrls: ['./public-key.component.scss'],
 	providers: [ApiSettings, KeyService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [AlertModule, NgbTooltip]
 })
 export class PublicKeyComponent extends AbstractBaseClass implements OnInit {

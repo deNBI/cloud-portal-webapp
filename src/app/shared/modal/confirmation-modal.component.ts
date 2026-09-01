@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnInit } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../applications/application.model/application.model'
 import { ConfirmationTypes } from './confirmation_types'
@@ -13,6 +13,7 @@ import { NgClass } from '@angular/common'
 	selector: 'app-confirmation-modal',
 	templateUrl: './confirmation-modal.component.html',
 	providers: [],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgClass]
 })
 export class ConfirmationModalComponent extends AbstractBaseModalComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core'
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core'
 import {
 	ToasterComponent,
 	ToastComponent,
@@ -13,6 +13,7 @@ import {
 	selector: 'app-information-toast',
 	templateUrl: './information-toast.component.html',
 	styleUrls: ['./information-toast.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		ToasterComponent,
 		ToastComponent,

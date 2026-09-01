@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core'
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnChanges,
+	OnInit,
+	Output,
+	SimpleChanges,
+	ChangeDetectionStrategy
+} from '@angular/core'
 import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class'
 
 import { Application } from '../application.model/application.model'
@@ -12,6 +21,7 @@ import { ApplicationCardComponent } from '../application-card/application-card.c
 	selector: 'app-application-list',
 	templateUrl: './application-list.component.html',
 	styleUrl: './application-list.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ApplicationCardComponent]
 })
 export class ApplicationListComponent implements OnInit, OnChanges {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { Client } from '../client.model'
 import { ClientService } from '../../../api-connector/client.service'
@@ -11,6 +11,7 @@ import { NgStyle } from '@angular/common'
 	selector: 'app-client-limits',
 	templateUrl: './client-limits.component.html',
 	providers: [FacilityService, ClientService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgStyle]
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {

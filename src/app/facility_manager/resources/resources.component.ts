@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { download, mkConfig, generateCsv, CsvOutput } from 'export-to-csv'
 
 import { Resources } from '../../vo_manager/resources/resources'
@@ -24,6 +24,7 @@ import { GPUSpecificationOverviewComponent } from './gpu-specification-overview/
 	templateUrl: './resources.component.html',
 	styleUrls: ['./resources.component.scss'],
 	providers: [FacilityService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		NgIf,
 		NgClass,

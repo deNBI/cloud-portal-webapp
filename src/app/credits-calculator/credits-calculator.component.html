@@ -152,8 +152,8 @@
 																[name]="flavor.name"
 																(change)="change_flavor_pair(flavor.name, $event)"
 																[ngClass]="{
-																	'is-invalid': name?.invalid,
-																	'is-valid': name?.valid,
+																	'is-invalid': $safeNavigationMigration(name?.invalid),
+																	'is-valid': $safeNavigationMigration(name?.valid),
 																}"
 															/>
 															<div class="input-group-append input-group-text col-3">
@@ -183,8 +183,8 @@
 													formControlName="hours_wanted_form"
 													id="ccs_needed"
 													[ngClass]="{
-														'is-invalid': hours_wanted_group?.invalid,
-														'is-valid': hours_wanted_group?.valid,
+														'is-invalid': $safeNavigationMigration(hours_wanted_group?.invalid),
+														'is-valid': $safeNavigationMigration(hours_wanted_group?.valid),
 													}"
 												/>
 												<div class="input-group-text input-group-append">hours</div>
@@ -228,8 +228,8 @@
 													formControlName="credits_wanted_form"
 													id="ccs_time"
 													[ngClass]="{
-														'is-invalid': credits_wanted_group?.invalid,
-														'is-valid': credits_wanted_group?.valid,
+														'is-invalid': $safeNavigationMigration(credits_wanted_group?.invalid),
+														'is-valid': $safeNavigationMigration(credits_wanted_group?.valid),
 													}"
 												/>
 												<div class="input-group-append input-group-text">Cloud Credits</div>

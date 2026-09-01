@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core'
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { is_vo } from 'app/shared/globalvar'
 
@@ -10,6 +10,7 @@ import { Router } from '@angular/router'
 @Component({
 	selector: 'app-application-list',
 	templateUrl: './application-list.modal.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ApplicationBadgesComponent]
 })
 export class ApplicationListModalComponent implements OnDestroy, OnInit {

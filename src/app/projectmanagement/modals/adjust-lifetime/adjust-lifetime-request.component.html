@@ -52,8 +52,12 @@
 										appMinAmount="0"
 										appInteger
 										[ngClass]="{
-											'is-invalid': lifetimeAdjustmentForm.controls.adjusted_lifetime_counter?.invalid,
-											'is-valid': lifetimeAdjustmentForm.controls.adjusted_lifetime_counter?.valid,
+											'is-invalid': $safeNavigationMigration(
+												lifetimeAdjustmentForm.controls.adjusted_lifetime_counter?.invalid
+											),
+											'is-valid': $safeNavigationMigration(
+												lifetimeAdjustmentForm.controls.adjusted_lifetime_counter?.valid
+											),
 										}"
 									/>
 								</div>

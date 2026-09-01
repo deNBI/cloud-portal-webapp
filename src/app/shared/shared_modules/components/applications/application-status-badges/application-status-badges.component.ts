@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 import { Application } from 'app/applications/application.model/application.model'
 import {
 	Application_States,
@@ -12,6 +12,7 @@ import { HasStatusPipe } from 'app/pipe-module/pipes/has-status.pipe'
 	selector: 'app-application-status-badges',
 	imports: [HasStatusPipe, HasstatusinlistPipe],
 	templateUrl: './application-status-badges.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrl: './application-status-badges.component.scss'
 })
 export class ApplicationStatusBadgesComponent {

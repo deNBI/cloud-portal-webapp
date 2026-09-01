@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import {
 	UntypedFormBuilder,
 	UntypedFormControl,
@@ -19,6 +19,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip'
 	selector: 'app-gpu-specification-overview',
 	templateUrl: './gpu-specification-overview.component.html',
 	providers: [FacilityService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, ReactiveFormsModule, NgClass, TooltipModule]
 })
 export class GPUSpecificationOverviewComponent implements OnInit {

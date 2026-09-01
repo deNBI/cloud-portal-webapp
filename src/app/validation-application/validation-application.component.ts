@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 
 import { ApplicationsService } from '../api-connector/applications.service'
@@ -15,6 +15,7 @@ import { ApplicationFormularComponent } from '../applications/application-formul
 	templateUrl: './validation-application.component.html',
 	styleUrls: ['./validation-application.component.scss'],
 	providers: [ApplicationsService, FlavorService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ApplicationFormularComponent]
 })
 export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit, AfterViewChecked {

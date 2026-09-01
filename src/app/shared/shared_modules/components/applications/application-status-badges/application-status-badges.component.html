@@ -8,12 +8,12 @@
 	}
 
 	@if (
-		(application?.lifetime_reached | hasStatus: Lifetime_States.EXPIRED) &&
+		($safeNavigationMigration(application?.lifetime_reached) | hasStatus: Lifetime_States.EXPIRED) &&
 		!(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION)
 	) {
 		<span style="margin-left: 5px" class="badge bg-danger">{{ Lifetime_States[Lifetime_States.EXPIRED] }} </span>
 	}
-	@if (application?.lifetime_reached | hasStatus: Lifetime_States.EXPIRES_SOON) {
+	@if ($safeNavigationMigration(application?.lifetime_reached) | hasStatus: Lifetime_States.EXPIRES_SOON) {
 		<span style="margin-left: 5px" class="badge bg-warning">{{ Lifetime_States[Lifetime_States.EXPIRES_SOON] }}</span>
 	}
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { OwlOptions, CarouselModule } from 'ngx-owl-carousel-o'
 import { NewsService } from '../api-connector/news.service'
@@ -13,6 +13,7 @@ import { NewsSlideComponent } from './news-slide/news-slide.component'
 	templateUrl: './news.component.html',
 	styleUrls: ['./news.component.scss'],
 	providers: [NewsService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [CarouselModule, NewsSlideComponent]
 })
 export class NewsComponent implements OnInit, OnDestroy {

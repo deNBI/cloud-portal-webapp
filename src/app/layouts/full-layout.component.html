@@ -118,8 +118,8 @@
 							<a
 								class="nav-link"
 								routerLinkActive="active"
-								[id]="application?.project_name"
-								[routerLink]="['/project-management/' + application?.application_id]"
+								[id]="$safeNavigationMigration(application?.project_name)"
+								[routerLink]="['/project-management/' + $safeNavigationMigration(application?.application_id)]"
 								[attr.data-test-id]="'project_overview_' + application?.project_name"
 							>
 								@if (application.is_open_stack) {
@@ -285,8 +285,8 @@
 								<a
 									class="nav-link"
 									routerLinkActive="active"
-									[id]="application?.project_name"
-									[routerLink]="['/project-management/' + application?.application_id]"
+									[id]="$safeNavigationMigration(application?.project_name)"
+									[routerLink]="['/project-management/' + $safeNavigationMigration(application?.application_id)]"
 									[attr.data-test-id]="'project_overview_' + application?.project_name"
 								>
 									@if (application.is_open_stack) {

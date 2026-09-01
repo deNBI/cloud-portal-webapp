@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { FacilityService } from '../api-connector/facility.service'
@@ -28,6 +28,7 @@ import { FloorIntegerPipe } from '../pipe-module/pipes/floor-integer.pipe'
 	templateUrl: './credits-calculator.component.html',
 	styleUrls: ['./credits-calculator.component.scss'],
 	providers: [FacilityService, FlavorService, CreditsService, GroupService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		AlertModule,
 		FormsModule,

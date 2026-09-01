@@ -191,8 +191,8 @@
 															}}"
 															aria-describedby="adjust_{{ flavor_name }}_help"
 															[ngClass]="{
-																'is-invalid': name?.invalid,
-																'is-valid': name?.valid,
+																'is-invalid': $safeNavigationMigration(name?.invalid),
+																'is-valid': $safeNavigationMigration(name?.valid),
 															}"
 														/>
 														<div class="input-group-append">
@@ -259,8 +259,12 @@
 							appMinAmount="0"
 							appInteger
 							[ngClass]="{
-								'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
-								'is-valid': modificationForm.controls.project_application_renewal_volume_counter?.valid,
+								'is-invalid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_volume_counter?.invalid
+								),
+								'is-valid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_volume_counter?.valid
+								),
 							}"
 						/>
 					</div>
@@ -303,8 +307,12 @@
 								appMinAmount="0"
 								appInteger
 								[ngClass]="{
-									'is-invalid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.invalid,
-									'is-valid': modificationForm.controls.project_application_renewal_volume_counter_adjusted?.valid,
+									'is-invalid': $safeNavigationMigration(
+										modificationForm.controls.project_application_renewal_volume_counter_adjusted?.invalid
+									),
+									'is-valid': $safeNavigationMigration(
+										modificationForm.controls.project_application_renewal_volume_counter_adjusted?.valid
+									),
 								}"
 							/>
 						</div>
@@ -355,8 +363,12 @@
 							appMinAmount="1"
 							appInteger
 							[ngClass]="{
-								'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
-								'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid,
+								'is-invalid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_volume_limit?.invalid
+								),
+								'is-valid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_volume_limit?.valid
+								),
 							}"
 							[disabled]="
 								modificationForm.controls.project_application_renewal_volume_counter?.value === 0 || adjustment
@@ -403,8 +415,12 @@
 								appMinAmount="1"
 								appInteger
 								[ngClass]="{
-									'is-invalid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.invalid,
-									'is-valid': modificationForm.controls.project_application_renewal_volume_limit_adjusted?.valid,
+									'is-invalid': $safeNavigationMigration(
+										modificationForm.controls.project_application_renewal_volume_limit_adjusted?.invalid
+									),
+									'is-valid': $safeNavigationMigration(
+										modificationForm.controls.project_application_renewal_volume_limit_adjusted?.valid
+									),
 								}"
 								[disabled]="modificationForm.controls.project_application_renewal_volume_counter_adjusted?.value === 0"
 							/>
@@ -460,8 +476,12 @@
 							appMinAmount="0"
 							required
 							[ngClass]="{
-								'is-invalid': modificationForm.controls.project_application_renewal_object_storage?.invalid,
-								'is-valid': modificationForm.controls.project_application_renewal_object_storage?.valid,
+								'is-invalid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_object_storage?.invalid
+								),
+								'is-valid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_object_storage?.valid
+								),
 							}"
 						/>
 						<div class="input-group-append"><span class="input-group-text"> GB </span></div>
@@ -508,8 +528,12 @@
 							appMinAmount="0"
 							required
 							[ngClass]="{
-								'is-invalid': modificationForm.controls.project_application_renewal_object_storage_adjust?.invalid,
-								'is-valid': modificationForm.controls.project_application_renewal_object_storage_adjust?.valid,
+								'is-invalid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_object_storage_adjust?.invalid
+								),
+								'is-valid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_object_storage_adjust?.valid
+								),
 							}"
 						/>
 						<div class="input-group-append"><span class="input-group-text"> GB </span></div>
@@ -562,8 +586,12 @@
 							appMinAmount="1"
 							required
 							[ngClass]="{
-								'is-invalid': modificationForm.controls.project_application_renewal_number_of_buckets?.invalid,
-								'is-valid': modificationForm.controls.project_application_renewal_number_of_buckets?.valid,
+								'is-invalid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_number_of_buckets?.invalid
+								),
+								'is-valid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_number_of_buckets?.valid
+								),
 							}"
 						/>
 					</div>
@@ -607,8 +635,12 @@
 							appMinAmount="1"
 							required
 							[ngClass]="{
-								'is-invalid': modificationForm.controls.project_application_renewal_number_of_buckets_adjust?.invalid,
-								'is-valid': modificationForm.controls.project_application_renewal_number_of_buckets_adjust?.valid,
+								'is-invalid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_number_of_buckets_adjust?.invalid
+								),
+								'is-valid': $safeNavigationMigration(
+									modificationForm.controls.project_application_renewal_number_of_buckets_adjust?.valid
+								),
 							}"
 						/>
 					</div>
@@ -646,7 +678,7 @@
 									type="checkbox"
 									class="switch-input"
 									name="project_application_renewal_cloud_service_develop"
-									[defaultChecked]="project?.project_application_cloud_service_develop"
+									[defaultChecked]="$safeNavigationMigration(project?.project_application_cloud_service_develop)"
 									[(ngModel)]="temp_project_modification.cloud_service_develop" />
 								<span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
 								<span class="switch-handle"></span
@@ -703,9 +735,12 @@
 								appMinAmount="0"
 								required
 								[ngClass]="{
-									'is-invalid':
-										modificationForm.controls.project_application_renewal_cloud_service_user_number?.invalid,
-									'is-valid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.valid,
+									'is-invalid': $safeNavigationMigration(
+										modificationForm.controls.project_application_renewal_cloud_service_user_number?.invalid
+									),
+									'is-valid': $safeNavigationMigration(
+										modificationForm.controls.project_application_renewal_cloud_service_user_number?.valid
+									),
 								}"
 							/>
 						</div>

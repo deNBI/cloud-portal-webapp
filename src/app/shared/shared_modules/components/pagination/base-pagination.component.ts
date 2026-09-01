@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators'
 import {
@@ -15,6 +15,7 @@ import { AbstractPage } from 'app/shared/models/abstract.page'
 @Component({
 	selector: 'app-pagination',
 	templateUrl: './base-pagination.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		RowComponent,
 		ColComponent,

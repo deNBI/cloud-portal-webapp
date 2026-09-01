@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../../applications/application.model/application.model'
 import { GroupService } from '../../../api-connector/group.service'
@@ -14,6 +14,7 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links'
 @Component({
 	selector: 'app-leave-project',
 	templateUrl: './leave-project.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrl: './leave-project.component.scss'
 })
 export class LeaveProjectComponent extends AbstractBaseModalComponent {

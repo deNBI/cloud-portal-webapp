@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 
 /**
@@ -6,6 +6,7 @@ import { Application } from '../../application.model/application.model'
  */
 @Component({
 	selector: 'app-credits-extension-detail',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './credits-extension-detail.component.html'
 })
 export class CreditsExtensionDetailComponent {

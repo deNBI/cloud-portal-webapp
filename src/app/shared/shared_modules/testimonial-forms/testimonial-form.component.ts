@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal'
 import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -14,6 +14,7 @@ import { SocialConsentGivenPipe } from '../../../pipe-module/pipes/social-consen
 	templateUrl: './testimonial-form.component.html',
 	styleUrls: ['./testimonial-form.component.scss'],
 	providers: [NewsService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, ReactiveFormsModule, NgClass, ModalModule, SocialConsentGivenPipe]
 })
 export class TestimonialFormComponent implements OnInit, OnDestroy {

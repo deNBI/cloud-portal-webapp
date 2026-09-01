@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 
 import { Application } from '../../../applications/application.model/application.model'
@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms'
 	selector: 'app-termination-request',
 	templateUrl: './termination-request.component.html',
 	styleUrl: './termination-request.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ProjectOsDetailsComponent, NgClass, FormsModule]
 })
 export class TerminationRequestComponent extends AbstractBaseModalComponent {

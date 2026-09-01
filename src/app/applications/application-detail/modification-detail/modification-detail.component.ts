@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 import { Application_States } from '../../../shared/shared_modules/baseClass/abstract-base-class'
 import { ApplicationBaseClassComponent } from '../../../shared/shared_modules/baseClass/application-base-class.component'
@@ -12,6 +12,7 @@ import { FlavorCounterPipe } from '../../../pipe-module/pipes/flavorcounter'
 @Component({
 	selector: 'app-modification-detail',
 	templateUrl: './modification-detail.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FlavorCounterPipe]
 })
 export class ModificationDetailComponent extends ApplicationBaseClassComponent implements OnInit {

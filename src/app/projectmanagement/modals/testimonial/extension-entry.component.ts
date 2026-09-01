@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy } from '@angular/core'
+import { Component, EventEmitter, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { TESTIMONIAL_PAGE_LINK, WIKI_PUBLICATIONS } from '../../../../links/links'
@@ -13,6 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 	templateUrl: './extension-entry.component.html',
 	styleUrls: ['./extension-entry.component.scss'],
 	providers: [GroupService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule]
 })
 export class ExtensionEntryComponent implements OnDestroy {

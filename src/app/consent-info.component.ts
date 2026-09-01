@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ChangeDetectionStrategy } from '@angular/core'
 import { environment } from '../environments/environment'
 
 /**
@@ -6,6 +6,7 @@ import { environment } from '../environments/environment'
  */
 @Component({
 	selector: 'app-consent-info',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: 'consent-info.component.html'
 })
 export class ConsentInfoComponent {

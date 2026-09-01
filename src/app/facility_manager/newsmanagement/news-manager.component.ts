@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
+import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal'
 import { NewsService } from '../../api-connector/news.service'
@@ -25,6 +25,7 @@ import {
 	selector: 'app-news-manager',
 	templateUrl: 'news-manager.component.html',
 	providers: [NewsService, FacilityService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		AlertComponent,
 		FormsModule,

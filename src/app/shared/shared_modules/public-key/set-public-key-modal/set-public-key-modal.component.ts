@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { KeyService } from 'app/api-connector/key.service'
 import { BlacklistedResponse } from 'app/api-connector/response-interfaces'
 import { AbstractBaseModalComponent } from 'app/shared/modal/abstract-base-modal/abstract-base-modal.component'
@@ -14,6 +14,7 @@ import { PublicKeyPipe } from '../../../../pipe-module/pipes/publicKey.pipe'
 	selector: 'app-set-public-key-modal',
 	templateUrl: './set-public-key-modal.component.html',
 	styleUrl: './set-public-key-modal.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [AlertModule, FormsModule, NgClass, PublicKeyPipe]
 })
 export class SetPublicKeyModalComponent extends AbstractBaseModalComponent {

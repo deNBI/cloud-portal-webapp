@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, Input, Output, OnInit, EventEmitter } from '@angular/core'
+import {
+	ChangeDetectorRef,
+	Component,
+	Input,
+	Output,
+	OnInit,
+	EventEmitter,
+	ChangeDetectionStrategy
+} from '@angular/core'
 import { Application } from '../application.model/application.model'
 import { ApplicationBaseClassComponent } from '../../shared/shared_modules/baseClass/application-base-class.component'
 import { ApplicationsService } from '../../api-connector/applications.service'
@@ -26,6 +34,7 @@ import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pip
 	templateUrl: './application-detail.component.html',
 	styleUrls: ['./application-detail.component.scss'],
 	providers: [FacilityService, UserService, ApplicationsService, CreditsService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		NgClass,
 		ApplicationPiDetailComponent,

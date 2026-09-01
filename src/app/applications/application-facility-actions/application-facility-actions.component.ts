@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { ConfirmationActions } from 'app/shared/modal/confirmation_actions'
@@ -19,6 +19,7 @@ import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pip
 	selector: 'app-application-facility-actions',
 	templateUrl: './application-facility-actions.component.html',
 	styleUrl: './application-facility-actions.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [TooltipModule, HasstatusinlistPipe]
 })
 export class ApplicationFacilityActionsComponent extends AbstractBaseClass {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../../applications/application.model/application.model'
 import { ApplicationLifetimeExtension } from '../../../applications/application_extension.model'
@@ -16,6 +16,7 @@ import {
 	selector: 'app-adjust-lifetime-request',
 	templateUrl: './adjust-lifetime-request.component.html',
 	providers: [ApplicationsService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, MinAmoutValidatorDirective, IntegerValidatorDirective, NgClass]
 })
 export class AdjustLifetimeRequestComponent implements OnInit {

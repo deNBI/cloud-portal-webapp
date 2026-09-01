@@ -130,13 +130,13 @@
 		} @else if (MODIFICATION_COMMENT_TAB_ACTIVE) {
 			<div class="table-responsive">
 				<app-adjustment-detail
-					[comment]="application?.project_modification_request?.manager_comment"
+					[comment]="$safeNavigationMigration(application?.project_modification_request?.manager_comment)"
 				></app-adjustment-detail>
 			</div>
 		} @else if (LIFETIME_COMMENT_TAB_ACTIVE) {
 			<div class="table-responsive">
 				<app-adjustment-detail
-					[comment]="application?.project_lifetime_request?.manager_comment"
+					[comment]="$safeNavigationMigration(application?.project_lifetime_request?.manager_comment)"
 				></app-adjustment-detail>
 			</div>
 		}

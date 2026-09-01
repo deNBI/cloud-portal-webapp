@@ -41,7 +41,7 @@
 			@if (flavor.counter > 0) {
 				<tr>
 					<td>Flavor: {{ flavor.name }}</td>
-					<td>{{ application?.project_modification_request | flavorCounter: flavor }}</td>
+					<td>{{ $safeNavigationMigration(application?.project_modification_request) | flavorCounter: flavor }}</td>
 				</tr>
 			}
 		}

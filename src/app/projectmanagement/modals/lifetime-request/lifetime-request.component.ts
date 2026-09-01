@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../../applications/application.model/application.model'
@@ -21,6 +21,7 @@ import { NgSelectComponent } from '@ng-select/ng-select'
 	templateUrl: './lifetime-request.component.html',
 	styleUrls: ['./lifetime-request.component.scss'],
 	providers: [CreditsService, ApplicationsService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		FormsModule,
 		IntegerValidatorDirective,

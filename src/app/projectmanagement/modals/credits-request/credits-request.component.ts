@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { CreditsService } from '../../../api-connector/credits.service'
@@ -18,6 +18,7 @@ import {
 	templateUrl: './credits-request.component.html',
 	styleUrls: ['./credits-request.component.scss'],
 	providers: [CreditsService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, NgClass, IntegerValidatorDirective, MinAmoutValidatorDirective]
 })
 export class CreditsRequestComponent implements OnInit, OnDestroy {

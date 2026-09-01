@@ -56,8 +56,8 @@
 							placeholder="NA"
 							type="text"
 							[ngClass]="{
-								'is-invalid': testimonialFormGroup.controls.testimonial_title?.invalid,
-								'is-valid': testimonialFormGroup.controls.testimonial_title?.valid,
+								'is-invalid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_title?.invalid),
+								'is-valid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_title?.valid),
 							}"
 						/>
 					</div>
@@ -79,8 +79,8 @@
 							required
 							rows="20"
 							[ngClass]="{
-								'is-invalid': testimonialFormGroup.controls.testimonial_text?.invalid,
-								'is-valid': testimonialFormGroup.controls.testimonial_text?.valid,
+								'is-invalid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_text?.invalid),
+								'is-valid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_text?.valid),
 							}"
 							class="form-control"
 							name="testimonial_text"
@@ -115,8 +115,8 @@
 							required
 							rows="4"
 							[ngClass]="{
-								'is-invalid': testimonialFormGroup.controls.testimonial_excerpt?.invalid,
-								'is-valid': testimonialFormGroup.controls.testimonial_excerpt?.valid,
+								'is-invalid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_excerpt?.invalid),
+								'is-valid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_excerpt?.valid),
 							}"
 						></textarea>
 					</div>
@@ -151,8 +151,8 @@
 							type="text"
 							required
 							[ngClass]="{
-								'is-invalid': testimonialFormGroup.controls.testimonial_contributor?.invalid,
-								'is-valid': testimonialFormGroup.controls.testimonial_contributor?.valid,
+								'is-invalid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_contributor?.invalid),
+								'is-valid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_contributor?.valid),
 							}"
 						/>
 					</div>
@@ -187,8 +187,8 @@
 							type="text"
 							required
 							[ngClass]="{
-								'is-invalid': testimonialFormGroup.controls.testimonial_instituton?.invalid,
-								'is-valid': testimonialFormGroup.controls.testimonial_institution?.valid,
+								'is-invalid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_instituton?.invalid),
+								'is-valid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_institution?.valid),
 							}"
 						/>
 					</div>
@@ -215,8 +215,8 @@
 							type="text"
 							required
 							[ngClass]="{
-								'is-invalid': testimonialFormGroup.controls.testimonial_workgroup?.invalid,
-								'is-valid': testimonialFormGroup.controls.testimonial_workgroup?.valid,
+								'is-invalid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_workgroup?.invalid),
+								'is-valid': $safeNavigationMigration(testimonialFormGroup.controls.testimonial_workgroup?.valid),
 							}"
 						/>
 					</div>

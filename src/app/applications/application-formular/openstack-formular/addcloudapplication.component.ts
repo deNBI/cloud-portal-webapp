@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ChangeDetectionStrategy } from '@angular/core'
 import { ApplicationFormularComponent } from '../application-formular.component'
 
 /**
@@ -8,6 +8,7 @@ import { ApplicationFormularComponent } from '../application-formular.component'
 	selector: 'app-addcloudapplication',
 	templateUrl: 'addcloudapplication.component.html',
 	styleUrls: ['addcloudapplication.component.css'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ApplicationFormularComponent]
 })
 export class AddcloudapplicationComponent {

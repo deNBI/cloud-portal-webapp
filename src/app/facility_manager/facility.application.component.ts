@@ -1,5 +1,5 @@
 import { ApplicationPage } from './../shared/models/application.page'
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 
 import { FacilityService } from '../api-connector/facility.service'
 import { UserService } from '../api-connector/user.service'
@@ -19,11 +19,11 @@ import { BasePaginationComponent } from 'app/shared/shared_modules/components/pa
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'
 
 enum TabStates {
-	'SUBMITTED' = 0,
-	'CREDITS_EXTENSION' = 1,
-	'LIFETIME_EXTENSION' = 2,
-	'MODIFICATION_EXTENSION' = 3,
-	'TERMINATION_REQUEST' = 4,
+	SUBMITTED = 0,
+	CREDITS_EXTENSION = 1,
+	LIFETIME_EXTENSION = 2,
+	MODIFICATION_EXTENSION = 3,
+	TERMINATION_REQUEST = 4,
 }
 
 /**
@@ -34,6 +34,7 @@ enum TabStates {
 	templateUrl: 'facility.application.component.html',
 	styleUrls: ['facility.application.component.scss'],
 	providers: [FacilityService, UserService, GroupService, ApplicationsService, ApiSettings],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		FormsModule,
 		NgClass,

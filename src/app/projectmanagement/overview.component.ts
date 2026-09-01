@@ -1,4 +1,14 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, Inject, DOCUMENT } from '@angular/core'
+import {
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	OnDestroy,
+	OnInit,
+	ViewChild,
+	Inject,
+	DOCUMENT,
+	ChangeDetectionStrategy
+} from '@angular/core'
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -69,6 +79,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 @Component({
 	selector: 'app-project-overview',
 	templateUrl: 'overview.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		ApplicationProgressComponent,
 		NgClass,

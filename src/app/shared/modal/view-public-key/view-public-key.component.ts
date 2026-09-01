@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../abstract-base-modal/abstract-base-modal.component'
 import { ClipboardModule } from 'ngx-clipboard'
@@ -10,6 +10,7 @@ import { ClipboardModule } from 'ngx-clipboard'
 	selector: 'app-view-public-key',
 	templateUrl: './view-public-key.component.html',
 	styleUrl: './view-public-key.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ClipboardModule]
 })
 export class ViewPublicKeyComponent extends AbstractBaseModalComponent {

@@ -228,7 +228,7 @@
 			<tr>
 				<td>Information</td>
 				<td id="dissemination_information">
-					{{ application?.dissemination | getAllowedInformationForDissemination }}
+					{{ $safeNavigationMigration(application?.dissemination) | getAllowedInformationForDissemination }}
 				</td>
 			</tr>
 		</tbody>

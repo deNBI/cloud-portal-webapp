@@ -75,7 +75,7 @@
 							name="emailAdminsOnly"
 							[(ngModel)]="emailAdminsOnly"
 							id="adminOnlyCheckbox"
-							[disabled]="csvMailTemplate?.errors?.length > 0"
+							[disabled]="$safeNavigationMigration(csvMailTemplate?.errors?.length) > 0"
 						/>
 						<label class="form-check-label" for="adminOnlyCheckbox"> Group administrators only </label>
 					</div>
@@ -98,7 +98,7 @@
 						class="form-control"
 						type="text"
 						[(ngModel)]="emailSubject"
-						[disabled]="csvMailTemplate?.errors?.length > 0"
+						[disabled]="$safeNavigationMigration(csvMailTemplate?.errors?.length) > 0"
 						minlength="1"
 						#emailSub="ngModel"
 						[ngClass]="{
@@ -119,7 +119,7 @@
 						class="form-control"
 						type="text"
 						[(ngModel)]="emailReply"
-						[disabled]="csvMailTemplate?.errors.length > 0"
+						[disabled]="$safeNavigationMigration(csvMailTemplate?.errors.length) > 0"
 						#emailRep="ngModel"
 						pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
 						[ngClass]="{
@@ -140,7 +140,7 @@
 						id="emailText"
 						name="emailText"
 						[(ngModel)]="emailText"
-						[disabled]="csvMailTemplate?.errors?.length > 0"
+						[disabled]="$safeNavigationMigration(csvMailTemplate?.errors?.length) > 0"
 						type="text"
 						#emailT="ngModel"
 						[ngClass]="{

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { is_vo, lifescience_id } from '../../../shared/globalvar'
 
 /**
@@ -6,6 +6,7 @@ import { is_vo, lifescience_id } from '../../../shared/globalvar'
  */
 @Component({
 	selector: 'app-adjustment-detail',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './adjustment-detail.component.html'
 })
 export class AdjustmentDetailComponent implements OnInit {

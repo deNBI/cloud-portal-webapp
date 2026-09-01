@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
@@ -22,6 +22,7 @@ import { ComputeCenterResponse } from 'app/shared/shared_modules/interfaces/comp
 	selector: 'app-client-overview',
 	templateUrl: 'clientOverview.html',
 	providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, NgClass, ModalModule]
 })
 export class ClientOverviewComponent implements OnInit, OnDestroy {

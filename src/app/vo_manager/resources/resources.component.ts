@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 
 import { CsvOutput, download, generateCsv, mkConfig } from 'export-to-csv'
 
@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common'
 	templateUrl: './resources.component.html',
 	styleUrls: ['./resources.component.scss'],
 	providers: [VoService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [DatePipe]
 })
 export class ResourcesComponent implements OnInit {

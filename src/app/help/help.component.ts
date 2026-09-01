@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 
 import { WIKI, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, SUPPORT_LINK, ZAMMAD_HELPDESK_LINK } from '../../links/links'
 /**
@@ -7,6 +7,7 @@ import { WIKI, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, SUPPORT_LINK, ZAMMAD_HELP
 @Component({
 	selector: 'app-help',
 	templateUrl: './help.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: []
 })
 export class HelpComponent implements OnInit {

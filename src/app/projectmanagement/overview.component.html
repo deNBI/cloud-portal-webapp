@@ -321,7 +321,8 @@
 												<div
 													[ngStyle]="{
 														'width.%': calculateProgressBar(
-															project_application?.DaysRunning / project_application?.lifetime_days
+															$safeNavigationMigration(project_application?.DaysRunning) /
+																$safeNavigationMigration(project_application?.lifetime_days)
 														),
 													}"
 													aria-valuemax="100"
@@ -758,8 +759,8 @@
 													<div
 														[ngStyle]="{
 															'width.%': calculateProgressBar(
-																project_application?.project_application_current_credits /
-																	project_application?.project_application_initial_credits
+																$safeNavigationMigration(project_application?.project_application_current_credits) /
+																	$safeNavigationMigration(project_application?.project_application_initial_credits)
 															),
 														}"
 														aria-valuemax="100"
@@ -1164,7 +1165,7 @@
 																) {
 																	<button
 																		(click)="removeAdmin(member.userId, member.userName)"
-																		[disabled]="member?.isPi"
+																		[disabled]="$safeNavigationMigration(member?.isPi)"
 																		class="btn btn-primary"
 																		style="margin: 2px"
 																		type="button"
@@ -1176,7 +1177,7 @@
 																	<button
 																		(click)="showConfirmationModalRemoveMember(member)"
 																		[id]="'remove_member_' + member.userName"
-																		[disabled]="member?.isPi"
+																		[disabled]="$safeNavigationMigration(member?.isPi)"
 																		class="btn btn-danger"
 																		style="margin: 2px"
 																		type="button"
@@ -1308,10 +1309,10 @@
 						@if (project_application && isLoaded && project_application.isApproved()) {
 							<div id="testimonialForm">
 								<app-testimonial-form
-									[title]="project_application?.project_application_name"
-									[contributor]="project_application?.project_application_pi?.username"
-									[institution]="project_application?.project_application_institute"
-									[workgroup]="project_application?.project_application_workgroup"
+									[title]="$safeNavigationMigration(project_application?.project_application_name)"
+									[contributor]="$safeNavigationMigration(project_application?.project_application_pi?.username)"
+									[institution]="$safeNavigationMigration(project_application?.project_application_institute)"
+									[workgroup]="$safeNavigationMigration(project_application?.project_application_workgroup)"
 									[simple_vm]="!project_application?.project_application_openstack_project"
 									[project_application]="project_application"
 									[testimonialSent]="project_application.project_application_testimonial_submitted"

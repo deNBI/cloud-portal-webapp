@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../../applications/application.model/application.model'
 import { CreditsService } from '../../../api-connector/credits.service'
@@ -23,6 +23,7 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 	selector: 'app-application',
 	templateUrl: './adjust-application.component.html',
 	providers: [ApplicationsService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		FormsModule,
 		NgStyle,

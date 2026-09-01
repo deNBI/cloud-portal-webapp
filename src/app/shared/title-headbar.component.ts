@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 import { UserService } from '../api-connector/user.service'
 import { NgClass } from '@angular/common'
 
@@ -9,6 +9,7 @@ import { NgClass } from '@angular/common'
 	templateUrl: 'title-headbar.component.html',
 	selector: 'app-title-headbar',
 	providers: [UserService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgClass]
 })
 export class TitleHeadbarComponent {

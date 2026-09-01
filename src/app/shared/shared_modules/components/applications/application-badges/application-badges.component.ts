@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 import { NgClass } from '@angular/common'
 import { is_vo } from '../../../../globalvar'
 import { Application } from '../../../../../applications/application.model/application.model'
@@ -7,6 +7,7 @@ import { Application } from '../../../../../applications/application.model/appli
 	selector: 'app-application-badges',
 	templateUrl: './application-badges.component.html',
 	styleUrls: ['./application-badges.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgClass]
 })
 export class ApplicationBadgesComponent {

@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core'
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
 	selector: 'app-timepicker',
 	imports: [NgbTimepickerModule, FormsModule],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './timepicker.component.html'
 })
 export class TimepickerComponent {

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core'
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 
 @Component({
 	template: '',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	standalone: false
 })
 export abstract class AbstractBaseModalComponent {

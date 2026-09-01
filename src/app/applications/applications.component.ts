@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 
@@ -40,6 +40,7 @@ import { ApplicationListComponent } from './application-list/application-list.co
 		FlavorService,
 		CreditsService
 	],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgClass, ApplicationListComponent]
 })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {

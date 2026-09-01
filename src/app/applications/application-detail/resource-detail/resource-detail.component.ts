@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core'
+import { Component, Input, OnChanges, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 import { User } from '../../application.model/user.model'
 import { ApplicationBaseClassComponent } from '../../../shared/shared_modules/baseClass/application-base-class.component'
@@ -18,6 +18,7 @@ interface FlavorDiff {
 @Component({
 	selector: 'app-resource-detail',
 	templateUrl: './resource-detail.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgStyle]
 })
 export class ResourceDetailComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {

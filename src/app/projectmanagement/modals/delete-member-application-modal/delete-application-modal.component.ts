@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { Application } from '../../../applications/application.model/application.model'
@@ -12,6 +12,7 @@ import { ApplicationsService } from '../../../api-connector/applications.service
 })
 @Component({
 	selector: 'app-delete-member-application-modal',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './delete-application-modal.component.html'
 })
 export class DeleteApplicationModal extends AbstractBaseModalComponent {

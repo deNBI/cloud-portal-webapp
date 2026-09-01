@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnInit } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { ProjectMemberApplication } from '../../project_member_application'
@@ -13,6 +13,7 @@ import { GroupService } from '../../../api-connector/group.service'
 	selector: 'app-user-applications-modal',
 	templateUrl: './user-applications-modal.component.html',
 	styleUrl: './user-applications-modal.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: []
 })
 export class UserApplicationsModalComponent extends AbstractBaseModalComponent implements OnInit {

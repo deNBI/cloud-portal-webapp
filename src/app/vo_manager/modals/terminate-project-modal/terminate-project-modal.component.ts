@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 
 import { Application } from '../../../applications/application.model/application.model'
@@ -16,6 +16,7 @@ import { ProjectOsDetailsComponent } from '../../../projectmanagement/project-os
 	selector: 'app-terminate-project-modal',
 	templateUrl: './terminate-project-modal.component.html',
 	styleUrl: './terminate-project-modal.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ProjectOsDetailsComponent]
 })
 export class TerminateProjectModalComponent extends AbstractBaseModalComponent {

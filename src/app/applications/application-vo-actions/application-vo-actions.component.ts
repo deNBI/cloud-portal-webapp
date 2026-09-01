@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { HttpStatusCode } from '@angular/common/http'
@@ -28,6 +28,7 @@ import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pip
 	selector: 'app-application-vo-actions',
 	templateUrl: './application-vo-actions.component.html',
 	styleUrl: './application-vo-actions.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, NgClass, TooltipModule, HasstatusinlistPipe]
 })
 export class ApplicationVoActionsComponent extends AbstractBaseClass implements OnInit {
@@ -262,12 +263,9 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 		this.applicationsService.approveModificationRequest(this.application.project_application_id).subscribe(
 			(res: Response): void => {
 				this.showNotificationModal('Success', 'The resource modification request was approved!', 'success')
-				if (
-					!(
-						this.application.project_application_openstack_project ||
-						this.application.project_application_storage_project
-					)
-				) {
+				if (!(
+					this.application.project_application_openstack_project || this.application.project_application_storage_project
+				)) {
 					if (res.status === HttpStatusCode.Accepted) {
 						this.triggerRemoveApplication()
 						this.triggerReloadNumbers()

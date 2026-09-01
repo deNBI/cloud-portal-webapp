@@ -77,8 +77,12 @@
 									appMinAmount="0"
 									appInteger
 									[ngClass]="{
-										'is-invalid': resourceAdjustmentForm.controls.granted_lifetime_counter?.invalid,
-										'is-valid': resourceAdjustmentForm.controls.granted_lifetime_counter?.valid,
+										'is-invalid': $safeNavigationMigration(
+											resourceAdjustmentForm.controls.granted_lifetime_counter?.invalid
+										),
+										'is-valid': $safeNavigationMigration(
+											resourceAdjustmentForm.controls.granted_lifetime_counter?.valid
+										),
 									}"
 								/>
 							</div>
@@ -157,8 +161,8 @@
 																	appMinAmount="0"
 																	appIntegerOrNull
 																	[ngClass]="{
-																		'is-invalid': name?.invalid,
-																		'is-valid': name?.valid,
+																		'is-invalid': $safeNavigationMigration(name?.invalid),
+																		'is-valid': $safeNavigationMigration(name?.valid),
 																	}"
 																/>
 																<div class="input-group-append"><span class="input-group-text"> VMs</span></div>
@@ -215,8 +219,12 @@
 										appMinAmount="0"
 										appInteger
 										[ngClass]="{
-											'is-invalid': resourceAdjustmentForm.controls.granted_volume_counter?.invalid,
-											'is-valid': resourceAdjustmentForm.controls.grated_volume_counter?.valid,
+											'is-invalid': $safeNavigationMigration(
+												resourceAdjustmentForm.controls.granted_volume_counter?.invalid
+											),
+											'is-valid': $safeNavigationMigration(
+												resourceAdjustmentForm.controls.grated_volume_counter?.valid
+											),
 										}"
 									/>
 								</div>
@@ -262,8 +270,10 @@
 										appMinAmount="1"
 										appInteger
 										[ngClass]="{
-											'is-invalid': resourceAdjustmentForm.controls.granted_volume_limit?.invalid,
-											'is-valid': resourceAdjustmentForm.controls.granted_volume_limit?.valid,
+											'is-invalid': $safeNavigationMigration(
+												resourceAdjustmentForm.controls.granted_volume_limit?.invalid
+											),
+											'is-valid': $safeNavigationMigration(resourceAdjustmentForm.controls.granted_volume_limit?.valid),
 										}"
 										[disabled]="resourceAdjustmentForm.controls.granted_volume_counter?.value === 0"
 									/>
@@ -318,8 +328,12 @@
 											appMinAmount="0"
 											required
 											[ngClass]="{
-												'is-invalid': resourceAdjustmentForm.controls.granted_object_storage?.invalid,
-												'is-valid': resourceAdjustmentForm.controls.granted_object_storage?.valid,
+												'is-invalid': $safeNavigationMigration(
+													resourceAdjustmentForm.controls.granted_object_storage?.invalid
+												),
+												'is-valid': $safeNavigationMigration(
+													resourceAdjustmentForm.controls.granted_object_storage?.valid
+												),
 											}"
 										/>
 										<div class="input-group-append"><span class="input-group-text"> GB </span></div>
@@ -370,8 +384,12 @@
 										appMinAmount="0"
 										required
 										[ngClass]="{
-											'is-invalid': resourceAdjustmentForm.controls.granted_number_of_buckets?.invalid,
-											'is-valid': resourceAdjustmentForm.controls.granted_number_of_buckets?.valid,
+											'is-invalid': $safeNavigationMigration(
+												resourceAdjustmentForm.controls.granted_number_of_buckets?.invalid
+											),
+											'is-valid': $safeNavigationMigration(
+												resourceAdjustmentForm.controls.granted_number_of_buckets?.valid
+											),
 										}"
 									/>
 									<div class="input-group-append"><span class="input-group-text"> Buckets </span></div>

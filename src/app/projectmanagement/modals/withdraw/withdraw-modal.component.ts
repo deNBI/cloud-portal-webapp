@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core'
+import { Component, EventEmitter, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 
 import { ApplicationsService } from '../../../api-connector/applications.service'
@@ -11,6 +11,7 @@ export enum WITHDRAWAL_TYPES {
 @Component({
 	selector: 'app-withdrawl-modal',
 	templateUrl: './withdraw-modal.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [ApplicationsService]
 })
 export class WithdrawModalComponent {

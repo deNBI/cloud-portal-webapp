@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import * as saveSVG from 'save-svg-as-png'
 import bb, { areaSpline, bar, Chart } from 'billboard.js'
 import * as d3 from 'd3'
@@ -14,6 +14,7 @@ import 'svg2pdf.js'
 	templateUrl: './number-charts.component.html',
 	styleUrls: ['./number-charts.component.css'],
 	providers: [NumbersService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: []
 })
 export class NumberChartsComponent implements OnInit {

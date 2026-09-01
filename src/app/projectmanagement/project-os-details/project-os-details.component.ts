@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core'
 import { GroupService } from '../../api-connector/group.service'
 import { Application } from '../../applications/application.model/application.model'
 
@@ -10,6 +10,7 @@ import { Application } from '../../applications/application.model/application.mo
 	templateUrl: './project-os-details.component.html',
 	styleUrls: ['./project-os-details.component.css'],
 	providers: [GroupService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: []
 })
 export class ProjectOsDetailsComponent implements OnInit, OnChanges {

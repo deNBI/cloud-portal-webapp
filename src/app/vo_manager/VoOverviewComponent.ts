@@ -1,4 +1,12 @@
-import { Component, EventEmitter, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core'
+import {
+	Component,
+	EventEmitter,
+	OnDestroy,
+	OnInit,
+	QueryList,
+	ViewChildren,
+	ChangeDetectionStrategy
+} from '@angular/core'
 import { debounceTime, distinctUntilChanged, Observable, Subject, Subscription } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 import * as FileSaver from 'file-saver'
@@ -54,6 +62,7 @@ import { ComputeCenterResponse } from 'app/shared/shared_modules/interfaces/comp
 	selector: 'app-vo-overview',
 	templateUrl: 'voOverview.component.html',
 	providers: [VoService, GroupService, FacilityService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		TextColorDirective,
 		TextBgColorDirective,

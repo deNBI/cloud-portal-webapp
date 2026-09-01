@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { Application } from '../../../../applications/application.model/application.model'
 import { EmailService } from '../../../../api-connector/email.service'
@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms'
 	templateUrl: './project-csv-templated-email-modal.component.html',
 	styleUrls: ['./project-csv-templated-email.scss'],
 	providers: [EmailService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, NgClass]
 })
 export class ProjectCsvTemplatedEmailModalComponent implements OnInit, OnDestroy {

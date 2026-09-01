@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { ApplicationFilter } from 'app/shared/classes/application-filter'
 import {
@@ -11,6 +11,7 @@ import {
 	selector: 'app-application-filter-input',
 	imports: [FormsModule],
 	templateUrl: './application-filter-input.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrl: './application-filter-input.component.scss'
 })
 export class ApplicationFilterInputComponent {

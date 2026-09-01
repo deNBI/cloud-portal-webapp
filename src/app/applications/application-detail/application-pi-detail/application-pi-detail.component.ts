@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core'
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 import { is_vo } from 'app/shared/globalvar'
 import { TextColorDirective, TextBgColorDirective, BadgeComponent } from '@coreui/angular'
@@ -9,6 +9,7 @@ import { TextColorDirective, TextBgColorDirective, BadgeComponent } from '@coreu
 @Component({
 	selector: 'app-application-pi-detail',
 	templateUrl: './application-pi-detail.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [TextColorDirective, TextBgColorDirective, BadgeComponent]
 })
 export class ApplicationPiDetailComponent implements OnInit {

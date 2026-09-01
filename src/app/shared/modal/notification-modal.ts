@@ -1,4 +1,4 @@
-import { Component, Injectable, OnDestroy } from '@angular/core'
+import { Component, Injectable, OnDestroy, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { Router, RouterLink } from '@angular/router'
 import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-modal.component'
@@ -7,6 +7,7 @@ import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-
 @Component({
 	selector: 'app-notification-modal',
 	templateUrl: './notification-modal.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [RouterLink]
 })
 export class NotificationModalComponent extends AbstractBaseModalComponent implements OnDestroy {

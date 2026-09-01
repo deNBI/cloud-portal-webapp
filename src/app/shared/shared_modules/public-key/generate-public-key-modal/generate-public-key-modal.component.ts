@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { KeyService } from 'app/api-connector/key.service'
 import { AbstractBaseModalComponent } from 'app/shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { BsModalService } from 'ngx-bootstrap/modal'
@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms'
 	selector: 'app-generate-public-key-modal',
 	templateUrl: './generate-public-key-modal.component.html',
 	styleUrl: './generate-public-key-modal.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule]
 })
 export class GeneratePublicKeyModalComponent extends AbstractBaseModalComponent {

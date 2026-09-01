@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core'
+import { Component, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { forkJoin } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
@@ -33,6 +33,7 @@ import { FormsModule } from '@angular/forms'
 	selector: 'app-userinfo',
 	templateUrl: 'userinfo.component.html',
 	providers: [GroupService, UserService, ApiSettings, KeyService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NewsComponent, MaintenanceAlertComponent, PublicKeyComponent, FormsModule, ModalModule, NgClass]
 })
 export class UserInfoComponent implements OnInit {

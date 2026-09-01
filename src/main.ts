@@ -1,7 +1,7 @@
 import { enableProdMode, ErrorHandler, importProvidersFrom, provideZoneChangeDetection } from '@angular/core'
 
 import { environment } from './environments/environment'
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http'
 import { AppInterceptor } from './app/app.interceptor.component'
 import { TokenInterceptor } from './app/api-connector/token-interceptor'
 import { LocationStrategy, HashLocationStrategy, CommonModule } from '@angular/common'
@@ -85,7 +85,7 @@ bootstrapApplication(AppComponent, {
 		FacilityService,
 		Title,
 		TitleService,
-		provideHttpClient(withInterceptorsFromDi()),
+		provideHttpClient(withXhr(), withInterceptorsFromDi()),
 		provideAnimations(),
 	],
 }).then(() => {

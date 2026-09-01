@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 
 import { WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK, KUBERNETES_LINK } from '../../links/links'
 import { is_vo } from '../shared/globalvar'
@@ -14,6 +14,7 @@ import { ApiSettings } from 'app/api-connector/api-settings.service'
 	templateUrl: './type-overview.component.html',
 	styleUrls: ['./type-overview.component.css'],
 	providers: [LandingPageService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [RouterLink]
 })
 export class TypeOverviewComponent implements OnInit {

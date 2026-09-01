@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core'
+import { Component, Input, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal'
 import { MaintenanceTimeFrame } from '../../../../vo_manager/maintenance/maintenanceTimeFrame.model'
 import { NgClass, DatePipe } from '@angular/common'
@@ -8,6 +8,7 @@ import { SignificancePipe } from './significance-pipe/significance.pipe'
 	selector: 'app-maintenance-notification',
 	templateUrl: './maintenance-notification.component.html',
 	styleUrls: ['./maintenance-notification.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgClass, ModalModule, DatePipe, SignificancePipe]
 })
 export class MaintenanceNotificationComponent {

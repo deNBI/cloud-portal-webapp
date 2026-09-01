@@ -172,17 +172,27 @@
 												<button
 													(click)="
 														getFacilityApplicationById(application);
-														switchCollapseStatus('application_history-' + application?.project_application_id)
+														switchCollapseStatus(
+															'application_history-' + $safeNavigationMigration(application?.project_application_id)
+														)
 													"
 													type="button"
 													class="btn btn-secondary"
 												>
 													<i class="fa fa-info-circle"></i>&nbsp;
 													<span
-														[hidden]="!getCollapseStatus('application_history-' + application?.project_application_id)"
+														[hidden]="
+															!getCollapseStatus(
+																'application_history-' + $safeNavigationMigration(application?.project_application_id)
+															)
+														"
 														>Show</span
 													><span
-														[hidden]="getCollapseStatus('application_history-' + application?.project_application_id)"
+														[hidden]="
+															getCollapseStatus(
+																'application_history-' + $safeNavigationMigration(application?.project_application_id)
+															)
+														"
 														style="margin-left: 5px"
 														>Hide</span
 													>
@@ -198,21 +208,29 @@
 										<td colspan="12">
 											@if (
 												application?.project_application_description &&
-												!getCollapseStatus('application_history-' + application?.project_application_id)
+												!getCollapseStatus(
+													'application_history-' + $safeNavigationMigration(application?.project_application_id)
+												)
 											) {
 												<app-application-detail
 													[class.collapse_no_margin]="
-														getCollapseStatus('application_history-' + application?.project_application_id)
+														getCollapseStatus(
+															'application_history-' + $safeNavigationMigration(application?.project_application_id)
+														)
 													"
 													[class.collapse]="
-														getCollapseStatus('application_history-' + application?.project_application_id)
+														getCollapseStatus(
+															'application_history-' + $safeNavigationMigration(application?.project_application_id)
+														)
 													"
 													[application]="application"
 												></app-application-detail>
 											}
 											@if (
 												!application?.project_application_description &&
-												!getCollapseStatus('application_history-' + application?.project_application_id)
+												!getCollapseStatus(
+													'application_history-' + $safeNavigationMigration(application?.project_application_id)
+												)
 											) {
 												<div class="d-flex justify-content-center">
 													<div class="spinner-border" role="status">

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { News } from '../news.model'
 import { DatePipe } from '@angular/common'
 
@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common'
 	selector: 'app-news-slide',
 	templateUrl: './news-slide.component.html',
 	styleUrls: ['./news-slide.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [DatePipe]
 })
 export class NewsSlideComponent implements OnInit {

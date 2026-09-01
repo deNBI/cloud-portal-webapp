@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Injectable, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, Injectable, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import moment from 'moment'
 import { ApiSettings } from '../api-connector/api-settings.service'
 import { ClientService } from '../api-connector/client.service'
@@ -34,6 +34,7 @@ import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
 	selector: 'app-dashboard',
 	templateUrl: './full-layout.component.html',
 	providers: [ApplicationsService, VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		AlertModule,
 		TitleHeadbarComponent,

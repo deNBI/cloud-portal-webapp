@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, Component, OnInit } from '@angular/core'
+import { AfterViewInit, ApplicationRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { VoService } from './api-connector/vo.service'
 import { TitleService } from './title.service'
 import { RouterOutlet } from '@angular/router'
@@ -10,6 +10,7 @@ import { RouterOutlet } from '@angular/router'
 	selector: 'body',
 	templateUrl: 'app.component.html',
 	providers: [VoService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [RouterOutlet]
 })
 export class AppComponent implements AfterViewInit, OnInit {

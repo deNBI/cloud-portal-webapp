@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core'
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { NgForm, FormsModule } from '@angular/forms'
 
 import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor'
@@ -59,6 +59,7 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 	templateUrl: './application-formular.component.html',
 	styleUrls: ['./application-formular.component.scss'],
 	providers: [FlavorService, ApplicationsService, CreditsService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		FormsModule,
 		NgClass,

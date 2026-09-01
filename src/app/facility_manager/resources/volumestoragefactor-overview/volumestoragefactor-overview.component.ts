@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { VolumeStorageFactor } from '../volume-storage-factor'
 import { FormsModule } from '@angular/forms'
@@ -11,6 +11,7 @@ import { NgClass } from '@angular/common'
 	selector: 'app-volumestoragefactor-overview',
 	templateUrl: './volumestoragefactor-overview.component.html',
 	providers: [FacilityService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, NgClass]
 })
 export class VolumestoragefactorOverviewComponent implements OnInit {

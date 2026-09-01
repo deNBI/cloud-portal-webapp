@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core'
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 
 import { ProjectMember } from '../../../projectmanagement/project_member.model'
@@ -9,6 +9,7 @@ import { FacilityService } from '../../../api-connector/facility.service'
 @Component({
 	selector: 'app-project-members-list',
 	templateUrl: './members-list-modal.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: []
 })
 export class MembersListModalComponent implements OnDestroy, OnInit {

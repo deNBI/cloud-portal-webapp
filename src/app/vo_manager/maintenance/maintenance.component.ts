@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 
 import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal'
@@ -22,6 +22,7 @@ import { ValidTimeFramePipe } from '../../pipe-module/pipes/validTimeFrame.pipe'
 	templateUrl: './maintenance.component.html',
 	styleUrls: ['./maintenance.component.scss'],
 	providers: [WorkshopService, VoService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		FormsModule,
 		ReactiveFormsModule,

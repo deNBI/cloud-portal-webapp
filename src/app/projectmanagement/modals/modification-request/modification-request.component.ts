@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { HasFlavorTypeOrIsNotCustomPipe } from 'app/pipe-module/pipes/has-flavor-type.pipe'
@@ -26,6 +26,7 @@ import { HasFlavorTypeOrIsNotCustomPipe as HasFlavorTypeOrIsNotCustomPipe_1 } fr
 	templateUrl: './modification-request.component.html',
 	styleUrls: ['./modification-request.component.scss'],
 	providers: [FlavorService, CreditsService, HasFlavorTypeOrIsNotCustomPipe],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		FormsModule,
 		AccordionModule,

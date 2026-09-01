@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ChangeDetectionStrategy } from '@angular/core'
 import { ApplicationFormularComponent } from '../application-formular.component'
 
 /**
@@ -7,6 +7,7 @@ import { ApplicationFormularComponent } from '../application-formular.component'
 @Component({
 	selector: 'app-addsimplevm',
 	templateUrl: 'addsimplevm.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ApplicationFormularComponent]
 })
 export class AddsimplevmComponent {

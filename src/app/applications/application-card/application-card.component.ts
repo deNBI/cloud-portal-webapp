@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { AbstractBaseClass, Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class'
 import { ConfirmationActions } from '../../shared/modal/confirmation_actions'
@@ -17,6 +17,7 @@ import { ApplicationFacilityActionsComponent } from '../application-facility-act
 	selector: 'app-application-card',
 	templateUrl: './application-card.component.html',
 	styleUrl: './application-card.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		ApplicationBadgesComponent,
 		ApplicationVoActionsComponent,

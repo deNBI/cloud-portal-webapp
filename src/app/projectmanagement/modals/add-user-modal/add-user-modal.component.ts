@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
 import { CLOUD_PORTAL_REGISTER_LINK, WIKI_MEMBER_MANAGEMENT } from '../../../../links/links'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
@@ -12,6 +12,7 @@ import { ClipboardModule } from 'ngx-clipboard'
 	selector: 'app-add-user-modal',
 	templateUrl: './add-user-modal.component.html',
 	styleUrl: './add-user-modal.component.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [ClipboardModule]
 })
 export class AddUserModalComponent extends AbstractBaseModalComponent {

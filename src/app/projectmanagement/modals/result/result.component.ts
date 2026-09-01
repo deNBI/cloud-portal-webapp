@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { Application } from '../../../applications/application.model/application.model'
@@ -15,6 +15,7 @@ import { AlertModule } from 'ngx-bootstrap/alert'
 	templateUrl: './result.component.html',
 	styleUrls: ['./result.component.scss'],
 	providers: [ApplicationsService, BsModalService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [AlertModule]
 })
 export class ResultComponent implements OnInit, OnDestroy {

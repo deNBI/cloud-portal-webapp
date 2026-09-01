@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core'
+import { Component, EventEmitter, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { Application } from '../../../../applications/application.model/application.model'
 import { EmailService } from '../../../../api-connector/email.service'
@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms'
 	templateUrl: './project-email-modal.component.html',
 	styleUrls: ['./projext-email-modal.component.scss'],
 	providers: [EmailService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, NgClass]
 })
 export class ProjectEmailModalComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 import { ApplicationBaseClassComponent } from '../../shared/shared_modules/baseClass/application-base-class.component'
 import { Application } from '../../applications/application.model/application.model'
 import { Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class'
@@ -14,6 +14,7 @@ import { IsPiApprovedPipe } from '../../pipe-module/pipes/is-pi-approved'
 	templateUrl: './application-progress.component.html',
 	styleUrls: ['./application-progress.component.scss'],
 	providers: [],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgClass, HasstatusinlistPipe, IsPiApprovedPipe]
 })
 export class ApplicationProgressComponent extends ApplicationBaseClassComponent {

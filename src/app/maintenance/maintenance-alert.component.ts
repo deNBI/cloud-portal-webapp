@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core'
+import { Component, OnInit, OnDestroy, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core'
 import { Subscription } from 'rxjs'
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
@@ -13,6 +13,7 @@ import { NgClass, DatePipe } from '@angular/common'
 	templateUrl: './maintenance-alert.component.html',
 	styleUrls: ['./maintenance-alert.component.scss'],
 	providers: [MaintenanceService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgClass, DatePipe]
 })
 export class MaintenanceAlertComponent implements OnInit, OnDestroy {

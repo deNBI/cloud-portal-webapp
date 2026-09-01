@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { Application } from '../../application.model/application.model'
 import { is_vo, lifescience_id } from '../../../shared/globalvar'
 import { environment } from '../../../../environments/environment'
@@ -11,6 +11,7 @@ import { AllowedDisseminationInformationPipe } from 'app/pipe-module/pipes/allow
 @Component({
 	selector: 'app-information-detail',
 	templateUrl: './information-detail.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgClass, AllowedDisseminationInformationPipe]
 })
 export class InformationDetailComponent implements OnInit {

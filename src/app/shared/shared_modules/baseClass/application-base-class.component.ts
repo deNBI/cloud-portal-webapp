@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core'
+import { ChangeDetectorRef, Component, ChangeDetectionStrategy } from '@angular/core'
 import { AbstractBaseClass, Application_States, Application_States_Strings } from './abstract-base-class'
 import { Application } from '../../../applications/application.model/application.model'
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
@@ -19,6 +19,7 @@ import { ComputeCenterResponse } from '../interfaces/computecenter-response.inte
 @Component({
 	selector: 'app-base',
 	template: '',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [FacilityService, ApplicationsService, FlavorService]
 })
 export class ApplicationBaseClassComponent extends AbstractBaseClass {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import {
 	UntypedFormBuilder,
 	UntypedFormControl,
@@ -19,6 +19,7 @@ import { NgClass } from '@angular/common'
 	selector: 'app-resourcemachine-overview',
 	templateUrl: './resourcemachine-overview.component.html',
 	providers: [FacilityService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FormsModule, ReactiveFormsModule, NgClass]
 })
 export class ResourcemachineOverviewComponent implements OnInit {

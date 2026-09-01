@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core'
+import { Component, Input, OnInit, QueryList, ViewChildren, ChangeDetectionStrategy } from '@angular/core'
 import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
@@ -54,6 +54,7 @@ import { ExtendedFacilityNews } from './newsmanagement/facility-news'
 	selector: 'app-facility-projects',
 	templateUrl: 'facilityprojectsoverview.component.html',
 	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService, ProjectSortService],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		FormsModule,
 		TextColorDirective,
