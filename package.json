@@ -16,7 +16,7 @@
   "dependencies": {
     "@angular-eslint/eslint-plugin": "21.4.0",
     "@angular/animations": "22.1.4",
-    "@angular/cdk": "21.2.14",
+    "@angular/cdk": "22.1.4",
     "@angular/common": "22.1.4",
     "@angular/compiler": "22.1.4",
     "@angular/core": "22.1.4",
