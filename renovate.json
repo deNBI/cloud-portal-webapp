@@ -46,7 +46,8 @@
       ],
       "addLabels": [
         "pin"
-      ]
+      ],
+      "enabled": false
     },
     {
       "matchLabels": [
