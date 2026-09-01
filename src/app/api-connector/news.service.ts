@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable, of } from 'rxjs'
 import { map, catchError } from 'rxjs/operators'
 import { SocialConsent } from 'app/shared/shared_modules/testimonial-forms/social-consent.model'
@@ -14,7 +14,11 @@ import { News } from '../news/news.model'
 	providedIn: 'root'
 })
 export class NewsService {
-	constructor(private http: HttpClient) {
+	private http = inject(HttpClient)
+
+	constructor() {
+		const http = this.http
+
 		this.http = http
 	}
 

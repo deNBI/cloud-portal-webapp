@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { catchError, map } from 'rxjs/operators'
@@ -18,7 +18,7 @@ import { ApplicationFilter } from 'app/shared/classes/application-filter'
 	providedIn: 'root'
 })
 export class VoService {
-	constructor(private http: HttpClient) {}
+	private http = inject(HttpClient)
 
 	getTsvInformation(): Observable<any> {
 		return this.http.get<boolean>(`${ApiSettings.getApiBaseURL()}voManagers/tsv_information/`, {
@@ -66,7 +66,7 @@ export class VoService {
 		})
 	}
 
-	getAllProjectsThatStillDemandAnIntroductionCourse(): Observable<object> {
+	getAllProjectsThatStillDemandAnIntroductionCourse(): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/introduction/`, {
 			withCredentials: true
 		})

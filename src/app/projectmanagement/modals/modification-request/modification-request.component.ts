@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import {
+	ChangeDetectorRef,
+	Component,
+	EventEmitter,
+	OnDestroy,
+	OnInit,
+	ChangeDetectionStrategy,
+	inject
+} from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { HasFlavorTypeOrIsNotCustomPipe } from 'app/pipe-module/pipes/has-flavor-type.pipe'
@@ -38,6 +46,12 @@ import { HasFlavorTypeOrIsNotCustomPipe as HasFlavorTypeOrIsNotCustomPipe_1 } fr
 	]
 })
 export class ModificationRequestComponent implements OnInit, OnDestroy {
+	bsModalRef = inject(BsModalRef)
+	private modalService = inject(BsModalService)
+	private flavorService = inject(FlavorService)
+	private creditsService = inject(CreditsService)
+	private cdRef = inject(ChangeDetectorRef)
+
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
 
 	project: Application
@@ -63,16 +77,6 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	extraResourceCommentRequired: boolean = false
 	GPU_SHORTCUT = 'GPU'
 	HMF_SHORTCUT = 'HMF'
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private modalService: BsModalService,
-		private flavorService: FlavorService,
-		private creditsService: CreditsService,
-		private cdRef: ChangeDetectorRef
-	) {
-		// do nothing.
-	}
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe()

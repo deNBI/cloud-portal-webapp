@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { Client } from '../client.model'
 import { ClientService } from '../../../api-connector/client.service'
@@ -15,6 +15,10 @@ import { NgStyle } from '@angular/common'
 	imports: [NgStyle]
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {
+	bsModalRef = inject(BsModalRef)
+	private clientService = inject(ClientService)
+	private facilityService = inject(FacilityService)
+
 	client: Client = null
 	compute_center_id: string = null
 	application: Application = null
@@ -25,12 +29,6 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	submitted: boolean = false
 	request_failed: boolean = false
 	public event: EventEmitter<any> = new EventEmitter()
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private clientService: ClientService,
-		private facilityService: FacilityService
-	) {}
 
 	getComputeCenterClientLimitsAvailable() {
 		this.facilityService

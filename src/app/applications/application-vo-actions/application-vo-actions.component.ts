@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { HttpStatusCode } from '@angular/common/http'
@@ -32,6 +32,13 @@ import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pip
 	imports: [FormsModule, NgClass, TooltipModule, HasstatusinlistPipe]
 })
 export class ApplicationVoActionsComponent extends AbstractBaseClass implements OnInit {
+	private applicationsService = inject(ApplicationsService)
+	private modalService = inject(BsModalService)
+	private voService = inject(VoService)
+	private groupService = inject(GroupService)
+	private adjustLifeTimeExtensionModal = inject(AdjustLifetimeRequestComponent)
+	private adjustApplicationModal = inject(AdjustApplicationComponent)
+
 	private subscription: Subscription = new Subscription()
 
 	@Input() application: Application
@@ -49,17 +56,6 @@ export class ApplicationVoActionsComponent extends AbstractBaseClass implements 
 
 	ngOnInit() {
 		this.is_vo_admin = is_vo
-	}
-
-	constructor(
-		private applicationsService: ApplicationsService,
-		private modalService: BsModalService,
-		private voService: VoService,
-		private groupService: GroupService,
-		private adjustLifeTimeExtensionModal: AdjustLifetimeRequestComponent,
-		private adjustApplicationModal: AdjustApplicationComponent
-	) {
-		super()
 	}
 
 	triggerRemoveApplication() {

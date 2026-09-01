@@ -43,7 +43,6 @@ export class ApplicationListComponent implements OnInit, OnChanges {
 		this.setDataTestId()
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	ngOnChanges(changes: SimpleChanges) {
 		this.setDataTestId()
 	}

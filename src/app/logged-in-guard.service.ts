@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router'
 import { Observable } from 'rxjs'
 import { CookieService } from 'ngx-cookie-service'
@@ -12,14 +12,10 @@ import { environment } from '../environments/environment'
  */
 @Injectable()
 export class LoggedInGuard {
-	constructor(
-		private http: HttpClient,
-		private cookieService: CookieService,
-		private router: Router,
-		private userService: UserService
-	) {
-		// constructor for LoggedInGuard
-	}
+	private http = inject(HttpClient)
+	private cookieService = inject(CookieService)
+	private router = inject(Router)
+	private userService = inject(UserService)
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
 		return this.userService.getOnlyLoggedUserWithRedirect(state.url).pipe(

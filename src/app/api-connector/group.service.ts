@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { ApiSettings } from './api-settings.service'
@@ -16,7 +16,11 @@ import { ProjectMember } from '../projectmanagement/project_member.model'
 	providedIn: 'root'
 })
 export class GroupService {
-	constructor(private http: HttpClient) {
+	private http = inject(HttpClient)
+
+	constructor() {
+		const http = this.http
+
 		this.http = http
 	}
 

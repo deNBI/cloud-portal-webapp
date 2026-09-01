@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core'
 import { download, mkConfig, generateCsv, CsvOutput } from 'export-to-csv'
 
 import { Resources } from '../../vo_manager/resources/resources'
@@ -39,6 +39,8 @@ import { GPUSpecificationOverviewComponent } from './gpu-specification-overview/
 	]
 })
 export class ResourcesComponent implements OnInit {
+	private facilityService = inject(FacilityService)
+
 	title: string = 'Resource Overview'
 
 	tableId: string = 'contentToConvert'
@@ -89,7 +91,9 @@ export class ResourcesComponent implements OnInit {
 	 */
 	today: number = Date.now()
 
-	constructor(private facilityService: FacilityService) {
+	constructor() {
+		const facilityService = this.facilityService
+
 		this.facilityService = facilityService
 	}
 

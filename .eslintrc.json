@@ -17,7 +17,6 @@
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/template/process-inline-templates",
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"

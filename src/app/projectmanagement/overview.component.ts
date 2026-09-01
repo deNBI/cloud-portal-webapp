@@ -5,9 +5,9 @@ import {
 	OnDestroy,
 	OnInit,
 	ViewChild,
-	Inject,
 	DOCUMENT,
-	ChangeDetectionStrategy
+	ChangeDetectionStrategy,
+	inject
 } from '@angular/core'
 import moment from 'moment'
 import { forkJoin, Observable, Subscription } from 'rxjs'
@@ -96,6 +96,21 @@ import { HttpErrorResponse } from '@angular/common/http'
 	]
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
+	private flavorService = inject(FlavorService)
+	private groupService = inject(GroupService)
+	private modalService = inject(BsModalService)
+	private activatedRoute = inject(ActivatedRoute)
+	private fullLayout = inject(FullLayoutComponent)
+	private router = inject(Router)
+	private creditsService = inject(CreditsService)
+	private terminationRequestComponent = inject(TerminationRequestComponent)
+	private viewPublicKeyComponent = inject(ViewPublicKeyComponent)
+	private leaveProjectComponent = inject(LeaveProjectComponent)
+	private deleteApplicationModal = inject(DeleteApplicationModal)
+	private addUserModalComponent = inject(AddUserModalComponent)
+	private userApplicationsModalComponent = inject(UserApplicationsModalComponent)
+	private document = inject<Document>(DOCUMENT)
+
 	bsModalRef: BsModalRef
 	protected readonly ConfirmationActions = ConfirmationActions
 
@@ -153,30 +168,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	private subscription: Subscription = new Subscription()
 	private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>
 	private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>
-
-	constructor(
-		private flavorService: FlavorService,
-		private groupService: GroupService,
-		private modalService: BsModalService,
-		applicationsService: ApplicationsService,
-		facilityService: FacilityService,
-		userService: UserService,
-		private activatedRoute: ActivatedRoute,
-		private fullLayout: FullLayoutComponent,
-		private router: Router,
-		private creditsService: CreditsService,
-		private terminationRequestComponent: TerminationRequestComponent,
-		private viewPublicKeyComponent: ViewPublicKeyComponent,
-		private leaveProjectComponent: LeaveProjectComponent,
-		private deleteApplicationModal: DeleteApplicationModal,
-		private addUserModalComponent: AddUserModalComponent,
-		private userApplicationsModalComponent: UserApplicationsModalComponent,
-		notificationModal: NotificationModalComponent,
-		@Inject(DOCUMENT) private document: Document,
-		cdrRef: ChangeDetectorRef
-	) {
-		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
-	}
 
 	calculateProgressBar(numberToRoundUp: number): string {
 		return Math.ceil(numberToRoundUp * 100).toString()

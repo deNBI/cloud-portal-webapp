@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 
@@ -44,6 +44,11 @@ import { ApplicationListComponent } from './application-list/application-list.co
 	imports: [NgClass, ApplicationListComponent]
 })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
+	private groupservice = inject(GroupService)
+	private modalService = inject(BsModalService)
+	private voService = inject(VoService)
+	private flavorService = inject(FlavorService)
+
 	title: string = 'Application Overview'
 	tab_state: number = ApplicationTabStates.SUBMITTED
 	ApplicationTabStates: typeof ApplicationTabStates = ApplicationTabStates
@@ -84,19 +89,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	 * @param facilityService
 	 * @param flavorService
 	 */
-	constructor(
-		applicationsService: ApplicationsService,
-		userService: UserService,
-		private groupservice: GroupService,
-		private modalService: BsModalService,
-		facilityService: FacilityService,
-		private voService: VoService,
-		private flavorService: FlavorService,
-		cdrRef: ChangeDetectorRef,
-		notificationModal: NotificationModalComponent
-	) {
-		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
-	}
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe()

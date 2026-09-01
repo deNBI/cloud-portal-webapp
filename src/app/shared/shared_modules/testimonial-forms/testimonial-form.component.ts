@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal'
 import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -18,6 +18,8 @@ import { SocialConsentGivenPipe } from '../../../pipe-module/pipes/social-consen
 	imports: [FormsModule, ReactiveFormsModule, NgClass, ModalModule, SocialConsentGivenPipe]
 })
 export class TestimonialFormComponent implements OnInit, OnDestroy {
+	private newsService = inject(NewsService)
+
 	subscription: Subscription = new Subscription()
 
 	TESTIMONIAL_PAGE_LINK: string = TESTIMONIAL_PAGE_LINK
@@ -58,8 +60,6 @@ export class TestimonialFormComponent implements OnInit, OnDestroy {
 	autosaveStatusTimer: ReturnType<typeof setTimeout>
 	file: File = null
 	hideTestimonialForm: boolean = false
-
-	constructor(private newsService: NewsService) {}
 
 	ngOnInit(): void {
 		this.setInitialData()

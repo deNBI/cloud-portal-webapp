@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import * as saveSVG from 'save-svg-as-png'
 import bb, { areaSpline, bar, Chart } from 'billboard.js'
 import * as d3 from 'd3'
@@ -18,10 +18,10 @@ import 'svg2pdf.js'
 	imports: []
 })
 export class NumberChartsComponent implements OnInit {
+	private numbersService = inject(NumbersService)
+
 	is_vo_admin: boolean = true
 	title: string = 'Cloud Numbers'
-
-	constructor(private numbersService: NumbersService) {}
 
 	/**
 	 * Charts

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, QueryList, ViewChildren, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Input, OnInit, QueryList, ViewChildren, ChangeDetectionStrategy, inject } from '@angular/core'
 import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
@@ -80,6 +80,11 @@ import { ExtendedFacilityNews } from './newsmanagement/facility-news'
 	]
 })
 export class FacilityProjectsOverviewComponent extends AbstractBaseClass implements OnInit {
+	private facilityService = inject(FacilityService)
+	private modalService = inject(BsModalService)
+	private emailService = inject(EmailService)
+	private notificationModal = inject(NotificationModalComponent)
+
 	@Input() voRegistrationLink: string = environment.voRegistrationLink
 
 	title: string = 'Projects Overview'
@@ -148,15 +153,6 @@ export class FacilityProjectsOverviewComponent extends AbstractBaseClass impleme
 
 	applictions$: Observable<Application[]>
 	total$: Observable<number>
-
-	constructor(
-		private facilityService: FacilityService,
-		private modalService: BsModalService,
-		private emailService: EmailService,
-		private notificationModal: NotificationModalComponent
-	) {
-		super()
-	}
 
 	setRecipientsString(): void {
 		switch (this.selectedProjectType) {

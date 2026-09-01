@@ -1,7 +1,6 @@
-/* eslint-disable */
 /* tslint-disable */
 
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router'
 import { Observable } from 'rxjs'
 import { is_vo } from '../shared/globalvar'
@@ -11,7 +10,7 @@ import { is_vo } from '../shared/globalvar'
  */
 @Injectable()
 export class VoGuardService {
-	constructor(private router: Router) {}
+	private router = inject(Router)
 
 	canActivate(
 		route: ActivatedRouteSnapshot,

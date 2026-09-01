@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { Application } from '../../../applications/application.model/application.model'
@@ -15,14 +15,18 @@ import { NotificationModalComponent } from '../../../shared/modal/notification-m
 	styleUrl: './decline-project-termination-modal.component.scss'
 })
 export class DeclineProjectTerminationModalComponent extends AbstractBaseModalComponent {
+	protected modalService: BsModalService
+	private voService = inject(VoService)
+	private notificationModal = inject(NotificationModalComponent)
+
 	application: Application
 
-	constructor(
-		protected modalService: BsModalService,
-		private voService: VoService,
-		private notificationModal: NotificationModalComponent
-	) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showTerminationProjectModal(application: Application): EventEmitter<boolean> {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { Application } from '../../../applications/application.model/application.model'
@@ -19,6 +19,10 @@ import { AlertModule } from 'ngx-bootstrap/alert'
 	imports: [AlertModule]
 })
 export class ResultComponent implements OnInit, OnDestroy {
+	bsModalRef = inject(BsModalRef)
+	private modalService = inject(BsModalService)
+	private applicationsService = inject(ApplicationsService)
+
 	subscription: Subscription = new Subscription()
 	public event: EventEmitter<any> = new EventEmitter()
 	submit: boolean = true
@@ -37,12 +41,6 @@ export class ResultComponent implements OnInit, OnDestroy {
 	selected_ontology_terms: EdamOntologyTerm[]
 
 	errorMessage: any
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private modalService: BsModalService,
-		private applicationsService: ApplicationsService
-	) {}
 
 	ngOnInit(): void {
 		this.setToSubmitState()

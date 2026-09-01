@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { ApiSettings } from './api-settings.service'
 
@@ -10,7 +10,11 @@ import { ApiSettings } from './api-settings.service'
 	providedIn: 'root'
 })
 export class NumbersService {
-	constructor(private http: HttpClient) {
+	private http = inject(HttpClient)
+
+	constructor() {
+		const http = this.http
+
 		this.http = http
 	}
 

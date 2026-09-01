@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { GeneralStorageFactor } from '../general-storage-factor'
 import { FormsModule } from '@angular/forms'
@@ -15,6 +15,8 @@ import { NgClass } from '@angular/common'
 	imports: [FormsModule, NgClass]
 })
 export class GeneralstoragefactorOverviewComponent implements OnInit {
+	private facilityService = inject(FacilityService)
+
 	generalStorageFactors: GeneralStorageFactor[]
 	@Input() facility_id: number
 	@Output() readonly factorChanged: EventEmitter<any> = new EventEmitter()
@@ -22,7 +24,9 @@ export class GeneralstoragefactorOverviewComponent implements OnInit {
 	newFactor: GeneralStorageFactor
 	storageUpdateList: { [id: string]: boolean } = {}
 
-	constructor(private facilityService: FacilityService) {
+	constructor() {
+		const facilityService = this.facilityService
+
 		this.facilityService = facilityService
 	}
 

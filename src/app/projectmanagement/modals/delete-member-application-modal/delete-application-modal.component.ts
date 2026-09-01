@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { Application } from '../../../applications/application.model/application.model'
@@ -16,15 +16,19 @@ import { ApplicationsService } from '../../../api-connector/applications.service
 	templateUrl: './delete-application-modal.component.html'
 })
 export class DeleteApplicationModal extends AbstractBaseModalComponent {
+	protected modalService: BsModalService
+	private notificationModalComponent = inject(NotificationModalComponent)
+	private applicationsService = inject(ApplicationsService)
+	private fullLayout = inject(FullLayoutComponent)
+
 	application: Application
 
-	constructor(
-		protected modalService: BsModalService,
-		private notificationModalComponent: NotificationModalComponent,
-		private applicationsService: ApplicationsService,
-		private fullLayout: FullLayoutComponent
-	) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showDeleteApplicationModal(application: Application): EventEmitter<boolean> {

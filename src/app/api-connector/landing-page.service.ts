@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { ApiSettings } from './api-settings.service'
 
@@ -7,7 +7,7 @@ import { ApiSettings } from './api-settings.service'
 	providedIn: 'root'
 })
 export class LandingPageService {
-	constructor(private http: HttpClient) {}
+	private http = inject(HttpClient)
 
 	getProjectTypeInformation(): Observable<any> {
 		return this.http.get<any>(`${ApiSettings.getWagtailBase()}project_types_information/`, {

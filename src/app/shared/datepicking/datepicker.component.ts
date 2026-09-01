@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import { NgbDateStruct, NgbCalendar, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap'
 import { FormsModule } from '@angular/forms'
 
@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms'
 	templateUrl: './datepicker.component.html'
 })
 export class DatePickerComponent implements OnInit {
+	private calendar = inject(NgbCalendar)
+
 	model: NgbDateStruct
 	date: { year: number; month: number; day: number }
 	@Output() readonly dayChange: EventEmitter<{ year: number; month: number; day: number }> = new EventEmitter<{
@@ -16,7 +18,9 @@ export class DatePickerComponent implements OnInit {
 		month: number
 		day: number
 	}>()
-	constructor(private calendar: NgbCalendar) {
+	constructor() {
+		const calendar = this.calendar
+
 		this.calendar = calendar
 	}
 

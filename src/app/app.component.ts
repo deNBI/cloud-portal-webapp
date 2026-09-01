@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, ApplicationRef, Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { VoService } from './api-connector/vo.service'
 import { TitleService } from './title.service'
 import { RouterOutlet } from '@angular/router'
@@ -14,27 +14,13 @@ import { RouterOutlet } from '@angular/router'
 	imports: [RouterOutlet]
 })
 export class AppComponent implements AfterViewInit, OnInit {
+	private appRef = inject(ApplicationRef)
+	private titleService = inject(TitleService)
+
 	notificationModalTitle: string = 'Update available'
 	notificationModalMessage: string =
 		'A new update is available. Please reload the site to use the new version of the portal.'
 	notificationModalType: string = 'info'
-
-	constructor(
-		private appRef: ApplicationRef,
-		private titleService: TitleService
-	) {
-		/*   if (environment.production) {
-			 const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
-			 const intervalTime = interval(60 * 1000);
-			 const checkUpdatesInIntervall = concat(isStable, intervalTime);
-			 checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => {
-				 this.swUpdate.available.subscribe(evt => {
-					 this.openNotificationModal()
-
-				 })
-			 }))
-		 } */
-	}
 
 	reloadSite(): void {
 		window.location.reload()

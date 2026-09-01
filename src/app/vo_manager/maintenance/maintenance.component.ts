@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 
 import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal'
@@ -36,6 +36,11 @@ import { ValidTimeFramePipe } from '../../pipe-module/pipes/validTimeFrame.pipe'
 	]
 })
 export class MaintenanceComponent implements OnInit {
+	private workshopService = inject(WorkshopService)
+	private voService = inject(VoService)
+	private fb = inject(UntypedFormBuilder)
+	private modalService = inject(BsModalService)
+
 	is_vo_admin: boolean = false
 	title: string = 'Maintenance'
 
@@ -52,13 +57,6 @@ export class MaintenanceComponent implements OnInit {
 	criticalTimeSpots: WorkshopTimeFrame[] = []
 
 	addTimeFrameForm!: UntypedFormGroup
-
-	constructor(
-		private workshopService: WorkshopService,
-		private voService: VoService,
-		private fb: UntypedFormBuilder,
-		private modalService: BsModalService
-	) {}
 
 	ngOnInit(): void {
 		this.newMaintenanceTimeFrame = new MaintenanceTimeFrame({

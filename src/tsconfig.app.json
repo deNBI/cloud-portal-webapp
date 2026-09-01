@@ -1,19 +1,13 @@
 {
-	"extends": "../tsconfig.json",
-	"compilerOptions": {
-		"outDir": "../out-tsc/app",
-		"baseUrl": "",
-		"types": []
-	},
-	"files": ["main.ts", "polyfills.ts"],
-	"include": ["src/**/*.d.ts"],
-	"angularCompilerOptions": {
-		"extendedDiagnostics": {
-			"checks": {
-				"nullishCoalescingNotNullable": "suppress",
-				"optionalChainNotNullable": "suppress"
-			}
+		"extends": "../tsconfig.json",
+		"compilerOptions": {
+			"outDir": "../out-tsc/app",
+			"baseUrl": "",
+			"types": []
 		},
-		"strictTemplates": false
+		"files": ["main.ts", "polyfills.ts"],
+		"include": ["src/**/*.d.ts"],
+		"angularCompilerOptions": {
+			"strictTemplates": false
+		}
 	}
-}

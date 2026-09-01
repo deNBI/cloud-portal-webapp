@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { TESTIMONIAL_PAGE_LINK, WIKI_PUBLICATIONS } from '../../../../links/links'
@@ -17,6 +17,9 @@ import { HttpErrorResponse } from '@angular/common/http'
 	imports: [FormsModule]
 })
 export class ExtensionEntryComponent implements OnDestroy {
+	bsModalRef = inject(BsModalRef)
+	private groupService = inject(GroupService)
+
 	private subscription: Subscription = new Subscription()
 	public event: EventEmitter<any> = new EventEmitter()
 	@Input() isTermination: boolean = false
@@ -32,11 +35,6 @@ export class ExtensionEntryComponent implements OnDestroy {
 	dois: Doi[]
 	application_id: string | number
 	disableInput: boolean = false
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private groupService: GroupService
-	) {}
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe()

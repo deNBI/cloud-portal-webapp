@@ -1,5 +1,5 @@
 import { ApplicationPage } from './../shared/models/application.page'
-import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 
 import { FacilityService } from '../api-connector/facility.service'
 import { UserService } from '../api-connector/user.service'
@@ -86,16 +86,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	textFilter = new Subject<string>()
 
 	approveLocked: boolean = false
-
-	constructor(
-		userService: UserService,
-		facilityService: FacilityService,
-		applicationsService: ApplicationsService,
-		cdrRef: ChangeDetectorRef,
-		notificationModal: NotificationModalComponent
-	) {
-		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
-	}
 
 	getFacilityApplicationById(application: Application): void {
 		if (application.project_application_description !== undefined) {

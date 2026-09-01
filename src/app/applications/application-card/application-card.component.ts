@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	ViewChild,
+	ChangeDetectionStrategy,
+	inject
+} from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { AbstractBaseClass, Application_States } from '../../shared/shared_modules/baseClass/abstract-base-class'
 import { ConfirmationActions } from '../../shared/modal/confirmation_actions'
@@ -26,6 +35,8 @@ import { ApplicationFacilityActionsComponent } from '../application-facility-act
 	]
 })
 export class ApplicationCardComponent extends AbstractBaseClass implements OnInit {
+	private applicationsService = inject(ApplicationsService)
+
 	@Input() application: Application
 	@Input() tabState: ApplicationTabStates = ApplicationTabStates.SUBMITTED
 	@Input() computeCenters: ComputecenterComponent[] = []
@@ -67,10 +78,6 @@ export class ApplicationCardComponent extends AbstractBaseClass implements OnIni
 		this.applicationsService.getApplicationUser(this.application.project_application_id).subscribe((user: User) => {
 			this.application.project_application_user = user
 		})
-	}
-
-	constructor(private applicationsService: ApplicationsService) {
-		super()
 	}
 
 	triggerRemoveApplication() {

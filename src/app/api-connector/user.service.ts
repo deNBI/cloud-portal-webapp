@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http'
 import { map } from 'rxjs/operators'
@@ -13,7 +13,11 @@ import { Userinfo } from '../userinfo/userinfo.model'
 	providedIn: 'root'
 })
 export class UserService {
-	constructor(private http: HttpClient) {
+	private http = inject(HttpClient)
+
+	constructor() {
+		const http = this.http
+
 		this.http = http
 	}
 

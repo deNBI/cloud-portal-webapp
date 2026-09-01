@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core'
 
 import { CsvOutput, download, generateCsv, mkConfig } from 'export-to-csv'
 
@@ -18,6 +18,8 @@ import { DatePipe } from '@angular/common'
 	imports: [DatePipe]
 })
 export class ResourcesComponent implements OnInit {
+	private voservice = inject(VoService)
+
 	title: string = 'VO Overview: Resources'
 	@ViewChild('resourcesTable') pdfTable: ElementRef
 
@@ -27,7 +29,7 @@ export class ResourcesComponent implements OnInit {
 	tableId: string = 'resourcesTable'
 	today: number = Date.now()
 
-	constructor(private voservice: VoService) {
+	constructor() {
 		this.getVoProjectResources()
 	}
 

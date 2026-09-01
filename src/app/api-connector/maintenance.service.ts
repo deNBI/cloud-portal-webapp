@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { ApiSettings } from './api-settings.service'
@@ -12,7 +12,7 @@ import { MaintenanceTimeFrame } from '../vo_manager/maintenance/maintenanceTimeF
 	providedIn: 'root'
 })
 export class MaintenanceService {
-	constructor(private http: HttpClient) {}
+	private http = inject(HttpClient)
 
 	/**
 	 * returns the upcoming maintenance timeframes

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import {
 	UntypedFormBuilder,
 	UntypedFormControl,
@@ -23,6 +23,8 @@ import { NgClass } from '@angular/common'
 	imports: [FormsModule, ReactiveFormsModule, NgClass]
 })
 export class ResourcemachineOverviewComponent implements OnInit {
+	private facilityService = inject(FacilityService)
+
 	factor_types: string[] = ['HIGH_MEMORY', 'GENERAL_PURPOSE', 'MIDCLASS']
 	gpu_types: GPUSpecification[] = []
 	resourceMachines: ResourceMachine[]
@@ -37,7 +39,9 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
 	resourceMachineUpdateList: { [id: string]: boolean } = {}
 
-	constructor(private facilityService: FacilityService) {
+	constructor() {
+		const facilityService = this.facilityService
+
 		this.facilityService = facilityService
 	}
 

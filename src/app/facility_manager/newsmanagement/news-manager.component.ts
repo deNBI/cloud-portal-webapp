@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal'
 import { NewsService } from '../../api-connector/news.service'
@@ -42,6 +42,9 @@ import {
 	]
 })
 export class NewsManagerComponent implements OnInit, OnDestroy {
+	private newsService = inject(NewsService)
+	private facilityService = inject(FacilityService)
+
 	title: string = 'News Management'
 	public production: boolean = environment.production
 	WIKI_MOTD: string = WIKI_MOTD
@@ -74,13 +77,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	reg2: RegExp = /]/g
 	reg3: RegExp = /'/g
 	subscription: Subscription = new Subscription()
-
-	constructor(
-		private newsService: NewsService,
-		private facilityService: FacilityService
-	) {
-		// constructor for NewsManager
-	}
 
 	/**
 	 * Method on site initialization.

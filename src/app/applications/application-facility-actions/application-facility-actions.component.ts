@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy, inject, OnInit } from '@angular/core'
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { ConfirmationActions } from 'app/shared/modal/confirmation_actions'
@@ -22,7 +22,11 @@ import { HasstatusinlistPipe } from '../../pipe-module/pipes/hasstatusinlist.pip
 	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [TooltipModule, HasstatusinlistPipe]
 })
-export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
+export class ApplicationFacilityActionsComponent extends AbstractBaseClass implements OnInit {
+	private facilityService = inject(FacilityService)
+	private modalService = inject(BsModalService)
+	private applicationsService = inject(ApplicationsService)
+
 	private subscription: Subscription = new Subscription()
 
 	protected readonly ConfirmationActions = ConfirmationActions
@@ -36,14 +40,6 @@ export class ApplicationFacilityActionsComponent extends AbstractBaseClass {
 	bsModalRef: BsModalRef
 	@Output() switchCollapseEvent: EventEmitter<void> = new EventEmitter()
 	@Output() reloadApplicationTrigger: EventEmitter<void> = new EventEmitter()
-
-	constructor(
-		private facilityService: FacilityService,
-		private modalService: BsModalService,
-		private applicationsService: ApplicationsService
-	) {
-		super()
-	}
 
 	switchCollaps() {
 		this.isCollapsed = !this.isCollapsed

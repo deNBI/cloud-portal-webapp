@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { map } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { HttpClient, HttpParams } from '@angular/common/http'
@@ -11,7 +11,11 @@ import { ResourceWeight, IResourceWeight } from '../credits-calculator/resource-
  */
 @Injectable({ providedIn: 'root' })
 export class CreditsService {
-	constructor(private http: HttpClient) {
+	private http = inject(HttpClient)
+
+	constructor() {
+		const http = this.http
+
 		this.http = http
 	}
 

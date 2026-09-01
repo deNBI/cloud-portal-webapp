@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { HttpClient, HttpParams } from '@angular/common/http'
@@ -21,7 +21,11 @@ import { ExtendedFacilityNews } from 'app/facility_manager/newsmanagement/facili
 	providedIn: 'root'
 })
 export class FacilityService {
-	constructor(private http: HttpClient) {
+	private http = inject(HttpClient)
+
+	constructor() {
+		const http = this.http
+
 		this.http = http
 	}
 
@@ -36,7 +40,7 @@ export class FacilityService {
 		})
 	}
 
-	getAllProjectsThatStillDemandAnIntroductionCourse(facilityId: string): Observable<object> {
+	getAllProjectsThatStillDemandAnIntroductionCourse(facilityId: string): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/introduction/`, {
 			withCredentials: true
 		})

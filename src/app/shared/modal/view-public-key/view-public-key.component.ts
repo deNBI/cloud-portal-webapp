@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../abstract-base-modal/abstract-base-modal.component'
 import { ClipboardModule } from 'ngx-clipboard'
@@ -14,11 +14,17 @@ import { ClipboardModule } from 'ngx-clipboard'
 	imports: [ClipboardModule]
 })
 export class ViewPublicKeyComponent extends AbstractBaseModalComponent {
+	protected modalService: BsModalService
+
 	publicKeyMemberName: string
 	publicKeyToShow: string
 
-	constructor(protected modalService: BsModalService) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showViewPublicKeyModal(publicKeyMemberName: string, publicKeyToShow: string): EventEmitter<void> {

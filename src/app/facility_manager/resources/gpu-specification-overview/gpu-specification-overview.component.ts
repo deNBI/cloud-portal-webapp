@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import {
 	UntypedFormBuilder,
 	UntypedFormControl,
@@ -23,6 +23,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip'
 	imports: [FormsModule, ReactiveFormsModule, NgClass, TooltipModule]
 })
 export class GPUSpecificationOverviewComponent implements OnInit {
+	private facilityService = inject(FacilityService)
+
 	gpuSpecifications: GPUSpecification[]
 	newGPUSpecification: GPUSpecification
 	newGPUFormGroup: UntypedFormGroup
@@ -34,7 +36,9 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 
 	gpuSpecificationUpdateList: { [id: string]: boolean } = {}
 
-	constructor(private facilityService: FacilityService) {
+	constructor() {
+		const facilityService = this.facilityService
+
 		this.facilityService = facilityService
 	}
 

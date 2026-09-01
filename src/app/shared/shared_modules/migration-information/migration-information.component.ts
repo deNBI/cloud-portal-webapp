@@ -20,9 +20,6 @@ export class MigrationInformationComponent implements OnInit, OnDestroy {
 
 	@Input() type: string = ''
 
-	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
-	constructor() {}
-
 	ngOnInit(): void {
 		this.subscription = new Subscription()
 		const uniqueProjects = []

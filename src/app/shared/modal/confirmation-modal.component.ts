@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../applications/application.model/application.model'
 import { ConfirmationTypes } from './confirmation_types'
@@ -17,6 +17,8 @@ import { NgClass } from '@angular/common'
 	imports: [NgClass]
 })
 export class ConfirmationModalComponent extends AbstractBaseModalComponent implements OnInit {
+	protected modalService: BsModalService
+
 	protected readonly ConfirmationTypes = ConfirmationTypes
 
 	application: Application = null
@@ -28,8 +30,12 @@ export class ConfirmationModalComponent extends AbstractBaseModalComponent imple
 	type: ConfirmationTypes
 	request_failed: boolean = false
 
-	constructor(protected modalService: BsModalService) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showConfirmationModal(application: Application, action: ConfirmationActions): EventEmitter<any> {

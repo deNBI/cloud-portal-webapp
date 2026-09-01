@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy, inject } from '@angular/core'
 import { UserService } from '../api-connector/user.service'
 import { NgClass } from '@angular/common'
 
@@ -13,12 +13,16 @@ import { NgClass } from '@angular/common'
 	imports: [NgClass]
 })
 export class TitleHeadbarComponent {
+	private userService = inject(UserService)
+
 	@Input() page_title: string
 	@Input() navbar_minimized: boolean
 	brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg'
 	brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg'
 
-	constructor(private userService: UserService) {
+	constructor() {
+		const userService = this.userService
+
 		this.userService = userService
 	}
 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../../applications/application.model/application.model'
 import { CreditsService } from '../../../api-connector/credits.service'
@@ -37,6 +37,11 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 	]
 })
 export class AdjustApplicationComponent implements OnInit {
+	private modalService = inject(BsModalService)
+	private applicationsService = inject(ApplicationsService)
+	private creditsService = inject(CreditsService)
+	private flavorService = inject(FlavorService)
+
 	bsModalRef = BsModalRef
 	loaded: boolean = false
 	loadedFlavorTypes: boolean = false
@@ -61,13 +66,6 @@ export class AdjustApplicationComponent implements OnInit {
 	FlavorTypeShortcuts: typeof FlavorTypeShortcuts = FlavorTypeShortcuts
 
 	@Output() eventSuccess: EventEmitter<boolean> = new EventEmitter()
-
-	constructor(
-		private modalService: BsModalService,
-		private applicationsService: ApplicationsService,
-		private creditsService: CreditsService,
-		private flavorService: FlavorService
-	) {}
 
 	ngOnInit() {
 		this.loaded = false

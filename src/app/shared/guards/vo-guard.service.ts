@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router'
 import { Observable } from 'rxjs'
 import { is_vo } from '../globalvar'
@@ -10,12 +10,11 @@ import { is_vo } from '../globalvar'
 	providedIn: 'root'
 })
 export class VoGuardService {
-	constructor(private router: Router) {}
+	private router = inject(Router)
 
 	canActivate(
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		next: ActivatedRouteSnapshot,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		if (is_vo) {

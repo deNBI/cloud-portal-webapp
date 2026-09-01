@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 
 import { ProjectMember } from '../../../projectmanagement/project_member.model'
@@ -13,17 +13,15 @@ import { FacilityService } from '../../../api-connector/facility.service'
 	imports: []
 })
 export class MembersListModalComponent implements OnDestroy, OnInit {
+	bsModalRef = inject(BsModalRef)
+	private voService = inject(VoService)
+	private facilityService = inject(FacilityService)
+
 	// currently only for vo
 	members: ProjectMember[] = []
 	@Input() projectId: string | number
 	@Input() projectName: string
 	@Input() facilityId: string | number
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private voService: VoService,
-		private facilityService: FacilityService
-	) {}
 
 	ngOnInit() {
 		if (is_vo) {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 
 import { Application } from '../../../applications/application.model/application.model'
@@ -20,14 +20,18 @@ import { ProjectOsDetailsComponent } from '../../../projectmanagement/project-os
 	imports: [ProjectOsDetailsComponent]
 })
 export class TerminateProjectModalComponent extends AbstractBaseModalComponent {
+	protected modalService: BsModalService
+	private voService = inject(VoService)
+	private notificationModal = inject(NotificationModalComponent)
+
 	application: Application
 
-	constructor(
-		protected modalService: BsModalService,
-		private voService: VoService,
-		private notificationModal: NotificationModalComponent
-	) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showTerminationProjectModal(application: Application): EventEmitter<boolean> {

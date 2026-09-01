@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 
 import { WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK, KUBERNETES_LINK } from '../../links/links'
 import { is_vo } from '../shared/globalvar'
@@ -18,6 +18,8 @@ import { ApiSettings } from 'app/api-connector/api-settings.service'
 	imports: [RouterLink]
 })
 export class TypeOverviewComponent implements OnInit {
+	private landingPageService = inject(LandingPageService)
+
 	title: string = 'Project Type Overview'
 	openstack_color: string = '#ed1944'
 	simplevm_color: string = '#00adef'
@@ -48,8 +50,6 @@ export class TypeOverviewComponent implements OnInit {
 	projectTypes: any = {}
 	projectTypeInformationLoaded: boolean = false
 	errorOnLoad: boolean = false
-
-	constructor(private landingPageService: LandingPageService) {}
 
 	ngOnInit(): any {
 		this.landingPageService.getProjectTypeInformation().subscribe({

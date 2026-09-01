@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -10,7 +10,7 @@ import { WorkshopTimeFrame } from '../virtualmachines/workshop/workshopTimeFrame
 	providedIn: 'root'
 })
 export class WorkshopService {
-	constructor(private http: HttpClient) {}
+	private http = inject(HttpClient)
 
 	loadWorkshopCalender(workshop_id: number): Observable<WorkshopTimeFrame[]> {
 		return this.http
@@ -91,7 +91,6 @@ export class WorkshopService {
 			})
 			.pipe(map((workshop_new: Workshop): Workshop => new Workshop(workshop_new)))
 	}
-
 
 	deleteWorkshop(workshop_id: number): Observable<boolean> {
 		return this.http.delete<boolean>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/`, {

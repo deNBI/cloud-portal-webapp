@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { HttpClient, HttpParams } from '@angular/common/http'
 
@@ -13,7 +13,7 @@ import { BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag 
 	providedIn: 'root'
 })
 export class ImageService {
-	constructor(private http: HttpClient) {}
+	private http = inject(HttpClient)
 
 	getImageTags(facility: number): Observable<any> {
 		const params: HttpParams = new HttpParams().set('facility', facility.toString())

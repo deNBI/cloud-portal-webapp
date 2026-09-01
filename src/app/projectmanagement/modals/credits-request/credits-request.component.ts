@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Subscription } from 'rxjs'
 import { CreditsService } from '../../../api-connector/credits.service'
@@ -22,6 +22,10 @@ import {
 	imports: [FormsModule, NgClass, IntegerValidatorDirective, MinAmoutValidatorDirective]
 })
 export class CreditsRequestComponent implements OnInit, OnDestroy {
+	bsModalRef = inject(BsModalRef)
+	private modalService = inject(BsModalService)
+	private creditsService = inject(CreditsService)
+
 	project: Application
 	temp_credits_extension: ApplicationCreditRequest
 
@@ -38,12 +42,6 @@ export class CreditsRequestComponent implements OnInit, OnDestroy {
 	private subscription: Subscription = new Subscription()
 	public event: EventEmitter<any> = new EventEmitter()
 	submitted: boolean = false
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private modalService: BsModalService,
-		private creditsService: CreditsService
-	) {}
 
 	ngOnInit(): void {
 		if (this.project.project_credit_request) {
@@ -84,12 +82,12 @@ export class CreditsRequestComponent implements OnInit, OnDestroy {
 	}
 
 	initExampleFlavors(): void {
-		const standardFlavors: Flavor[] = this.flavorList
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavors')
-		const highMemFlavors: Flavor[] = this.flavorList
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavors')
+		const standardFlavors: Flavor[] = this.flavorList.filter(
+			(fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavors'
+		)
+		const highMemFlavors: Flavor[] = this.flavorList.filter(
+			(fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavors'
+		)
 		standardFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus)
 		highMemFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus)
 		if (standardFlavors.length !== 0) {

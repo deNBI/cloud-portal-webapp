@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 
 import { ApplicationsService } from '../../../api-connector/applications.service'
@@ -15,14 +15,12 @@ export enum WITHDRAWAL_TYPES {
 	providers: [ApplicationsService]
 })
 export class WithdrawModalComponent {
+	bsModalRef = inject(BsModalRef)
+	private projectService = inject(ApplicationsService)
+
 	target_id: string | number
 	type: WITHDRAWAL_TYPES
 	event: EventEmitter<boolean> = new EventEmitter()
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private projectService: ApplicationsService
-	) {}
 
 	withdrawTarget() {
 		switch (this.type) {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 
 import { Application } from '../../../applications/application.model/application.model'
@@ -21,16 +21,20 @@ import { FormsModule } from '@angular/forms'
 	imports: [ProjectOsDetailsComponent, NgClass, FormsModule]
 })
 export class TerminationRequestComponent extends AbstractBaseModalComponent {
+	protected modalService: BsModalService
+	private groupService = inject(GroupService)
+	private fullLayout = inject(FullLayoutComponent)
+	private notificationModalComponent = inject(NotificationModalComponent)
+
 	application: Application
 	terminate_confirmation_given: boolean = false
 
-	constructor(
-		protected modalService: BsModalService,
-		private groupService: GroupService,
-		private fullLayout: FullLayoutComponent,
-		private notificationModalComponent: NotificationModalComponent
-	) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showTerminationRequestModal(application: Application): EventEmitter<boolean> {

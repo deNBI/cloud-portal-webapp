@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy, inject } from '@angular/core'
 import { CLOUD_PORTAL_REGISTER_LINK, WIKI_MEMBER_MANAGEMENT } from '../../../../links/links'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
@@ -16,11 +16,17 @@ import { ClipboardModule } from 'ngx-clipboard'
 	imports: [ClipboardModule]
 })
 export class AddUserModalComponent extends AbstractBaseModalComponent {
+	protected modalService: BsModalService
+
 	invitation_link: string
 	application: Application
 
-	constructor(protected modalService: BsModalService) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showAddUserModalComponent(application: Application, invitation_link: string): EventEmitter<boolean> {

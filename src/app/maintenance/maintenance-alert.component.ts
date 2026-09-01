@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, OnDestroy, EventEmitter, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import { Subscription } from 'rxjs'
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
@@ -17,6 +17,10 @@ import { NgClass, DatePipe } from '@angular/common'
 	imports: [NgClass, DatePipe]
 })
 export class MaintenanceAlertComponent implements OnInit, OnDestroy {
+	private maintenanceService = inject(MaintenanceService)
+	private userService = inject(UserService)
+	private modalService = inject(BsModalService)
+
 	subscription: Subscription = new Subscription()
 	maintenanceTimeFrames: MaintenanceTimeFrame[]
 	numberOfConfirmableTimeframes: number = 0
@@ -24,12 +28,6 @@ export class MaintenanceAlertComponent implements OnInit, OnDestroy {
 	error_on_loading: boolean = false
 	bsModalRef: BsModalRef
 	@Output() confirmEventEmitter: EventEmitter<any> = new EventEmitter<any>()
-
-	constructor(
-		private maintenanceService: MaintenanceService,
-		private userService: UserService,
-		private modalService: BsModalService
-	) {}
 
 	ngOnInit(): void {
 		this.subscription = new Subscription()

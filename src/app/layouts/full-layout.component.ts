@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Injectable, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { ChangeDetectorRef, Component, Injectable, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import moment from 'moment'
 import { ApiSettings } from '../api-connector/api-settings.service'
 import { ClientService } from '../api-connector/client.service'
@@ -47,6 +47,10 @@ import { HasstatusinlistPipe } from '../pipe-module/pipes/hasstatusinlist.pipe'
 	]
 })
 export class FullLayoutComponent extends ApplicationBaseClassComponent implements OnInit {
+	private maintenanceService = inject(MaintenanceService)
+	private groupService = inject(GroupService)
+	private cd: ChangeDetectorRef
+
 	public year: number = new Date().getFullYear()
 	public disabled: boolean = false
 	public status: { isopen: boolean } = { isopen: false }
@@ -86,15 +90,15 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	WIKI_FAQ: string = WIKI_FAQ
 	STATUS_LINK: string = STATUS_LINK
 
-	constructor(
-		private maintenanceService: MaintenanceService,
-		private groupService: GroupService,
-		userService: UserService,
-		facilityService: FacilityService,
-		applicationsService: ApplicationsService,
-		private cd: ChangeDetectorRef
-	) {
-		super(userService, applicationsService, facilityService, null, cd)
+	constructor() {
+		const userService = inject(UserService)
+		const facilityService = inject(FacilityService)
+		const applicationsService = inject(ApplicationsService)
+		const cd = inject(ChangeDetectorRef)
+
+		super()
+
+		this.cd = cd
 	}
 
 	componentAdded(component: any): void {

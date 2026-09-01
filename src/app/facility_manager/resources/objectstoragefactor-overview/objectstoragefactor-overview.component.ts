@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import { ObjectStorageFactor } from '../object-storage-factor'
 import { FacilityService } from '../../../api-connector/facility.service'
 import { FormsModule } from '@angular/forms'
@@ -15,6 +15,8 @@ import { NgClass } from '@angular/common'
 	imports: [FormsModule, NgClass]
 })
 export class ObjectstoragefactorOverviewComponent implements OnInit {
+	private facilityService = inject(FacilityService)
+
 	objectStorageFactors: ObjectStorageFactor[]
 	newFactor: ObjectStorageFactor
 	@Input() facility_id: number
@@ -22,7 +24,9 @@ export class ObjectstoragefactorOverviewComponent implements OnInit {
 
 	objectUpdateList: { [id: string]: boolean } = {}
 
-	constructor(private facilityService: FacilityService) {
+	constructor() {
+		const facilityService = this.facilityService
+
 		this.facilityService = facilityService
 	}
 

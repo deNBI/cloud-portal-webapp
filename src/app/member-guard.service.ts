@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router'
 import { Observable } from 'rxjs'
 import { CookieService } from 'ngx-cookie-service'
@@ -15,13 +15,11 @@ import { setLifeScienceId, setVO } from './shared/globalvar'
  */
 @Injectable()
 export class MemberGuardService {
-	constructor(
-		private http: HttpClient,
-		private cookieService: CookieService,
-		private router: Router,
-		private userService: UserService,
-		private voService: VoService
-	) {}
+	private http = inject(HttpClient)
+	private cookieService = inject(CookieService)
+	private router = inject(Router)
+	private userService = inject(UserService)
+	private voService = inject(VoService)
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
 		const redirectUrl = state.url

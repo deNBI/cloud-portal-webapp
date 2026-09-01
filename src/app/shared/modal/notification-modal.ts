@@ -1,4 +1,4 @@
-import { Component, Injectable, OnDestroy, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Injectable, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { Router, RouterLink } from '@angular/router'
 import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-modal.component'
@@ -11,16 +11,20 @@ import { AbstractBaseModalComponent } from './abstract-base-modal/abstract-base-
 	imports: [RouterLink]
 })
 export class NotificationModalComponent extends AbstractBaseModalComponent implements OnDestroy {
+	protected modalService: BsModalService
+	private router = inject(Router)
+
 	notificationModalTitle: string
 	notificationModalType: string
 	notificationModalMessage: string
 	routerRedirectString: string
 
-	constructor(
-		protected modalService: BsModalService,
-		private router: Router
-	) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showNotificationModal(

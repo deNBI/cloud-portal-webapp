@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { ApiSettings } from './api-settings.service'
@@ -12,7 +12,7 @@ import { CsvMailTemplateModel } from '../shared/classes/csvMailTemplate.model'
 	providedIn: 'root'
 })
 export class EmailService {
-	constructor(private http: HttpClient) {}
+	private http = inject(HttpClient)
 
 	getMailTemplates(): Observable<string[]> {
 		return this.http.get<string[]>(`${ApiSettings.getApiBaseURL()}emails/templates/`, {

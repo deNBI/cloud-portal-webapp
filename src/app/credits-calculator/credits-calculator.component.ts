@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { FacilityService } from '../api-connector/facility.service'
@@ -43,6 +43,11 @@ import { FloorIntegerPipe } from '../pipe-module/pipes/floor-integer.pipe'
 	]
 })
 export class CreditsCalculatorComponent implements OnInit {
+	private facility_service = inject(FacilityService)
+	private flavor_service = inject(FlavorService)
+	private credits_service = inject(CreditsService)
+	private group_service = inject(GroupService)
+
 	title: string = 'Credits Calculator'
 	got_all_cc: boolean = false
 	got_all_flavor: boolean = false
@@ -75,13 +80,6 @@ export class CreditsCalculatorComponent implements OnInit {
 	hours_wanted_group: UntypedFormGroup = new UntypedFormGroup({
 		hours_wanted_form: new UntypedFormControl(1, [integerValidator, minAmountValidator(1)])
 	})
-
-	constructor(
-		private facility_service: FacilityService,
-		private flavor_service: FlavorService,
-		private credits_service: CreditsService,
-		private group_service: GroupService
-	) {}
 
 	ngOnInit(): void {
 		this.flavor_service.getListOfTypesAvailable().subscribe((result: FlavorType[]) => {

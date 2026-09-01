@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { is_vo } from 'app/shared/globalvar'
 
@@ -14,13 +14,11 @@ import { Router } from '@angular/router'
 	imports: [ApplicationBadgesComponent]
 })
 export class ApplicationListModalComponent implements OnDestroy, OnInit {
-	@Input() applications: Application[]
+	bsModalRef = inject(BsModalRef)
+	router = inject(Router)
+	applicationsService = inject(ApplicationsService)
 
-	constructor(
-		public bsModalRef: BsModalRef,
-		public router: Router,
-		public applicationsService: ApplicationsService
-	) {}
+	@Input() applications: Application[]
 	is_vo_admin: boolean = false
 
 	ngOnInit() {

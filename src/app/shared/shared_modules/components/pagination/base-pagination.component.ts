@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, OnDestroy } from '@angular/core'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators'
 import {
@@ -26,7 +26,7 @@ import { AbstractPage } from 'app/shared/models/abstract.page'
 		InputGroupTextDirective
 	]
 })
-export class BasePaginationComponent<T> implements OnInit {
+export class BasePaginationComponent<T> implements OnInit, OnDestroy {
 	@Input() basePage: AbstractPage<T>
 	@Output() pageChanged: EventEmitter<AbstractPage<T>> = new EventEmitter<AbstractPage<T>>()
 

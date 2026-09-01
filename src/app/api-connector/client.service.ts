@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { map } from 'rxjs/operators'
@@ -13,9 +13,13 @@ import { IResponseTemplate } from './response-template'
 	providedIn: 'root'
 })
 export class ClientService {
+	private http = inject(HttpClient)
+
 	clientURL: string = `${ApiSettings.getApiBaseURL()}clients/`
 
-	constructor(private http: HttpClient) {
+	constructor() {
+		const http = this.http
+
 		this.http = http
 	}
 

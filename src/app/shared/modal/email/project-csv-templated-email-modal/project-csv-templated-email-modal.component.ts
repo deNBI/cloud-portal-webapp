@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef } from 'ngx-bootstrap/modal'
 import { Application } from '../../../../applications/application.model/application.model'
 import { EmailService } from '../../../../api-connector/email.service'
@@ -17,6 +17,10 @@ import { FormsModule } from '@angular/forms'
 	imports: [FormsModule, NgClass]
 })
 export class ProjectCsvTemplatedEmailModalComponent implements OnInit, OnDestroy {
+	bsModalRef = inject(BsModalRef)
+	private emailService = inject(EmailService)
+	private notificationModal = inject(NotificationModalComponent)
+
 	csvMailTemplate: CsvMailTemplateModel
 	csvFile: File
 
@@ -30,12 +34,6 @@ Proj1, VM_1, Bielefeld
 Proj2, VM_2, Giessen`
 
 	public event: EventEmitter<boolean> = new EventEmitter()
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private emailService: EmailService,
-		private notificationModal: NotificationModalComponent
-	) {}
 
 	ngOnInit() {
 		this.getMailTemplates()

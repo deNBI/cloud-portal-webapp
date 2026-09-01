@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../../applications/application.model/application.model'
@@ -32,6 +32,11 @@ import { NgSelectComponent } from '@ng-select/ng-select'
 	]
 })
 export class LifetimeRequestComponent implements OnInit, OnDestroy {
+	bsModalRef = inject(BsModalRef)
+	private modalService = inject(BsModalService)
+	private creditsService = inject(CreditsService)
+	private applicationsService = inject(ApplicationsService)
+
 	project: Application
 	temp_project_extension: ApplicationLifetimeExtension
 	initial_number_of_edam_terms: number = 0
@@ -48,13 +53,6 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	private subscription: Subscription = new Subscription()
 	public event: EventEmitter<any> = new EventEmitter()
 	submitted: boolean = false
-
-	constructor(
-		public bsModalRef: BsModalRef,
-		private modalService: BsModalService,
-		private creditsService: CreditsService,
-		private applicationsService: ApplicationsService
-	) {}
 
 	ngOnInit(): void {
 		this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {

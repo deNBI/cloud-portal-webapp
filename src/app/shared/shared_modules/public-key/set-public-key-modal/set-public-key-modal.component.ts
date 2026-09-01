@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy, inject } from '@angular/core'
 import { KeyService } from 'app/api-connector/key.service'
 import { BlacklistedResponse } from 'app/api-connector/response-interfaces'
 import { AbstractBaseModalComponent } from 'app/shared/modal/abstract-base-modal/abstract-base-modal.component'
@@ -18,17 +18,21 @@ import { PublicKeyPipe } from '../../../../pipe-module/pipes/publicKey.pipe'
 	imports: [AlertModule, FormsModule, NgClass, PublicKeyPipe]
 })
 export class SetPublicKeyModalComponent extends AbstractBaseModalComponent {
+	protected modalService: BsModalService
+	private keyService = inject(KeyService)
+
 	acknowledgement_given: boolean = false
 	public_key: string
 	validated_key: boolean = false
 	blocked_key: boolean = false
 	current_key_blocked: boolean = false
 
-	constructor(
-		protected modalService: BsModalService,
-		private keyService: KeyService
-	) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 	showSetPublicKeyModal(userlogin: string): EventEmitter<void> {
 		const initialState = {

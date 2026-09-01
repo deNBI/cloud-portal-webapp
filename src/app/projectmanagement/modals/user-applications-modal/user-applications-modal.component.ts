@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { AbstractBaseModalComponent } from '../../../shared/modal/abstract-base-modal/abstract-base-modal.component'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { ProjectMemberApplication } from '../../project_member_application'
@@ -17,6 +17,9 @@ import { GroupService } from '../../../api-connector/group.service'
 	imports: []
 })
 export class UserApplicationsModalComponent extends AbstractBaseModalComponent implements OnInit {
+	protected modalService: BsModalService
+	private groupService = inject(GroupService)
+
 	application: Application
 	memberApplicationsLoaded: boolean
 	application_action_done: boolean
@@ -25,11 +28,12 @@ export class UserApplicationsModalComponent extends AbstractBaseModalComponent i
 	application_action: string
 	application_member_name: string
 
-	constructor(
-		protected modalService: BsModalService,
-		private groupService: GroupService
-	) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	ngOnInit() {

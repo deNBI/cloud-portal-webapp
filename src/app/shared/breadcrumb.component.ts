@@ -2,25 +2,27 @@ import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute, NavigationEnd, RouterLink } from '@angular/router'
 
 import { filter } from 'rxjs/operators'
-import { NgFor, NgIf, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 
 // tslint:disable
 @Component({
 	selector: 'app-breadcrumbs',
-	template: ` <ng-template ngFor let-breadcrumb [ngForOf]="breadcrumbs" let-last="last">
-		<li
-			class="breadcrumb-item"
-			*ngIf="
-				(breadcrumb.label.title && breadcrumb.url.substring(breadcrumb.url.length - 1) === '/') ||
-				(breadcrumb.label.title && last)
-			"
-			[ngClass]="{ active: last }"
-		>
-			<a *ngIf="!last" [routerLink]="breadcrumb.url">{{ breadcrumb.label.title }}</a>
-			<span *ngIf="last" [routerLink]="breadcrumb.url">{{ breadcrumb.label.title }}</span>
-		</li>
-	</ng-template>`,
-	imports: [NgFor, NgIf, NgClass, RouterLink]
+	template: ` @for (breadcrumb of breadcrumbs; track breadcrumb; let last = $last) {
+		@if (
+			(breadcrumb.label.title && breadcrumb.url.substring(breadcrumb.url.length - 1) === '/') ||
+			(breadcrumb.label.title && last)
+		) {
+			<li class="breadcrumb-item" [ngClass]="{ active: last }">
+				@if (!last) {
+					<a [routerLink]="breadcrumb.url">{{ breadcrumb.label.title }}</a>
+				}
+				@if (last) {
+					<span [routerLink]="breadcrumb.url">{{ breadcrumb.label.title }}</span>
+				}
+			</li>
+		}
+	}`,
+	imports: [NgClass, RouterLink]
 })
 export class BreadcrumbsComponent implements OnInit {
 	breadcrumbs: object[]

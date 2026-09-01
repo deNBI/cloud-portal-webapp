@@ -5,7 +5,8 @@ import {
 	OnInit,
 	QueryList,
 	ViewChildren,
-	ChangeDetectionStrategy
+	ChangeDetectionStrategy,
+	inject
 } from '@angular/core'
 import { debounceTime, distinctUntilChanged, Observable, Subject, Subscription } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
@@ -85,6 +86,15 @@ import { ComputeCenterResponse } from 'app/shared/shared_modules/interfaces/comp
 	]
 })
 export class VoOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
+	private fullLayout = inject(FullLayoutComponent)
+	private voService = inject(VoService)
+	private facilityService = inject(FacilityService)
+	private modalService = inject(BsModalService)
+	private notificationModal = inject(NotificationModalComponent)
+	private terminateProjectModalComponent = inject(TerminateProjectModalComponent)
+	private declineProjectTerminationModalComponent = inject(DeclineProjectTerminationModalComponent)
+	private confirmationModalComponent = inject(ConfirmationModalComponent)
+
 	title: string = 'VO Overview'
 	public emailSubject: string
 	public emailReply: string = ''
@@ -135,21 +145,6 @@ export class VoOverviewComponent extends AbstractBaseClass implements OnInit, On
 
 	applictions$: Observable<Application[]>
 	total$: Observable<number>
-
-	// public selectedFacility: [string, number];
-
-	constructor(
-		private fullLayout: FullLayoutComponent,
-		private voService: VoService,
-		private facilityService: FacilityService,
-		private modalService: BsModalService,
-		private notificationModal: NotificationModalComponent,
-		private terminateProjectModalComponent: TerminateProjectModalComponent,
-		private declineProjectTerminationModalComponent: DeclineProjectTerminationModalComponent,
-		private confirmationModalComponent: ConfirmationModalComponent
-	) {
-		super()
-	}
 
 	ngOnInit(): void {
 		this.textFilterSubject.pipe(debounceTime(600), distinctUntilChanged()).subscribe(filter => {

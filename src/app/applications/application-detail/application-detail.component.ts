@@ -5,7 +5,8 @@ import {
 	Output,
 	OnInit,
 	EventEmitter,
-	ChangeDetectionStrategy
+	ChangeDetectionStrategy,
+	inject
 } from '@angular/core'
 import { Application } from '../application.model/application.model'
 import { ApplicationBaseClassComponent } from '../../shared/shared_modules/baseClass/application-base-class.component'
@@ -120,16 +121,6 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 			default:
 				break
 		}
-	}
-
-	constructor(
-		applicationsService: ApplicationsService,
-		userService: UserService,
-		facilityService: FacilityService,
-		cdrRef: ChangeDetectorRef,
-		notificationModal: NotificationModalComponent
-	) {
-		super(userService, applicationsService, facilityService, notificationModal, cdrRef)
 	}
 
 	ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core'
 import { NgForm, FormsModule } from '@angular/forms'
 
 import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor'
@@ -75,6 +75,11 @@ import { SufficientHumanDataInformationGivenPipe } from 'app/pipe-module/pipes/s
 	]
 })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
+	private creditsService = inject(CreditsService)
+	private flavorService = inject(FlavorService)
+	private fullLayout = inject(FullLayoutComponent)
+	private router = inject(Router)
+
 	@Input() openstack_project: boolean = false
 	@Input() simple_vm_project: boolean = false
 	@Input() storage_project: boolean = false
@@ -142,19 +147,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	//  */
 	// public typeList: FlavorType[] = [];
 
-	constructor(
-		private creditsService: CreditsService,
-		private flavorService: FlavorService,
-		private fullLayout: FullLayoutComponent,
-		private router: Router,
-		userService: UserService,
-		applicationsService: ApplicationsService,
-		cdrRef: ChangeDetectorRef,
-		notificationModal: NotificationModalComponent
-	) {
-		super(userService, applicationsService, null, notificationModal, cdrRef)
-	}
-
 	ngOnInit(): void {
 		this.getUserinfo()
 		this.getListOfFlavors()
@@ -174,7 +166,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		})
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onAllDissChange(event: any): void {
 		if (this.all_dissemination_checked) {
 			this.application.dissemination.setAllInformationTrue()
@@ -426,7 +417,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	/**
 	 * Sends a request to the BE to get the initital credits for a new application.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 	calculateInitialCredits(form: NgForm): void {
 		this.creditsService
 			.getCreditsForApplication(this.application.flavors, this.application.project_application_lifetime)

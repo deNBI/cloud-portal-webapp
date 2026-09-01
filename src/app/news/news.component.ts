@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input, ChangeDetectionStrategy, inject } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { OwlOptions, CarouselModule } from 'ngx-owl-carousel-o'
 import { NewsService } from '../api-connector/news.service'
@@ -17,6 +17,9 @@ import { NewsSlideComponent } from './news-slide/news-slide.component'
 	imports: [CarouselModule, NewsSlideComponent]
 })
 export class NewsComponent implements OnInit, OnDestroy {
+	private news_service = inject(NewsService)
+	private groupService = inject(GroupService)
+
 	@Input() tags: string[] = []
 	facilities: number[] = []
 	@Input() cards_per_page: number = 3
@@ -56,11 +59,6 @@ export class NewsComponent implements OnInit, OnDestroy {
 		},
 		nav: true
 	}
-
-	constructor(
-		private news_service: NewsService,
-		private groupService: GroupService
-	) {}
 
 	ngOnInit(): void {
 		this.subscription = new Subscription()

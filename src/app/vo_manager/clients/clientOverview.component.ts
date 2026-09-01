@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
@@ -26,6 +26,11 @@ import { ComputeCenterResponse } from 'app/shared/shared_modules/interfaces/comp
 	imports: [FormsModule, NgClass, ModalModule]
 })
 export class ClientOverviewComponent implements OnInit, OnDestroy {
+	private facilityService = inject(FacilityService)
+	private userService = inject(UserService)
+	private clientservice = inject(ClientService)
+	private modalService = inject(BsModalService)
+
 	title: string = 'Client Overview'
 	/**
 	 * All clients.
@@ -68,12 +73,10 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 
 	subscription: Subscription = new Subscription()
 
-	constructor(
-		private facilityService: FacilityService,
-		private userService: UserService,
-		private clientservice: ClientService,
-		private modalService: BsModalService
-	) {
+	constructor() {
+		const facilityService = this.facilityService
+		const userService = this.userService
+
 		this.facilityService = facilityService
 		this.userService = userService
 		this.facilityService = facilityService

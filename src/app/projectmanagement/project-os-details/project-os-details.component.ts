@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy, inject } from '@angular/core'
 import { GroupService } from '../../api-connector/group.service'
 import { Application } from '../../applications/application.model/application.model'
 
@@ -14,16 +14,19 @@ import { Application } from '../../applications/application.model/application.mo
 	imports: []
 })
 export class ProjectOsDetailsComponent implements OnInit, OnChanges {
+	private groupService = inject(GroupService)
+
 	@Input() project: Application
 
 	details_loaded: boolean = false
 	show_error: boolean = false
 
-	constructor(private groupService: GroupService) {
+	constructor() {
+		const groupService = this.groupService
+
 		this.groupService = groupService
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	ngOnChanges(changes: SimpleChanges): void {
 		this.details_loaded = false
 		this.getProjectDetails()

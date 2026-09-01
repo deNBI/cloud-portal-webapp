@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 
 import { ApplicationsService } from '../api-connector/applications.service'
@@ -19,6 +19,9 @@ import { ApplicationFormularComponent } from '../applications/application-formul
 	imports: [ApplicationFormularComponent]
 })
 export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit, AfterViewChecked {
+	private activatedRoute = inject(ActivatedRoute)
+	private changeDetector: ChangeDetectorRef
+
 	application: Application
 	isLoadedApplication: boolean = false
 	hash: string
@@ -37,12 +40,13 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 	 */
 	public totalRAM: number = 0
 
-	constructor(
-		applicationsService: ApplicationsService,
-		private activatedRoute: ActivatedRoute,
-		private changeDetector: ChangeDetectorRef
-	) {
-		super(null, applicationsService, null, null, changeDetector)
+	constructor() {
+		const applicationsService = inject(ApplicationsService)
+		const changeDetector = inject(ChangeDetectorRef)
+
+		super()
+
+		this.changeDetector = changeDetector
 	}
 
 	ngAfterViewChecked(): void {

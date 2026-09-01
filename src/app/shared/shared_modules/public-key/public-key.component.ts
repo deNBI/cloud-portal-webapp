@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import { ClipboardService } from 'ngx-clipboard'
 import { KeyService } from '../../../api-connector/key.service'
 import { ApiSettings } from '../../../api-connector/api-settings.service'
@@ -25,6 +25,11 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 	imports: [AlertModule, NgbTooltip]
 })
 export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
+	private keyService = inject(KeyService)
+	private clipboardService = inject(ClipboardService)
+	private generatePublicKeyModal = inject(GeneratePublicKeyModalComponent)
+	private setPublicKeyModalComponent = inject(SetPublicKeyModalComponent)
+
 	WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS
 	public_key: string
 	validated_key: boolean = false
@@ -34,15 +39,6 @@ export class PublicKeyComponent extends AbstractBaseClass implements OnInit {
 	@Input() userinfo: Userinfo
 	@Output() readonly currentKeyBlockedChanged: EventEmitter<boolean> = new EventEmitter()
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
-
-	constructor(
-		private keyService: KeyService,
-		private clipboardService: ClipboardService,
-		private generatePublicKeyModal: GeneratePublicKeyModalComponent,
-		private setPublicKeyModalComponent: SetPublicKeyModalComponent
-	) {
-		super()
-	}
 
 	ngOnInit() {
 		if (this.userinfo?.PublicKey) {

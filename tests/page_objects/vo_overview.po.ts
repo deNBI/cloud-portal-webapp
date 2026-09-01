@@ -42,7 +42,6 @@ export class VoOverviewPage {
 
 		try {
 			await this.page.waitForSelector(Util.by_data_test_id_str(this.SPINNER), { state: 'visible', timeout: 5000 })
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (error) {
 			console.log('Spinner not visible within 5 seconds, continuing...')
 		}

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ChangeDetectionStrategy } from '@angular/core'
+import { ChangeDetectorRef, Component, ChangeDetectionStrategy, inject } from '@angular/core'
 import { AbstractBaseClass, Application_States, Application_States_Strings } from './abstract-base-class'
 import { Application } from '../../../applications/application.model/application.model'
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor'
@@ -23,6 +23,12 @@ import { ComputeCenterResponse } from '../interfaces/computecenter-response.inte
 	providers: [FacilityService, ApplicationsService, FlavorService]
 })
 export class ApplicationBaseClassComponent extends AbstractBaseClass {
+	protected userService = inject(UserService)
+	protected applicationsService = inject(ApplicationsService)
+	protected facilityService = inject(FacilityService)
+	protected notificationModal = inject(NotificationModalComponent)
+	private cdRef = inject(ChangeDetectorRef)
+
 	/**
 	 * If all Applications are loaded, important for the loader.
 	 *
@@ -118,16 +124,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 */
 	user_applications: Application[] = []
 
-	constructor(
-		protected userService: UserService,
-		protected applicationsService: ApplicationsService,
-		protected facilityService: FacilityService,
-		protected notificationModal: NotificationModalComponent,
-		private cdRef: ChangeDetectorRef
-	) {
-		super()
-	}
-
 	/**
 	 * Gets all available compute centers and saves them in the computeCenters attribute.
 	 */
@@ -147,7 +143,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		})
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	valuesChanged(flavor: Flavor, counter: number, lifetime?: string): void {
 		if (this.newFlavors[flavor.name]) {
 			if (counter === 0 || counter === null) {

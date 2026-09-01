@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { forkJoin } from 'rxjs'
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal'
 
@@ -37,6 +37,12 @@ import { FormsModule } from '@angular/forms'
 	imports: [NewsComponent, MaintenanceAlertComponent, PublicKeyComponent, FormsModule, ModalModule, NgClass]
 })
 export class UserInfoComponent implements OnInit {
+	private groupService = inject(GroupService)
+	private userService = inject(UserService)
+	private keyService = inject(KeyService)
+	private applicationsService = inject(ApplicationsService)
+	private modalService = inject(BsModalService)
+
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
 
 	/**
@@ -119,13 +125,12 @@ export class UserInfoComponent implements OnInit {
 
 	confirmEventEmitter: EventEmitter<any> = new EventEmitter<any>()
 
-	constructor(
-		private groupService: GroupService,
-		private userService: UserService,
-		private keyService: KeyService,
-		private applicationsService: ApplicationsService,
-		private modalService: BsModalService
-	) {
+	constructor() {
+		const groupService = this.groupService
+		const userService = this.userService
+		const keyService = this.keyService
+		const applicationsService = this.applicationsService
+
 		this.groupService = groupService
 		this.userService = userService
 		this.keyService = keyService

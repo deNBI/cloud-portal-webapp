@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../../applications/application.model/application.model'
 import { GroupService } from '../../../api-connector/group.service'
@@ -18,17 +18,21 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links'
 	styleUrl: './leave-project.component.scss'
 })
 export class LeaveProjectComponent extends AbstractBaseModalComponent {
+	protected modalService: BsModalService
+	private groupService = inject(GroupService)
+	private fullLayout = inject(FullLayoutComponent)
+	private notificationModalComponent = inject(NotificationModalComponent)
+
 	application: Application
 	userinfo: Userinfo
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL
 
-	constructor(
-		protected modalService: BsModalService,
-		private groupService: GroupService,
-		private fullLayout: FullLayoutComponent,
-		private notificationModalComponent: NotificationModalComponent
-	) {
+	constructor() {
+		const modalService = inject(BsModalService)
+
 		super(modalService)
+
+		this.modalService = modalService
 	}
 
 	showLeaveProjectModal(application: Application, userinfo: Userinfo): EventEmitter<boolean> {

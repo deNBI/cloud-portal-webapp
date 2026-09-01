@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, Injectable, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { Application } from '../../../applications/application.model/application.model'
 import { ApplicationLifetimeExtension } from '../../../applications/application_extension.model'
@@ -20,6 +20,9 @@ import {
 	imports: [FormsModule, MinAmoutValidatorDirective, IntegerValidatorDirective, NgClass]
 })
 export class AdjustLifetimeRequestComponent implements OnInit {
+	private modalService = inject(BsModalService)
+	private applicationsService = inject(ApplicationsService)
+
 	bsModalRef = BsModalRef
 	modalId: number | string | undefined
 	loaded: boolean = false
@@ -27,11 +30,6 @@ export class AdjustLifetimeRequestComponent implements OnInit {
 	application: Application
 	adjustedApplicationLifetimeExtension: ApplicationLifetimeExtension
 	@Output() eventSuccess: EventEmitter<boolean> = new EventEmitter()
-
-	constructor(
-		private modalService: BsModalService,
-		private applicationsService: ApplicationsService
-	) {}
 
 	ngOnInit() {
 		this.loaded = false
