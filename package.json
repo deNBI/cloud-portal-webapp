@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.998.0",
+  "version": "4.999.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -76,12 +76,12 @@
   },
   
   "devDependencies": {
-    "@angular/build": "^21.2.20",
+    "@angular/build": "^22.0.0",
     "@angular-eslint/builder": "20.7.0",
     "@angular-eslint/eslint-plugin-template": "20.7.0",
     "@angular-eslint/schematics": "20.7.0",
     "@angular-eslint/template-parser": "20.7.0",
-    "@angular/cli": "21.2.20",
+    "@angular/cli": "22.1.6",
     "@angular/compiler-cli": "21.2.19",
     "@eslint/eslintrc": "3.3.5",
     "@eslint/js": "9.39.4",
