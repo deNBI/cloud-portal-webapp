@@ -47,6 +47,12 @@
       "addLabels": [
         "pin"
       ]
+    },
+    {
+      "matchLabels": [
+        "security"
+      ],
+      "minimumReleaseAge": null
     }
   ],
   "vulnerabilityAlerts": {
@@ -74,5 +80,6 @@
   "commitBodyTable": true,
   "prHourlyLimit": 0,
   "rebaseWhen": "behind-base-branch",
-  "commitMessagePrefix": "feat(Dependencies):"
+  "commitMessagePrefix": "feat(Dependencies):",
+  "minimumReleaseAge": "3 days"
 }
