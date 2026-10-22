@@ -291,9 +291,9 @@
 												de.NBI Cloud projects have no fixed total runtime. The maximum possible initial lifetime for new
 												projects is <strong>{{ max_lifetime }} months</strong>. Under certain conditions, longer initial
 												terms can also be granted immediately, for example for
-												<strong>longer funded projects, like NFDI, DFG, BMBF or Horizon Europe projects</strong>. Please
-												select the corresponding options in the further course of the form and enter information about
-												the total funded runtime of your project in the comment field further down in the project
+												<strong>longer funded projects, like NFDI, DFG, BMFTR or Horizon Europe projects</strong>.
+												Please select the corresponding options in the further course of the form and enter information
+												about the total funded runtime of your project in the comment field further down in the project
 												application form.
 											</p>
 										}
@@ -1179,7 +1179,7 @@
 							<br />
 							<div class="form-group row">
 								<label class="col-md-4 form-control-label" for="id_project_application_bmbf_switch"
-									><strong>BMBF</strong></label
+									><strong>BMFTR</strong></label
 								>
 								<div class="col-md-8">
 									<div class="form-check">
@@ -1192,7 +1192,7 @@
 											[defaultChecked]="application?.project_application_bmbf_project?.length > 1"
 											(click)="toggleProjectPart(part_bmbf.checked, 'bmbf')"
 										/>
-										<span class="help-block">Is your project part of a BMBF project?</span>
+										<span class="help-block">Is your project part of a BMFTR project?</span>
 									</div>
 									@if (part_bmbf.checked) {
 										<input
@@ -2054,10 +2054,10 @@
 			<div class="modal-body">
 				<div class="alert alert-{{ acknowledgeModalType }}" role="alert">
 					The development and support of the cloud is possible above all through the funding of the cloud infrastructure
-					by the Federal Ministry of Education and Research (BMBF)! We would highly appreciate the following citation in
-					your next publication(s): This work was supported by the de.NBI Cloud within the German Network for
-					Bioinformatics Infrastructure (de.NBI) and ELIXIR-DE (Forschungszentrum Jülich and W-de.NBI-001, W-de.NBI-004,
-					W-de.NBI-008, W-de.NBI-010, W-de.NBI-013, W-de.NBI-014, W-de.NBI-016, W-de.NBI-022).
+					by the Federal Ministry of Research, Technology and Space (BMFTR)! We would highly appreciate the following
+					citation in your next publication(s): This work was supported by the de.NBI Cloud within the German Network
+					for Bioinformatics Infrastructure (de.NBI) and ELIXIR-DE (Forschungszentrum Jülich and W-de.NBI-001,
+					W-de.NBI-004, W-de.NBI-008, W-de.NBI-010, W-de.NBI-013, W-de.NBI-014, W-de.NBI-016, W-de.NBI-022).
 				</div>
 			</div>
 			<div class="modal-footer">
