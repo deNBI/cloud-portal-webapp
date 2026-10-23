@@ -752,7 +752,7 @@
 									<span class="help-block">To which institute do you belong? (Up to 256 characters allowed)</span>
 								</div>
 							</div>
-							<div class="form-group ow">
+							<div class="form-group row">
 								<label class="col-md-4 form-control-label" for="id_project_application_workgroup"
 									><strong
 										>Workgroup Name<i class="fa fa-asterisk" aria-hidden="true"></i>
@@ -844,32 +844,35 @@
 												(click)="toggleTest()"
 											/>
 											<span class="help-block">
-												My project processes data of human subjects that are publicly available
+												My project processes data of human subjects that <strong>are publicly available</strong>
 											</span>
 											@if (application.project_application_public_person_related_data) {
-												<input
-													required
-													type="text"
-													data-test-id="project_application_public_person_related_data_source_input"
-													id="id_project_application_public_person_related_data_source"
-													name="project_application_workgroup"
-													class="form-control"
-													maxlength="256"
-													[(ngModel)]="application.project_application_workgroup"
-													placeholder="e.g. Computational Metagenomics"
-													[ngClass]="{
-														'is-invalid':
-															form.controls.project_application_workgroup?.invalid &&
-															(form.controls.project_application_workgroup?.dirty ||
-																form.controls.project_application_workgroup?.touched),
-														'is-valid':
-															form.controls.project_application_workgroup?.valid &&
-															(form.controls.project_application_workgroup?.dirty ||
-																form.controls.project_application_workgroup?.touched),
-													}"
-												/>
-												<!-- proceed here-->
-												<span class="help-block">To which workgroup do you belong? (Up to 256 characters allowed)</span>
+												<div class="my-1 p-1">
+													<input
+														required
+														type="text"
+														data-test-id="project_application_public_person_related_data_source_input"
+														id="id_project_application_public_person_related_data_source"
+														name="project_application_public_person_related_data_source"
+														class="form-control"
+														maxlength="256"
+														[(ngModel)]="application.project_application_public_person_related_data_source"
+														placeholder="https://"
+														[ngClass]="{
+															'is-invalid':
+																form.controls.project_application_public_person_related_data_source?.invalid &&
+																(form.controls.project_application_public_person_related_data_source?.dirty ||
+																	form.controls.project_application_public_person_related_data_source?.touched),
+															'is-valid':
+																form.controls.project_application_public_person_related_data_source?.valid &&
+																(form.controls.project_application_public_person_related_data_source?.dirty ||
+																	form.controls.project_application_public_person_related_data_source?.touched),
+														}"
+													/>
+													<span class="help-block"
+														>Please name the source for the publicly available person related / human data.</span
+													>
+												</div>
 											}
 										</div>
 										<div class="form-check">
@@ -885,7 +888,7 @@
 											/>
 											@if (!personalData.checked) {
 												<span class="help-block">
-													My project processes data of human subjects that are not publicly available
+													My project processes data of human subjects that <strong>are not publicly available</strong>
 												</span>
 											}
 											@if (personalData.checked) {
@@ -975,8 +978,8 @@
 									@if (!(application | sufficientHumanDataInformation)) {
 										<div class="alert alert-danger">
 											The selection is not sufficient. When stating, that data of human subjects is processed in the
-											course of this project, please also specific which type be selecting the checkboxes with the
-											different options above!
+											course of this project, please either specify which type be selecting the checkboxes with the
+											different options above, or state a source for publicly available data.
 										</div>
 									}
 									<div class="alert alert-primary" role="alert">
