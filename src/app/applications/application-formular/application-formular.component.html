@@ -752,7 +752,7 @@
 									<span class="help-block">To which institute do you belong? (Up to 256 characters allowed)</span>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group ow">
 								<label class="col-md-4 form-control-label" for="id_project_application_workgroup"
 									><strong
 										>Workgroup Name<i class="fa fa-asterisk" aria-hidden="true"></i>
@@ -832,6 +832,46 @@
 										<strong>Person Related Data<i class="fa fa-asterisk" aria-hidden="true"></i></strong>
 									</label>
 									<div class="col-md-8">
+										<div class="form-check">
+											<input
+												class="form-check-input"
+												type="checkbox"
+												id="id_project_application_public_person_related_data"
+												name="project_application_public_person_related_data"
+												data-test-id="project_application_public_person_related_data_switch"
+												#publicPersonalData
+												[(ngModel)]="application.project_application_public_person_related_data"
+												(click)="toggleTest()"
+											/>
+											<span class="help-block">
+												My project processes data of human subjects that are publicly available
+											</span>
+											@if (application.project_application_public_person_related_data) {
+												<input
+													required
+													type="text"
+													data-test-id="project_application_public_person_related_data_source_input"
+													id="id_project_application_public_person_related_data_source"
+													name="project_application_workgroup"
+													class="form-control"
+													maxlength="256"
+													[(ngModel)]="application.project_application_workgroup"
+													placeholder="e.g. Computational Metagenomics"
+													[ngClass]="{
+														'is-invalid':
+															form.controls.project_application_workgroup?.invalid &&
+															(form.controls.project_application_workgroup?.dirty ||
+																form.controls.project_application_workgroup?.touched),
+														'is-valid':
+															form.controls.project_application_workgroup?.valid &&
+															(form.controls.project_application_workgroup?.dirty ||
+																form.controls.project_application_workgroup?.touched),
+													}"
+												/>
+												<!-- proceed here-->
+												<span class="help-block">To which workgroup do you belong? (Up to 256 characters allowed)</span>
+											}
+										</div>
 										<div class="form-check">
 											<input
 												class="form-check-input"

@@ -182,6 +182,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		}
 	}
 
+	toggleTest(): void {
+		console.log('yeah')
+	}
+
 	getDisseminationPlatforms(): void {
 		this.applicationsService.getDisseminationPlatforms().subscribe((platforms: DisseminationPlatform[]): void => {
 			this.availablePlatforms = platforms
