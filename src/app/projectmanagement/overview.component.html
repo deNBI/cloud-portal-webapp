@@ -156,6 +156,16 @@
 															><span style="font-size: 15px"> <i class="fas fa-fingerprint"></i></span>
 														</span>
 													}
+													@if (application?.project_application_public_person_related_data) {
+														<span
+															style="margin-left: 12px"
+															class="badge bg-warning"
+															data-toggle="tooltip"
+															data-placement="auto"
+															title="This application uses publicly available human data"
+															><span style="font-size: 17px"> <i class="fas fa-fingerprint"></i></span>
+														</span>
+													}
 												</td>
 												<td>{{ project_application?.project_application_name }}</td>
 												<td>{{ project_application?.project_application_shortname }}</td>

@@ -129,7 +129,19 @@
 				@if (application?.project_application_person_related_data) {
 					<p>Yes</p>
 				}
-				@if (!application?.project_application_person_related_data) {
+				@if (application?.project_application_public_person_related_data) {
+					<p>
+						Publicly availabla data with source:
+						{{ application?.project_application_public_person_related_data_source }}
+					</p>
+				}
+
+				@if (
+					!(
+						application?.project_application_person_related_data ||
+						application?.project_application_public_person_related_data
+					)
+				) {
 					<p>No</p>
 				}
 			</td>

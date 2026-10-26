@@ -841,7 +841,7 @@
 												data-test-id="project_application_public_person_related_data_switch"
 												#publicPersonalData
 												[(ngModel)]="application.project_application_public_person_related_data"
-												(click)="toggleTest()"
+												(click)="togglePersonalDataType(publicPersonalData.checked, 'public_person_related')"
 											/>
 											<span class="help-block">
 												My project processes data of human subjects that <strong>are publicly available</strong>

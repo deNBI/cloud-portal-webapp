@@ -130,8 +130,24 @@ export class AdjustApplicationComponent implements OnInit {
 					this.adjustedApplication.project_application_no_personal_data = false
 					this.adjustedApplication.project_application_nonsensitive_data = false
 					this.adjustedApplication.project_application_sensitive_data = false
+					this.adjustedApplication.project_application_person_related_data = false
 				} else {
 					this.adjustedApplication.project_application_no_data_at_all = false
+					this.adjustedApplication.project_application_public_person_related_data = false
+					this.adjustedApplication.project_application_person_related_data = true
+				}
+				break
+			}
+			case 'public_person_related': {
+				if (!checked) {
+					this.adjustedApplication.project_application_public_person_related_data = false
+				} else {
+					this.adjustedApplication.project_application_public_person_related_data = true
+					this.adjustedApplication.project_application_no_personal_data = false
+					this.adjustedApplication.project_application_nonsensitive_data = false
+					this.adjustedApplication.project_application_sensitive_data = false
+					this.adjustedApplication.project_application_no_data_at_all = false
+					this.adjustedApplication.project_application_person_related_data = false
 				}
 				break
 			}
@@ -157,7 +173,7 @@ export class AdjustApplicationComponent implements OnInit {
 				}
 				break
 			}
-			case 'no_at_all': {
+			case 'no_at_all':
 				if (checked) {
 					this.adjustedApplication.project_application_no_data_at_all = true
 					this.adjustedApplication.project_application_no_personal_data = false
@@ -166,7 +182,6 @@ export class AdjustApplicationComponent implements OnInit {
 					this.adjustedApplication.project_application_person_related_data = false
 				}
 				break
-			}
 			default:
 				break
 		}

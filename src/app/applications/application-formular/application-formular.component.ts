@@ -561,8 +561,24 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 					this.application.project_application_no_personal_data = false
 					this.application.project_application_nonsensitive_data = false
 					this.application.project_application_sensitive_data = false
+					this.application.project_application_person_related_data = false
 				} else {
 					this.application.project_application_no_data_at_all = false
+					this.application.project_application_public_person_related_data = false
+					this.application.project_application_person_related_data = true
+				}
+				break
+			}
+			case 'public_person_related': {
+				if (!checked) {
+					this.application.project_application_public_person_related_data = false
+				} else {
+					this.application.project_application_public_person_related_data = true
+					this.application.project_application_no_personal_data = false
+					this.application.project_application_nonsensitive_data = false
+					this.application.project_application_sensitive_data = false
+					this.application.project_application_no_data_at_all = false
+					this.application.project_application_person_related_data = false
 				}
 				break
 			}
