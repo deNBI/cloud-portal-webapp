@@ -49,12 +49,6 @@
       ],
       "enabled": false
     },
-    {
-      "matchLabels": [
-        "security"
-      ],
-      "minimumReleaseAge": null
-    }
   ],
   "vulnerabilityAlerts": {
     "labels": [
