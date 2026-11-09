@@ -15,6 +15,6 @@ jobs:
       dockerfile: Dockerfile
       RUNS_ON: '["ubuntu-latest"]'
     secrets:
-      OCI_USERNAME: ${{ secrets.OCI_USERNAME }}
-      OCI_TOKEN: ${{ secrets.OCI_TOKEN }}
+      OCI_USERNAME: ${{ secrets.OCI_DENBI_USERNAME }}
+      OCI_TOKEN: ${{ secrets.OCI_DENBI_TOKEN }}
       CUSTOM_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
