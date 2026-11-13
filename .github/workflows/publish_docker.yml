@@ -13,7 +13,7 @@ jobs:
     with:
       image_name: oci.bi.denbi.de/denbicloud/cloud-portal-webapp
       dockerfile: Dockerfile
-      RUNS_ON: '["ubuntu-latest"]'
+      runs_on: '["ubuntu-latest"]'
     secrets:
       OCI_USERNAME: ${{ secrets.OCI_DENBI_USERNAME }}
       OCI_TOKEN: ${{ secrets.OCI_DENBI_TOKEN }}
