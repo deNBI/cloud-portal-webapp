@@ -5,7 +5,7 @@ on:
       fail_on_findings:
         description: 'Abort publish on scan findings (Tier 1/2)'
         required: false
-        default: 'true'
+        default: true
         type: boolean
   push:
     branches:
