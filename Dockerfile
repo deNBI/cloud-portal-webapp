@@ -26,7 +26,7 @@ COPY . .
 RUN npx ng build --configuration=custom
 
 ### STAGE 2: Setup
-FROM nginx:1.31.8-alpine3.24-slim@sha256:9c68ad4f28e7dee4b9484a7859bf451da39ef661bcd038ef62e87593fcd91c86
+FROM nginx:1.31.9-alpine3.24-slim@sha256:5bfced78d24d644270bedb0a9968697042e38d5c03fb6354603df025279c1cbe
 
 RUN apk update && apk upgrade --no-cache
 
